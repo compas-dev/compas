@@ -156,13 +156,16 @@ class Brep(Geometry):
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "faces": list,
-        })
+
+        return schema.Schema(
+            {
+                "faces": list,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'brep'
+        return "brep"
 
     @property
     def data(self):
@@ -178,6 +181,17 @@ class Brep(Geometry):
     # ==============================================================================
     # Properties
     # ==============================================================================
+
+    @property
+    def native_brep(self):
+        """The native representation of the Brep wrapped by this instance
+
+        Returns
+        -------
+        Any
+            A native backend type
+        """
+        raise NotImplementedError
 
     @property
     def orientation(self):
@@ -455,10 +469,11 @@ class Brep(Geometry):
 
     @property
     def centroid(self):
-        """
-        TODO: is this just a frame?
+        """Returns the center of mass point of this Brep.
+
         Returns
         -------
+        :class:`~compas.geometry.Point`
 
         """
         raise NotImplementedError
@@ -469,74 +484,242 @@ class Brep(Geometry):
 
     @classmethod
     def from_brep(cls, brep):
+        """Create a Brep from an instance of a backend Brep.
+
+        Parameters
+        ----------
+        brep : an instance of a Brep from a supported Brep backend
+            e.g. Rhino.Geometry.Brep
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+        """
         return from_brep(brep)
 
     @classmethod
     def from_step_file(cls, filename):
+        """Conctruct a BRep from the data contained in a STEP file.
+
+        Parameters
+        ----------
+        filename : str
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_step_file(filename)
 
     @classmethod
     def from_polygons(cls, polygons):
+        """Construct a Brep from a set of polygons.
+
+        Parameters
+        ----------
+        polygons : list[:class:`~compas.geometry.Polygon`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_polygons(polygons)
 
     @classmethod
     def from_curves(cls, curves):
+        """Construct a Brep from a set of curves.
+
+        Parameters
+        ----------
+        curves : List[:class:`~compas.geometry.NurbsCurve`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_curves(curves)
 
     @classmethod
     def from_box(cls, box):
+        """Construct a Brep from a COMPAS box.
+
+        Parameters
+        ----------
+        box : :class:`~compas.geometry.Box`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_box(box)
 
     @classmethod
     def from_sphere(cls, sphere):
+        """Construct a Brep from a COMPAS sphere.
+
+        Parameters
+        ----------
+        sphere : :class:`~compas.geometry.Sphere`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_sphere(sphere)
 
     @classmethod
     def from_cylinder(cls, cylinder):
+        """Construct a Brep from a COMPAS cylinder.
+
+        Parameters
+        ----------
+        cylinder : :class:`~compas.geometry.Cylinder`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_cylinder(cylinder)
 
     @classmethod
     def from_cone(cls, cone):
+        """Construct a Brep from a COMPAS cone.
+
+        Parameters
+        ----------
+        cone : :class:`~compas.geometry.Cone`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_cone(cone)
 
     @classmethod
     def from_torus(cls, torus):
+        """Construct a Brep from a COMPAS torus.
+
+        Parameters
+        ----------
+        torus : :class:`~compas.geometry.Torus`
+
+        Returns
+        -------
+        :class:`~compas.geometry.BRep`
+
+        """
         return from_torus(torus)
 
     @classmethod
     def from_mesh(cls, mesh):
+        """Construct a Brep from a COMPAS mesh.
+
+        Parameters
+        ----------
+        mesh : :class:`~compas.datastructures.Mesh`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         return from_mesh(mesh)
 
     @classmethod
     def from_brepfaces(cls, faces):
+        """Make a Brep from a list of Brep faces forming an open or closed shell.
+
+        Parameters
+        ----------
+        faces : List[:class:`~compas.geometry.BrepFace`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         raise NotImplementedError
 
     @classmethod
     def from_extrusion(cls, curve, vector):
+        """Construct a Brep by extruding a closed curve along a direction vector."""
         raise NotImplementedError
 
     @classmethod
     def from_sweep(cls, profile, path):
-        raise NotImplementedError
+        """Construct a BRep by sweeping a profile along a path.
 
-    # create pipe
-    # create patch
-    # create offset
+        Parameters
+        ----------
+        profile : Union[:class:`~compas.geometry.BrepEdge`, :class:`~compas.geometry.BrepFace`]
+            the profile to sweep. Either an edge or a face.
+        path : :class:`~compas.geometry.BrepLoop`
+            the path to sweep along
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        raise NotImplementedError
 
     # ==============================================================================
     # Boolean Constructors
     # ==============================================================================
 
     @classmethod
-    def from_boolean_difference(cls, A, B):
+    def from_boolean_difference(cls, brep_a, brep_b):
+        """Construct a Brep from the boolean difference of two other Breps.
+
+        Parameters
+        ----------
+        brep_a : :class:`~compas.geometry.Brep`
+        brep_b : :class:`~compas.geometry.Brep`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         raise NotImplementedError
 
     @classmethod
-    def from_boolean_intersection(cls, A, B):
+    def from_boolean_intersection(cls, brep_a, brep_b):
+        """Construct a BRep from the boolean intersection of two other Breps.
+
+        Parameters
+        ----------
+        brep_a : :class:`~compas.geometry.Brep`
+        brep_b : :class:`~compas.geometry.Brep`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         raise NotImplementedError
 
     @classmethod
-    def from_boolean_union(cls, A, B):
+    def from_boolean_union(cls, brep_a, brep_b):
+        """Construct a Brep from the boolean union of two other Breps.
+
+        Parameters
+        ----------
+        brep_a : :class:`~compas.geometry.Brep`
+        brep_b : :class:`~compas.geometry.Brep`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         raise NotImplementedError
 
     # ==============================================================================
@@ -544,15 +727,69 @@ class Brep(Geometry):
     # ==============================================================================
 
     def to_json(self, filepath):
+        """Export the BRep to a JSON file.
+
+        Parameters
+        ----------
+        filepath : str
+            Location of the file.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     def to_step(self, filepath):
+        """Write the BRep shape to a STEP file.
+
+        Parameters
+        ----------
+        filepath : str
+            Location of the file.
+        schema : str, optional
+            STEP file format schema.
+        unit : str, optional
+            Base units for the geometry in the file.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     def to_tesselation(self, linear_deflection=LINEAR_DEFLECTION):
+        """Create a tesselation of the shape for visualisation.
+
+        Parameters
+        ----------
+        linear_deflection : float, optional
+            Allowable deviation between curved geometry and mesh discretisation.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Mesh`
+
+        """
         raise NotImplementedError
 
     def to_meshes(self, u=16, v=16):
+        """Convert the faces of this Brep shape to meshes.
+
+        Parameters
+        ----------
+        u : int, optional
+            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
+        v : int, optional
+            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+
+        """
         raise NotImplementedError
 
     def to_viewmesh(self, precision):
@@ -574,32 +811,50 @@ class Brep(Geometry):
     # ==============================================================================
 
     def vertex_neighbors(self, vertex):
+        """Identify the neighbouring vertices of a given vertex.
+
+        Parameters
+        ----------
+        vertex : :class:`~compas.geometry.BrepVertex`
+
+        Returns
+        -------
+        List[:class:`~compas.geometry.BrepVertex`]
+
+        """
         raise NotImplementedError
 
     def vertex_edges(self, vertex):
+        """Identify the edges connected to a given vertex.
+
+        Parameters
+        ----------
+        vertex : :class:`~compas.geometry.BrepVertex`
+
+        Returns
+        -------
+        List[:class:`~compas.geometry.BrepEdge`]
+
+        """
         raise NotImplementedError
 
     def vertex_faces(self, vertex):
+        """Identify the faces connected to a vertex.
+
+        Parameters
+        ----------
+        vertex : :class:`~compas.geometry.BrepVertex`
+
+        Returns
+        -------
+        List[:class:`~compas.geometry.BrepFace`]
+
+        """
         raise NotImplementedError
 
     # ==============================================================================
     # Other Methods
     # ==============================================================================
-
-    # flip
-    # join
-    # join edges
-    # join naked edges
-    # merge coplanar faces
-    # remove fins
-    # remove holes
-    # repair
-    # rotate
-    # scale
-    # trim
-    # rotate
-    # translate
-    # unjoin edges
 
     def trim(self, trimming_plane, tolerance):
         """Trim this Brep using the given trimming plane
@@ -625,15 +880,33 @@ class Brep(Geometry):
         raise NotImplementedError
 
     def make_solid(self):
-        """TODO: What should this do?"""
+        """Convert the current shape to a solid if it is a shell.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     def sew(self):
-        """TODO: What should this do?"""
+        """Sew together the individual parts of the shape.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     def fix(self):
-        """TODO: What should this do?"""
+        """Fix the shell.
+
+        Returns
+        -------
+        None
+
+        """
         raise NotImplementedError
 
     def cull_unused_vertices(self):
@@ -677,14 +950,62 @@ class Brep(Geometry):
         NotImplementedError
 
     def contours(self, planes):
-        """TODO: What should this do?"""
+        """Generate contour lines by slicing the Brep shape with a series of planes.
+
+        Parameters
+        ----------
+        planes : list[:class:`~compas.geometry.Plane`]
+            The slicing planes.
+
+        Returns
+        -------
+        list[list[:class:`~compas.geometry.Polyline`]]
+            A list of polylines per plane.
+
+        """
         raise NotImplementedError
 
     def slice(self, plane):
-        raise NotImplementedError
+        """Slice through the BRep with a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+
+        Returns
+        -------
+        :class:`~compas.geometry.BrepFace`
+        """
 
     def split(self, other):
+        """Slice through the BRep with a plane.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geomtery.Brep`
+            Another Brep.
+
+        Returns
+        -------
+        List[:class:`~compas.geometry.Brep`]
+        """
         raise NotImplementedError
 
     def overlap(self, other, deflection=LINEAR_DEFLECTION, tolerance=0.0):
+        """Compute the overlap between this BRep and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Brep`
+            The other Brep.
+        deflection : float, optional
+            Allowable deflection for mesh generation used for proximity detection.
+        tolerance : float, optional
+            Tolerance for overlap calculation.
+
+        Returns
+        -------
+        Tuple[List[:class:`~compas.geometry.BrepFace`]]
+
+        """
         raise NotImplementedError

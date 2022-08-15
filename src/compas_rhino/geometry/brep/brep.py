@@ -1,4 +1,3 @@
-import copy
 from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepInvalidError
@@ -25,6 +24,11 @@ class RhinoBrep(Brep):
     Rhino Brep backend class.
     Wraps around and allows serialization and de-serialization of a `Rhino.Geometry.Brep`
     """
+
+    # this makes de-serialization backend-agnostic.
+    # The deserializing type is determined by plugin availability when de-serializing
+    # regardless of the context available when serializing.
+    __class__ = Brep
 
     def __new__(cls, *args, **kwargs):
         # This breaks the endless recursion when calling `compas.geometry.Brep()` and allows
@@ -53,13 +57,6 @@ class RhinoBrep(Brep):
     # ==============================================================================
     # Data
     # ==============================================================================
-
-    @property
-    def dtype(self):
-        # this should make de-serialization backend-agnostic
-        # The deserializing type is determined by plugin availability when de-serializing
-        # regardless of the context available when serializing.
-        return super(RhinoBrep, self).dtype
 
     @property
     def data(self):
