@@ -71,7 +71,7 @@ def from_curves(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
-class BrepType:
+class BrepType(object):
     """
     Possible types of a Brep
     """
@@ -86,7 +86,7 @@ class BrepType:
     SHAPE = 7
 
 
-class BrepOrientation:
+class BrepOrientation(object):
     """
     Possible orientations of a Brep
     """
