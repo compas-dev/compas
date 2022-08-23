@@ -72,8 +72,19 @@ def from_curves(*args, **kwargs):
 
 
 class BrepType(object):
-    """
-    Possible types of a Brep
+    """Possible types of a Brep
+
+    Attributes
+    ----------
+    COMPOUND
+    COMPSOLID
+    SHELL
+    FACE
+    WIRE
+    EDGE
+    VERTEX
+    SHAPE
+
     """
 
     COMPOUND = 0
@@ -87,8 +98,15 @@ class BrepType(object):
 
 
 class BrepOrientation(object):
-    """
-    Possible orientations of a Brep
+    """Possible orientations of a Brep
+
+    Attributes
+    ----------
+    FORWARD
+    REVERSED
+    INTERNAL
+    EXTERNAL
+
     """
 
     FORWARD = 0
@@ -105,13 +123,13 @@ class Brep(Geometry):
 
     Attributes
     ----------
-    vertices : list[:class:`~compas_rhino.geometry.BrepVertex`], read-only
+    vertices : list[:class:`~compas.geometry.BrepVertex`], read-only
         The vertices of the Brep.
-    edges : list[:class:`~compas_rhino.geometry.BrepEdge`], read-only
+    edges : list[:class:`~compas.geometry.BrepEdge`], read-only
         The edges of the Brep.
-    loops : list[:class:`~compas_rhino.geometry.BrepLoop`], read-only
+    loops : list[:class:`~compas.geometry.BrepLoop`], read-only
         The loops of the Brep.
-    faces : list[:class:`~compas_rhino.geometry.BrepFace`], read-only
+    faces : list[:class:`~compas.geometry.BrepFace`], read-only
         The faces of the Brep.
     frame : :class:`~compas.geometry.Frame`, read-only
         The local coordinate system of the Brep.
@@ -122,6 +140,8 @@ class Brep(Geometry):
 
     Other Attributes
     ----------------
+    native_brep
+        The underlying instance of the backend brep.
     type : :class:`~compas.geometry.BrepType`, read-only
         The type of Brep shape.
     orientation : :class:`~compas.geometry.BrepOrientation`, read-obly
@@ -184,144 +204,144 @@ class Brep(Geometry):
 
     @property
     def native_brep(self):
-        """The native representation of the Brep wrapped by this instance
+        """The native representation of the Brep wrapped by this instance.
 
         Returns
         -------
-        Any
-            A native backend type
+        A native backend type
+
         """
         raise NotImplementedError
 
     @property
     def orientation(self):
-        """
-        Returns the current orientation of this Brep.
+        """Returns the current orientation of this Brep.
 
         Returns
         -------
         :class:`~compas.geometry.BrepOrientation`
+
         """
         raise NotImplementedError
 
     @property
     def type(self):
-        """
-        Returns the type of this Brep.
+        """Returns the type of this Brep.
 
         Returns
         -------
         :class:`~compas.geometry.BrepType`
+
         """
         raise NotImplementedError
 
     @property
     def is_shell(self):
-        """
-        Returns True if the geometry of this Brep is a shell.
+        """Returns True if the geometry of this Brep is a shell.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_solid(self):
-        """
-        Returns True if the geometry of this Brep is a solid.
+        """Returns True if the geometry of this Brep is a solid.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_compound(self):
-        """
-        Returns True if the geometry of this Brep is a compound.
+        """Returns True if the geometry of this Brep is a compound.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_compoundsolid(self):
-        """
-        Returns True if the geometry of this Brep is a compound solid.
+        """Returns True if the geometry of this Brep is a compound solid.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_orientable(self):
-        """
-        Returns True if the geometry of this Brep is orientable.
+        """Returns True if the geometry of this Brep is orientable.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_closed(self):
-        """
-        Returns True if the geometry of this Brep is closed.
+        """Returns True if the geometry of this Brep is closed.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_infinite(self):
-        """
-        Returns True if the geometry of this Brep is infinte.
+        """Returns True if the geometry of this Brep is infinte.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_convex(self):
-        """
-        Returns True if the geometry of this Brep is convex.
+        """Returns True if the geometry of this Brep is convex.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_manifold(self):
-        """
-        Returns True if the geometry of this Brep is a manifold.
+        """Returns True if the geometry of this Brep is a manifold.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
     @property
     def is_surface(self):
-        """
-        Returns True if the geometry of this Brep is a surface.
+        """Returns True if the geometry of this Brep is a surface.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
@@ -331,34 +351,34 @@ class Brep(Geometry):
 
     @property
     def points(self):
-        """
-        Returns the points which underly this brap's vertices.
+        """Returns the points which underly this brap's vertices.
 
         Returns
         -------
-        List[:class:`~compas.geometry.Point`]
+        list[:class:`~compas.geometry.Point`]
+
         """
         raise NotImplementedError
 
     @property
     def curves(self):
-        """
-        Returns the curves which underly this breb's edges.
+        """Returns the curves which underly this breb's edges.
 
         Returns
         -------
-        List[:class:`compas.geometry.Curve`]
+        list[:class:`~compas.geometry.Curve`]
+
         """
         raise NotImplementedError
 
     @property
     def surfaces(self):
-        """
-        Returns the surfaces which underly this brep's faces.
+        """Returns the surfaces which underly this brep's faces.
 
         Returns
         -------
-        List[:class:`~compas.geometry.NurbsSurface`]
+        list[:class:`~compas.geometry.NurbsSurface`]
+
         """
         raise NotImplementedError
 
@@ -368,65 +388,68 @@ class Brep(Geometry):
 
     @property
     def vertices(self):
-        """
-        Return the vertices of this brep.
+        """Return the vertices of this brep.
 
         Returns
         -------
-        List[:class:`compas.geometry.BrepVertex`]
+        list[:class:`compas.geometry.BrepVertex`]
+
         """
         raise NotImplementedError
 
     @property
     def edges(self):
-        """
-        Return the edges of this brep.
+        """Return the edges of this brep.
 
         Returns
         -------
-        List[:class:`compas.geometry.BrepEdge`]
+        list[:class:`compas.geometry.BrepEdge`]
+
         """
         raise NotImplementedError
 
     @property
     def loops(self):
-        """
-        Return the loops of this brep.
+        """Return the loops of this brep.
 
         Returns
         -------
-        List[:class:`compas.geometry.BrepLoop`]
+        list[:class:`compas.geometry.BrepLoop`]
+
         """
         raise NotImplementedError
 
     @property
     def faces(self):
-        """
-        Return the faces of this brep.
+        """Return the faces of this brep.
 
         Returns
         -------
-        List[:class:`compas.geometry.BrepFace]
+        list[:class:`compas.geometry.BrepFace]
+
         """
         raise NotImplementedError
 
     @property
     def shells(self):
-        """
-        Returns the shells of this brep, if any.
-        TODO: do we have a type for this? is this just a list of faces?
+        """Returns the shells of this brep, if any.
+
         Returns
         -------
+        TODO: do we have a type for this? is this just a list of faces?
+
         """
         raise NotImplementedError
 
     @property
     def solids(self):
-        """
-        Returns the solids of this brep.
-        TODO: do we have a type for this?
+        """Returns the solids of this brep.
+
+
         Returns
         -------
+        TODO: do we have a type for this?
+
         """
         raise NotImplementedError
 
@@ -436,34 +459,34 @@ class Brep(Geometry):
 
     @property
     def frame(self):
-        """
-        Returns the Frame of this Brep.
+        """Returns the Frame of this Brep.
 
         Returns
         -------
         :class:`~compas.geometry.Frame`
+
         """
         raise NotImplementedError
 
     @property
     def area(self):
-        """
-        Returns the calculated area of this brep.
+        """Returns the calculated area of this brep.
 
         Returns
         -------
         float
+
         """
         raise NotImplementedError
 
     @property
     def volume(self):
-        """
-        Returns the calculated volume of this brep.
+        """Returns the calculated volume of this brep.
 
         Returns
         -------
         float
+
         """
         raise NotImplementedError
 
@@ -533,7 +556,7 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        curves : List[:class:`~compas.geometry.NurbsCurve`]
+        curves : list[:class:`~compas.geometry.NurbsCurve`]
 
         Returns
         -------
@@ -638,7 +661,7 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        faces : List[:class:`~compas.geometry.BrepFace`]
+        faces : list[:class:`~compas.geometry.BrepFace`]
 
         Returns
         -------
@@ -649,7 +672,20 @@ class Brep(Geometry):
 
     @classmethod
     def from_extrusion(cls, curve, vector):
-        """Construct a Brep by extruding a closed curve along a direction vector."""
+        """Construct a Brep by extruding a closed curve along a direction vector.
+
+        Parameters
+        ----------
+        curve : :class:`~compas.geometry.Curve`
+            The curve to extrude
+        vector : :class:`~compas.geometry.Vector`
+            The vector to extrude the curve by
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
         raise NotImplementedError
 
     @classmethod
@@ -658,7 +694,7 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        profile : Union[:class:`~compas.geometry.BrepEdge`, :class:`~compas.geometry.BrepFace`]
+        profile : :class:`~compas.geometry.BrepEdge` or :class:`~compas.geometry.BrepFace`
             the profile to sweep. Either an edge or a face.
         path : :class:`~compas.geometry.BrepLoop`
             the path to sweep along
@@ -793,15 +829,16 @@ class Brep(Geometry):
         raise NotImplementedError
 
     def to_viewmesh(self, precision):
-        """
-        Convert this Brep to a view mesh
+        """Convert this Brep to a view mesh
+
         Parameters
         ----------
-        precision:
-            float
+        precision : float
+            The presicion by which the mesh is estimated
 
         Returns
         -------
+        :class:`~compas.datastructure.Mesh`
 
         """
         raise NotImplementedError
@@ -819,7 +856,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        List[:class:`~compas.geometry.BrepVertex`]
+        list[:class:`~compas.geometry.BrepVertex`]
 
         """
         raise NotImplementedError
@@ -833,7 +870,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        List[:class:`~compas.geometry.BrepEdge`]
+        list[:class:`~compas.geometry.BrepEdge`]
 
         """
         raise NotImplementedError
@@ -847,7 +884,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        List[:class:`~compas.geometry.BrepFace`]
+        list[:class:`~compas.geometry.BrepFace`]
 
         """
         raise NotImplementedError
@@ -857,25 +894,29 @@ class Brep(Geometry):
     # ==============================================================================
 
     def trim(self, trimming_plane, tolerance):
-        """Trim this Brep using the given trimming plane
+        """Trim this Brep using the given trimming plane.
 
         Parameters
         ----------
-        trimming_plane: defines the trimming plane
-            :class:`~compas.geometry.Frame
+        trimming_plane : :class:`~compas.geometry.Frame`
+            defines the trimming plane
+        tolerance: float
+            the tolerance to use when trimming
 
-        tolerance: the tolerance to use when trimming
-            float
+        Returns
+        -------
+        None
+
         """
         raise NotImplementedError
 
     def is_valid(self):
-        """
-        Returns True if this brep is a vaild brep.
+        """Returns True if this brep is a vaild brep.
 
         Returns
         -------
         bool
+
         """
         raise NotImplementedError
 
@@ -975,6 +1016,7 @@ class Brep(Geometry):
         Returns
         -------
         :class:`~compas.geometry.BrepFace`
+
         """
 
     def split(self, other):
@@ -987,7 +1029,8 @@ class Brep(Geometry):
 
         Returns
         -------
-        List[:class:`~compas.geometry.Brep`]
+        list[:class:`~compas.geometry.Brep`]
+
         """
         raise NotImplementedError
 
@@ -1005,7 +1048,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        Tuple[List[:class:`~compas.geometry.BrepFace`]]
+        tuple[list[:class:`~compas.geometry.BrepFace`]]
 
         """
         raise NotImplementedError
