@@ -145,6 +145,8 @@ class Brep(Geometry):
         The points of this brep.
     centroid : :class:`~compas.geometry.Point`, read-only
         The centroid of this brep.
+    is_valid : bool, read-only
+        True if this brep is valid, False otherwise
     is_solid : bool, read-only
         True if this brep is a solid, False otherwise.
     is_compound : bool, read-only
@@ -238,123 +240,50 @@ class Brep(Geometry):
 
     @property
     def type(self):
-        """Returns the type of this Brep.
+        raise NotImplementedError
 
-        Returns
-        -------
-        :class:`~compas.geometry.BrepType`
-
-        """
+    @property
+    def is_valid(self):
         raise NotImplementedError
 
     @property
     def is_shell(self):
-        """Returns True if the geometry of this Brep is a shell.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_solid(self):
-        """Returns True if the geometry of this Brep is a solid.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_compound(self):
-        """Returns True if the geometry of this Brep is a compound.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_compoundsolid(self):
-        """Returns True if the geometry of this Brep is a compound solid.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_orientable(self):
-        """Returns True if the geometry of this Brep is orientable.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_closed(self):
-        """Returns True if the geometry of this Brep is closed.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_infinite(self):
-        """Returns True if the geometry of this Brep is infinte.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_convex(self):
-        """Returns True if the geometry of this Brep is convex.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_manifold(self):
-        """Returns True if the geometry of this Brep is a manifold.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     @property
     def is_surface(self):
-        """Returns True if the geometry of this Brep is a surface.
-
-        Returns
-        -------
-        bool
-
-        """
         raise NotImplementedError
 
     # ==============================================================================
@@ -363,35 +292,14 @@ class Brep(Geometry):
 
     @property
     def points(self):
-        """Returns the points which underly this brap's vertices.
-
-        Returns
-        -------
-        list[:class:`~compas.geometry.Point`]
-
-        """
         raise NotImplementedError
 
     @property
     def curves(self):
-        """Returns the curves which underly this breb's edges.
-
-        Returns
-        -------
-        list[:class:`~compas.geometry.Curve`]
-
-        """
         raise NotImplementedError
 
     @property
     def surfaces(self):
-        """Returns the surfaces which underly this brep's faces.
-
-        Returns
-        -------
-        list[:class:`~compas.geometry.NurbsSurface`]
-
-        """
         raise NotImplementedError
 
     # ==============================================================================
@@ -400,69 +308,26 @@ class Brep(Geometry):
 
     @property
     def vertices(self):
-        """Return the vertices of this brep.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.BrepVertex`]
-
-        """
         raise NotImplementedError
 
     @property
     def edges(self):
-        """Return the edges of this brep.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.BrepEdge`]
-
-        """
         raise NotImplementedError
 
     @property
     def loops(self):
-        """Return the loops of this brep.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.BrepLoop`]
-
-        """
         raise NotImplementedError
 
     @property
     def faces(self):
-        """Return the faces of this brep.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.BrepFace]
-
-        """
         raise NotImplementedError
 
     @property
     def shells(self):
-        """Returns the shells of this brep, if any.
-
-        Returns
-        -------
-        TODO: do we have a type for this? is this just a list of faces?
-
-        """
         raise NotImplementedError
 
     @property
     def solids(self):
-        """Returns the solids of this brep.
-
-
-        Returns
-        -------
-        TODO: do we have a type for this?
-
-        """
         raise NotImplementedError
 
     # ==============================================================================
@@ -471,46 +336,18 @@ class Brep(Geometry):
 
     @property
     def frame(self):
-        """Returns the Frame of this Brep.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Frame`
-
-        """
         raise NotImplementedError
 
     @property
     def area(self):
-        """Returns the calculated area of this brep.
-
-        Returns
-        -------
-        float
-
-        """
         raise NotImplementedError
 
     @property
     def volume(self):
-        """Returns the calculated volume of this brep.
-
-        Returns
-        -------
-        float
-
-        """
         raise NotImplementedError
 
     @property
     def centroid(self):
-        """Returns the center of mass point of this Brep.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Point`
-
-        """
         raise NotImplementedError
 
     # ==============================================================================
@@ -914,16 +751,6 @@ class Brep(Geometry):
         Returns
         -------
         None
-
-        """
-        raise NotImplementedError
-
-    def is_valid(self):
-        """Returns True if this brep is a vaild brep.
-
-        Returns
-        -------
-        bool
 
         """
         raise NotImplementedError
