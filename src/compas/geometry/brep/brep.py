@@ -137,6 +137,32 @@ class Brep(Geometry):
         The surface area of the Brep.
     volume : float, read-only
         The volume of the regions contained by the Brep.
+    solids : list[:class:`~compas.geometry.Brep`], read-only
+        The solids of this brep.
+    shells : list[:class:`~compas.geometry.Brep`], read-only
+        The shells of this brep.
+    points : list[:class:`~compas.geometry.Point`], read-only
+        The points of this brep.
+    centroid : :class:`~compas.geometry.Point`, read-only
+        The centroid of this brep.
+    is_solid : bool, read-only
+        True if this brep is a solid, False otherwise.
+    is_compound : bool, read-only
+        True if this brep's type is a compound, False otherwise.
+    is_compoundsolid : bool, read-only
+        True if this brep's type is a compoundsolid, False otherwise.
+    is_orientable : bool, read-only
+        True if this brep is orientable, False otherwise.
+    is_closed : bool, read-only
+        True if this brep is closed, False otherwise.
+    is_infinite : bool, read-only
+        True if this brep is infinite, False otherwise.
+    is_convex : bool, read-only
+        True if this brep is convex, False otherwise.
+    is_manifold : bool, read-only
+        True if this brep is a manifold, False otherwise.
+    is_surface : bool, read-only
+        True if this brep is a surface, False otherwise.
 
     Other Attributes
     ----------------
@@ -204,24 +230,10 @@ class Brep(Geometry):
 
     @property
     def native_brep(self):
-        """The native representation of the Brep wrapped by this instance.
-
-        Returns
-        -------
-        A native backend type
-
-        """
         raise NotImplementedError
 
     @property
     def orientation(self):
-        """Returns the current orientation of this Brep.
-
-        Returns
-        -------
-        :class:`~compas.geometry.BrepOrientation`
-
-        """
         raise NotImplementedError
 
     @property
@@ -784,10 +796,6 @@ class Brep(Geometry):
         ----------
         filepath : str
             Location of the file.
-        schema : str, optional
-            STEP file format schema.
-        unit : str, optional
-            Base units for the geometry in the file.
 
         Returns
         -------
@@ -829,7 +837,7 @@ class Brep(Geometry):
         raise NotImplementedError
 
     def to_viewmesh(self, precision):
-        """Convert this Brep to a view mesh
+        """Convert this Brep to a view mesh.
 
         Parameters
         ----------

@@ -2,8 +2,17 @@ from compas.data import Data
 
 
 class BrepLoop(Data):
-    """
-    An interface for a Brep Loop
+    """An interface for a Brep Loop
+
+    Attributes
+    ----------
+    is_valid : bool, read-only
+        Returns True if this loop is valid, False otherwise.
+    vertices : list[:class:`~compas.geometry.BrepVertex`], read-only
+        Returns the list of vertices associated with this loop.
+    edges : list[:class:`~compas.geometry.BrepEdge`], read-only
+        Returns the list of deges associated with this loop.
+
     """
 
     # ==============================================================================
@@ -12,35 +21,14 @@ class BrepLoop(Data):
 
     @property
     def is_valid(self):
-        """
-        Returns True if this loop is valid, False otherwise.
-
-        Returns
-        -------
-        bool
-        """
         return NotImplementedError
 
     @property
     def vertices(self):
-        """
-        Returns a list of the vertices comprising this loop.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.BrepVertex`]
-        """
         raise NotImplementedError
 
     @property
     def edges(self):
-        """
-        Returns a list of the edges comprising this loop.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.BrepEdge`]
-        """
         raise NotImplementedError
 
     # ==============================================================================
@@ -48,13 +36,46 @@ class BrepLoop(Data):
     # ==============================================================================
 
     @classmethod
-    def from_edges(cls):
+    def from_edges(cls, edges):
+        """Construct a loop from a list of edges.
+
+        Parameters
+        ----------
+        edges : list[:class:`~compas.geometry.BrepEdge`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.BrepLoop`
+
+        """
         raise NotImplementedError
 
     @classmethod
-    def from_polyline(cls):
+    def from_polyline(cls, polyline):
+        """Construct a loop from a polyline.
+
+        Parameters
+        ----------
+        polyline : :class:`~compas.geometry.Polyline`
+
+        Returns
+        -------
+        :class:`~compas.geometry.BrepLoop`
+
+        """
         raise NotImplementedError
 
     @classmethod
-    def from_polygon(cls):
+    def from_polygon(cls, polygon):
+        """Construct a loop from a polygon.
+
+        Parameters
+        ----------
+        polygon : :class:`~compas.geometry.Polygon`
+
+        Returns
+        -------
+        :class:`~compas.geometry.BrepLoop`
+
+        """
         raise NotImplementedError
