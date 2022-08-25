@@ -24,8 +24,6 @@ class RhinoBrepFace(BrepFace):
 
     """
 
-    TOLERANCE = 1e-6
-
     def __init__(self, rhino_face=None):
         super(RhinoBrepFace, self).__init__()
         self._loops = None
