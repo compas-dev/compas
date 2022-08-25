@@ -6,6 +6,18 @@ from .edge import RhinoBrepEdge
 
 
 class LoopType(object):
+    """Represents the type of a brep loop.
+
+    Attributes
+    ----------
+    UNKNOWN
+    OUTER
+    INNTER
+    SLIT
+    CURVE_ON_SURFACE
+    POINT_ON_SURFACE
+
+    """
     UNKNOWN = 0
     OUTER = 1
     INNTER = 2
@@ -15,7 +27,20 @@ class LoopType(object):
 
 
 class RhinoBrepLoop(BrepLoop):
-    """A wrapper for Rhino.Geometry.BrepLoop"""
+    """A wrapper for Rhino.Geometry.BrepLoop
+
+    Attributes
+    ----------
+    edges : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`]
+        The list of edges which comprise this loop.
+    loop_type : :class:`~compas_rhino.geometry.brep.loop.LoopType`
+        The type of this loop.
+    is_outer : bool, read-only
+        True if this loop is an outer boundary, False otherwise.
+    is_inner : bool, read-only
+        True if this loop is an inner hole, False otherwise.
+
+    """
 
     def __init__(self, rhino_loop=None):
         super(RhinoBrepLoop, self).__init__()
@@ -30,6 +55,10 @@ class RhinoBrepLoop(BrepLoop):
         self._type = int(self._loop.LoopType)
         self._edges = [RhinoBrepEdge(t.Edge) for t in self._loop.Trims]
 
+    # ==============================================================================
+    # Data
+    # ==============================================================================
+
     @property
     def data(self):
         return [e.data for e in self._edges]
@@ -37,6 +66,10 @@ class RhinoBrepLoop(BrepLoop):
     @data.setter
     def data(self, value):
         self._edges = [RhinoBrepEdge.from_data(e_data) for e_data in value]
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
 
     @property
     def edges(self):

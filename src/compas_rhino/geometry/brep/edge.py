@@ -12,7 +12,24 @@ from .vertex import RhinoBrepVertex
 
 
 class RhinoBrepEdge(BrepEdge):
-    """A wrapper for Rhino.Geometry.BrepEdge"""
+    """A wrapper for Rhino.Geometry.BrepEdge
+
+    Attributes
+    ----------
+    curve : :class:`Rhino.Geometry.Curve3D`
+        The underlying geometry of this edge.
+    start_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`
+        The start vertex of this edge.
+    end_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`
+        The end vertex of this edge.
+    vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`]
+        The list of vertices which comprise this edge (start and end)
+    is_circle : bool, read-only
+        True if the geometry of this edge is a circle, False otherwise.
+    is_line : bool, read-only
+        True if the geometry of this edge is a line, False otherwise.
+
+    """
 
     def __init__(self, rhino_edge=None):
         super(RhinoBrepEdge, self).__init__()
@@ -28,6 +45,10 @@ class RhinoBrepEdge(BrepEdge):
         self._curve = self._edge.EdgeCurve
         self._start_vertex = RhinoBrepVertex(self._edge.StartVertex)
         self._end_vertex = RhinoBrepVertex(self._edge.EndVertex)
+
+    # ==============================================================================
+    # Data
+    # ==============================================================================
 
     @property
     def data(self):
@@ -55,6 +76,10 @@ class RhinoBrepEdge(BrepEdge):
         self._start_vertex, self._end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
         self._start_vertex._point = Point.from_data(value["points"][0])
         self._end_vertex._point = Point.from_data(value["points"][1])
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
 
     @property
     def curve(self):
