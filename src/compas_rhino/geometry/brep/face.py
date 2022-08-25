@@ -11,13 +11,13 @@ class RhinoBrepFace(BrepFace):
     ----------
     native_surface : :class:`Rhino.Geometry.Surface`
         The rhino native underlying geometry of this face.
-    loops : list[:class:`compas_rhino.geometry.RhinoBrepLoop`]
+    loops : list[:class:`compas_rhino.geometry.RhinoBrepLoop`], read-only
         The list of loops which comprise this face.
     surface : :class:`compas_rhino.geometry.RhinoNurbsSurface`
         The compas_rhino wrapper of the underlying geometry of this face.
-    boundary : :class:`compas_rhino.geometry.RhinoBrepLoop`
+    boundary : :class:`compas_rhino.geometry.RhinoBrepLoop`, read-only
         The loop which defines the outer boundary of this face.
-    holes : list[:class:`compas_rhino.geometry.RhinoBrepLoop`]
+    holes : list[:class:`compas_rhino.geometry.RhinoBrepLoop`], read-only
         The list of loops which comprise the holes of this brep, if any.
     is_plane : float, read-only
         True if the geometry of this face is a plane, False otherwise.

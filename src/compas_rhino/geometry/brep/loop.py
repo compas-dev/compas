@@ -31,9 +31,9 @@ class RhinoBrepLoop(BrepLoop):
 
     Attributes
     ----------
-    edges : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`]
+    edges : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`], read-only
         The list of edges which comprise this loop.
-    loop_type : :class:`~compas_rhino.geometry.brep.loop.LoopType`
+    loop_type : :class:`~compas_rhino.geometry.brep.loop.LoopType`, read-only
         The type of this loop.
     is_outer : bool, read-only
         True if this loop is an outer boundary, False otherwise.

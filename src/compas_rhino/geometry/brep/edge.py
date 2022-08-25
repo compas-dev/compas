@@ -18,11 +18,11 @@ class RhinoBrepEdge(BrepEdge):
     ----------
     curve : :class:`Rhino.Geometry.Curve3D`
         The underlying geometry of this edge.
-    start_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`
+    start_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
         The start vertex of this edge.
-    end_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`
+    end_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
         The end vertex of this edge.
-    vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`]
+    vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
         The list of vertices which comprise this edge (start and end)
     is_circle : bool, read-only
         True if the geometry of this edge is a circle, False otherwise.

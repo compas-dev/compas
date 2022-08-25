@@ -27,19 +27,19 @@ class RhinoBrep(Brep):
     Attributes
     ----------
     native_brep : :class:`Rhino.Geometry.Brep`
-        The underlying Rhino Brep instance,
+        The underlying Rhino Brep instance.
     vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
-        The list of vertices which comprise this Brep,
+        The list of vertices which comprise this Brep.
     points : list[:class:`~compas.geometry.Point`], read-only
-        The list of vertex geometries as points in 3D space,
+        The list of vertex geometries as points in 3D space.
     edges : list[:class:`~compas_rhino.geometry.RhinoBrepEdge`], read-only
-        The list of edges which comprise this brep,
+        The list of edges which comprise this brep.
     loops : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`], read-only
-        The list of loops which comprise this brep,
+        The list of loops which comprise this brep.
     faces : list[:class:`~compas_rhino.geometry.RhinoBrepFace`], read-only
-        The list of faces which comprise this brep,
+        The list of faces which comprise this brep.
     frame : :class:`~compas.geometry.Frame`, read-only
-        The brep's origin (Frame.worldXY()),
+        The brep's origin (Frame.worldXY()).
     area : float, read-only
         The calculated area of this brep.
     volume : float, read-only

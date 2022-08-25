@@ -8,7 +8,7 @@ class RhinoBrepVertex(BrepVertex):
 
     Attributes
     ----------
-    point : :class:`~compas.geometry.Point`
+    point : :class:`~compas.geometry.Point`, read-only
         The geometry of this vertex as a point in 3D space.
 
     """
