@@ -4,7 +4,14 @@ from compas_rhino.conversions import point_to_compas
 
 
 class RhinoBrepVertex(BrepVertex):
-    """A wrapper for Rhino.Geometry.BrepVertex"""
+    """A wrapper for a Rhino Brep vertex.
+
+    Attributes
+    ----------
+    point : :class:`~compas.geometry.Point`, read-only
+        The geometry of this vertex as a point in 3D space.
+
+    """
 
     def __init__(self, rhino_vertex=None):
         super(RhinoBrepVertex, self).__init__()
@@ -17,6 +24,10 @@ class RhinoBrepVertex(BrepVertex):
         self._vertex = native_vertex
         self._point = point_to_compas(self._vertex.Location)
 
+    # ==============================================================================
+    # Data
+    # ==============================================================================
+
     @property
     def data(self):
         return {
@@ -25,19 +36,13 @@ class RhinoBrepVertex(BrepVertex):
 
     @data.setter
     def data(self, data):
-        """
-
-        Parameters
-        ----------
-        data
-
-        Returns
-        -------
-
-        """
         # Rhino.BrepVertex has no public constructor
         # Vertex creation is via Brep.Vertices.Add(Rhino.Point3D)
         self._point = Point.from_data(data["point"])
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
 
     @property
     def point(self):

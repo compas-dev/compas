@@ -12,7 +12,24 @@ from .vertex import RhinoBrepVertex
 
 
 class RhinoBrepEdge(BrepEdge):
-    """A wrapper for Rhino.Geometry.BrepEdge"""
+    """A wrapper for Rhino.Geometry.BrepEdge
+
+    Attributes
+    ----------
+    curve : :class:`Rhino.Geometry.Curve3D`
+        The underlying geometry of this edge.
+    start_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
+        The start vertex of this edge.
+    end_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
+        The end vertex of this edge.
+    vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
+        The list of vertices which comprise this edge (start and end)
+    is_circle : bool, read-only
+        True if the geometry of this edge is a circle, False otherwise.
+    is_line : bool, read-only
+        True if the geometry of this edge is a line, False otherwise.
+
+    """
 
     def __init__(self, rhino_edge=None):
         super(RhinoBrepEdge, self).__init__()
@@ -29,6 +46,10 @@ class RhinoBrepEdge(BrepEdge):
         self._start_vertex = RhinoBrepVertex(self._edge.StartVertex)
         self._end_vertex = RhinoBrepVertex(self._edge.EndVertex)
 
+    # ==============================================================================
+    # Data
+    # ==============================================================================
+
     @property
     def data(self):
         if self.is_line:
@@ -40,7 +61,11 @@ class RhinoBrepEdge(BrepEdge):
         else:
             type_ = "nurbs"
             curve = RhinoNurbsCurve.from_rhino(self._curve)
-        return {"type": type_, "value": curve.data, "points": [self._start_vertex.point.data, self._end_vertex.point.data]}
+        return {
+            "type": type_,
+            "value": curve.data,
+            "points": [self._start_vertex.point.data, self._end_vertex.point.data],
+        }
 
     @data.setter
     def data(self, value):
@@ -55,6 +80,10 @@ class RhinoBrepEdge(BrepEdge):
         self._start_vertex, self._end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
         self._start_vertex._point = Point.from_data(value["points"][0])
         self._end_vertex._point = Point.from_data(value["points"][1])
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
 
     @property
     def curve(self):

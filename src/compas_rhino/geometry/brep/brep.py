@@ -2,6 +2,7 @@ from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepInvalidError
 from compas.geometry import BrepTrimmingError
+from compas.geometry import Plane
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import point_to_rhino
@@ -20,9 +21,31 @@ TOLERANCE = 1e-6
 
 
 class RhinoBrep(Brep):
-    """
-    Rhino Brep backend class.
-    Wraps around and allows serialization and de-serialization of a `Rhino.Geometry.Brep`
+    """Rhino Brep backend class.
+
+    Wraps around and allows serialization and de-serialization of a :class:`Rhino.Geometry.Brep`.
+
+    Attributes
+    ----------
+    native_brep : :class:`Rhino.Geometry.Brep`
+        The underlying Rhino Brep instance.
+    vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
+        The list of vertices which comprise this Brep.
+    points : list[:class:`~compas.geometry.Point`], read-only
+        The list of vertex geometries as points in 3D space.
+    edges : list[:class:`~compas_rhino.geometry.RhinoBrepEdge`], read-only
+        The list of edges which comprise this brep.
+    loops : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`], read-only
+        The list of loops which comprise this brep.
+    faces : list[:class:`~compas_rhino.geometry.RhinoBrepFace`], read-only
+        The list of faces which comprise this brep.
+    frame : :class:`~compas.geometry.Frame`, read-only
+        The brep's origin (Frame.worldXY()).
+    area : float, read-only
+        The calculated area of this brep.
+    volume : float, read-only
+        The calculated volume of this brep.
+
     """
 
     # this makes de-serialization backend-agnostic.
@@ -41,20 +64,6 @@ class RhinoBrep(Brep):
         self._brep = brep or Rhino.Geometry.Brep()
 
     # ==============================================================================
-    # Constructors
-    # ==============================================================================
-
-    @classmethod
-    def from_brep(cls, rhino_brep):
-        brep = cls(rhino_brep)
-        return brep
-
-    @classmethod
-    def from_box(cls, box):
-        rhino_box = box_to_rhino(box)
-        return cls.from_brep(rhino_box.ToBrep())
-
-    # ==============================================================================
     # Data
     # ==============================================================================
 
@@ -67,15 +76,6 @@ class RhinoBrep(Brep):
 
     @data.setter
     def data(self, data):
-        """
-        Parameters
-        ----------
-        data
-
-        Returns
-        -------
-
-        """
         faces = []
         for facedata in data["faces"]:
             face = RhinoBrepFace.from_data(facedata)
@@ -88,13 +88,6 @@ class RhinoBrep(Brep):
 
     @property
     def native_brep(self):
-        """
-        Returns the native representation of this Brep.
-
-        Returns
-        -------
-        :class: `Rhino.Geometry.Brep`
-        """
         return self._brep
 
     @property
@@ -135,18 +128,103 @@ class RhinoBrep(Brep):
         if self._brep:
             return self._brep.GetVolume()
 
+    # ==============================================================================
+    # Constructors
+    # ==============================================================================
+
+    @classmethod
+    def from_brep(cls, rhino_brep):
+        """Constructs a RhinoBrep from an instance of a Rhino brep
+
+        Parameters
+        ----------
+        rhino_brep : :class:`Rhino.Geometry.Brep`
+            The instance of Rhino brep to wrap.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        brep = cls(rhino_brep)
+        return brep
+
+    @classmethod
+    def from_box(cls, box):
+        """Create a RhinoBrep from a box.
+
+        Parameters
+        ----------
+        box : :class:`~compas.geometry.Box`
+            The box geometry of the brep.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_box = box_to_rhino(box)
+        return cls.from_brep(rhino_box.ToBrep())
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
+
+    def transform(self, matrix):
+        """Transform this Brep by given transformation matrix
+
+        Parameters
+        ----------
+        matrix: :class:`~compas.geometry.Transformation`
+            The transformation matrix by which to transform this Brep.
+
+        Returns
+        -------
+        None
+
+        """
+        self._brep.Transform(xform_to_rhino(matrix))
+
+    def trim(self, trimming_plane, tolerance=TOLERANCE):
+        """Trim this brep by the given trimming plane
+
+        Parameters
+        ----------
+        trimming_plane : :class:`~compas.geometry.Frame` or :class:`~compas.geometry.Plane`
+            The frame or plane to use when trimming.
+
+        tolerance : float
+            The precision to use for the trimming operation.
+
+        Returns
+        -------
+        None
+
+        """
+        if isinstance(trimming_plane, Plane):
+            trimming_plane = Frame.from_plane(trimming_plane)
+        rhino_frame = frame_to_rhino(trimming_plane)
+        rhino_frame.Flip()
+        results = self._brep.Trim(rhino_frame, tolerance)
+        if not results:
+            raise BrepTrimmingError("Trim operation ended with no result")
+
+        self._brep = results[0]
+
+    # ==============================================================================
+    # Other Methods
+    # ==============================================================================
+
     def _create_native_brep(self, faces):
-        """
-        Source: https://github.com/mcneel/rhino-developer-samples/blob/3179a8386a64602ee670cc832c77c561d1b0944b/rhinocommon/cs/SampleCsCommands/SampleCsTrimmedPlane.cs
-         Things need to be defined in a valid brep:
-          1- Vertices
-          2- 3D Curves (geometry)
-          3- Edges (topology - reference curve geometry)
-          4- Surfaces (geometry)
-          5- Faces (topology - reference surface geometry)
-          6- Loops (2D parameter space of faces)
-          4- Trims and 2D curves (2D parameter space of edges)
-        """
+        # Source: https://github.com/mcneel/rhino-developer-samples/blob/3179a8386a64602ee670cc832c77c561d1b0944b/rhinocommon/cs/SampleCsCommands/SampleCsTrimmedPlane.cs
+        # Things need to be defined in a valid brep:
+        #  1- Vertices
+        #  2- 3D Curves (geometry)
+        #  3- Edges (topology - reference curve geometry)
+        #  4- Surfaces (geometry)
+        #  5- Faces (topology - reference surface geometry)
+        #  6- Loops (2D parameter space of faces)
+        #  4- Trims and 2D curves (2D parameter space of edges)
         self._brep = Rhino.Geometry.Brep()
         for face in faces:
             rhino_face, rhino_surface = self._create_brep_face(face)
@@ -159,7 +237,9 @@ class RhinoBrep(Brep):
                     self._add_trim(rhino_2d_curve, rhino_edge, rhino_loop)
 
         self._brep.Repair(TOLERANCE)
-        self._brep.JoinNakedEdges(TOLERANCE)  # without this, Brep.Trim() led to some weird results on de-serialized Breps
+        self._brep.JoinNakedEdges(
+            TOLERANCE
+        )  # without this, Brep.Trim() led to some weird results on de-serialized Breps
         self._validate_brep()
 
     def _validate_brep(self):
@@ -204,7 +284,9 @@ class RhinoBrep(Brep):
         trim_curve_index = self._brep.AddTrimCurve(rhino_trim_curve)
         # Topology
         trim = self._brep.Trims.Add(rhino_edge, True, rhino_loop, trim_curve_index)
-        trim.IsoStatus = getattr(Rhino.Geometry.IsoStatus, "None")  # IsoStatus.None makes lint, IDE and even Python angry
+        trim.IsoStatus = getattr(
+            Rhino.Geometry.IsoStatus, "None"
+        )  # IsoStatus.None makes lint, IDE and even Python angry
         trim.TrimType = Rhino.Geometry.BrepTrimType.Boundary
         trim.SetTolerances(TOLERANCE, TOLERANCE)
 
@@ -213,36 +295,3 @@ class RhinoBrep(Brep):
         curve_2d = rhino_surface.Pullback(rhino_edge.EdgeCurve, TOLERANCE)
         curve_2d.Reverse()
         return curve_2d
-
-    # ==============================================================================
-    # Methods
-    # ==============================================================================
-
-    def transform(self, matrix):
-        """
-        Transform this Brep by given transformation matrix
-        Parameters
-        ----------
-        matrix: :class:`~compas.geometry.Transformation`
-            The transformation matrix by which to transform this Brep.
-        """
-        self._brep.Transform(xform_to_rhino(matrix))
-
-    def trim(self, trimming_plane, tolerance=TOLERANCE):
-        """Trim this brep by the given trimming plane
-
-        Parameters
-        ----------
-        trimming_plane
-            :class:`~compas.geometry.Frame`
-
-        tolerance: the tolerance to use when trimming
-            float
-        """
-        rhino_frame = frame_to_rhino(trimming_plane)
-        rhino_frame.Flip()
-        results = self._brep.Trim(rhino_frame, tolerance)
-        if not results:
-            raise BrepTrimmingError("Trim operation ended with no result")
-
-        self._brep = results[0]

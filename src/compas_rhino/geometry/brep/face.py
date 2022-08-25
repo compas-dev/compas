@@ -5,9 +5,24 @@ from .loop import RhinoBrepLoop
 
 
 class RhinoBrepFace(BrepFace):
-    """A wrapper for Rhino.Geometry.BrepFace"""
+    """A wrapper for Rhino.Geometry.BrepFace
 
-    TOLERANCE = 1e-6
+    Attributes
+    ----------
+    native_surface : :class:`Rhino.Geometry.Surface`
+        The rhino native underlying geometry of this face.
+    loops : list[:class:`compas_rhino.geometry.RhinoBrepLoop`], read-only
+        The list of loops which comprise this face.
+    surface : :class:`compas_rhino.geometry.RhinoNurbsSurface`
+        The compas_rhino wrapper of the underlying geometry of this face.
+    boundary : :class:`compas_rhino.geometry.RhinoBrepLoop`, read-only
+        The loop which defines the outer boundary of this face.
+    holes : list[:class:`compas_rhino.geometry.RhinoBrepLoop`], read-only
+        The list of loops which comprise the holes of this brep, if any.
+    is_plane : float, read-only
+        True if the geometry of this face is a plane, False otherwise.
+
+    """
 
     def __init__(self, rhino_face=None):
         super(RhinoBrepFace, self).__init__()
@@ -20,7 +35,13 @@ class RhinoBrepFace(BrepFace):
     def _set_face(self, native_face):
         self._face = native_face
         self._loops = [RhinoBrepLoop(loop) for loop in self._face.Loops]
-        self._surface = RhinoNurbsSurface.from_rhino(self._face.ToNurbsSurface())  # surface in Rhino will always be NURBS
+        self._surface = RhinoNurbsSurface.from_rhino(
+            self._face.ToNurbsSurface()
+        )  # surface in Rhino will always be NURBS
+
+    # ==============================================================================
+    # Data
+    # ==============================================================================
 
     @property
     def data(self):
@@ -35,6 +56,10 @@ class RhinoBrepFace(BrepFace):
         self._loops = [boundary] + holes
         # TODO: should we check surface type here? should we support surfaces other than NURBS?
         self._surface = RhinoNurbsSurface.from_data(value["surface"])
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
 
     @property
     def native_surface(self):
