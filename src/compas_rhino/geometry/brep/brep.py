@@ -2,6 +2,7 @@ from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepInvalidError
 from compas.geometry import BrepTrimmingError
+from compas.geometry import Plane
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import point_to_rhino
@@ -200,6 +201,8 @@ class RhinoBrep(Brep):
         None
 
         """
+        if isinstance(trimming_plane, Plane):
+            trimming_plane = Frame.from_plane(trimming_plane)
         rhino_frame = frame_to_rhino(trimming_plane)
         rhino_frame.Flip()
         results = self._brep.Trim(rhino_frame, tolerance)
