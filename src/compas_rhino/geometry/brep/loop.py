@@ -18,6 +18,7 @@ class LoopType(object):
     POINT_ON_SURFACE
 
     """
+
     UNKNOWN = 0
     OUTER = 1
     INNTER = 2

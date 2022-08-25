@@ -61,7 +61,11 @@ class RhinoBrepEdge(BrepEdge):
         else:
             type_ = "nurbs"
             curve = RhinoNurbsCurve.from_rhino(self._curve)
-        return {"type": type_, "value": curve.data, "points": [self._start_vertex.point.data, self._end_vertex.point.data]}
+        return {
+            "type": type_,
+            "value": curve.data,
+            "points": [self._start_vertex.point.data, self._end_vertex.point.data],
+        }
 
     @data.setter
     def data(self, value):

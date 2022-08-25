@@ -237,7 +237,9 @@ class RhinoBrep(Brep):
                     self._add_trim(rhino_2d_curve, rhino_edge, rhino_loop)
 
         self._brep.Repair(TOLERANCE)
-        self._brep.JoinNakedEdges(TOLERANCE)  # without this, Brep.Trim() led to some weird results on de-serialized Breps
+        self._brep.JoinNakedEdges(
+            TOLERANCE
+        )  # without this, Brep.Trim() led to some weird results on de-serialized Breps
         self._validate_brep()
 
     def _validate_brep(self):
@@ -282,7 +284,9 @@ class RhinoBrep(Brep):
         trim_curve_index = self._brep.AddTrimCurve(rhino_trim_curve)
         # Topology
         trim = self._brep.Trims.Add(rhino_edge, True, rhino_loop, trim_curve_index)
-        trim.IsoStatus = getattr(Rhino.Geometry.IsoStatus, "None")  # IsoStatus.None makes lint, IDE and even Python angry
+        trim.IsoStatus = getattr(
+            Rhino.Geometry.IsoStatus, "None"
+        )  # IsoStatus.None makes lint, IDE and even Python angry
         trim.TrimType = Rhino.Geometry.BrepTrimType.Boundary
         trim.SetTolerances(TOLERANCE, TOLERANCE)
 

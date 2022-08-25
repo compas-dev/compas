@@ -35,7 +35,9 @@ class RhinoBrepFace(BrepFace):
     def _set_face(self, native_face):
         self._face = native_face
         self._loops = [RhinoBrepLoop(loop) for loop in self._face.Loops]
-        self._surface = RhinoNurbsSurface.from_rhino(self._face.ToNurbsSurface())  # surface in Rhino will always be NURBS
+        self._surface = RhinoNurbsSurface.from_rhino(
+            self._face.ToNurbsSurface()
+        )  # surface in Rhino will always be NURBS
 
     # ==============================================================================
     # Data
