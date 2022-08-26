@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <title> - Brep</title>
+  
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/mono-blue.min.css">
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+  
+  <link rel="next" title="Brep.contours" href="compas.geometry.Brep.contours.html" />
+  
+
+  
+  <link rel="prev" title="Polyhedron.validate_json" href="compas.geometry.Polyhedron.validate_json.html" />
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            1.16.0
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- content -->
+      <main class="col-12 col-md-9 col-xl-9 px-4 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../index.html">docs</a></li>
+            
+            <li class="breadcrumb-item"><a href="../../api.html">API Reference</a></li>
+            
+            <li class="breadcrumb-item"><a href="../compas.html">compas</a></li>
+            
+            <li class="breadcrumb-item"><a href="../compas.geometry.html">geometry</a></li>
+            
+            <!-- <li class="breadcrumb-item active" aria-current="page">Brep</li> -->
+          </ol>
+        </nav>
+        
+
+        
+        
+        <section class="detail" id="brep">
+<h1>Brep</h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="compas.geometry.Brep">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Brep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/brep/brep.py#L118"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
+<p>Contains the topological and geometrical information of a Brep shape.</p>
+<p>This class serves as an interface for a Brep and allows instantiating a Brep object depending on the available Backend.
+Note: this is not a full implementation of Brep and rather relies on COMPAS’s plugin system for actual implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (list[<a class="reference internal" href="compas.geometry.BrepVertex.html#compas.geometry.BrepVertex" title="compas.geometry.BrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepVertex</span></code></a>], read-only) – The vertices of the Brep.</p></li>
+<li><p><strong>edges</strong> (list[<a class="reference internal" href="compas.geometry.BrepEdge.html#compas.geometry.BrepEdge" title="compas.geometry.BrepEdge"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepEdge</span></code></a>], read-only) – The edges of the Brep.</p></li>
+<li><p><strong>loops</strong> (list[<a class="reference internal" href="compas.geometry.BrepLoop.html#compas.geometry.BrepLoop" title="compas.geometry.BrepLoop"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepLoop</span></code></a>], read-only) – The loops of the Brep.</p></li>
+<li><p><strong>faces</strong> (list[<a class="reference internal" href="compas.geometry.BrepFace.html#compas.geometry.BrepFace" title="compas.geometry.BrepFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepFace</span></code></a>], read-only) – The faces of the Brep.</p></li>
+<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>, read-only) – The local coordinate system of the Brep.</p></li>
+<li><p><strong>area</strong> (<em>float, read-only</em>) – The surface area of the Brep.</p></li>
+<li><p><strong>volume</strong> (<em>float, read-only</em>) – The volume of the regions contained by the Brep.</p></li>
+<li><p><strong>solids</strong> (list[<a class="reference internal" href="#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a>], read-only) – The solids of this brep.</p></li>
+<li><p><strong>shells</strong> (list[<a class="reference internal" href="#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a>], read-only) – The shells of this brep.</p></li>
+<li><p><strong>points</strong> (list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>], read-only) – The points of this brep.</p></li>
+<li><p><strong>centroid</strong> (<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>, read-only) – The centroid of this brep.</p></li>
+<li><p><strong>is_valid</strong> (<em>bool, read-only</em>) – True if this brep is valid, False otherwise</p></li>
+<li><p><strong>is_solid</strong> (<em>bool, read-only</em>) – True if this brep is a solid, False otherwise.</p></li>
+<li><p><strong>is_compound</strong> (<em>bool, read-only</em>) – True if this brep’s type is a compound, False otherwise.</p></li>
+<li><p><strong>is_compoundsolid</strong> (<em>bool, read-only</em>) – True if this brep’s type is a compoundsolid, False otherwise.</p></li>
+<li><p><strong>is_orientable</strong> (<em>bool, read-only</em>) – True if this brep is orientable, False otherwise.</p></li>
+<li><p><strong>is_closed</strong> (<em>bool, read-only</em>) – True if this brep is closed, False otherwise.</p></li>
+<li><p><strong>is_infinite</strong> (<em>bool, read-only</em>) – True if this brep is infinite, False otherwise.</p></li>
+<li><p><strong>is_convex</strong> (<em>bool, read-only</em>) – True if this brep is convex, False otherwise.</p></li>
+<li><p><strong>is_manifold</strong> (<em>bool, read-only</em>) – True if this brep is a manifold, False otherwise.</p></li>
+<li><p><strong>is_surface</strong> (<em>bool, read-only</em>) – True if this brep is a surface, False otherwise.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Other Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>native_brep</strong> – The underlying instance of the backend brep.</p></li>
+<li><p><strong>type</strong> (<a class="reference internal" href="compas.geometry.BrepType.html#compas.geometry.BrepType" title="compas.geometry.BrepType"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepType</span></code></a>, read-only) – The type of Brep shape.</p></li>
+<li><p><strong>orientation</strong> (<a class="reference internal" href="compas.geometry.BrepOrientation.html#compas.geometry.BrepOrientation" title="compas.geometry.BrepOrientation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepOrientation</span></code></a>, read-obly) – Orientation of the shape.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.contours.html#compas.geometry.Brep.contours" title="compas.geometry.Brep.contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contours</span></code></a></p></td>
+<td><p>Generate contour lines by slicing the Brep shape with a series of planes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_edges.html#compas.geometry.Brep.cull_unused_edges" title="compas.geometry.Brep.cull_unused_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_edges</span></code></a></p></td>
+<td><p>Remove all unused edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_faces.html#compas.geometry.Brep.cull_unused_faces" title="compas.geometry.Brep.cull_unused_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_faces</span></code></a></p></td>
+<td><p>Remove all unused faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_loops.html#compas.geometry.Brep.cull_unused_loops" title="compas.geometry.Brep.cull_unused_loops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_loops</span></code></a></p></td>
+<td><p>Remove all unused loops.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_vertices.html#compas.geometry.Brep.cull_unused_vertices" title="compas.geometry.Brep.cull_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_vertices</span></code></a></p></td>
+<td><p>Remove all unused vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.fix.html#compas.geometry.Brep.fix" title="compas.geometry.Brep.fix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix</span></code></a></p></td>
+<td><p>Fix the shell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_difference.html#compas.geometry.Brep.from_boolean_difference" title="compas.geometry.Brep.from_boolean_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_difference</span></code></a></p></td>
+<td><p>Construct a Brep from the boolean difference of two other Breps.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_intersection.html#compas.geometry.Brep.from_boolean_intersection" title="compas.geometry.Brep.from_boolean_intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_intersection</span></code></a></p></td>
+<td><p>Construct a BRep from the boolean intersection of two other Breps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_union.html#compas.geometry.Brep.from_boolean_union" title="compas.geometry.Brep.from_boolean_union"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_union</span></code></a></p></td>
+<td><p>Construct a Brep from the boolean union of two other Breps.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_box.html#compas.geometry.Brep.from_box" title="compas.geometry.Brep.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a></p></td>
+<td><p>Construct a Brep from a COMPAS box.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_brep.html#compas.geometry.Brep.from_brep" title="compas.geometry.Brep.from_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brep</span></code></a></p></td>
+<td><p>Create a Brep from an instance of a backend Brep.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_brepfaces.html#compas.geometry.Brep.from_brepfaces" title="compas.geometry.Brep.from_brepfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brepfaces</span></code></a></p></td>
+<td><p>Make a Brep from a list of Brep faces forming an open or closed shell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_cone.html#compas.geometry.Brep.from_cone" title="compas.geometry.Brep.from_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cone</span></code></a></p></td>
+<td><p>Construct a Brep from a COMPAS cone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_curves.html#compas.geometry.Brep.from_curves" title="compas.geometry.Brep.from_curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_curves</span></code></a></p></td>
+<td><p>Construct a Brep from a set of curves.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_cylinder.html#compas.geometry.Brep.from_cylinder" title="compas.geometry.Brep.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
+<td><p>Construct a Brep from a COMPAS cylinder.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_extrusion.html#compas.geometry.Brep.from_extrusion" title="compas.geometry.Brep.from_extrusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_extrusion</span></code></a></p></td>
+<td><p>Construct a Brep by extruding a closed curve along a direction vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_mesh.html#compas.geometry.Brep.from_mesh" title="compas.geometry.Brep.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
+<td><p>Construct a Brep from a COMPAS mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_polygons.html#compas.geometry.Brep.from_polygons" title="compas.geometry.Brep.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a></p></td>
+<td><p>Construct a Brep from a set of polygons.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sphere.html#compas.geometry.Brep.from_sphere" title="compas.geometry.Brep.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
+<td><p>Construct a Brep from a COMPAS sphere.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_step_file.html#compas.geometry.Brep.from_step_file" title="compas.geometry.Brep.from_step_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step_file</span></code></a></p></td>
+<td><p>Conctruct a BRep from the data contained in a STEP file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sweep.html#compas.geometry.Brep.from_sweep" title="compas.geometry.Brep.from_sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sweep</span></code></a></p></td>
+<td><p>Construct a BRep by sweeping a profile along a path.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_torus.html#compas.geometry.Brep.from_torus" title="compas.geometry.Brep.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
+<td><p>Construct a Brep from a COMPAS torus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.make_solid.html#compas.geometry.Brep.make_solid" title="compas.geometry.Brep.make_solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_solid</span></code></a></p></td>
+<td><p>Convert the current shape to a solid if it is a shell.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.overlap.html#compas.geometry.Brep.overlap" title="compas.geometry.Brep.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a></p></td>
+<td><p>Compute the overlap between this BRep and another.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.sew.html#compas.geometry.Brep.sew" title="compas.geometry.Brep.sew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sew</span></code></a></p></td>
+<td><p>Sew together the individual parts of the shape.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.slice.html#compas.geometry.Brep.slice" title="compas.geometry.Brep.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a></p></td>
+<td><p>Slice through the BRep with a plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.split.html#compas.geometry.Brep.split" title="compas.geometry.Brep.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<td><p>Slice through the BRep with a plane.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_json.html#compas.geometry.Brep.to_json" title="compas.geometry.Brep.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<td><p>Export the BRep to a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_meshes.html#compas.geometry.Brep.to_meshes" title="compas.geometry.Brep.to_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_meshes</span></code></a></p></td>
+<td><p>Convert the faces of this Brep shape to meshes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_step.html#compas.geometry.Brep.to_step" title="compas.geometry.Brep.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<td><p>Write the BRep shape to a STEP file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_tesselation.html#compas.geometry.Brep.to_tesselation" title="compas.geometry.Brep.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<td><p>Create a tesselation of the shape for visualisation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_viewmesh.html#compas.geometry.Brep.to_viewmesh" title="compas.geometry.Brep.to_viewmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_viewmesh</span></code></a></p></td>
+<td><p>Convert this Brep to a view mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.trim.html#compas.geometry.Brep.trim" title="compas.geometry.Brep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<td><p>Trim this Brep using the given trimming plane.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges" title="compas.geometry.Brep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
+<td><p>Identify the edges connected to a given vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces" title="compas.geometry.Brep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
+<td><p>Identify the faces connected to a vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors" title="compas.geometry.Brep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
+<td><p>Identify the neighbouring vertices of a given vertex.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.ToString.html#compas.geometry.Brep.ToString" title="compas.geometry.Brep.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.copy.html#compas.geometry.Brep.copy" title="compas.geometry.Brep.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_data.html#compas.geometry.Brep.from_data" title="compas.geometry.Brep.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_json.html#compas.geometry.Brep.from_json" title="compas.geometry.Brep.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_jsonstring.html#compas.geometry.Brep.from_jsonstring" title="compas.geometry.Brep.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.sha256.html#compas.geometry.Brep.sha256" title="compas.geometry.Brep.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_data.html#compas.geometry.Brep.to_data" title="compas.geometry.Brep.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<td><p>Convert an object to its native data representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_jsonstring.html#compas.geometry.Brep.to_jsonstring" title="compas.geometry.Brep.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Serialize the data representation of an object to a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.transform.html#compas.geometry.Brep.transform" title="compas.geometry.Brep.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<td><p>Transform the geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.transformed.html#compas.geometry.Brep.transformed" title="compas.geometry.Brep.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<td><p>Returns a transformed copy of this geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.validate_data.html#compas.geometry.Brep.validate_data" title="compas.geometry.Brep.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the object's data against its data schema.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.validate_json.html#compas.geometry.Brep.validate_json" title="compas.geometry.Brep.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<td><p>Validate the object's data against its json schema.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation">
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column collapse show active">
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../index.html">Introduction</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column collapse show active">
+<li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas.html">compas</a><ul class="nav flex-column collapse show active">
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.artists.html">artists</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.colors.html">colors</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.data.html">data</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.datastructures.html">datastructures</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.files.html">files</a></li>
+<li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas.geometry.html">geometry</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.numerical.html">numerical</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.plugins.html">plugins</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.robots.html">robots</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.rpc.html">rpc</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.topology.html">topology</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas.utilities.html">utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
+<li class="toctree-l2 nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../releases.html">Releases</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+      <a href="compas.geometry.Polyhedron.validate_json.html" title="Polyhedron.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
+        <div class="nav-title flex-grow-1 align-self-center">
+          <div class="nav-direction small font-weight-light">Previous</div>
+          Polyhedron.validate_json
+        </div>
+      </a>
+      
+
+      
+      <a href="compas.geometry.Brep.contours.html" title="Brep.contours" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <div class="nav-title footer-link flex-grow-1 align-self-center">
+          <div class="nav-direction small font-weight-light">Next</div>
+          Brep.contours
+        </div>
+        <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      
+    </nav>
+  </footer>
+  <!-- footer -->
+  <!-- below -->
+  <div class="below py-5">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
+          <p class="below-text">
+            A computational framework for collaboration and research in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <!-- <nav class="nav justify-content-center my-4">
+            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
+          </nav> -->
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- below -->
+  <!-- scripts -->
+  <!-- <script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+      URL_ROOT: '',
+      VERSION: '1.16.0',
+      COLLAPSE_INDEX: false,
+      FILE_SUFFIX: '.html',
+      HAS_SOURCE: 'false',
+      SOURCELINK_SUFFIX: '.txt'
+    };
+  </script> -->
+
+  <script id="documentation_options" src="../../_static/documentation_options.js"
+          data-url_root=""
+          data-has_source="true" ></script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+  <script src="../../_static/underscore.js"></script>
+  <script src="../../_static/doctools.js"></script>
+  <script src="../../_static/js/searchtools.js"></script>
+  <script src="../../_static/language_data.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $(".language-default code").addClass("python");
+      $(".language-python code").addClass("python");
+      $(".language-bash code").addClass("bash");
+      $(".language-cpp code").addClass("cpp");
+      $(".language-json code").addClass("json");
+      $(".language-none code").addClass("plaintext");
+
+      hljs.initHighlighting();
+      anchors.add();
+
+      new ClipboardJS('.btn.copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+
+      $("#compas-navigation li.active > ul").each(function() {
+        var ul = $(this);
+        if (! ul.hasClass("show")) {
+          ul.addClass("show");
+        }
+      });
+
+      $("#compas-navigation li.toctree-l1").has("ul").each(function() {
+        var li = $(this);
+        li.addClass("has-children");
+        if (li.hasClass("active")) {
+          li.prepend('<span class="menu-toggle"><i class="fas fa-chevron-up"></i></span>');
+        }
+        else {
+          li.prepend('<span class="menu-toggle"><i class="fas fa-chevron-down"></i></span>');
+        }
+      });
+
+      $(".menu-toggle").click(function() {
+        var toggle = $(this);
+        toggle.siblings("ul").toggleClass("show");
+      });
+
+    });
+
+    var url = $("#doc_versions").data("url");
+    var docs_site = $("#doc_versions").data("docs");
+
+    if (url) {
+      $.get(url, res => {
+        var lines = res.match(/[^\r\n]+/g);
+        lines.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+        lines.reverse();
+        lines.forEach(version => {
+          $("#doc_version_list").append("<a class=\"dropdown-item\" href=\"" + docs_site + version + "/\">" + version + "</a>");
+        });
+
+        var selected_version = $('.nav-versions .dropdown-item').filter(function (i, ver) {
+          return window.location.href.startsWith(ver.href);
+        });
+        selected_version.addClass('active');
+        $("#bd-versions").text(selected_version.text());
+
+      })
+    }
+  </script>
+  <!-- scripts -->
+  
+  
+</body>
+
+</html>
