@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `GLTFContent.get_node_by_name`, `GLTFContent.get_material_index_by_name`
 * Added `GLTFContent.add_material`, `GLTFContent.add_texture`, `GLTFContent.add_image`
 
+* Added pluggable `Brep` support with `compas.geometry.brep`.
+* Added Rhino `Brep` plugin in `compas_rhino.geometry.brep`.
+
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`
 
