@@ -65,6 +65,7 @@ For example, when in Rhino
     compas_rhino.geometry.RhinoBrep
 
 Every backend is expected to implement some alternative constructors
+
 .. code-block::
 
     >>> from compas.geometry import Box
@@ -75,6 +76,7 @@ Every backend is expected to implement some alternative constructors
 
 
 `Brep` can also be instantiated from an instance of a backend native `Brep`
+
 .. code-block::
 
     >>> import Rhino
@@ -114,7 +116,7 @@ Implementing a new backend
 
 If you wish to create an additional backend to `Brep` in your package, this can be done using the plugin system of COMPAS.
 
-Create a Brep type in your package which inherits from `compas.geometry.Brep` and override the `__new__` dundle as follows:
+Create a Brep type in your package which inherits from :class:`compas.geometry.Brep` and override the `__new__` dundle as follows:
 
 .. code-block::
 
@@ -144,5 +146,5 @@ Now, a call to `compas.geometry.Brep()` will result in an instance of `your.pack
 Implementing the `compas.data.Data` interface
 ---------------------------------------------
 A powerful feature of this approach is to be able to serialize a Brep created in one backend and de-serialize it using another.
-For that, it is required that `your.package.OccBrep` implements the `compas.data.Data` interface and follows the unified serialization protocol.
+For that, it is required that `your.package.OccBrep` implements the :class:`compas.data.Data` interface and follows the unified serialization protocol.
 
