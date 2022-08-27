@@ -56,7 +56,7 @@ jobs:
           choco install ironpython --version=2.7.8.1
 
       - name: 🦗 Build grasshopper components
-        uses: compas-dev/compas-actions.ghpython_components@v1
+        uses: compas-dev/compas-actions.ghpython_components@v2
         with:
           source: src/compas_ghpython/components
           target: src/compas_ghpython/components/ghuser
