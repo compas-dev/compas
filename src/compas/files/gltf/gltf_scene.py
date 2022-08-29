@@ -26,6 +26,7 @@ class GLTFScene(object):
         Tuple containing a dictionary of positions and a list of tuples representing edges.
 
     """
+
     def __init__(self, context, children=None, name=None, extras=None, extensions=None):
         self.name = name
         self._children = GLTFChildren(context, children or [])
@@ -90,13 +91,13 @@ class GLTFScene(object):
         """
         scene_dict = {}
         if self.children:
-            scene_dict['nodes'] = [node_index_by_key[key] for key in self.children]
+            scene_dict["nodes"] = [node_index_by_key[key] for key in self.children]
         if self.name:
-            scene_dict['name'] = self.name
+            scene_dict["name"] = self.name
         if self.extras:
-            scene_dict['extras'] = self.extras
+            scene_dict["extras"] = self.extras
         if self.extensions:
-            scene_dict['extensions'] = self.extensions
+            scene_dict["extensions"] = self.extensions
         return scene_dict
 
     @classmethod
@@ -117,8 +118,8 @@ class GLTFScene(object):
             return None
         return cls(
             context=context,
-            children=scene.get('nodes'),
-            name=scene.get('name'),
-            extras=scene.get('extras'),
-            extensions=scene.get('extensions'),
+            children=scene.get("nodes"),
+            name=scene.get("name"),
+            extras=scene.get("extras"),
+            extensions=scene.get("extensions"),
         )

@@ -192,7 +192,7 @@ def patched_parse(self):
     self._sections["keys"] = self._parse_keys_section
     self._sections["attributes"] = self._parse_attributes_section
     self._sections["class attributes"] = self._parse_class_attributes_section
-    self._sections["others attributes"] = self._parse_other_attributes_section
+    self._sections["other attributes"] = self._parse_other_attributes_section
     self._unpatched_parse()
 
 

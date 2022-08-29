@@ -276,7 +276,7 @@ class Color(Data):
         self.private_name = '_' + name
 
     def __get__(self, obj, otype=None):
-        return getattr(obj, self.private_name) or self
+        return getattr(obj, self.private_name, None) or self
 
     def __set__(self, obj, value):
         if not obj:
