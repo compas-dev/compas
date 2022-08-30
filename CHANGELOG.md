@@ -18,8 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`
-
 * Fixed `Color.__get___` AttributeError.
+* Re-worked `compas.geometry.assembly.part` to include non-destructive `Feature` application.
+* Created an abstraction for `Part` geometry with to support both `Mesh` and `Brep`.
 
 ### Removed
 
