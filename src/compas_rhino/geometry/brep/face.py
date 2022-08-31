@@ -47,7 +47,9 @@ class RhinoBrepFace(BrepFace):
     def data(self):
         boundary = self._loops[0].data
         holes = [loop.data for loop in self._loops[1:]]
-        return {"boundary": boundary, "surface": self._surface.data, "holes": holes}
+        surface = {"type": "nurbs"}
+        surface.update(self.surface.data)
+        return {"boundary": boundary, "surface": surface, "holes": holes}
 
     @data.setter
     def data(self, value):
