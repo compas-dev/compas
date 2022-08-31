@@ -236,7 +236,9 @@ class RhinoBrep(Brep):
         Parameters
         ----------
         brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One or more Breps from which to substract.
         brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One or more Breps to substract.
 
         Returns
         -------
@@ -244,13 +246,13 @@ class RhinoBrep(Brep):
             list of one or more resulting Breps.
 
         """
-        if not isinstance(brep_a, list):
-            brep_a = [brep_a]
-        if not isinstance(brep_b, list):
-            brep_b = [brep_b]
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
         resulting_breps = Rhino.Geometry.Brep.CreateBooleanDifference(
-            [b.native_brep for b in brep_a],
-            [b.native_brep for b in brep_b],
+            [b.native_brep for b in breps_a],
+            [b.native_brep for b in breps_b],
             TOLERANCE
         )
         return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
@@ -261,8 +263,10 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
-        brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One of more breps to join.
+        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            Another one of more breps to join.
 
         Returns
         -------
@@ -270,22 +274,24 @@ class RhinoBrep(Brep):
             list of one or more resulting Breps.
 
         """
-        if not isinstance(brep_a, list):
-            brep_a = [brep_a]
-        if not isinstance(brep_b, list):
-            brep_b = [brep_b]
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
 
-        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in brep_a + brep_b], TOLERANCE)
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in breps_a + breps_b], TOLERANCE)
         return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
 
     @classmethod
-    def from_boolean_intersection(cls, brep_a, brep_b):
+    def from_boolean_intersection(cls, breps_a, breps_b):
         """Construct a Brep from the boolean intersection of two groups of Breps.
 
         Parameters
         ----------
         brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One or more Breps to instrsect.
         brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            Another one or more Breps to intersect.
 
         Returns
         -------
@@ -293,13 +299,13 @@ class RhinoBrep(Brep):
             list of one or more resulting Breps.
 
         """
-        if not isinstance(brep_a, list):
-            brep_a = [brep_a]
-        if not isinstance(brep_b, list):
-            brep_b = [brep_b]
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
         resulting_breps = Rhino.Geometry.Brep.CreateBooleanIntersection(
-            [b.native_brep for b in brep_a],
-            [b.native_brep for b in brep_b],
+            [b.native_brep for b in breps_a],
+            [b.native_brep for b in breps_b],
             TOLERANCE
         )
         return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
