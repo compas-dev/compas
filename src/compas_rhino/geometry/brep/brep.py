@@ -8,6 +8,7 @@ from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import frame_to_rhino
+from compas_rhino.conversions import cylinder_to_rhino
 
 import Rhino
 
@@ -166,6 +167,23 @@ class RhinoBrep(Brep):
         rhino_box = box_to_rhino(box)
         return cls.from_brep(rhino_box.ToBrep())
 
+    @classmethod
+    def from_cylinder(cls, cylinder):
+        """Create a RhinoBrep from a box.
+
+        Parameters
+        ----------
+        box : :class:`~compas.geometry.Box`
+            The box geometry of the brep.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_cylinder = cylinder_to_rhino(cylinder)
+        return cls.from_brep(rhino_cylinder.ToBrep(True, True))
+
     # ==============================================================================
     # Methods
     # ==============================================================================
@@ -210,6 +228,81 @@ class RhinoBrep(Brep):
             raise BrepTrimmingError("Trim operation ended with no result")
 
         self._brep = results[0]
+
+    @classmethod
+    def from_boolean_difference(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean difference of two groups of Breps.
+
+        Parameters
+        ----------
+        brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+
+        Returns
+        -------
+        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(brep_a, list):
+            brep_a = [brep_a]
+        if not isinstance(brep_b, list):
+            brep_b = [brep_b]
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanDifference(
+            [b.native_brep for b in brep_a],
+            [b.native_brep for b in brep_b],
+            TOLERANCE
+        )
+        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+
+    @classmethod
+    def from_boolean_union(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean union of two groups of Breps.
+
+        Parameters
+        ----------
+        brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+
+        Returns
+        -------
+        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(brep_a, list):
+            brep_a = [brep_a]
+        if not isinstance(brep_b, list):
+            brep_b = [brep_b]
+
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in brep_a + brep_b], TOLERANCE)
+        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+
+    @classmethod
+    def from_boolean_intersection(cls, brep_a, brep_b):
+        """Construct a Brep from the boolean intersection of two groups of Breps.
+
+        Parameters
+        ----------
+        brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+
+        Returns
+        -------
+        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(brep_a, list):
+            brep_a = [brep_a]
+        if not isinstance(brep_b, list):
+            brep_b = [brep_b]
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanIntersection(
+            [b.native_brep for b in brep_a],
+            [b.native_brep for b in brep_b],
+            TOLERANCE
+        )
+        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
 
     # ==============================================================================
     # Other Methods
