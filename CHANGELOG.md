@@ -15,11 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added pluggable `Brep` support with `compas.geometry.brep`.
 * Added Rhino `Brep` plugin in `compas_rhino.geometry.brep`.
+* Added boolean operations to the `compas_rhino` `Brep` backend.
+* Added boolean operation operator overloads in `compas.geometry.Brep`
 
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`
 
 * Fixed `Color.__get___` AttributeError.
+* Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
 
 ### Removed
 
