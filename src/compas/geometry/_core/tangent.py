@@ -35,7 +35,6 @@ def tangent_points_to_circle_xy(circle, point):
     True
     """
     m, r = circle[0], circle[1]
-    print(m)
     cx, cy = m[0][0], m[0][1]
     px = point[0] - cx
     py = point[1] - cy
