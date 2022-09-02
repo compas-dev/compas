@@ -152,6 +152,24 @@ class RhinoCurve(Curve):
         """
         self.rhino_curve.Transform(xform_to_rhino(T))
 
+    def transformed(self, T):
+        """Returns a transformed copy of this geometry.
+
+        Parameters
+        ----------
+        T : :class:`~compas.geometry.Transformation`
+            The transformation used to transform the geometry.
+
+        Returns
+        -------
+        :class:`Geometry`
+            The transformed geometry.
+
+        """
+        geometry = self.copy()
+        geometry.transform(T)
+        return geometry
+
     def reverse(self):
         """Reverse the parametrisation of the curve.
 

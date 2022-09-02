@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added pluggable `Brep` support with `compas.geometry.brep`.
 * Added Rhino `Brep` plugin in `compas_rhino.geometry.brep`.
+* Added `transformed` function `compas_rhino.geometry.Curve`.
 
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`
