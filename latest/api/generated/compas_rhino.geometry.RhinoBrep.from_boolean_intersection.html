@@ -110,17 +110,17 @@
 <h1>RhinoBrep.from_boolean_intersection</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_boolean_intersection">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_boolean_intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">brep_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brep_b</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Construct a BRep from the boolean intersection of two other Breps.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_boolean_intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">breps_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">breps_b</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Construct a Brep from the boolean intersection of two groups of Breps.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>brep_a</strong> (<a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a>)</p></li>
-<li><p><strong>brep_b</strong> (<a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a>)</p></li>
+<li><p><strong>breps_a</strong> (<a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a> or list(<a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a>)) – One or more Breps to instrsect.</p></li>
+<li><p><strong>breps_b</strong> (<a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a> or list(<a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a>)) – Another one or more Breps to intersect.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a></p>
+<dd class="field-even"><p>list(<a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a>) – list of one or more resulting Breps.</p>
 </dd>
 </dl>
 </dd></dl>

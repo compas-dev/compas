@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="RhinoBrep.from_box" href="compas_rhino.geometry.RhinoBrep.from_box.html" />
+  <link rel="next" title="RhinoBrep.from_boolean_difference" href="compas_rhino.geometry.RhinoBrep.from_boolean_difference.html" />
   
 
   
@@ -108,7 +108,7 @@
 <h1>RhinoBrep</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/brep.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/brep.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.brep.brep.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a></p>
 <p>Rhino Brep backend class.</p>
 <p>Wraps around and allows serialization and de-serialization of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Brep</span></code>.</p>
@@ -134,11 +134,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_box.html#compas_rhino.geometry.RhinoBrep.from_box" title="compas_rhino.geometry.RhinoBrep.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_boolean_difference.html#compas_rhino.geometry.RhinoBrep.from_boolean_difference" title="compas_rhino.geometry.RhinoBrep.from_boolean_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_difference</span></code></a></p></td>
+<td><p>Construct a Brep from the boolean difference of two groups of Breps.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_boolean_intersection.html#compas_rhino.geometry.RhinoBrep.from_boolean_intersection" title="compas_rhino.geometry.RhinoBrep.from_boolean_intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_intersection</span></code></a></p></td>
+<td><p>Construct a Brep from the boolean intersection of two groups of Breps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_boolean_union.html#compas_rhino.geometry.RhinoBrep.from_boolean_union" title="compas_rhino.geometry.RhinoBrep.from_boolean_union"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_union</span></code></a></p></td>
+<td><p>Construct a Brep from the boolean union of two groups of Breps.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_box.html#compas_rhino.geometry.RhinoBrep.from_box" title="compas_rhino.geometry.RhinoBrep.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a></p></td>
 <td><p>Create a RhinoBrep from a box.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_brep.html#compas_rhino.geometry.RhinoBrep.from_brep" title="compas_rhino.geometry.RhinoBrep.from_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brep</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_brep.html#compas_rhino.geometry.RhinoBrep.from_brep" title="compas_rhino.geometry.RhinoBrep.from_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brep</span></code></a></p></td>
 <td><p>Constructs a RhinoBrep from an instance of a Rhino brep</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_cylinder.html#compas_rhino.geometry.RhinoBrep.from_cylinder" title="compas_rhino.geometry.RhinoBrep.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
+<td><p>Create a RhinoBrep from a box.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.transform.html#compas_rhino.geometry.RhinoBrep.transform" title="compas_rhino.geometry.RhinoBrep.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform this Brep by given transformation matrix</p></td>
@@ -179,26 +191,14 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.fix.html#compas_rhino.geometry.RhinoBrep.fix" title="compas_rhino.geometry.RhinoBrep.fix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix</span></code></a></p></td>
 <td><p>Fix the shell.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_boolean_difference.html#compas_rhino.geometry.RhinoBrep.from_boolean_difference" title="compas_rhino.geometry.RhinoBrep.from_boolean_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_difference</span></code></a></p></td>
-<td><p>Construct a Brep from the boolean difference of two other Breps.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_boolean_intersection.html#compas_rhino.geometry.RhinoBrep.from_boolean_intersection" title="compas_rhino.geometry.RhinoBrep.from_boolean_intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_intersection</span></code></a></p></td>
-<td><p>Construct a BRep from the boolean intersection of two other Breps.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_boolean_union.html#compas_rhino.geometry.RhinoBrep.from_boolean_union" title="compas_rhino.geometry.RhinoBrep.from_boolean_union"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_union</span></code></a></p></td>
-<td><p>Construct a Brep from the boolean union of two other Breps.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_brepfaces.html#compas_rhino.geometry.RhinoBrep.from_brepfaces" title="compas_rhino.geometry.RhinoBrep.from_brepfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brepfaces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_brepfaces.html#compas_rhino.geometry.RhinoBrep.from_brepfaces" title="compas_rhino.geometry.RhinoBrep.from_brepfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brepfaces</span></code></a></p></td>
 <td><p>Make a Brep from a list of Brep faces forming an open or closed shell.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_cone.html#compas_rhino.geometry.RhinoBrep.from_cone" title="compas_rhino.geometry.RhinoBrep.from_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cone</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_cone.html#compas_rhino.geometry.RhinoBrep.from_cone" title="compas_rhino.geometry.RhinoBrep.from_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cone</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS cone.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_curves.html#compas_rhino.geometry.RhinoBrep.from_curves" title="compas_rhino.geometry.RhinoBrep.from_curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_curves</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_curves.html#compas_rhino.geometry.RhinoBrep.from_curves" title="compas_rhino.geometry.RhinoBrep.from_curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_curves</span></code></a></p></td>
 <td><p>Construct a Brep from a set of curves.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_cylinder.html#compas_rhino.geometry.RhinoBrep.from_cylinder" title="compas_rhino.geometry.RhinoBrep.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
-<td><p>Construct a Brep from a COMPAS cylinder.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_data.html#compas_rhino.geometry.RhinoBrep.from_data" title="compas_rhino.geometry.RhinoBrep.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
@@ -362,10 +362,10 @@
       
 
       
-      <a href="compas_rhino.geometry.RhinoBrep.from_box.html" title="RhinoBrep.from_box" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_rhino.geometry.RhinoBrep.from_boolean_difference.html" title="RhinoBrep.from_boolean_difference" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          RhinoBrep.from_box
+          RhinoBrep.from_boolean_difference
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
