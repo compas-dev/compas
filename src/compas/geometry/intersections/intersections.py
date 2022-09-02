@@ -881,10 +881,11 @@ def intersection_circle_circle_xy(circle1, circle2):
         None otherwise.
 
     """
-    p1, r1 = circle1[0][0], circle1[1]
-    p2, r2 = circle2[0][0], circle2[1]
-
-    d = length_vector_xy(subtract_vectors_xy(p2, p1))
+    p1, r1 = circle1[0], circle1[1]
+    p2, r2 = circle2[0], circle2[1]
+    p1_point = p1[0]
+    p2_point = p2[0]
+    d = length_vector_xy(subtract_vectors_xy(p2_point, p1_point))
 
     if d > r1 + r2:
         return None
@@ -897,10 +898,10 @@ def intersection_circle_circle_xy(circle1, circle2):
 
     a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
     h = (r1 * r1 - a * a) ** 0.5
-    cx2 = p1[0] + a * (p2[0] - p1[0]) / d
-    cy2 = p1[1] + a * (p2[1] - p1[1]) / d
-    i1 = ((cx2 + h * (p2[1] - p1[1]) / d), (cy2 - h * (p2[0] - p1[0]) / d), 0)
-    i2 = ((cx2 - h * (p2[1] - p1[1]) / d), (cy2 + h * (p2[0] - p1[0]) / d), 0)
+    cx2 = p1_point[0] + a * (p2_point[0] - p1_point[0]) / d
+    cy2 = p1_point[1] + a * (p2_point[1] - p1_point[1]) / d
+    i1 = ((cx2 + h * (p2_point[1] - p1_point[1]) / d), (cy2 - h * (p2_point[0] - p1_point[0]) / d), 0)
+    i2 = ((cx2 - h * (p2_point[1] - p1_point[1]) / d), (cy2 + h * (p2_point[0] - p1_point[0]) / d), 0)
 
     return i1, i2
 
