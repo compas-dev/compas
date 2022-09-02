@@ -235,9 +235,9 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
             One or more Breps from which to substract.
-        brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
             One or more Breps to substract.
 
         Returns
@@ -288,9 +288,9 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        brep_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
             One or more Breps to instrsect.
-        brep_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
             Another one or more Breps to intersect.
 
         Returns
