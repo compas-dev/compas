@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed `Color.__get___` AttributeError.
 
+* Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
+* Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
 ### Removed
 
 

@@ -881,8 +881,8 @@ def intersection_circle_circle_xy(circle1, circle2):
         None otherwise.
 
     """
-    p1, r1 = circle1[0], circle1[1]
-    p2, r2 = circle2[0], circle2[1]
+    p1, r1 = circle1[0][0], circle1[1]
+    p2, r2 = circle2[0][0], circle2[1]
 
     d = length_vector_xy(subtract_vectors_xy(p2, p1))
 
