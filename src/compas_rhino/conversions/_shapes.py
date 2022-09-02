@@ -158,4 +158,7 @@ def cylinder_to_rhino(cylinder):
     :rhino:`Rhino.Geometry.Cylinder`
 
     """
-    return RhinoCylinder(circle_to_rhino(cylinder.circle), cylinder.height)
+    circle = cylinder.circle.copy()
+    height = cylinder.height
+    circle.plane.point += circle.plane.normal * (-0.5 * height)
+    return RhinoCylinder(circle_to_rhino(circle), cylinder.height)
