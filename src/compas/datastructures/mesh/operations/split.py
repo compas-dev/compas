@@ -6,10 +6,10 @@ from compas.utilities import pairwise
 
 
 __all__ = [
-    'mesh_split_edge',
-    'mesh_split_face',
-    'mesh_split_strip',
-    'trimesh_split_edge',
+    "mesh_split_edge",
+    "mesh_split_face",
+    "mesh_split_strip",
+    "trimesh_split_edge",
 ]
 
 
@@ -41,10 +41,15 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
         If u and v are not neighbors.
 
     """
-    if t <= 0.0:
-        raise ValueError('t should be greater than 0.0.')
-    if t >= 1.0:
-        raise ValueError('t should be smaller than 1.0.')
+    if t < 0.0:
+        raise ValueError("t should be greater than 0.0: {}".format(t))
+    if t > 1.0:
+        raise ValueError("t should be smaller than 1.0: {}".format(t))
+
+    if t == 0:
+        return u
+    if t == 1:
+        return v
 
     # check if the split is legal
     # don't split if edge is on boundary
@@ -112,9 +117,9 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     """
     if t <= 0.0:
-        raise ValueError('t should be greater than 0.0.')
+        raise ValueError("t should be greater than 0.0.")
     if t >= 1.0:
-        raise ValueError('t should be smaller than 1.0.')
+        raise ValueError("t should be smaller than 1.0.")
 
     # check if the split is legal
     # don't split if edge is on boundary
@@ -204,7 +209,7 @@ def mesh_split_face(mesh, fkey, u, v):
 
     """
     if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
-        raise ValueError('The split vertices do not belong to the split face.')
+        raise ValueError("The split vertices do not belong to the split face.")
 
     face = mesh.face[fkey]
 
@@ -212,14 +217,14 @@ def mesh_split_face(mesh, fkey, u, v):
     j = face.index(v)
 
     if i + 1 == j:
-        raise ValueError('The split vertices are neighbors.')
+        raise ValueError("The split vertices are neighbors.")
 
     if j > i:
-        f = face[i:j + 1]
-        g = face[j:] + face[:i + 1]
+        f = face[i : j + 1]
+        g = face[j:] + face[: i + 1]
     else:
-        f = face[i:] + face[:j + 1]
-        g = face[j:i + 1]
+        f = face[i:] + face[: j + 1]
+        g = face[j : i + 1]
 
     f = mesh.add_face(f)
     g = mesh.add_face(g)
