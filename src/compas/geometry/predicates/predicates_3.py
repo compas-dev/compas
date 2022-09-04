@@ -12,7 +12,7 @@ from compas.geometry._core import dot_vectors
 from compas.geometry._core import normalize_vector
 from compas.geometry._core import centroid_points
 from compas.geometry._core import normal_polygon
-from compas.geometry._core import length_vector_sqrd
+from compas.geometry._core import length_vector
 
 from compas.geometry._core import distance_point_point
 from compas.geometry._core import distance_point_plane
@@ -23,26 +23,26 @@ from compas.geometry._core import area_triangle
 
 
 __all__ = [
-    'is_colinear',
-    'is_colinear_line_line',
-    'is_coplanar',
-    'is_polygon_convex',
-    'is_point_on_plane',
-    'is_point_infront_plane',
-    'is_point_behind_plane',
-    'is_point_in_halfspace',
-    'is_point_on_line',
-    'is_point_on_segment',
-    'is_point_on_polyline',
-    'is_point_in_triangle',
-    'is_point_in_circle',
-    'is_point_in_polyhedron',
-    'is_intersection_line_line',
-    'is_intersection_segment_segment',
-    'is_intersection_line_triangle',
-    'is_intersection_line_plane',
-    'is_intersection_segment_plane',
-    'is_intersection_plane_plane',
+    "is_colinear",
+    "is_colinear_line_line",
+    "is_coplanar",
+    "is_polygon_convex",
+    "is_point_on_plane",
+    "is_point_infront_plane",
+    "is_point_behind_plane",
+    "is_point_in_halfspace",
+    "is_point_on_line",
+    "is_point_on_segment",
+    "is_point_on_polyline",
+    "is_point_in_triangle",
+    "is_point_in_circle",
+    "is_point_in_polyhedron",
+    "is_intersection_line_line",
+    "is_intersection_segment_segment",
+    "is_intersection_line_triangle",
+    "is_intersection_line_plane",
+    "is_intersection_segment_plane",
+    "is_intersection_plane_plane",
 ]
 
 
@@ -152,22 +152,30 @@ def is_coplanar(points, tol=0.01):
     if len(points) < 4:
         return True
 
-    tol2 = tol ** 2
+    tol2 = tol**2
 
     if len(points) == 4:
         v01 = subtract_vectors(points[1], points[0])
         v02 = subtract_vectors(points[2], points[0])
         v23 = subtract_vectors(points[3], points[2])
-        res = dot_vectors(v02, cross_vectors(v01, v23))
-        return res**2 < tol2
+        n = cross_vectors(v01, v02)
+        r = dot_vectors(n, v23)
+        return r**2 < tol2
 
-    a, b, c = points[:3]
-    ab = subtract_vectors(b, a)
-    n0 = cross_vectors(ab, subtract_vectors(c, a))
-    points = points[3:]
-    for c in points:
-        n1 = cross_vectors(ab, subtract_vectors(c, a))
-        if length_vector_sqrd(cross_vectors(n0, n1)) > tol:
+    for i in range(len(points)):
+        temp = points[i:] + points[:i]
+        a, b, c = temp[:3]
+        ab = subtract_vectors(b, a)
+        ac = subtract_vectors(c, a)
+        n = cross_vectors(ab, ac)
+        if length_vector(n) > tol:
+            points = temp
+            break
+
+    for d in points[3:]:
+        ad = subtract_vectors(d, a)
+        r = dot_vectors(n, ad)
+        if r**2 > tol2:
             return False
     return True
 
@@ -397,6 +405,7 @@ def is_point_in_triangle(point, triangle):
     Should the point be on the same plane as the triangle?
 
     """
+
     def is_on_same_side(p1, p2, segment):
         a, b = segment
         v = subtract_vectors(b, a)
@@ -408,9 +417,11 @@ def is_point_in_triangle(point, triangle):
 
     a, b, c = triangle
 
-    if is_on_same_side(point, a, (b, c)) and \
-       is_on_same_side(point, b, (a, c)) and \
-       is_on_same_side(point, c, (a, b)):
+    if (
+        is_on_same_side(point, a, (b, c))
+        and is_on_same_side(point, b, (a, c))
+        and is_on_same_side(point, c, (a, b))
+    ):
         return True
 
     return False
@@ -537,7 +548,7 @@ def is_intersection_line_triangle(line, triangle, tol=1e-6):
     det = dot_vectors(e1, p)
 
     # NOT CULLING
-    if det > - tol and det < tol:
+    if det > -tol and det < tol:
         return False
 
     inv_det = 1.0 / det
@@ -627,8 +638,8 @@ def is_intersection_segment_plane(segment, plane, tol=1e-6):
 
     if fabs(dot) > tol:
         v2 = subtract_vectors(pt1, p_cent)
-        fac = - dot_vectors(p_norm, v2) / dot
-        if fac > 0. and fac < 1.:
+        fac = -dot_vectors(p_norm, v2) / dot
+        if fac > 0.0 and fac < 1.0:
             return True
         return False
     else:
@@ -701,5 +712,7 @@ def is_point_in_polyhedron(point, polyhedron):
     """
     vertices, faces = polyhedron
     polygons = [[vertices[index] for index in face] for face in faces]
-    planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
+    planes = [
+        [centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons
+    ]
     return all(is_point_behind_plane(point, plane) for plane in planes)
