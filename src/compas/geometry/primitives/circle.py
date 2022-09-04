@@ -6,6 +6,9 @@ from math import pi
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Plane
+from compas.geometry.primitives import Line
+
+from compas.geometry import project_point_plane
 
 
 class Circle(Primitive):
@@ -44,7 +47,7 @@ class Circle(Primitive):
 
     """
 
-    __slots__ = ['_plane', '_radius']
+    __slots__ = ["_plane", "_radius"]
 
     def __init__(self, plane, radius, **kwargs):
         super(Circle, self).__init__(**kwargs)
@@ -61,25 +64,28 @@ class Circle(Primitive):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
-        return schema.Schema({
-            'plane': Plane.DATASCHEMA.fget(None),
-            'radius': schema.And(float, lambda x: x > 0)
-        })
+
+        return schema.Schema(
+            {
+                "plane": Plane.DATASCHEMA.fget(None),
+                "radius": schema.And(float, lambda x: x > 0),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'circle'
+        return "circle"
 
     @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
-        return {'plane': self.plane.data, 'radius': self.radius}
+        return {"plane": self.plane.data, "radius": self.radius}
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.radius = data['radius']
+        self.plane = Plane.from_data(data["plane"])
+        self.radius = data["radius"]
 
     @classmethod
     def from_data(cls, data):
@@ -102,7 +108,7 @@ class Circle(Primitive):
         >>> circle = Circle.from_data(data)
 
         """
-        return cls(Plane.from_data(data['plane']), data['radius'])
+        return cls(Plane.from_data(data["plane"]), data["radius"])
 
     # ==========================================================================
     # properties
@@ -153,7 +159,7 @@ class Circle(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Circle({0!r}, {1!r})'.format(self.plane, self.radius)
+        return "Circle({0!r}, {1!r})".format(self.plane, self.radius)
 
     def __len__(self):
         return 2
@@ -218,3 +224,70 @@ class Circle(Primitive):
 
         """
         self.plane.transform(T)
+
+    def locus(self, resolution=100):
+        pass
+
+    def point_at(self, t):
+        """
+        Compute the point on the circle at the given parameter.
+
+        Parameters
+        ----------
+        t : float
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+
+        """
+        pass
+
+    def normal_at(self, point):
+        """
+        Compute the normal vector at a point on the circle.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        return Line(self.center, point).direction
+
+    def tangent_at(self, point):
+        """
+        Compute the tangent vector at a point on the circle.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        return self.normal.cross(self.normal_at(point))
+
+    def closest_point(self, point):
+        """
+        Compute the closest point on the circle to a given point.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+
+        """
+        plane = self.plane
+        point = project_point_plane(point, plane)
+        vector = Line(self.center, point).direction
+        point = self.center + vector * self.radius
+        return point
