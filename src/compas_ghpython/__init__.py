@@ -20,21 +20,21 @@ import zipfile
 import compas
 import compas_rhino
 
-__version__ = '1.16.0'
+__version__ = "1.16.0"
 
 if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
 
 __all__ = [
-    'get_grasshopper_managedplugin_path',
-    'get_grasshopper_library_path',
-    'get_grasshopper_userobjects_path',
-    'fetch_ghio_lib'
+    "get_grasshopper_managedplugin_path",
+    "get_grasshopper_library_path",
+    "get_grasshopper_userobjects_path",
+    "fetch_ghio_lib",
 ]
 __all_plugins__ = [
-    'compas_ghpython.install',
-    'compas_ghpython.uninstall',
-    'compas_ghpython.artists',
+    "compas_ghpython.install",
+    "compas_ghpython.uninstall",
+    "compas_ghpython.artists",
 ]
 
 
@@ -58,13 +58,17 @@ def get_grasshopper_managedplugin_path(version):
     managedplugins = compas_rhino._get_rhino_managedplugins_path(version)
 
     if compas.WINDOWS:
-        gh_managedplugin_path = os.path.join(managedplugins, 'Grasshopper')
+        gh_managedplugin_path = os.path.join(managedplugins, "Grasshopper")
 
     elif compas.OSX:
-        gh_managedplugin_path = os.path.join(managedplugins, 'GrasshopperPlugin.rhp')
+        gh_managedplugin_path = os.path.join(managedplugins, "GrasshopperPlugin.rhp")
 
     if not os.path.exists(gh_managedplugin_path):
-        raise Exception("The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path))
+        raise Exception(
+            "The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(
+                gh_managedplugin_path
+            )
+        )
 
     return gh_managedplugin_path
 
@@ -76,7 +80,7 @@ def get_grasshopper_managedplugin_path(version):
 
 def get_grasshopper_library_path(version):
     """Retrieve Grasshopper's library (components) path"""
-    return _get_grasshopper_special_folder(version, 'Libraries')
+    return _get_grasshopper_special_folder(version, "Libraries")
 
 
 # =============================================================================
@@ -86,7 +90,7 @@ def get_grasshopper_library_path(version):
 
 def get_grasshopper_userobjects_path(version):
     """Retrieve Grasshopper's user objects path"""
-    return _get_grasshopper_special_folder(version, 'UserObjects')
+    return _get_grasshopper_special_folder(version, "UserObjects")
 
 
 # =============================================================================
@@ -94,17 +98,19 @@ def get_grasshopper_userobjects_path(version):
 # =============================================================================
 
 
-def fetch_ghio_lib(target_folder='temp'):
+def fetch_ghio_lib(target_folder="temp"):
     """Fetch the GH_IO.dll library from the NuGet packaging system."""
-    ghio_dll = 'GH_IO.dll'
-    filename = 'lib/net48/' + ghio_dll
+    ghio_dll = "GH_IO.dll"
+    filename = "lib/net48/" + ghio_dll
 
-    response = urllib.request.urlopen('https://www.nuget.org/api/v2/package/Grasshopper/')
+    response = urllib.request.urlopen(
+        "https://www.nuget.org/api/v2/package/Grasshopper/"
+    )
     dst_file = os.path.join(target_folder, ghio_dll)
     zip_file = zipfile.ZipFile(io.BytesIO(response.read()))
 
-    with zip_file.open(filename, 'r') as zipped_dll:
-        with open(dst_file, 'wb') as fp:
+    with zip_file.open(filename, "r") as zipped_dll:
+        with open(dst_file, "wb") as fp:
             fp.write(zipped_dll.read())
 
     return dst_file
