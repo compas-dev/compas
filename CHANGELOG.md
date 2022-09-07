@@ -62,7 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `GLTFExporter` such that generated gltfs can be viewed with webxr
 * Fixed source directory path in `compas_ghpython.uninstall` plugin.
 * Fixed bug in`compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
-* Fixed conversion bug of transformed `Box` in `compas_rhino.conversions`
+* Fixed conversion bug of transformed `Box` in `compas_rhino.conversions`.
+* Changed `compas.datastructures.mesh.operations.mesh_split_edge` to allow for boundary cases.
 
 ### Removed
 
