@@ -8,19 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 * Added gltf extensions: `KHR_materials_transmission`, `KHR_materials_specular`, `KHR_materials_ior`, `KHR_materials_clearcoat`, `KHR_Texture_Transform`, `KHR_materials_pbrSpecularGlossiness`
 * Added `GLTFContent.check_extensions_texture_recursively`
 * Added `GLTFContent.get_node_by_name`, `GLTFContent.get_material_index_by_name`
 * Added `GLTFContent.add_material`, `GLTFContent.add_texture`, `GLTFContent.add_image`
-
 * Added pluggable `Brep` support with `compas.geometry.brep`.
 * Added Rhino `Brep` plugin in `compas_rhino.geometry.brep`.
 * Added boolean operations to the `compas_rhino` `Brep` backend.
 * Added boolean operation operator overloads in `compas.geometry.Brep`
+* Added `normal_at` and `tangent_at`, `closest_point` to `compas.geometry.Circle`.
 
 ### Changed
-* Based all gltf data classes on `BaseGLTFDataClass`
 
+* Based all gltf data classes on `BaseGLTFDataClass`
 * Fixed `Color.__get___` AttributeError.
 * Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
 
