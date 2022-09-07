@@ -56,6 +56,7 @@ def _get_artist_cls(data, **kwargs):
         cls = kwargs["artist_type"]
     else:
         context = Artist.ITEM_ARTIST[Artist.CONTEXT]
+
         for type_ in inspect.getmro(dtype):
             cls = context.get(type_, None)
             if cls is not None:
