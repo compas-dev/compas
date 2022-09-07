@@ -14,8 +14,10 @@ import tempfile
 try:
     NotADirectoryError
 except NameError:
+
     class NotADirectoryError(Exception):
         pass
+
 
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
@@ -23,27 +25,27 @@ SYMLINK_REGEX = re.compile(r"\n.*\<SYMLINKD\>\s(.*)\s\[(.*)\]\r")
 
 
 __all__ = [
-    'absjoin',
-    'realpath',
-    'create_symlink',
-    'create_symlinks',
-    'remove_symlink',
-    'remove_symlinks',
-    'copy',
-    'remove',
-    'rename',
-    'user_data_dir',
-    'select_python',
-    'prepare_environment',
-    'is_admin',
-    'is_windows',
-    'is_linux',
-    'is_osx',
-    'is_mono',
-    'is_ironpython',
-    'is_rhino',
-    'is_blender',
-    'is_grasshopper'
+    "absjoin",
+    "realpath",
+    "create_symlink",
+    "create_symlinks",
+    "remove_symlink",
+    "remove_symlinks",
+    "copy",
+    "remove",
+    "rename",
+    "user_data_dir",
+    "select_python",
+    "prepare_environment",
+    "is_admin",
+    "is_windows",
+    "is_linux",
+    "is_osx",
+    "is_mono",
+    "is_ironpython",
+    "is_rhino",
+    "is_blender",
+    "is_grasshopper",
 ]
 
 
@@ -57,8 +59,8 @@ def is_windows():
 
     """
     if is_ironpython():
-        return os.name == 'nt'
-    return sys.platform == 'win32'
+        return os.name == "nt"
+    return sys.platform == "win32"
 
 
 def is_linux():
@@ -70,11 +72,11 @@ def is_linux():
         True if the OS is Linux. False otherwise
 
     """
-    return sys.platform in ('linux', 'linux2')
+    return sys.platform in ("linux", "linux2")
 
 
 def is_osx():
-    return sys.platform == 'darwin'
+    return sys.platform == "darwin"
 
 
 def is_mono():
@@ -86,7 +88,7 @@ def is_mono():
         True if the OS is running on Mono. False otherwise
 
     """
-    return 'mono' in sys.version.lower()
+    return "mono" in sys.version.lower()
 
 
 def is_ironpython():
@@ -98,7 +100,7 @@ def is_ironpython():
         True if the implementation is IronPython. False otherwise
 
     """
-    return 'ironpython' == platform.python_implementation().lower()
+    return "ironpython" == platform.python_implementation().lower()
 
 
 def is_rhino():
@@ -132,21 +134,22 @@ if is_windows():
 
     class ShellExecuteInfo(ctypes.Structure):
         _fields_ = [
-            ('cbSize',       ctypes.wintypes.DWORD),
-            ('fMask',        ctypes.c_ulong),
-            ('hwnd',         ctypes.wintypes.HWND),
-            ('lpVerb',       ctypes.c_char_p),
-            ('lpFile',       ctypes.c_char_p),
-            ('lpParameters', ctypes.c_char_p),
-            ('lpDirectory',  ctypes.c_char_p),
-            ('nShow',        ctypes.c_int),
-            ('hInstApp',     ctypes.wintypes.HINSTANCE),
-            ('lpIDList',     ctypes.c_void_p),
-            ('lpClass',      ctypes.c_char_p),
-            ('hKeyClass',    ctypes.wintypes.HKEY),
-            ('dwHotKey',     ctypes.wintypes.DWORD),
-            ('hIcon',        ctypes.wintypes.HANDLE),
-            ('hProcess',     ctypes.wintypes.HANDLE)]
+            ("cbSize", ctypes.wintypes.DWORD),
+            ("fMask", ctypes.c_ulong),
+            ("hwnd", ctypes.wintypes.HWND),
+            ("lpVerb", ctypes.c_char_p),
+            ("lpFile", ctypes.c_char_p),
+            ("lpParameters", ctypes.c_char_p),
+            ("lpDirectory", ctypes.c_char_p),
+            ("nShow", ctypes.c_int),
+            ("hInstApp", ctypes.wintypes.HINSTANCE),
+            ("lpIDList", ctypes.c_void_p),
+            ("lpClass", ctypes.c_char_p),
+            ("hKeyClass", ctypes.wintypes.HKEY),
+            ("dwHotKey", ctypes.wintypes.DWORD),
+            ("hIcon", ctypes.wintypes.HANDLE),
+            ("hProcess", ctypes.wintypes.HANDLE),
+        ]
 
         def __init__(self, **kw):
             super(ShellExecuteInfo, self).__init__()
@@ -191,26 +194,28 @@ def select_python(python_executable):
         either `python` or `pythonw`.
     """
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
-        python_executables = [python_executable] if python_executable else ['pythonw', 'python']
+        python_executables = (
+            [python_executable] if python_executable else ["pythonw", "python"]
+        )
 
         for python_exe in python_executables:
             python = os.path.join(PYTHON_DIRECTORY, python_exe)
             if os.path.exists(python):
                 return python
 
-            python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_exe))
+            python = os.path.join(PYTHON_DIRECTORY, "{0}.exe".format(python_exe))
             if os.path.exists(python):
                 return python
 
-            python = os.path.join(PYTHON_DIRECTORY, 'bin', python_exe)
+            python = os.path.join(PYTHON_DIRECTORY, "bin", python_exe)
             if os.path.exists(python):
                 return python
 
-            python = os.path.join(PYTHON_DIRECTORY, 'bin', '{0}.exe'.format(python_exe))
+            python = os.path.join(PYTHON_DIRECTORY, "bin", "{0}.exe".format(python_exe))
             if os.path.exists(python):
                 return python
 
-    default_exe = 'pythonw' if is_windows() else 'python'
+    default_exe = "pythonw" if is_windows() else "python"
 
     # Assume a system-wide install exists
     return python_executable or default_exe
@@ -240,15 +245,15 @@ def prepare_environment(env=None):
 
     if PYTHON_DIRECTORY:
         if is_windows():
-            lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
+            lib_bin = os.path.join(PYTHON_DIRECTORY, "Library", "bin")
         else:
-            lib_bin = os.path.join(PYTHON_DIRECTORY, 'bin')
+            lib_bin = os.path.join(PYTHON_DIRECTORY, "bin")
 
-        if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
-            env['PATH'] = lib_bin + os.pathsep + env['PATH']
+        if os.path.exists(lib_bin) and lib_bin not in env["PATH"]:
+            env["PATH"] = lib_bin + os.pathsep + env["PATH"]
 
     if CONDA_EXE:
-        env['CONDA_EXE'] = CONDA_EXE
+        env["CONDA_EXE"] = CONDA_EXE
 
     return env
 
@@ -276,10 +281,12 @@ def realpath(path):
 
 def _realpath_ipy_win(path):
     dirname = os.path.basename(path)
-    parent_path = os.path.join(path, '..')
+    parent_path = os.path.join(path, "..")
 
     args = 'dir /c "{}" /Al'.format(parent_path)
-    process = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(
+        args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
 
     output, _error = process.communicate()
     matches = SYMLINK_REGEX.finditer(output)
@@ -295,7 +302,9 @@ def _realpath_ipy_win(path):
 
 def _realpath_ipy_posix(path):
     args = 'readlink -f "{}"'.format(path)
-    process = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(
+        args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     output, _error = process.communicate()
     return output
 
@@ -306,18 +315,24 @@ _os_symlink = None
 
 def _polyfill_symlinks(symlinks, raise_on_error):
     """Create multiple symlinks using the polyfill implementation."""
-    _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
+    _handle, temp_path = tempfile.mkstemp(suffix=".cmd", text=True)
 
-    with open(temp_path, 'w') as mklink_cmd:
-        mklink_cmd.write('@echo off\n')
-        mklink_cmd.write('SET /A symlink_result=0\n')
-        mklink_cmd.write('ECHO ret=%symlink_result%\n')
+    with open(temp_path, "w") as mklink_cmd:
+        mklink_cmd.write("@echo off\n")
+        mklink_cmd.write("SET /A symlink_result=0\n")
+        mklink_cmd.write("ECHO ret=%symlink_result%\n")
         for i, (source, link_name) in enumerate(symlinks):
-            dir_symlink_arg = '/D' if os.path.isdir(source) else ''
-            mklink_cmd.write("mklink {} {}\n".format(dir_symlink_arg, subprocess.list2cmdline([link_name, source])))
-            mklink_cmd.write('IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} \n'.format(2 ** i))
+            dir_symlink_arg = "/D" if os.path.isdir(source) else ""
+            mklink_cmd.write(
+                "mklink {} {}\n".format(
+                    dir_symlink_arg, subprocess.list2cmdline([link_name, source])
+                )
+            )
+            mklink_cmd.write(
+                "IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} \n".format(2**i)
+            )
 
-        mklink_cmd.write('EXIT /B %symlink_result%\n')
+        mklink_cmd.write("EXIT /B %symlink_result%\n")
 
     ret_value = _run_as_admin([temp_path])
 
@@ -327,7 +342,7 @@ def _polyfill_symlinks(symlinks, raise_on_error):
 
     result = []
     for i in range(len(symlinks)):
-        success = ret_value & 2 ** i != 0
+        success = ret_value & 2**i != 0
         result.append(success)
 
     return result
@@ -360,7 +375,7 @@ def _get_symlink_function():
     allow_polyfill_retry = False
 
     if not _os_symlink:
-        if getattr(os, 'symlink', None):
+        if getattr(os, "symlink", None):
             _os_symlink = _native_symlinks
 
         if is_windows():
@@ -431,7 +446,7 @@ def remove_symlink(symlink):
             if not is_windows():
                 raise
 
-            _run_command_as_admin('rmdir', [symlink])
+            _run_command_as_admin("rmdir", [symlink])
     else:
         os.unlink(symlink)
 
@@ -476,7 +491,7 @@ def rename(src, dst):
         if not is_windows():
             raise
 
-        _run_command_as_admin('move', [src, dst])
+        _run_command_as_admin("move", [src, dst])
 
 
 def remove(path):
@@ -487,7 +502,7 @@ def remove(path):
         if not is_windows():
             raise
 
-        _run_command_as_admin('del', [path])
+        _run_command_as_admin("del", [path])
 
 
 def copy(src, dst):
@@ -498,7 +513,7 @@ def copy(src, dst):
         if not is_windows():
             raise
 
-        _run_command_as_admin('copy', [src, dst])
+        _run_command_as_admin("copy", [src, dst])
 
 
 def is_admin():
@@ -528,11 +543,13 @@ def _run_command_as_admin(command, arguments):
     arguments : list[str]
         List of arguments.
     """
-    _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
+    _handle, temp_path = tempfile.mkstemp(suffix=".cmd", text=True)
 
-    with open(temp_path, 'w') as remove_symlink_cmd:
-        remove_symlink_cmd.write('@echo off\n')
-        remove_symlink_cmd.write('{} {}\n'.format(command, subprocess.list2cmdline(arguments)))
+    with open(temp_path, "w") as remove_symlink_cmd:
+        remove_symlink_cmd.write("@echo off\n")
+        remove_symlink_cmd.write(
+            "{} {}\n".format(command, subprocess.list2cmdline(arguments))
+        )
 
     _run_as_admin([temp_path])
 
@@ -552,16 +569,17 @@ def _run_as_admin(command):
     """
 
     if not is_windows():
-        raise RuntimeError('Only supported on Windows')
+        raise RuntimeError("Only supported on Windows")
 
     command_file, command_args = command[0], command[1:]
 
     params = ShellExecuteInfo(
         nShow=int(False),
         fMask=SEE_MASK_NOCLOSEPROCESS | SEE_MASK_NO_CONSOLE,
-        lpVerb=b'runas',
-        lpFile=command_file.encode('cp1252'),
-        lpParameters=subprocess.list2cmdline(command_args).encode('cp1252'))
+        lpVerb=b"runas",
+        lpFile=command_file.encode("cp1252"),
+        lpParameters=subprocess.list2cmdline(command_args).encode("cp1252"),
+    )
 
     if not ctypes.windll.shell32.ShellExecuteExA(ctypes.byref(params)):
         raise RuntimeError('Failed to run command "%s" as admin', command_file)
@@ -570,8 +588,11 @@ def _run_as_admin(command):
     ctypes.windll.kernel32.WaitForSingleObject(process_handle, INFINITE)
 
     ret = ctypes.wintypes.DWORD()
-    if ctypes.windll.kernel32.GetExitCodeProcess(process_handle, ctypes.byref(ret)) == 0:
-        raise RuntimeError('Failed to retrieve exit code')
+    if (
+        ctypes.windll.kernel32.GetExitCodeProcess(process_handle, ctypes.byref(ret))
+        == 0
+    ):
+        raise RuntimeError("Failed to retrieve exit code")
 
     return ret.value
 
@@ -627,18 +648,18 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
                 path = os.path.join(path, appname)
 
     elif is_osx():
-        path = os.path.expanduser('~/Library/Application Support/')
+        path = os.path.expanduser("~/Library/Application Support/")
         if appname:
             path = os.path.join(path, appname)
 
     elif is_mono():
-        path = os.path.expanduser('~/Library/Application Support/')
+        path = os.path.expanduser("~/Library/Application Support/")
         if appname:
             path = os.path.join(path, appname)
 
     else:
         # is_linux()
-        path = os.getenv('XDG_DATA_HOME', os.path.expanduser("~/.local/share"))
+        path = os.getenv("XDG_DATA_HOME", os.path.expanduser("~/.local/share"))
         if appname:
             path = os.path.join(path, appname)
 
@@ -666,7 +687,7 @@ def _get_win_folder_from_registry(csidl_name):
 
     key = _winreg.OpenKey(
         _winreg.HKEY_CURRENT_USER,
-        r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
+        r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders",
     )
     dir, type = _winreg.QueryValueEx(key, shell_folder_name)
     return dir
@@ -674,6 +695,7 @@ def _get_win_folder_from_registry(csidl_name):
 
 def _get_win_folder_with_pywin32(csidl_name):
     from win32com.shell import shellcon, shell
+
     dir = shell.SHGetFolderPath(0, getattr(shellcon, csidl_name), 0, 0)
     # Try to make this a unicode path because SHGetFolderPath does
     # not return unicode strings when there is unicode data in the
@@ -691,6 +713,7 @@ def _get_win_folder_with_pywin32(csidl_name):
         if has_high_char:
             try:
                 import win32api
+
                 dir = win32api.GetShortPathName(dir)
             except ImportError:
                 pass
@@ -727,10 +750,12 @@ def _get_win_folder_with_ctypes(csidl_name):
 if is_windows():
     try:
         import win32com.shell  # noqa: F401
+
         _get_win_folder = _get_win_folder_with_pywin32
     except ImportError:
         try:
             from ctypes import windll  # noqa: F401
+
             _get_win_folder = _get_win_folder_with_ctypes
         except ImportError:
             _get_win_folder = _get_win_folder_from_registry

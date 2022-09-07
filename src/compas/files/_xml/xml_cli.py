@@ -46,15 +46,16 @@ from compas.files._xml.xml_shared import shared_xml_from_file
 from compas.files._xml.xml_shared import shared_xml_from_string
 
 __all__ = [
-    'xml_from_file',
-    'xml_from_string',
-    'prettify_string',
+    "xml_from_file",
+    "xml_from_string",
+    "prettify_string",
 ]
 
 
 if compas.IPY:
     import clr
-    clr.AddReference('System.Xml')
+
+    clr.AddReference("System.Xml")
 
     from System.IO import MemoryStream
     from System.IO import StreamReader
@@ -71,8 +72,7 @@ if compas.IPY:
     from System.Xml import XmlReaderSettings
     from System.Xml import XmlTextWriter
 
-    CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
-                         RegexOptions.Compiled)
+    CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]", RegexOptions.Compiled)
 
 
 def prettify_string(rough_string):
@@ -134,7 +134,7 @@ class CLRXMLTreeParser(ET.XMLParser):
 
     def __init__(self, target=None, validating=False):
         if not compas.IPY:
-            raise Exception('CLRXMLTreeParser can only be used from IronPython')
+            raise Exception("CLRXMLTreeParser can only be used from IronPython")
 
         settings = XmlReaderSettings()
         settings.IgnoreComments = True
@@ -142,14 +142,14 @@ class CLRXMLTreeParser(ET.XMLParser):
         settings.IgnoreWhitespace = True
         if not validating:
             settings.DtdProcessing = DtdProcessing.Ignore
-            settings.ValidationType = getattr(ValidationType, 'None')
+            settings.ValidationType = getattr(ValidationType, "None")
         else:
             settings.DtdProcessing = DtdProcessing.Parse
             settings.ValidationType = ValidationType.DTD
         self.settings = settings
         self._target = target or ET.TreeBuilder()
         self._buffer = []
-        self._document_encoding = 'UTF-8'  # default
+        self._document_encoding = "UTF-8"  # default
 
     def feed(self, data):
         """Add more XML data to be parsed.
@@ -196,11 +196,11 @@ class CLRXMLTreeParser(ET.XMLParser):
         if not reader.NamespaceURI:
             return reader.LocalName
 
-        return '{{{}}}{}'.format(reader.NamespaceURI, reader.LocalName)
+        return "{{{}}}{}".format(reader.NamespaceURI, reader.LocalName)
 
     def _parse_xml_declaration(self, xml_decl):
         """Parse the document encoding from XML declaration."""
-        enc_name = CRE_ENCODING.Match(xml_decl).Groups['enc_name'].Value
+        enc_name = CRE_ENCODING.Match(xml_decl).Groups["enc_name"].Value
 
         if enc_name:
             self._document_encoding = enc_name

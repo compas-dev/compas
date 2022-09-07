@@ -16,14 +16,14 @@ except AttributeError:
 
 
 __all__ = [
-    'create_layers_from_path',
-    'create_layers_from_paths',
-    'create_layers_from_dict',
-    'create_layers',
-    'clear_layer',
-    'clear_current_layer',
-    'clear_layers',
-    'delete_layers',
+    "create_layers_from_path",
+    "create_layers_from_paths",
+    "create_layers_from_dict",
+    "create_layers",
+    "clear_layer",
+    "clear_current_layer",
+    "clear_layers",
+    "delete_layers",
 ]
 
 
@@ -33,7 +33,9 @@ __all__ = [
 
 
 def show_hidden_objects_on_layer(name):
-    rs.ShowObjects([guid for guid in rs.HiddenObjects() if rs.ObjectLayer(guid) == name])
+    rs.ShowObjects(
+        [guid for guid in rs.HiddenObjects() if rs.ObjectLayer(guid) == name]
+    )
 
 
 def find_objects_on_layer(name, include_hidden=True, include_children=True):
@@ -52,7 +54,9 @@ def find_objects_on_layer(name, include_hidden=True, include_children=True):
     return to_delete
 
 
-def delete_objects_on_layer(name, include_hidden=True, include_children=False, purge=True):
+def delete_objects_on_layer(
+    name, include_hidden=True, include_children=False, purge=True
+):
     guids = find_objects_on_layer(name, include_hidden, include_children)
     if purge and purge_object:
         rs.EnableRedraw(False)
@@ -70,7 +74,8 @@ def delete_objects_on_layer(name, include_hidden=True, include_children=False, p
 # create
 # ==============================================================================
 
-def create_layers_from_path(path, separator='::'):
+
+def create_layers_from_path(path, separator="::"):
     """Create a nested layer structure from a hierarchical path string.
 
     Parameters
@@ -108,7 +113,7 @@ def create_layers_from_path(path, separator='::'):
         parent = name
 
 
-def create_layers_from_paths(names, separator='::'):
+def create_layers_from_paths(names, separator="::"):
     """Create nested layers from a lst of hierarchical path strings.
 
     Parameters
@@ -180,25 +185,27 @@ def create_layers_from_dict(layers):
         create_layers_from_dict(layers)
 
     """
+
     def recurse(layers, parent=None):
         for name in layers:
             if not name:
                 continue
             fullname = name
             if parent:
-                fullname = parent + '::' + name
+                fullname = parent + "::" + name
             try:
                 attr = layers[name]
             except TypeError:
                 attr = {}
             attr = attr or {}
-            color = attr.get('color', (0, 0, 0))
-            visible = attr.get('visible', True)
-            locked = attr.get('locked', False)
+            color = attr.get("color", (0, 0, 0))
+            visible = attr.get("visible", True)
+            locked = attr.get("locked", False)
             if not rs.IsLayer(fullname):
                 rs.AddLayer(fullname, color, visible, locked)
-            if 'layers' in attr:
-                recurse(attr['layers'], fullname)
+            if "layers" in attr:
+                recurse(attr["layers"], fullname)
+
     rs.EnableRedraw(False)
     recurse(layers)
     rs.EnableRedraw(True)
@@ -210,6 +217,7 @@ create_layers = create_layers_from_dict
 # ==============================================================================
 # clear
 # ==============================================================================
+
 
 def clear_layer(name, include_hidden=True, include_children=True, purge=True):
     """Delete all objects of a layer.
@@ -296,6 +304,7 @@ def clear_layers(layers, include_children=True, include_hidden=True, purge=True)
 # delete
 # ==============================================================================
 
+
 def delete_layers(layers):
     """Delete layers and all contained objects.
 
@@ -330,13 +339,13 @@ def delete_layers(layers):
                 continue
             fullname = name
             if parent:
-                fullname = parent + '::' + name
+                fullname = parent + "::" + name
             try:
                 attr = layers[name]
             except TypeError:
                 attr = {}
-            if 'layers' in attr:
-                recurse(attr['layers'], fullname)
+            if "layers" in attr:
+                recurse(attr["layers"], fullname)
             to_delete.append(fullname)
 
     rs.EnableRedraw(False)

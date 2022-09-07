@@ -4,7 +4,7 @@ from __future__ import division
 
 
 __all__ = [
-    'network_split_edge',
+    "network_split_edge",
 ]
 
 
@@ -37,9 +37,9 @@ def network_split_edge(network, u, v, t=0.5):
         return
 
     if t <= 0.0:
-        raise ValueError('t should be greater than 0.0.')
+        raise ValueError("t should be greater than 0.0.")
     if t >= 1.0:
-        raise ValueError('t should be smaller than 1.0.')
+        raise ValueError("t should be smaller than 1.0.")
 
     # the split node
     x, y, z = network.edge_point(u, v, t)

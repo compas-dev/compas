@@ -16,7 +16,7 @@ from compas.artists import NetworkArtist
 from compas.colors import Color
 from .artist import BlenderArtist
 
-colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
+colordict = partial(color_to_colordict, colorformat="rgb", normalize=True)
 
 
 class NetworkArtist(BlenderArtist, NetworkArtist):
@@ -70,35 +70,47 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
 
     """
 
-    def __init__(self,
-                 network: Network,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        network: Network,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any,
+    ):
 
-        super().__init__(network=network, collection=collection or network.name, **kwargs)
+        super().__init__(
+            network=network, collection=collection or network.name, **kwargs
+        )
 
     @property
     def nodecollection(self) -> bpy.types.Collection:
         if not self._nodecollection:
-            self._nodecollection = compas_blender.create_collection('Nodes', parent=self.collection)
+            self._nodecollection = compas_blender.create_collection(
+                "Nodes", parent=self.collection
+            )
         return self._nodecollection
 
     @property
     def edgecollection(self) -> bpy.types.Collection:
         if not self._edgecollection:
-            self._edgecollection = compas_blender.create_collection('Edges', parent=self.collection)
+            self._edgecollection = compas_blender.create_collection(
+                "Edges", parent=self.collection
+            )
         return self._edgecollection
 
     @property
     def nodelabelcollection(self) -> bpy.types.Collection:
         if not self._nodelabelcollection:
-            self._nodelabelcollection = compas_blender.create_collection('NodeLabels', parent=self.collection)
+            self._nodelabelcollection = compas_blender.create_collection(
+                "NodeLabels", parent=self.collection
+            )
         return self._nodelabelcollection
 
     @property
     def edgelabelcollection(self) -> bpy.types.Collection:
         if not self._edgelabelcollection:
-            self._edgelabelcollection = compas_blender.create_collection('EdgeLabels', parent=self.collection)
+            self._edgelabelcollection = compas_blender.create_collection(
+                "EdgeLabels", parent=self.collection
+            )
         return self._edgelabelcollection
 
     # ==========================================================================
@@ -149,12 +161,13 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
     # draw
     # ==========================================================================
 
-    def draw(self,
-             nodes: Optional[List[int]] = None,
-             edges: Optional[Tuple[int, int]] = None,
-             nodecolor: Optional[Union[str, Color, Dict[int, Color]]] = None,
-             edgecolor: Optional[Union[str, Color, Dict[int, Color]]] = None
-             ) -> None:
+    def draw(
+        self,
+        nodes: Optional[List[int]] = None,
+        edges: Optional[Tuple[int, int]] = None,
+        nodecolor: Optional[Union[str, Color, Dict[int, Color]]] = None,
+        edgecolor: Optional[Union[str, Color, Dict[int, Color]]] = None,
+    ) -> None:
         """Draw the network.
 
         Parameters
@@ -181,10 +194,11 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         if self.show_edges:
             self.draw_edges(edges=edges, color=edgecolor)
 
-    def draw_nodes(self,
-                   nodes: Optional[List[int]] = None,
-                   color: Optional[Union[Color, Dict[int, Color]]] = None
-                   ) -> List[bpy.types.Object]:
+    def draw_nodes(
+        self,
+        nodes: Optional[List[int]] = None,
+        color: Optional[Union[Color, Dict[int, Color]]] = None,
+    ) -> List[bpy.types.Object]:
         """Draw a selection of nodes.
 
         Parameters
@@ -205,18 +219,21 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         nodes = nodes or self.nodes
         points = []
         for node in nodes:
-            points.append({
-                'pos': self.node_xyz[node],
-                'name': f"{self.network.name}.node.{node}",
-                'color': self.node_color[node],
-                'radius': 0.05
-            })
+            points.append(
+                {
+                    "pos": self.node_xyz[node],
+                    "name": f"{self.network.name}.node.{node}",
+                    "color": self.node_color[node],
+                    "radius": 0.05,
+                }
+            )
         return compas_blender.draw_points(points, self.nodecollection)
 
-    def draw_edges(self,
-                   edges: Optional[Tuple[int, int]] = None,
-                   color: Optional[Union[Color, Dict[int, Color]]] = None
-                   ) -> List[bpy.types.Object]:
+    def draw_edges(
+        self,
+        edges: Optional[Tuple[int, int]] = None,
+        color: Optional[Union[Color, Dict[int, Color]]] = None,
+    ) -> List[bpy.types.Object]:
         """Draw a selection of edges.
 
         Parameters
@@ -238,18 +255,20 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         lines = []
         for edge in edges:
             u, v = edge
-            lines.append({
-                'start': self.node_xyz[u],
-                'end': self.node_xyz[v],
-                'color': self.edge_color[edge],
-                'name': f"{self.network.name}.edge.{u}-{v}",
-                'width': self.edge_width[edge]
-            })
+            lines.append(
+                {
+                    "start": self.node_xyz[u],
+                    "end": self.node_xyz[v],
+                    "color": self.edge_color[edge],
+                    "name": f"{self.network.name}.edge.{u}-{v}",
+                    "width": self.edge_width[edge],
+                }
+            )
         return compas_blender.draw_lines(lines, self.edgecollection)
 
-    def draw_nodelabels(self,
-                        text: Optional[Dict[int, str]] = None
-                        ) -> List[bpy.types.Object]:
+    def draw_nodelabels(
+        self, text: Optional[Dict[int, str]] = None
+    ) -> List[bpy.types.Object]:
         """Draw labels for a selection nodes.
 
         Parameters
@@ -266,17 +285,19 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         self.node_text = text
         labels = []
         for node in self.node_text:
-            labels.append({
-                'pos': self.node_xyz[node],
-                'name': f"{self.network.name}.nodelabel.{node}",
-                'text': self.node_text[node],
-                'color': self.node_color[node]
-            })
+            labels.append(
+                {
+                    "pos": self.node_xyz[node],
+                    "name": f"{self.network.name}.nodelabel.{node}",
+                    "text": self.node_text[node],
+                    "color": self.node_color[node],
+                }
+            )
         return compas_blender.draw_texts(labels, collection=self.nodelabelcollection)
 
-    def draw_edgelabels(self,
-                        text: Optional[Dict[Tuple[int, int], str]] = None
-                        ) -> List[bpy.types.Object]:
+    def draw_edgelabels(
+        self, text: Optional[Dict[Tuple[int, int], str]] = None
+    ) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters
@@ -294,10 +315,12 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         labels = []
         for edge in self.edge_text:
             u, v = edge
-            labels.append({
-                'pos': centroid_points([self.node_xyz[u], self.node_xyz[v]]),
-                'name': f"{self.network.name}.edgelabel.{u}-{v}",
-                'text': self.edge_text[edge],
-                'color': self.edge_color[edge]
-            })
+            labels.append(
+                {
+                    "pos": centroid_points([self.node_xyz[u], self.node_xyz[v]]),
+                    "name": f"{self.network.name}.edgelabel.{u}-{v}",
+                    "text": self.edge_text[edge],
+                    "color": self.edge_color[edge],
+                }
+            )
         return compas_blender.draw_texts(labels, collection=self.edgelabelcollection)

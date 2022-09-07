@@ -147,7 +147,9 @@ class GLTFNode(object):
         if self._matrix:
             raise Exception("Cannot set translation when matrix is set.")
         if not isinstance(value, list) or len(value) != 3:
-            raise Exception("Invalid translation. Translations are expected to be of the form [x, y, z].")
+            raise Exception(
+                "Invalid translation. Translations are expected to be of the form [x, y, z]."
+            )
         self._translation = value
 
     @property
@@ -161,8 +163,15 @@ class GLTFNode(object):
             return
         if self._matrix:
             raise Exception("Cannot set rotation when matrix is set.")
-        if not isinstance(value, list) or len(value) != 4 or fabs(sum([q**2 for q in value]) - 1) > 1e-03:
-            raise Exception("Invalid rotation.  Rotations are expected to be given as " "unit quaternions of the form [q1, q2, q3, q4]")
+        if (
+            not isinstance(value, list)
+            or len(value) != 4
+            or fabs(sum([q**2 for q in value]) - 1) > 1e-03
+        ):
+            raise Exception(
+                "Invalid rotation.  Rotations are expected to be given as "
+                "unit quaternions of the form [q1, q2, q3, q4]"
+            )
         self._rotation = value
 
     @property
@@ -177,7 +186,9 @@ class GLTFNode(object):
         if self._matrix:
             raise Exception("Cannot set scale when matrix is set.")
         if not isinstance(value, list) or len(value) != 3:
-            raise Exception("Invalid scale.  Scales are expected to be of the form [s1, s2, s3]")
+            raise Exception(
+                "Invalid scale.  Scales are expected to be of the form [s1, s2, s3]"
+            )
         self._scale = value
 
     @property
@@ -192,14 +203,22 @@ class GLTFNode(object):
             self._matrix = value
             return
         if self.translation or self.rotation or self.scale:
-            raise Exception("Cannot set matrix when translation, rotation or scale is set.")
-        if not isinstance(value, list) or not value or not value[0] or not isinstance(value[0], list):
+            raise Exception(
+                "Cannot set matrix when translation, rotation or scale is set."
+            )
+        if (
+            not isinstance(value, list)
+            or not value
+            or not value[0]
+            or not isinstance(value[0], list)
+        ):
             raise Exception("Invalid matrix. A list of lists is expected.")
         if len(value) != 4 or len(value[0]) != 4:
             raise Exception("Invalid matrix. A 4x4 matrix is expected.")
         if value[3] != [0, 0, 0, 1]:
             raise Exception(
-                "Invalid matrix.  A matrix without shear or skew is expected.  It must be of " "the form TRS, where T is a translation, R is a rotation and S is a scaling."
+                "Invalid matrix.  A matrix without shear or skew is expected.  It must be of "
+                "the form TRS, where T is a translation, R is a rotation and S is a scaling."
             )
         self._matrix = value
 
@@ -265,7 +284,13 @@ class GLTFNode(object):
         """
         return self.context.add_mesh_to_node(self, mesh)
 
-    def to_data(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
+    def to_data(
+        self,
+        node_index_by_key,
+        mesh_index_by_key,
+        camera_index_by_key,
+        skin_index_by_key,
+    ):
         """Returns a JSONable dictionary object in accordance with glTF specifications.
 
         Parameters
@@ -334,7 +359,9 @@ class GLTFNode(object):
         gltf_node.translation = node.get("translation")
         gltf_node.rotation = node.get("rotation")
         gltf_node.scale = node.get("scale")
-        gltf_node.matrix = get_matrix_from_col_major_list(node["matrix"]) if "matrix" in node else None
+        gltf_node.matrix = (
+            get_matrix_from_col_major_list(node["matrix"]) if "matrix" in node else None
+        )
         gltf_node.weights = node.get("weights")
         gltf_node.mesh_key = node.get("mesh")
         gltf_node.camera = node.get("camera")

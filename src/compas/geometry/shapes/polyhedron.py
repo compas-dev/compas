@@ -24,17 +24,19 @@ def tetrahedron():
 
 
 def hexahedron():
-    faces = [[0, 3, 2, 1],
-             [0, 1, 7, 6],
-             [0, 6, 5, 3],
-             [4, 2, 3, 5],
-             [4, 7, 1, 2],
-             [4, 5, 6, 7]]
+    faces = [
+        [0, 3, 2, 1],
+        [0, 1, 7, 6],
+        [0, 6, 5, 3],
+        [4, 2, 3, 5],
+        [4, 7, 1, 2],
+        [4, 5, 6, 7],
+    ]
     vertices = []
-    L = 1.
-    r = L * sqrt(3) / 2.
-    c = 1. / r
-    for i in -1., +1.:
+    L = 1.0
+    r = L * sqrt(3) / 2.0
+    c = 1.0 / r
+    for i in -1.0, +1.0:
         i *= c
         vertices.append([+i, +i, +i])
         vertices.append([-i, +i, +i])
@@ -44,44 +46,48 @@ def hexahedron():
 
 
 def octahedron():
-    faces = [[0, 1, 5],
-             [1, 3, 5],
-             [3, 4, 5],
-             [0, 5, 4],
-             [0, 2, 1],
-             [1, 2, 3],
-             [3, 2, 4],
-             [0, 4, 2]]
+    faces = [
+        [0, 1, 5],
+        [1, 3, 5],
+        [3, 4, 5],
+        [0, 5, 4],
+        [0, 2, 1],
+        [1, 2, 3],
+        [3, 2, 4],
+        [0, 4, 2],
+    ]
     vertices = []
     L = sqrt(2)
-    r = L * sqrt(2) / 2.
-    c = 1. / r
-    for i in -1., +1.:
+    r = L * sqrt(2) / 2.0
+    c = 1.0 / r
+    for i in -1.0, +1.0:
         i *= c
-        vertices.append([i, 0., 0.])
-        vertices.append([0., i, 0.])
-        vertices.append([0., 0., i])
+        vertices.append([i, 0.0, 0.0])
+        vertices.append([0.0, i, 0.0])
+        vertices.append([0.0, 0.0, i])
     return vertices, faces
 
 
 def dodecahedron():
     phi = 0.5 * (1 + sqrt(5))
     vertices = []
-    faces = [[0,  13,  11, 1,  3],
-             [0,   3,  2,  8, 10],
-             [0,  10, 18, 12, 13],
-             [1,   4,  7,  2,  3],
-             [1,  11, 14,  5,  4],
-             [2,   7,  9,  6,  8],
-             [5,  15,  9,  7,  4],
-             [5,  14, 17, 19, 15],
-             [6,  16, 18, 10,  8],
-             [6,   9, 15, 19, 16],
-             [12, 17, 14, 11, 13],
-             [12, 18, 16, 19, 17]]
-    L = 2. / phi
-    r = L * phi * sqrt(3) / 2.
-    c = 1. / r
+    faces = [
+        [0, 13, 11, 1, 3],
+        [0, 3, 2, 8, 10],
+        [0, 10, 18, 12, 13],
+        [1, 4, 7, 2, 3],
+        [1, 11, 14, 5, 4],
+        [2, 7, 9, 6, 8],
+        [5, 15, 9, 7, 4],
+        [5, 14, 17, 19, 15],
+        [6, 16, 18, 10, 8],
+        [6, 9, 15, 19, 16],
+        [12, 17, 14, 11, 13],
+        [12, 18, 16, 19, 17],
+    ]
+    L = 2.0 / phi
+    r = L * phi * sqrt(3) / 2.0
+    c = 1.0 / r
     for i in -1, +1:
         i *= c
         for j in -1, +1:
@@ -91,23 +97,21 @@ def dodecahedron():
             vertices.append([i * phi, 0, j / phi])
             for k in -1, +1:
                 k *= c
-                vertices.append([i * 1., j * 1., k * 1.])
+                vertices.append([i * 1.0, j * 1.0, k * 1.0])
     return vertices, faces
 
 
 def icosahedron():
-    phi = (1 + sqrt(5)) / 2.
+    phi = (1 + sqrt(5)) / 2.0
     vertices = [
         (-1, phi, 0),
         (1, phi, 0),
         (-1, -phi, 0),
         (1, -phi, 0),
-
         (0, -1, phi),
         (0, 1, phi),
         (0, -1, -phi),
         (0, 1, -phi),
-
         (phi, 0, -1),
         (phi, 0, 1),
         (-phi, 0, -1),
@@ -115,13 +119,29 @@ def icosahedron():
     ]
     faces = [
         # 5 faces around point 0
-        [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+        [0, 11, 5],
+        [0, 5, 1],
+        [0, 1, 7],
+        [0, 7, 10],
+        [0, 10, 11],
         # Adjacent faces
-        [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+        [1, 5, 9],
+        [5, 11, 4],
+        [11, 10, 2],
+        [10, 7, 6],
+        [7, 1, 8],
         # 5 faces around 3
-        [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+        [3, 9, 4],
+        [3, 4, 2],
+        [3, 2, 6],
+        [3, 6, 8],
+        [3, 8, 9],
         # Adjacent faces
-        [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
+        [4, 9, 5],
+        [2, 4, 11],
+        [6, 2, 10],
+        [8, 6, 7],
+        [9, 8, 1],
     ]
     return vertices, faces
 
@@ -147,7 +167,7 @@ class Polyhedron(Shape):
 
     """
 
-    __slots__ = ['_vertices', '_faces']
+    __slots__ = ["_vertices", "_faces"]
 
     def __init__(self, vertices, faces, **kwargs):
         super(Polyhedron, self).__init__(**kwargs)
@@ -165,26 +185,28 @@ class Polyhedron(Shape):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         from compas.data import is_float3, is_sequence_of_int
-        return schema.Schema({
-            'vertices': lambda items: all(is_float3(item) for item in items),
-            'faces': lambda items: all(is_sequence_of_int(item) for item in items)
-        })
+
+        return schema.Schema(
+            {
+                "vertices": lambda items: all(is_float3(item) for item in items),
+                "faces": lambda items: all(is_sequence_of_int(item) for item in items),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'polyhedron'
+        return "polyhedron"
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the polyhedron.
-        """
-        return {'vertices': self.vertices, 'faces': self.faces}
+        """dict : Returns the data dictionary that represents the polyhedron."""
+        return {"vertices": self.vertices, "faces": self.faces}
 
     @data.setter
     def data(self, data):
-        self.vertices = data['vertices']
-        self.faces = data['faces']
+        self.vertices = data["vertices"]
+        self.faces = data["faces"]
 
     @classmethod
     def from_data(cls, data):
@@ -207,7 +229,7 @@ class Polyhedron(Shape):
         >>> q = Polyhedron.from_data(p.data)
 
         """
-        return cls(data['vertices'], data['faces'])
+        return cls(data["vertices"], data["faces"])
 
     # ==========================================================================
     # properties
@@ -244,7 +266,9 @@ class Polyhedron(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return '<Polyhedron with {} vertices and {} faces>'.format(len(self.vertices), len(self.faces))
+        return "<Polyhedron with {} vertices and {} faces>".format(
+            len(self.vertices), len(self.faces)
+        )
 
     def __len__(self):
         return 2
@@ -306,7 +330,9 @@ class Polyhedron(Shape):
         elif f == 20:
             vertices, faces = icosahedron()
         else:
-            raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
+            raise ValueError(
+                "The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20."
+            )
         solid = cls(vertices, faces)
         return solid
 
@@ -347,11 +373,14 @@ class Polyhedron(Shape):
         from scipy.spatial import HalfspaceIntersection, ConvexHull
         from compas.datastructures import Mesh, mesh_merge_faces
         from compas.geometry import length_vector, dot_vectors, cross_vectors
+
         halfspaces = asarray(halfspaces, dtype=float)
         interior_point = asarray(interior_point, dtype=float)
         hsi = HalfspaceIntersection(halfspaces, interior_point)
         hull = ConvexHull(hsi.intersections)
-        mesh = Mesh.from_vertices_and_faces([hsi.intersections[i] for i in hull.vertices], hull.simplices)
+        mesh = Mesh.from_vertices_and_faces(
+            [hsi.intersections[i] for i in hull.vertices], hull.simplices
+        )
         mesh.unify_cycles()
         to_merge = []
         for a, b in combinations(mesh.faces(), 2):
@@ -391,6 +420,7 @@ class Polyhedron(Shape):
         """
         from compas.geometry import Plane
         from compas.geometry import centroid_points
+
         planes = [Plane(point, normal) for point, normal in planes]
         interior = centroid_points([plane.point for plane in planes])
         return cls.from_halfspaces([plane.abcd for plane in planes], interior)
@@ -444,6 +474,7 @@ class Polyhedron(Shape):
 
         """
         from compas.datastructures import Mesh
+
         mesh = Mesh.from_vertices_and_faces(self.vertices, self.faces)
         return mesh.is_closed()
 

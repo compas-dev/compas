@@ -9,8 +9,8 @@ from compas.geometry import cross_vectors_xy
 
 
 __all__ = [
-    'convex_hull',
-    'convex_hull_xy',
+    "convex_hull",
+    "convex_hull_xy",
 ]
 
 
@@ -46,6 +46,7 @@ def convex_hull(points):
     >>>
 
     """
+
     def _normal_face(face):
         u = subtract_vectors(points[face[1]], points[face[0]])
         v = subtract_vectors(points[face[-1]], points[face[0]])
@@ -54,11 +55,15 @@ def convex_hull(points):
     def _seen(face, p):
         normal = _normal_face(face)
         vec = subtract_vectors(points[p], points[face[0]])
-        return (dot_vectors(normal, vec) >= 0)
+        return dot_vectors(normal, vec) >= 0
 
     def _bdry(faces):
-        bdry_fw = set([(face[i - 1], face[i]) for face in faces for i in range(len(face))])
-        bdry_bk = set([(face[i], face[i - 1]) for face in faces for i in range(len(face))])
+        bdry_fw = set(
+            [(face[i - 1], face[i]) for face in faces for i in range(len(face))]
+        )
+        bdry_bk = set(
+            [(face[i], face[i - 1]) for face in faces for i in range(len(face))]
+        )
         return bdry_fw - bdry_bk
 
     def _add_point(hull, p):
@@ -67,7 +72,11 @@ def convex_hull(points):
         if len(seen_faces) == len(hull):
             # if can see all faces, unsee ones looking "down"
             normal = _normal_face(seen_faces[0])
-            seen_faces = [face for face in seen_faces if dot_vectors(_normal_face(face), normal) > 0]
+            seen_faces = [
+                face
+                for face in seen_faces
+                if dot_vectors(_normal_face(face), normal) > 0
+            ]
 
         for face in seen_faces:
             hull.remove(face)
@@ -110,6 +119,7 @@ def convex_hull_xy(points, strict=False):
     >>>
 
     """
+
     def cross(o, a, b):
         u = subtract_vectors(a, o)
         v = subtract_vectors(b, o)

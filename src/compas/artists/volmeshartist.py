@@ -70,29 +70,31 @@ class VolMeshArtist(Artist):
 
     """
 
-    color = Color.from_hex('#0092D2').lightened(50)
+    color = Color.from_hex("#0092D2").lightened(50)
 
-    default_vertexcolor = Color.from_hex('#0092D2')
-    default_edgecolor = Color.from_hex('#0092D2')
-    default_facecolor = Color.from_hex('#0092D2').lightened(50)
-    default_cellcolor = Color.from_hex('#0092D2').lightened(50)
+    default_vertexcolor = Color.from_hex("#0092D2")
+    default_edgecolor = Color.from_hex("#0092D2")
+    default_facecolor = Color.from_hex("#0092D2").lightened(50)
+    default_cellcolor = Color.from_hex("#0092D2").lightened(50)
 
     vertex_color = ColorDict()
     edge_color = ColorDict()
     face_color = ColorDict()
     cell_color = ColorDict()
 
-    def __init__(self,
-                 volmesh,
-                 vertices=None,
-                 edges=None,
-                 faces=None,
-                 cells=None,
-                 vertexcolor=None,
-                 edgecolor=None,
-                 facecolor=None,
-                 cellcolor=None,
-                 **kwargs):
+    def __init__(
+        self,
+        volmesh,
+        vertices=None,
+        edges=None,
+        faces=None,
+        cells=None,
+        vertexcolor=None,
+        edgecolor=None,
+        facecolor=None,
+        cellcolor=None,
+        **kwargs
+    ):
         super(VolMeshArtist, self).__init__()
 
         self._default_vertexcolor = None
@@ -189,7 +191,10 @@ class VolMeshArtist(Artist):
     @property
     def vertex_xyz(self):
         if not self._vertex_xyz:
-            self._vertex_xyz = {vertex: self.volmesh.vertex_attributes(vertex, 'xyz') for vertex in self.volmesh.vertices()}
+            self._vertex_xyz = {
+                vertex: self.volmesh.vertex_attributes(vertex, "xyz")
+                for vertex in self.volmesh.vertices()
+            }
         return self._vertex_xyz
 
     @vertex_xyz.setter
@@ -199,30 +204,43 @@ class VolMeshArtist(Artist):
     @property
     def vertex_text(self):
         if not self._vertex_text:
-            self._vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}
+            self._vertex_text = {
+                vertex: str(vertex) for vertex in self.volmesh.vertices()
+            }
         return self._vertex_text
 
     @vertex_text.setter
     def vertex_text(self, text):
-        if text == 'key':
-            self._vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}
-        elif text == 'index':
-            self._vertex_text = {vertex: str(index) for index, vertex in enumerate(self.volmesh.vertices())}
+        if text == "key":
+            self._vertex_text = {
+                vertex: str(vertex) for vertex in self.volmesh.vertices()
+            }
+        elif text == "index":
+            self._vertex_text = {
+                vertex: str(index)
+                for index, vertex in enumerate(self.volmesh.vertices())
+            }
         elif isinstance(text, dict):
             self._vertex_text = text
 
     @property
     def edge_text(self):
         if not self._edge_text:
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}
+            self._edge_text = {
+                edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()
+            }
         return self._edge_text
 
     @edge_text.setter
     def edge_text(self, text):
-        if text == 'key':
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}
-        elif text == 'index':
-            self._edge_text = {edge: str(index) for index, edge in enumerate(self.volmesh.edges())}
+        if text == "key":
+            self._edge_text = {
+                edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()
+            }
+        elif text == "index":
+            self._edge_text = {
+                edge: str(index) for index, edge in enumerate(self.volmesh.edges())
+            }
         elif isinstance(text, dict):
             self._edge_text = text
 
@@ -234,10 +252,12 @@ class VolMeshArtist(Artist):
 
     @face_text.setter
     def face_text(self, text):
-        if text == 'key':
+        if text == "key":
             self._face_text = {face: str(face) for face in self.volmesh.faces()}
-        elif text == 'index':
-            self._face_text = {face: str(index) for index, face in enumerate(self.volmesh.faces())}
+        elif text == "index":
+            self._face_text = {
+                face: str(index) for index, face in enumerate(self.volmesh.faces())
+            }
         elif isinstance(text, dict):
             self._face_text = text
 
@@ -249,10 +269,12 @@ class VolMeshArtist(Artist):
 
     @cell_text.setter
     def cell_text(self, text):
-        if text == 'key':
+        if text == "key":
             self._cell_text = {cell: str(cell) for cell in self.volmesh.cells()}
-        elif text == 'index':
-            self._cell_text = {cell: str(index) for index, cell in enumerate(self.volmesh.cells())}
+        elif text == "index":
+            self._cell_text = {
+                cell: str(index) for index, cell in enumerate(self.volmesh.cells())
+            }
         elif isinstance(text, dict):
             self._cell_text = text
 

@@ -38,8 +38,7 @@ TOL = sc.doc.ModelAbsoluteTolerance
 
 
 def draw_frame(frame):
-    """Draw a frame.
-    """
+    """Draw a frame."""
     pt = Point3d(*iter(frame.point))
     xaxis = Vector3d(*iter(frame.xaxis))
     yaxis = Vector3d(*iter(frame.yaxis))
@@ -69,7 +68,7 @@ def draw_points(points):
     """
     rg_points = []
     for p in iter(points):
-        pos = p['pos']
+        pos = p["pos"]
         rg_points.append(Point3d(*pos))
     return rg_points
 
@@ -98,8 +97,8 @@ def draw_lines(lines):
     """
     rg_lines = []
     for line in iter(lines):
-        sp = line['start']
-        ep = line['end']
+        sp = line["start"]
+        ep = line["end"]
         rg_lines.append(Line(Point3d(*sp), Point3d(*ep)))
     return rg_lines
 
@@ -129,9 +128,9 @@ def draw_geodesics(geodesics):
     """
     rg_geodesics = []
     for g in iter(geodesics):
-        sp = g['start']
-        ep = g['end']
-        srf = g['srf']
+        sp = g["start"]
+        ep = g["end"]
+        srf = g["srf"]
         curve = srf.ShortPath(Point3d(*sp), Point3d(*ep), TOL)
         rg_geodesics.append(curve)
     return rg_geodesics
@@ -160,7 +159,7 @@ def draw_polylines(polylines):
     """
     rg_polylines = []
     for p in iter(polylines):
-        points = p['points']
+        points = p["points"]
         poly = Polyline([Point3d(*xyz) for xyz in points])
         poly.DeleteShortSegments(TOL)
         rg_polylines.append(poly)
@@ -191,8 +190,8 @@ def draw_faces(faces):
     """
     meshes = []
     for face in iter(faces):
-        points = face['points'][:]
-        vertexcolors = face.get('vertexcolors')
+        points = face["points"][:]
+        vertexcolors = face.get("vertexcolors")
         v = len(points)
         if v < 3:
             continue
@@ -246,9 +245,9 @@ def draw_cylinders(cylinders, cap=False):
     """
     rg_cylinders = []
     for c in iter(cylinders):
-        start = c['start']
-        end = c['end']
-        radius = c['radius']
+        start = c["start"]
+        end = c["end"]
+        radius = c["radius"]
         if radius < TOL:
             continue
         base = Point3d(*start)
@@ -296,8 +295,8 @@ def draw_pipes(pipes, cap=2, fit=1.0):
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
     for p in pipes:
-        points = p['points']
-        radius = p['radius']
+        points = p["points"]
+        radius = p["radius"]
         params = [0.0, 1.0]
         cap = ToObject(PipeCapMode, cap)
         if type(radius) in (int, float):
@@ -305,8 +304,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
         radius = [float(r) for r in radius]
 
         rail = Curve.CreateControlPointCurve([Point3d(*xyz) for xyz in points])
-        breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol,
-                                ang_tol)
+        breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol, ang_tol)
         for brep in breps:
             yield brep
 
@@ -335,13 +333,15 @@ def draw_spheres(spheres):
     """
     rg_sheres = []
     for s in iter(spheres):
-        pos = s['pos']
-        radius = s['radius']
+        pos = s["pos"]
+        radius = s["radius"]
         rg_sheres.append(Sphere(Point3d(*pos), radius))
     return rg_sheres
 
 
-def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordinates=None):
+def draw_mesh(
+    vertices, faces, color=None, vertex_normals=None, texture_coordinates=None
+):
     """Draw mesh in Grasshopper.
 
     Parameters
@@ -423,13 +423,12 @@ def draw_network(network):
     """
     points = []
     for key in network.nodes():
-        points.append({
-            'pos': network.node_coordinates(key)})
+        points.append({"pos": network.node_coordinates(key)})
     lines = []
     for u, v in network.edges():
-        lines.append({
-            'start': network.node_coordinates(u),
-            'end': network.node_coordinates(v)})
+        lines.append(
+            {"start": network.node_coordinates(u), "end": network.node_coordinates(v)}
+        )
     points_rg = draw_points(points)
     lines_rg = draw_lines(lines)
 
@@ -460,7 +459,7 @@ def draw_circles(circles):
     """
     rg_circles = []
     for c in iter(circles):
-        point, normal = c['plane']
-        radius = c['radius']
+        point, normal = c["plane"]
+        radius = c["radius"]
         rg_circles.append(Circle(Plane(Point3d(*point), Vector3d(*normal)), radius))
     return rg_circles

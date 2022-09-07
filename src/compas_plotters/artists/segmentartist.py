@@ -40,14 +40,16 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 line: Line,
-                 draw_points: bool = False,
-                 linewidth: float = 2.0,
-                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 color: Color = (0.0, 0.0, 0.0),
-                 zorder: int = 2000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        line: Line,
+        draw_points: bool = False,
+        linewidth: float = 2.0,
+        linestyle: Literal["solid", "dotted", "dashed", "dashdot"] = "solid",
+        color: Color = (0.0, 0.0, 0.0),
+        zorder: int = 2000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=line, **kwargs)
 
@@ -80,11 +82,14 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
         None
 
         """
-        line2d = Line2D([self.line.start[0], self.line.end[0]], [self.line.start[1], self.line.end[1]],
-                        linewidth=self.linewidth,
-                        linestyle=self.linestyle,
-                        color=self.color,
-                        zorder=self.zorder)
+        line2d = Line2D(
+            [self.line.start[0], self.line.end[0]],
+            [self.line.start[1], self.line.end[1]],
+            linewidth=self.linewidth,
+            linestyle=self.linestyle,
+            color=self.color,
+            zorder=self.zorder,
+        )
         self._mpl_line = self.plotter.axes.add_line(line2d)
         if self.draw_points:
             self._start_artist = self.plotter.add(self.line.start, edgecolor=self.color)

@@ -5,9 +5,7 @@ from __future__ import print_function
 from itertools import combinations
 
 
-__all__ = [
-    'network_complement'
-]
+__all__ = ["network_complement"]
 
 
 def network_complement(network, cls=None):
@@ -46,6 +44,10 @@ def network_complement(network, cls=None):
         cls = type(network)
 
     nodes = [network.node_coordinates(key) for key in network.nodes()]
-    edges = [(u, v) for u, v in combinations(network.nodes(), 2) if not network.has_edge(u, v, directed=False)]
+    edges = [
+        (u, v)
+        for u, v in combinations(network.nodes(), 2)
+        if not network.has_edge(u, v, directed=False)
+    ]
 
     return cls.from_nodes_and_edges(nodes, edges)

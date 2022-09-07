@@ -11,7 +11,7 @@ from compas.utilities import normalize_values
 
 
 __all__ = [
-    'discrete_coons_patch',
+    "discrete_coons_patch",
 ]
 
 
@@ -83,9 +83,13 @@ def discrete_coons_patch(ab, bc, dc, ad):
     for i, ki in enumerate(n_norm):
         for j, kj in enumerate(m_norm):
             # first function: linear interpolation of first two opposite curves
-            lin_interp_ab_dc = add_vectors(scale_vector(ab[i], (1 - kj)), scale_vector(dc[i], kj))
+            lin_interp_ab_dc = add_vectors(
+                scale_vector(ab[i], (1 - kj)), scale_vector(dc[i], kj)
+            )
             # second function: linear interpolation of other two opposite curves
-            lin_interp_bc_ad = add_vectors(scale_vector(ad[j], (1 - ki)), scale_vector(bc[j], ki))
+            lin_interp_bc_ad = add_vectors(
+                scale_vector(ad[j], (1 - ki)), scale_vector(bc[j], ki)
+            )
             # third function: linear interpolation of four corners resulting a hypar
             a = scale_vector(ab[0], (1 - ki) * (1 - kj))
             b = scale_vector(bc[0], ki * (1 - kj))
@@ -93,7 +97,9 @@ def discrete_coons_patch(ab, bc, dc, ad):
             d = scale_vector(ad[-1], (1 - ki) * kj)
             lin_interp_a_b_c_d = sum_vectors([a, b, c, d])
             # coons patch = first + second - third functions
-            array[i][j] = subtract_vectors(add_vectors(lin_interp_ab_dc, lin_interp_bc_ad), lin_interp_a_b_c_d)
+            array[i][j] = subtract_vectors(
+                add_vectors(lin_interp_ab_dc, lin_interp_bc_ad), lin_interp_a_b_c_d
+            )
 
     # create vertex list
     vertices = []
@@ -104,5 +110,7 @@ def discrete_coons_patch(ab, bc, dc, ad):
     faces = []
     for i in range(n - 1):
         for j in range(m - 1):
-            faces.append([i * m + j, i * m + j + 1, (i + 1) * m + j + 1, (i + 1) * m + j])
+            faces.append(
+                [i * m + j, i * m + j + 1, (i + 1) * m + j + 1, (i + 1) * m + j]
+            )
     return vertices, faces

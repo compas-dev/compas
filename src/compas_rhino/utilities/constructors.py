@@ -8,7 +8,7 @@ import Rhino
 import scriptcontext as sc
 
 
-__all__ = ['volmesh_from_polysurfaces']
+__all__ = ["volmesh_from_polysurfaces"]
 
 
 def volmesh_from_polysurfaces(cls, guids, precision=None):

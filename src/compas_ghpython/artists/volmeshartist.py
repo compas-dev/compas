@@ -66,11 +66,13 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         points = []
         for vertex in vertices:
-            points.append({
-                'pos': vertex_xyz[vertex],
-                'name': "{}.vertex.{}".format(self.volmesh.name, vertex),
-                'color': self.vertex_color[vertex].rgb255
-            })
+            points.append(
+                {
+                    "pos": vertex_xyz[vertex],
+                    "name": "{}.vertex.{}".format(self.volmesh.name, vertex),
+                    "color": self.vertex_color[vertex].rgb255,
+                }
+            )
         return compas_ghpython.draw_points(points)
 
     def draw_edges(self, edges=None, color=None):
@@ -96,12 +98,14 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         lines = []
         for edge in edges:
             u, v = edge
-            lines.append({
-                'start': vertex_xyz[u],
-                'end': vertex_xyz[v],
-                'color': self.edge_color[edge].rgb255,
-                'name': "{}.edge.{}-{}".format(self.volmesh.name, u, v)
-            })
+            lines.append(
+                {
+                    "start": vertex_xyz[u],
+                    "end": vertex_xyz[v],
+                    "color": self.edge_color[edge].rgb255,
+                    "name": "{}.edge.{}-{}".format(self.volmesh.name, u, v),
+                }
+            )
         return compas_ghpython.draw_lines(lines)
 
     def draw_faces(self, faces=None, color=None, join_faces=False):
@@ -128,11 +132,16 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         facets = []
         for face in faces:
-            facets.append({
-                'points': [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)],
-                'name': "{}.face.{}".format(self.volmesh.name, face),
-                'color': self.face_color[face].rgb255
-            })
+            facets.append(
+                {
+                    "points": [
+                        vertex_xyz[vertex]
+                        for vertex in self.volmesh.halfface_vertices(face)
+                    ],
+                    "name": "{}.face.{}".format(self.volmesh.name, face),
+                    "color": self.face_color[face].rgb255,
+                }
+            )
         return compas_ghpython.draw_faces(facets)
 
     def draw_cells(self, cells=None, color=None):
@@ -159,10 +168,17 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         for cell in cells:
             vertices = self.volmesh.cell_vertices(cell)
             faces = self.volmesh.cell_faces(cell)
-            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
+            vertex_index = dict(
+                (vertex, index) for index, vertex in enumerate(vertices)
+            )
             vertices = [vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
-            mesh = compas_ghpython.draw_mesh(vertices, faces, color=self.cell_color[cell].rgb255)
+            faces = [
+                [vertex_index[vertex] for vertex in self.halfface_vertices(face)]
+                for face in faces
+            ]
+            mesh = compas_ghpython.draw_mesh(
+                vertices, faces, color=self.cell_color[cell].rgb255
+            )
             meshes.append(mesh)
         return meshes
 

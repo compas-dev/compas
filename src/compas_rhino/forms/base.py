@@ -23,7 +23,7 @@ class BaseForm(System.Windows.Forms.Form):
 
     """
 
-    def __init__(self, title='Form', width=None, height=None):
+    def __init__(self, title="Form", width=None, height=None):
         self.Text = title
         if width:
             self.Width = width

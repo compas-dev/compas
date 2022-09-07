@@ -43,7 +43,9 @@ class RhinoBox(RhinoGeometry):
             elif isinstance(geometry, Box):
                 geometry = box_to_rhino(geometry)
             else:
-                raise ConversionError('Geometry object cannot be converted to a box: {}'.format(geometry))
+                raise ConversionError(
+                    "Geometry object cannot be converted to a box: {}".format(geometry)
+                )
 
         self._geometry = geometry
 

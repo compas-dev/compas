@@ -62,11 +62,31 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
         X = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
         Y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
         Z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
-        points = [{'pos': origin, 'color': self.color_origin.rgb255}]
+        points = [{"pos": origin, "color": self.color_origin.rgb255}]
         lines = [
-            {'start': origin, 'end': X, 'color': self.color_xaxis.rgb255, 'arrow': 'end'},
-            {'start': origin, 'end': Y, 'color': self.color_yaxis.rgb255, 'arrow': 'end'},
-            {'start': origin, 'end': Z, 'color': self.color_zaxis.rgb255, 'arrow': 'end'}]
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+            {
+                "start": origin,
+                "end": X,
+                "color": self.color_xaxis.rgb255,
+                "arrow": "end",
+            },
+            {
+                "start": origin,
+                "end": Y,
+                "color": self.color_yaxis.rgb255,
+                "arrow": "end",
+            },
+            {
+                "start": origin,
+                "end": Z,
+                "color": self.color_zaxis.rgb255,
+                "arrow": "end",
+            },
+        ]
+        guids = compas_rhino.draw_points(
+            points, layer=self.layer, clear=False, redraw=False
+        )
+        guids += compas_rhino.draw_lines(
+            lines, layer=self.layer, clear=False, redraw=False
+        )
         return guids

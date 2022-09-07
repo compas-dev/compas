@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -20,10 +19,12 @@ eps = finfo(float64).eps
 e = sqrt(eps)
 
 
-__all__ = ['descent_numpy']
+__all__ = ["descent_numpy"]
 
 
-def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=()):
+def descent_numpy(
+    x0, fn, iterations=1000, gtol=10 ** (-6), bounds=None, limit=0, args=()
+):
     """A gradient descent optimisation solver.
 
     Parameters
@@ -61,15 +62,15 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
         lb = bounds[:, 0][:, newaxis]
         ub = bounds[:, 1][:, newaxis]
     else:
-        lb = ones((n, 1)) * -10**20
-        ub = ones((n, 1)) * +10**20
+        lb = ones((n, 1)) * -(10**20)
+        ub = ones((n, 1)) * +(10**20)
 
     zn = zeros((n, 1))
     g = zeros((n, 1))
     v = eye(n) * e
 
     def phi(x, mu, *args):
-        p = mu * (sum(maximum(lb - x, zn)) + sum(maximum(x - ub, zn)))**2
+        p = mu * (sum(maximum(lb - x, zn)) + sum(maximum(x - ub, zn))) ** 2
         return fn(x, *args) + p
 
     i = 0
@@ -105,6 +106,10 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
         if res < gtol:
             break
 
-        print('Iteration: {0}  fopt: {1:.3g}  gres: {2:.3g}  step: {3}'.format(i, f1, res, a))
+        print(
+            "Iteration: {0}  fopt: {1:.3g}  gres: {2:.3g}  step: {3}".format(
+                i, f1, res, a
+            )
+        )
 
     return f1, x0

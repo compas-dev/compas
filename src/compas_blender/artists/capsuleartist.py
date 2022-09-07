@@ -54,14 +54,18 @@ class CapsuleArtist(BlenderArtist, ShapeArtist):
 
     """
 
-    def __init__(self,
-                 capsule: Capsule,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        capsule: Capsule,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
 
         super().__init__(shape=capsule, collection=collection or capsule.name, **kwargs)
 
-    def draw(self, color: Optional[Color] = None, u: int = None, v: int = None) -> List[bpy.types.Object]:
+    def draw(
+        self, color: Optional[Color] = None, u: int = None, v: int = None
+    ) -> List[bpy.types.Object]:
         """Draw the capsule associated with the artist.
 
         Parameters
@@ -86,5 +90,11 @@ class CapsuleArtist(BlenderArtist, ShapeArtist):
         v = v or self.v
         color = Color.coerce(color) or self.color
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
+        obj = compas_blender.draw_mesh(
+            vertices,
+            faces,
+            name=self.shape.name,
+            color=color,
+            collection=self.collection,
+        )
         return [obj]

@@ -43,15 +43,17 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 line: Line,
-                 draw_points: bool = False,
-                 draw_as_segment: bool = False,
-                 linewidth: float = 1.0,
-                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 color: Color = (0, 0, 0),
-                 zorder: int = 1000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        line: Line,
+        draw_points: bool = False,
+        draw_as_segment: bool = False,
+        linewidth: float = 1.0,
+        linestyle: Literal["solid", "dotted", "dashed", "dashdot"] = "solid",
+        color: Color = (0, 0, 0),
+        zorder: int = 1000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=line, **kwargs)
 
@@ -104,11 +106,14 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
         if self.draw_as_segment:
             x0, y0 = self.line.start[:2]
             x1, y1 = self.line.end[:2]
-            line2d = Line2D([x0, x1], [y0, y1],
-                            linewidth=self.linewidth,
-                            linestyle=self.linestyle,
-                            color=self.color,
-                            zorder=self.zorder)
+            line2d = Line2D(
+                [x0, x1],
+                [y0, y1],
+                linewidth=self.linewidth,
+                linestyle=self.linestyle,
+                color=self.color,
+                zorder=self.zorder,
+            )
             self._mpl_line = self.plotter.axes.add_line(line2d)
             if self.draw_points:
                 self._start_artist = self.plotter.add(self.line.start)
@@ -119,15 +124,22 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
                 p0, p1 = points
                 x0, y0 = p0[:2]
                 x1, y1 = p1[:2]
-                line2d = Line2D([x0, x1], [y0, y1],
-                                linewidth=self.linewidth,
-                                linestyle=self.linestyle,
-                                color=self.color,
-                                zorder=self.zorder)
+                line2d = Line2D(
+                    [x0, x1],
+                    [y0, y1],
+                    linewidth=self.linewidth,
+                    linestyle=self.linestyle,
+                    color=self.color,
+                    zorder=self.zorder,
+                )
                 self._mpl_line = self.plotter.axes.add_line(line2d)
                 if self.draw_points:
-                    self._start_artist = self.plotter.add(self.line.start, edgecolor=self.color)
-                    self._end_artist = self.plotter.add(self.line.end, edgecolor=self.color)
+                    self._start_artist = self.plotter.add(
+                        self.line.start, edgecolor=self.color
+                    )
+                    self._end_artist = self.plotter.add(
+                        self.line.end, edgecolor=self.color
+                    )
 
     def redraw(self) -> None:
         """Update the line using the current geometry and visualization settings.

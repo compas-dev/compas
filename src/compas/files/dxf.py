@@ -72,7 +72,7 @@ class DXFReader(object):
 
     def read(self):
         """Read the contents of the file."""
-        with _iotools.open_file(self.filepath, 'rb') as fp:
+        with _iotools.open_file(self.filepath, "rb") as fp:
             for line in fp:
                 print(line.strip())
 

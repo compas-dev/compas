@@ -55,16 +55,22 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 vector: Vector,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
-        super().__init__(primitive=vector, collection=collection or vector.name, **kwargs)
+    def __init__(
+        self,
+        vector: Vector,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any,
+    ):
+        super().__init__(
+            primitive=vector, collection=collection or vector.name, **kwargs
+        )
 
-    def draw(self,
-             color: Optional[Color] = None,
-             point: Optional[Point] = None,
-             show_point: Optional[bool] = False) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        point: Optional[Point] = None,
+        show_point: Optional[bool] = False,
+    ) -> List[bpy.types.Object]:
         """Draw the vector.
 
         Parameters
@@ -83,20 +89,27 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        point = point or (0., 0., 0.)
+        point = point or (0.0, 0.0, 0.0)
         start = Point(*point)
         end = start + self.primitive
         color = Color.coerce(color) or self.color
         lines = [
-            {'start': start, 'end': end, 'color': color, 'name': f"{self.primitive.name}"},
+            {
+                "start": start,
+                "end": end,
+                "color": color,
+                "name": f"{self.primitive.name}",
+            },
         ]
         objects = compas_blender.draw_lines(lines, self.collection)
         if show_point:
-            points = [{
-                'pos': start,
-                'name': f"{self.primitive.name}.origin",
-                'color': (1.0, 1.0, 1.0),
-                'radius': 0.01,
-            }]
+            points = [
+                {
+                    "pos": start,
+                    "name": f"{self.primitive.name}.origin",
+                    "color": (1.0, 1.0, 1.0),
+                    "radius": 0.01,
+                }
+            ]
             objects += compas_blender.draw_points(points, self.collection)
         return objects

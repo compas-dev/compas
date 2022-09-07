@@ -40,14 +40,16 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 polyline: Polyline,
-                 draw_points: bool = True,
-                 linewidth: float = 1.0,
-                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 color: Color = (0, 0, 0),
-                 zorder: int = 1000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        polyline: Polyline,
+        draw_points: bool = True,
+        linewidth: float = 1.0,
+        linestyle: Literal["solid", "dotted", "dashed", "dashdot"] = "solid",
+        color: Color = (0, 0, 0),
+        zorder: int = 1000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=polyline, **kwargs)
 
@@ -79,12 +81,15 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
         None
 
         """
-        x, y, _ = zip(* self.polyline.points)
-        line2d = Line2D(x, y,
-                        linewidth=self.linewidth,
-                        linestyle=self.linestyle,
-                        color=self.color,
-                        zorder=self.zorder)
+        x, y, _ = zip(*self.polyline.points)
+        line2d = Line2D(
+            x,
+            y,
+            linewidth=self.linewidth,
+            linestyle=self.linestyle,
+            color=self.color,
+            zorder=self.zorder,
+        )
         self._mpl_line = self.plotter.axes.add_line(line2d)
         if self.draw_points:
             for point in self.polyline:
@@ -98,7 +103,7 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
         None
 
         """
-        x, y, _ = zip(* self.polyline.points)
+        x, y, _ = zip(*self.polyline.points)
         self._mpl_line.set_xdata(x)
         self._mpl_line.set_ydata(y)
         self._mpl_line.set_color(self.color)

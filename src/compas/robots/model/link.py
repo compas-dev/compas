@@ -24,7 +24,7 @@ from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import SphereProxy
 from compas.robots.model.geometry import Texture
 
-__all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
+__all__ = ["Link", "Inertial", "Visual", "Collision", "Mass", "Inertia"]
 
 
 class Mass(Data):
@@ -38,16 +38,16 @@ class Mass(Data):
         return str(self.value)
 
     def get_urdf_element(self):
-        attributes = {'value': self.value}
-        return URDFElement('mass', attributes)
+        attributes = {"value": self.value}
+        return URDFElement("mass", attributes)
 
     @property
     def data(self):
-        return {'value': self.value}
+        return {"value": self.value}
 
     @data.setter
     def data(self, data):
-        self.value = data['value']
+        self.value = data["value"]
 
     @classmethod
     def from_data(cls, data):
@@ -63,7 +63,7 @@ class Inertia(Data):
 
     """
 
-    def __init__(self, ixx=0., ixy=0., ixz=0., iyy=0., iyz=0., izz=0.):
+    def __init__(self, ixx=0.0, ixy=0.0, ixz=0.0, iyy=0.0, iyz=0.0, izz=0.0):
         super(Inertia, self).__init__()
         self.ixx = float(ixx)
         self.ixy = float(ixy)
@@ -74,34 +74,34 @@ class Inertia(Data):
 
     def get_urdf_element(self):
         attributes = {
-            'ixx': self.ixx,
-            'ixy': self.ixy,
-            'ixz': self.ixz,
-            'iyy': self.iyy,
-            'iyz': self.iyz,
-            'izz': self.izz,
+            "ixx": self.ixx,
+            "ixy": self.ixy,
+            "ixz": self.ixz,
+            "iyy": self.iyy,
+            "iyz": self.iyz,
+            "izz": self.izz,
         }
-        return URDFElement('inertia', attributes)
+        return URDFElement("inertia", attributes)
 
     @property
     def data(self):
         return {
-            'ixx': self.ixx,
-            'ixy': self.ixy,
-            'ixz': self.ixz,
-            'iyy': self.iyy,
-            'iyz': self.iyz,
-            'izz': self.izz,
+            "ixx": self.ixx,
+            "ixy": self.ixy,
+            "ixz": self.ixz,
+            "iyy": self.iyy,
+            "iyz": self.iyz,
+            "izz": self.izz,
         }
 
     @data.setter
     def data(self, data):
-        self.ixx = data.get('ixx', 0.)
-        self.ixy = data.get('ixy', 0.)
-        self.ixz = data.get('ixz', 0.)
-        self.iyy = data.get('iyy', 0.)
-        self.iyz = data.get('iyz', 0.)
-        self.izz = data.get('izz', 0.)
+        self.ixx = data.get("ixx", 0.0)
+        self.ixy = data.get("ixy", 0.0)
+        self.ixz = data.get("ixz", 0.0)
+        self.iyy = data.get("iyy", 0.0)
+        self.iyz = data.get("iyz", 0.0)
+        self.izz = data.get("izz", 0.0)
 
     @classmethod
     def from_data(cls, data):
@@ -139,21 +139,21 @@ class Inertial(Data):
 
     def get_urdf_element(self):
         elements = [self.origin, self.mass, self.inertia]
-        return URDFElement('inertial', elements=elements)
+        return URDFElement("inertial", elements=elements)
 
     @property
     def data(self):
         return {
-            'origin': self.origin.data if self.origin else None,
-            'mass': self.mass.data if self.mass else None,
-            'inertia': self.inertia.data if self.inertia else None,
+            "origin": self.origin.data if self.origin else None,
+            "mass": self.mass.data if self.mass else None,
+            "inertia": self.inertia.data if self.inertia else None,
         }
 
     @data.setter
     def data(self, data):
-        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
-        self.mass = Mass.from_data(data['mass']) if data['mass'] else None
-        self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
+        self.origin = Frame.from_data(data["origin"]) if data["origin"] else None
+        self.mass = Mass.from_data(data["mass"]) if data["mass"] else None
+        self.inertia = Inertia.from_data(data["inertia"]) if data["inertia"] else None
 
 
 class LinkItem(object):
@@ -201,10 +201,10 @@ class Visual(LinkItem, Data):
     def get_urdf_element(self):
         attributes = {}
         if self.name is not None:
-            attributes['name'] = self.name
+            attributes["name"] = self.name
         attributes.update(self.attr)
         elements = [self.origin, self.geometry, self.material]
-        return URDFElement('visual', attributes, elements)
+        return URDFElement("visual", attributes, elements)
 
     # Overriding the default name property, because sometimes the name really is `None`.
     @property
@@ -218,28 +218,42 @@ class Visual(LinkItem, Data):
     @property
     def data(self):
         return {
-            'geometry': self.geometry.data,
-            'origin': self.origin.data if self.origin else None,
-            'name': self.name,
-            'material': self.material.data if self.material else None,
-            'attr': _attr_to_data(self.attr),
-            'init_transformation': self.init_transformation.data if self.init_transformation else None,
-            'current_transformation': self.current_transformation.data if self.current_transformation else None,
+            "geometry": self.geometry.data,
+            "origin": self.origin.data if self.origin else None,
+            "name": self.name,
+            "material": self.material.data if self.material else None,
+            "attr": _attr_to_data(self.attr),
+            "init_transformation": self.init_transformation.data
+            if self.init_transformation
+            else None,
+            "current_transformation": self.current_transformation.data
+            if self.current_transformation
+            else None,
         }
 
     @data.setter
     def data(self, data):
-        self.geometry = Geometry.from_data(data['geometry'])
-        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
-        self.name = data['name']
-        self.material = Material.from_data(data['material']) if data['material'] else None
-        self.attr = _attr_from_data(data['attr'])
-        self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
-        self.current_transformation = Transformation.from_data(data['current_transformation']) if data['current_transformation'] else None
+        self.geometry = Geometry.from_data(data["geometry"])
+        self.origin = Frame.from_data(data["origin"]) if data["origin"] else None
+        self.name = data["name"]
+        self.material = (
+            Material.from_data(data["material"]) if data["material"] else None
+        )
+        self.attr = _attr_from_data(data["attr"])
+        self.init_transformation = (
+            Transformation.from_data(data["init_transformation"])
+            if data["init_transformation"]
+            else None
+        )
+        self.current_transformation = (
+            Transformation.from_data(data["current_transformation"])
+            if data["current_transformation"]
+            else None
+        )
 
     @classmethod
     def from_data(cls, data):
-        visual = cls(Geometry.from_data(data['geometry']))
+        visual = cls(Geometry.from_data(data["geometry"]))
         visual.data = data
         return visual
 
@@ -316,10 +330,10 @@ class Collision(LinkItem, Data):
     def get_urdf_element(self):
         attributes = {}
         if self.name is not None:
-            attributes['name'] = self.name
+            attributes["name"] = self.name
         attributes.update(self.attr)
         elements = [self.origin, self.geometry]
-        return URDFElement('collision', attributes, elements)
+        return URDFElement("collision", attributes, elements)
 
     # Overriding the default name property, because sometimes the name really is `None`.
     @property
@@ -333,26 +347,38 @@ class Collision(LinkItem, Data):
     @property
     def data(self):
         return {
-            'geometry': self.geometry.data,
-            'origin': self.origin.data if self.origin else None,
-            'name': self.name,
-            'attr': _attr_to_data(self.attr),
-            'init_transformation': self.init_transformation.data if self.init_transformation else None,
-            'current_transformation': self.current_transformation.data if self.current_transformation else None,
+            "geometry": self.geometry.data,
+            "origin": self.origin.data if self.origin else None,
+            "name": self.name,
+            "attr": _attr_to_data(self.attr),
+            "init_transformation": self.init_transformation.data
+            if self.init_transformation
+            else None,
+            "current_transformation": self.current_transformation.data
+            if self.current_transformation
+            else None,
         }
 
     @data.setter
     def data(self, data):
-        self.geometry = Geometry.from_data(data['geometry'])
-        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
-        self.name = data['name']
-        self.attr = _attr_from_data(data['attr'])
-        self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
-        self.current_transformation = Transformation.from_data(data['current_transformation']) if data['current_transformation'] else None
+        self.geometry = Geometry.from_data(data["geometry"])
+        self.origin = Frame.from_data(data["origin"]) if data["origin"] else None
+        self.name = data["name"]
+        self.attr = _attr_from_data(data["attr"])
+        self.init_transformation = (
+            Transformation.from_data(data["init_transformation"])
+            if data["init_transformation"]
+            else None
+        )
+        self.current_transformation = (
+            Transformation.from_data(data["current_transformation"])
+            if data["current_transformation"]
+            else None
+        )
 
     @classmethod
     def from_data(cls, data):
-        collision = cls(Geometry.from_data(data['geometry']))
+        collision = cls(Geometry.from_data(data["geometry"]))
         collision.data = data
         return collision
 
@@ -403,7 +429,9 @@ class Link(Data):
 
     """
 
-    def __init__(self, name, type=None, visual=(), collision=(), inertial=None, **kwargs):
+    def __init__(
+        self, name, type=None, visual=(), collision=(), inertial=None, **kwargs
+    ):
         super(Link, self).__init__()
         self.name = name
         self.type = type
@@ -415,59 +443,94 @@ class Link(Data):
         self.parent_joint = None
 
     def get_urdf_element(self):
-        attributes = {'name': self.name}
+        attributes = {"name": self.name}
         if self.type is not None:
-            attributes['type'] = self.type
+            attributes["type"] = self.type
         attributes.update(self.attr)
         elements = self.visual + self.collision + [self.inertial]
-        return URDFElement('link', attributes, elements)
+        return URDFElement("link", attributes, elements)
 
     @property
     def data(self):
         return {
-            'name': self.name,
-            'type': self.type,
-            'visual': [visual.data for visual in self.visual],
-            'collision': [collision.data for collision in self.collision],
-            'inertial': self.inertial.data if self.inertial else None,
-            'attr': _attr_to_data(self.attr),
-            'joints': [joint.data for joint in self.joints],
+            "name": self.name,
+            "type": self.type,
+            "visual": [visual.data for visual in self.visual],
+            "collision": [collision.data for collision in self.collision],
+            "inertial": self.inertial.data if self.inertial else None,
+            "attr": _attr_to_data(self.attr),
+            "joints": [joint.data for joint in self.joints],
         }
 
     @data.setter
     def data(self, data):
         from compas.robots.model.joint import Joint
-        self.name = data['name']
-        self.type = data['type']
-        self.visual = [Visual.from_data(d) for d in data['visual']]
-        self.collision = [Collision.from_data(d) for d in data['collision']]
-        self.inertial = Inertial.from_data(data['inertial']) if data['inertial'] else None
-        self.attr = _attr_from_data(data['attr'])
-        self.joints = [Joint.from_data(d) for d in data['joints']]
+
+        self.name = data["name"]
+        self.type = data["type"]
+        self.visual = [Visual.from_data(d) for d in data["visual"]]
+        self.collision = [Collision.from_data(d) for d in data["collision"]]
+        self.inertial = (
+            Inertial.from_data(data["inertial"]) if data["inertial"] else None
+        )
+        self.attr = _attr_from_data(data["attr"])
+        self.joints = [Joint.from_data(d) for d in data["joints"]]
 
     @classmethod
     def from_data(cls, data):
-        link = cls(data['name'])
+        link = cls(data["name"])
         link.data = data
         return link
 
 
-URDFParser.install_parser(Link, 'robot/link')
-URDFParser.install_parser(Inertial, 'robot/link/inertial')
-URDFParser.install_parser(Mass, 'robot/link/inertial/mass')
-URDFParser.install_parser(Inertia, 'robot/link/inertial/inertia')
+URDFParser.install_parser(Link, "robot/link")
+URDFParser.install_parser(Inertial, "robot/link/inertial")
+URDFParser.install_parser(Mass, "robot/link/inertial/mass")
+URDFParser.install_parser(Inertia, "robot/link/inertial/inertia")
 
-URDFParser.install_parser(Visual, 'robot/link/visual')
-URDFParser.install_parser(Collision, 'robot/link/collision')
+URDFParser.install_parser(Visual, "robot/link/visual")
+URDFParser.install_parser(Collision, "robot/link/collision")
 
-URDFParser.install_parser(Frame, 'robot/link/inertial/origin', 'robot/link/visual/origin', 'robot/link/collision/origin', proxy_type=FrameProxy)
-URDFParser.install_parser(Geometry, 'robot/link/visual/geometry', 'robot/link/collision/geometry')
-URDFParser.install_parser(MeshDescriptor, 'robot/link/visual/geometry/mesh', 'robot/link/collision/geometry/mesh')
-URDFParser.install_parser(Box, 'robot/link/visual/geometry/box', 'robot/link/collision/geometry/box', proxy_type=BoxProxy)
-URDFParser.install_parser(Cylinder, 'robot/link/visual/geometry/cylinder', 'robot/link/collision/geometry/cylinder', proxy_type=CylinderProxy)
-URDFParser.install_parser(Sphere, 'robot/link/visual/geometry/sphere', 'robot/link/collision/geometry/sphere', proxy_type=SphereProxy)
-URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/link/collision/geometry/capsule', proxy_type=CapsuleProxy)
+URDFParser.install_parser(
+    Frame,
+    "robot/link/inertial/origin",
+    "robot/link/visual/origin",
+    "robot/link/collision/origin",
+    proxy_type=FrameProxy,
+)
+URDFParser.install_parser(
+    Geometry, "robot/link/visual/geometry", "robot/link/collision/geometry"
+)
+URDFParser.install_parser(
+    MeshDescriptor,
+    "robot/link/visual/geometry/mesh",
+    "robot/link/collision/geometry/mesh",
+)
+URDFParser.install_parser(
+    Box,
+    "robot/link/visual/geometry/box",
+    "robot/link/collision/geometry/box",
+    proxy_type=BoxProxy,
+)
+URDFParser.install_parser(
+    Cylinder,
+    "robot/link/visual/geometry/cylinder",
+    "robot/link/collision/geometry/cylinder",
+    proxy_type=CylinderProxy,
+)
+URDFParser.install_parser(
+    Sphere,
+    "robot/link/visual/geometry/sphere",
+    "robot/link/collision/geometry/sphere",
+    proxy_type=SphereProxy,
+)
+URDFParser.install_parser(
+    Capsule,
+    "robot/link/visual/geometry/capsule",
+    "robot/link/collision/geometry/capsule",
+    proxy_type=CapsuleProxy,
+)
 
-URDFParser.install_parser(Material, 'robot/link/visual/material')
-URDFParser.install_parser(Color, 'robot/link/visual/material/color')
-URDFParser.install_parser(Texture, 'robot/link/visual/material/texture')
+URDFParser.install_parser(Material, "robot/link/visual/material")
+URDFParser.install_parser(Color, "robot/link/visual/material/color")
+URDFParser.install_parser(Texture, "robot/link/visual/material/texture")

@@ -56,7 +56,7 @@ class Polyline(Primitive):
 
     """
 
-    __slots__ = ['_points', '_lines']
+    __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
         super(Polyline, self).__init__(**kwargs)
@@ -73,24 +73,24 @@ class Polyline(Primitive):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points)
-        })
+
+        return Schema(
+            {"points": lambda points: all(is_float3(point) for point in points)}
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'polyline'
+        return "polyline"
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the polyline.
-        """
-        return {'points': [point.data for point in self.points]}
+        """dict : Returns the data dictionary that represents the polyline."""
+        return {"points": [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
-        self.points = [Point.from_data(point) for point in data['points']]
+        self.points = [Point.from_data(point) for point in data["points"]]
 
     @classmethod
     def from_data(cls, data):
@@ -112,7 +112,7 @@ class Polyline(Primitive):
         Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
 
         """
-        return cls([Point.from_data(point) for point in data['points']])
+        return cls([Point.from_data(point) for point in data["points"]])
 
     # ==========================================================================
     # properties
@@ -144,7 +144,9 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polyline([{0}])'.format(', '.join(['{0!r}'.format(point) for point in self.points]))
+        return "Polyline([{0}])".format(
+            ", ".join(["{0!r}".format(point) for point in self.points])
+        )
 
     def __len__(self):
         return len(self.points)
@@ -160,7 +162,11 @@ class Polyline(Primitive):
         return iter(self.points)
 
     def __eq__(self, other):
-        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+        if (
+            not hasattr(other, "__iter__")
+            or not hasattr(other, "__len__")
+            or len(self) != len(other)
+        ):
             return False
         return allclose(self, other)
 
@@ -303,7 +309,7 @@ class Polyline(Primitive):
         for seg1, seg2 in pairwise(seg_ids):
             angle = self.lines[seg1].vector.angle(self.lines[seg2].vector)
             if angle >= angle_threshold:
-                corner_ids.append(seg1+1)
+                corner_ids.append(seg1 + 1)
 
         if self.is_closed() and len(corner_ids) > 0:
             if corner_ids[-1] != len(points):
@@ -313,9 +319,11 @@ class Polyline(Primitive):
 
         for id1, id2 in pairwise(corner_ids):
             if id1 < id2:
-                split_polylines.append(Polyline(points[id1:id2+1]))
+                split_polylines.append(Polyline(points[id1 : id2 + 1]))
             else:
-                looped_pts = [points[i] for i in range(id1, len(points))] + points[1:id2+1]
+                looped_pts = [points[i] for i in range(id1, len(points))] + points[
+                    1 : id2 + 1
+                ]
                 split_polylines.append(Polyline(looped_pts))
 
         if self.is_closed() and not corner_ids:
@@ -338,7 +346,7 @@ class Polyline(Primitive):
         for line in self.lines:
             if is_point_on_line(point, line):
                 return line.direction
-        raise Exception('{} not found!'.format(point))
+        raise Exception("{} not found!".format(point))
 
     tangent_at = tangent_at_point_on_polyline
 
@@ -355,7 +363,7 @@ class Polyline(Primitive):
             list[:class:`~compas.geometry.Point`]
 
         """
-        segment_length = self.length/num_segments
+        segment_length = self.length / num_segments
         return self.divide_polyline_by_length(segment_length, False)
 
     divide = divide_polyline
@@ -382,7 +390,7 @@ class Polyline(Primitive):
         However, since the old points are not part of the new set of points, the geometry of the polyline will change.
 
         """
-        num_pts = int(self.length/length)
+        num_pts = int(self.length / length)
         total_length = [0, 0]
         division_pts = [self.points[0]]
         new_polyline = self
@@ -395,7 +403,7 @@ class Polyline(Primitive):
                     new_pt = line.start + line.vector.scaled(amp)
                     division_pts.append(new_pt)
                     total_length = [0, 0]
-                    remaining_pts = new_polyline.points[i_ln + 2:]
+                    remaining_pts = new_polyline.points[i_ln + 2 :]
                     new_polyline = Polyline([new_pt, line.end] + remaining_pts)
                     break
                 elif total_length[-1] == length:
@@ -407,7 +415,10 @@ class Polyline(Primitive):
 
         if strict is False and not self.is_closed() and len(division_pts) < num_pts + 1:
             division_pts.append(new_polyline.points[-1])
-        elif strict is False and division_pts[-1].distance_to_point(self.points[-1]) > tol:
+        elif (
+            strict is False
+            and division_pts[-1].distance_to_point(self.points[-1]) > tol
+        ):
             division_pts.append(self.points[-1])
 
         return division_pts
@@ -430,7 +441,9 @@ class Polyline(Primitive):
         """
         try:
             start, end = length
-            self.points[0] = self.points[0] + self.lines[0].vector.unitized().scaled(-start)
+            self.points[0] = self.points[0] + self.lines[0].vector.unitized().scaled(
+                -start
+            )
         except TypeError:
             start = end = length
         self.points[-1] = self.points[-1] + self.lines[-1].vector.unitized().scaled(end)
@@ -478,14 +491,16 @@ class Polyline(Primitive):
                     del self.points[0]
                     break
                 else:
-                    self.points[0] = line.end + line.vector.unitized().scaled(-(total_length-start))
+                    self.points[0] = line.end + line.vector.unitized().scaled(
+                        -(total_length - start)
+                    )
                     break
         except TypeError:
             start = end = length
 
         total_length = 0
         for i in range(len(self.lines)):
-            line = self.lines[-(i+1)]
+            line = self.lines[-(i + 1)]
             total_length += line.length
             if total_length < end:
                 del self.points[-1]
@@ -493,7 +508,9 @@ class Polyline(Primitive):
                 del self.points[-1]
                 break
             else:
-                self.points[-1] = line.start + line.vector.unitized().scaled(total_length-end)
+                self.points[-1] = line.start + line.vector.unitized().scaled(
+                    total_length - end
+                )
                 break
 
     def shortened(self, length):

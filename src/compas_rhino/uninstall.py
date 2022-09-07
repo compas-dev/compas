@@ -13,8 +13,8 @@ from compas_rhino.install import _run_post_execution_steps
 from compas_rhino.install import installable_rhino_packages
 
 __all__ = [
-    'uninstall',
-    'after_rhino_uninstall',
+    "uninstall",
+    "after_rhino_uninstall",
 ]
 
 
@@ -82,7 +82,11 @@ def uninstall(version=None, packages=None):
 
     # There is nothing to uninstall
     if not symlinks_to_uninstall:
-        print('\nNo packages to uninstall from Rhino {0} scripts folder: \n{1}.'.format(version, scripts_path))
+        print(
+            "\nNo packages to uninstall from Rhino {0} scripts folder: \n{1}.".format(
+                version, scripts_path
+            )
+        )
         return
 
     # -------------------------
@@ -93,56 +97,75 @@ def uninstall(version=None, packages=None):
     results = []
     exit_code = 0
 
-    symlinks = [link['link'] for link in symlinks_to_uninstall]
+    symlinks = [link["link"] for link in symlinks_to_uninstall]
     uninstall_results = compas._os.remove_symlinks(symlinks)
 
     for uninstall_data, success in zip(symlinks_to_uninstall, uninstall_results):
         if success:
-            uninstalled_packages.append(uninstall_data['name'])
-            result = 'OK'
+            uninstalled_packages.append(uninstall_data["name"])
+            result = "OK"
         else:
-            result = 'ERROR: Cannot remove symlink, try to run as administrator.'
+            result = "ERROR: Cannot remove symlink, try to run as administrator."
 
-        results.append((uninstall_data['name'], result))
+        results.append((uninstall_data["name"], result))
 
     if not all(uninstall_results):
         exit_code = -1
 
     if exit_code == -1:
-        results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not uninstall bootstrapper.'))
+        results.append(
+            (
+                "compas_bootstrapper",
+                "WARNING: One or more packages failed, will not uninstall bootstrapper.",
+            )
+        )
 
     else:
         if compas_rhino._try_remove_bootstrapper(scripts_path):
-            results.append(('compas_bootstrapper', 'OK'))
+            results.append(("compas_bootstrapper", "OK"))
         else:
-            results.append(('compas_bootstrapper', 'ERROR: Cannot remove compas_bootstrapper, try to run as administrator.'))
+            results.append(
+                (
+                    "compas_bootstrapper",
+                    "ERROR: Cannot remove compas_bootstrapper, try to run as administrator.",
+                )
+            )
 
         # Handle legacy bootstrapper
         # Again, only if possible...
         if ipylib_path:
             if not compas_rhino._try_remove_bootstrapper(ipylib_path):
-                results.append(('compas_bootstrapper', 'ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.'))
+                results.append(
+                    (
+                        "compas_bootstrapper",
+                        "ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.",
+                    )
+                )
 
     # -------------------------
     # Output results
     # -------------------------
 
-    print('Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}'.format(version, scripts_path))
-    print('\nThe following packages have been detected and will be uninstalled:\n')
+    print(
+        "Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}".format(
+            version, scripts_path
+        )
+    )
+    print("\nThe following packages have been detected and will be uninstalled:\n")
 
     for package, status in results:
-        print('   {} {}'.format(package.ljust(20), status))
+        print("   {} {}".format(package.ljust(20), status))
 
-        if status != 'OK':
+        if status != "OK":
             exit_code = -1
 
     if exit_code == 0 and uninstalled_packages:
-        print('\nRunning post-uninstallation steps...\n')
+        print("\nRunning post-uninstallation steps...\n")
 
         if not _run_post_execution_steps(after_rhino_uninstall(uninstalled_packages)):
             exit_code = -1
 
-    print('\nUninstall completed.')
+    print("\nUninstall completed.")
 
     if exit_code != 0:
         sys.exit(exit_code)
@@ -159,7 +182,7 @@ def _filter_installed_packages(version, packages):
     if packages:
         packages = packages[:]
     else:
-        packages = bootstrapper_data.get('INSTALLED_PACKAGES', None)
+        packages = bootstrapper_data.get("INSTALLED_PACKAGES", None)
 
         # No info, fall back to installable packages list
         if packages is None:
@@ -170,7 +193,7 @@ def _filter_installed_packages(version, packages):
         legacy_bootstrapper = compas_rhino._get_bootstrapper_path(ipylib_path)
         if os.path.exists(legacy_bootstrapper):
             bootstrapper_data = compas_rhino._get_bootstrapper_data(legacy_bootstrapper)
-            legacy_packages = bootstrapper_data.get('INSTALLED_PACKAGES', None)
+            legacy_packages = bootstrapper_data.get("INSTALLED_PACKAGES", None)
 
             if legacy_packages:
                 packages.extend(legacy_packages)
@@ -178,7 +201,7 @@ def _filter_installed_packages(version, packages):
     return packages
 
 
-@compas.plugins.pluggable(category='install', selector='collect_all')
+@compas.plugins.pluggable(category="install", selector="collect_all")
 def after_rhino_uninstall(uninstalled_packages):
     """Allows extensions to execute actions after uninstall from Rhino is done.
 
@@ -219,13 +242,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '-v',
-        '--version',
+        "-v",
+        "--version",
         choices=compas_rhino.SUPPORTED_VERSIONS,
         default=compas_rhino.DEFAULT_VERSION,
-        help="The version of Rhino to install the packages in."
+        help="The version of Rhino to install the packages in.",
     )
-    parser.add_argument('-p', '--packages', nargs='+', help="The packages to uninstall.")
+    parser.add_argument(
+        "-p", "--packages", nargs="+", help="The packages to uninstall."
+    )
 
     args = parser.parse_args()
 

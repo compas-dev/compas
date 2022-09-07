@@ -29,7 +29,4 @@ from __future__ import print_function
 from .color import Color
 from .colormap import ColorMap
 
-__all__ = [
-    'Color',
-    'ColorMap'
-]
+__all__ = ["Color", "ColorMap"]

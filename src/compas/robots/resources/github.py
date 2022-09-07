@@ -5,7 +5,7 @@ from __future__ import print_function
 from compas.robots.resources.basic import AbstractMeshLoader
 from compas.robots.resources.basic import _mesh_import
 
-__all__ = ['GithubPackageMeshLoader']
+__all__ = ["GithubPackageMeshLoader"]
 
 try:
     from urllib.request import urlopen
@@ -32,14 +32,14 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         ``relative_path`` to ``'.'``.  Defaults to ``support_package``
     """
 
-    HOST = 'https://raw.githubusercontent.com'
+    HOST = "https://raw.githubusercontent.com"
 
-    def __init__(self, repository, support_package, branch='main', relative_path=None):
+    def __init__(self, repository, support_package, branch="main", relative_path=None):
         super(GithubPackageMeshLoader, self).__init__()
         self.repository = repository
         self.support_package = support_package
         self.branch = branch
-        self.schema_prefix = 'package://' + self.support_package + '/'
+        self.schema_prefix = "package://" + self.support_package + "/"
         self.relative_path = support_package if relative_path is None else relative_path
 
     def build_url(self, file):
@@ -56,15 +56,17 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         str
             The file's url.
         """
-        relative_path_component = None if self.relative_path == '.' else self.relative_path
+        relative_path_component = (
+            None if self.relative_path == "." else self.relative_path
+        )
         url_components = [
             GithubPackageMeshLoader.HOST,
             self.repository,
             self.branch,
             relative_path_component,
-            file
+            file,
         ]
-        return '/'.join(filter(None, url_components))
+        return "/".join(filter(None, url_components))
 
     def load_urdf(self, file):
         """Load a URDF file from a Github support package repository.
@@ -75,7 +77,7 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
             File name. Following convention, the file should reside
             inside a ``urdf`` folder.
         """
-        url = self.build_url('urdf/{}'.format(file))
+        url = self.build_url("urdf/{}".format(file))
         return urlopen(url)
 
     def can_load_mesh(self, url):

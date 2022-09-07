@@ -50,12 +50,25 @@ class PolygonArtist(GHArtist, PrimitiveArtist):
         _points = map(list, self.primitive.points)
         result = []
         if show_points:
-            points = [{'pos': point, 'color': color, 'name': self.primitive.name} for point in _points]
+            points = [
+                {"pos": point, "color": color, "name": self.primitive.name}
+                for point in _points
+            ]
             result += compas_ghpython.draw_points(points)
         if show_edges:
-            lines = [{'start': list(a), 'end': list(b), 'color': color, 'name': self.primitive.name} for a, b in self.primitive.lines]
+            lines = [
+                {
+                    "start": list(a),
+                    "end": list(b),
+                    "color": color,
+                    "name": self.primitive.name,
+                }
+                for a, b in self.primitive.lines
+            ]
             result += compas_ghpython.draw_lines(lines)
         if show_face:
-            polygons = [{'points': _points, 'color': color, 'name': self.primitive.name}]
+            polygons = [
+                {"points": _points, "color": color, "name": self.primitive.name}
+            ]
             result += compas_ghpython.draw_faces(polygons)
         return result

@@ -53,10 +53,12 @@ class BoxArtist(BlenderArtist, ShapeArtist):
 
     """
 
-    def __init__(self,
-                 box: Box,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        box: Box,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
 
         super().__init__(shape=box, collection=collection or box.name, **kwargs)
 
@@ -77,5 +79,11 @@ class BoxArtist(BlenderArtist, ShapeArtist):
         """
         color = Color.coerce(color) or self.color
         vertices, faces = self.shape.to_vertices_and_faces()
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
+        obj = compas_blender.draw_mesh(
+            vertices,
+            faces,
+            name=self.shape.name,
+            color=color,
+            collection=self.collection,
+        )
         return [obj]

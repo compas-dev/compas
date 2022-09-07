@@ -5,10 +5,7 @@ from __future__ import division
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
 
-__all__ = [
-    'network_join_edges',
-    'network_polylines'
-]
+__all__ = ["network_join_edges", "network_polylines"]
 
 
 def network_join_edges(network, key):
@@ -110,13 +107,25 @@ def network_polylines(network, splits=None):
         while polyline[0] != polyline[-1]:
 
             # ... or until both end are non-two-valent vertices
-            if len(network.neighbors(polyline[-1])) != 2 or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys:
+            if (
+                len(network.neighbors(polyline[-1])) != 2
+                or geometric_key(network.node_coordinates(polyline[-1]))
+                in stop_geom_keys
+            ):
                 polyline = list(reversed(polyline))
-                if len(network.neighbors(polyline[-1])) != 2 or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys:
+                if (
+                    len(network.neighbors(polyline[-1])) != 2
+                    or geometric_key(network.node_coordinates(polyline[-1]))
+                    in stop_geom_keys
+                ):
                     break
 
             # add next edge
-            polyline.append([nbr for nbr in network.neighbors(polyline[-1]) if nbr != polyline[-2]][0])
+            polyline.append(
+                [nbr for nbr in network.neighbors(polyline[-1]) if nbr != polyline[-2]][
+                    0
+                ]
+            )
 
         # delete polyline edges from the list of univisted edges
         for u, v in pairwise(polyline):
@@ -127,4 +136,6 @@ def network_polylines(network, splits=None):
 
         polylines.append(polyline)
 
-    return [[network.node_coordinates(vkey) for vkey in polyline] for polyline in polylines]
+    return [
+        [network.node_coordinates(vkey) for vkey in polyline] for polyline in polylines
+    ]

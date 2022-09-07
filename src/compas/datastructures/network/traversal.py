@@ -5,9 +5,7 @@ from __future__ import division
 from compas.topology import shortest_path
 
 
-__all__ = [
-    'network_shortest_path'
-]
+__all__ = ["network_shortest_path"]
 
 
 def network_shortest_path(network, start, end):

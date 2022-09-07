@@ -6,18 +6,16 @@ import warnings
 
 
 __all__ = [
-    'Float',
-    'RGBColour',
+    "Float",
+    "RGBColour",
 ]
 
 
 class Float(object):
     def __init__(self):
-        warnings.warn("This class will be removed.",
-                      DeprecationWarning)
+        warnings.warn("This class will be removed.", DeprecationWarning)
 
 
 class RGBColour(object):
     def __init__(self):
-        warnings.warn("This class will be removed.",
-                      DeprecationWarning)
+        warnings.warn("This class will be removed.", DeprecationWarning)

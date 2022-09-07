@@ -7,7 +7,7 @@ from compas.geometry import bounding_box
 
 
 __all__ = [
-    'volmesh_bounding_box',
+    "volmesh_bounding_box",
 ]
 
 
@@ -25,5 +25,5 @@ def volmesh_bounding_box(volmesh):
         The 8 corner points of the bounding box.
 
     """
-    xyz = volmesh.vertices_attributes('xyz', vertices=list(volmesh.vertices()))
+    xyz = volmesh.vertices_attributes("xyz", vertices=list(volmesh.vertices()))
     return bounding_box(xyz)

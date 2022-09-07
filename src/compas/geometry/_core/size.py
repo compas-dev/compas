@@ -21,11 +21,11 @@ from compas.geometry._core import normal_triangle_xy
 
 
 __all__ = [
-    'area_polygon',
-    'area_polygon_xy',
-    'area_triangle',
-    'area_triangle_xy',
-    'volume_polyhedron',
+    "area_polygon",
+    "area_polygon_xy",
+    "area_triangle",
+    "area_triangle_xy",
+    "volume_polyhedron",
 ]
 
 
@@ -193,4 +193,4 @@ def volume_polyhedron(polyhedron):
             ac = subtract_vectors(c, a)
             n = cross_vectors(ab, ac)
             V += dot_vectors(a, n)
-    return V / 6.
+    return V / 6.0

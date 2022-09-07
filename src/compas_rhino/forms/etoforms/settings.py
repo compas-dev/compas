@@ -5,6 +5,7 @@ from __future__ import division
 from ast import literal_eval
 
 import clr
+
 clr.AddReference("Eto")
 clr.AddReference("Rhino.UI")
 
@@ -14,12 +15,11 @@ import Eto.Drawing  # noqa: E402
 import Eto.Forms  # noqa: E402
 
 
-__all__ = ['SettingsForm']
+__all__ = ["SettingsForm"]
 
 
 class SettingsForm(Eto.Forms.Dialog[bool]):
-
-    def __init__(self, settings, title='Settings'):
+    def __init__(self, settings, title="Settings"):
         # super(SettingsForm, self).__init__()
         self._settings = None
         self._names = None
@@ -28,17 +28,19 @@ class SettingsForm(Eto.Forms.Dialog[bool]):
 
         self.table = table = Eto.Forms.GridView()
         table.ShowHeader = True
-        table.DataStore = [[name, value] for name, value in zip(self.names, self.values)]
+        table.DataStore = [
+            [name, value] for name, value in zip(self.names, self.values)
+        ]
         table.Height = 300
 
         c1 = Eto.Forms.GridColumn()
-        c1.HeaderText = 'Name'
+        c1.HeaderText = "Name"
         c1.Editable = False
         c1.DataCell = Eto.Forms.TextBoxCell(0)
         table.Columns.Add(c1)
 
         c2 = Eto.Forms.GridColumn()
-        c2.HeaderText = 'Value'
+        c2.HeaderText = "Value"
         c2.Editable = True
         c2.DataCell = Eto.Forms.TextBoxCell(1)
         table.Columns.Add(c2)
@@ -60,13 +62,13 @@ class SettingsForm(Eto.Forms.Dialog[bool]):
 
     @property
     def ok(self):
-        self.DefaultButton = Eto.Forms.Button(Text='OK')
+        self.DefaultButton = Eto.Forms.Button(Text="OK")
         self.DefaultButton.Click += self.on_ok
         return self.DefaultButton
 
     @property
     def cancel(self):
-        self.AbortButton = Eto.Forms.Button(Text='Cancel')
+        self.AbortButton = Eto.Forms.Button(Text="Cancel")
         self.AbortButton.Click += self.on_cancel
         return self.AbortButton
 

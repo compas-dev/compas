@@ -27,7 +27,7 @@ except ImportError:
         compas.raise_if_ironpython()
 
 
-__all__ = ['XFunc']
+__all__ = ["XFunc"]
 
 
 WRAPPER = """
@@ -222,10 +222,22 @@ class XFunc(object):
 
     """
 
-    def __init__(self, funcname, basedir='.', tmpdir=None, delete_files=True,
-                 verbose=True, callback=None, callback_args=None, python=None,
-                 paths=None, serializer='json',
-                 argtypes=None, kwargtypes=None, restypes=None):
+    def __init__(
+        self,
+        funcname,
+        basedir=".",
+        tmpdir=None,
+        delete_files=True,
+        verbose=True,
+        callback=None,
+        callback_args=None,
+        python=None,
+        paths=None,
+        serializer="json",
+        argtypes=None,
+        kwargtypes=None,
+        restypes=None,
+    ):
         self._basedir = None
         self._tmpdir = None
         self._callback = None
@@ -233,7 +245,7 @@ class XFunc(object):
         self._serializer = None
         self.funcname = funcname
         self.basedir = basedir
-        self.tmpdir = tmpdir or tempfile.mkdtemp('compas_xfunc')
+        self.tmpdir = tmpdir or tempfile.mkdtemp("compas_xfunc")
         self.delete_files = delete_files
         self.verbose = verbose
         self.callback = callback
@@ -267,7 +279,9 @@ class XFunc(object):
         if not os.path.isdir(tmpdir):
             raise Exception("tmpdir is not a directory: %s" % tmpdir)
         if not os.access(tmpdir, os.W_OK):
-            raise Exception("You do not have write access to 'tmpdir'. Please set the 'tmpdir' attribute to a different directory.")
+            raise Exception(
+                "You do not have write access to 'tmpdir'. Please set the 'tmpdir' attribute to a different directory."
+            )
         self._tmpdir = os.path.abspath(tmpdir)
 
     @property
@@ -296,17 +310,17 @@ class XFunc(object):
 
     @serializer.setter
     def serializer(self, serializer):
-        if serializer not in ('json', 'pickle'):
+        if serializer not in ("json", "pickle"):
             raise Exception("*serializer* should be one of {'json', 'pickle'}.")
         self._serializer = serializer
 
     @property
     def ipath(self):
-        return os.path.join(self.tmpdir, '%s.in' % self.funcname)
+        return os.path.join(self.tmpdir, "%s.in" % self.funcname)
 
     @property
     def opath(self):
-        return os.path.join(self.tmpdir, '%s.out' % self.funcname)
+        return os.path.join(self.tmpdir, "%s.out" % self.funcname)
 
     def __call__(self, *args, **kwargs):
         """Make a call to the wrapped function.
@@ -334,25 +348,32 @@ class XFunc(object):
         #     kwargs = {name: value for name, value in kwargs.items()}
 
         idict = {
-            'args': args,
-            'kwargs': kwargs,
+            "args": args,
+            "kwargs": kwargs,
             # 'argtypes': self.argtypes,
             # 'kwargtypes': self.kwargtypes,
             # 'restypes': self.restypes
         }
 
-        if self.serializer == 'json':
-            with open(self.ipath, 'w+') as fo:
+        if self.serializer == "json":
+            with open(self.ipath, "w+") as fo:
                 json.dump(idict, fo, cls=DataEncoder)
         else:
-            with open(self.ipath, 'wb+') as fo:
+            with open(self.ipath, "wb+") as fo:
                 pickle.dump(idict, fo, protocol=2)
 
-        with open(self.opath, 'w+') as fh:
-            fh.write('')
+        with open(self.opath, "w+") as fh:
+            fh.write("")
 
         env = compas._os.prepare_environment()
-        args = [WRAPPER, self.basedir, self.funcname, self.ipath, self.opath, self.serializer]
+        args = [
+            WRAPPER,
+            self.basedir,
+            self.funcname,
+            self.ipath,
+            self.opath,
+            self.serializer,
+        ]
 
         try:
             Popen
@@ -368,7 +389,9 @@ class XFunc(object):
             process.StartInfo.RedirectStandardOutput = True
             process.StartInfo.RedirectStandardError = True
             process.StartInfo.FileName = self.python
-            process.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4} {5}'.format(*args)
+            process.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4} {5}'.format(
+                *args
+            )
             process.Start()
             process.WaitForExit()
 
@@ -385,7 +408,7 @@ class XFunc(object):
             # stderr = p.StandardError.ReadToEnd()
 
         else:
-            process_args = [self.python, '-u', '-c'] + args
+            process_args = [self.python, "-u", "-c"] + args
 
             process = Popen(process_args, stderr=PIPE, stdout=PIPE, env=env)
 
@@ -396,16 +419,16 @@ class XFunc(object):
                 if self.verbose:
                     print(line)
 
-        if self.serializer == 'json':
-            with open(self.opath, 'r') as fo:
+        if self.serializer == "json":
+            with open(self.opath, "r") as fo:
                 odict = json.load(fo, cls=DataDecoder)
         else:
-            with open(self.opath, 'rb') as fo:
+            with open(self.opath, "rb") as fo:
                 odict = pickle.load(fo)
 
-        self.data = odict['data']
-        self.profile = odict['profile']
-        self.error = odict['error']
+        self.data = odict["data"]
+        self.profile = odict["profile"]
+        self.error = odict["error"]
 
         if self.delete_files:
             try:

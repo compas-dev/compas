@@ -11,27 +11,27 @@ from compas.geometry import Frame
 from .curve import Curve
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbscurve(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbscurve_from_parameters(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbscurve_from_points(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbscurve_from_step(cls, *args, **kwargs):
     raise NotImplementedError
 
@@ -76,18 +76,18 @@ class NurbsCurve(Curve):
 
     def __str__(self):
         lines = [
-            'NurbsCurve',
-            '----------',
-            'Points: {}'.format(self.points),
-            'Weights: {}'.format(self.weights),
-            'Knots: {}'.format(self.knots),
-            'Mults: {}'.format(self.multiplicities),
-            'Degree: {}'.format(self.degree),
-            'Order: {}'.format(self.order),
-            'Domain: {}'.format(self.domain),
-            'Closed: {}'.format(self.is_closed),
-            'Periodic: {}'.format(self.is_periodic),
-            'Rational: {}'.format(self.is_rational),
+            "NurbsCurve",
+            "----------",
+            "Points: {}".format(self.points),
+            "Weights: {}".format(self.weights),
+            "Knots: {}".format(self.knots),
+            "Mults: {}".format(self.multiplicities),
+            "Degree: {}".format(self.degree),
+            "Order: {}".format(self.order),
+            "Domain: {}".format(self.domain),
+            "Closed: {}".format(self.is_closed),
+            "Periodic: {}".format(self.is_periodic),
+            "Rational: {}".format(self.is_rational),
         ]
         return "\n".join(lines)
 
@@ -102,14 +102,17 @@ class NurbsCurve(Curve):
         from compas.data import is_float3
         from compas.data import is_sequence_of_int
         from compas.data import is_sequence_of_float
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points),
-            'weights': is_sequence_of_float,
-            'knots': is_sequence_of_float,
-            'multiplicities': is_sequence_of_int,
-            'degree': int,
-            'is_periodic': bool
-        })
+
+        return Schema(
+            {
+                "points": lambda points: all(is_float3(point) for point in points),
+                "weights": is_sequence_of_float,
+                "knots": is_sequence_of_float,
+                "multiplicities": is_sequence_of_int,
+                "degree": int,
+                "is_periodic": bool,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
@@ -119,18 +122,18 @@ class NurbsCurve(Curve):
     @property
     def dtype(self):
         """str : The type of the object in the form of a '2-level' import and a class name."""
-        return 'compas.geometry/NurbsCurve'
+        return "compas.geometry/NurbsCurve"
 
     @property
     def data(self):
         """dict : Representation of the curve as a dict containing only native Python data."""
         return {
-            'points': [point.data for point in self.points],
-            'weights': self.weights,
-            'knots': self.knots,
-            'multiplicities': self.multiplicities,
-            'degree': self.degree,
-            'is_periodic': self.is_periodic
+            "points": [point.data for point in self.points],
+            "weights": self.weights,
+            "knots": self.knots,
+            "multiplicities": self.multiplicities,
+            "degree": self.degree,
+            "is_periodic": self.is_periodic,
         }
 
     @data.setter
@@ -152,13 +155,15 @@ class NurbsCurve(Curve):
             The constructed curve.
 
         """
-        points = [Point.from_data(point) for point in data['points']]
-        weights = data['weights']
-        knots = data['knots']
-        multiplicities = data['multiplicities']
-        degree = data['degree']
-        is_periodic = data['is_periodic']
-        return cls.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
+        points = [Point.from_data(point) for point in data["points"]]
+        weights = data["weights"]
+        knots = data["knots"]
+        multiplicities = data["multiplicities"]
+        degree = data["degree"]
+        is_periodic = data["is_periodic"]
+        return cls.from_parameters(
+            points, weights, knots, multiplicities, degree, is_periodic
+        )
 
     # ==============================================================================
     # Properties
@@ -220,7 +225,9 @@ class NurbsCurve(Curve):
         return new_nurbscurve_from_step(cls, filepath)
 
     @classmethod
-    def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
+    def from_parameters(
+        cls, points, weights, knots, multiplicities, degree, is_periodic=False
+    ):
         """Construct a NURBS curve from explicit curve parameters.
 
         Parameters
@@ -243,7 +250,9 @@ class NurbsCurve(Curve):
         :class:`~compas.geometry.NurbsCurve`
 
         """
-        return new_nurbscurve_from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False)
+        return new_nurbscurve_from_parameters(
+            cls, points, weights, knots, multiplicities, degree, is_periodic=False
+        )
 
     @classmethod
     def from_points(cls, points, degree=3):
@@ -322,9 +331,9 @@ class NurbsCurve(Curve):
             frame.point + dy + dx,
             frame.point + dx,
             frame.point - dy + dx,
-            frame.point - dy
+            frame.point - dy,
         ]
-        knots = [0, 1/4, 1/2, 3/4, 1]
+        knots = [0, 1 / 4, 1 / 2, 3 / 4, 1]
         mults = [3, 2, 2, 2, 3]
         weights = [1, w, 1, w, 1, w, 1, w, 1]
         return cls.from_parameters(
@@ -358,9 +367,9 @@ class NurbsCurve(Curve):
             frame.point + dy + dx,
             frame.point + dx,
             frame.point - dy + dx,
-            frame.point - dy
+            frame.point - dy,
         ]
-        knots = [0, 1/4, 1/2, 3/4, 1]
+        knots = [0, 1 / 4, 1 / 2, 3 / 4, 1]
         mults = [3, 2, 2, 2, 3]
         weights = [1, w, 1, w, 1, w, 1, w, 1]
         return cls.from_parameters(
@@ -385,7 +394,7 @@ class NurbsCurve(Curve):
             weights=[1.0, 1.0],
             knots=[0.0, 1.0],
             multiplicities=[2, 2],
-            degree=1
+            degree=1,
         )
 
     # ==============================================================================
@@ -410,5 +419,5 @@ class NurbsCurve(Curve):
             self.knots,
             self.multiplicities,
             self.degree,
-            self.is_periodic
+            self.is_periodic,
         )

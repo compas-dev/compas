@@ -6,52 +6,52 @@ from math import sqrt
 from math import fabs
 
 __all__ = [
-    'close',
-    'allclose',
-    'argmin',
-    'argmax',
-    'add_vectors',
-    'add_vectors_xy',
-    'sum_vectors',
-    'cross_vectors',
-    'cross_vectors_xy',
-    'divide_vectors',
-    'divide_vectors_xy',
-    'dot_vectors',
-    'dot_vectors_xy',
-    'length_vector',
-    'length_vector_xy',
-    'length_vector_sqrd',
-    'length_vector_sqrd_xy',
-    'multiply_matrices',
-    'multiply_matrix_vector',
-    'multiply_vectors',
-    'multiply_vectors_xy',
-    'norm_vector',
-    'norm_vectors',
-    'normalize_vector',
-    'normalize_vector_xy',
-    'normalize_vectors',
-    'normalize_vectors_xy',
-    'homogenize_vectors',
-    'dehomogenize_vectors',
-    'orthonormalize_vectors',
-    'power_vector',
-    'power_vectors',
-    'scale_vector',
-    'scale_vector_xy',
-    'scale_vectors',
-    'scale_vectors_xy',
-    'square_vector',
-    'square_vectors',
-    'subtract_vectors',
-    'subtract_vectors_xy',
-    'transpose_matrix',
-    'vector_component',
-    'vector_component_xy',
-    'vector_average',
-    'vector_variance',
-    'vector_standard_deviation',
+    "close",
+    "allclose",
+    "argmin",
+    "argmax",
+    "add_vectors",
+    "add_vectors_xy",
+    "sum_vectors",
+    "cross_vectors",
+    "cross_vectors_xy",
+    "divide_vectors",
+    "divide_vectors_xy",
+    "dot_vectors",
+    "dot_vectors_xy",
+    "length_vector",
+    "length_vector_xy",
+    "length_vector_sqrd",
+    "length_vector_sqrd_xy",
+    "multiply_matrices",
+    "multiply_matrix_vector",
+    "multiply_vectors",
+    "multiply_vectors_xy",
+    "norm_vector",
+    "norm_vectors",
+    "normalize_vector",
+    "normalize_vector_xy",
+    "normalize_vectors",
+    "normalize_vectors_xy",
+    "homogenize_vectors",
+    "dehomogenize_vectors",
+    "orthonormalize_vectors",
+    "power_vector",
+    "power_vectors",
+    "scale_vector",
+    "scale_vector_xy",
+    "scale_vectors",
+    "scale_vectors_xy",
+    "square_vector",
+    "square_vectors",
+    "subtract_vectors",
+    "subtract_vectors_xy",
+    "transpose_matrix",
+    "vector_component",
+    "vector_component_xy",
+    "vector_average",
+    "vector_variance",
+    "vector_standard_deviation",
 ]
 
 
@@ -85,7 +85,7 @@ def vector_variance(vector):
         The variance value.
     """
     m = vector_average(vector)
-    return (sum([(i - m) ** 2 for i in vector]) / float(len(vector))) ** .5
+    return (sum([(i - m) ** 2 for i in vector]) / float(len(vector))) ** 0.5
 
 
 def vector_standard_deviation(vector):
@@ -101,7 +101,7 @@ def vector_standard_deviation(vector):
     float
         The standard deviation value.
     """
-    return vector_variance(vector) ** .5
+    return vector_variance(vector) ** 0.5
 
 
 def close(value1, value2, tol=1e-05):
@@ -166,7 +166,10 @@ def allclose(l1, l2, tol=1e-05):
 
     """
 
-    if any(not allclose(a, b, tol) if hasattr(a, '__iter__') else fabs(a - b) > tol for a, b in zip(l1, l2)):
+    if any(
+        not allclose(a, b, tol) if hasattr(a, "__iter__") else fabs(a - b) > tol
+        for a, b in zip(l1, l2)
+    ):
         return False
     return True
 
@@ -230,6 +233,7 @@ def argmin(values):
     """
     return min(range(len(values)), key=lambda i: values[i])
 
+
 # ==============================================================================
 # these return something of smaller dimension/length/...
 # something_(of)vector/s
@@ -289,7 +293,7 @@ def norm_vector(vector):
     True
 
     """
-    return sqrt(sum(axis ** 2 for axis in vector))
+    return sqrt(sum(axis**2 for axis in vector))
 
 
 def norm_vectors(vectors):
@@ -634,7 +638,7 @@ def power_vector(vector, power):
     >>>
 
     """
-    return [axis ** power for axis in vector]
+    return [axis**power for axis in vector]
 
 
 def power_vectors(vectors, power):
@@ -944,9 +948,11 @@ def cross_vectors(u, v):
     [0.0, 0.0, 1.0]
 
     """
-    return [u[1] * v[2] - u[2] * v[1],
-            u[2] * v[0] - u[0] * v[2],
-            u[0] * v[1] - u[1] * v[0]]
+    return [
+        u[1] * v[2] - u[2] * v[1],
+        u[2] * v[0] - u[0] * v[2],
+        u[0] * v[1] - u[1] * v[0],
+    ]
 
 
 def cross_vectors_xy(u, v):
@@ -1132,7 +1138,7 @@ def transpose_matrix(M):
         The result matrix.
 
     """
-    return list(map(list, zip(* list(M))))
+    return list(map(list, zip(*list(M))))
 
 
 def multiply_matrices(A, B):
@@ -1176,13 +1182,13 @@ def multiply_matrices(A, B):
     """
     A = list(A)
     B = list(B)
-    n = len(B)     # number of rows in B
+    n = len(B)  # number of rows in B
     o = len(B[0])  # number of cols in B
     if not all(len(row) == o for row in B):
-        raise Exception('Row length in matrix B is inconsistent.')
+        raise Exception("Row length in matrix B is inconsistent.")
     if not all([len(row) == n for row in A]):
-        raise Exception('Matrix shapes are not compatible.')
-    B = list(zip(* list(B)))
+        raise Exception("Matrix shapes are not compatible.")
+    B = list(zip(*list(B)))
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 
@@ -1227,7 +1233,7 @@ def multiply_matrix_vector(A, b):
     """
     n = len(b)
     if not all([len(row) == n for row in A]):
-        raise Exception('Matrix shape is not compatible with vector length.')
+        raise Exception("Matrix shape is not compatible with vector length.")
     return [dot_vectors(row, b) for row in A]
 
 
@@ -1317,7 +1323,9 @@ def orthonormalize_vectors(vectors):
     basis = []
     for v in vectors:
         if basis:
-            e = subtract_vectors(v, sum_vectors([vector_component(v, b) for b in basis]))
+            e = subtract_vectors(
+                v, sum_vectors([vector_component(v, b) for b in basis])
+            )
         else:
             e = v
         if any(axis > 1e-10 for axis in e):

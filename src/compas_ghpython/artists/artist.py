@@ -6,8 +6,7 @@ from compas.artists import Artist
 
 
 class GHArtist(Artist):
-    """Base class for all GH artists.
-    """
+    """Base class for all GH artists."""
 
     def __init__(self, **kwargs):
         super(GHArtist, self).__init__(**kwargs)

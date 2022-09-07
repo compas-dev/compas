@@ -59,7 +59,7 @@ class Scale(Transformation):
             scale, _, _, _, _ = decompose_matrix(matrix)
             check = matrix_from_scale_factors(scale)
             if not allclose(flatten(matrix), flatten(check)):
-                raise ValueError('This is not a proper scale matrix.')
+                raise ValueError("This is not a proper scale matrix.")
         super(Scale, self).__init__(matrix=matrix)
 
     def __repr__(self):

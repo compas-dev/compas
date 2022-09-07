@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -30,10 +29,12 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.linalg import spsolve
 
 
-__all__ = ['topop_numpy']
+__all__ = ["topop_numpy"]
 
 
-def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None):
+def topop_numpy(
+    nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None
+):
     """Topology optimisation in 2D.
 
     Parameters
@@ -76,25 +77,36 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
     # Finite element analysis
 
     v = 0.3
-    E = 1.
-    Emin = 10**(-10)
+    E = 1.0
+    Emin = 10 ** (-10)
 
-    A11 = array([[12, +3, -6, -3], [+3, 12, +3, +0], [-6, +3, 12, -3], [-3, +0, -3, 12]])
-    A12 = array([[-6, -3, +0, +3], [-3, -6, -3, -6], [+0, -3, -6, +3], [+3, -6, +3, -6]])
-    B11 = array([[-4, +3, -2, +9], [+3, -4, -9, +4], [-2, -9, -4, -3], [+9, +4, -3, -4]])
-    B12 = array([[+2, -3, +4, -9], [-3, +2, +9, -2], [+4, +9, +2, +3], [-9, -2, +3, +2]])
+    A11 = array(
+        [[12, +3, -6, -3], [+3, 12, +3, +0], [-6, +3, 12, -3], [-3, +0, -3, 12]]
+    )
+    A12 = array(
+        [[-6, -3, +0, +3], [-3, -6, -3, -6], [+0, -3, -6, +3], [+3, -6, +3, -6]]
+    )
+    B11 = array(
+        [[-4, +3, -2, +9], [+3, -4, -9, +4], [-2, -9, -4, -3], [+9, +4, -3, -4]]
+    )
+    B12 = array(
+        [[+2, -3, +4, -9], [-3, +2, +9, -2], [+4, +9, +2, +3], [-9, -2, +3, +2]]
+    )
     A21 = A12.transpose()
     B21 = B12.transpose()
     A = vstack([hstack([A11, A12]), hstack([A21, A11])])
     B = vstack([hstack([B11, B12]), hstack([B21, B11])])
 
     Ke = 1 / (1 - v**2) / 24 * (A + v * B)
-    Ker = ravel(Ke, order='F')[:, newaxis]
-    nodes = reshape(range(1, nn + 1), (ny, nx), order='F')
-    eVec = tile(reshape(2 * nodes[:-1, :-1], (ne, 1), order='F'), (1, 8))
-    edof = eVec + tile(hstack([array([0, 1]), 2 * nely + array([2, 3, 0, 1]), array([-2, -1])]), (ne, 1))
-    iK = reshape(kron(edof, ones((8, 1))).transpose(), (64 * ne), order='F')
-    jK = reshape(kron(edof, ones((1, 8))).transpose(), (64 * ne), order='F')
+    Ker = ravel(Ke, order="F")[:, newaxis]
+    nodes = reshape(range(1, nn + 1), (ny, nx), order="F")
+    eVec = tile(reshape(2 * nodes[:-1, :-1], (ne, 1), order="F"), (1, 8))
+    edof = eVec + tile(
+        hstack([array([0, 1]), 2 * nely + array([2, 3, 0, 1]), array([-2, -1])]),
+        (ne, 1),
+    )
+    iK = reshape(kron(edof, ones((8, 1))).transpose(), (64 * ne), order="F")
+    jK = reshape(kron(edof, ones((1, 8))).transpose(), (64 * ne), order="F")
 
     # Supports
 
@@ -103,7 +115,7 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
 
     for support, B in supports.items():
 
-        jb, ib = [int(i) for i in support.split('-')]
+        jb, ib = [int(i) for i in support.split("-")]
         Bx, By = B
         node = int(jb * ny + ib)
 
@@ -122,7 +134,7 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
 
     for load, P in loads.items():
 
-        jp, ip = [int(i) for i in load.split('-')]
+        jp, ip = [int(i) for i in load.split("-")]
         Px, Py = P
         node = int(jp * ny + ip)
 
@@ -135,7 +147,7 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
 
     # Filter
 
-    iH = zeros(ne * (2 * (int(ceil(rmin)) - 1) + 1)**2, dtype=int64)
+    iH = zeros(ne * (2 * (int(ceil(rmin)) - 1) + 1) ** 2, dtype=int64)
     jH = zeros(iH.shape, dtype=int64)
     sH = zeros(iH.shape)
     k = 0
@@ -158,7 +170,7 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
                     e2 = i2 * nely + j2
                     iH[k] = e1
                     jH[k] = e2
-                    sH[k] = max([0, rmin - sqrt((i1 - i2)**2 + (j1 - j2)**2)])
+                    sH[k] = max([0, rmin - sqrt((i1 - i2) ** 2 + (j1 - j2) ** 2)])
 
     H = coo_matrix((sH, (iH, jH)))
     Hs = sum(H.toarray(), 1)
@@ -170,26 +182,34 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
     move = 0.2
 
     x = tile(volfrac, (nely, nelx))
-    xP = x * 1.
+    xP = x * 1.0
     nones = ones((ne)) * 0.001
 
     while change > 0.1:
 
         # FE
 
-        xrav = ravel(xP, order='F').transpose()
-        sK = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (64 * ne), order='F')
-        K = coo_matrix((sK, (asarray(iK, dtype=int64), asarray(jK, dtype=int64)))).tocsr()
+        xrav = ravel(xP, order="F").transpose()
+        sK = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (64 * ne), order="F")
+        K = coo_matrix(
+            (sK, (asarray(iK, dtype=int64), asarray(jK, dtype=int64)))
+        ).tocsr()
         Kind = (K.tocsc()[:, free]).tocsr()[free, :]
         U[free] = spsolve(Kind, Find)[:, newaxis]
 
         # Objective function
 
-        ce = reshape(sum(dot(squeeze(U[edof]), Ke) * squeeze(U[edof]), 1), (nely, nelx), order='F')
+        ce = reshape(
+            sum(dot(squeeze(U[edof]), Ke) * squeeze(U[edof]), 1),
+            (nely, nelx),
+            order="F",
+        )
         c = sum(sum((Emin + xP**penal * (E - Emin)) * ce))
-        dc = -penal * (E - Emin) * xP**(penal - 1) * ce
-        xdc = squeeze(H.dot(ravel(x * dc, order='F')[:, newaxis]))
-        dc = reshape(xdc / Hs / maximum(nones, ravel(x, order='F')), (nely, nelx), order='F')
+        dc = -penal * (E - Emin) * xP ** (penal - 1) * ce
+        xdc = squeeze(H.dot(ravel(x * dc, order="F")[:, newaxis]))
+        dc = reshape(
+            xdc / Hs / maximum(nones, ravel(x, order="F")), (nely, nelx), order="F"
+        )
 
         # Lagrange mulipliers
 
@@ -202,7 +222,7 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
             sdv = sqrt(-dc / dv / lmid)
             min1 = minimum(x + move, x * sdv)
             xn = maximum(0, maximum(x - move, minimum(1, min1)))
-            xP = xn * 1.
+            xP = xn * 1.0
 
             if sum(xP) > volfrac * ne:
                 l1 = lmid
@@ -213,10 +233,10 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
 
         # Update
 
-        x = xn * 1.
+        x = xn * 1.0
         iteration += 1
 
-        print('Iteration: {0}  Compliance: {1:.4g}'.format(iteration, c))
+        print("Iteration: {0}  Compliance: {1:.4g}".format(iteration, c))
 
         if callback:
             callback(x)

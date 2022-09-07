@@ -25,10 +25,14 @@ def get_morph_function(weights):
         return weight * target_coordinate
 
     def weighted_sum(vertex_coordinate, *targets_coordinate):
-        return vertex_coordinate + math.fsum(map(apply_weight, weights, targets_coordinate))
+        return vertex_coordinate + math.fsum(
+            map(apply_weight, weights, targets_coordinate)
+        )
 
     def apply_morph_target(vertex, *targets):
-        return tuple(map(weighted_sum, vertex, *targets)) + ((vertex[-1],) if len(vertex) == 4 else ())
+        return tuple(map(weighted_sum, vertex, *targets)) + (
+            (vertex[-1],) if len(vertex) == 4 else ()
+        )
 
     return apply_morph_target
 
@@ -43,13 +47,23 @@ def get_weighted_mesh_vertices(mesh, weights):
     for primitive_data in mesh.primitive_data_list:
         position_target_data = [target["POSITION"] for target in primitive_data.targets]
         apply_morph_targets = get_morph_function(weights)
-        vertices += list(map(apply_morph_targets, primitive_data.attributes["POSITION"], *position_target_data))
+        vertices += list(
+            map(
+                apply_morph_targets,
+                primitive_data.attributes["POSITION"],
+                *position_target_data
+            )
+        )
     return vertices
 
 
 def get_unweighted_primitive_vertices(primitive_data_list):
     """This returns the vertices within a primitive without any weighted morph targets applied."""
-    return list(itertools.chain(*[primitive.attributes["POSITION"] for primitive in primitive_data_list]))
+    return list(
+        itertools.chain(
+            *[primitive.attributes["POSITION"] for primitive in primitive_data_list]
+        )
+    )
 
 
 def get_mode(faces):

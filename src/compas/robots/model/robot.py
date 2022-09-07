@@ -31,7 +31,7 @@ from compas.robots.resources import DefaultMeshLoader
 from compas.robots.resources import LocalPackageMeshLoader
 from compas.topology import shortest_path
 
-__all__ = ['RobotModel']
+__all__ = ["RobotModel"]
 
 
 class RobotModel(Data):
@@ -62,7 +62,7 @@ class RobotModel(Data):
 
     def __init__(self, name=None, joints=(), links=(), materials=(), **kwargs):
         super(RobotModel, self).__init__()
-        self.name = name or 'Robot'
+        self.name = name or "Robot"
         self.joints = list(joints or [])
         self.links = list(links or [])
         self.materials = list(materials or [])
@@ -70,13 +70,13 @@ class RobotModel(Data):
         self.root = None
         self._rebuild_tree()
         self._create(self.root, Transformation())
-        self._scale_factor = 1.
+        self._scale_factor = 1.0
 
     def get_urdf_element(self):
-        attributes = {'name': self.name}
+        attributes = {"name": self.name}
         attributes.update(self.attr)
         elements = self.links + self.joints + self.materials
-        return URDFElement('robot', attributes, elements)
+        return URDFElement("robot", attributes, elements)
 
     @property
     def data(self):
@@ -92,12 +92,12 @@ class RobotModel(Data):
 
     def _get_data(self):
         return {
-            'name': self.name,
-            'joints': [joint.data for joint in self.joints],
-            'links': [link.data for link in self.links],
-            'materials': [material.data for material in self.materials],
-            'attr': _attr_to_data(self.attr),
-            '_scale_factor': self._scale_factor,
+            "name": self.name,
+            "joints": [joint.data for joint in self.joints],
+            "links": [link.data for link in self.links],
+            "materials": [material.data for material in self.materials],
+            "attr": _attr_to_data(self.attr),
+            "_scale_factor": self._scale_factor,
         }
 
     @data.setter
@@ -105,12 +105,12 @@ class RobotModel(Data):
         self._set_data(data)
 
     def _set_data(self, data):
-        self.name = data.get('name', '')
-        self.joints = [Joint.from_data(d) for d in data.get('joints', [])]
-        self.links = [Link.from_data(d) for d in data.get('links', [])]
-        self.materials = [Material.from_data(d) for d in data.get('materials', [])]
-        self.attr = _attr_from_data(data.get('attr', {}))
-        self._scale_factor = data.get('_scale_factor', 1.)
+        self.name = data.get("name", "")
+        self.joints = [Joint.from_data(d) for d in data.get("joints", [])]
+        self.links = [Link.from_data(d) for d in data.get("links", [])]
+        self.materials = [Material.from_data(d) for d in data.get("materials", [])]
+        self.attr = _attr_from_data(data.get("attr", {}))
+        self._scale_factor = data.get("_scale_factor", 1.0)
 
         self._rebuild_tree()
 
@@ -202,7 +202,7 @@ class RobotModel(Data):
 
     @classmethod
     def ur5(cls, load_geometry=False):
-        """"Construct a UR5 robot model.
+        """ "Construct a UR5 robot model.
 
         Parameters
         ----------
@@ -215,9 +215,9 @@ class RobotModel(Data):
             A robot model instance.
 
         """
-        model = cls.from_urdf_file(compas.get('ur_description/urdf/ur5.urdf'))
+        model = cls.from_urdf_file(compas.get("ur_description/urdf/ur5.urdf"))
         if load_geometry:
-            loader = LocalPackageMeshLoader(compas.DATA, 'ur_description')
+            loader = LocalPackageMeshLoader(compas.DATA, "ur_description")
             model.load_geometry(loader)
         return model
 
@@ -239,8 +239,7 @@ class RobotModel(Data):
         return urdf.to_string(prettify=prettify)
 
     def find_children_joints(self, link):
-        """Returns a list of all children joints of the link.
-        """
+        """Returns a list of all children joints of the link."""
         joints = []
         for joint in self.joints:
             if str(joint.parent) == link.name:
@@ -458,7 +457,7 @@ class RobotModel(Data):
         """
         if not start:
             if not self.root:
-                raise Exception('No root link found')
+                raise Exception("No root link found")
             start = self.root.name
 
         if not end:
@@ -472,7 +471,7 @@ class RobotModel(Data):
         shortest_chain = shortest_path(self._adjacency, start, end)
 
         if not shortest_chain:
-            raise Exception('No chain found between the specified element')
+            raise Exception("No chain found between the specified element")
 
         for name in shortest_chain:
             yield name
@@ -628,7 +627,7 @@ class RobotModel(Data):
         joint_types = []
         for joint in self.get_configurable_joints():
             if joint.limit and not (0 <= joint.limit.upper and 0 >= joint.limit.lower):
-                values.append((joint.limit.upper + joint.limit.lower)/2.)
+                values.append((joint.limit.upper + joint.limit.lower) / 2.0)
             else:
                 values.append(0)
             joint_names.append(joint.name)
@@ -652,7 +651,10 @@ class RobotModel(Data):
         values = []
         for joint in configurable_joints:
             if joint.limit:
-                values.append(joint.limit.lower + (joint.limit.upper - joint.limit.lower) * random.random())
+                values.append(
+                    joint.limit.lower
+                    + (joint.limit.upper - joint.limit.lower) * random.random()
+                )
             else:
                 values.append(0)
         joint_names = self.get_configurable_joint_names()
@@ -681,7 +683,7 @@ class RobotModel(Data):
         Robot name=ur5, Links=11, Joints=10 (6 configurable)
 
         """
-        force = kwargs.get('force', False)
+        force = kwargs.get("force", False)
 
         loaders = list(resource_loaders)
         loaders.insert(0, DefaultMeshLoader())
@@ -690,7 +692,7 @@ class RobotModel(Data):
             for element in itertools.chain(link.collision, link.visual):
                 shape = element.geometry.shape
                 needs_reload = force or not shape.meshes
-                if 'filename' in dir(shape) and needs_reload:
+                if "filename" in dir(shape) and needs_reload:
                     for loader in loaders:
                         if loader.can_load_mesh(shape.filename):
                             # NOTE: this part is annoying, but we keep it for backwards compatibility's sake.
@@ -702,14 +704,16 @@ class RobotModel(Data):
                             # so, we don't force load_mesh into a list, otherwise it will turn into a
                             # list of lists in those cases.
                             # All of this ugly fallback should be removed in 2.0
-                            if hasattr(loader, 'load_meshes'):
+                            if hasattr(loader, "load_meshes"):
                                 shape.meshes = loader.load_meshes(shape.filename)
                             else:
                                 shape.meshes = loader.load_mesh(shape.filename)
                             break
 
                     if not shape.meshes:
-                        raise Exception('Unable to load meshes for {}'.format(shape.filename))
+                        raise Exception(
+                            "Unable to load meshes for {}".format(shape.filename)
+                        )
 
     def ensure_geometry(self):
         """Check if geometry has been loaded.
@@ -725,7 +729,8 @@ class RobotModel(Data):
                 shape = element.geometry.shape
                 if not shape.meshes:
                     raise Exception(
-                        'This method is only callable once the geometry has been loaded.')
+                        "This method is only callable once the geometry has been loaded."
+                    )
 
     @property
     def frames(self):
@@ -760,7 +765,7 @@ class RobotModel(Data):
 
     def __str__(self):
         """Generate a readable representation of the robot."""
-        return 'Robot name={}, Links={}, Joints={} ({} configurable)'.format(
+        return "Robot name={}, Links={}, Joints={} ({} configurable)".format(
             self.name,
             len(self.links),
             len(self.joints),
@@ -828,7 +833,9 @@ class RobotModel(Data):
 
         self._scale_factor = factor
 
-    def compute_transformations(self, joint_state, link=None, parent_transformation=None):
+    def compute_transformations(
+        self, joint_state, link=None, parent_transformation=None
+    ):
         """Recursive function to calculate the transformations of each joint.
 
         Parameters
@@ -862,18 +869,30 @@ class RobotModel(Data):
         transformations = {}
 
         for child_joint in link.joints:
-            if child_joint.name in joint_state.keys():  # if passive/mimicking joint is in the joint_state, the transformation will be calculated according to this value
+            if (
+                child_joint.name in joint_state.keys()
+            ):  # if passive/mimicking joint is in the joint_state, the transformation will be calculated according to this value
                 position = joint_state[child_joint.name]
-                transformation = parent_transformation * child_joint.calculate_transformation(position)
+                transformation = (
+                    parent_transformation
+                    * child_joint.calculate_transformation(position)
+                )
             elif child_joint.mimic and child_joint.mimic.joint in joint_state.keys():
                 mimicked_joint_position = joint_state[child_joint.mimic.joint]
                 position = child_joint.mimic.calculate_position(mimicked_joint_position)
-                transformation = parent_transformation * child_joint.calculate_transformation(position)
+                transformation = (
+                    parent_transformation
+                    * child_joint.calculate_transformation(position)
+                )
             else:
                 transformation = parent_transformation
             transformations.update({child_joint.name: transformation})
             # call function on child
-            transformations.update(self.compute_transformations(joint_state, child_joint.child_link, transformation))
+            transformations.update(
+                self.compute_transformations(
+                    joint_state, child_joint.child_link, transformation
+                )
+            )
 
         return transformations
 
@@ -902,7 +921,10 @@ class RobotModel(Data):
 
         """
         transformations = self.compute_transformations(joint_state)
-        return [j.current_origin.transformed(transformations[j.name]) for j in self.iter_joints()]
+        return [
+            j.current_origin.transformed(transformations[j.name])
+            for j in self.iter_joints()
+        ]
 
     def transformed_axes(self, joint_state):
         """Returns the transformed axes based on the joint_state.
@@ -929,7 +951,11 @@ class RobotModel(Data):
 
         """
         transformations = self.compute_transformations(joint_state)
-        return [j.current_axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.current_axis.vector.length]
+        return [
+            j.current_axis.transformed(transformations[j.name])
+            for j in self.iter_joints()
+            if j.current_axis.vector.length
+        ]
 
     def forward_kinematics(self, joint_state, link_name=None):
         """Calculate the robot's forward kinematic.
@@ -981,7 +1007,14 @@ class RobotModel(Data):
         if name in all_link_names:
             raise ValueError("Link name '%s' already used in chain." % name)
 
-    def add_link(self, name, visual_meshes=None, visual_color=None, collision_meshes=None, **kwargs):
+    def add_link(
+        self,
+        name,
+        visual_meshes=None,
+        visual_color=None,
+        collision_meshes=None,
+        **kwargs
+    ):
         """Adds a link to the robot model.
 
         Provides an easy way to programmatically add a link to the robot model.
@@ -1022,8 +1055,12 @@ class RobotModel(Data):
 
         """
         self._check_link_name(name)
-        visual_meshes, kwargs = self._consolidate_meshes(visual_meshes, 'visual_mesh', **kwargs)
-        collision_meshes, kwargs = self._consolidate_meshes(collision_meshes, 'collision_mesh', **kwargs)
+        visual_meshes, kwargs = self._consolidate_meshes(
+            visual_meshes, "visual_mesh", **kwargs
+        )
+        collision_meshes, kwargs = self._consolidate_meshes(
+            collision_meshes, "collision_mesh", **kwargs
+        )
         if not visual_color:
             visual_color = (0.8, 0.8, 0.8)
 
@@ -1039,7 +1076,9 @@ class RobotModel(Data):
             v.material = Material(color=Color("%f %f %f 1" % visual_color))
             visuals.append(v)
 
-        for collision in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
+        for (
+            collision
+        ) in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
             if isinstance(collision, Mesh):
                 c = Collision(Geometry(MeshDescriptor("")))
                 c.geometry.shape.meshes = [collision]
@@ -1068,7 +1107,17 @@ class RobotModel(Data):
         """
         self.links = [link for link in self.links if link.name != name]
 
-    def add_joint(self, name, type, parent_link, child_link, origin=None, axis=None, limit=None, **kwargs):
+    def add_joint(
+        self,
+        name,
+        type,
+        parent_link,
+        child_link,
+        origin=None,
+        axis=None,
+        limit=None,
+        **kwargs
+    ):
         """Adds a joint to the robot model.
 
         Provides an easy way to programmatically add a joint to the robot model.
@@ -1121,14 +1170,23 @@ class RobotModel(Data):
         if origin:
             origin = Frame(origin.point, origin.xaxis, origin.yaxis)
         if axis:
-            axis = Axis('{} {} {}'.format(*list(axis)))
+            axis = Axis("{} {} {}".format(*list(axis)))
         if limit:
             lower, upper = limit
             limit = Limit(lower=lower, upper=upper)
 
         type_str = Joint.SUPPORTED_TYPES[type]
 
-        joint = Joint(name, type_str, parent_link.name, child_link.name, origin=origin, axis=axis, limit=limit, **kwargs)
+        joint = Joint(
+            name,
+            type_str,
+            parent_link.name,
+            child_link.name,
+            origin=origin,
+            axis=axis,
+            limit=limit,
+            **kwargs
+        )
 
         self.joints.append(joint)
 
@@ -1176,7 +1234,7 @@ class RobotModel(Data):
         del self._adjacency[name]
 
 
-URDFParser.install_parser(RobotModel, 'robot')
-URDFParser.install_parser(Material, 'robot/material')
-URDFParser.install_parser(Color, 'robot/material/color')
-URDFParser.install_parser(Texture, 'robot/material/texture')
+URDFParser.install_parser(RobotModel, "robot")
+URDFParser.install_parser(Material, "robot/material")
+URDFParser.install_parser(Color, "robot/material/color")
+URDFParser.install_parser(Texture, "robot/material/texture")

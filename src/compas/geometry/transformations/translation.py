@@ -69,13 +69,16 @@ class Translation(Transformation):
         if matrix:
             _, _, _, translation, _ = decompose_matrix(matrix)
             if check:
-                if not allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
-                    raise ValueError('This is not a proper translation matrix.')
+                if not allclose(
+                    flatten(matrix), flatten(matrix_from_translation(translation))
+                ):
+                    raise ValueError("This is not a proper translation matrix.")
         super(Translation, self).__init__(matrix=matrix)
 
     @property
     def translation_vector(self):
         from compas.geometry import Vector
+
         x = self.matrix[0][3]
         y = self.matrix[1][3]
         z = self.matrix[2][3]

@@ -55,4 +55,4 @@ def intersection_ray_mesh(ray, mesh):
     raise NotImplementedError
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [name for name in dir() if not name.startswith("_")]

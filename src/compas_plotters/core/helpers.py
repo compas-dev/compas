@@ -9,7 +9,13 @@ from compas_plotters.core.utilities import assert_axes_dimension
 
 
 __all__ = [
-    'Axes2D', 'Axes3D', 'Bounds', 'Box', 'Cloud2D', 'Cloud3D', 'Hull',
+    "Axes2D",
+    "Axes3D",
+    "Bounds",
+    "Box",
+    "Cloud2D",
+    "Cloud3D",
+    "Hull",
 ]
 
 
@@ -49,16 +55,8 @@ class Axes2D(object):
         assert_axes_dimension(axes, 2)
         o = self.origin
         xy = self.vectors
-        axes.plot(
-            [o[0, 0], o[0, 0] + xy[0, 0]],
-            [o[0, 1], o[0, 1] + xy[0, 1]],
-            'r-'
-        )
-        axes.plot(
-            [o[0, 0], o[0, 0] + xy[1, 0]],
-            [o[0, 1], o[0, 1] + xy[1, 1]],
-            'g-'
-        )
+        axes.plot([o[0, 0], o[0, 0] + xy[0, 0]], [o[0, 1], o[0, 1] + xy[0, 1]], "r-")
+        axes.plot([o[0, 0], o[0, 0] + xy[1, 0]], [o[0, 1], o[0, 1] + xy[1, 1]], "g-")
 
 
 class Axes3D(object):
@@ -85,7 +83,7 @@ class Axes3D(object):
         self.origin = asarray(origin)
         self.vectors = asarray(vectors)
         if not colors:
-            colors = ('r', 'g', 'b')
+            colors = ("r", "g", "b")
         self.colors = colors
 
     def plot(self, axes):
@@ -103,22 +101,22 @@ class Axes3D(object):
             [o[0, 0], o[0, 0] + xyz[0, 0]],
             [o[0, 1], o[0, 1] + xyz[0, 1]],
             [o[0, 2], o[0, 2] + xyz[0, 2]],
-            '{0}-'.format(self.colors[0]),
-            linewidth=3
+            "{0}-".format(self.colors[0]),
+            linewidth=3,
         )
         axes.plot(
             [o[0, 0], o[0, 0] + xyz[1, 0]],
             [o[0, 1], o[0, 1] + xyz[1, 1]],
             [o[0, 2], o[0, 2] + xyz[1, 2]],
-            '{0}-'.format(self.colors[1]),
-            linewidth=3
+            "{0}-".format(self.colors[1]),
+            linewidth=3,
         )
         axes.plot(
             [o[0, 0], o[0, 0] + xyz[2, 0]],
             [o[0, 1], o[0, 1] + xyz[2, 1]],
             [o[0, 2], o[0, 2] + xyz[2, 2]],
-            '{0}-'.format(self.colors[2]),
-            linewidth=3
+            "{0}-".format(self.colors[2]),
+            linewidth=3,
         )
 
 
@@ -136,8 +134,15 @@ class Bounds(object):
         yspan = self.points[ymax, 1] - self.points[ymin, 1]
         zspan = self.points[zmax, 2] - self.points[zmin, 2]
         span = max(xspan, yspan, zspan)
-        axes.plot([self.points[xmin, 0]], [self.points[ymin, 1]], [self.points[zmin, 2]], 'w')
-        axes.plot([self.points[xmin, 0] + span], [self.points[ymin, 1] + span], [self.points[zmin, 2] + span], 'w')
+        axes.plot(
+            [self.points[xmin, 0]], [self.points[ymin, 1]], [self.points[zmin, 2]], "w"
+        )
+        axes.plot(
+            [self.points[xmin, 0] + span],
+            [self.points[ymin, 1] + span],
+            [self.points[zmin, 2] + span],
+            "w",
+        )
 
 
 class Box(object):
@@ -145,7 +150,14 @@ class Box(object):
 
     def __init__(self, corners):
         self.corners = corners
-        self.faces = [[0, 1, 2, 3], [4, 7, 6, 5], [1, 5, 6, 2], [0, 4, 5, 1], [0, 3, 7, 4], [2, 6, 7, 3]]
+        self.faces = [
+            [0, 1, 2, 3],
+            [4, 7, 6, 5],
+            [1, 5, 6, 2],
+            [0, 4, 5, 1],
+            [0, 3, 7, 4],
+            [2, 6, 7, 3],
+        ]
 
     def plot(self, axes):
         assert_axes_dimension(axes, 3)
@@ -168,7 +180,7 @@ class Cloud2D(object):
     def plot(self, axes):
         x = self.cloud[:, 0]
         y = self.cloud[:, 1]
-        axes.plot(x, y, 'o', color=(1.0, 1.0, 1.0))
+        axes.plot(x, y, "o", color=(1.0, 1.0, 1.0))
 
 
 class Cloud3D(object):
@@ -184,7 +196,7 @@ class Cloud3D(object):
         x = self.cloud[:, 0]
         y = self.cloud[:, 1]
         z = self.cloud[:, 2]
-        axes.plot(x, y, z, 'o', color=(0.7, 0.7, 0.7))
+        axes.plot(x, y, z, "o", color=(0.7, 0.7, 0.7))
 
 
 class Hull(object):

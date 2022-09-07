@@ -22,6 +22,7 @@ from .offset import *  # noqa: F401 F403
 from .orientation import *  # noqa: F401 F403
 from .planarisation import *  # noqa: F401 F403
 from .slice import *  # noqa: F401 F403
+
 # has to be imported before remeshing
 from .smoothing import *  # noqa: F401 F403
 from .remesh import *  # noqa: F401 F403
@@ -43,4 +44,4 @@ if not IPY:
 from .mesh import Mesh  # noqa: F401
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [name for name in dir() if not name.startswith("_")]

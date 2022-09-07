@@ -25,28 +25,27 @@ from compas.geometry._core import vector_component_xy
 
 
 __all__ = [
-    'distance_point_point',
-    'distance_point_point_xy',
-    'distance_point_point_sqrd',
-    'distance_point_point_sqrd_xy',
-    'distance_point_line',
-    'distance_point_line_xy',
-    'distance_point_line_sqrd',
-    'distance_point_line_sqrd_xy',
-    'distance_point_plane',
-    'distance_point_plane_signed',
-    'distance_line_line',
-
-    'closest_point_in_cloud',
-    'closest_point_in_cloud_xy',
-    'closest_point_on_line',
-    'closest_point_on_line_xy',
-    'closest_point_on_segment',
-    'closest_point_on_segment_xy',
-    'closest_point_on_polyline',
-    'closest_point_on_polyline_xy',
-    'closest_point_on_plane',
-    'closest_line_to_point',
+    "distance_point_point",
+    "distance_point_point_xy",
+    "distance_point_point_sqrd",
+    "distance_point_point_sqrd_xy",
+    "distance_point_line",
+    "distance_point_line_xy",
+    "distance_point_line_sqrd",
+    "distance_point_line_sqrd_xy",
+    "distance_point_plane",
+    "distance_point_plane_signed",
+    "distance_line_line",
+    "closest_point_in_cloud",
+    "closest_point_in_cloud_xy",
+    "closest_point_on_line",
+    "closest_point_on_line_xy",
+    "closest_point_on_segment",
+    "closest_point_on_segment_xy",
+    "closest_point_on_polyline",
+    "closest_point_on_polyline_xy",
+    "closest_point_on_plane",
+    "closest_line_to_point",
 ]
 
 
@@ -311,7 +310,7 @@ def distance_point_line_sqrd_xy(point, line):
     ab = subtract_vectors_xy(b, a)
     pa = subtract_vectors_xy(a, point)
     pb = subtract_vectors_xy(b, point)
-    length = cross_vectors_xy(pa, pb)[2]**2
+    length = cross_vectors_xy(pa, pb)[2] ** 2
     length_ab = length_vector_sqrd_xy(ab)
     return length / length_ab
 
@@ -576,7 +575,9 @@ def closest_point_in_cloud(point, cloud):
     return sqrt(d), xyz, index
 
 
-def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True, num_nbrs=1):
+def closest_points_in_cloud_numpy(
+    points, cloud, threshold=10**7, distances=True, num_nbrs=1
+):
     """Find the closest points in a point cloud to a set of sample points.
 
     Parameters
@@ -891,9 +892,7 @@ def closest_point_on_plane(point, plane):
     x1, y1, z1 = point
     d = a * x + b * y + c * z
     k = (a * x1 + b * y1 + c * z1 - d) / (a**2 + b**2 + c**2)
-    return [x1 - k * a,
-            y1 - k * b,
-            z1 - k * c]
+    return [x1 - k * a, y1 - k * b, z1 - k * c]
 
 
 def closest_line_to_point(point, lines):

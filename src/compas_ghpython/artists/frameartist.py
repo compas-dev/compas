@@ -62,7 +62,7 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         :rhino:`Rhino.Geometry.Point`
 
         """
-        point = {'pos': list(self.primitive.point), 'color': self.color_origin.rgb255}
+        point = {"pos": list(self.primitive.point), "color": self.color_origin.rgb255}
         return compas_ghpython.draw_points([point])[0]
 
     def draw_axes(self):
@@ -78,8 +78,23 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
         z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
         lines = [
-            {'start': origin, 'end': x, 'color': self.color_xaxis.rgb255, 'arrow': 'end'},
-            {'start': origin, 'end': y, 'color': self.color_yaxis.rgb255, 'arrow': 'end'},
-            {'start': origin, 'end': z, 'color': self.color_zaxis.rgb255, 'arrow': 'end'}
+            {
+                "start": origin,
+                "end": x,
+                "color": self.color_xaxis.rgb255,
+                "arrow": "end",
+            },
+            {
+                "start": origin,
+                "end": y,
+                "color": self.color_yaxis.rgb255,
+                "arrow": "end",
+            },
+            {
+                "start": origin,
+                "end": z,
+                "color": self.color_zaxis.rgb255,
+                "arrow": "end",
+            },
         ]
         return compas_ghpython.draw_lines(lines)

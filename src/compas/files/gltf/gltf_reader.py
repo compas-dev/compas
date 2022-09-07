@@ -153,7 +153,13 @@ class GLTFReader(object):
 
         if "bufferView" in accessor:
             buffer_view_index = accessor["bufferView"]
-            data = self._read_from_buffer_view(buffer_view_index, count, component_type, accessor_offset, num_components)
+            data = self._read_from_buffer_view(
+                buffer_view_index,
+                count,
+                component_type,
+                accessor_offset,
+                num_components,
+            )
         else:
             data = self.get_generic_data(num_components, count)
 
@@ -165,12 +171,22 @@ class GLTFReader(object):
             sparse_indices_buffer_view_index = sparse_indices_data["bufferView"]
             sparse_indices_component_type = sparse_indices_data["componentType"]
             sparse_indices = self._read_from_buffer_view(
-                sparse_indices_buffer_view_index, sparse_count, sparse_indices_component_type, accessor_offset, NUM_COMPONENTS_BY_TYPE_ENUM["SCALAR"]
+                sparse_indices_buffer_view_index,
+                sparse_count,
+                sparse_indices_component_type,
+                accessor_offset,
+                NUM_COMPONENTS_BY_TYPE_ENUM["SCALAR"],
             )
 
             sparse_values_data = sparse_data["values"]
             sparse_values_buffer_view_index = sparse_values_data["bufferView"]
-            sparse_values = self._read_from_buffer_view(sparse_values_buffer_view_index, sparse_count, component_type, accessor_offset, num_components)
+            sparse_values = self._read_from_buffer_view(
+                sparse_values_buffer_view_index,
+                sparse_count,
+                component_type,
+                accessor_offset,
+                num_components,
+            )
 
             for index, data_index in enumerate(sparse_indices):
                 data[data_index] = sparse_values[index]
@@ -193,7 +209,9 @@ class GLTFReader(object):
 
         return data
 
-    def _read_from_buffer_view(self, buffer_view_index, count, component_type, accessor_offset, num_components):
+    def _read_from_buffer_view(
+        self, buffer_view_index, count, component_type, accessor_offset, num_components
+    ):
         buffer_view = self.json["bufferViews"][buffer_view_index]
 
         buffer_view_offset = buffer_view.get("byteOffset", 0)
@@ -222,7 +240,10 @@ class GLTFReader(object):
         buffer_index = buffer_view["buffer"]
         buffer = self._get_buffer(buffer_index)
 
-        data = [unpack_from(buffer[i : i + byte_stride].tobytes()) for i in range(offset, offset + count * byte_stride, byte_stride)]  # noqa E203
+        data = [
+            unpack_from(buffer[i : i + byte_stride].tobytes())
+            for i in range(offset, offset + count * byte_stride, byte_stride)
+        ]  # noqa E203
 
         if num_components == 1:
             data = [item[0] for item in data]  # unwrap scalars from tuple

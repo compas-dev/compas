@@ -93,7 +93,9 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertexlabel.*".format(self.volmesh.name))
+        guids = compas_rhino.get_objects(
+            name="{}.vertexlabel.*".format(self.volmesh.name)
+        )
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
@@ -104,7 +106,9 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.volmesh.name))
+        guids = compas_rhino.get_objects(
+            name="{}.edgelabel.*".format(self.volmesh.name)
+        )
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
@@ -115,7 +119,9 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.facelabel.*".format(self.volmesh.name))
+        guids = compas_rhino.get_objects(
+            name="{}.facelabel.*".format(self.volmesh.name)
+        )
         compas_rhino.delete_objects(guids, purge=True)
 
     # ==========================================================================
@@ -166,12 +172,16 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         points = []
         for vertex in vertices:
-            points.append({
-                'pos': vertex_xyz[vertex],
-                'name': "{}.vertex.{}".format(self.volmesh.name, vertex),
-                'color': self.vertex_color[vertex].rgb255
-            })
-        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+            points.append(
+                {
+                    "pos": vertex_xyz[vertex],
+                    "name": "{}.vertex.{}".format(self.volmesh.name, vertex),
+                    "color": self.vertex_color[vertex].rgb255,
+                }
+            )
+        return compas_rhino.draw_points(
+            points, layer=self.layer, clear=False, redraw=False
+        )
 
     def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
@@ -196,13 +206,17 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         lines = []
         for edge in edges:
-            lines.append({
-                'start': vertex_xyz[edge[0]],
-                'end': vertex_xyz[edge[1]],
-                'color': self.edge_color[edge].rgb255,
-                'name': "{}.edge.{}-{}".format(self.volmesh.name, *edge)
-            })
-        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+            lines.append(
+                {
+                    "start": vertex_xyz[edge[0]],
+                    "end": vertex_xyz[edge[1]],
+                    "color": self.edge_color[edge].rgb255,
+                    "name": "{}.edge.{}-{}".format(self.volmesh.name, *edge),
+                }
+            )
+        return compas_rhino.draw_lines(
+            lines, layer=self.layer, clear=False, redraw=False
+        )
 
     def draw_faces(self, faces=None, color=None):
         """Draw a selection of faces.
@@ -227,12 +241,19 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         facets = []
         for face in faces:
-            facets.append({
-                'points': [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)],
-                'name': "{}.face.{}".format(self.volmesh.name, face),
-                'color': self.face_color[face].rgb255
-            })
-        return compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
+            facets.append(
+                {
+                    "points": [
+                        vertex_xyz[vertex]
+                        for vertex in self.volmesh.halfface_vertices(face)
+                    ],
+                    "name": "{}.face.{}".format(self.volmesh.name, face),
+                    "color": self.face_color[face].rgb255,
+                }
+            )
+        return compas_rhino.draw_faces(
+            facets, layer=self.layer, clear=False, redraw=False
+        )
 
     def draw_cells(self, cells=None, color=None):
         """Draw a selection of cells.
@@ -260,15 +281,22 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         for cell in cells:
             vertices = self.volmesh.cell_vertices(cell)
             faces = self.volmesh.cell_faces(cell)
-            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
+            vertex_index = dict(
+                (vertex, index) for index, vertex in enumerate(vertices)
+            )
             vertices = [vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
-            guid = compas_rhino.draw_mesh(vertices,
-                                          faces,
-                                          layer=self.layer,
-                                          name="{}.cell.{}".format(self.volmesh.name, cell),
-                                          color=self.cell_color[cell].rgb255,
-                                          disjoint=True)
+            faces = [
+                [vertex_index[vertex] for vertex in self.halfface_vertices(face)]
+                for face in faces
+            ]
+            guid = compas_rhino.draw_mesh(
+                vertices,
+                faces,
+                layer=self.layer,
+                name="{}.cell.{}".format(self.volmesh.name, cell),
+                color=self.cell_color[cell].rgb255,
+                disjoint=True,
+            )
             guids.append(guid)
         return guids
 
@@ -295,13 +323,17 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         labels = []
         for vertex in self.vertex_text:
-            labels.append({
-                'pos': vertex_xyz[vertex],
-                'name': "{}.vertexlabel.{}".format(self.volmesh.name, vertex),
-                'color': self.vertex_color[vertex].rgb255,
-                'text': self.vertex_text[vertex]
-            })
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+            labels.append(
+                {
+                    "pos": vertex_xyz[vertex],
+                    "name": "{}.vertexlabel.{}".format(self.volmesh.name, vertex),
+                    "color": self.vertex_color[vertex].rgb255,
+                    "text": self.vertex_text[vertex],
+                }
+            )
+        return compas_rhino.draw_labels(
+            labels, layer=self.layer, clear=False, redraw=False
+        )
 
     def draw_edgelabels(self, text=None):
         """Draw labels for a selection of edges.
@@ -322,13 +354,17 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         labels = []
         for edge in self.edge_text:
-            labels.append({
-                'pos': centroid_points([vertex_xyz[edge[0]], vertex_xyz[edge[1]]]),
-                'name': "{}.edgelabel.{}-{}".format(self.volmesh.name, *edge),
-                'color': self.edge_color[edge].rgb255,
-                'text': self.edge_text[edge]
-            })
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+            labels.append(
+                {
+                    "pos": centroid_points([vertex_xyz[edge[0]], vertex_xyz[edge[1]]]),
+                    "name": "{}.edgelabel.{}-{}".format(self.volmesh.name, *edge),
+                    "color": self.edge_color[edge].rgb255,
+                    "text": self.edge_text[edge],
+                }
+            )
+        return compas_rhino.draw_labels(
+            labels, layer=self.layer, clear=False, redraw=False
+        )
 
     def draw_facelabels(self, text=None):
         """Draw labels for a selection of faces.
@@ -349,13 +385,22 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         labels = []
         for face in self.face_text:
-            labels.append({
-                'pos': centroid_points([vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]),
-                'name': "{}.facelabel.{}".format(self.volmesh.name, face),
-                'color': self.face_color[face].rgb255,
-                'text': self.face_text[face]
-            })
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+            labels.append(
+                {
+                    "pos": centroid_points(
+                        [
+                            vertex_xyz[vertex]
+                            for vertex in self.volmesh.face_vertices(face)
+                        ]
+                    ),
+                    "name": "{}.facelabel.{}".format(self.volmesh.name, face),
+                    "color": self.face_color[face].rgb255,
+                    "text": self.face_text[face],
+                }
+            )
+        return compas_rhino.draw_labels(
+            labels, layer=self.layer, clear=False, redraw=False
+        )
 
     def draw_celllabels(self, text=None):
         """Draw labels for cells.
@@ -376,10 +421,19 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
         vertex_xyz = self.vertex_xyz
         labels = []
         for cell in self.cell_text:
-            labels.append({
-                'pos': centroid_points([vertex_xyz[vertex] for vertex in self.volmesh.cell_vertices(cell)]),
-                'name': "{}.facelabel.{}".format(self.volmesh.name, cell),
-                'color': self.cell_color[cell].rgb255,
-                'text': self.cell_text[cell]
-            })
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+            labels.append(
+                {
+                    "pos": centroid_points(
+                        [
+                            vertex_xyz[vertex]
+                            for vertex in self.volmesh.cell_vertices(cell)
+                        ]
+                    ),
+                    "name": "{}.facelabel.{}".format(self.volmesh.name, cell),
+                    "color": self.cell_color[cell].rgb255,
+                    "text": self.cell_text[cell],
+                }
+            )
+        return compas_rhino.draw_labels(
+            labels, layer=self.layer, clear=False, redraw=False
+        )

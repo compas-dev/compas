@@ -25,7 +25,11 @@ class ControlPoints(object):
         for i in range(self.rhino_surface.Points.CountU):
             row = []
             for j in range(self.rhino_surface.Points.CountV):
-                row.append(point_to_compas(self.rhino_surface.Points.GetControlPoint(i, j).Location))
+                row.append(
+                    point_to_compas(
+                        self.rhino_surface.Points.GetControlPoint(i, j).Location
+                    )
+                )
             points.append(row)
         return points
 
@@ -40,7 +44,9 @@ class ControlPoints(object):
 
     def __setitem__(self, index, point):
         u, v = index
-        self.rhino_surface.Points.SetControlPoint(u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point)))
+        self.rhino_surface.Points.SetControlPoint(
+            u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point))
+        )
 
     def __len__(self):
         return self.rhino_surface.Points.CountU
@@ -49,14 +55,20 @@ class ControlPoints(object):
         return iter(self.points)
 
 
-def rhino_surface_from_parameters(points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=False, is_v_periodic=False):
+def rhino_surface_from_parameters(
+    points,
+    weights,
+    u_knots,
+    v_knots,
+    u_mults,
+    v_mults,
+    u_degree,
+    v_degree,
+    is_u_periodic=False,
+    is_v_periodic=False,
+):
     rhino_surface = Rhino.Geometry.NurbsSurface.Create(
-        3,
-        True,
-        u_degree + 1,
-        v_degree + 1,
-        len(points[0]),
-        len(points)
+        3, True, u_degree + 1, v_degree + 1, len(points[0]), len(points)
     )
     u_knotvector = [knot for knot, mult in zip(u_knots, u_mults) for _ in range(mult)]
     v_knotvector = [knot for knot, mult in zip(v_knots, v_mults) for _ in range(mult)]
@@ -78,7 +90,9 @@ def rhino_surface_from_parameters(points, weights, u_knots, v_knots, u_mults, v_
     # add control points
     for i in range(v_count):
         for j in range(u_count):
-            rhino_surface.Points.SetPoint(i, j, point_to_rhino(points[i][j]), weights[i][j])
+            rhino_surface.Points.SetPoint(
+                i, j, point_to_rhino(points[i][j]), weights[i][j]
+            )
     return rhino_surface
 
 
@@ -126,32 +140,41 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         v_mults[0] += 1
         v_mults[-1] += 1
         return {
-            'points': [[point.data for point in row] for row in self.points],
-            'weights': self.weights,
-            'u_knots': self.u_knots,
-            'v_knots': self.v_knots,
-            'u_mults': u_mults,
-            'v_mults': v_mults,
-            'u_degree': self.u_degree,
-            'v_degree': self.v_degree,
-            'is_u_periodic': self.is_u_periodic,
-            'is_v_periodic': self.is_v_periodic
+            "points": [[point.data for point in row] for row in self.points],
+            "weights": self.weights,
+            "u_knots": self.u_knots,
+            "v_knots": self.v_knots,
+            "u_mults": u_mults,
+            "v_mults": v_mults,
+            "u_degree": self.u_degree,
+            "v_degree": self.v_degree,
+            "is_u_periodic": self.is_u_periodic,
+            "is_v_periodic": self.is_v_periodic,
         }
 
     @data.setter
     def data(self, data):
-        points = [[Point.from_data(point) for point in row] for row in data['points']]
-        weights = data['weights']
-        u_knots = data['u_knots']
-        v_knots = data['v_knots']
-        u_mults = data['u_mults']
-        v_mults = data['v_mults']
-        u_degree = data['u_degree']
-        v_degree = data['v_degree']
-        is_u_periodic = data['is_u_periodic']
-        is_v_periodic = data['is_v_periodic']
+        points = [[Point.from_data(point) for point in row] for row in data["points"]]
+        weights = data["weights"]
+        u_knots = data["u_knots"]
+        v_knots = data["v_knots"]
+        u_mults = data["u_mults"]
+        v_mults = data["v_mults"]
+        u_degree = data["u_degree"]
+        v_degree = data["v_degree"]
+        is_u_periodic = data["is_u_periodic"]
+        is_v_periodic = data["is_v_periodic"]
         self.rhino_surface = NurbsSurface.from_parameters(
-            points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic, is_v_periodic
+            points,
+            weights,
+            u_knots,
+            v_knots,
+            u_mults,
+            v_mults,
+            u_degree,
+            v_degree,
+            is_u_periodic,
+            is_v_periodic,
         )
 
     @classmethod
@@ -169,18 +192,27 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
             The constructed surface.
 
         """
-        points = [[Point.from_data(point) for point in row] for row in data['points']]
-        weights = data['weights']
-        u_knots = data['u_knots']
-        v_knots = data['v_knots']
-        u_mults = data['u_mults']
-        v_mults = data['v_mults']
-        u_degree = data['u_degree']
-        v_degree = data['v_degree']
-        is_u_periodic = data['is_u_periodic']
-        is_v_periodic = data['is_v_periodic']
+        points = [[Point.from_data(point) for point in row] for row in data["points"]]
+        weights = data["weights"]
+        u_knots = data["u_knots"]
+        v_knots = data["v_knots"]
+        u_mults = data["u_mults"]
+        v_mults = data["v_mults"]
+        u_degree = data["u_degree"]
+        v_degree = data["v_degree"]
+        is_u_periodic = data["is_u_periodic"]
+        is_v_periodic = data["is_v_periodic"]
         return cls.from_parameters(
-            points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic, is_v_periodic
+            points,
+            weights,
+            u_knots,
+            v_knots,
+            u_mults,
+            v_mults,
+            u_degree,
+            v_degree,
+            is_u_periodic,
+            is_v_periodic,
         )
 
     # ==============================================================================
@@ -250,7 +282,19 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     # ==============================================================================
 
     @classmethod
-    def from_parameters(cls, points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=False, is_v_periodic=False):
+    def from_parameters(
+        cls,
+        points,
+        weights,
+        u_knots,
+        v_knots,
+        u_mults,
+        v_mults,
+        u_degree,
+        v_degree,
+        is_u_periodic=False,
+        is_v_periodic=False,
+    ):
         """Construct a NURBS surface from explicit parameters.
 
         Parameters
@@ -278,7 +322,9 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         """
         surface = cls()
-        surface.rhino_surface = rhino_surface_from_parameters(points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree)
+        surface.rhino_surface = rhino_surface_from_parameters(
+            points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree
+        )
         return surface
 
     @classmethod
@@ -304,7 +350,9 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         v_count = len(points)
         points[:] = [point_to_rhino(point) for row in points for point in row]
         surface = cls()
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(points, v_count, u_count, u_degree, v_degree)
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(
+            points, v_count, u_count, u_degree, v_degree
+        )
         return surface
 
     @classmethod
@@ -323,7 +371,9 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         """
         surface = cls()
         # these curves probably need to be processed first
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(curve1, curve2)
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(
+            curve1, curve2
+        )
         return surface
 
     # ==============================================================================

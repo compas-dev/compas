@@ -105,7 +105,7 @@ class Point(Primitive):
 
     """
 
-    __slots__ = ['_x', '_y', '_z']
+    __slots__ = ["_x", "_y", "_z"]
 
     def __init__(self, x, y, z=0.0, **kwargs):
         super(Point, self).__init__(**kwargs)
@@ -125,12 +125,13 @@ class Point(Primitive):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
+
         return Schema(is_float3)
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'point'
+        return "point"
 
     @property
     def data(self):
@@ -199,7 +200,9 @@ class Point(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, PRECISION[:1])
+        return "Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(
+            self.x, self.y, self.z, PRECISION[:1]
+        )
 
     def __len__(self):
         return 3
@@ -336,7 +339,7 @@ class Point(Primitive):
             A new point with raised coordinates.
 
         """
-        return Point(self.x ** n, self.y ** n, self.z ** n)
+        return Point(self.x**n, self.y**n, self.z**n)
 
     def __iadd__(self, other):
         """Add the coordinates of the other point to this point.
@@ -780,7 +783,9 @@ class Point(Primitive):
         """
         vertices, faces = polyhedron
         polygons = [[vertices[index] for index in face] for face in faces]
-        planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
+        planes = [
+            [centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons
+        ]
         return all(is_point_behind_plane(self, plane) for plane in planes)
 
     # ==========================================================================

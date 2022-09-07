@@ -138,52 +138,52 @@ VolMeshArtist.default_facecolor = (255, 255, 255)
 VolMeshArtist.default_cellcolor = (255, 0, 0)
 
 
-@plugin(category='factories', requires=['Rhino'])
+@plugin(category="factories", requires=["Rhino"])
 def register_artists():
-    Artist.register(Box, BoxArtist, context='Grasshopper')
-    Artist.register(Capsule, CapsuleArtist, context='Grasshopper')
-    Artist.register(Circle, CircleArtist, context='Grasshopper')
-    Artist.register(Cone, ConeArtist, context='Grasshopper')
-    Artist.register(Curve, CurveArtist, context='Grasshopper')
-    Artist.register(Cylinder, CylinderArtist, context='Grasshopper')
-    Artist.register(Frame, FrameArtist, context='Grasshopper')
-    Artist.register(Line, LineArtist, context='Grasshopper')
-    Artist.register(Mesh, MeshArtist, context='Grasshopper')
-    Artist.register(Network, NetworkArtist, context='Grasshopper')
-    Artist.register(Point, PointArtist, context='Grasshopper')
-    Artist.register(Polygon, PolygonArtist, context='Grasshopper')
-    Artist.register(Polyhedron, PolyhedronArtist, context='Grasshopper')
-    Artist.register(Polyline, PolylineArtist, context='Grasshopper')
-    Artist.register(RobotModel, RobotModelArtist, context='Grasshopper')
-    Artist.register(Sphere, SphereArtist, context='Grasshopper')
-    Artist.register(Surface, SurfaceArtist, context='Grasshopper')
-    Artist.register(Torus, TorusArtist, context='Grasshopper')
-    Artist.register(Vector, VectorArtist, context='Grasshopper')
-    Artist.register(VolMesh, VolMeshArtist, context='Grasshopper')
-    print('GH Artists registered.')
+    Artist.register(Box, BoxArtist, context="Grasshopper")
+    Artist.register(Capsule, CapsuleArtist, context="Grasshopper")
+    Artist.register(Circle, CircleArtist, context="Grasshopper")
+    Artist.register(Cone, ConeArtist, context="Grasshopper")
+    Artist.register(Curve, CurveArtist, context="Grasshopper")
+    Artist.register(Cylinder, CylinderArtist, context="Grasshopper")
+    Artist.register(Frame, FrameArtist, context="Grasshopper")
+    Artist.register(Line, LineArtist, context="Grasshopper")
+    Artist.register(Mesh, MeshArtist, context="Grasshopper")
+    Artist.register(Network, NetworkArtist, context="Grasshopper")
+    Artist.register(Point, PointArtist, context="Grasshopper")
+    Artist.register(Polygon, PolygonArtist, context="Grasshopper")
+    Artist.register(Polyhedron, PolyhedronArtist, context="Grasshopper")
+    Artist.register(Polyline, PolylineArtist, context="Grasshopper")
+    Artist.register(RobotModel, RobotModelArtist, context="Grasshopper")
+    Artist.register(Sphere, SphereArtist, context="Grasshopper")
+    Artist.register(Surface, SurfaceArtist, context="Grasshopper")
+    Artist.register(Torus, TorusArtist, context="Grasshopper")
+    Artist.register(Vector, VectorArtist, context="Grasshopper")
+    Artist.register(VolMesh, VolMeshArtist, context="Grasshopper")
+    print("GH Artists registered.")
 
 
 __all__ = [
-    'GHArtist',
-    'ShapeArtist',
-    'BoxArtist',
-    'CapsuleArtist',
-    'CircleArtist',
-    'ConeArtist',
-    'CurveArtist',
-    'CylinderArtist',
-    'FrameArtist',
-    'LineArtist',
-    'MeshArtist',
-    'NetworkArtist',
-    'PointArtist',
-    'PolygonArtist',
-    'PolyhedronArtist',
-    'PolylineArtist',
-    'RobotModelArtist',
-    'SphereArtist',
-    'SurfaceArtist',
-    'TorusArtist',
-    'VectorArtist',
-    'VolMeshArtist',
+    "GHArtist",
+    "ShapeArtist",
+    "BoxArtist",
+    "CapsuleArtist",
+    "CircleArtist",
+    "ConeArtist",
+    "CurveArtist",
+    "CylinderArtist",
+    "FrameArtist",
+    "LineArtist",
+    "MeshArtist",
+    "NetworkArtist",
+    "PointArtist",
+    "PolygonArtist",
+    "PolyhedronArtist",
+    "PolylineArtist",
+    "RobotModelArtist",
+    "SphereArtist",
+    "SurfaceArtist",
+    "TorusArtist",
+    "VectorArtist",
+    "VolMeshArtist",
 ]

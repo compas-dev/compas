@@ -8,16 +8,24 @@ import compas.plugins
 from compas_ghpython.components import install_userobjects
 
 
-@compas.plugins.plugin(category='install')
+@compas.plugins.plugin(category="install")
 def installable_rhino_packages():
-    return ['compas_ghpython']
+    return ["compas_ghpython"]
 
 
-@compas.plugins.plugin(category='install')
+@compas.plugins.plugin(category="install")
 def after_rhino_install(installed_packages):
-    if 'compas_ghpython' not in installed_packages:
+    if "compas_ghpython" not in installed_packages:
         return []
 
-    installed_objects = install_userobjects(os.path.join(os.path.dirname(__file__), 'components', 'ghuser'))
+    installed_objects = install_userobjects(
+        os.path.join(os.path.dirname(__file__), "components", "ghuser")
+    )
 
-    return [('compas_ghpython', 'Installed {} GH User Objects'.format(len(installed_objects)), True)]
+    return [
+        (
+            "compas_ghpython",
+            "Installed {} GH User Objects".format(len(installed_objects)),
+            True,
+        )
+    ]

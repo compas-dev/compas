@@ -3,10 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = [
-    'mesh_add_vertex_to_face_edge',
-    'mesh_insert_vertex_on_edge'
-]
+__all__ = ["mesh_add_vertex_to_face_edge", "mesh_insert_vertex_on_edge"]
 
 
 def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
@@ -109,11 +106,20 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
 
     # add new vertex if there is none or if vkey not in vertices
     if vkey is None:
-        vkey = mesh.add_vertex(attr_dict={attr: xyz for attr, xyz in zip(
-            ['x', 'y', 'z'], mesh.edge_midpoint(u, v))})
+        vkey = mesh.add_vertex(
+            attr_dict={
+                attr: xyz
+                for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(u, v))
+            }
+        )
     elif vkey not in list(mesh.vertices()):
-        vkey = mesh.add_vertex(key=vkey, attr_dict={attr: xyz for attr, xyz in zip(
-            ['x', 'y', 'z'], mesh.edge_midpoint(u, v))})
+        vkey = mesh.add_vertex(
+            key=vkey,
+            attr_dict={
+                attr: xyz
+                for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(u, v))
+            },
+        )
 
     # insert vertex
     for fkey, halfedge in zip(mesh.edge_faces(u, v), [(u, v), (v, u)]):

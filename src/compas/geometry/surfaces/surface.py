@@ -9,7 +9,7 @@ from compas.plugins import pluggable
 from compas.utilities import linspace
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_surface(cls, *args, **kwargs):
     raise NotImplementedError
 
@@ -45,7 +45,7 @@ class Surface(Geometry):
         raise NotImplementedError
 
     def __str__(self):
-        return '<Surface with parameter domain {}>'.format(self.domain)
+        return "<Surface with parameter domain {}>".format(self.domain)
 
     # ==============================================================================
     # Data
@@ -154,13 +154,19 @@ class Surface(Geometry):
         from compas.datastructures import Mesh
 
         nv = nv or nu
-        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
-        faces = [[
-            i * (nv + 1) + j,
-            (i + 1) * (nv + 1) + j,
-            (i + 1) * (nv + 1) + j + 1,
-            i * (nv + 1) + j + 1
-        ] for i, j in product(range(nu), range(nv))]
+        vertices = [
+            self.point_at(i, j)
+            for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))
+        ]
+        faces = [
+            [
+                i * (nv + 1) + j,
+                (i + 1) * (nv + 1) + j,
+                (i + 1) * (nv + 1) + j + 1,
+                i * (nv + 1) + j + 1,
+            ]
+            for i, j in product(range(nu), range(nv))
+        ]
 
         return Mesh.from_vertices_and_faces(vertices, faces)
 
@@ -182,7 +188,10 @@ class Surface(Geometry):
 
         """
         nv = nv or nu
-        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
+        vertices = [
+            self.point_at(i, j)
+            for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))
+        ]
         triangles = []
         for i, j in product(range(nu), range(nv)):
             a = i * (nv + 1) + j
@@ -278,7 +287,9 @@ class Surface(Geometry):
             The size of the grid in the V direction.
 
         """
-        return [self.point_at(i, j) for i, j in product(self.u_space(nu), self.v_space(nv))]
+        return [
+            self.point_at(i, j) for i, j in product(self.u_space(nu), self.v_space(nv))
+        ]
 
     def point_at(self, u, v):
         """Compute a point on the surface.

@@ -52,12 +52,31 @@ class PolygonArtist(RhinoArtist, PrimitiveArtist):
         _points = map(list, self.primitive.points)
         guids = []
         if show_points:
-            points = [{'pos': point, 'color': color, 'name': self.primitive.name} for point in _points]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+            points = [
+                {"pos": point, "color": color, "name": self.primitive.name}
+                for point in _points
+            ]
+            guids += compas_rhino.draw_points(
+                points, layer=self.layer, clear=False, redraw=False
+            )
         if show_edges:
-            lines = [{'start': list(a), 'end': list(b), 'color': color, 'name': self.primitive.name} for a, b in self.primitive.lines]
-            guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+            lines = [
+                {
+                    "start": list(a),
+                    "end": list(b),
+                    "color": color,
+                    "name": self.primitive.name,
+                }
+                for a, b in self.primitive.lines
+            ]
+            guids += compas_rhino.draw_lines(
+                lines, layer=self.layer, clear=False, redraw=False
+            )
         if show_face:
-            polygons = [{'points': _points, 'color': color, 'name': self.primitive.name}]
-            guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
+            polygons = [
+                {"points": _points, "color": color, "name": self.primitive.name}
+            ]
+            guids += compas_rhino.draw_faces(
+                polygons, layer=self.layer, clear=False, redraw=False
+            )
         return guids

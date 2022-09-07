@@ -64,7 +64,7 @@ class Polygon(Primitive):
 
     """
 
-    __slots__ = ['_points', '_lines']
+    __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
         super(Polygon, self).__init__(**kwargs)
@@ -81,23 +81,24 @@ class Polygon(Primitive):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points)
-        })
+
+        return Schema(
+            {"points": lambda points: all(is_float3(point) for point in points)}
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'polygon'
+        return "polygon"
 
     @property
     def data(self):
         """dict : The data dictionary that represents the polygon."""
-        return {'points': [point.data for point in self.points]}
+        return {"points": [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
-        self.points = [Point.from_data(point) for point in data['points']]
+        self.points = [Point.from_data(point) for point in data["points"]]
 
     @classmethod
     def from_data(cls, data):
@@ -120,7 +121,7 @@ class Polygon(Primitive):
         Point(0.000, 0.000, 0.000)
 
         """
-        return cls([Point.from_data(point) for point in data['points']])
+        return cls([Point.from_data(point) for point in data["points"]])
 
     # ==========================================================================
     # properties
@@ -142,7 +143,9 @@ class Polygon(Primitive):
     @property
     def lines(self):
         if not self._lines:
-            self._lines = [Line(a, b) for a, b in pairwise(self.points + self.points[:1])]
+            self._lines = [
+                Line(a, b) for a, b in pairwise(self.points + self.points[:1])
+            ]
         return self._lines
 
     @property
@@ -169,7 +172,7 @@ class Polygon(Primitive):
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)
         n = [sum(axis) / a2 for axis in zip(*normals)]
-        n = Vector(* n)
+        n = Vector(*n)
         return n
 
     @property
@@ -181,7 +184,9 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polygon([{0}])'.format(', '.join(['{0!r}'.format(point) for point in self.points]))
+        return "Polygon([{0}])".format(
+            ", ".join(["{0!r}".format(point) for point in self.points])
+        )
 
     def __len__(self):
         return len(self.points)
@@ -197,7 +202,11 @@ class Polygon(Primitive):
         return iter(self.points)
 
     def __eq__(self, other):
-        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+        if (
+            not hasattr(other, "__iter__")
+            or not hasattr(other, "__len__")
+            or len(self) != len(other)
+        ):
             return False
         return allclose(self, other)
 
@@ -243,13 +252,15 @@ class Polygon(Primitive):
         True
 
         """
-        assert n >= 3, 'Supplied number of sides must be at least 3!'
+        assert n >= 3, "Supplied number of sides must be at least 3!"
         points = []
         side = math.pi * 2 / n
         for i in range(n):
-            point = [math.sin(side * (n - i)) * radius,
-                     math.cos(side * (n - i)) * radius,
-                     0.0]
+            point = [
+                math.sin(side * (n - i)) * radius,
+                math.cos(side * (n - i)) * radius,
+                0.0,
+            ]
             points.append(point)
         return cls(points)
 

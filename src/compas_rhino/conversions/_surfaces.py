@@ -56,16 +56,16 @@ def surface_to_compas_data(surface):
     is_v_periodic = False
 
     return {
-        'points': [[point.data for point in row] for row in points],
-        'weights': weights,
-        'u_knots': u_knots,
-        'v_knots': v_knots,
-        'u_mults': u_mults,
-        'v_mults': v_mults,
-        'u_degree': u_degree,
-        'v_degree': v_degree,
-        'is_u_periodic': is_u_periodic,
-        'is_v_periodic': is_v_periodic
+        "points": [[point.data for point in row] for row in points],
+        "weights": weights,
+        "u_knots": u_knots,
+        "v_knots": v_knots,
+        "u_mults": u_mults,
+        "v_mults": v_mults,
+        "u_degree": u_degree,
+        "v_degree": v_degree,
+        "is_u_periodic": is_u_periodic,
+        "is_v_periodic": is_v_periodic,
     }
 
 
@@ -81,24 +81,21 @@ def data_to_rhino_surface(data):
     :rhino:`Rhino.Geometry.NurbsSurface`
 
     """
-    points = [[Point.from_data(point) for point in row] for row in data['points']]
+    points = [[Point.from_data(point) for point in row] for row in data["points"]]
 
     nu = len(points[0])
     nv = len(points)
 
-    nurbs = RhinoNurbsSurface.Create(3,
-                                     False,
-                                     data['u_degree'] + 1,
-                                     data['v_degree'] + 1,
-                                     nu,
-                                     nv)
+    nurbs = RhinoNurbsSurface.Create(
+        3, False, data["u_degree"] + 1, data["v_degree"] + 1, nu, nv
+    )
     for i in range(nu):
         for j in range(nv):
             nurbs.Points.SetPoint(i, j, point_to_rhino(points[j][i]))
-            nurbs.Points.SetWeight(i, j, data['weights'][j][i])
+            nurbs.Points.SetWeight(i, j, data["weights"][j][i])
 
     u_knotvector = []
-    for knot, mult in zip(data['u_knots'], data['u_mults']):
+    for knot, mult in zip(data["u_knots"], data["u_mults"]):
         for i in range(mult):
             u_knotvector.append(knot)
 
@@ -106,7 +103,7 @@ def data_to_rhino_surface(data):
         nurbs.KnotsU.Item[index] = knot
 
     v_knotvector = []
-    for knot, mult in zip(data['v_knots'], data['v_mults']):
+    for knot, mult in zip(data["v_knots"], data["v_mults"]):
         for i in range(mult):
             v_knotvector.append(knot)
 

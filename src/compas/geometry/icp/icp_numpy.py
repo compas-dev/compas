@@ -17,7 +17,7 @@ from compas.geometry import Frame
 from compas.geometry import transform_points_numpy
 
 
-__all__ = ['icp_numpy']
+__all__ = ["icp_numpy"]
 
 
 def bestfit_transform(A, B):
@@ -33,12 +33,12 @@ def bestfit_transform(A, B):
     R = np.dot(Vt.T, U.T)
     # check for RotoReflection
     if det(R) < 0:
-        Vt[m-1, :] *= -1
+        Vt[m - 1, :] *= -1
         R = np.dot(Vt.T, U.T)
     # translation that moves data set means to same location
     # this can be done differently (by applying three transformations (T1, R, T2))
     T = Bm.T - np.dot(R, Am.T)
-    X = np.identity(m+1)
+    X = np.identity(m + 1)
     X[:m, :m] = R
     X[:m, m] = T
     return X
@@ -97,7 +97,7 @@ def icp_numpy(source, target, tol=1e-3):
     A = transform_points_numpy(A, X)
 
     for i in range(20):
-        D = cdist(A, B, 'euclidean')
+        D = cdist(A, B, "euclidean")
         closest = argmin(D, axis=1)
         if norm(normrow(A - B[closest])) < tol:
             break

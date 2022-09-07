@@ -59,7 +59,7 @@ class Cone(Shape):
 
     """
 
-    __slots__ = ['_circle', '_height']
+    __slots__ = ["_circle", "_height"]
 
     def __init__(self, circle, height, **kwargs):
         super(Cone, self).__init__(**kwargs)
@@ -76,29 +76,31 @@ class Cone(Shape):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
-        return schema.Schema({
-            'circle': {
-                'plane': Plane.DATASCHEMA.fget(None),
-                'radius': schema.And(float, lambda x: x > 0)
-            },
-            'height': schema.And(float, lambda x: x > 0)
-        })
+
+        return schema.Schema(
+            {
+                "circle": {
+                    "plane": Plane.DATASCHEMA.fget(None),
+                    "radius": schema.And(float, lambda x: x > 0),
+                },
+                "height": schema.And(float, lambda x: x > 0),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'cone'
+        return "cone"
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the cone.
-        """
-        return {'circle': self.circle.data, 'height': self.height}
+        """dict : Returns the data dictionary that represents the cone."""
+        return {"circle": self.circle.data, "height": self.height}
 
     @data.setter
     def data(self, data):
-        self.circle = Circle.from_data(data['circle'])
-        self.height = data['height']
+        self.circle = Circle.from_data(data["circle"])
+        self.height = data["height"]
 
     @classmethod
     def from_data(cls, data):
@@ -123,7 +125,7 @@ class Cone(Shape):
         >>> cone = Cone.from_data(data)
 
         """
-        cone = cls(Circle.from_data(data['circle']), data['height'])
+        cone = cls(Circle.from_data(data["circle"]), data["height"])
         return cone
 
     # ==========================================================================
@@ -192,7 +194,7 @@ class Cone(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Cone({0!r}, {1!r})'.format(self.circle, self.height)
+        return "Cone({0!r}, {1!r})".format(self.circle, self.height)
 
     def __len__(self):
         return 2
@@ -244,7 +246,7 @@ class Cone(Shape):
 
         """
         if u < 3:
-            raise ValueError('The value for u should be u > 3.')
+            raise ValueError("The value for u should be u > 3.")
 
         vertices = [[0, 0, 0]]
         a = 2 * pi / u

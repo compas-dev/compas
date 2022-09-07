@@ -2,7 +2,7 @@ import sys
 
 
 __all__ = [
-    'unload_modules',
+    "unload_modules",
 ]
 
 

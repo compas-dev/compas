@@ -4,7 +4,7 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 
 
-__all__ = ['mesh_slice_plane']
+__all__ = ["mesh_slice_plane"]
 
 
 def mesh_slice_plane(mesh, plane):
@@ -45,7 +45,6 @@ def mesh_slice_plane(mesh, plane):
 
 
 class IntersectionMeshPlane(object):
-
     def __init__(self, mesh, plane):
         self.mesh = mesh
         self.plane = plane
@@ -92,7 +91,10 @@ class IntersectionMeshPlane(object):
         for key in vertices:
             faces += self.mesh.vertex_faces(key)
         faces = list(set(faces))
-        vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
+        vdict = {
+            key: self.mesh.vertex_coordinates(key)
+            for key in vertices + self.intersections
+        }
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
         if self.is_mesh_closed:
@@ -103,7 +105,7 @@ class IntersectionMeshPlane(object):
         o = self.plane.point
         n = self.plane.normal
         if key not in self.intersections:
-            a = self.mesh.vertex_attributes(key, 'xyz')
+            a = self.mesh.vertex_attributes(key, "xyz")
             oa = subtract_vectors(a, o)
             similarity = dot_vectors(n, oa)
             if similarity > 0.0:
@@ -122,7 +124,10 @@ class IntersectionMeshPlane(object):
         for key in vertices:
             faces += self.mesh.vertex_faces(key)
         faces = list(set(faces))
-        vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
+        vdict = {
+            key: self.mesh.vertex_coordinates(key)
+            for key in vertices + self.intersections
+        }
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
         if self.is_mesh_closed:
@@ -134,7 +139,7 @@ class IntersectionMeshPlane(object):
         n = self.plane.normal
         if key in self.intersections:
             return False
-        a = self.mesh.vertex_attributes(key, 'xyz')
+        a = self.mesh.vertex_attributes(key, "xyz")
         oa = subtract_vectors(a, o)
         similarity = dot_vectors(n, oa)
         return similarity < 0.0
@@ -143,12 +148,14 @@ class IntersectionMeshPlane(object):
         intersections = []
         vertex_intersections = []
         for u, v in list(self.mesh.edges()):
-            a = self.mesh.vertex_attributes(u, 'xyz')
-            b = self.mesh.vertex_attributes(v, 'xyz')
+            a = self.mesh.vertex_attributes(u, "xyz")
+            b = self.mesh.vertex_attributes(v, "xyz")
             x = intersection_segment_plane((a, b), self.plane)
             if not x:
                 continue
-            if any([i != j for i, j in zip(x, a)]) and any([i != j for i, j in zip(x, b)]):
+            if any([i != j for i, j in zip(x, a)]) and any(
+                [i != j for i, j in zip(x, b)]
+            ):
                 L_ax = length_vector(subtract_vectors(x, a))
                 L_ab = length_vector(subtract_vectors(b, a))
                 t = L_ax / L_ab
@@ -164,7 +171,11 @@ class IntersectionMeshPlane(object):
 
     def split(self):
         for fkey in list(self.mesh.faces()):
-            split = [key for key in self.mesh.face_vertices(fkey) if key in self.intersections]
+            split = [
+                key
+                for key in self.mesh.face_vertices(fkey)
+                if key in self.intersections
+            ]
             if len(split) == 2:
                 u, v = split
                 try:

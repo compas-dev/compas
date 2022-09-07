@@ -42,10 +42,12 @@ class Graph(Datastructure):
 
     """
 
-    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
+    def __init__(
+        self, name=None, default_node_attributes=None, default_edge_attributes=None
+    ):
         super(Graph, self).__init__()
         self._max_node = -1
-        self.attributes = {'name': name or 'Graph'}
+        self.attributes = {"name": name or "Graph"}
         self.node = {}
         self.edge = {}
         self.adjacency = {}
@@ -63,61 +65,64 @@ class Graph(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "attributes": dict,
-            "dna": dict,
-            "dea": dict,
-            "node": dict,
-            "edge": dict,
-            "adjacency": dict,
-            "max_node": schema.And(int, lambda x: x >= -1)
-        })
+
+        return schema.Schema(
+            {
+                "attributes": dict,
+                "dna": dict,
+                "dea": dict,
+                "node": dict,
+                "edge": dict,
+                "adjacency": dict,
+                "max_node": schema.And(int, lambda x: x >= -1),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'graph'
+        return "graph"
 
     @property
     def data(self):
         data = {
-            'attributes': self.attributes,
-            'dna': self.default_node_attributes,
-            'dea': self.default_edge_attributes,
-            'node': {},
-            'edge': {},
-            'adjacency': {},
-            'max_node': self._max_node
+            "attributes": self.attributes,
+            "dna": self.default_node_attributes,
+            "dea": self.default_edge_attributes,
+            "node": {},
+            "edge": {},
+            "adjacency": {},
+            "max_node": self._max_node,
         }
         for key in self.node:
-            data['node'][repr(key)] = self.node[key]
+            data["node"][repr(key)] = self.node[key]
         for u in self.edge:
             ru = repr(u)
-            data['edge'][ru] = {}
+            data["edge"][ru] = {}
             for v in self.edge[u]:
                 rv = repr(v)
-                data['edge'][ru][rv] = self.edge[u][v]
+                data["edge"][ru][rv] = self.edge[u][v]
         for u in self.adjacency:
             ru = repr(u)
-            data['adjacency'][ru] = {}
+            data["adjacency"][ru] = {}
             for v in self.adjacency[u]:
                 rv = repr(v)
-                data['adjacency'][ru][rv] = None
+                data["adjacency"][ru][rv] = None
         return data
 
     @data.setter
     def data(self, data):
-        if 'data' in data:
-            data = data['data']
-        attributes = data.get('attributes') or {}
-        default_node_attributes = data.get('dna') or {}
-        default_edge_attributes = data.get('dea') or {}
-        node = data.get('node') or {}
-        edge = data.get('edge') or {}
-        adjacency = data.get('adjacency') or {}
-        if 'max_int_key' in data:
-            max_node = data['max_int_key']
+        if "data" in data:
+            data = data["data"]
+        attributes = data.get("attributes") or {}
+        default_node_attributes = data.get("dna") or {}
+        default_edge_attributes = data.get("dea") or {}
+        node = data.get("node") or {}
+        edge = data.get("edge") or {}
+        adjacency = data.get("adjacency") or {}
+        if "max_int_key" in data:
+            max_node = data["max_int_key"]
         else:
-            max_node = data.get('max_node')
+            max_node = data.get("max_node")
         self._max_node = max_node
         self.attributes.update(attributes)
         self.default_node_attributes.update(default_node_attributes)
@@ -150,11 +155,11 @@ class Graph(Datastructure):
 
     @property
     def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, value):
-        self.attributes['name'] = value
+        self.attributes["name"] = value
 
     # --------------------------------------------------------------------------
     # customization
@@ -225,6 +230,7 @@ class Graph(Datastructure):
 
         """
         import networkx as nx
+
         graph = nx.DiGraph()
         graph.graph.update(self.attributes)
 
@@ -572,7 +578,14 @@ class Graph(Datastructure):
             The formatted summary.
 
         """
-        tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- nodes: {}", "- edges: {}"])
+        tpl = "\n".join(
+            [
+                "{} summary",
+                "=" * (len(self.name) + len(" summary")),
+                "- nodes: {}",
+                "- edges: {}",
+            ]
+        )
         return tpl.format(self.name, self.number_of_nodes(), self.number_of_edges())
 
     def number_of_nodes(self):
@@ -1480,4 +1493,6 @@ class Graph(Datastructure):
         """
         if directed:
             return u in self.edge and v in self.edge[u]
-        return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
+        return (u in self.edge and v in self.edge[u]) or (
+            v in self.edge and u in self.edge[v]
+        )

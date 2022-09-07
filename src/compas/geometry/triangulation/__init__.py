@@ -64,7 +64,9 @@ def constrained_delaunay_triangulation(boundary, polylines=None, polygons=None):
 
 
 @pluggable(category="triangulation")
-def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, angle=None, area=None):
+def conforming_delaunay_triangulation(
+    boundary, polylines=None, polygons=None, angle=None, area=None
+):
     """Construct a Conforming Delaunay triangulation of set of vertices, constrained to the specified segments.
 
     Parameters
@@ -98,4 +100,4 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
     raise NotImplementedError
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [name for name in dir() if not name.startswith("_")]

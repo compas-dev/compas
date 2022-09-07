@@ -68,7 +68,9 @@ class FacesConduit(BaseConduit):
             return
         if not is_sequence_of_iterable(color):
             color = [color]
-        color = [FromArgb(* c) for c in iterable_like(self.faces, color, self.default_color)]
+        color = [
+            FromArgb(*c) for c in iterable_like(self.faces, color, self.default_color)
+        ]
         self._color = color
 
     def DrawForeground(self, e):
@@ -84,7 +86,7 @@ class FacesConduit(BaseConduit):
 
         """
         for i, face in enumerate(self.faces):
-            points = [Point3d(* self.vertices[key]) for key in face]
+            points = [Point3d(*self.vertices[key]) for key in face]
             if self.color:
                 e.Display.DrawPolygon(points, self.color[i], True)
             else:

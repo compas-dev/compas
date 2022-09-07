@@ -126,7 +126,7 @@ class Data(object):
         self.__dict__.update(state["__dict__"])
         self.data = state["data"]
         if "guid" in state:
-            self._guid = UUID(state['guid'])
+            self._guid = UUID(state["guid"])
 
     @property
     def DATASCHEMA(self):

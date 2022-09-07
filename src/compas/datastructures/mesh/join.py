@@ -5,11 +5,7 @@ from __future__ import division
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
 
-__all__ = [
-    'mesh_weld',
-    'meshes_join',
-    'meshes_join_and_weld'
-]
+__all__ = ["mesh_weld", "meshes_join", "meshes_join_and_weld"]
 
 
 def mesh_weld(mesh, precision=None, cls=None):
@@ -41,10 +37,15 @@ def mesh_weld(mesh, precision=None, cls=None):
     gkey_index = {gkey: index for index, gkey in enumerate(gkey_key)}
 
     vertices = [key_xyz[key] for gkey, key in gkey_key.items()]
-    faces = [[gkey_index[geo(key_xyz[key], precision)] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    faces = [
+        [gkey_index[geo(key_xyz[key], precision)] for key in mesh.face_vertices(fkey)]
+        for fkey in mesh.faces()
+    ]
 
     faces[:] = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
-    faces[:] = [face for face in faces if len(face) > 2]  # make sure no face has less than 3 vertices
+    faces[:] = [
+        face for face in faces if len(face) > 2
+    ]  # make sure no face has less than 3 vertices
 
     mesh = cls.from_vertices_and_faces(vertices, faces)
     return mesh
@@ -89,9 +90,12 @@ def meshes_join(meshes, cls=None):
     faces = []
 
     for mesh in meshes:
-        key_index = ({key: len(vertices) + i for i, key in enumerate(mesh.vertices())})
+        key_index = {key: len(vertices) + i for i, key in enumerate(mesh.vertices())}
         vertices += [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-        faces += [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+        faces += [
+            [key_index[key] for key in mesh.face_vertices(fkey)]
+            for fkey in mesh.faces()
+        ]
 
     return cls.from_vertices_and_faces(vertices, faces)
 

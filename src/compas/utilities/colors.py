@@ -14,7 +14,7 @@ except NameError:
 warnings.warn(
     "The colors module in utilities is deprecated. Use compas.colors instead",
     DeprecationWarning,
-    stacklevel=2
+    stacklevel=2,
 )
 
 red = 255, 0, 0
@@ -31,7 +31,7 @@ white = 255, 255, 255
 black = 0, 0, 0
 
 
-BASE16 = '0123456789abcdef'
+BASE16 = "0123456789abcdef"
 
 try:
     HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
@@ -102,7 +102,11 @@ def i_to_rgb(i, normalize=False):
     elif i == 0.75:
         r, g, b = 255, 255, 0
     elif 0.75 < i < 1.0:
-        r, g, b,  = 255, int(255 - 255 * 4 * (i - 0.75)), 0
+        r, g, b, = (
+            255,
+            int(255 - 255 * 4 * (i - 0.75)),
+            0,
+        )
     elif i == 1.0:
         r, g, b = 255, 0, 0
     else:
@@ -338,12 +342,12 @@ class Colormap(object):
     """
 
     colorfuncs = {
-        'rgb': i_to_rgb,
-        'red': i_to_red,
-        'green': i_to_green,
-        'blue': i_to_blue,
-        'white': i_to_white,
-        'black': i_to_black
+        "rgb": i_to_rgb,
+        "red": i_to_red,
+        "green": i_to_green,
+        "blue": i_to_blue,
+        "white": i_to_white,
+        "black": i_to_black,
     }
 
     def __init__(self, data, spec):
@@ -435,7 +439,7 @@ def is_color_hex(color):
 
     """
     if isinstance(color, basestring):
-        match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
+        match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", color)
         if match:
             return True
         return False
@@ -483,7 +487,9 @@ def rgb_to_rgb(rgb, g=None, b=None):
     r = max(0, min(r, 255))
     g = max(0, min(g, 255))
     b = max(0, min(b, 255))
-    if any(isinstance(c, float) for c in (r, g, b)) and all(c <= 1.0 for c in (r, g, b)):
+    if any(isinstance(c, float) for c in (r, g, b)) and all(
+        c <= 1.0 for c in (r, g, b)
+    ):
         r = r * 255.0
         g = g * 255.0
         b = b * 255.0
@@ -529,7 +535,7 @@ def rgb_to_hex(rgb, g=None, b=None):
 
     """
     r, g, b = rgb_to_rgb(rgb, g=g, b=b)
-    return '#{0:02x}{1:02x}{2:02x}'.format(r, g, b)
+    return "#{0:02x}{1:02x}{2:02x}".format(r, g, b)
 
 
 def hex_to_rgb(value, normalize=False):
@@ -559,7 +565,7 @@ def hex_to_rgb(value, normalize=False):
     (1.0, 0.0, 0.0)
 
     """
-    value = value.lstrip('#').lower()
+    value = value.lstrip("#").lower()
     r = HEX_DEC[value[0:2]]
     g = HEX_DEC[value[2:4]]
     b = HEX_DEC[value[4:6]]
@@ -613,10 +619,10 @@ def color_to_rgb(color, normalize=False):
         return r, g, b
     if isinstance(r, float):
         return r, g, b
-    return r / 255., g / 255., b / 255.
+    return r / 255.0, g / 255.0, b / 255.0
 
 
-def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=False):
+def color_to_colordict(color, keys, default=None, colorformat="rgb", normalize=False):
     """Convert a color specification to a dict of colors.
 
     .. deprecated:: 1.14
@@ -662,13 +668,13 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
     # if input is hex
     if isinstance(color, basestring):
         # and output should be rgb
-        if colorformat == 'rgb':
+        if colorformat == "rgb":
             color = hex_to_rgb(color, normalize=normalize)
         return {key: color for key in keys}
     # if input is rgb
     if isinstance(color, (tuple, list)) and len(color) == 3:
         # and output should be hex
-        if colorformat == 'hex':
+        if colorformat == "hex":
             color = rgb_to_hex(color, normalize=normalize)
         # and output should be rgb
         # else:
@@ -679,18 +685,18 @@ def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=F
             # if input is hex
             if isinstance(c, basestring):
                 # and output should be rgb
-                if colorformat == 'rgb':
+                if colorformat == "rgb":
                     color[k] = hex_to_rgb(c, normalize=normalize)
             # if input is rgb
             elif isinstance(c, (tuple, list)) and len(c) == 3:
                 # and output should be hex
-                if colorformat == 'hex':
+                if colorformat == "hex":
                     color[k] = rgb_to_hex(c, normalize=normalize)
                 # and output should be rgb
                 # else:
                 #     color[k] = rgb_to_rgb(c, normalize=normalize)
         return {key: (default if key not in color else color[key]) for key in keys}
-    raise Exception('This is not a valid color format: {0}'.format(type(color)))
+    raise Exception("This is not a valid color format: {0}".format(type(color)))
 
 
 def is_color_light(color):
