@@ -41,7 +41,7 @@ from compas._os import (
     is_rhino,
     is_blender,
     is_grasshopper,
-)  # noqa: F401
+)
 from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
@@ -152,6 +152,7 @@ __all__ = [
     "is_ironpython",
     "is_rhino",
     "is_blender",
+    "is_grasshopper",
     "set_precision",
     "get",
     "json_dump",
