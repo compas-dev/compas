@@ -869,9 +869,9 @@ def intersection_circle_circle_xy(circle1, circle2):
     Parameters
     ----------
     circle1 : [plane, float] | :class:`~compas.geometry.Circle`
-        Circle defined by a point, with at least XY coordinates, and a radius.
+        Circle defined by a plane, with at least XY coordinates, and a radius.
     circle2 : [plane, float] | :class:`~compas.geometry.Circle`
-        Circle defined by a point, with at least XY coordinates, and a radius.
+        Circle defined by a plane, with at least XY coordinates, and a radius.
 
     Returns
     -------
@@ -881,27 +881,35 @@ def intersection_circle_circle_xy(circle1, circle2):
         None otherwise.
 
     """
-    p1, r1 = circle1[0], circle1[1]
-    p2, r2 = circle2[0], circle2[1]
-    p1_point = p1[0]
-    p2_point = p2[0]
-    d = length_vector_xy(subtract_vectors_xy(p2_point, p1_point))
+    plane1, r1 = circle1
+    plane2, r2 = circle2
+    p1, n1 = plane1
+    p2, n2 = plane2
+    R = length_vector_xy(subtract_vectors_xy(p2, p1))
 
-    if d > r1 + r2:
+    if R > r1 + r2:
         return None
 
-    if d < fabs(r1 - r2):
+    if R < fabs(r1 - r2):
         return None
 
-    if (d == 0) and (r1 == r2):
+    if (R == 0) and (r1 == r2):
         return None
 
-    a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
-    h = (r1 * r1 - a * a) ** 0.5
-    cx2 = p1_point[0] + a * (p2_point[0] - p1_point[0]) / d
-    cy2 = p1_point[1] + a * (p2_point[1] - p1_point[1]) / d
-    i1 = ((cx2 + h * (p2_point[1] - p1_point[1]) / d), (cy2 - h * (p2_point[0] - p1_point[0]) / d), 0)
-    i2 = ((cx2 - h * (p2_point[1] - p1_point[1]) / d), (cy2 + h * (p2_point[0] - p1_point[0]) / d), 0)
+    x1, y1 = p1[:2]
+    x2, y2 = p2[:2]
+
+    cx = 0.5 * (x1 + x2)
+    cy = 0.5 * (y2 + y1)
+
+    R2 = R * R
+    R4 = R2 * R2
+
+    a = (r1 * r1 - r2 * r2) / (2 * R2)
+    b = 0.5 * sqrt(2 * (r1 * r1 + r2 * r2) / R2 - (r1 * r1 - r2 * r2) ** 2 / R4 - 1)
+
+    i1 = cx + a * (x2 - x1) + b * (y2 - y1), cy + a * (y2 - y1) + b * (x1 - x2), 0
+    i2 = cx + a * (x2 - x1) - b * (y2 - y1), cy + a * (y2 - y1) - b * (x1 - x2), 0
 
     return i1, i2
 
