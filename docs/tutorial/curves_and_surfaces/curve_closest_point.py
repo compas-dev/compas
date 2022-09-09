@@ -19,7 +19,7 @@ print(curve.point_at(t) == closest_point)
 
 Artist.clear()
 
-Artist(curve, color=Color.from_hex('#0092D2')).draw()
+Artist(curve, color=Color.from_hex("#0092D2")).draw()
 
 Artist(projection_point).draw()
 Artist(closest_point).draw()

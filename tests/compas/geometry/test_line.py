@@ -1,4 +1,5 @@
 from compas.geometry import Line
+
 # This import is use to test __repr__.
 from compas.geometry import Point  # noqa: F401
 

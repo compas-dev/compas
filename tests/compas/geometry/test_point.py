@@ -3,8 +3,9 @@ from compas.geometry import Point
 
 
 if not compas.IPY:
+
     def test_data():
-        p = Point(0, 0, '0')
+        p = Point(0, 0, "0")
         assert p.data == p.validate_data()
         o = Point.from_data(p.data)
         assert p == o
@@ -13,11 +14,11 @@ if not compas.IPY:
 
 
 def test_point():
-    p = Point(1, 0, '0')
+    p = Point(1, 0, "0")
     assert p.x == 1.0 and p.y == 0.0 and p.z == 0.0
     assert p[0] == 1.0 and p[1] == 0.0 and p[2] == 0.0
     assert p == [1.0, 0.0, 0.0]
-    assert repr(p) == 'Point(1.000, 0.000, 0.000)'
+    assert repr(p) == "Point(1.000, 0.000, 0.000)"
 
 
 def test_point_operators():

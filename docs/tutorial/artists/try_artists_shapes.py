@@ -12,7 +12,7 @@ shapes = [
     Cone(Circle(Plane([0, 0, 0], [0, 0, 1]), 0.3), 1.0),
     Capsule([[0, 0, 0], [1, 0, 0]], 0.2),
     Torus(Plane([0, 0, 0], [0, 0, 1]), 1.0, 0.3),
-    Polyhedron.from_platonicsolid(12)
+    Polyhedron.from_platonicsolid(12),
 ]
 
 cloud = Pointcloud.from_bounds(8, 5, 3, len(shapes))

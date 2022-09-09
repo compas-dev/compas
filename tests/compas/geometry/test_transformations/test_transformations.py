@@ -42,11 +42,17 @@ def R():
 
 
 def test_transform_points(T):
-    assert transform_points([[0, 0, 1], [1, 0, 0]], T) == [[1.0, 2.0, 4.0], [2.0, 2.0, 3.0]]
+    assert transform_points([[0, 0, 1], [1, 0, 0]], T) == [
+        [1.0, 2.0, 4.0],
+        [2.0, 2.0, 3.0],
+    ]
 
 
 def test_transform_vectors(R):
-    assert transform_vectors([[1, 2, 3], [5, 6, 7]], R) == [[1.0, -3.5781372230600135, 0.44377247881360526], [5.0, -8.946418341978926, 2.227464668699156]]
+    assert transform_vectors([[1, 2, 3], [5, 6, 7]], R) == [
+        [1.0, -3.5781372230600135, 0.44377247881360526],
+        [5.0, -8.946418341978926, 2.227464668699156],
+    ]
 
 
 # def test_homogenize():
@@ -78,11 +84,16 @@ def test_scale_points_xy():
 
 
 def test_rotate_points():
-    assert allclose(rotate_points([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 2.0]])
+    assert allclose(
+        rotate_points([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 2.0]]
+    )
 
 
 def test_rotate_points_xy():
-    assert allclose(rotate_points_xy([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 0.0]])
+    assert allclose(
+        rotate_points_xy([[0, 1, 2]], 1),
+        [[-0.8414709848078965, 0.5403023058681398, 0.0]],
+    )
 
 
 def test_mirror_vector_vector():
@@ -99,27 +110,45 @@ def test_mirror_points_point_xy():
 
 
 def test_mirror_points_line():
-    assert allclose(mirror_points_line([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])), [[-1.0, 0.0, 0.0]])
+    assert allclose(
+        mirror_points_line([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])),
+        [[-1.0, 0.0, 0.0]],
+    )
 
 
 def test_mirror_points_line_xy():
-    assert allclose(mirror_points_line_xy([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])), [[-1.0, 0.0, 0.0]])
+    assert allclose(
+        mirror_points_line_xy([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])),
+        [[-1.0, 0.0, 0.0]],
+    )
 
 
 def test_mirror_points_plane():
-    assert allclose(mirror_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])), [[4.055651317409505, 7.231593203644422, 7.948288598867276]])
+    assert allclose(
+        mirror_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])),
+        [[4.055651317409505, 7.231593203644422, 7.948288598867276]],
+    )
 
 
 def test_project_point_plane():
-    assert allclose(project_point_plane([0, 2.5, 2], ([3, 4, 5], [6, 7, 8.8])), [2.0278256587047525, 4.865796601822211, 4.974144299433638])
+    assert allclose(
+        project_point_plane([0, 2.5, 2], ([3, 4, 5], [6, 7, 8.8])),
+        [2.0278256587047525, 4.865796601822211, 4.974144299433638],
+    )
 
 
 def test_project_points_plane():
-    assert allclose(project_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])), [[2.0278256587047525, 4.865796601822211, 4.974144299433638]])
+    assert allclose(
+        project_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])),
+        [[2.0278256587047525, 4.865796601822211, 4.974144299433638]],
+    )
 
 
 def test_project_point_line():
-    assert allclose(project_point_line([0, 1, 2], ([3, 4, 5], [6, 7, 8.8])), [0.281134401972873, 1.281134401972873, 1.5561035758323052])
+    assert allclose(
+        project_point_line([0, 1, 2], ([3, 4, 5], [6, 7, 8.8])),
+        [0.281134401972873, 1.281134401972873, 1.5561035758323052],
+    )
 
 
 def test_project_point_line_xy():
@@ -128,11 +157,16 @@ def test_project_point_line_xy():
 
 
 def test_project_points_line():
-    assert allclose(project_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])), [[0.281134401972873, 1.281134401972873, 1.5561035758323052]])
+    assert allclose(
+        project_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])),
+        [[0.281134401972873, 1.281134401972873, 1.5561035758323052]],
+    )
 
 
 def test_project_points_line_xy():
-    assert project_points_line_xy([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])) == [[0.0, 1.0, 0.0]]
+    assert project_points_line_xy([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])) == [
+        [0.0, 1.0, 0.0]
+    ]
     # TODO: is this correct?
 
 
@@ -156,7 +190,7 @@ def test_orient_points():
         [0.288675, 0.288675, 1.1547],
         [0.866025, 0.866025, 0.0],
         [1.077350, 0.077350, 0.57735],
-        [0.077350, 1.077350, 0.57735]
+        [0.077350, 1.077350, 0.57735],
     ]
 
     points = orient_points(points, refplane, tarplane)

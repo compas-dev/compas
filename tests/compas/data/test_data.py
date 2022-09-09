@@ -1,5 +1,6 @@
 from compas.data import Data
 
+
 def test_string_casting():
     class TestClass(Data):
         def __init__(self, i):
