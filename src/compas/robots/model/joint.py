@@ -17,15 +17,15 @@ from compas.robots.model.base import _attr_to_data
 from compas.robots.model.base import _parse_floats
 
 __all__ = [
-    'Joint',
-    'ParentLink',
-    'ChildLink',
-    'Calibration',
-    'Dynamics',
-    'Limit',
-    'Axis',
-    'Mimic',
-    'SafetyController'
+    "Joint",
+    "ParentLink",
+    "ChildLink",
+    "Calibration",
+    "Dynamics",
+    "Limit",
+    "Axis",
+    "Mimic",
+    "SafetyController",
 ]
 
 
@@ -40,21 +40,21 @@ class ParentLink(Data):
         return str(self.link)
 
     def get_urdf_element(self):
-        return URDFElement('parent', {'link': self.link})
+        return URDFElement("parent", {"link": self.link})
 
     @property
     def data(self):
         return {
-            'link': self.link,
+            "link": self.link,
         }
 
     @data.setter
     def data(self, data):
-        self.link = data['link']
+        self.link = data["link"]
 
     @classmethod
     def from_data(cls, data):
-        return cls(data['link'])
+        return cls(data["link"])
 
 
 class ChildLink(Data):
@@ -68,21 +68,21 @@ class ChildLink(Data):
         return str(self.link)
 
     def get_urdf_element(self):
-        return URDFElement('child', {'link': self.link})
+        return URDFElement("child", {"link": self.link})
 
     @property
     def data(self):
         return {
-            'link': self.link,
+            "link": self.link,
         }
 
     @data.setter
     def data(self, data):
-        self.link = data['link']
+        self.link = data["link"]
 
     @classmethod
     def from_data(cls, data):
-        return cls(data['link'])
+        return cls(data["link"])
 
 
 class Calibration(Data):
@@ -96,26 +96,26 @@ class Calibration(Data):
 
     def get_urdf_element(self):
         attributes = {
-            'rising': self.rising,
-            'falling': self.falling,
-            'reference_position': self.reference_position,
+            "rising": self.rising,
+            "falling": self.falling,
+            "reference_position": self.reference_position,
         }
         attributes = dict(filter(lambda x: x[1], attributes.items()))
-        return URDFElement('calibration', attributes)
+        return URDFElement("calibration", attributes)
 
     @property
     def data(self):
         return {
-            'rising': self.rising,
-            'falling': self.falling,
-            'reference_position': self.reference_position,
+            "rising": self.rising,
+            "falling": self.falling,
+            "reference_position": self.reference_position,
         }
 
     @data.setter
     def data(self, data):
-        self.rising = data['rising']
-        self.falling = data['falling']
-        self.reference_position = data['reference_position']
+        self.rising = data["rising"]
+        self.falling = data["falling"]
+        self.reference_position = data["reference_position"]
 
 
 class Dynamics(Data):
@@ -129,25 +129,25 @@ class Dynamics(Data):
 
     def get_urdf_element(self):
         attributes = {
-            'damping': self.damping,
-            'friction': self.friction,
+            "damping": self.damping,
+            "friction": self.friction,
         }
         attributes.update(self.attr)
-        return URDFElement('dynamics', attributes)
+        return URDFElement("dynamics", attributes)
 
     @property
     def data(self):
         return {
-            'damping': self.damping,
-            'friction': self.friction,
-            'attr': _attr_to_data(self.attr),
+            "damping": self.damping,
+            "friction": self.friction,
+            "attr": _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
-        self.damping = data['damping']
-        self.friction = data['friction']
-        self.attr = _attr_from_data(data['attr'])
+        self.damping = data["damping"]
+        self.friction = data["friction"]
+        self.attr = _attr_from_data(data["attr"])
 
 
 class Limit(Data):
@@ -176,32 +176,32 @@ class Limit(Data):
 
     def get_urdf_element(self):
         attributes = {
-            'lower': self.lower,
-            'upper': self.upper,
+            "lower": self.lower,
+            "upper": self.upper,
         }
         attributes = dict(filter(lambda x: x[1], attributes.items()))
-        attributes['effort'] = self.effort
-        attributes['velocity'] = self.velocity
+        attributes["effort"] = self.effort
+        attributes["velocity"] = self.velocity
         attributes.update(self.attr)
-        return URDFElement('limit', attributes)
+        return URDFElement("limit", attributes)
 
     @property
     def data(self):
         return {
-            'effort': self.effort,
-            'velocity': self.velocity,
-            'lower': self.lower,
-            'upper': self.upper,
-            'attr': _attr_to_data(self.attr),
+            "effort": self.effort,
+            "velocity": self.velocity,
+            "lower": self.lower,
+            "upper": self.upper,
+            "attr": _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
-        self.effort = data['effort']
-        self.velocity = data['velocity']
-        self.lower = data['lower']
-        self.upper = data['upper']
-        self.attr = _attr_from_data(data['attr'])
+        self.effort = data["effort"]
+        self.velocity = data["velocity"]
+        self.lower = data["lower"]
+        self.upper = data["upper"]
+        self.attr = _attr_from_data(data["attr"])
 
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
@@ -223,37 +223,37 @@ class Limit(Data):
 class Mimic(Data):
     """Description of joint mimic."""
 
-    def __init__(self, joint, multiplier=1.0, offset=0.):
+    def __init__(self, joint, multiplier=1.0, offset=0.0):
         super(Mimic, self).__init__()
         self.joint = joint  # == joint name
         self.multiplier = float(multiplier)
         self.offset = float(offset)
 
     def get_urdf_element(self):
-        attributes = {'joint': self.joint}
+        attributes = {"joint": self.joint}
         if self.multiplier != 1.0:
-            attributes['multiplier'] = self.multiplier
+            attributes["multiplier"] = self.multiplier
         if self.offset != 0.0:
-            attributes['offset'] = self.offset
-        return URDFElement('mimic', attributes)
+            attributes["offset"] = self.offset
+        return URDFElement("mimic", attributes)
 
     @property
     def data(self):
         return {
-            'joint': self.joint,
-            'multiplier': self.multiplier,
-            'offset': self.offset,
+            "joint": self.joint,
+            "multiplier": self.multiplier,
+            "offset": self.offset,
         }
 
     @data.setter
     def data(self, data):
-        self.joint = data['joint']
-        self.multiplier = data['multiplier']
-        self.offset = data['offset']
+        self.joint = data["joint"]
+        self.multiplier = data["multiplier"]
+        self.offset = data["offset"]
 
     @classmethod
     def from_data(cls, data):
-        mimic = cls(data['joint'])
+        mimic = cls(data["joint"])
         mimic.data = data
         return mimic
 
@@ -264,7 +264,9 @@ class Mimic(Data):
 class SafetyController(Data):
     """Safety controller properties."""
 
-    def __init__(self, k_velocity, k_position=0.0, soft_lower_limit=0.0, soft_upper_limit=0.0):
+    def __init__(
+        self, k_velocity, k_position=0.0, soft_lower_limit=0.0, soft_upper_limit=0.0
+    ):
         super(SafetyController, self).__init__()
         self.k_velocity = float(k_velocity)
         self.k_position = float(k_position)
@@ -273,33 +275,33 @@ class SafetyController(Data):
 
     def get_urdf_element(self):
         attributes = {
-            'k_position': self.k_position,
-            'soft_lower_limit': self.soft_lower_limit,
-            'soft_upper_limit': self.soft_upper_limit,
+            "k_position": self.k_position,
+            "soft_lower_limit": self.soft_lower_limit,
+            "soft_upper_limit": self.soft_upper_limit,
         }
         attributes = dict(filter(lambda x: x[1], attributes.items()))
-        attributes['k_velocity'] = self.k_velocity
-        return URDFElement('safety_controller', attributes)
+        attributes["k_velocity"] = self.k_velocity
+        return URDFElement("safety_controller", attributes)
 
     @property
     def data(self):
         return {
-            'k_velocity': self.k_velocity,
-            'k_position': self.k_position,
-            'soft_lower_limit': self.soft_lower_limit,
-            'soft_upper_limit': self.soft_upper_limit,
+            "k_velocity": self.k_velocity,
+            "k_position": self.k_position,
+            "soft_lower_limit": self.soft_lower_limit,
+            "soft_upper_limit": self.soft_upper_limit,
         }
 
     @data.setter
     def data(self, data):
-        self.k_velocity = data['k_velocity']
-        self.k_position = data['k_position']
-        self.soft_lower_limit = data['soft_lower_limit']
-        self.soft_upper_limit = data['soft_upper_limit']
+        self.k_velocity = data["k_velocity"]
+        self.k_position = data["k_position"]
+        self.soft_lower_limit = data["soft_lower_limit"]
+        self.soft_upper_limit = data["soft_upper_limit"]
 
     @classmethod
     def from_data(cls, data):
-        sc = cls(data['k_velocity'])
+        sc = cls(data["k_velocity"])
         sc.data = data
         return sc
 
@@ -320,7 +322,7 @@ class Axis(Data):
 
     """
 
-    def __init__(self, xyz='1 0 0', **kwargs):
+    def __init__(self, xyz="1 0 0", **kwargs):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
         super(Axis, self).__init__()
@@ -334,25 +336,25 @@ class Axis(Data):
         self.attr = kwargs
 
     def get_urdf_element(self):
-        attributes = {'xyz': "{} {} {}".format(self.x, self.y, self.z)}
+        attributes = {"xyz": "{} {} {}".format(self.x, self.y, self.z)}
         attributes.update(self.attr)
-        return URDFElement('axis', attributes)
+        return URDFElement("axis", attributes)
 
     @property
     def data(self):
         return {
-            'x': self.x,
-            'y': self.y,
-            'z': self.z,
-            'attr': _attr_to_data(self.attr),
+            "x": self.x,
+            "y": self.y,
+            "z": self.z,
+            "attr": _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
-        self.x = data['x']
-        self.y = data['y']
-        self.z = data['z']
-        self.attr = _attr_from_data(data['attr'])
+        self.x = data["x"]
+        self.y = data["y"]
+        self.z = data["z"]
+        self.attr = _attr_from_data(data["attr"])
 
     def copy(self):
         """Create a copy of the axis instance."""
@@ -368,8 +370,7 @@ class Axis(Data):
             The transformation used to transform the axis.
 
         """
-        xyz = transform_vectors(
-            [[self.x, self.y, self.z]], transformation.matrix)
+        xyz = transform_vectors([[self.x, self.y, self.z]], transformation.matrix)
         self.x = xyz[0][0]
         self.y = xyz[0][1]
         self.z = xyz[0][2]
@@ -388,8 +389,7 @@ class Axis(Data):
             The transformed axis.
 
         """
-        xyz = transform_vectors(
-            [[self.x, self.y, self.z]], transformation.matrix)
+        xyz = transform_vectors([[self.x, self.y, self.z]], transformation.matrix)
         return Vector(xyz[0][0], xyz[0][1], xyz[0][2])
 
     @property
@@ -467,12 +467,30 @@ class Joint(Data):
     FLOATING = 4
     PLANAR = 5
 
-    SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic', 'fixed',
-                       'floating', 'planar')
+    SUPPORTED_TYPES = (
+        "revolute",
+        "continuous",
+        "prismatic",
+        "fixed",
+        "floating",
+        "planar",
+    )
 
-    def __init__(self, name, type, parent, child, origin=None, axis=None,
-                 calibration=None, dynamics=None, limit=None,
-                 safety_controller=None, mimic=None, **kwargs):
+    def __init__(
+        self,
+        name,
+        type,
+        parent,
+        child,
+        origin=None,
+        axis=None,
+        calibration=None,
+        dynamics=None,
+        limit=None,
+        safety_controller=None,
+        mimic=None,
+        **kwargs
+    ):
 
         type_idx = type
 
@@ -480,14 +498,14 @@ class Joint(Data):
             type_idx = Joint.SUPPORTED_TYPES.index(type_idx)
 
         if type_idx not in range(len(Joint.SUPPORTED_TYPES)):
-            raise ValueError('Unsupported joint type: %s' % type)
+            raise ValueError("Unsupported joint type: %s" % type)
 
         super(Joint, self).__init__()
         self.name = name
         self.type = type_idx
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
         self.child = child if isinstance(child, ChildLink) else ChildLink(child)
-        self.origin = origin or Frame.from_euler_angles([0., 0., 0.])
+        self.origin = origin or Frame.from_euler_angles([0.0, 0.0, 0.0])
         self.axis = axis or Axis()
         self.calibration = calibration
         self.dynamics = dynamics
@@ -519,56 +537,72 @@ class Joint(Data):
         self._current_origin = FrameProxy.create_proxy(value)
 
     def get_urdf_element(self):
-        attributes = {
-            'name': self.name,
-            'type': self.SUPPORTED_TYPES[self.type]
-        }
+        attributes = {"name": self.name, "type": self.SUPPORTED_TYPES[self.type]}
         attributes.update(self.attr)
-        elements = [self.parent, self.child, self.axis, self.calibration, self.dynamics,
-                    self.limit, self.safety_controller, self.mimic, self.origin]
-        return URDFElement('joint', attributes, elements)
+        elements = [
+            self.parent,
+            self.child,
+            self.axis,
+            self.calibration,
+            self.dynamics,
+            self.limit,
+            self.safety_controller,
+            self.mimic,
+            self.origin,
+        ]
+        return URDFElement("joint", attributes, elements)
 
     @property
     def data(self):
         return {
-            'name': self.name,
-            'type': self.SUPPORTED_TYPES[self.type],
-            'parent': self.parent.data,
-            'child': self.child.data,
-            'origin': self.origin.data if self.origin else None,
-            'axis': self.axis.data if self.axis else None,
-            'calibration': self.calibration.data if self.calibration else None,
-            'dynamics': self.dynamics.data if self.dynamics else None,
-            'limit': self.limit.data if self.limit else None,
-            'safety_controller': self.safety_controller.data if self.safety_controller else None,
-            'mimic': self.mimic.data if self.mimic else None,
-            'attr': _attr_to_data(self.attr),
-            'position': self.position,
+            "name": self.name,
+            "type": self.SUPPORTED_TYPES[self.type],
+            "parent": self.parent.data,
+            "child": self.child.data,
+            "origin": self.origin.data if self.origin else None,
+            "axis": self.axis.data if self.axis else None,
+            "calibration": self.calibration.data if self.calibration else None,
+            "dynamics": self.dynamics.data if self.dynamics else None,
+            "limit": self.limit.data if self.limit else None,
+            "safety_controller": self.safety_controller.data
+            if self.safety_controller
+            else None,
+            "mimic": self.mimic.data if self.mimic else None,
+            "attr": _attr_to_data(self.attr),
+            "position": self.position,
         }
 
     @data.setter
     def data(self, data):
-        self.name = data['name']
-        self.type = Joint.SUPPORTED_TYPES.index(data['type'])
-        self.parent = ParentLink.from_data(data['parent'])
-        self.child = ChildLink.from_data(data['child'])
-        self.origin = Frame.from_data(data['origin']) if data['origin'] else None
-        self.axis = Axis.from_data(data['axis']) if data['axis'] else None
-        self.calibration = Calibration.from_data(data['calibration']) if data['calibration'] else None
-        self.dynamics = Dynamics.from_data(data['dynamics']) if data['dynamics'] else None
-        self.limit = Limit.from_data(data['limit']) if data['limit'] else None
-        self.safety_controller = SafetyController.from_data(data['safety_controller']) if data['safety_controller'] else None
-        self.mimic = Mimic.from_data(data['mimic']) if data['mimic'] else None
-        self.attr = _attr_from_data(data['attr'])
-        self.position = data['position']
+        self.name = data["name"]
+        self.type = Joint.SUPPORTED_TYPES.index(data["type"])
+        self.parent = ParentLink.from_data(data["parent"])
+        self.child = ChildLink.from_data(data["child"])
+        self.origin = Frame.from_data(data["origin"]) if data["origin"] else None
+        self.axis = Axis.from_data(data["axis"]) if data["axis"] else None
+        self.calibration = (
+            Calibration.from_data(data["calibration"]) if data["calibration"] else None
+        )
+        self.dynamics = (
+            Dynamics.from_data(data["dynamics"]) if data["dynamics"] else None
+        )
+        self.limit = Limit.from_data(data["limit"]) if data["limit"] else None
+        self.safety_controller = (
+            SafetyController.from_data(data["safety_controller"])
+            if data["safety_controller"]
+            else None
+        )
+        self.mimic = Mimic.from_data(data["mimic"]) if data["mimic"] else None
+        self.attr = _attr_from_data(data["attr"])
+        self.position = data["position"]
 
     @classmethod
     def from_data(cls, data):
         joint = cls(
-            data['name'],
-            data['type'],
-            ParentLink.from_data(data['parent']),
-            ChildLink.from_data(data['child'])
+            data["name"],
+            data["type"],
+            ParentLink.from_data(data["parent"]),
+            ChildLink.from_data(data["child"]),
         )
         joint.data = data
         return joint
@@ -628,7 +662,7 @@ class Joint(Data):
 
         """
         if not self.limit:
-            raise ValueError('Revolute joints are required to define a limit')
+            raise ValueError("Revolute joints are required to define a limit")
 
         position = max(min(position, self.limit.upper), self.limit.lower)
         return self.calculate_continuous_transformation(position)
@@ -650,7 +684,9 @@ class Joint(Data):
             Transformation of type rotation for the continuous joint.
 
         """
-        return Rotation.from_axis_and_angle(self.current_axis.vector, position, self.current_origin.point)
+        return Rotation.from_axis_and_angle(
+            self.current_axis.vector, position, self.current_origin.point
+        )
 
     def calculate_prismatic_transformation(self, position):
         """Returns a transformation of a prismatic joint.
@@ -670,7 +706,7 @@ class Joint(Data):
 
         """
         if not self.limit:
-            raise ValueError('Prismatic joints are required to define a limit')
+            raise ValueError("Prismatic joints are required to define a limit")
 
         position = max(min(position, self.limit.upper), self.limit.lower)
         return Translation.from_vector(self.current_axis.vector * position)
@@ -716,14 +752,14 @@ class Joint(Data):
         """
 
         # Set the transformation function according to the type
-        if not hasattr(self, '_calculate_transformation'):
+        if not hasattr(self, "_calculate_transformation"):
             switcher = {
                 Joint.REVOLUTE: self.calculate_revolute_transformation,
                 Joint.CONTINUOUS: self.calculate_continuous_transformation,
                 Joint.PRISMATIC: self.calculate_prismatic_transformation,
                 Joint.FIXED: self.calculate_fixed_transformation,
                 Joint.FLOATING: self.calculate_floating_transformation,
-                Joint.PLANAR: self.calculate_planar_transformation
+                Joint.PLANAR: self.calculate_planar_transformation,
             }
             self._calculate_transformation = switcher.get(self.type)
 
@@ -754,14 +790,14 @@ class Joint(Data):
             self.limit.scale(factor)
 
 
-URDFParser.install_parser(Joint, 'robot/joint')
-URDFParser.install_parser(ParentLink, 'robot/joint/parent')
-URDFParser.install_parser(ChildLink, 'robot/joint/child')
-URDFParser.install_parser(Calibration, 'robot/joint/calibration')
-URDFParser.install_parser(Dynamics, 'robot/joint/dynamics')
-URDFParser.install_parser(Limit, 'robot/joint/limit')
-URDFParser.install_parser(Axis, 'robot/joint/axis')
-URDFParser.install_parser(Mimic, 'robot/joint/mimic')
-URDFParser.install_parser(SafetyController, 'robot/joint/safety_controller')
+URDFParser.install_parser(Joint, "robot/joint")
+URDFParser.install_parser(ParentLink, "robot/joint/parent")
+URDFParser.install_parser(ChildLink, "robot/joint/child")
+URDFParser.install_parser(Calibration, "robot/joint/calibration")
+URDFParser.install_parser(Dynamics, "robot/joint/dynamics")
+URDFParser.install_parser(Limit, "robot/joint/limit")
+URDFParser.install_parser(Axis, "robot/joint/axis")
+URDFParser.install_parser(Mimic, "robot/joint/mimic")
+URDFParser.install_parser(SafetyController, "robot/joint/safety_controller")
 
-URDFParser.install_parser(Frame, 'robot/joint/origin', proxy_type=FrameProxy)
+URDFParser.install_parser(Frame, "robot/joint/origin", proxy_type=FrameProxy)

@@ -10,11 +10,11 @@ from compas.plugins import plugin
 
 
 __all__ = [
-    'trimesh_slice',
+    "trimesh_slice",
 ]
 
 
-@plugin(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=["Rhino"])
 def trimesh_slice(mesh, planes):
     """Slice a mesh by a list of planes.
 

@@ -13,5 +13,5 @@ class CompasInfo(component):
 
         try:
             return compas.json_load(json)
-        except:    # noqa: E722
+        except:  # noqa: E722
             return compas.json_loads(json)

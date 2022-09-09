@@ -10,7 +10,7 @@ from numpy import finfo
 
 
 __all__ = [
-    'trimesh_samplepoints_numpy',
+    "trimesh_samplepoints_numpy",
 ]
 
 
@@ -65,8 +65,10 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
 
     # (1)  Prepare data for computing
     key_index = mesh.key_index()
-    vertices = mesh.vertices_attributes('xyz')
-    faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    vertices = mesh.vertices_attributes("xyz")
+    faces = [
+        [key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()
+    ]
     V = array(vertices, dtype=float64)
     F = array(faces, dtype=int)
 
@@ -101,9 +103,13 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
     if return_normals:
 
         samples_points_normals = cross((v1 - v0), (v2 - v1), axis=1)
-        samples_points_normals_norm = norm(samples_points_normals, ord=2, axis=1, keepdims=True)
+        samples_points_normals_norm = norm(
+            samples_points_normals, ord=2, axis=1, keepdims=True
+        )
         samples_points_normals = samples_points_normals / samples_points_normals_norm
-        samples_points_normals = clip(samples_points_normals, a_min=finfo(float64).eps, a_max=None)
+        samples_points_normals = clip(
+            samples_points_normals, a_min=finfo(float64).eps, a_max=None
+        )
         samples_points_normals = samples_points_normals[samples_faces_idx]
 
         return samples_points, samples_points_normals

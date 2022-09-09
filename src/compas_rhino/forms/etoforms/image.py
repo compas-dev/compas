@@ -11,6 +11,7 @@ from System.Net import WebClient
 from System.IO import MemoryStream
 
 import clr
+
 clr.AddReference("Eto")
 clr.AddReference("Rhino.UI")
 
@@ -21,7 +22,7 @@ import Eto.Drawing  # noqa: E402
 import Eto.Forms  # noqa: E402
 
 
-__all__ = ['ImageForm']
+__all__ = ["ImageForm"]
 
 
 def image_from_remote(source):
@@ -101,7 +102,7 @@ class ImageForm(Eto.Forms.Dialog[bool]):
 
     """
 
-    def __init__(self, image, title='Image', width=None, height=None):
+    def __init__(self, image, title="Image", width=None, height=None):
         super(ImageForm, self).__init__(title, width, height)
         self._image = None
         self.image = image
@@ -115,14 +116,13 @@ class ImageForm(Eto.Forms.Dialog[bool]):
 
     @property
     def image(self):
-        """Eto.Drawing.Image: An instance of ``Eto.Drawing.Image``.
-        """
+        """Eto.Drawing.Image: An instance of ``Eto.Drawing.Image``."""
         return self._image
 
     @image.setter
     def image(self, image):
         if isinstance(image, basestring):
-            if image.startswith('http'):
+            if image.startswith("http"):
                 self._image = image_from_remote(image)
             else:
                 self._image = image_from_local(image)

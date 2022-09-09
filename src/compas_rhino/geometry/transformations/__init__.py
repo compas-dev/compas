@@ -4,6 +4,7 @@ import warnings
 
 warnings.warn(
     "Conversion functions for transformations have been moved to `compas_rhino.conversions`.",
-    DeprecationWarning)
+    DeprecationWarning,
+)
 
 from compas_rhino.conversions._transformations import *  # noqa : F401 F403

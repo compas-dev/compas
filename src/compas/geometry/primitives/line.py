@@ -47,7 +47,7 @@ class Line(Primitive):
 
     """
 
-    __slots__ = ['_start', '_end']
+    __slots__ = ["_start", "_end"]
 
     def __init__(self, p1, p2, **kwargs):
         super(Line, self).__init__(**kwargs)
@@ -64,25 +64,25 @@ class Line(Primitive):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
-        return Schema({
-            'start': Point.DATASCHEMA.fget(None),
-            'end': Point.DATASCHEMA.fget(None)
-        })
+
+        return Schema(
+            {"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)}
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'line'
+        return "line"
 
     @property
     def data(self):
         """dict : The data dictionary that represents the line."""
-        return {'start': self.start.data, 'end': self.end.data}
+        return {"start": self.start.data, "end": self.end.data}
 
     @data.setter
     def data(self, data):
-        self.start = Point.from_data(data['start'])
-        self.end = Point.from_data(data['end'])
+        self.start = Point.from_data(data["start"])
+        self.end = Point.from_data(data["end"])
 
     @classmethod
     def from_data(cls, data):
@@ -100,7 +100,7 @@ class Line(Primitive):
         Point(1.000, 0.000, 0.000)
 
         """
-        return cls(Point.from_data(data['start']), Point.from_data(data['end']))
+        return cls(Point.from_data(data["start"]), Point.from_data(data["end"]))
 
     # ==========================================================================
     # properties
@@ -144,7 +144,7 @@ class Line(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Line({0!r}, {1!r})'.format(self.start, self.end)
+        return "Line({0!r}, {1!r})".format(self.start, self.end)
 
     def __len__(self):
         return 2

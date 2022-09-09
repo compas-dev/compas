@@ -54,14 +54,17 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 line: Line,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any
-                 ):
+    def __init__(
+        self,
+        line: Line,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any,
+    ):
         super().__init__(primitive=line, collection=collection or line.name, **kwargs)
 
-    def draw(self, color: Optional[Color] = None, show_points: bool = False) -> List[bpy.types.Object]:
+    def draw(
+        self, color: Optional[Color] = None, show_points: bool = False
+    ) -> List[bpy.types.Object]:
         """Draw the line.
 
         Parameters
@@ -83,12 +86,27 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
         objects = []
         if show_points:
             points = [
-                {'pos': start, 'name': f"{self.primitive.name}.start", 'color': color, 'radius': 0.01},
-                {'pos': end, 'name': f"{self.primitive.name}.end", 'color': color, 'radius': 0.01},
+                {
+                    "pos": start,
+                    "name": f"{self.primitive.name}.start",
+                    "color": color,
+                    "radius": 0.01,
+                },
+                {
+                    "pos": end,
+                    "name": f"{self.primitive.name}.end",
+                    "color": color,
+                    "radius": 0.01,
+                },
             ]
             objects += compas_blender.draw_points(points, collection=self.collection)
         lines = [
-            {'start': start, 'end': end, 'color': color, 'name': f"{self.primitive.name}"},
+            {
+                "start": start,
+                "end": end,
+                "color": color,
+                "name": f"{self.primitive.name}",
+            },
         ]
         objects += compas_blender.draw_lines(lines, collection=self.collection)
         return objects

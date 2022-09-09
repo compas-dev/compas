@@ -41,5 +41,5 @@ class LineArtist(GHArtist, PrimitiveArtist):
         color = Color.coerce(color) or self.color
         start = list(self.primitive.start)
         end = list(self.primitive.end)
-        lines = [{'start': start, 'end': end, 'color': color.rgb255}]
+        lines = [{"start": start, "end": end, "color": color.rgb255}]
         return compas_ghpython.draw_lines(lines)[0]

@@ -30,32 +30,33 @@ from scipy.sparse.linalg import spsolve
 
 import compas
 
-old_settings = seterr(all='ignore')
+old_settings = seterr(all="ignore")
 
 
 __all__ = [
-    'nullspace',
-    'rank',
-    'dof',
-    'pivots',
-    'nonpivots',
-    'rref',
-    'rref_sympy',
-    'rref_matlab',
-    'uvw_lengths',
-    'normrow',
-    'normalizerow',
-    'rot90',
-    'solve_with_known',
-    'spsolve_with_known',
-    'chofactor',
-    'lufactorized'
+    "nullspace",
+    "rank",
+    "dof",
+    "pivots",
+    "nonpivots",
+    "rref",
+    "rref_sympy",
+    "rref_matlab",
+    "uvw_lengths",
+    "normrow",
+    "normalizerow",
+    "rot90",
+    "solve_with_known",
+    "spsolve_with_known",
+    "chofactor",
+    "lufactorized",
 ]
 
 
 # ==============================================================================
 # Fundamentals
 # ==============================================================================
+
 
 def nullspace(A, tol=0.001):
     r"""Calculates the nullspace of the input matrix A.
@@ -374,26 +375,27 @@ def rref_matlab(A, ifile, ofile, tol=None):
     """
     A = atleast_2d(asarray(A, dtype=float))
 
-    idict = {'A': A}
+    idict = {"A": A}
     savemat(ifile, idict)
 
-    matlab = ['matlab']
+    matlab = ["matlab"]
     if compas.is_windows():
-        options = ['-nosplash', '-wait', '-r']
+        options = ["-nosplash", "-wait", "-r"]
     else:
-        options = ['-nosplash', '-r']
+        options = ["-nosplash", "-r"]
     command = ["load('{0}');[R, jb]=rref(A);save('{1}');exit;".format(ifile, ofile)]
 
     p = Popen(matlab + options + command)
     stdout, stderr = p.communicate()
 
     odict = loadmat(ofile)
-    return odict['R']
+    return odict["R"]
 
 
 # ==============================================================================
 # Factorisation
 # ==============================================================================
+
 
 class Memoized:
     """"""
@@ -497,6 +499,7 @@ lufactorized = memoize(_lufactorized)
 # Geometry
 # ------------------------------------------------------------------------------
 
+
 def uvw_lengths(C, X):
     r"""Calculates the lengths and co-ordinate differences.
 
@@ -557,7 +560,7 @@ def normrow(A):
 
     """
     A = atleast_2d(asarray(A, dtype=float))
-    return (sum(A ** 2, axis=1) ** 0.5).reshape((-1, 1))
+    return (sum(A**2, axis=1) ** 0.5).reshape((-1, 1))
 
 
 def normalizerow(A, do_nan_to_num=True):
@@ -632,6 +635,7 @@ def rot90(vectors, axes):
 # ==============================================================================
 # Solving
 # ==============================================================================
+
 
 def solve_with_known(A, b, x, known):
     r"""Solve a system of linear equations with part of solution known.

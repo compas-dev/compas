@@ -253,7 +253,7 @@ class RhinoBrep(Brep):
         resulting_breps = Rhino.Geometry.Brep.CreateBooleanDifference(
             [b.native_brep for b in breps_a],
             [b.native_brep for b in breps_b],
-            TOLERANCE
+            TOLERANCE,
         )
         return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
 
@@ -279,7 +279,9 @@ class RhinoBrep(Brep):
         if not isinstance(breps_b, list):
             breps_b = [breps_b]
 
-        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in breps_a + breps_b], TOLERANCE)
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion(
+            [b.native_brep for b in breps_a + breps_b], TOLERANCE
+        )
         return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
 
     @classmethod
@@ -306,7 +308,7 @@ class RhinoBrep(Brep):
         resulting_breps = Rhino.Geometry.Brep.CreateBooleanIntersection(
             [b.native_brep for b in breps_a],
             [b.native_brep for b in breps_b],
-            TOLERANCE
+            TOLERANCE,
         )
         return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
 
@@ -328,7 +330,9 @@ class RhinoBrep(Brep):
         for face in faces:
             rhino_face, rhino_surface = self._create_brep_face(face)
             for loop in face.loops:
-                rhino_loop = self._brep.Loops.Add(Rhino.Geometry.BrepLoopType.Outer, rhino_face)
+                rhino_loop = self._brep.Loops.Add(
+                    Rhino.Geometry.BrepLoopType.Outer, rhino_face
+                )
                 for edge in loop.edges:
                     start_vertex, end_vertex = self._add_edge_vertices(edge)
                     rhino_edge = self._add_edge(edge, start_vertex, end_vertex)
@@ -367,15 +371,21 @@ class RhinoBrep(Brep):
         return brep_face, brep_surface
 
     def _add_edge_vertices(self, edge):
-        start_vertex = self._brep.Vertices.Add(point_to_rhino(edge.start_vertex.point), TOLERANCE)
-        end_vertex = self._brep.Vertices.Add(point_to_rhino(edge.end_vertex.point), TOLERANCE)
+        start_vertex = self._brep.Vertices.Add(
+            point_to_rhino(edge.start_vertex.point), TOLERANCE
+        )
+        end_vertex = self._brep.Vertices.Add(
+            point_to_rhino(edge.end_vertex.point), TOLERANCE
+        )
         return start_vertex, end_vertex
 
     def _add_edge(self, edge, start_vertex, end_vertex):
         # Geometry
         curve_index = self._brep.AddEdgeCurve(edge.curve)
         # Topology
-        rhino_edge = self._brep.Edges.Add(start_vertex, end_vertex, curve_index, TOLERANCE)
+        rhino_edge = self._brep.Edges.Add(
+            start_vertex, end_vertex, curve_index, TOLERANCE
+        )
         return rhino_edge
 
     def _add_trim(self, rhino_trim_curve, rhino_edge, rhino_loop):

@@ -64,7 +64,12 @@ def box_to_rhino(box):
     base_plane.point -= base_plane.xaxis * 0.5 * box.xsize
     base_plane.point -= base_plane.yaxis * 0.5 * box.ysize
     base_plane.point -= base_plane.zaxis * 0.5 * box.zsize
-    return RhinoBox(frame_to_rhino(base_plane), Interval(0, box.xsize), Interval(0, box.ysize), Interval(0, box.zsize))
+    return RhinoBox(
+        frame_to_rhino(base_plane),
+        Interval(0, box.xsize),
+        Interval(0, box.ysize),
+        Interval(0, box.zsize),
+    )
 
 
 def sphere_to_compas(sphere):

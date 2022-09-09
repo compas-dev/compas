@@ -71,9 +71,13 @@ class RhinoBrepEdge(BrepEdge):
     def data(self, value):
         curve_type = value["type"]
         if curve_type == "line":
-            self._curve = line_to_rhino_curve(Line.from_data(value["value"]))  # this returns a Nurbs Curve, why?
+            self._curve = line_to_rhino_curve(
+                Line.from_data(value["value"])
+            )  # this returns a Nurbs Curve, why?
         elif curve_type == "circle":
-            self._curve = circle_to_rhino_curve(Circle.from_data(value["value"]))  # this returns a Nurbs Curve, why?
+            self._curve = circle_to_rhino_curve(
+                Circle.from_data(value["value"])
+            )  # this returns a Nurbs Curve, why?
         else:
             self._curve = RhinoNurbsCurve.from_data(value["value"]).rhino_curve
         # TODO: can a single edge be defined with more than start and end vertices?

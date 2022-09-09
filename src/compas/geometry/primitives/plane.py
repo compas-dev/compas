@@ -39,7 +39,7 @@ class Plane(Primitive):
 
     """
 
-    __slots__ = ['_point', '_normal']
+    __slots__ = ["_point", "_normal"]
 
     def __init__(self, point, normal, **kwargs):
         super(Plane, self).__init__(**kwargs)
@@ -56,26 +56,28 @@ class Plane(Primitive):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
-        return Schema({
-            'point': Point.DATASCHEMA.fget(None),
-            'normal': Vector.DATASCHEMA.fget(None)
-        })
+
+        return Schema(
+            {
+                "point": Point.DATASCHEMA.fget(None),
+                "normal": Vector.DATASCHEMA.fget(None),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'plane'
+        return "plane"
 
     @property
     def data(self):
         """dict : The data dictionary that represents the plane."""
-        return {'point': self.point.data,
-                'normal': self.normal.data}
+        return {"point": self.point.data, "normal": self.normal.data}
 
     @data.setter
     def data(self, data):
-        self.point = Point.from_data(data['point'])
-        self.normal = Vector.from_data(data['normal'])
+        self.point = Point.from_data(data["point"])
+        self.normal = Vector.from_data(data["normal"])
 
     @classmethod
     def from_data(cls, data):
@@ -100,7 +102,7 @@ class Plane(Primitive):
         Vector(0.000, 0.000, 1.000)
 
         """
-        return cls(Point.from_data(data['point']), Vector.from_data(data['normal']))
+        return cls(Point.from_data(data["point"]), Vector.from_data(data["normal"]))
 
     # ==========================================================================
     # properties
@@ -127,7 +129,7 @@ class Plane(Primitive):
     def d(self):
         a, b, c = self.normal
         x, y, z = self.point
-        return - a * x - b * y - c * z
+        return -a * x - b * y - c * z
 
     @property
     def abcd(self):
@@ -140,7 +142,7 @@ class Plane(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Plane({0!r}, {1!r})'.format(self.point, self.normal)
+        return "Plane({0!r}, {1!r})".format(self.point, self.normal)
 
     def __len__(self):
         return 2

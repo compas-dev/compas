@@ -92,19 +92,20 @@ class Transformation(Data):
     def DATASCHEMA(self):
         from schema import Schema
         from compas.data import is_float4x4
+
         return Schema({"matrix": is_float4x4})
 
     @property
     def JSONSCHEMANAME(self):
-        return 'transformation'
+        return "transformation"
 
     @property
     def data(self):
-        return {'matrix': self.matrix}
+        return {"matrix": self.matrix}
 
     @data.setter
     def data(self, data):
-        self.matrix = data['matrix']
+        self.matrix = data["matrix"]
 
     @property
     def scale(self):
@@ -134,12 +135,14 @@ class Transformation(Data):
     @property
     def translation_vector(self):
         from compas.geometry import Vector
+
         vector = translation_from_matrix(self.matrix)
         return Vector(*vector)
 
     @property
     def basis_vectors(self):
         from compas.geometry import Vector
+
         x, y = basis_vectors_from_matrix(self.rotation.matrix)
         return Vector(*x), Vector(*y)
 
@@ -254,7 +257,7 @@ class Transformation(Data):
         return cls(matrix)
 
     @classmethod
-    def from_euler_angles(cls, euler_angles, static=True, axes='xyz', point=[0, 0, 0]):
+    def from_euler_angles(cls, euler_angles, static=True, axes="xyz", point=[0, 0, 0]):
         """Construct a transformation from a rotation represented by Euler angles.
 
         Parameters
@@ -400,7 +403,8 @@ class Transformation(Data):
             self.matrix[0][:],
             self.matrix[1][:],
             self.matrix[2][:],
-            self.matrix[3][:]]
+            self.matrix[3][:],
+        ]
         return cls(matrix)
 
     def transpose(self):
@@ -502,10 +506,11 @@ class Transformation(Data):
         from compas.geometry import Rotation  # noqa: F811
         from compas.geometry import Translation  # noqa: F811
         from compas.geometry import Projection
+
         s, h, a, t, p = decompose_matrix(self.matrix)
         S = Scale.from_factors(s)
         H = Shear.from_entries(h)
-        R = Rotation.from_euler_angles(a, static=True, axes='xyz')
+        R = Rotation.from_euler_angles(a, static=True, axes="xyz")
         T = Translation.from_vector(t)
         P = Projection.from_entries(p)
         return S, H, R, T, P

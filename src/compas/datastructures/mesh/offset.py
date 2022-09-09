@@ -8,10 +8,7 @@ from compas.geometry import scale_vector
 from .orientation import mesh_flip_cycles
 from .join import meshes_join
 
-__all__ = [
-    'mesh_offset',
-    'mesh_thicken'
-]
+__all__ = ["mesh_offset", "mesh_thicken"]
 
 
 def mesh_offset(mesh, distance=1.0):
@@ -52,7 +49,9 @@ def mesh_offset(mesh, distance=1.0):
     for vertex in offset.vertices():
         normal = mesh.vertex_normal(vertex)
         xyz = mesh.vertex_coordinates(vertex)
-        offset.vertex_attributes(vertex, 'xyz', add_vectors(xyz, scale_vector(normal, distance)))
+        offset.vertex_attributes(
+            vertex, "xyz", add_vectors(xyz, scale_vector(normal, distance))
+        )
 
     return offset
 
@@ -110,7 +109,11 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
     # close boundaries
     n = thickened_mesh.number_of_vertices() / 2
 
-    edges_on_boundary = [edge for boundary in list(thickened_mesh.edges_on_boundaries()) for edge in boundary]
+    edges_on_boundary = [
+        edge
+        for boundary in list(thickened_mesh.edges_on_boundaries())
+        for edge in boundary
+    ]
 
     for u, v in edges_on_boundary:
         if u < n and v < n:

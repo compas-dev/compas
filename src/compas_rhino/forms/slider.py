@@ -14,7 +14,7 @@ from System.Windows.Forms import TrackBar
 import scriptcontext as sc
 
 
-__all__ = ['SliderForm']
+__all__ = ["SliderForm"]
 
 
 class SliderForm(BaseForm):
@@ -65,7 +65,9 @@ class SliderForm(BaseForm):
         trackbar.Scroll += System.EventHandler(self.on_scroll)
         self.Controls.Add(textbox)
         self.Controls.Add(trackbar)
-        self.ClientSize = Size(10 + textbox.Width + 10 + trackbar.Width + 10, trackbar.Height + 10)
+        self.ClientSize = Size(
+            10 + textbox.Width + 10 + trackbar.Width + 10, trackbar.Height + 10
+        )
         self.textbox = textbox
         self.trackbar = trackbar
 
@@ -110,7 +112,7 @@ class SliderForm(BaseForm):
 # Main
 # ==============================================================================
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     import Rhino
     from Rhino.Geometry import Point3d

@@ -15,16 +15,16 @@ from compas.robots.model.base import _attr_to_data
 from compas.robots.model.base import _parse_floats
 
 __all__ = [
-    'Geometry',
-    'MeshDescriptor',
-    'Color',
-    'Texture',
-    'Material',
-    'Origin',
-    'Cylinder',
-    'Box',
-    'Sphere',
-    'Capsule',
+    "Geometry",
+    "MeshDescriptor",
+    "Color",
+    "Texture",
+    "Material",
+    "Origin",
+    "Cylinder",
+    "Box",
+    "Sphere",
+    "Capsule",
 ]
 
 
@@ -35,12 +35,12 @@ class BoxProxy(ProxyObject):
     """
 
     def get_urdf_element(self):
-        attributes = {'size': '{} {} {}'.format(*self.size)}
-        return URDFElement('box', attributes)
+        attributes = {"size": "{} {} {}".format(*self.size)}
+        return URDFElement("box", attributes)
 
     @classmethod
     def from_urdf(cls, attributes, elements=None, text=None):
-        size = _parse_floats(attributes['size'])
+        size = _parse_floats(attributes["size"])
         return cls(compas.geometry.Box(Frame.worldXY(), *size))
 
     @property
@@ -59,13 +59,13 @@ class CylinderProxy(ProxyObject):
     """
 
     def get_urdf_element(self):
-        attributes = {'radius': self.radius, 'length': self.length}
-        return URDFElement('cylinder', attributes)
+        attributes = {"radius": self.radius, "length": self.length}
+        return URDFElement("cylinder", attributes)
 
     @classmethod
     def from_urdf(cls, attributes, elements=None, text=None):
-        radius = float(attributes['radius'])
-        length = float(attributes['length'])
+        radius = float(attributes["radius"])
+        length = float(attributes["length"])
         plane = compas.geometry.Plane([0, 0, 0], [0, 0, 1])
         circle = compas.geometry.Circle(plane, radius)
         return cls(compas.geometry.Cylinder(circle, length))
@@ -86,12 +86,12 @@ class SphereProxy(ProxyObject):
     """
 
     def get_urdf_element(self):
-        attributes = {'radius': self.radius}
-        return URDFElement('sphere', attributes)
+        attributes = {"radius": self.radius}
+        return URDFElement("sphere", attributes)
 
     @classmethod
     def from_urdf(cls, attributes, elements=None, text=None):
-        radius = float(attributes['radius'])
+        radius = float(attributes["radius"])
         return cls(compas.geometry.Sphere((0, 0, 0), radius))
 
     @property
@@ -106,13 +106,13 @@ class CapsuleProxy(ProxyObject):
     """
 
     def get_urdf_element(self):
-        attributes = {'radius': self.radius, 'length': self.length}
-        return URDFElement('capsule', attributes)
+        attributes = {"radius": self.radius, "length": self.length}
+        return URDFElement("capsule", attributes)
 
     @classmethod
     def from_urdf(cls, attributes, elements=None, text=None):
-        radius = float(attributes['radius'])
-        length = float(attributes['length'])
+        radius = float(attributes["radius"])
+        length = float(attributes["length"])
         line = ((0, 0, length / -2), (0, 0, length / 2))
         return cls(compas.geometry.Capsule(line, radius))
 
@@ -149,7 +149,7 @@ class MeshDescriptor(Data):
 
     """
 
-    def __init__(self, filename, scale='1.0 1.0 1.0', **kwargs):
+    def __init__(self, filename, scale="1.0 1.0 1.0", **kwargs):
         super(MeshDescriptor, self).__init__()
         self.filename = filename
         self.scale = _parse_floats(scale)
@@ -157,35 +157,37 @@ class MeshDescriptor(Data):
         self.attr = kwargs or {}
 
     def get_urdf_element(self):
-        attributes = {'filename': self.filename}
+        attributes = {"filename": self.filename}
         # There is no need to record default values.  Usually these
         # coincide with some form of 0 and are filtered out with
         # `attributes = dict(filter(lambda x: x[1], attributes.items()))`,
         # but here we must be explicit.
         if self.scale != [1.0, 1.0, 1.0]:
-            attributes['scale'] = "{} {} {}".format(*self.scale)
+            attributes["scale"] = "{} {} {}".format(*self.scale)
         attributes.update(self.attr)
-        return URDFElement('mesh', attributes)
+        return URDFElement("mesh", attributes)
 
     @property
     def data(self):
         return {
-            'filename': self.filename,
-            'scale': self.scale,
-            'attr': _attr_to_data(self.attr),
-            'meshes': [m.data for m in self.meshes],
+            "filename": self.filename,
+            "scale": self.scale,
+            "attr": _attr_to_data(self.attr),
+            "meshes": [m.data for m in self.meshes],
         }
 
     @data.setter
     def data(self, data):
-        self.filename = data['filename']
-        self.scale = data['scale']
-        self.attr = _attr_from_data(data['attr']) if 'attr' in data else {}
-        self.meshes = [Mesh.from_data(md) for md in data['meshes']] if 'meshes' in data else []
+        self.filename = data["filename"]
+        self.scale = data["scale"]
+        self.attr = _attr_from_data(data["attr"]) if "attr" in data else {}
+        self.meshes = (
+            [Mesh.from_data(md) for md in data["meshes"]] if "meshes" in data else []
+        )
 
     @classmethod
     def from_data(cls, data):
-        md = cls('')
+        md = cls("")
         md.data = data
         return md
 
@@ -216,22 +218,22 @@ class Color(Data):
         self.rgba = _parse_floats(rgba)
 
     def get_urdf_element(self):
-        attributes = {'rgba': "{} {} {} {}".format(*self.rgba)}
-        return URDFElement('color', attributes)
+        attributes = {"rgba": "{} {} {} {}".format(*self.rgba)}
+        return URDFElement("color", attributes)
 
     @property
     def data(self):
         return {
-            'rgba': self.rgba,
+            "rgba": self.rgba,
         }
 
     @data.setter
     def data(self, data):
-        self.rgba = data['rgba']
+        self.rgba = data["rgba"]
 
     @classmethod
     def from_data(cls, data):
-        color = cls('1 1 1')
+        color = cls("1 1 1")
         color.data = data
         return color
 
@@ -260,18 +262,18 @@ class Texture(Data):
         self.filename = filename
 
     def get_urdf_element(self):
-        attributes = {'filename': self.filename}
-        return URDFElement('texture', attributes)
+        attributes = {"filename": self.filename}
+        return URDFElement("texture", attributes)
 
     @property
     def data(self):
         return {
-            'filename': self.filename,
+            "filename": self.filename,
         }
 
     @data.setter
     def data(self, data):
-        self.filename = data['filename']
+        self.filename = data["filename"]
 
     @classmethod
     def from_data(cls, data):
@@ -308,23 +310,23 @@ class Material(Data):
         self.texture = texture
 
     def get_urdf_element(self):
-        attributes = {'name': self.name}
+        attributes = {"name": self.name}
         elements = [self.color, self.texture]
-        return URDFElement('material', attributes, elements)
+        return URDFElement("material", attributes, elements)
 
     @property
     def data(self):
         return {
-            'name': self.name,
-            'color': self.color.data if self.color else None,
-            'texture': self.texture.data if self.texture else None,
+            "name": self.name,
+            "color": self.color.data if self.color else None,
+            "texture": self.texture.data if self.texture else None,
         }
 
     @data.setter
     def data(self, data):
-        self.name = data['name']
-        self.color = Color.from_data(data['color']) if data['color'] else None
-        self.texture = Texture.from_data(data['texture']) if data['texture'] else None
+        self.name = data["name"]
+        self.color = Color.from_data(data["color"]) if data["color"] else None
+        self.texture = Texture.from_data(data["texture"]) if data["texture"] else None
 
     def get_color(self):
         """Get the RGBA color array of the material.
@@ -353,27 +355,27 @@ class Material(Data):
 
 
 TYPE_CLASS_ENUM = {
-    'box': compas.geometry.Box,
-    'cylinder': compas.geometry.Cylinder,
-    'sphere': compas.geometry.Sphere,
-    'capsule': compas.geometry.Capsule,
-    'mesh': MeshDescriptor,
+    "box": compas.geometry.Box,
+    "cylinder": compas.geometry.Cylinder,
+    "sphere": compas.geometry.Sphere,
+    "capsule": compas.geometry.Capsule,
+    "mesh": MeshDescriptor,
 }
 
 TYPE_CLASS_ENUM_BY_DATA = {
-    ('frame', 'xsize', 'ysize', 'zsize'): compas.geometry.Box,
-    ('circle', 'height'): compas.geometry.Cylinder,
-    ('point', 'radius'): compas.geometry.Sphere,
-    ('line', 'radius'): compas.geometry.Capsule,
-    ('attr', 'filename', 'scale'): MeshDescriptor,
-    ('attr', 'filename', 'meshes', 'scale'): MeshDescriptor,
+    ("frame", "xsize", "ysize", "zsize"): compas.geometry.Box,
+    ("circle", "height"): compas.geometry.Cylinder,
+    ("point", "radius"): compas.geometry.Sphere,
+    ("line", "radius"): compas.geometry.Capsule,
+    ("attr", "filename", "scale"): MeshDescriptor,
+    ("attr", "filename", "meshes", "scale"): MeshDescriptor,
 }
 
 
 def _get_type_from_shape_data(data):
     # This is here only to support models serialized with older versions of COMPAS
-    if 'type' in data:
-        return TYPE_CLASS_ENUM[data['type']]
+    if "type" in data:
+        return TYPE_CLASS_ENUM[data["type"]]
 
     # The current scenario is that we need to figure out the object type based on the DATASCHEMA
     keys = tuple(sorted(data.keys()))
@@ -413,7 +415,9 @@ class Geometry(Data):
 
     """
 
-    def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
+    def __init__(
+        self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs
+    ):
         super(Geometry, self).__init__()
         self.shape = box or cylinder or sphere or capsule or mesh
         self.attr = kwargs
@@ -439,31 +443,31 @@ class Geometry(Data):
         else:
             self._shape = value
 
-        if 'meshes' not in dir(self._shape):
-            raise TypeError('Shape implementation does not define a meshes accessor')
+        if "meshes" not in dir(self._shape):
+            raise TypeError("Shape implementation does not define a meshes accessor")
 
     def get_urdf_element(self):
         attributes = self.attr.copy()
         elements = [self.shape]
-        return URDFElement('geometry', attributes, elements)
+        return URDFElement("geometry", attributes, elements)
 
     @property
     def data(self):
         return {
-            'shape': self.shape.data,
-            'attr': _attr_to_data(self.attr),
+            "shape": self.shape.data,
+            "attr": _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
-        class_ = _get_type_from_shape_data(data['shape'])
-        self.shape = class_.from_data(data['shape'])
-        self.attr = _attr_from_data(data['attr'])
+        class_ = _get_type_from_shape_data(data["shape"])
+        self.shape = class_.from_data(data["shape"])
+        self.attr = _attr_from_data(data["attr"])
 
     @classmethod
     def from_data(cls, data):
-        class_ = _get_type_from_shape_data(data['shape'])
-        geo = cls(box=class_.from_data(data['shape']))
+        class_ = _get_type_from_shape_data(data["shape"])
+        geo = cls(box=class_.from_data(data["shape"]))
         geo.data = data
         return geo
 
@@ -473,7 +477,7 @@ class Geometry(Data):
 
         if meshes:
             # Coerce meshes into an iterable (a tuple if not natively iterable)
-            if not hasattr(meshes, '__iter__'):
+            if not hasattr(meshes, "__iter__"):
                 meshes = (meshes,)
 
         return meshes

@@ -9,10 +9,12 @@ from numpy import argmin
 from numpy import amax
 from numpy import amin
 from numpy import dot
+
 # from numpy import ptp
 from numpy import sum
 
 from scipy.spatial import ConvexHull
+
 # from scipy.spatial import QhullError
 
 from compas.geometry import local_axes
@@ -27,9 +29,9 @@ from compas.geometry.bbox.bbox import bounding_box
 
 
 __all__ = [
-    'oriented_bounding_box_numpy',
-    'oriented_bounding_box_xy_numpy',
-    'oabb_numpy'
+    "oriented_bounding_box_numpy",
+    "oriented_bounding_box_xy_numpy",
+    "oabb_numpy",
 ]
 
 
@@ -208,7 +210,7 @@ def oriented_bounding_box_xy_numpy(points):
 
         # s direction
         s = p1 - p0
-        sl = sum(s ** 2) ** 0.5
+        sl = sum(s**2) ** 0.5
         su = s / sl
         vn = xy_hull - p0
         sc = (sum(vn * s, axis=1) / sl).reshape((-1, 1))
@@ -221,7 +223,7 @@ def oriented_bounding_box_xy_numpy(points):
 
         # t direction
         t = array([-s[1], s[0]])
-        tl = sum(t ** 2) ** 0.5
+        tl = sum(t**2) ** 0.5
         tu = t / tl
         vn = xy_hull - p0
         tc = (sum(vn * t, axis=1) / tl).reshape((-1, 1))

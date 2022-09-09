@@ -34,10 +34,19 @@ class ToolModel(RobotModel):
 
     """
 
-    def __init__(self, visual, frame_in_tool0_frame, collision=None, name="attached_tool", link_name=None):
+    def __init__(
+        self,
+        visual,
+        frame_in_tool0_frame,
+        collision=None,
+        name="attached_tool",
+        link_name=None,
+    ):
         collision = collision or visual
         super(ToolModel, self).__init__(name)
-        self.add_link("attached_tool_link", visual_mesh=visual, collision_mesh=collision)
+        self.add_link(
+            "attached_tool_link", visual_mesh=visual, collision_mesh=collision
+        )
 
         self._rebuild_tree()
         self._create(self.root, Transformation())
@@ -60,8 +69,8 @@ class ToolModel(RobotModel):
 
         """
         data = robot.data
-        data['frame'] = frame_in_tool0_frame.data
-        data['link_name'] = link_name
+        data["frame"] = frame_in_tool0_frame.data
+        data["link_name"] = link_name
         return cls.from_data(data)
 
     @property
@@ -78,8 +87,8 @@ class ToolModel(RobotModel):
 
     def _get_data(self):
         data = super(ToolModel, self)._get_data()
-        data['frame'] = self.frame.data
-        data['link_name'] = self.link_name
+        data["frame"] = self.frame.data
+        data["link_name"] = self.link_name
         return data
 
     @data.setter
@@ -88,9 +97,9 @@ class ToolModel(RobotModel):
 
     def _set_data(self, data):
         super(ToolModel, self)._set_data(data)
-        self.frame = Frame.from_data(data['frame'])
-        self.name = self.name or 'attached_tool'
-        self.link_name = data['link_name'] if 'link_name' in data else None
+        self.frame = Frame.from_data(data["frame"])
+        self.name = self.name or "attached_tool"
+        self.link_name = data["link_name"] if "link_name" in data else None
 
     @classmethod
     def from_data(cls, data):
@@ -140,7 +149,10 @@ class ToolModel(RobotModel):
 
         """
         Te = Transformation.from_frame_to_frame(self.frame, Frame.worldXY())
-        return [Frame.from_transformation(Transformation.from_frame(f) * Te) for f in frames_tcf]
+        return [
+            Frame.from_transformation(Transformation.from_frame(f) * Te)
+            for f in frames_tcf
+        ]
 
     def from_t0cf_to_tcf(self, frames_t0cf):
         """Converts frames at the robot's flange (tool0 frame) to frames at the robot's tool tip (tcf frame).
@@ -169,4 +181,7 @@ class ToolModel(RobotModel):
 
         """
         Te = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
-        return [Frame.from_transformation(Transformation.from_frame(f) * Te) for f in frames_t0cf]
+        return [
+            Frame.from_transformation(Transformation.from_frame(f) * Te)
+            for f in frames_t0cf
+        ]

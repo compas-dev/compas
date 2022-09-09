@@ -52,10 +52,12 @@ class SphereArtist(RhinoArtist, ShapeArtist):
         v = v or self.v
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
         vertices = [list(vertex) for vertex in vertices]
-        guid = compas_rhino.draw_mesh(vertices,
-                                      faces,
-                                      layer=self.layer,
-                                      name=self.shape.name,
-                                      color=color.rgb255,
-                                      disjoint=True)
+        guid = compas_rhino.draw_mesh(
+            vertices,
+            faces,
+            layer=self.layer,
+            name=self.shape.name,
+            color=color.rgb255,
+            disjoint=True,
+        )
         return [guid]

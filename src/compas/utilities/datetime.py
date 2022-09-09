@@ -6,10 +6,7 @@ import time
 import datetime
 
 
-__all__ = [
-    'timestamp',
-    'now'
-]
+__all__ = ["timestamp", "now"]
 
 
 def timestamp():
@@ -26,7 +23,7 @@ def timestamp():
     True
 
     """
-    return datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d%H%M%S')
+    return datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 
 
 def now():

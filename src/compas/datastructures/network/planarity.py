@@ -15,19 +15,20 @@ from compas.geometry import subtract_vectors_xy
 
 
 __all__ = [
-    'network_is_crossed',
-    'network_count_crossings',
-    'network_find_crossings',
-    'network_is_xy',
-    'network_is_planar',
-    'network_is_planar_embedding',
-    'network_embed_in_plane',
-    'network_embed_in_plane_proxy'
+    "network_is_crossed",
+    "network_count_crossings",
+    "network_find_crossings",
+    "network_is_xy",
+    "network_is_planar",
+    "network_is_planar_embedding",
+    "network_embed_in_plane",
+    "network_embed_in_plane_proxy",
 ]
 
 
 def network_embed_in_plane_proxy(data, fixed=None, straightline=True):
     from compas.datastructures import Network
+
     network = Network.from_data(data)
     network_embed_in_plane(network, fixed=fixed, straightline=straightline)
     return network.to_data()
@@ -55,10 +56,10 @@ def network_is_crossed(network):
     for (u1, v1), (u2, v2) in product(network.edges(), network.edges()):
         if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
             continue
-        a = network.node_attributes(u1, 'xy')
-        b = network.node_attributes(v1, 'xy')
-        c = network.node_attributes(u2, 'xy')
-        d = network.node_attributes(v2, 'xy')
+        a = network.node_attributes(u1, "xy")
+        b = network.node_attributes(v1, "xy")
+        c = network.node_attributes(u2, "xy")
+        d = network.node_attributes(v2, "xy")
         if is_intersection_segment_segment_xy((a, b), (c, d)):
             return True
     return False
@@ -124,10 +125,10 @@ def network_find_crossings(network):
             continue
         if ((u2, v2), (u1, v1)) in crossings:
             continue
-        a = network.node_attributes(u1, 'xy')
-        b = network.node_attributes(v1, 'xy')
-        c = network.node_attributes(u2, 'xy')
-        d = network.node_attributes(v2, 'xy')
+        a = network.node_attributes(u1, "xy")
+        b = network.node_attributes(v1, "xy")
+        c = network.node_attributes(u2, "xy")
+        d = network.node_attributes(v2, "xy")
         if is_intersection_segment_segment_xy((a, b), (c, d)):
             crossings.add(((u1, v1), (u2, v2)))
     return list(crossings)
@@ -151,9 +152,9 @@ def network_is_xy(network):
     z = None
     for key in network.nodes():
         if z is None:
-            z = network.node_attribute(key, 'z') or 0.0
+            z = network.node_attribute(key, "z") or 0.0
         else:
-            if z != network.node_attribute(key, 'z') or 0.0:
+            if z != network.node_attribute(key, "z") or 0.0:
                 return False
     return True
 
@@ -214,9 +215,11 @@ def network_is_planar_embedding(network):
         Fase otherwise.
 
     """
-    return (network_is_planar(network) and
-            network_is_xy(network) and not
-            network_is_crossed(network))
+    return (
+        network_is_planar(network)
+        and network_is_xy(network)
+        and not network_is_crossed(network)
+    )
 
 
 def network_embed_in_plane(network, fixed=None, straightline=True):
@@ -249,14 +252,18 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
         print("NetworkX is not installed. Get NetworkX at https://networkx.github.io/.")
         raise
 
-    x = network.nodes_attribute('x')
-    y = network.nodes_attribute('y')
+    x = network.nodes_attribute("x")
+    y = network.nodes_attribute("y")
     xmin, xmax = min(x), max(x)
     ymin, ymax = min(y), max(y)
     xspan = xmax - xmin
     yspan = ymax - ymin
 
-    edges = [(u, v) for u, v in network.edges() if not network.is_leaf(u) and not network.is_leaf(v)]
+    edges = [
+        (u, v)
+        for u, v in network.edges()
+        if not network.is_leaf(u) and not network.is_leaf(v)
+    ]
 
     is_embedded = False
 
@@ -274,8 +281,8 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
 
     if fixed:
         a, b = fixed
-        p0 = network.node_attributes(a, 'xy')
-        p1 = network.node_attributes(b, 'xy')
+        p0 = network.node_attributes(a, "xy")
+        p1 = network.node_attributes(b, "xy")
         p2 = pos[b]
         vec0 = subtract_vectors_xy(p1, p0)
         vec1 = subtract_vectors_xy(pos[b], pos[a])
@@ -305,6 +312,6 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
     # update network node coordinates
     for key in network.nodes():
         if key in pos:
-            network.node_attributes(key, 'xy', pos[key])
+            network.node_attributes(key, "xy", pos[key])
 
     return True

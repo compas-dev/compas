@@ -39,5 +39,5 @@ class PointArtist(GHArtist, PrimitiveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        points = [{'pos': list(self.primitive), 'color': color.rgb255}]
+        points = [{"pos": list(self.primitive), "color": color.rgb255}]
         return compas_ghpython.utilities.draw_points(points)[0]

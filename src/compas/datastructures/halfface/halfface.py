@@ -44,12 +44,14 @@ class HalfFace(Datastructure):
 
     """
 
-    def __init__(self,
-                 name=None,
-                 default_vertex_attributes=None,
-                 default_edge_attributes=None,
-                 default_face_attributes=None,
-                 default_cell_attributes=None):
+    def __init__(
+        self,
+        name=None,
+        default_vertex_attributes=None,
+        default_edge_attributes=None,
+        default_face_attributes=None,
+        default_cell_attributes=None,
+    ):
         super(HalfFace, self).__init__()
         self._max_vertex = -1
         self._max_face = -1
@@ -61,8 +63,8 @@ class HalfFace(Datastructure):
         self._edge_data = {}
         self._face_data = {}
         self._cell_data = {}
-        self.attributes = {'name': name or 'HalfFace'}
-        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        self.attributes = {"name": name or "HalfFace"}
+        self.default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
         self.default_cell_attributes = {}
@@ -77,7 +79,12 @@ class HalfFace(Datastructure):
 
     def __str__(self):
         tpl = "<HalfFace with {} vertices, {} faces, {} cells, {} edges>"
-        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_cells(),  self.number_of_edges())
+        return tpl.format(
+            self.number_of_vertices(),
+            self.number_of_faces(),
+            self.number_of_cells(),
+            self.number_of_edges(),
+        )
 
     # --------------------------------------------------------------------------
     # descriptors
@@ -85,34 +92,37 @@ class HalfFace(Datastructure):
 
     @property
     def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, value):
-        self.attributes['name'] = value
+        self.attributes["name"] = value
 
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "attributes": dict,
-            "dva": dict,
-            "dea": dict,
-            "dfa": dict,
-            "dca": dict,
-            "vertex": dict,
-            "cell": dict,
-            "edge_data": dict,
-            "face_data": dict,
-            "cell_data": dict,
-            "max_vertex": schema.And(int, lambda x: x >= -1),
-            "max_face": schema.And(int, lambda x: x >= -1),
-            "max_cell": schema.And(int, lambda x: x >= -1),
-        })
+
+        return schema.Schema(
+            {
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "dca": dict,
+                "vertex": dict,
+                "cell": dict,
+                "edge_data": dict,
+                "face_data": dict,
+                "cell_data": dict,
+                "max_vertex": schema.And(int, lambda x: x >= -1),
+                "max_face": schema.And(int, lambda x: x >= -1),
+                "max_cell": schema.And(int, lambda x: x >= -1),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'halfface'
+        return "halfface"
 
     @property
     def data(self):
@@ -124,36 +134,37 @@ class HalfFace(Datastructure):
                 for v in self._cell[c][u]:
                     cell[c][u][v] = self._halfface[self._cell[c][u][v]]
         data = {
-            'attributes': self.attributes,
-            'dva': self.default_vertex_attributes,
-            'dea': self.default_edge_attributes,
-            'dfa': self.default_face_attributes,
-            'dca': self.default_cell_attributes,
-            'vertex': self._vertex,
-            'cell': cell,
-            'edge_data': self._edge_data,
-            'face_data': self._face_data,
-            'cell_data': self._cell_data,
-            'max_vertex': self._max_vertex,
-            'max_face': self._max_face,
-            'max_cell': self._max_cell}
+            "attributes": self.attributes,
+            "dva": self.default_vertex_attributes,
+            "dea": self.default_edge_attributes,
+            "dfa": self.default_face_attributes,
+            "dca": self.default_cell_attributes,
+            "vertex": self._vertex,
+            "cell": cell,
+            "edge_data": self._edge_data,
+            "face_data": self._face_data,
+            "cell_data": self._cell_data,
+            "max_vertex": self._max_vertex,
+            "max_face": self._max_face,
+            "max_cell": self._max_cell,
+        }
         return data
 
     @data.setter
     def data(self, data):
-        attributes = data.get('attributes') or {}
-        dva = data.get('dva') or {}
-        dea = data.get('dea') or {}
-        dfa = data.get('dfa') or {}
-        dca = data.get('dca') or {}
-        vertex = data.get('vertex') or {}
-        cell = data.get('cell') or {}
-        edge_data = data.get('edge_data') or {}
-        face_data = data.get('face_data') or {}
-        cell_data = data.get('cell_data') or {}
-        max_vertex = data.get('max_vertex', -1)
-        max_face = data.get('max_face', -1)
-        max_cell = data.get('max_cell', -1)
+        attributes = data.get("attributes") or {}
+        dva = data.get("dva") or {}
+        dea = data.get("dea") or {}
+        dfa = data.get("dfa") or {}
+        dca = data.get("dca") or {}
+        vertex = data.get("vertex") or {}
+        cell = data.get("cell") or {}
+        edge_data = data.get("edge_data") or {}
+        face_data = data.get("face_data") or {}
+        cell_data = data.get("cell_data") or {}
+        max_vertex = data.get("max_vertex", -1)
+        max_face = data.get("max_face", -1)
+        max_cell = data.get("max_cell", -1)
 
         if not vertex or not cell:
             return
@@ -659,7 +670,7 @@ class HalfFace(Datastructure):
                 yield hface, self.face_attributes(hface)
 
     def faces(self, data=False):
-        """"Iterate over the halffaces of the volmesh and yield faces.
+        """ "Iterate over the halffaces of the volmesh and yield faces.
 
         Parameters
         ----------
@@ -1199,7 +1210,9 @@ class HalfFace(Datastructure):
         # use it as a getter
         if not names:
             # return all vertex attributes as a dict
-            return VertexAttributeView(self.default_vertex_attributes, self._vertex[vertex])
+            return VertexAttributeView(
+                self.default_vertex_attributes, self._vertex[vertex]
+            )
         values = []
         for name in names:
             if name in self._vertex[vertex]:
@@ -1412,8 +1425,9 @@ class HalfFace(Datastructure):
             return
         if not names:
             key = str(tuple(sorted(edge)))
-            return EdgeAttributeView(self.default_edge_attributes,
-                                     self._edge_data.setdefault(key, {}))
+            return EdgeAttributeView(
+                self.default_edge_attributes, self._edge_data.setdefault(key, {})
+            )
         values = []
         for name in names:
             value = self.edge_attribute(edge, name)
@@ -1616,8 +1630,9 @@ class HalfFace(Datastructure):
                 self._face_data[key][name] = value
             return
         if not names:
-            return FaceAttributeView(self.default_face_attributes,
-                                     self._face_data.setdefault(key, {}))
+            return FaceAttributeView(
+                self.default_face_attributes, self._face_data.setdefault(key, {})
+            )
         values = []
         for name in names:
             value = self.face_attribute(face, name)
@@ -1820,7 +1835,9 @@ class HalfFace(Datastructure):
                 self._cell_data[cell][name] = value
             return
         if not names:
-            return CellAttributeView(self.default_cell_attributes, self._cell_data.setdefault(cell, {}))
+            return CellAttributeView(
+                self.default_cell_attributes, self._cell_data.setdefault(cell, {})
+            )
         values = []
         for name in names:
             value = self.cell_attribute(cell, name)
@@ -2491,7 +2508,15 @@ class HalfFace(Datastructure):
         but in the context of a cell of the `VolMesh`.
 
         """
-        return list(set([vertex for face in self.cell_faces(cell) for vertex in self.halfface_vertices(face)]))
+        return list(
+            set(
+                [
+                    vertex
+                    for face in self.cell_faces(cell)
+                    for vertex in self.halfface_vertices(face)
+                ]
+            )
+        )
 
     def cell_halfedges(self, cell):
         """The halfedges of a cell.

@@ -77,18 +77,22 @@ class Rotation(Transformation):
         if matrix:
             _, _, angles, _, _ = decompose_matrix(matrix)
             if check:
-                if not allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
-                    raise ValueError('This is not a proper rotation matrix.')
+                if not allclose(
+                    flatten(matrix), flatten(matrix_from_euler_angles(angles))
+                ):
+                    raise ValueError("This is not a proper rotation matrix.")
         super(Rotation, self).__init__(matrix=matrix)
 
     @property
     def quaternion(self):
         from compas.geometry import Quaternion
+
         return Quaternion.from_matrix(self.matrix)
 
     @property
     def axis_and_angle(self):
         from compas.geometry import Vector
+
         axis, angle = axis_and_angle_from_matrix(self.matrix)
         return Vector(*axis), angle
 
@@ -100,6 +104,7 @@ class Rotation(Transformation):
     @property
     def basis_vectors(self):
         from compas.geometry import Vector
+
         xaxis, yaxis = basis_vectors_from_matrix(self.matrix)
         return Vector(*xaxis), Vector(*yaxis)
 
@@ -177,7 +182,8 @@ class Rotation(Transformation):
             [xaxis[0], yaxis[0], zaxis[0], 0],
             [xaxis[1], yaxis[1], zaxis[1], 0],
             [xaxis[2], yaxis[2], zaxis[2], 0],
-            [0, 0, 0, 1]]
+            [0, 0, 0, 1],
+        ]
         R = cls()
         R.matrix = matrix
         return R
@@ -274,7 +280,7 @@ class Rotation(Transformation):
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
 
     @classmethod
-    def from_euler_angles(cls, euler_angles, static=True, axes='xyz', **kwargs):
+    def from_euler_angles(cls, euler_angles, static=True, axes="xyz", **kwargs):
         """Construct a rotation transformation from Euler angles.
 
         In 3D space any orientation can be achieved by composing three
@@ -326,7 +332,7 @@ class Rotation(Transformation):
     # xyz seems irelevant
     # could be added to base Transformation
     # always relevant
-    def euler_angles(self, static=True, axes='xyz'):
+    def euler_angles(self, static=True, axes="xyz"):
         """Returns Euler angles from the rotation according to specified
         axis sequence and rotation type.
 

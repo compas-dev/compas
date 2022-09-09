@@ -18,9 +18,9 @@ from compas.utilities import is_item_iterable
 
 
 __all__ = [
-    'offset_line',
-    'offset_polyline',
-    'offset_polygon',
+    "offset_line",
+    "offset_polyline",
+    "offset_polygon",
 ]
 
 
@@ -35,6 +35,7 @@ def intersect_lines_colinear(l1, l2, tol):
         a, b = l1
         d, c = l2
         return is_colinear(a, b, c, tol)
+
     if are_segments_colinear(l1, l2, tol):
         return centroid_points([l1[1], l2[0]])
 

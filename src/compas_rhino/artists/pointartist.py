@@ -42,6 +42,14 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        points = [{'pos': list(self.primitive), 'color': color.rgb255, 'name': self.primitive.name}]
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        points = [
+            {
+                "pos": list(self.primitive),
+                "color": color.rgb255,
+                "name": self.primitive.name,
+            }
+        ]
+        guids = compas_rhino.draw_points(
+            points, layer=self.layer, clear=False, redraw=False
+        )
         return guids

@@ -6,7 +6,7 @@ from numpy import asarray
 from scipy.linalg import svd
 
 
-__all__ = ['pca_numpy']
+__all__ = ["pca_numpy"]
 
 
 def pca_numpy(data):
@@ -42,7 +42,9 @@ def pca_numpy(data):
     X = asarray(data)
     n, dim = X.shape
 
-    assert n >= dim, "The number of observations (n) should be higher than the number of measured variables (dimensions)."
+    assert (
+        n >= dim
+    ), "The number of observations (n) should be higher than the number of measured variables (dimensions)."
 
     # the average of the observations for each of the variables
     # for example, if the data are 2D point coordinates,

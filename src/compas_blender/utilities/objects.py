@@ -33,7 +33,7 @@ def delete_all_objects(purge_data: bool = True):
     None
 
     """
-    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=True, confirm=False)
     if purge_data:
         delete_unused_data()

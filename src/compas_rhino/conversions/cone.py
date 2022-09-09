@@ -38,7 +38,7 @@ class RhinoCone(RhinoGeometry):
         if not isinstance(geometry, Rhino.Geometry.Cone):
             if isinstance(geometry, Rhino.Geometry.Brep):
                 if geometry.Faces.Count > 2:
-                    raise ConversionError('Object brep cannot be converted to a cone.')
+                    raise ConversionError("Object brep cannot be converted to a cone.")
                 faces = geometry.Faces
                 geometry = None
                 for face in faces:
@@ -47,11 +47,13 @@ class RhinoCone(RhinoGeometry):
                         if result:
                             break
                 if not geometry:
-                    raise ConversionError('Object brep cannot be converted to a cone.')
+                    raise ConversionError("Object brep cannot be converted to a cone.")
             elif isinstance(geometry, Cone):
                 geometry = cone_to_rhino(geometry)
             else:
-                raise ConversionError('Geometry object cannot be converted to a cone: {}'.format(geometry))
+                raise ConversionError(
+                    "Geometry object cannot be converted to a cone: {}".format(geometry)
+                )
         self._geometry = geometry
 
     def to_compas(self):

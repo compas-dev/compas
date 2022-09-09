@@ -66,7 +66,7 @@ class Vector(Primitive):
 
     """
 
-    __slots__ = ['_x', '_y', '_z']
+    __slots__ = ["_x", "_y", "_z"]
 
     def __init__(self, x, y, z=0.0, **kwargs):
         super(Vector, self).__init__(**kwargs)
@@ -86,12 +86,13 @@ class Vector(Primitive):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
         from compas.data import is_float3
+
         return Schema(is_float3)
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'vector'
+        return "vector"
 
     @property
     def data(self):
@@ -162,7 +163,9 @@ class Vector(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, PRECISION[:1])
+        return "Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(
+            self.x, self.y, self.z, PRECISION[:1]
+        )
 
     def __len__(self):
         return 3
@@ -293,7 +296,7 @@ class Vector(Primitive):
             A new point with raised coordinates.
 
         """
-        return Vector(self.x ** n, self.y ** n, self.z ** n)
+        return Vector(self.x**n, self.y**n, self.z**n)
 
     def __neg__(self):
         return self.scaled(-1.0)
@@ -579,7 +582,7 @@ class Vector(Primitive):
         Vector(3.000, 0.000, 0.000)
 
         """
-        return Vector(* [sum(axis) for axis in zip(* vectors)])
+        return Vector(*[sum(axis) for axis in zip(*vectors)])
 
     @staticmethod
     def dot_vectors(left, right):
@@ -773,7 +776,7 @@ class Vector(Primitive):
         True
 
         """
-        self.scale(-1.)
+        self.scale(-1.0)
 
     def inverted(self):
         """Returns a inverted copy of this vector
@@ -791,7 +794,7 @@ class Vector(Primitive):
         0.0
 
         """
-        return self.scaled(-1.)
+        return self.scaled(-1.0)
 
     def scale(self, n):
         """Scale this vector by a factor n.
@@ -888,7 +891,7 @@ class Vector(Primitive):
         Vector(0.000, 0.000, 1.000)
 
         """
-        return Vector(* cross_vectors(self, other))
+        return Vector(*cross_vectors(self, other))
 
     def angle(self, other):
         """Compute the smallest angle between this vector and another vector.

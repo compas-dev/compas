@@ -3,11 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 from collections import deque
+
 # from functools import reduce
 
 from compas.geometry import Frame
 from compas.geometry import Polyhedron as Shape
 from compas.geometry import Transformation
+
 # from compas.geometry import multiply_matrices
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import boolean_difference_mesh_mesh
@@ -61,15 +63,15 @@ class Part(Datastructure):
     """
 
     operations = {
-        'union': boolean_union_mesh_mesh,
-        'difference': boolean_difference_mesh_mesh,
-        'intersection': boolean_intersection_mesh_mesh
+        "union": boolean_union_mesh_mesh,
+        "difference": boolean_difference_mesh_mesh,
+        "intersection": boolean_intersection_mesh_mesh,
     }
 
     def __init__(self, name=None, frame=None, shape=None, features=None, **kwargs):
         super(Part, self).__init__()
         self._frame = None
-        self.attributes = {'name': name or 'Part'}
+        self.attributes = {"name": name or "Part"}
         self.attributes.update(kwargs)
         self.key = None
         self.frame = frame
@@ -84,23 +86,26 @@ class Part(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        return schema.Schema({
-            "attributes": dict,
-            "key": int,
-            "frame": Frame,
-            "shape": Shape,
-            "features": list,
-            "transformations": list,
-        })
+
+        return schema.Schema(
+            {
+                "attributes": dict,
+                "key": int,
+                "frame": Frame,
+                "shape": Shape,
+                "features": list,
+                "transformations": list,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'part'
+        return "part"
 
     @property
     def data(self):
         data = {
-            'attributes': self.attributes,
+            "attributes": self.attributes,
             "key": self.key,
             "frame": self.frame.data,
             "shape": self.shape.data,
@@ -111,12 +116,16 @@ class Part(Datastructure):
 
     @data.setter
     def data(self, data):
-        self.attributes.update(data['attributes'] or {})
-        self.key = data['key']
-        self.frame.data = data['frame']
-        self.shape.data = data['shape']
-        self.features = [(Shape.from_data(shape), operation) for shape, operation in data['features']]
-        self.transformations = deque([Transformation.from_data(T) for T in data['transformations']])
+        self.attributes.update(data["attributes"] or {})
+        self.key = data["key"]
+        self.frame.data = data["frame"]
+        self.shape.data = data["shape"]
+        self.features = [
+            (Shape.from_data(shape), operation) for shape, operation in data["features"]
+        ]
+        self.transformations = deque(
+            [Transformation.from_data(T) for T in data["transformations"]]
+        )
 
     # ==========================================================================
     # properties
@@ -124,11 +133,11 @@ class Part(Datastructure):
 
     @property
     def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, value):
-        self.attributes['name'] = value
+        self.attributes["name"] = value
 
     @property
     def frame(self):

@@ -5,9 +5,9 @@ from __future__ import division
 from compas.topology import connected_components
 
 __all__ = [
-    'mesh_disconnected_vertices',
-    'mesh_disconnected_faces',
-    'mesh_explode',
+    "mesh_disconnected_vertices",
+    "mesh_disconnected_faces",
+    "mesh_explode",
 ]
 
 
@@ -43,7 +43,10 @@ def mesh_disconnected_faces(mesh):
 
     """
     parts = mesh_disconnected_vertices(mesh)
-    return [set([fkey for vkey in part for fkey in mesh.vertex_faces(vkey)]) for part in parts]
+    return [
+        set([fkey for vkey in part for fkey in mesh.vertex_faces(vkey)])
+        for part in parts
+    ]
 
 
 def mesh_explode(mesh, cls=None):
@@ -68,9 +71,13 @@ def mesh_explode(mesh, cls=None):
     parts = mesh_disconnected_faces(mesh)
     exploded_meshes = []
     for part in parts:
-        vertex_keys = list(set([vkey for fkey in part for vkey in mesh.face_vertices(fkey)]))
+        vertex_keys = list(
+            set([vkey for fkey in part for vkey in mesh.face_vertices(fkey)])
+        )
         vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
         key_to_index = {vkey: i for i, vkey in enumerate(vertex_keys)}
-        faces = [[key_to_index[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in part]
+        faces = [
+            [key_to_index[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in part
+        ]
         exploded_meshes.append(cls.from_vertices_and_faces(vertices, faces))
     return exploded_meshes

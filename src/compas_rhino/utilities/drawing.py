@@ -69,29 +69,30 @@ except SystemError:
 
 
 __all__ = [
-    'draw_labels',
-    'draw_points',
-    'draw_lines',
-    'draw_geodesics',
-    'draw_polylines',
-    'draw_breps',
-    'draw_faces',
-    'draw_cylinders',
-    'draw_pipes',
-    'draw_spheres',
-    'draw_mesh',
-    'draw_circles',
-    'draw_surfaces',
+    "draw_labels",
+    "draw_points",
+    "draw_lines",
+    "draw_geodesics",
+    "draw_polylines",
+    "draw_breps",
+    "draw_faces",
+    "draw_cylinders",
+    "draw_pipes",
+    "draw_spheres",
+    "draw_mesh",
+    "draw_circles",
+    "draw_surfaces",
 ]
 
 
 def wrap_drawfunc(f):
     """Wraps all ``draw_`` functions with support for recurring keyword arguments."""
+
     @wraps(f)
     def wrapper(*args, **kwargs):
-        layer = kwargs.get('layer', None)
-        clear = kwargs.get('clear', False)
-        redraw = kwargs.get('redraw', False)
+        layer = kwargs.get("layer", None)
+        clear = kwargs.get("clear", False)
+        redraw = kwargs.get("redraw", False)
         if layer:
             if not rs.IsLayer(layer):
                 create_layers_from_path(layer)
@@ -108,6 +109,7 @@ def wrap_drawfunc(f):
         if layer:
             rs.CurrentLayer(previous)
         return res
+
     return wrapper
 
 
@@ -144,13 +146,13 @@ def draw_labels(labels, **kwargs):
     """
     guids = []
     for label in iter(labels):
-        pos = label['pos']
-        text = label['text']
-        name = label.get('name', '')
-        color = label.get('color', None)
-        layer = label.get('layer')
-        size = label.get('fontsize', 10)
-        font = label.get('font', 'Arial Regular')
+        pos = label["pos"]
+        text = label["text"]
+        name = label.get("name", "")
+        color = label.get("color", None)
+        layer = label.get("layer")
+        size = label.get("fontsize", 10)
+        font = label.get("font", "Arial Regular")
         dot = TextDot(str(text), Point3d(*pos))
         dot.FontHeight = size
         dot.FontFace = font
@@ -206,10 +208,10 @@ def draw_points(points, **kwargs):
     """
     guids = []
     for p in iter(points):
-        pos = p['pos']
-        name = p.get('name', '')
-        color = p.get('color')
-        layer = p.get('layer')
+        pos = p["pos"]
+        name = p.get("name", "")
+        color = p.get("color")
+        layer = p.get("layer")
         guid = add_point(Point3d(*pos))
         if not guid:
             continue
@@ -266,13 +268,13 @@ def draw_lines(lines, **kwargs):
     """
     guids = []
     for line in iter(lines):
-        sp = line['start']
-        ep = line['end']
-        name = line.get('name', '')
-        color = line.get('color')
-        arrow = line.get('arrow')
-        layer = line.get('layer')
-        width = line.get('width')
+        sp = line["start"]
+        ep = line["end"]
+        name = line.get("name", "")
+        color = line.get("color")
+        arrow = line.get("arrow")
+        layer = line.get("layer")
+        width = line.get("width")
         guid = add_line(Point3d(*sp), Point3d(*ep))
         if not guid:
             continue
@@ -285,9 +287,9 @@ def draw_lines(lines, **kwargs):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
-        if arrow == 'end':
+        if arrow == "end":
             attr.ObjectDecoration = EndArrowhead
-        if arrow == 'start':
+        if arrow == "start":
             attr.ObjectDecoration = StartArrowhead
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
@@ -336,13 +338,13 @@ def draw_geodesics(geodesics, **kwargs):
     """
     guids = []
     for g in iter(geodesics):
-        sp = g['start']
-        ep = g['end']
-        srf = g['srf']
-        name = g.get('name', '')
-        color = g.get('color')
-        arrow = g.get('arrow')
-        layer = g.get('layer')
+        sp = g["start"]
+        ep = g["end"]
+        srf = g["srf"]
+        name = g.get("name", "")
+        color = g.get("color")
+        arrow = g.get("arrow")
+        layer = g.get("layer")
         # replace this by a proper rhinocommon call
         guid = rs.ShortPath(srf, Point3d(*sp), Point3d(*ep))
         if not guid:
@@ -356,9 +358,9 @@ def draw_geodesics(geodesics, **kwargs):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
-        if arrow == 'end':
+        if arrow == "end":
             attr.ObjectDecoration = EndArrowhead
-        if arrow == 'start':
+        if arrow == "start":
             attr.ObjectDecoration = StartArrowhead
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
@@ -402,11 +404,11 @@ def draw_polylines(polylines, **kwargs):
     """
     guids = []
     for p in iter(polylines):
-        points = p['points']
-        name = p.get('name', '')
-        color = p.get('color')
-        arrow = p.get('arrow')
-        layer = p.get('layer')
+        points = p["points"]
+        name = p.get("name", "")
+        color = p.get("color")
+        arrow = p.get("arrow")
+        layer = p.get("layer")
         poly = Polyline([Point3d(*xyz) for xyz in points])
         poly.DeleteShortSegments(TOL)
         guid = add_polyline(poly)
@@ -421,9 +423,9 @@ def draw_polylines(polylines, **kwargs):
             attr.ColorSource = ColorFromObject
         else:
             attr.ColorSource = ColorFromLayer
-        if arrow == 'end':
+        if arrow == "end":
             attr.ObjectDecoration = EndArrowhead
-        if arrow == 'start':
+        if arrow == "start":
             attr.ObjectDecoration = StartArrowhead
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
@@ -491,26 +493,27 @@ def draw_breps(faces, u=10, v=10, join=False, **kwargs):
     """
     breps = []
     for f in iter(faces):
-        points = f['points']
-        name = f.get('name', '')
-        color = f.get('color')
-        layer = f.get('layer')
+        points = f["points"]
+        name = f.get("name", "")
+        color = f.get("color")
+        layer = f.get("layer")
         corners = [Point3d(*point) for point in points + points[:1]]
         pcurve = PolylineCurve(corners)
         geo = List[GeometryBase](1)
         geo.Add(pcurve)
         p = len(points)
         if p == 3:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               TOL)
+            brep = Brep.CreateFromCornerPoints(
+                Point3d(*points[0]), Point3d(*points[1]), Point3d(*points[2]), TOL
+            )
         elif p == 4:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]),
-                                               Point3d(*points[1]),
-                                               Point3d(*points[2]),
-                                               Point3d(*points[3]),
-                                               TOL)
+            brep = Brep.CreateFromCornerPoints(
+                Point3d(*points[0]),
+                Point3d(*points[1]),
+                Point3d(*points[2]),
+                Point3d(*points[3]),
+                TOL,
+            )
         else:
             brep = Brep.CreatePatch(geo, u, v, TOL)
         if brep:
@@ -578,12 +581,12 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
     """
     guids = []
     for c in iter(cylinders):
-        start = c['start']
-        end = c['end']
-        radius = c['radius']
-        name = c.get('name', '')
-        color = c.get('color')
-        layer = c.get('layer')
+        start = c["start"]
+        end = c["end"]
+        radius = c["radius"]
+        name = c.get("name", "")
+        color = c.get("color")
+        layer = c.get("layer")
         if radius < TOL:
             continue
         base = Point3d(*start)
@@ -658,11 +661,11 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
     for p in pipes:
-        points = p['points']
-        radius = p['radius']
-        name = p.get('name', '')
-        color = p.get('color')
-        layer = p.get('layer')
+        points = p["points"]
+        radius = p["radius"]
+        name = p.get("name", "")
+        color = p.get("color")
+        layer = p.get("layer")
         params = [0.0, 1.0]
         cap = ToObject(PipeCapMode, cap)
         if type(radius) in (int, float):
@@ -725,11 +728,11 @@ def draw_spheres(spheres, **kwargs):
     """
     guids = []
     for s in iter(spheres):
-        pos = s['pos']
-        radius = s['radius']
-        name = s.get('name', '')
-        color = s.get('color')
-        layer = s.get('layer')
+        pos = s["pos"]
+        radius = s["radius"]
+        name = s.get("name", "")
+        color = s.get("color")
+        layer = s.get("layer")
         sphere = Sphere(Point3d(*pos), radius)
         guid = add_sphere(sphere)
         if not guid:
@@ -781,15 +784,15 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
             if f < 3:
                 continue
             if f == 3:
-                a = mesh.Vertices.Add(* vertices[face[0]])
-                b = mesh.Vertices.Add(* vertices[face[1]])
-                c = mesh.Vertices.Add(* vertices[face[2]])
+                a = mesh.Vertices.Add(*vertices[face[0]])
+                b = mesh.Vertices.Add(*vertices[face[1]])
+                c = mesh.Vertices.Add(*vertices[face[2]])
                 mesh.Faces.AddFace(a, b, c)
             elif f == 4:
-                a = mesh.Vertices.Add(* vertices[face[0]])
-                b = mesh.Vertices.Add(* vertices[face[1]])
-                c = mesh.Vertices.Add(* vertices[face[2]])
-                d = mesh.Vertices.Add(* vertices[face[3]])
+                a = mesh.Vertices.Add(*vertices[face[0]])
+                b = mesh.Vertices.Add(*vertices[face[1]])
+                c = mesh.Vertices.Add(*vertices[face[2]])
+                d = mesh.Vertices.Add(*vertices[face[3]])
                 mesh.Faces.AddFace(a, b, c, d)
             else:
                 if MeshNgon:
@@ -797,8 +800,8 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
                     centroid = centroid_polygon(points)
                     indices = []
                     for point in points:
-                        indices.append(mesh.Vertices.Add(* point))
-                    c = mesh.Vertices.Add(* centroid)
+                        indices.append(mesh.Vertices.Add(*point))
+                    c = mesh.Vertices.Add(*centroid)
                     facets = []
                     for i, j in pairwise(indices + indices[:1]):
                         facets.append(mesh.Faces.AddFace(i, j, c))
@@ -818,7 +821,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
             else:
                 if MeshNgon:
                     centroid = centroid_polygon([vertices[index] for index in face])
-                    c = mesh.Vertices.Add(* centroid)
+                    c = mesh.Vertices.Add(*centroid)
                     facets = []
                     for i, j in pairwise(face + face[:1]):
                         facets.append(mesh.Faces.AddFace(i, j, c))
@@ -875,10 +878,10 @@ def draw_faces(faces, **kwargs):
     """
     guids = []
     for face in iter(faces):
-        points = face['points'][:]
-        name = face.get('name')
-        color = face.get('color')
-        vertexcolors = face.get('vertexcolors')
+        points = face["points"][:]
+        name = face.get("name")
+        color = face.get("color")
+        vertexcolors = face.get("vertexcolors")
 
         v = len(points)
 
@@ -891,7 +894,15 @@ def draw_faces(faces, **kwargs):
         else:
             mfaces = [list(range(v))]
 
-        guid = draw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
+        guid = draw_mesh(
+            points,
+            mfaces,
+            color=color,
+            name=name,
+            clear=False,
+            redraw=False,
+            layer=None,
+        )
 
         if vertexcolors:
             try:
@@ -946,11 +957,11 @@ def draw_circles(circles, **kwargs):
     """
     guids = []
     for data in iter(circles):
-        point, normal = data['plane']
-        radius = data['radius']
-        name = data.get('name', '')
-        color = data.get('color')
-        layer = data.get('layer')
+        point, normal = data["plane"]
+        radius = data["radius"]
+        name = data.get("name", "")
+        color = data.get("color")
+        layer = data.get("layer")
         circle = Circle(Plane(Point3d(*point), Vector3d(*normal)), radius)
         guid = add_circle(circle)
         if not guid:
@@ -1005,10 +1016,10 @@ def draw_curves(curves, **kwargs):
     """
     guids = []
     for data in iter(curves):
-        curve = data['curve']
-        name = data.get('name', '')
-        color = data.get('color')
-        layer = data.get('layer')
+        curve = data["curve"]
+        name = data.get("name", "")
+        color = data.get("color")
+        layer = data.get("layer")
         guid = add_curve(curve.rhino_curve)
         if not guid:
             continue
@@ -1061,10 +1072,10 @@ def draw_surfaces(surfaces, **kwargs):
     """
     guids = []
     for data in iter(surfaces):
-        surface = data['surface']
-        name = data.get('name', '')
-        color = data.get('color')
-        layer = data.get('layer')
+        surface = data["surface"]
+        name = data.get("name", "")
+        color = data.get("color")
+        layer = data.get("layer")
         guid = add_surface(surface.rhino_surface)
         if not guid:
             continue

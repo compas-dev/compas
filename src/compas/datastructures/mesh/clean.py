@@ -5,9 +5,7 @@ from __future__ import division
 from compas.utilities import geometric_key
 
 
-__all__ = [
-    'mesh_delete_duplicate_vertices'
-]
+__all__ = ["mesh_delete_duplicate_vertices"]
 
 
 def mesh_delete_duplicate_vertices(mesh, precision=None):
@@ -49,7 +47,10 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
     36
 
     """
-    key_gkey = {key: geometric_key(mesh.vertex_attributes(key, 'xyz'), precision=precision) for key in mesh.vertices()}
+    key_gkey = {
+        key: geometric_key(mesh.vertex_attributes(key, "xyz"), precision=precision)
+        for key in mesh.vertices()
+    }
     gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
 
     for key in list(mesh.vertices()):

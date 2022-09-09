@@ -47,7 +47,13 @@ class HalfEdge(Datastructure):
 
     """
 
-    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
+    def __init__(
+        self,
+        name=None,
+        default_vertex_attributes=None,
+        default_edge_attributes=None,
+        default_face_attributes=None,
+    ):
         super(HalfEdge, self).__init__()
         self._max_vertex = -1
         self._max_face = -1
@@ -56,7 +62,7 @@ class HalfEdge(Datastructure):
         self.face = {}
         self.facedata = {}
         self.edgedata = {}
-        self.attributes = {'name': name or 'HalfEdge'}
+        self.attributes = {"name": name or "HalfEdge"}
         self.default_vertex_attributes = {}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
@@ -69,7 +75,9 @@ class HalfEdge(Datastructure):
 
     def __str__(self):
         tpl = "<HalfEdge with {} vertices, {} faces, {} edges>"
-        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
+        return tpl.format(
+            self.number_of_vertices(), self.number_of_faces(), self.number_of_edges()
+        )
 
     # --------------------------------------------------------------------------
     # descriptors
@@ -77,11 +85,11 @@ class HalfEdge(Datastructure):
 
     @property
     def name(self):
-        return self.attributes.get('name') or self.__class__.__name__
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, value):
-        self.attributes['name'] = value
+        self.attributes["name"] = value
 
     @property
     def adjacency(self):
@@ -91,73 +99,83 @@ class HalfEdge(Datastructure):
     def DATASCHEMA(self):
         import schema
         from compas.data import is_sequence_of_uint
-        return schema.Schema({
-            "attributes": dict,
-            "dva": dict,
-            "dea": dict,
-            "dfa": dict,
-            "vertex": schema.And(
-                dict,
-                is_sequence_of_uint,
-            ),
-            "face": schema.And(
-                dict,
-                is_sequence_of_uint,
-                lambda x: all(all(isinstance(item, int) for item in value) for value in x.values()),
-                lambda x: all(all(item >= 0 for item in value) for value in x.values()),
-                lambda x: all(len(value) > 2 for value in x.values()),
-                lambda x: all(len(value) == len(set(value)) for value in x.values())
-            ),
-            "facedata": schema.And(
-                dict,
-                is_sequence_of_uint,
-                lambda x: all(isinstance(value, dict) for value in x.values())
-            ),
-            "edgedata": schema.And(
-                dict,
-                lambda x: all(isinstance(key, str) for key in x),
-                lambda x: all(isinstance(value, dict) for value in x.values())
-            ),
-            "max_vertex": schema.And(int, lambda x: x >= -1),
-            "max_face": schema.And(int, lambda x: x >= -1)
-        })
+
+        return schema.Schema(
+            {
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "vertex": schema.And(
+                    dict,
+                    is_sequence_of_uint,
+                ),
+                "face": schema.And(
+                    dict,
+                    is_sequence_of_uint,
+                    lambda x: all(
+                        all(isinstance(item, int) for item in value)
+                        for value in x.values()
+                    ),
+                    lambda x: all(
+                        all(item >= 0 for item in value) for value in x.values()
+                    ),
+                    lambda x: all(len(value) > 2 for value in x.values()),
+                    lambda x: all(
+                        len(value) == len(set(value)) for value in x.values()
+                    ),
+                ),
+                "facedata": schema.And(
+                    dict,
+                    is_sequence_of_uint,
+                    lambda x: all(isinstance(value, dict) for value in x.values()),
+                ),
+                "edgedata": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, str) for key in x),
+                    lambda x: all(isinstance(value, dict) for value in x.values()),
+                ),
+                "max_vertex": schema.And(int, lambda x: x >= -1),
+                "max_face": schema.And(int, lambda x: x >= -1),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'halfedge'
+        return "halfedge"
 
     @property
     def data(self):
         return {
-            'attributes': self.attributes,
-            'dva': self.default_vertex_attributes,
-            'dea': self.default_edge_attributes,
-            'dfa': self.default_face_attributes,
-            'vertex': self.vertex,
-            'face': self.face,
-            'facedata': self.facedata,
-            'edgedata': self.edgedata,
-            'max_vertex': self._max_vertex,
-            'max_face': self._max_face
+            "attributes": self.attributes,
+            "dva": self.default_vertex_attributes,
+            "dea": self.default_edge_attributes,
+            "dfa": self.default_face_attributes,
+            "vertex": self.vertex,
+            "face": self.face,
+            "facedata": self.facedata,
+            "edgedata": self.edgedata,
+            "max_vertex": self._max_vertex,
+            "max_face": self._max_face,
         }
 
     @data.setter
     def data(self, data):
-        if 'data' in data:
-            data = data['data']
-        self.attributes.update(data.get('attributes') or {})
-        self.default_vertex_attributes.update(data.get('dva') or {})
-        self.default_face_attributes.update(data.get('dfa') or {})
-        self.default_edge_attributes.update(data.get('dea') or {})
+        if "data" in data:
+            data = data["data"]
+        self.attributes.update(data.get("attributes") or {})
+        self.default_vertex_attributes.update(data.get("dva") or {})
+        self.default_face_attributes.update(data.get("dfa") or {})
+        self.default_edge_attributes.update(data.get("dea") or {})
         self.vertex = {}
         self.face = {}
         self.halfedge = {}
         self.facedata = {}
         self.edgedata = {}
-        vertex = data.get('vertex') or {}
-        face = data.get('face') or {}
-        facedata = data.get('facedata') or {}
-        edgedata = data.get('edgedata') or {}
+        vertex = data.get("vertex") or {}
+        face = data.get("face") or {}
+        facedata = data.get("facedata") or {}
+        edgedata = data.get("edgedata") or {}
         for key, attr in iter(vertex.items()):
             self.add_vertex(int(key), attr_dict=attr)
         for fkey, vertices in iter(face.items()):
@@ -165,8 +183,8 @@ class HalfEdge(Datastructure):
             self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
         for uv, attr in iter(edgedata.items()):
             self.edgedata[uv] = attr or {}
-        self._max_vertex = data.get('max_vertex', -1)
-        self._max_face = data.get('max_face', -1)
+        self._max_vertex = data.get("max_vertex", -1)
+        self._max_face = data.get("max_face", -1)
 
     # --------------------------------------------------------------------------
     # helpers
@@ -1234,7 +1252,9 @@ class HalfEdge(Datastructure):
             return
         # use it as a getter
         if not names:
-            return FaceAttributeView(self.default_face_attributes, self.facedata.setdefault(key, {}))
+            return FaceAttributeView(
+                self.default_face_attributes, self.facedata.setdefault(key, {})
+            )
         values = []
         for name in names:
             value = self.face_attribute(key, name)
@@ -1444,7 +1464,9 @@ class HalfEdge(Datastructure):
         if not names:
             key = str(tuple(sorted(edge)))
             # get the entire attribute dict
-            return EdgeAttributeView(self.default_edge_attributes, self.edgedata.setdefault(key, {}))
+            return EdgeAttributeView(
+                self.default_edge_attributes, self.edgedata.setdefault(key, {})
+            )
         # get only the values of the named attributes
         values = []
         for name in names:
@@ -1533,8 +1555,21 @@ class HalfEdge(Datastructure):
             The formatted summary text.
 
         """
-        tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- vertices: {}", "- edges: {}", "- faces: {}"])
-        return tpl.format(self.name, self.number_of_vertices(), self.number_of_edges(), self.number_of_faces())
+        tpl = "\n".join(
+            [
+                "{} summary",
+                "=" * (len(self.name) + len(" summary")),
+                "- vertices: {}",
+                "- edges: {}",
+                "- faces: {}",
+            ]
+        )
+        return tpl.format(
+            self.name,
+            self.number_of_vertices(),
+            self.number_of_edges(),
+            self.number_of_faces(),
+        )
 
     def number_of_vertices(self):
         """Count the number of vertices in the mesh.
@@ -1774,7 +1809,9 @@ class HalfEdge(Datastructure):
             The Euler characteristic.
 
         """
-        V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
+        V = len(
+            [vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0]
+        )
         E = self.number_of_edges()
         F = self.number_of_faces()
         return V - E + F
@@ -2539,7 +2576,9 @@ class HalfEdge(Datastructure):
             or None, if the faces are not adjacent.
 
         """
-        return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
+        return [
+            vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)
+        ]
 
     def is_face_on_boundary(self, key):
         """Verify that a face is on a boundary.

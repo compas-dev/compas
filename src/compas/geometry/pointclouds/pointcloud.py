@@ -10,7 +10,7 @@ from compas.geometry import Primitive
 from compas.geometry import Point
 
 
-__all__ = ['Pointcloud']
+__all__ = ["Pointcloud"]
 
 
 class Pointcloud(Primitive):
@@ -43,25 +43,26 @@ class Pointcloud(Primitive):
     def DATASCHEMA(self):
         from schema import Schema
         from compas.data import is_float3
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points)
-        })
+
+        return Schema(
+            {"points": lambda points: all(is_float3(point) for point in points)}
+        )
 
     @property
     def JSONSCHEMANAME(self):
-        return 'pointcloud'
+        return "pointcloud"
 
     @property
     def data(self):
-        return {'points': [point.data for point in self.points]}
+        return {"points": [point.data for point in self.points]}
 
     @data.setter
     def data(self, data):
-        self._points = [Point.from_data(point) for point in data['points']]
+        self._points = [Point.from_data(point) for point in data["points"]]
 
     @classmethod
     def from_data(cls, data):
-        return cls(data['points'])
+        return cls(data["points"])
 
     # ==========================================================================
     # properties
@@ -88,7 +89,7 @@ class Pointcloud(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Pointcloud({0!r})'.format(self.points)
+        return "Pointcloud({0!r})".format(self.points)
 
     def __len__(self):
         return len(self.points)

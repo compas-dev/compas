@@ -13,7 +13,7 @@ import re
 from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
 
-BASE16 = '0123456789abcdef'
+BASE16 = "0123456789abcdef"
 
 try:
     HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
@@ -117,18 +117,18 @@ class Color(Data):
 
     @property
     def data(self):
-        return {'red': self.r, 'green': self.g, 'blue': self.b, 'alpha': self.a}
+        return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
     @data.setter
     def data(self, data):
-        self.r = data['red']
-        self.g = data['green']
-        self.b = data['blue']
-        self.a = data['alpha']
+        self.r = data["red"]
+        self.g = data["green"]
+        self.b = data["blue"]
+        self.a = data["alpha"]
 
     @classmethod
     def from_data(cls, data):
-        return cls(data['red'], data['green'], data['blue'], data['alpha'])
+        return cls(data["red"], data["green"], data["blue"], data["alpha"])
 
     # --------------------------------------------------------------------------
     # properties
@@ -202,15 +202,15 @@ class Color(Data):
 
     @property
     def hex(self):
-        return '#{0:02x}{1:02x}{2:02x}'.format(* self.rgb255)
+        return "#{0:02x}{1:02x}{2:02x}".format(*self.rgb255)
 
     @property
     def hls(self):
-        return colorsys.rgb_to_hls(* self.rgb)
+        return colorsys.rgb_to_hls(*self.rgb)
 
     @property
     def hsv(self):
-        return colorsys.rgb_to_hsv(* self.rgb)
+        return colorsys.rgb_to_hsv(*self.rgb)
 
     @property
     def lightness(self):
@@ -273,7 +273,7 @@ class Color(Data):
 
     def __set_name__(self, owner, name):
         self.public_name = name
-        self.private_name = '_' + name
+        self.private_name = "_" + name
 
     def __get__(self, obj, otype=None):
         return getattr(obj, self.private_name, None) or self
@@ -299,7 +299,7 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     def __repr__(self):
-        return 'Color({}, {}, {}, {})'.format(self.r, self.g, self.b, self.a)
+        return "Color({}, {}, {}, {})".format(self.r, self.g, self.b, self.a)
 
     def __getitem__(self, key):
         if key == 0:
@@ -341,7 +341,7 @@ class Color(Data):
         :class:`~compas.colors.Color`
 
         """
-        return cls(r/255, g/255, b/255)
+        return cls(r / 255, g / 255, b / 255)
 
     @classmethod
     def from_hls(cls, h, l, s):  # noqa: E741
@@ -474,7 +474,11 @@ class Color(Data):
         elif i == 0.75:
             r, g, b = 255, 255, 0
         elif 0.75 < i < 1.0:
-            r, g, b,  = 255, int(255 - 255 * 4 * (i - 0.75)), 0
+            r, g, b, = (
+                255,
+                int(255 - 255 * 4 * (i - 0.75)),
+                0,
+            )
         elif i == 1.0:
             r, g, b = 255, 0, 0
         else:
@@ -495,7 +499,7 @@ class Color(Data):
         :class:`~compas.colors.Color`
 
         """
-        value = value.lstrip('#').lower()
+        value = value.lstrip("#").lower()
         r = HEX_DEC[value[0:2]]
         g = HEX_DEC[value[2:4]]
         b = HEX_DEC[value[4:6]]
@@ -805,11 +809,11 @@ class Color(Data):
         if not color:
             return
         if Color.is_rgb255(color):
-            return Color.from_rgb255(* list(color))
+            return Color.from_rgb255(*list(color))
         if Color.is_hex(color):
             return Color.from_hex(color)
         if Color.is_rgb1(color):
-            return Color(* list(color))
+            return Color(*list(color))
         raise ColorError
 
     @staticmethod
@@ -821,7 +825,9 @@ class Color(Data):
         bool
 
         """
-        return color and all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
+        return color and all(
+            isinstance(c, float) and (c >= 0 and c <= 1) for c in color
+        )
 
     @staticmethod
     def is_rgb255(color):
@@ -832,7 +838,9 @@ class Color(Data):
         bool
 
         """
-        return color and all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
+        return color and all(
+            isinstance(c, int) and (c >= 0 and c <= 255) for c in color
+        )
 
     @staticmethod
     def is_hex(color):
@@ -844,7 +852,7 @@ class Color(Data):
 
         """
         if isinstance(color, basestring):
-            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
+            match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", color)
             if match:
                 return True
             return False
@@ -869,7 +877,9 @@ class Color(Data):
 
         """
         if factor > 100 or factor < 0:
-            raise ValueError('Percentage of increased lightness should be in the range 0-100.')
+            raise ValueError(
+                "Percentage of increased lightness should be in the range 0-100."
+            )
 
         factor = 1.0 + factor / 100
 
@@ -920,7 +930,9 @@ class Color(Data):
 
         """
         if factor > 100 or factor < 0:
-            raise ValueError('Percentage of reduced lightness should be in the range 0-100.')
+            raise ValueError(
+                "Percentage of reduced lightness should be in the range 0-100."
+            )
 
         factor = 1.0 - factor / 100
 
@@ -995,7 +1007,7 @@ class Color(Data):
 
         """
         if factor > 100 or factor < 0:
-            raise ValueError('Percentage of saturation should be in the range 0-100.')
+            raise ValueError("Percentage of saturation should be in the range 0-100.")
 
         factor = 1.0 + factor / 100
 
@@ -1046,7 +1058,7 @@ class Color(Data):
 
         """
         if factor > 100 or factor < 0:
-            raise ValueError('Percentage of desaturation should be in the range 0-100.')
+            raise ValueError("Percentage of desaturation should be in the range 0-100.")
 
         factor = 1.0 - factor / 100
 

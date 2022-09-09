@@ -30,7 +30,7 @@ class PrimitiveArtist(Artist):
 
     """
 
-    default_color = Color.from_hex('#0092D2')
+    default_color = Color.from_hex("#0092D2")
 
     def __init__(self, primitive, color=None, **kwargs):
         super(PrimitiveArtist, self).__init__()

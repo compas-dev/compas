@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ['mesh_merge_faces']
+__all__ = ["mesh_merge_faces"]
 
 
 def mesh_merge_faces(mesh, faces):
@@ -50,15 +50,15 @@ def mesh_merge_faces(mesh, faces):
     i = a.index(u)
     j = a.index(v)
     if j < i:
-        vertices += a[j:i+1]
+        vertices += a[j : i + 1]
     else:
-        vertices += a[j:] + a[:i+1]
+        vertices += a[j:] + a[: i + 1]
     i = b.index(v)
     j = b.index(u)
     if j < i:
-        vertices += b[j+1:i]
+        vertices += b[j + 1 : i]
     else:
-        vertices += b[j+1:] + b[:i]
+        vertices += b[j + 1 :] + b[:i]
     mesh.delete_face(faces[0])
     mesh.delete_face(faces[1])
     key = mesh.add_face(vertices)

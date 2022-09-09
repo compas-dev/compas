@@ -54,14 +54,19 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 polyline: Polyline,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any
-                 ):
-        super().__init__(primitive=polyline, collection=collection or polyline.name, **kwargs)
+    def __init__(
+        self,
+        polyline: Polyline,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any,
+    ):
+        super().__init__(
+            primitive=polyline, collection=collection or polyline.name, **kwargs
+        )
 
-    def draw(self, color: Optional[Color] = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
+    def draw(
+        self, color: Optional[Color] = None, show_points: Optional[bool] = False
+    ) -> List[bpy.types.Object]:
         """Draw the line.
 
         Parameters
@@ -80,14 +85,24 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
         color = Color.coerce(color) or self.color
 
         lines = [
-            {'start': start, 'end': end, 'color': self.color, 'name': f"{self.primitive.name}"}
+            {
+                "start": start,
+                "end": end,
+                "color": self.color,
+                "name": f"{self.primitive.name}",
+            }
             for start, end in self.primitive.lines
         ]
         objects = compas_blender.draw_lines(lines, collection=self.collection)
 
         if show_points:
             points = [
-                {'pos': point, 'name': f"{self.primitive.name}.point", 'color': color, 'radius': 0.01}
+                {
+                    "pos": point,
+                    "name": f"{self.primitive.name}.point",
+                    "color": color,
+                    "radius": 0.01,
+                }
                 for point in self.primitive.points
             ]
             objects += compas_blender.draw_points(points, collection=self.collection)

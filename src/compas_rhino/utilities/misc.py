@@ -20,7 +20,7 @@ import rhinoscriptsyntax as rs
 import Rhino
 import clr
 
-clr.AddReference('Rhino.UI')
+clr.AddReference("Rhino.UI")
 import Rhino.UI  # noqa: E402
 from Rhino.UI.Dialogs import ShowMessageBox  # noqa: E402
 
@@ -31,23 +31,23 @@ except ImportError:
 
 
 __all__ = [
-    'wait',
-    'get_tolerance',
-    'toggle_toolbargroup',
-    'pick_point',
-    'browse_for_folder',
-    'browse_for_file',
-    'print_display_on',
-    'display_message',
-    'display_text',
-    'display_image',
-    'display_html',
-    'update_settings',
-    'update_named_values',
-    'screenshot_current_view',
-    'select_folder',
-    'select_file',
-    'unload_modules',
+    "wait",
+    "get_tolerance",
+    "toggle_toolbargroup",
+    "pick_point",
+    "browse_for_folder",
+    "browse_for_file",
+    "print_display_on",
+    "display_message",
+    "display_text",
+    "display_image",
+    "display_html",
+    "update_settings",
+    "update_named_values",
+    "screenshot_current_view",
+    "select_folder",
+    "select_file",
+    "unload_modules",
 ]
 
 
@@ -56,14 +56,16 @@ __all__ = [
 # ==============================================================================
 
 
-def screenshot_current_view(path,
-                            width=1920,
-                            height=1080,
-                            scale=1,
-                            draw_grid=False,
-                            draw_world_axes=False,
-                            draw_cplane_axes=False,
-                            background=False):
+def screenshot_current_view(
+    path,
+    width=1920,
+    height=1080,
+    scale=1,
+    draw_grid=False,
+    draw_world_axes=False,
+    draw_cplane_axes=False,
+    background=False,
+):
     """Take a screenshot of the current view.
 
     Parameters
@@ -93,23 +95,31 @@ def screenshot_current_view(path,
     scale = max(1, scale)  # the rhino command requires a scale > 1
     rs.EnableRedraw(True)
     rs.Sleep(0)
-    result = rs.Command("-_ViewCaptureToFile \"" + os.path.abspath(path) + "\""
-                        " Width=" + str(width) +
-                        " Height=" + str(height) +
-                        " Scale=" + str(scale) +
-                        " DrawGrid=" + properties[0] +
-                        " DrawWorldAxes=" + properties[1] +
-                        " DrawCPlaneAxes=" + properties[2] +
-                        " TransparentBackground=" + properties[3] +
-                        " _enter", False)
+    result = rs.Command(
+        '-_ViewCaptureToFile "' + os.path.abspath(path) + '"'
+        " Width="
+        + str(width)
+        + " Height="
+        + str(height)
+        + " Scale="
+        + str(scale)
+        + " DrawGrid="
+        + properties[0]
+        + " DrawWorldAxes="
+        + properties[1]
+        + " DrawCPlaneAxes="
+        + properties[2]
+        + " TransparentBackground="
+        + properties[3]
+        + " _enter",
+        False,
+    )
     rs.EnableRedraw(False)
     return result
 
 
 def wait():
-    """Make Rhino wait to prevent the spinning wheel from appearing.
-
-    """
+    """Make Rhino wait to prevent the spinning wheel from appearing."""
     return Rhino.RhinoApp.Wait()
 
 
@@ -141,7 +151,7 @@ def toggle_toolbargroup(rui, group):
                 rs.ShowToolbar(collection, group)
 
 
-def pick_point(message='Pick a point.'):
+def pick_point(message="Pick a point."):
     point = rs.GetPoint(message)
     if point:
         return list(point)
@@ -154,19 +164,19 @@ def pick_point(message='Pick a point.'):
 
 
 def browse_for_folder(message=None, default=None):
-    return rs.BrowseForFolder(folder=default, message=message, title='compas')
+    return rs.BrowseForFolder(folder=default, message=message, title="compas")
 
 
 select_folder = browse_for_folder
 
 
 def browse_for_file(title=None, folder=None, filter=None):
-    if filter == 'json':
-        filter = 'JSON files (*.json)|*.json||'
-    elif filter == 'obj':
-        filter = 'OBJ files (*.obj)|*.obj||'
-    elif filter == 'fofin':
-        filter = 'FOFIN session files (*.fofin)|*.fofin||'
+    if filter == "json":
+        filter = "JSON files (*.json)|*.json||"
+    elif filter == "obj":
+        filter = "OBJ files (*.obj)|*.obj||"
+    elif filter == "fofin":
+        filter = "FOFIN session files (*.fofin)|*.fofin||"
     else:
         pass
     return rs.OpenFileName(title, filter=filter, folder=folder)
@@ -182,23 +192,23 @@ select_file = browse_for_file
 
 def print_display_on(on=True):
     if on:
-        rs.Command('_PrintDisplay State On Color Display Thickness 1 _Enter')
+        rs.Command("_PrintDisplay State On Color Display Thickness 1 _Enter")
     else:
-        rs.Command('_PrintDisplay State Off _Enter')
+        rs.Command("_PrintDisplay State Off _Enter")
 
 
 def display_message(message):
-    return ShowMessageBox(message, 'Message')
+    return ShowMessageBox(message, "Message")
 
 
-def display_text(text, title='Text', width=800, height=600):
+def display_text(text, title="Text", width=800, height=600):
     if isinstance(text, (list, tuple)):
-        text = '{0}'.format(System.Environment.NewLine).join(text)
+        text = "{0}".format(System.Environment.NewLine).join(text)
     form = TextForm(text, title, width, height)
     return form.show()
 
 
-def display_image(image, title='Image', width=800, height=600):
+def display_image(image, title="Image", width=800, height=600):
     form = ImageForm(image, title, width, height)
     return form.show()
 
@@ -212,7 +222,9 @@ def display_html():
 # ==============================================================================
 
 
-def update_named_values(names, values, message='', title='Update named values', evaluate=False):
+def update_named_values(
+    names, values, message="", title="Update named values", evaluate=False
+):
     try:
         dialog = PropertyListForm(names, values)
     except Exception:
@@ -235,7 +247,7 @@ def update_named_values(names, values, message='', title='Update named values', 
     return values
 
 
-def update_settings(settings, message='', title='Update settings'):
+def update_settings(settings, message="", title="Update settings"):
     names = sorted(settings.keys())
     values = [str(settings[name]) for name in names]
     values = update_named_values(names, values, message=message, title=title)

@@ -48,8 +48,15 @@ class PolylineArtist(RhinoArtist, PrimitiveArtist):
         _points = map(list, self.primitive.points)
         guids = []
         if show_points:
-            points = [{'pos': point, 'color': color, 'name': self.primitive.name} for point in _points]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        polylines = [{'points': _points, 'color': color, 'name': self.primitive.name}]
-        guids += compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
+            points = [
+                {"pos": point, "color": color, "name": self.primitive.name}
+                for point in _points
+            ]
+            guids += compas_rhino.draw_points(
+                points, layer=self.layer, clear=False, redraw=False
+            )
+        polylines = [{"points": _points, "color": color, "name": self.primitive.name}]
+        guids += compas_rhino.draw_polylines(
+            polylines, layer=self.layer, clear=False, redraw=False
+        )
         return guids

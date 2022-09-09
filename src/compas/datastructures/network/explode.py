@@ -5,9 +5,9 @@ from __future__ import division
 from compas.topology import connected_components
 
 __all__ = [
-    'network_disconnected_nodes',
-    'network_disconnected_edges',
-    'network_explode'
+    "network_disconnected_nodes",
+    "network_disconnected_edges",
+    "network_explode",
 ]
 
 
@@ -43,7 +43,10 @@ def network_disconnected_edges(network):
 
     """
     components = network_disconnected_nodes(network)
-    return [[(u, v) for u in component for v in network.neighbors(u) if u < v] for component in components]
+    return [
+        [(u, v) for u in component for v in network.neighbors(u) if u < v]
+        for component in components
+    ]
 
 
 def network_explode(network, cls=None):

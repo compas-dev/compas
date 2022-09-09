@@ -22,10 +22,10 @@ except ImportError:
 
 
 __all__ = [
-    'abstractstaticmethod',
-    'abstractclassmethod',
-    'memoize',
-    'print_profile',
+    "abstractstaticmethod",
+    "abstractclassmethod",
+    "memoize",
+    "print_profile",
 ]
 
 
@@ -124,6 +124,7 @@ def print_profile(func):
         print(f.__name__)
 
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         profile = Profile.Profile()
@@ -140,4 +141,5 @@ def print_profile(func):
         print(stream.getvalue())
         #
         return res
+
     return wrapper

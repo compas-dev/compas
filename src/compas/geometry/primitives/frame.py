@@ -83,29 +83,34 @@ class Frame(Primitive):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
-        return Schema({
-            'point': Point.DATASCHEMA.fget(None),
-            'xaxis': Vector.DATASCHEMA.fget(None),
-            'yaxis': Vector.DATASCHEMA.fget(None)
-        })
+
+        return Schema(
+            {
+                "point": Point.DATASCHEMA.fget(None),
+                "xaxis": Vector.DATASCHEMA.fget(None),
+                "yaxis": Vector.DATASCHEMA.fget(None),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'frame'
+        return "frame"
 
     @property
     def data(self):
         """dict : The data dictionary that represents the frame."""
-        return {'point': self.point.data,
-                'xaxis': self.xaxis.data,
-                'yaxis': self.yaxis.data}
+        return {
+            "point": self.point.data,
+            "xaxis": self.xaxis.data,
+            "yaxis": self.yaxis.data,
+        }
 
     @data.setter
     def data(self, data):
-        self.point = Point.from_data(data['point'])
-        self.xaxis = Vector.from_data(data['xaxis'])
-        self.yaxis = Vector.from_data(data['yaxis'])
+        self.point = Point.from_data(data["point"])
+        self.xaxis = Vector.from_data(data["xaxis"])
+        self.yaxis = Vector.from_data(data["yaxis"])
 
     @classmethod
     def from_data(cls, data):
@@ -133,7 +138,11 @@ class Frame(Primitive):
         Vector(0.000, 1.000, 0.000)
 
         """
-        frame = cls(Point.from_data(data['point']), Vector.from_data(data['xaxis']), Vector.from_data(data['yaxis']))
+        frame = cls(
+            Point.from_data(data["point"]),
+            Vector.from_data(data["xaxis"]),
+            Vector.from_data(data["yaxis"]),
+        )
         return frame
 
     # ==========================================================================
@@ -193,7 +202,7 @@ class Frame(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Frame({0!r}, {1!r}, {2!r})'.format(self.point, self.xaxis, self.yaxis)
+        return "Frame({0!r}, {1!r}, {2!r})".format(self.point, self.xaxis, self.yaxis)
 
     def __len__(self):
         return 3
@@ -222,7 +231,11 @@ class Frame(Primitive):
         return iter([self.point, self.xaxis, self.yaxis])
 
     def __eq__(self, other, tol=1e-05):
-        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+        if (
+            not hasattr(other, "__iter__")
+            or not hasattr(other, "__len__")
+            or len(self) != len(other)
+        ):
             return False
         return allclose(self, other)
 
@@ -414,7 +427,7 @@ class Frame(Primitive):
 
         """
         _, _, angles, point, _ = decompose_matrix(matrix)
-        R = matrix_from_euler_angles(angles, static=True, axes='xyz')
+        R = matrix_from_euler_angles(angles, static=True, axes="xyz")
         xaxis, yaxis = basis_vectors_from_matrix(R)
         return cls(point, xaxis, yaxis)
 
@@ -449,13 +462,11 @@ class Frame(Primitive):
 
         """
         if len(values) == 12:
-            values.extend([0., 0., 0., 1.])
+            values.extend([0.0, 0.0, 0.0, 1.0])
         if len(values) != 16:
-            raise ValueError(
-                'Expected 12 or 16 floats but got %d' %
-                len(values))
+            raise ValueError("Expected 12 or 16 floats but got %d" % len(values))
 
-        matrix = [[0. for i in range(4)] for j in range(4)]
+        matrix = [[0.0 for i in range(4)] for j in range(4)]
         for i in range(4):
             for j in range(4):
                 matrix[i][j] = float(values[i * 4 + j])
@@ -522,7 +533,7 @@ class Frame(Primitive):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_euler_angles(cls, euler_angles, static=True, axes='xyz', point=[0, 0, 0]):
+    def from_euler_angles(cls, euler_angles, static=True, axes="xyz", point=[0, 0, 0]):
         """Construct a frame from a rotation represented by Euler angles.
 
         Parameters
@@ -584,9 +595,11 @@ class Frame(Primitive):
         # To construct a frame we need to find a vector v that is perpendicular
         # to the plane's normal. This means that the dot-product of v with the
         # normal must be equal to 0, which is true for the following vectors:
-        vectors = [Vector(-normal[1], normal[0], 0),
-                   Vector(0, -normal[2], normal[1]),
-                   Vector(normal[2], 0, -normal[0])]
+        vectors = [
+            Vector(-normal[1], normal[0], 0),
+            Vector(0, -normal[2], normal[1]),
+            Vector(normal[2], 0, -normal[0]),
+        ]
         # But if we are unlucky, one of these vectors is (0, 0, 0), so we
         # choose the vector with the longest length as xaxis.
         idx = argmax([v.length for v in vectors])
@@ -637,7 +650,7 @@ class Frame(Primitive):
     # methods
     # ==========================================================================
 
-    def euler_angles(self, static=True, axes='xyz'):
+    def euler_angles(self, static=True, axes="xyz"):
         """The Euler angles from the rotation given by the frame.
 
         Parameters

@@ -14,17 +14,14 @@ from compas.geometry import cross_vectors
 
 
 __all__ = [
-    'transform_points_numpy',
-    'transform_vectors_numpy',
-
-    'homogenize_numpy',
-    'dehomogenize_numpy',
-
-    'homogenize_and_flatten_frames_numpy',
-    'dehomogenize_and_unflatten_frames_numpy',
-
-    'world_to_local_coordinates_numpy',
-    'local_to_world_coordinates_numpy',
+    "transform_points_numpy",
+    "transform_vectors_numpy",
+    "homogenize_numpy",
+    "dehomogenize_numpy",
+    "homogenize_and_flatten_frames_numpy",
+    "dehomogenize_and_unflatten_frames_numpy",
+    "world_to_local_coordinates_numpy",
+    "local_to_world_coordinates_numpy",
 ]
 
 
@@ -236,8 +233,10 @@ def dehomogenize_numpy(data):
     True
 
     """
+
     def func(a):
-        return a if a else 1.
+        return a if a else 1.0
+
     func = vectorize(func)
 
     data = asarray(data)
@@ -294,4 +293,4 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
 
     """
     frames = dehomogenize_numpy(points_and_vectors)
-    return frames.reshape((int(frames.shape[0]/3.), 3, 3))
+    return frames.reshape((int(frames.shape[0] / 3.0), 3, 3))

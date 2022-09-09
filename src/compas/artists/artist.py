@@ -15,34 +15,34 @@ from compas.plugins import pluggable
 from .colordict import DescriptorProtocol
 
 
-@pluggable(category='drawing-utils')
+@pluggable(category="drawing-utils")
 def clear():
     raise NotImplementedError
 
 
-@pluggable(category='drawing-utils')
+@pluggable(category="drawing-utils")
 def redraw():
     raise NotImplementedError
 
 
-@pluggable(category='factories', selector='collect_all')
+@pluggable(category="factories", selector="collect_all")
 def register_artists():
     raise NotImplementedError
 
 
 def identify_context():
     if compas.is_grasshopper():
-        return 'Grasshopper'
+        return "Grasshopper"
     if compas.is_rhino():
-        return 'Rhino'
+        return "Rhino"
     if compas.is_blender():
-        return 'Blender'
+        return "Blender"
     return None
 
 
 def _get_artist_cls(data, **kwargs):
-    if 'context' in kwargs:
-        Artist.CONTEXT = kwargs['context']
+    if "context" in kwargs:
+        Artist.CONTEXT = kwargs["context"]
     else:
         Artist.CONTEXT = identify_context()
 
@@ -52,17 +52,22 @@ def _get_artist_cls(data, **kwargs):
     dtype = type(data)
     cls = None
 
-    if 'artist_type' in kwargs:
-        cls = kwargs['artist_type']
+    if "artist_type" in kwargs:
+        cls = kwargs["artist_type"]
     else:
         context = Artist.ITEM_ARTIST[Artist.CONTEXT]
+
         for type_ in inspect.getmro(dtype):
             cls = context.get(type_, None)
             if cls is not None:
                 break
 
     if cls is None:
-        raise DataArtistNotRegistered('No artist is registered for this data type: {} in this context: {}'.format(dtype, Artist.CONTEXT))
+        raise DataArtistNotRegistered(
+            "No artist is registered for this data type: {} in this context: {}".format(
+                dtype, Artist.CONTEXT
+            )
+        )
 
     return cls
 
@@ -85,7 +90,7 @@ class Artist(object):
 
     __ARTISTS_REGISTERED = False
 
-    AVAILABLE_CONTEXTS = ['Rhino', 'Grasshopper', 'Blender', 'Plotter']
+    AVAILABLE_CONTEXTS = ["Rhino", "Grasshopper", "Blender", "Plotter"]
     CONTEXT = None
     ITEM_ARTIST = defaultdict(dict)
 
@@ -95,7 +100,9 @@ class Artist(object):
             Artist.__ARTISTS_REGISTERED = True
 
         if item is None:
-            raise ValueError('Cannot create an artist for None. Please ensure you pass a instance of a supported class.')
+            raise ValueError(
+                "Cannot create an artist for None. Please ensure you pass a instance of a supported class."
+            )
 
         cls = _get_artist_cls(item, **kwargs)
         PluginValidator.ensure_implementations(cls)

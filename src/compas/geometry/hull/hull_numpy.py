@@ -7,8 +7,8 @@ from scipy.spatial import ConvexHull
 
 
 __all__ = [
-    'convex_hull_numpy',
-    'convex_hull_xy_numpy',
+    "convex_hull_numpy",
+    "convex_hull_xy_numpy",
 ]
 
 

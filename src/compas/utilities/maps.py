@@ -6,9 +6,9 @@ import compas
 
 
 __all__ = [
-    'geometric_key',
-    'reverse_geometric_key',
-    'geometric_key_xy',
+    "geometric_key",
+    "reverse_geometric_key",
+    "geometric_key_xy",
 ]
 
 
@@ -46,8 +46,8 @@ def geometric_key(xyz, precision=None, sanitize=True):
     x, y, z = xyz
     if not precision:
         precision = compas.PRECISION
-    if precision == 'd':
-        return '{0},{1},{2}'.format(int(x), int(y), int(z))
+    if precision == "d":
+        return "{0},{1},{2}".format(int(x), int(y), int(z))
     if sanitize:
         minzero = "-{0:.{1}}".format(0.0, precision)
         if "{0:.{1}}".format(x, precision) == minzero:
@@ -56,7 +56,7 @@ def geometric_key(xyz, precision=None, sanitize=True):
             y = 0.0
         if "{0:.{1}}".format(z, precision) == minzero:
             z = 0.0
-    return '{0:.{3}},{1:.{3}},{2:.{3}}'.format(x, y, z, precision)
+    return "{0:.{3}},{1:.{3}},{2:.{3}}".format(x, y, z, precision)
 
 
 def reverse_geometric_key(gkey):
@@ -85,7 +85,7 @@ def reverse_geometric_key(gkey):
     [3.142, 3.142, 3.142]
 
     """
-    xyz = gkey.split(',')
+    xyz = gkey.split(",")
     return [float(i) for i in xyz]
 
 
@@ -123,12 +123,12 @@ def geometric_key_xy(xy, precision=None, sanitize=True):
     x, y = xy[:2]
     if not precision:
         precision = compas.PRECISION
-    if precision == 'd':
-        return '{0},{1}'.format(int(x), int(y))
+    if precision == "d":
+        return "{0},{1}".format(int(x), int(y))
     if sanitize:
         minzero = "-{0:.{1}}".format(0.0, precision)
         if "{0:.{1}}".format(x, precision) == minzero:
             x = 0.0
         if "{0:.{1}}".format(y, precision) == minzero:
             y = 0.0
-    return '{0:.{2}},{1:.{2}}'.format(x, y, precision)
+    return "{0:.{2}},{1:.{2}}".format(x, y, precision)

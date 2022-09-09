@@ -6,7 +6,7 @@ import sys
 import threading
 
 
-__all__ = ['await_callback']
+__all__ = ["await_callback"]
 
 
 class ThreadExceptHookHandler(object):
@@ -43,7 +43,9 @@ class ThreadExceptHookHandler(object):
         threading.Thread.__init__ = self._original_init
 
 
-def await_callback(async_func, callback_name='callback', errback_name=None, *args, **kwargs):
+def await_callback(
+    async_func, callback_name="callback", errback_name=None, *args, **kwargs
+):
     """Wait for the completion of an asynchronous code that uses callbacks to signal completion.
 
     This helper function turns an async function into a synchronous one,
@@ -98,26 +100,27 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
 
     def inner_callback(*args, **kwargs):
         try:
-            call_results['args'] = args
-            call_results['kwargs'] = kwargs
+            call_results["args"] = args
+            call_results["kwargs"] = kwargs
             wait_event.set()
         except Exception as e:
-            call_results['exception'] = e
+            call_results["exception"] = e
             wait_event.set()
 
-    kwargs['callback'] = inner_callback
+    kwargs["callback"] = inner_callback
     if errback_name:
+
         def inner_errback(error):
             if isinstance(error, Exception):
-                call_results['exception'] = error
+                call_results["exception"] = error
             else:
-                call_results['exception'] = Exception(str(error))
+                call_results["exception"] = Exception(str(error))
             wait_event.set()
 
         kwargs[errback_name] = inner_errback
 
     def unhandled_exception_handler(type, value, traceback):
-        call_results['exception'] = value
+        call_results["exception"] = value
         wait_event.set()
 
     try:
@@ -132,11 +135,11 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
         # Restore built-in unhanled exception handler
         sys.excepthook = sys.__excepthook__
 
-    if 'exception' in call_results:
-        raise call_results['exception']
+    if "exception" in call_results:
+        raise call_results["exception"]
 
-    return_value = call_results['args']
-    dict_values = call_results['kwargs']
+    return_value = call_results["args"]
+    dict_values = call_results["kwargs"]
 
     if not dict_values:
         # If nothing, then None

@@ -54,14 +54,21 @@ class TorusArtist(BlenderArtist, ShapeArtist):
 
     """
 
-    def __init__(self,
-                 torus: Torus,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        torus: Torus,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
 
         super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
 
-    def draw(self, color: Optional[Color] = None, u: Optional[int] = None, v: Optional[int] = None) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        u: Optional[int] = None,
+        v: Optional[int] = None,
+    ) -> List[bpy.types.Object]:
         """Draw the torus associated with the artist.
 
         Parameters
@@ -86,5 +93,11 @@ class TorusArtist(BlenderArtist, ShapeArtist):
         v = v or self.v
         color = Color.coerce(color) or self.color
         vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        obj = compas_blender.draw_mesh(vertices, faces, name=self.shape.name, color=color, collection=self.collection)
+        obj = compas_blender.draw_mesh(
+            vertices,
+            faces,
+            name=self.shape.name,
+            color=color,
+            collection=self.collection,
+        )
         return [obj]

@@ -4,19 +4,19 @@ from __future__ import division
 
 
 __all__ = [
-    'mesh_conway_dual',
-    'mesh_conway_join',
-    'mesh_conway_ambo',
-    'mesh_conway_kis',
-    'mesh_conway_needle',
-    'mesh_conway_zip',
-    'mesh_conway_truncate',
-    'mesh_conway_ortho',
-    'mesh_conway_expand',
-    'mesh_conway_gyro',
-    'mesh_conway_snub',
-    'mesh_conway_meta',
-    'mesh_conway_bevel'
+    "mesh_conway_dual",
+    "mesh_conway_join",
+    "mesh_conway_ambo",
+    "mesh_conway_kis",
+    "mesh_conway_needle",
+    "mesh_conway_zip",
+    "mesh_conway_truncate",
+    "mesh_conway_ortho",
+    "mesh_conway_expand",
+    "mesh_conway_gyro",
+    "mesh_conway_snub",
+    "mesh_conway_meta",
+    "mesh_conway_bevel",
 ]
 
 
@@ -58,9 +58,15 @@ def mesh_conway_dual(mesh):
     cls = type(mesh)
     vertices = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
     old_faces_to_new_vertices = {fkey: i for i, fkey in enumerate(mesh.faces())}
-    faces = [[old_faces_to_new_vertices[fkey] for fkey in reversed(mesh.vertex_faces(vkey, ordered=True))]
-             for vkey in mesh.vertices()
-             if not mesh.is_vertex_on_boundary(vkey) and len(mesh.vertex_neighbors(vkey)) != 0]
+    faces = [
+        [
+            old_faces_to_new_vertices[fkey]
+            for fkey in reversed(mesh.vertex_faces(vkey, ordered=True))
+        ]
+        for vkey in mesh.vertices()
+        if not mesh.is_vertex_on_boundary(vkey)
+        and len(mesh.vertex_neighbors(vkey)) != 0
+    ]
     return cls.from_vertices_and_faces(vertices, faces)
 
 
@@ -106,8 +112,15 @@ def mesh_conway_join(mesh):
     vkey_index = {vkey: i for i, vkey in enumerate(mesh.vertices())}
     fkey_index = {fkey: i + v for i, fkey in enumerate(mesh.faces())}
     faces = [
-        [vkey_index[u], fkey_index[mesh.halfedge[v][u]], vkey_index[v], fkey_index[mesh.halfedge[u][v]]]
-        for u, v in mesh.edges() if not mesh.is_edge_on_boundary(u, v)]
+        [
+            vkey_index[u],
+            fkey_index[mesh.halfedge[v][u]],
+            vkey_index[v],
+            fkey_index[mesh.halfedge[u][v]],
+        ]
+        for u, v in mesh.edges()
+        if not mesh.is_edge_on_boundary(u, v)
+    ]
     join_mesh = cls.from_vertices_and_faces(vertices, faces)
     # is this necessary?
     join_mesh.cull_vertices()
@@ -195,7 +208,9 @@ def mesh_conway_kis(mesh):
     fkey_index = {fkey: i + v for i, fkey in enumerate(mesh.faces())}
     faces = [
         [vkey_index[u], vkey_index[v], fkey_index[mesh.halfedge[u][v]]]
-        for fkey in mesh.faces() for u, v in mesh.face_halfedges(fkey)]
+        for fkey in mesh.faces()
+        for u, v in mesh.face_halfedges(fkey)
+    ]
     return cls.from_vertices_and_faces(vertices, faces)
 
 
@@ -428,21 +443,31 @@ def mesh_conway_gyro(mesh):
     cls = type(mesh)
     vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
     vertices += [mesh.face_centroid(fkey) for fkey in mesh.faces()]
-    vertices += [mesh.edge_point(u, v, t=.33) for u in mesh.vertices() for v in mesh.halfedge[u]]
+    vertices += [
+        mesh.edge_point(u, v, t=0.33) for u in mesh.vertices() for v in mesh.halfedge[u]
+    ]
     V = mesh.number_of_vertices()
     F = mesh.number_of_faces()
     vkey_index = {vkey: i for i, vkey in enumerate(mesh.vertices())}
     fkey_index = {fkey: i + V for i, fkey in enumerate(mesh.faces())}
-    ekey_index = {halfedge: i + V + F for i, halfedge in enumerate([(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]])}
+    ekey_index = {
+        halfedge: i + V + F
+        for i, halfedge in enumerate(
+            [(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]]
+        )
+    }
     faces = []
     for fkey in mesh.faces():
         for u, v in mesh.face_halfedges(fkey):
-            faces.append([
-                ekey_index[u, v],
-                ekey_index[v, u],
-                vkey_index[v],
-                ekey_index[v, mesh.face_vertex_descendant(fkey, v)],
-                fkey_index[mesh.halfedge[u][v]]])
+            faces.append(
+                [
+                    ekey_index[u, v],
+                    ekey_index[v, u],
+                    vkey_index[v],
+                    ekey_index[v, mesh.face_vertex_descendant(fkey, v)],
+                    fkey_index[mesh.halfedge[u][v]],
+                ]
+            )
     return cls.from_vertices_and_faces(vertices, faces)
 
 

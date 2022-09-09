@@ -56,7 +56,7 @@ class Torus(Shape):
 
     """
 
-    __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
+    __slots__ = ["_plane", "_radius_axis", "_radius_pipe"]
 
     def __init__(self, plane, radius_axis, radius_pipe, **kwargs):
         super(Torus, self).__init__(**kwargs)
@@ -75,30 +75,34 @@ class Torus(Shape):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
-        return schema.Schema({
-            'plane': Plane.DATASCHEMA.fget(None),
-            'radius_axis': schema.And(float, lambda x: x > 0),
-            'radius_pipe': schema.And(float, lambda x: x > 0)
-        })
+
+        return schema.Schema(
+            {
+                "plane": Plane.DATASCHEMA.fget(None),
+                "radius_axis": schema.And(float, lambda x: x > 0),
+                "radius_pipe": schema.And(float, lambda x: x > 0),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'torus'
+        return "torus"
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the torus.
-        """
-        return {'plane': self.plane.data,
-                'radius_axis': self.radius_axis,
-                'radius_pipe': self.radius_pipe}
+        """dict : Returns the data dictionary that represents the torus."""
+        return {
+            "plane": self.plane.data,
+            "radius_axis": self.radius_axis,
+            "radius_pipe": self.radius_pipe,
+        }
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.radius_axis = data['radius_axis']
-        self.radius_pipe = data['radius_pipe']
+        self.plane = Plane.from_data(data["plane"])
+        self.radius_axis = data["radius_axis"]
+        self.radius_pipe = data["radius_pipe"]
 
     @classmethod
     def from_data(cls, data):
@@ -121,7 +125,9 @@ class Torus(Shape):
         >>> torus = Torus.from_data(data)
 
         """
-        torus = cls(Plane.from_data(data['plane']), data['radius_axis'], data['radius_pipe'])
+        torus = cls(
+            Plane.from_data(data["plane"]), data["radius_axis"], data["radius_pipe"]
+        )
         return torus
 
     # ==========================================================================
@@ -169,7 +175,9 @@ class Torus(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Torus({0!r}, {1!r}, {2!r})'.format(self.plane, self.radius_axis, self.radius_pipe)
+        return "Torus({0!r}, {1!r}, {2!r})".format(
+            self.plane, self.radius_axis, self.radius_pipe
+        )
 
     def __len__(self):
         return 3
@@ -227,17 +235,21 @@ class Torus(Shape):
 
         """
         if u < 3:
-            raise ValueError('The value for u should be u > 3.')
+            raise ValueError("The value for u should be u > 3.")
         if v < 3:
-            raise ValueError('The value for v should be v > 3.')
+            raise ValueError("The value for v should be v > 3.")
 
-        theta = pi*2 / u
-        phi = pi*2 / v
+        theta = pi * 2 / u
+        phi = pi * 2 / v
         vertices = []
         for i in range(u):
             for j in range(v):
-                x = cos(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
-                y = sin(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
+                x = cos(i * theta) * (
+                    self.radius_axis + self.radius_pipe * cos(j * phi)
+                )
+                y = sin(i * theta) * (
+                    self.radius_axis + self.radius_pipe * cos(j * phi)
+                )
                 z = self.radius_pipe * sin(j * phi)
                 vertices.append([x, y, z])
 
