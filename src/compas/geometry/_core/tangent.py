@@ -14,7 +14,7 @@ def tangent_points_to_circle_xy(circle, point):
     Parameters
     ----------
     circle : [plane, float] | :class:`~compas.geometry.Circle`
-        center, radius of the circle in the xy plane.
+        plane, radius of the circle in the xy plane.
     point : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a point in the xy plane.
 
@@ -34,18 +34,25 @@ def tangent_points_to_circle_xy(circle, point):
     >>> allclose(t2, [0.972, -0.236, 0.000], 1e-3)
     True
     """
-    plane, r = circle
-    c_point, c_normal = plane
+    plane, R = circle
+    c_point, _ = plane
+
     cx, cy = c_point[:2]
-    px = point[0] - cx
-    py = point[1] - cy
+    px, py = point[:2]
 
-    a1 = r*(px*r - py*math.sqrt(px**2 + py**2 - r**2))/(px**2 + py**2)
-    a2 = r*(px*r + py*math.sqrt(px**2 + py**2 - r**2))/(px**2 + py**2)
+    dx = px - cx
+    dy = py - cy
 
-    b1 = (r**2 - px*a1)/py
-    b2 = (r**2 - px*a2)/py
+    D = math.sqrt(dx**2 + dy**2)
+    L2 = D**2 - R**2
 
-    p1 = [a1 + cx, b1 + cy, 0]
-    p2 = [a2 + cx, b2 + cy, 0]
-    return p1, p2
+    a = dx / D, dy / D
+    b = -a[1], a[0]
+
+    A = D - L2 / D
+    B = math.sqrt(R**2 - A**2)
+
+    t1 = cx + A * a[0] + B * b[0], cy + A * a[1] + B * b[1], 0
+    t2 = cx + A * a[0] - B * b[0], cy + A * a[1] - B * b[1], 0
+
+    return t1, t2
