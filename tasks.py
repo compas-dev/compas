@@ -129,8 +129,15 @@ def docs(ctx, doctest=False, rebuild=False, check_links=False):
 @task()
 def lint(ctx):
     """Check the consistency of coding style."""
-    log.write("Running flake8 python linter...")
-    ctx.run("flake8 src")
+    log.write("Running black python linter...")
+    ctx.run("black --check --diff --color src tests")
+
+
+@task()
+def format(ctx):
+    """Reformat the code base using black."""
+    log.write("Running black python formatter...")
+    ctx.run("black src tests")
 
 
 @task()
@@ -253,6 +260,9 @@ def release(ctx, release_type):
         raise Exit(
             "The release type parameter is invalid.\nMust be one of: major, minor, patch"
         )
+
+    # Run formmatter
+    ctx.run("invoke format")
 
     # Run checks
     ctx.run("invoke check test")
