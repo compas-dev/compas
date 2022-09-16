@@ -116,6 +116,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added Rhino <code class="docutils literal notranslate"><span class="pre">Brep</span></code> plugin in <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.brep</span></code>.</p></li>
 <li><p>Added boolean operations to the <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code> <code class="docutils literal notranslate"><span class="pre">Brep</span></code> backend.</p></li>
 <li><p>Added boolean operation operator overloads in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Brep</span></code></p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">format</span></code> task using <code class="docutils literal notranslate"><span class="pre">black</span></code> formatter.</p></li>
 </ul>
 </section>
 <section id="changed">
@@ -124,6 +125,8 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Based all gltf data classes on <code class="docutils literal notranslate"><span class="pre">BaseGLTFDataClass</span></code></p></li>
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">Color.__get___</span></code> AttributeError.</p></li>
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">cylinder_to_rhino</span></code> conversion to match <code class="docutils literal notranslate"><span class="pre">compas.geometry.Cylinder</span></code> location.</p></li>
+<li><p>Changed linter to <code class="docutils literal notranslate"><span class="pre">black</span></code>.</p></li>
+<li><p>Automatically trigger <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">format</span></code> during <code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">release</span></code>.</p></li>
 </ul>
 </section>
 <section id="removed">
