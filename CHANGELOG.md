@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added Rhino `Brep` plugin in `compas_rhino.geometry.brep`.
 * Added boolean operations to the `compas_rhino` `Brep` backend.
 * Added boolean operation operator overloads in `compas.geometry.Brep`
+* Added `format` task using `black` formatter.
 
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`
@@ -24,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `Color.__get___` AttributeError.
 * Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
 * Changed linter to `black`.
+* Automatically trigger `invoke format` during `invoke release`.
 
 ### Removed
 

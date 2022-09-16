@@ -94,7 +94,7 @@ class MeshArtist(Artist):
 
     color = Color.from_hex("#0092D2").lightened(50)
 
-    default_vertexcolor = Color.from_hex('#0092D2')
+    default_vertexcolor = Color.from_hex("#0092D2")
     default_edgecolor = Color.from_hex("#0092D2")
     default_facecolor = Color.from_hex("#0092D2").lightened(50)
 

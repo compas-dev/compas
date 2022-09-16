@@ -134,6 +134,13 @@ def lint(ctx):
 
 
 @task()
+def format(ctx):
+    """Reformat the code base using black."""
+    log.write("Running black python formatter...")
+    ctx.run("black src tests")
+
+
+@task()
 def testdocs(ctx, rebuild=False):
     """Test the examples in the docstrings."""
     log.write("Running doctest...")
@@ -253,6 +260,9 @@ def release(ctx, release_type):
         raise Exit(
             "The release type parameter is invalid.\nMust be one of: major, minor, patch"
         )
+
+    # Run formmatter
+    ctx.run("invoke format")
 
     # Run checks
     ctx.run("invoke check test")
