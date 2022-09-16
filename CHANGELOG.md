@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed `Color.__get___` AttributeError.
 * Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
+* Changed linter to `black`.
 
 ### Removed
 
