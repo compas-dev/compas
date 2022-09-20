@@ -14,7 +14,7 @@ def tangent_points_to_circle_xy(circle, point):
     Parameters
     ----------
     circle : [plane, float] | :class:`~compas.geometry.Circle`
-        plane, radius of the circle in the xy plane.
+        Plane and radius of the circle.
     point : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a point in the xy plane.
 
@@ -26,7 +26,7 @@ def tangent_points_to_circle_xy(circle, point):
     Examples
     --------
     >>> from compas.geometry import allclose
-    >>> circle = ((0, 0, 0), (1, 0, 0), (0, 1, 0)), 1.0
+    >>> circle = ((0, 0, 0), (0, 0, 1)), 1.0
     >>> point = (2, 4, 0)
     >>> t1, t2 = tangent_points_to_circle_xy(circle, point)
     >>> allclose(t1, [-0.772, 0.636, 0.000], 1e-3)
