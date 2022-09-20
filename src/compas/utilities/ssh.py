@@ -11,7 +11,7 @@ except ImportError:
 import os
 
 
-__all__ = ['SSH']
+__all__ = ["SSH"]
 
 
 class SSH(object):
@@ -44,9 +44,13 @@ class SSH(object):
         client.set_missing_host_key_policy(AutoAddPolicy())
         try:
             client.connect(self.server, username=self.username)
-            print('\n***** Connected to server: {0} with username: {1}'.format(self.server, self.username))
+            print(
+                "\n***** Connected to server: {0} with username: {1}".format(
+                    self.server, self.username
+                )
+            )
         except Exception:
-            print('\n***** Connection failed')
+            print("\n***** Connection failed")
         return client
 
     def close(self):
@@ -58,7 +62,7 @@ class SSH(object):
 
         """
         self.client.close()
-        print('\n***** SSH connection closed')
+        print("\n***** SSH connection closed")
 
     def receive_file(self, remote_file, local_file):
         """Recieve a remote file from the server.
@@ -75,7 +79,9 @@ class SSH(object):
         None
 
         """
-        command = 'scp {0}@{1}:{2} {3}'.format(self.username, self.server, remote_file, local_file)
+        command = "scp {0}@{1}:{2} {3}".format(
+            self.username, self.server, remote_file, local_file
+        )
         self.local_command(command)
 
     def send_file(self, local_file):
@@ -91,7 +97,7 @@ class SSH(object):
         None
 
         """
-        command = 'scp {0} {1}@{2}:'.format(local_file, self.username, self.server)
+        command = "scp {0} {1}@{2}:".format(local_file, self.username, self.server)
         self.local_command(command=command)
 
     def send_folder(self, local_folder):
@@ -107,7 +113,7 @@ class SSH(object):
         None
 
         """
-        command = 'scp -r {0} {1}@{2}:'.format(local_folder, self.username, self.server)
+        command = "scp -r {0} {1}@{2}:".format(local_folder, self.username, self.server)
         self.local_command(command=command)
 
     def sync_folder(self, local_folder, remote_folder):
@@ -125,7 +131,9 @@ class SSH(object):
         None
 
         """
-        command = 'rsync -Pa {0} {1}@{2}:{3}'.format(local_folder, self.username, self.server, remote_folder)
+        command = "rsync -Pa {0} {1}@{2}:{3}".format(
+            local_folder, self.username, self.server, remote_folder
+        )
         self.local_command(command=command)
 
     @staticmethod
@@ -144,11 +152,11 @@ class SSH(object):
         None
 
         """
-        print('\n***** Executing local command: {0}'.format(command))
+        print("\n***** Executing local command: {0}".format(command))
         if folder:
             os.chdir(folder)
         os.system(command)
-        print('***** Command executed')
+        print("***** Command executed")
 
     def server_command(self, command):
         """Send a BASH command to run on the server.
@@ -163,10 +171,10 @@ class SSH(object):
         None
 
         """
-        print('\n***** Executing server command: {0}\n'.format(command))
+        print("\n***** Executing server command: {0}\n".format(command))
         stdin, stdout, stderr = self.client.exec_command(command)
         for line in stdout.readlines():
             print(line)
         for line in stderr.readlines():
             print(line)
-        print('***** Command executed')
+        print("***** Command executed")

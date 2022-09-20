@@ -50,7 +50,7 @@ class RhinoCurve(RhinoGeometry):
             elif isinstance(geometry, Ellipse):
                 geometry = ellipse_to_rhino_curve(geometry)
             else:
-                raise ConversionError('The geometry cannot be converted to a curve.')
+                raise ConversionError("The geometry cannot be converted to a curve.")
         self._geometry = geometry
 
     def to_compas(self):
@@ -61,6 +61,7 @@ class RhinoCurve(RhinoGeometry):
         :class:`~compas_rhino.geometry.RhinoNurbsCurve`
         """
         from compas_rhino.geometry import RhinoNurbsCurve
+
         curve = RhinoNurbsCurve.from_rhino(self.geometry)
         return curve
 

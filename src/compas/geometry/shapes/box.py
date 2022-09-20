@@ -115,33 +115,37 @@ class Box(Shape):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
-        return schema.Schema({
-            'frame': Frame.DATASCHEMA.fget(None),
-            'xsize': schema.And(float, lambda x: x > 0),
-            'ysize': schema.And(float, lambda x: x > 0),
-            'zsize': schema.And(float, lambda x: x > 0)
-        })
+
+        return schema.Schema(
+            {
+                "frame": Frame.DATASCHEMA.fget(None),
+                "xsize": schema.And(float, lambda x: x > 0),
+                "ysize": schema.And(float, lambda x: x > 0),
+                "zsize": schema.And(float, lambda x: x > 0),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the  schema of the data representation in JSON format."""
-        return 'box'
+        return "box"
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the box.
-        """
-        return {'frame': self.frame.data,
-                'xsize': self.xsize,
-                'ysize': self.ysize,
-                'zsize': self.zsize}
+        """dict : Returns the data dictionary that represents the box."""
+        return {
+            "frame": self.frame.data,
+            "xsize": self.xsize,
+            "ysize": self.ysize,
+            "zsize": self.zsize,
+        }
 
     @data.setter
     def data(self, data):
-        self.frame = Frame.from_data(data['frame'])
-        self.xsize = data['xsize']
-        self.ysize = data['ysize']
-        self.zsize = data['zsize']
+        self.frame = Frame.from_data(data["frame"])
+        self.xsize = data["xsize"]
+        self.ysize = data["ysize"]
+        self.zsize = data["zsize"]
 
     @classmethod
     def from_data(cls, data):
@@ -162,7 +166,9 @@ class Box(Shape):
         >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
         >>> box = Box.from_data(data)
         """
-        return cls(Frame.from_data(data['frame']), data['xsize'], data['ysize'], data['zsize'])
+        return cls(
+            Frame.from_data(data["frame"]), data["xsize"], data["ysize"], data["zsize"]
+        )
 
     # ==========================================================================
     # properties
@@ -247,7 +253,11 @@ class Box(Shape):
 
     @property
     def area(self):
-        return 2 * self.xsize * self.ysize + 2 * self.ysize * self.zsize + 2 * self.zsize * self.xsize
+        return (
+            2 * self.xsize * self.ysize
+            + 2 * self.ysize * self.zsize
+            + 2 * self.zsize * self.xsize
+        )
 
     @property
     def volume(self):
@@ -265,10 +275,18 @@ class Box(Shape):
         zaxis = self.frame.zaxis
         width, depth, height = self.xsize, self.ysize, self.zsize
 
-        a = point + (xaxis * (-0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
-        b = point + (xaxis * (-0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
-        c = point + (xaxis * (+0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
-        d = point + (xaxis * (+0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
+        a = point + (
+            xaxis * (-0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height)
+        )
+        b = point + (
+            xaxis * (-0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height)
+        )
+        c = point + (
+            xaxis * (+0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height)
+        )
+        d = point + (
+            xaxis * (+0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height)
+        )
 
         e = a + zaxis * height
         f = d + zaxis * height
@@ -279,12 +297,7 @@ class Box(Shape):
 
     @property
     def faces(self):
-        return [self.bottom,
-                self.front,
-                self.right,
-                self.back,
-                self.left,
-                self.top]
+        return [self.bottom, self.front, self.right, self.back, self.left, self.top]
 
     @property
     def bottom(self):
@@ -322,7 +335,9 @@ class Box(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Box({0!r}, {1!r}, {2!r}, {3!r})'.format(self.frame, self.xsize, self.ysize, self.zsize)
+        return "Box({0!r}, {1!r}, {2!r}, {3!r})".format(
+            self.frame, self.xsize, self.ysize, self.zsize
+        )
 
     def __len__(self):
         return 4
@@ -392,13 +407,13 @@ class Box(Shape):
         depth = float(depth)
 
         if width == 0.0:
-            raise Exception('Width cannot be zero.')
+            raise Exception("Width cannot be zero.")
 
         if height == 0.0:
-            raise Exception('Height cannot be zero.')
+            raise Exception("Height cannot be zero.")
 
         if depth == 0.0:
-            raise Exception('Depth cannot be zero.')
+            raise Exception("Depth cannot be zero.")
 
         return cls(Frame.worldXY(), width, depth, height)
 
@@ -469,13 +484,13 @@ class Box(Shape):
 
         """
         if height == 0:
-            raise Exception('The box should have a height.')
+            raise Exception("The box should have a height.")
 
         x1, y1, z1 = corner1
         x2, y2, z2 = corner2
 
         if z1 != z2:
-            raise Exception('Corners should be in the same horizontal plane.')
+            raise Exception("Corners should be in the same horizontal plane.")
 
         xaxis = Vector(x2 - x1, 0, 0)
         yaxis = Vector(0, y2 - y1, 0)
@@ -514,11 +529,11 @@ class Box(Shape):
         x2, y2, z2 = d2
 
         if z1 == z2:
-            raise Exception('The box has no height.')
+            raise Exception("The box has no height.")
 
         xaxis = Vector(x2 - x1, 0, 0)
         yaxis = Vector(0, y2 - y1, 0)
-        zaxis = Vector(0, 0,  z2 - z1)
+        zaxis = Vector(0, 0, z2 - z1)
         width = xaxis.length
         depth = yaxis.length
         height = zaxis.length
@@ -571,7 +586,7 @@ class Box(Shape):
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
         point = transform_points([point], T)[0]
-        if -0.5 * self.xsize < point[0] < + 0.5 * self.xsize:
+        if -0.5 * self.xsize < point[0] < +0.5 * self.xsize:
             if -0.5 * self.ysize < point[1] < +0.5 * self.ysize:
                 if -0.5 * self.zsize < point[2] < +0.5 * self.zsize:
                     return True

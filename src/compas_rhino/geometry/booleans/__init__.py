@@ -8,13 +8,13 @@ from compas.plugins import plugin
 
 
 __all__ = [
-    'boolean_union_mesh_mesh',
-    'boolean_difference_mesh_mesh',
-    'boolean_intersection_mesh_mesh',
+    "boolean_union_mesh_mesh",
+    "boolean_difference_mesh_mesh",
+    "boolean_intersection_mesh_mesh",
 ]
 
 
-@plugin(category='booleans', requires=['Rhino'])
+@plugin(category="booleans", requires=["Rhino"])
 def boolean_union_mesh_mesh(A, B, remesh=False):
     """Compute the boolean union of two triangle meshes.
 
@@ -35,10 +35,12 @@ def boolean_union_mesh_mesh(A, B, remesh=False):
         The faces of the boolean union.
 
     """
-    return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanUnion([a, b]))
+    return _boolean_operation(
+        A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanUnion([a, b])
+    )
 
 
-@plugin(category='booleans', requires=['Rhino'])
+@plugin(category="booleans", requires=["Rhino"])
 def boolean_difference_mesh_mesh(A, B, remesh=False):
     """Compute the boolean difference of two triangle meshes.
 
@@ -59,10 +61,12 @@ def boolean_difference_mesh_mesh(A, B, remesh=False):
         The faces of the boolean difference.
 
     """
-    return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanDifference([a], [b]))
+    return _boolean_operation(
+        A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanDifference([a], [b])
+    )
 
 
-@plugin(category='booleans', requires=['Rhino'])
+@plugin(category="booleans", requires=["Rhino"])
 def boolean_intersection_mesh_mesh(A, B, remesh=False):
     """Compute the boolean intersection of two triangle meshes.
 
@@ -83,7 +87,9 @@ def boolean_intersection_mesh_mesh(A, B, remesh=False):
         The faces of the boolean intersection.
 
     """
-    return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanIntersection([a], [b]))
+    return _boolean_operation(
+        A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanIntersection([a], [b])
+    )
 
 
 def _boolean_operation(A, B, method):

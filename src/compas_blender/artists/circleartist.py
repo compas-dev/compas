@@ -55,13 +55,22 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 circle: Circle,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
-        super().__init__(primitive=circle, collection=collection or circle.name, **kwargs)
+    def __init__(
+        self,
+        circle: Circle,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
+        super().__init__(
+            primitive=circle, collection=collection or circle.name, **kwargs
+        )
 
-    def draw(self, color: Optional[Color] = None, show_point: bool = False, show_normal: bool = False) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        show_point: bool = False,
+        show_normal: bool = False,
+    ) -> List[bpy.types.Object]:
         """Draw the circle.
 
         Parameters
@@ -87,12 +96,33 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
         radius = self.primitive.radius
         objects = []
         if show_point:
-            points = [{'pos': point, 'color': color, 'name': self.primitive.name, 'radius': 0.01}]
+            points = [
+                {
+                    "pos": point,
+                    "color": color,
+                    "name": self.primitive.name,
+                    "radius": 0.01,
+                }
+            ]
             objects += compas_blender.draw_points(points, collection=self.collection)
         if show_normal:
             end = add_vectors(point, normal)
-            lines = [{'start': point, 'end': end, 'color': color, 'name': self.primitive.name}]
+            lines = [
+                {
+                    "start": point,
+                    "end": end,
+                    "color": color,
+                    "name": self.primitive.name,
+                }
+            ]
             objects += compas_blender.draw_lines(lines, collection=self.collection)
-        circles = [{'plane': plane, 'radius': radius, 'color': color, 'name': self.primitive.name}]
+        circles = [
+            {
+                "plane": plane,
+                "radius": radius,
+                "color": color,
+                "name": self.primitive.name,
+            }
+        ]
         objects += compas_blender.draw_circles(circles, collection=self.collection)
         return objects

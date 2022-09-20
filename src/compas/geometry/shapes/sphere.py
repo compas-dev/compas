@@ -51,7 +51,7 @@ class Sphere(Shape):
 
     """
 
-    __slots__ = ['_point', '_radius']
+    __slots__ = ["_point", "_radius"]
 
     def __init__(self, point, radius, **kwargs):
         super(Sphere, self).__init__(**kwargs)
@@ -69,26 +69,25 @@ class Sphere(Shape):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
         from compas.data import is_float3
-        return schema.Schema({
-            'point': is_float3,
-            'radius': schema.And(float, lambda x: x > 0)
-        })
+
+        return schema.Schema(
+            {"point": is_float3, "radius": schema.And(float, lambda x: x > 0)}
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'sphere'
+        return "sphere"
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the sphere.
-        """
-        return {'point': self.point.data, 'radius': self.radius}
+        """dict : Returns the data dictionary that represents the sphere."""
+        return {"point": self.point.data, "radius": self.radius}
 
     @data.setter
     def data(self, data):
-        self.point = Point.from_data(data['point'])
-        self.radius = data['radius']
+        self.point = Point.from_data(data["point"])
+        self.radius = data["radius"]
 
     @classmethod
     def from_data(cls, data):
@@ -111,7 +110,7 @@ class Sphere(Shape):
         >>> sphere = Sphere.from_data(data)
 
         """
-        sphere = cls(Point.from_data(data['point']), data['radius'])
+        sphere = cls(Point.from_data(data["point"]), data["radius"])
         return sphere
 
     # ==========================================================================
@@ -144,14 +143,14 @@ class Sphere(Shape):
 
     @property
     def volume(self):
-        return 4./3. * pi * self.radius**3
+        return 4.0 / 3.0 * pi * self.radius**3
 
     # ==========================================================================
     # customisation
     # ==========================================================================
 
     def __repr__(self):
-        return 'Sphere({0!r}, {1!r})'.format(self.point, self.radius)
+        return "Sphere({0!r}, {1!r})".format(self.point, self.radius)
 
     def __len__(self):
         return 2
@@ -205,12 +204,12 @@ class Sphere(Shape):
 
         """
         if u < 3:
-            raise ValueError('The value for u should be u > 3.')
+            raise ValueError("The value for u should be u > 3.")
         if v < 3:
-            raise ValueError('The value for v should be v > 3.')
+            raise ValueError("The value for v should be v > 3.")
 
         theta = pi / v
-        phi = pi*2 / u
+        phi = pi * 2 / u
         hpi = pi * 0.5
 
         vertices = []
@@ -229,9 +228,9 @@ class Sphere(Shape):
         # south pole triangle fan
         sp = len(vertices) - 1
         for j in range(u):
-            faces.append([sp, (j+1) % u, j])
+            faces.append([sp, (j + 1) % u, j])
 
-        for i in range(v-2):
+        for i in range(v - 2):
             for j in range(u):
                 jj = (j + 1) % u
                 a = i * u + j

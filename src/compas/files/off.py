@@ -117,7 +117,7 @@ class OFFReader(object):
         None
 
         """
-        with _iotools.open_file(self.filepath, 'r') as f:
+        with _iotools.open_file(self.filepath, "r") as f:
             self.content = f.readlines()
 
     def pre(self):
@@ -135,9 +135,9 @@ class OFFReader(object):
         for line in self.content:
             # Check this only one time
             if needs_decode is None:
-                needs_decode = hasattr(line, 'decode')
+                needs_decode = hasattr(line, "decode")
             if needs_decode:
-                line = line.decode('utf-8')
+                line = line.decode("utf-8")
             line = line.rstrip()
             if not line:
                 continue
@@ -145,7 +145,7 @@ class OFFReader(object):
                 lines[-1] = lines[-1][:-2] + line
             else:
                 lines.append(line)
-            if line[-1] == '\\':
+            if line[-1] == "\\":
                 is_continuation = True
             else:
                 is_continuation = False
@@ -182,11 +182,11 @@ class OFFReader(object):
             return
 
         header = next(self.content)
-        if not header.lower() == 'off':
+        if not header.lower() == "off":
             return
 
         for line in self.content:
-            if line.startswith('#'):
+            if line.startswith("#"):
                 continue
 
             parts = line.split()
@@ -208,7 +208,7 @@ class OFFReader(object):
             parts = line.split()
             if parts:
                 f = int(parts[0])
-                face = [int(index) for index in parts[1:f + 1]]
+                face = [int(index) for index in parts[1 : f + 1]]
                 # if len(parts[1:]) >= f:
                 #     face = [int(index) for index in parts[1:f + 1]]
                 # else:
@@ -247,14 +247,26 @@ class OFFWriter(object):
 
     """
 
-    def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
+    def __init__(
+        self, filepath, mesh, author=None, email=None, date=None, precision=None
+    ):
         self.filepath = filepath
         self.mesh = mesh
         self.author = author
         self.email = email
         self.date = date
         self.precision = precision or compas.PRECISION
-        self.vertex_tpl = "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
+        self.vertex_tpl = (
+            "{0:."
+            + self.precision
+            + "}"
+            + " {1:."
+            + self.precision
+            + "}"
+            + " {2:."
+            + self.precision
+            + "}\n"
+        )
         self.v = mesh.number_of_vertices()
         self.f = mesh.number_of_faces()
         self.e = mesh.number_of_edges()
@@ -268,7 +280,7 @@ class OFFWriter(object):
         None
 
         """
-        with _iotools.open_file(self.filepath, 'w') as self.file:
+        with _iotools.open_file(self.filepath, "w") as self.file:
             self._write_header()
             self._write_vertices()
             self._write_faces()
@@ -293,4 +305,8 @@ class OFFWriter(object):
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)
             v = len(vertices)
-            self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))
+            self.file.write(
+                "{0} {1}\n".format(
+                    v, " ".join([str(key_index[key]) for key in vertices])
+                )
+            )

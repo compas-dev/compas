@@ -58,22 +58,22 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
 
         """
         # Imported colors take priority over a the parameter color
-        if 'mesh_color.diffuse' in geometry.attributes:
-            color = geometry.attributes['mesh_color.diffuse']
+        if "mesh_color.diffuse" in geometry.attributes:
+            color = geometry.attributes["mesh_color.diffuse"]
 
         vertices, faces = geometry.to_vertices_and_faces(triangulated=False)
 
         mesh = Rhino.Geometry.Mesh()
 
         if name:
-            mesh.UserDictionary.Set('MeshName', name)
+            mesh.UserDictionary.Set("MeshName", name)
 
         if color:
             r, g, b, a = color
-            mesh.UserDictionary.Set('MeshColor.R', r)
-            mesh.UserDictionary.Set('MeshColor.G', g)
-            mesh.UserDictionary.Set('MeshColor.B', b)
-            mesh.UserDictionary.Set('MeshColor.A', a)
+            mesh.UserDictionary.Set("MeshColor.R", r)
+            mesh.UserDictionary.Set("MeshColor.G", g)
+            mesh.UserDictionary.Set("MeshColor.B", b)
+            mesh.UserDictionary.Set("MeshColor.A", a)
 
         for v in vertices:
             mesh.Vertices.Add(*v)
@@ -213,12 +213,18 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
         guid = sc.doc.Objects.AddMesh(mesh)
 
         color = None
-        if 'MeshColor.R' in mesh.UserDictionary:
-            color = [mesh.UserDictionary['MeshColor.R'],
-                     mesh.UserDictionary['MeshColor.G'],
-                     mesh.UserDictionary['MeshColor.B'],
-                     mesh.UserDictionary['MeshColor.A']]
-        name = mesh.UserDictionary['MeshName'] if 'MeshName' in mesh.UserDictionary else None
+        if "MeshColor.R" in mesh.UserDictionary:
+            color = [
+                mesh.UserDictionary["MeshColor.R"],
+                mesh.UserDictionary["MeshColor.G"],
+                mesh.UserDictionary["MeshColor.B"],
+                mesh.UserDictionary["MeshColor.A"],
+            ]
+        name = (
+            mesh.UserDictionary["MeshName"]
+            if "MeshName" in mesh.UserDictionary
+            else None
+        )
 
         obj = sc.doc.Objects.Find(guid)
 
@@ -229,7 +235,9 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
                 attr.ObjectColor = Color.FromArgb(a, r, g, b)
                 attr.ColorSource = ColorFromObject
 
-                material_name = 'robotmodelartist.{:.2f}_{:.2f}_{:.2f}_{:.2f}'.format(r, g, b, a)
+                material_name = "robotmodelartist.{:.2f}_{:.2f}_{:.2f}_{:.2f}".format(
+                    r, g, b, a
+                )
                 material_index = sc.doc.Materials.Find(material_name, True)
 
                 # Material does not exist, create it

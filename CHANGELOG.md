@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added pluggable `Brep` support with `compas.geometry.brep`.
 * Added Rhino `Brep` plugin in `compas_rhino.geometry.brep`.
+* Added boolean operations to the `compas_rhino` `Brep` backend.
+* Added boolean operation operator overloads in `compas.geometry.Brep`
+* Added `format` task using `black` formatter.
 
 * Added a `test_intersection_circle_circle_xy` in the `test_intersections`
 
@@ -22,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Based all gltf data classes on `BaseGLTFDataClass`
 
 * Fixed `Color.__get___` AttributeError.
+* Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
+* Changed linter to `black`.
+* Automatically trigger `invoke format` during `invoke release`.
 
 * Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
 * Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.

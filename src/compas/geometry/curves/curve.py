@@ -7,7 +7,7 @@ from compas.geometry import Geometry
 from compas.utilities import linspace
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_curve(cls, *args, **kwargs):
     raise NotImplementedError
 
@@ -47,7 +47,7 @@ class Curve(Geometry):
         raise NotImplementedError
 
     def __str__(self):
-        return '<Curve with parameter domain {}>'.format(self.domain)
+        return "<Curve with parameter domain {}>".format(self.domain)
 
     # ==============================================================================
     # Data
@@ -66,7 +66,7 @@ class Curve(Geometry):
     @property
     def dtype(self):
         """str : The type of the object in the form of a '2-level' import and a class name."""
-        return 'compas.geometry/Curve'
+        return "compas.geometry/Curve"
 
     @property
     def data(self):

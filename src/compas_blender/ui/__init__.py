@@ -16,4 +16,4 @@ Classes
 from .mouse import Mouse
 
 
-__all__ = ['Mouse']
+__all__ = ["Mouse"]

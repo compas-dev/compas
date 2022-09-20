@@ -70,8 +70,8 @@ class NetworkArtist(Artist):
 
     """
 
-    default_nodecolor = Color.from_hex('#0092D2')
-    default_edgecolor = Color.from_hex('#0092D2')
+    default_nodecolor = Color.from_hex("#0092D2")
+    default_edgecolor = Color.from_hex("#0092D2")
 
     node_color = ColorDict()
     edge_color = ColorDict()
@@ -79,13 +79,9 @@ class NetworkArtist(Artist):
     default_nodesize = 5
     default_edgewidth = 1.0
 
-    def __init__(self,
-                 network,
-                 nodes=None,
-                 edges=None,
-                 nodecolor=None,
-                 edgecolor=None,
-                 **kwargs):
+    def __init__(
+        self, network, nodes=None, edges=None, nodecolor=None, edgecolor=None, **kwargs
+    ):
         super(NetworkArtist, self).__init__()
 
         self._default_nodecolor = None
@@ -145,7 +141,10 @@ class NetworkArtist(Artist):
     @property
     def node_xyz(self):
         if not self._node_xyz:
-            return {node: self.network.node_attributes(node, 'xyz') for node in self.network.nodes()}
+            return {
+                node: self.network.node_attributes(node, "xyz")
+                for node in self.network.nodes()
+            }
         return self._node_xyz
 
     @node_xyz.setter
@@ -155,7 +154,9 @@ class NetworkArtist(Artist):
     @property
     def node_size(self):
         if not self._node_size:
-            self._node_size = {node: self.default_nodesize for node in self.network.nodes()}
+            self._node_size = {
+                node: self.default_nodesize for node in self.network.nodes()
+            }
         return self._node_size
 
     @node_size.setter
@@ -173,32 +174,42 @@ class NetworkArtist(Artist):
 
     @node_text.setter
     def node_text(self, text):
-        if text == 'key':
+        if text == "key":
             self._node_text = {node: str(node) for node in self.network.nodes()}
-        elif text == 'index':
-            self._node_text = {node: str(index) for index, node in enumerate(self.network.nodes())}
+        elif text == "index":
+            self._node_text = {
+                node: str(index) for index, node in enumerate(self.network.nodes())
+            }
         elif isinstance(text, dict):
             self._node_text = text
 
     @property
     def edge_text(self):
         if not self._edge_text:
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}
+            self._edge_text = {
+                edge: "{}-{}".format(*edge) for edge in self.network.edges()
+            }
         return self._edge_text
 
     @edge_text.setter
     def edge_text(self, text):
-        if text == 'key':
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}
-        elif text == 'index':
-            self._edge_text = {edge: str(index) for index, edge in enumerate(self.network.edges())}
+        if text == "key":
+            self._edge_text = {
+                edge: "{}-{}".format(*edge) for edge in self.network.edges()
+            }
+        elif text == "index":
+            self._edge_text = {
+                edge: str(index) for index, edge in enumerate(self.network.edges())
+            }
         elif isinstance(text, dict):
             self._edge_text = text
 
     @property
     def edge_width(self):
         if not self._edge_width:
-            self._edge_width = {edge: self.default_edgewidth for edge in self.network.edges()}
+            self._edge_width = {
+                edge: self.default_edgewidth for edge in self.network.edges()
+            }
         return self._edge_width
 
     @edge_width.setter

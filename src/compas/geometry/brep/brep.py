@@ -607,6 +607,63 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
+    def __sub__(self, other):
+        """Compute the boolean difference using the "-" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Brep`
+            The other Brep to create a union with.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+            The Brep resulting from the difference operation.
+
+        """
+        results = type(self).from_boolean_difference(self, other)
+        if isinstance(results, list):
+            results = results[0]
+        return results
+
+    def __and__(self, other):
+        """Compute the boolean intersection using the "&" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Brep`
+            The other Brep to create a union with.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+            The Brep resulting from the intersection operation.
+
+        """
+        results = type(self).from_boolean_intersection(self, other)
+        if isinstance(results, list):
+            results = results[0]
+        return results
+
+    def __add__(self, other):
+        """Compute the boolean union using the "+" operator of this Brep and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Brep`
+            The other Brep to create a union with.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+            The Brep resulting from the union operation.
+
+        """
+        results = type(self).from_boolean_union(self, other)
+        if isinstance(results, list):
+            results = results[0]
+        return results
+
     # ==============================================================================
     # Converters
     # ==============================================================================

@@ -18,13 +18,13 @@ from compas.plugins import plugin
 
 
 __all__ = [
-    'trimesh_gaussian_curvature',
-    'trimesh_mean_curvature',
-    'trimesh_principal_curvature',
+    "trimesh_gaussian_curvature",
+    "trimesh_mean_curvature",
+    "trimesh_principal_curvature",
 ]
 
 
-@plugin(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=["Rhino"])
 def trimesh_gaussian_curvature(M):
 
     r"""Compute the discrete Gaussian curvature of a triangle mesh.
@@ -92,7 +92,9 @@ def trimesh_gaussian_curvature(M):
 
     # (3) Main - loop every vertex for angle defect
     for i in range(mesh.Vertices.Count):
-        vert_neighbors_topo = mesh.TopologyVertices.ConnectedTopologyVertices(mesh.TopologyVertices.TopologyVertexIndex(i), True)
+        vert_neighbors_topo = mesh.TopologyVertices.ConnectedTopologyVertices(
+            mesh.TopologyVertices.TopologyVertexIndex(i), True
+        )
         vert_neighbors = []
         if vert_neighbors_topo is None:
             K.append(None)
@@ -114,7 +116,7 @@ def trimesh_gaussian_curvature(M):
     return K
 
 
-@plugin(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=["Rhino"])
 def trimesh_mean_curvature(M):
     r"""Compute the discrete mean curvature of a triangle mesh.
 
@@ -184,7 +186,9 @@ def trimesh_mean_curvature(M):
 
     # (3) Main - loop over all vertices
     for i in range(mesh.Vertices.Count):
-        edges = mesh.TopologyVertices.ConnectedEdges(mesh.TopologyVertices.TopologyVertexIndex(i))
+        edges = mesh.TopologyVertices.ConnectedEdges(
+            mesh.TopologyVertices.TopologyVertexIndex(i)
+        )
         vertex = FromPoint3f(mesh.Vertices[i])
         if edges is None:
             H.append(None)
@@ -202,7 +206,9 @@ def trimesh_mean_curvature(M):
             orientation = list(orientation.Value)
             start_pt = mesh.TopologyEdges.EdgeLine(edge).From
             direction = start_pt.EpsilonEquals(vertex, doc.ModelAbsoluteTolerance)
-            normals = dict(zip(orientation, [faces_normal[faces[0]], faces_normal[faces[1]]]))
+            normals = dict(
+                zip(orientation, [faces_normal[faces[0]], faces_normal[faces[1]]])
+            )
             e = mesh.TopologyEdges.EdgeLine(edge).Direction
             e.Unitize()
             n1 = normals[True]
@@ -213,13 +219,13 @@ def trimesh_mean_curvature(M):
             # (3.3) calculate dihedral angle
             angle = dihedral_angle(e, n1, n2)
             x.append(l_ij * angle)
-        H.append(1/4 * sum(x))
+        H.append(1 / 4 * sum(x))
 
     # (4) Output
     return H
 
 
-@plugin(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=["Rhino"])
 def trimesh_principal_curvature(M):
     r"""Compute the principal curvature of a triangle mesh.
     Parameters
@@ -318,8 +324,8 @@ def trimesh_barycentric_area(mesh):
         dA = ptB.DistanceTo(ptC)
         dB = ptA.DistanceTo(ptC)
         dC = ptA.DistanceTo(ptB)
-        p = (dA+dB+dC)/2
-        area = sqrt(p*(p-dA)*(p-dB)*(p-dC)) / 3
+        p = (dA + dB + dC) / 2
+        area = sqrt(p * (p - dA) * (p - dB) * (p - dC)) / 3
 
         # topology vertices
         verts_topo = mesh.Faces.GetTopologicalVertices(i)

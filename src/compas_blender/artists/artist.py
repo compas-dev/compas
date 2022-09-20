@@ -26,9 +26,11 @@ class BlenderArtist(Artist):
 
     """
 
-    def __init__(self,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
         # Initialize collection before even calling super because other classes depend on that
         self._collection = None
         self.collection = collection
@@ -45,4 +47,6 @@ class BlenderArtist(Artist):
         elif isinstance(value, str):
             self._collection = compas_blender.create_collection(value)
         else:
-            raise Exception('Collection must be of type `str` or `bpy.types.Collection`.')
+            raise Exception(
+                "Collection must be of type `str` or `bpy.types.Collection`."
+            )

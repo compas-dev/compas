@@ -153,7 +153,11 @@ def plane_to_compas_frame(plane):
     :class:`~compas.geometry.Frame`
 
     """
-    return Frame(point_to_compas(plane.Origin), vector_to_compas(plane.XAxis), vector_to_compas(plane.YAxis))
+    return Frame(
+        point_to_compas(plane.Origin),
+        vector_to_compas(plane.XAxis),
+        vector_to_compas(plane.YAxis),
+    )
 
 
 def frame_to_rhino(frame):
@@ -168,7 +172,9 @@ def frame_to_rhino(frame):
     :rhino:`Rhino.Geometry.Plane`
 
     """
-    return RhinoPlane(point_to_rhino(frame[0]), vector_to_rhino(frame[1]), vector_to_rhino(frame[2]))
+    return RhinoPlane(
+        point_to_rhino(frame[0]), vector_to_rhino(frame[1]), vector_to_rhino(frame[2])
+    )
 
 
 def circle_to_compas(circle):

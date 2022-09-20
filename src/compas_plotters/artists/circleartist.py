@@ -44,16 +44,18 @@ class CircleArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 circle: Circle,
-                 linewidth: float = 1.0,
-                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 facecolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0, 0, 0),
-                 fill: bool = True,
-                 alpha: float = 1.0,
-                 zorder: int = 1000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        circle: Circle,
+        linewidth: float = 1.0,
+        linestyle: Literal["solid", "dotted", "dashed", "dashdot"] = "solid",
+        facecolor: Color = (1.0, 1.0, 1.0),
+        edgecolor: Color = (0, 0, 0),
+        fill: bool = True,
+        alpha: float = 1.0,
+        zorder: int = 1000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=circle, **kwargs)
 
@@ -80,7 +82,7 @@ class CircleArtist(PlotterArtist, PrimitiveArtist):
             self.circle.center[:2],
             self.circle.center[:2],
             self.circle.center[:2],
-            self.circle.center[:2]
+            self.circle.center[:2],
         ]
         points[0][0] -= self.circle.radius
         points[1][0] += self.circle.radius
@@ -105,7 +107,7 @@ class CircleArtist(PlotterArtist, PrimitiveArtist):
             edgecolor=self.edgecolor,
             fill=self.fill,
             alpha=self.alpha,
-            zorder=self.zorder
+            zorder=self.zorder,
         )
         self._mpl_circle = self.plotter.axes.add_artist(circle)
         self.update_data()

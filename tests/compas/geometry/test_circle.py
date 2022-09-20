@@ -1,4 +1,5 @@
 from compas.geometry import Circle
+
 # These imports are used to check __repr__.
 from compas.geometry import Plane  # noqa: F401
 from compas.geometry import Point  # noqa: F401

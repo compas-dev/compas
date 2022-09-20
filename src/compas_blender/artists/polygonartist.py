@@ -50,17 +50,23 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 polygon: Polygon,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
-        super().__init__(primitive=polygon, collection=collection or polygon.name, **kwargs)
+    def __init__(
+        self,
+        polygon: Polygon,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
+        super().__init__(
+            primitive=polygon, collection=collection or polygon.name, **kwargs
+        )
 
-    def draw(self,
-             color: Optional[Color] = None,
-             show_points: bool = False,
-             show_edges: bool = False,
-             show_face: bool = True) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        show_points: bool = False,
+        show_edges: bool = False,
+        show_face: bool = True,
+    ) -> List[bpy.types.Object]:
         """Draw the polygon.
 
         Parameters
@@ -83,12 +89,29 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
         color = Color.coerce(color) or self.color
         objects = []
         if show_points:
-            points = [{'pos': point, 'color': color, 'name': self.primitive.name, 'radius': 0.01} for point in self.primitive.points]
+            points = [
+                {
+                    "pos": point,
+                    "color": color,
+                    "name": self.primitive.name,
+                    "radius": 0.01,
+                }
+                for point in self.primitive.points
+            ]
             objects += compas_blender.draw_points(points, collection=self.collection)
         if show_edges:
-            lines = [{'start': a, 'end': b, 'color': color, 'name': self.primitive.name} for a, b in self.primitive.lines]
+            lines = [
+                {"start": a, "end": b, "color": color, "name": self.primitive.name}
+                for a, b in self.primitive.lines
+            ]
             objects += compas_blender.draw_lines(lines, collection=self.collection)
         if show_face:
-            polygons = [{'points': self.primitive.points, 'color': color, 'name': self.primitive.name}]
+            polygons = [
+                {
+                    "points": self.primitive.points,
+                    "color": color,
+                    "name": self.primitive.name,
+                }
+            ]
             objects += compas_blender.draw_faces(polygons, collection=self.collection)
         return objects

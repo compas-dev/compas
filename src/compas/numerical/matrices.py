@@ -14,27 +14,27 @@ from scipy.sparse import vstack as svstack
 
 
 __all__ = [
-    'adjacency_matrix',
-    'degree_matrix',
-    'connectivity_matrix',
-    'laplacian_matrix',
-    'face_matrix',
-    'mass_matrix',
-    'stiffness_matrix',
-    'equilibrium_matrix',
+    "adjacency_matrix",
+    "degree_matrix",
+    "connectivity_matrix",
+    "laplacian_matrix",
+    "face_matrix",
+    "mass_matrix",
+    "stiffness_matrix",
+    "equilibrium_matrix",
 ]
 
 
 def _return_matrix(M, rtype):
-    if rtype == 'list':
+    if rtype == "list":
         return M.toarray().tolist()
-    if rtype == 'array':
+    if rtype == "array":
         return M.toarray()
-    if rtype == 'csr':
+    if rtype == "csr":
         return M.tocsr()
-    if rtype == 'csc':
+    if rtype == "csc":
         return M.tocsc()
-    if rtype == 'coo':
+    if rtype == "coo":
         return M.tocoo()
     return M
 
@@ -43,7 +43,8 @@ def _return_matrix(M, rtype):
 # adjacency
 # ==============================================================================
 
-def adjacency_matrix(adjacency, rtype='array'):
+
+def adjacency_matrix(adjacency, rtype="array"):
     """Creates a vertex adjacency matrix.
 
     Parameters
@@ -65,7 +66,7 @@ def adjacency_matrix(adjacency, rtype='array'):
     return _return_matrix(A, rtype)
 
 
-def face_matrix(face_vertices, rtype='array', normalize=False):
+def face_matrix(face_vertices, rtype="array", normalize=False):
     """Creates a face-vertex adjacency matrix.
 
     Parameters
@@ -82,9 +83,17 @@ def face_matrix(face_vertices, rtype='array', normalize=False):
 
     """
     if normalize:
-        f = array([(i, j, 1.0 / len(vertices)) for i, vertices in enumerate(face_vertices) for j in vertices])
+        f = array(
+            [
+                (i, j, 1.0 / len(vertices))
+                for i, vertices in enumerate(face_vertices)
+                for j in vertices
+            ]
+        )
     else:
-        f = array([(i, j, 1.0) for i, vertices in enumerate(face_vertices) for j in vertices])
+        f = array(
+            [(i, j, 1.0) for i, vertices in enumerate(face_vertices) for j in vertices]
+        )
     F = coo_matrix((f[:, 2], (f[:, 0].astype(int), f[:, 1].astype(int))))
     return _return_matrix(F, rtype)
 
@@ -93,7 +102,8 @@ def face_matrix(face_vertices, rtype='array', normalize=False):
 # degree
 # ==============================================================================
 
-def degree_matrix(adjacency, rtype='array'):
+
+def degree_matrix(adjacency, rtype="array"):
     """Creates a matrix representing vertex degrees.
 
     Parameters
@@ -119,7 +129,8 @@ def degree_matrix(adjacency, rtype='array'):
 # connectivity
 # ==============================================================================
 
-def connectivity_matrix(edges, rtype='array'):
+
+def connectivity_matrix(edges, rtype="array"):
     r"""Creates a connectivity matrix from a list of vertex index pairs.
 
     Parameters
@@ -174,7 +185,7 @@ def connectivity_matrix(edges, rtype='array'):
 
 # change this to a procedural approach
 # constructing (fundamental) matrices should not involve matrix operations
-def laplacian_matrix(edges, normalize=False, rtype='array'):
+def laplacian_matrix(edges, normalize=False, rtype="array"):
     r"""Creates a laplacian matrix from a list of edge topologies.
 
     Parameters
@@ -208,7 +219,7 @@ def laplacian_matrix(edges, normalize=False, rtype='array'):
            [-1.,  0.,  0.,  1.]])
 
     """
-    C = connectivity_matrix(edges, rtype='csr')
+    C = connectivity_matrix(edges, rtype="csr")
     L = C.transpose().dot(C)
     if normalize:
         L = L / L.diagonal().reshape((-1, 1))
@@ -220,7 +231,8 @@ def laplacian_matrix(edges, normalize=False, rtype='array'):
 # structural
 # ==============================================================================
 
-def equilibrium_matrix(C, xyz, free, rtype='array'):
+
+def equilibrium_matrix(C, xyz, free, rtype="array"):
     r"""Construct the equilibrium matrix of a structural system.
 
     Parameters

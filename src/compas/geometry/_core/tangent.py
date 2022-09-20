@@ -5,7 +5,7 @@ from __future__ import division
 import math
 
 
-__all__ = ['tangent_points_to_circle_xy']
+__all__ = ["tangent_points_to_circle_xy"]
 
 
 def tangent_points_to_circle_xy(circle, point):
@@ -35,24 +35,25 @@ def tangent_points_to_circle_xy(circle, point):
     True
     """
     plane, R = circle
-    c_point, _ = plane
+    center, _ = plane
 
-    cx, cy = c_point[:2]
+    cx, cy = center[:2]
     px, py = point[:2]
 
     dx = px - cx
     dy = py - cy
 
-    D = math.sqrt(dx**2 + dy**2)
+    D = sqrt(dx**2 + dy**2)
     L2 = D**2 - R**2
 
     a = dx / D, dy / D
     b = -a[1], a[0]
 
     A = D - L2 / D
-    B = math.sqrt(R**2 - A**2)
+    B = sqrt(R**2 - A**2)
 
     t1 = cx + A * a[0] + B * b[0], cy + A * a[1] + B * b[1], 0
     t2 = cx + A * a[0] - B * b[0], cy + A * a[1] - B * b[1], 0
 
     return t1, t2
+    

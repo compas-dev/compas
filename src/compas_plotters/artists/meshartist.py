@@ -91,25 +91,27 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
     default_halfedgecolor = (0.7, 0.7, 0.7)
 
-    def __init__(self,
-                 mesh: Mesh,
-                 vertices: Optional[List[int]] = None,
-                 edges: Optional[List[int]] = None,
-                 faces: Optional[List[int]] = None,
-                 vertexcolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0.0, 0.0, 0.0),
-                 facecolor: Color = (0.9, 0.9, 0.9),
-                 edgewidth: float = 1.0,
-                 show_vertices: bool = True,
-                 show_edges: bool = True,
-                 show_faces: bool = True,
-                 vertexsize: int = 5,
-                 vertextext: Optional[Union[str, Dict[int, str]]] = None,
-                 edgetext: Optional[Union[str, Dict[Tuple[int, int], str]]] = None,
-                 facetext: Optional[Union[str, Dict[int, str]]] = None,
-                 sizepolicy: Literal['relative', 'absolute'] = 'relative',
-                 zorder: int = 1000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        mesh: Mesh,
+        vertices: Optional[List[int]] = None,
+        edges: Optional[List[int]] = None,
+        faces: Optional[List[int]] = None,
+        vertexcolor: Color = (1.0, 1.0, 1.0),
+        edgecolor: Color = (0.0, 0.0, 0.0),
+        facecolor: Color = (0.9, 0.9, 0.9),
+        edgewidth: float = 1.0,
+        show_vertices: bool = True,
+        show_edges: bool = True,
+        show_faces: bool = True,
+        vertexsize: int = 5,
+        vertextext: Optional[Union[str, Dict[int, str]]] = None,
+        edgetext: Optional[Union[str, Dict[Tuple[int, int], str]]] = None,
+        facetext: Optional[Union[str, Dict[int, str]]] = None,
+        sizepolicy: Literal["relative", "absolute"] = "relative",
+        zorder: int = 1000,
+        **kwargs: Any,
+    ):
 
         super().__init__(mesh=mesh, **kwargs)
 
@@ -135,7 +137,9 @@ class MeshArtist(PlotterArtist, MeshArtist):
     @property
     def halfedges(self):
         if not self._halfedges:
-            self._halfedges = [(u, v) for u in self.mesh.halfedge for v in self.mesh.halfedge[u]]
+            self._halfedges = [
+                (u, v) for u in self.mesh.halfedge for v in self.mesh.halfedge[u]
+            ]
         return self._halfedges
 
     @halfedges.setter
@@ -145,23 +149,39 @@ class MeshArtist(PlotterArtist, MeshArtist):
     @property
     def vertex_size(self):
         if not self._vertex_size:
-            factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.mesh.number_of_vertices()
+            factor = (
+                self.plotter.dpi
+                if self.sizepolicy == "absolute"
+                else self.mesh.number_of_vertices()
+            )
             size = self.default_vertexsize / factor
             self._vertex_size = {vertex: size for vertex in self.mesh.vertices()}
         return self._vertex_size
 
     @vertex_size.setter
     def vertex_size(self, vertexsize):
-        factor = self.plotter.dpi if self.sizepolicy == 'absolute' else self.mesh.number_of_vertices()
+        factor = (
+            self.plotter.dpi
+            if self.sizepolicy == "absolute"
+            else self.mesh.number_of_vertices()
+        )
         if isinstance(vertexsize, dict):
-            self.vertex_size.update({vertex: size / factor for vertex, size in vertexsize.items()})
+            self.vertex_size.update(
+                {vertex: size / factor for vertex, size in vertexsize.items()}
+            )
         elif isinstance(vertexsize, (int, float)):
-            self._vertex_size = {vertex: vertexsize / factor for vertex in self.mesh.vertices()}
+            self._vertex_size = {
+                vertex: vertexsize / factor for vertex in self.mesh.vertices()
+            }
 
     @property
     def halfedge_color(self):
         if self._halfedge_color is None:
-            self._halfedge_color = {(u, v): self.default_halfedgecolor for u in self.mesh.halfedge for v in self.mesh.halfedge[u]}
+            self._halfedge_color = {
+                (u, v): self.default_halfedgecolor
+                for u in self.mesh.halfedge
+                for v in self.mesh.halfedge[u]
+            }
         return self._halfedge_color
 
     @halfedge_color.setter
@@ -169,7 +189,11 @@ class MeshArtist(PlotterArtist, MeshArtist):
         if isinstance(halfedge_color, dict):
             self._halfedge_color = halfedge_color
         elif is_color_rgb(halfedge_color):
-            self._halfedge_color = {(u, v): halfedge_color for u in self.mesh.halfedge for v in self.mesh.halfedge[u]}
+            self._halfedge_color = {
+                (u, v): halfedge_color
+                for u in self.mesh.halfedge
+                for v in self.mesh.halfedge[u]
+            }
 
     @property
     def zorder_faces(self):
@@ -194,7 +218,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
     @property
     def data(self) -> List[List[float]]:
-        return self.mesh.vertices_attributes('xy')
+        return self.mesh.vertices_attributes("xy")
 
     # ==============================================================================
     # clear and draw
@@ -252,14 +276,15 @@ class MeshArtist(PlotterArtist, MeshArtist):
             self._facecollection.remove()
         self._facecollection = None
 
-    def draw(self,
-             vertices: Optional[List[int]] = None,
-             edges: Optional[List[Tuple[int, int]]] = None,
-             faces: Optional[List[int]] = None,
-             vertexcolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
-             edgecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
-             facecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
-             ) -> None:
+    def draw(
+        self,
+        vertices: Optional[List[int]] = None,
+        edges: Optional[List[Tuple[int, int]]] = None,
+        faces: Optional[List[int]] = None,
+        vertexcolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+        edgecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+        facecolor: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+    ) -> None:
         """Draw the mesh.
 
         Parameters
@@ -296,10 +321,11 @@ class MeshArtist(PlotterArtist, MeshArtist):
     def draw_mesh(self):
         raise NotImplementedError
 
-    def draw_vertices(self,
-                      vertices: Optional[List[int]] = None,
-                      color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
-                      ) -> None:
+    def draw_vertices(
+        self,
+        vertices: Optional[List[int]] = None,
+        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+    ) -> None:
         """Draw a selection of vertices.
 
         Parameters
@@ -339,15 +365,16 @@ class MeshArtist(PlotterArtist, MeshArtist):
             match_original=True,
             zorder=self.zorder_vertices,
             alpha=1.0,
-            picker=5
+            picker=5,
         )
         self.plotter.axes.add_collection(collection)
         self._vertexcollection = collection
 
-    def draw_edges(self,
-                   edges: Optional[List[Tuple[int, int]]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
-                   ) -> None:
+    def draw_edges(
+        self,
+        edges: Optional[List[Tuple[int, int]]] = None,
+        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+    ) -> None:
         """Draw a selection of edges.
 
         Parameters
@@ -375,27 +402,36 @@ class MeshArtist(PlotterArtist, MeshArtist):
         for edge in self.edges:
             u, v = edge
             lines.append([self.vertex_xyz[edge[0]][:2], self.vertex_xyz[edge[1]][:2]])
-            colors.append(self.edge_color.get(edge, self.edge_color.get((v, u), self.default_edgecolor)))
-            widths.append(self.edge_width.get(edge, self.edge_width.get((v, u), self.default_edgewidth)))
+            colors.append(
+                self.edge_color.get(
+                    edge, self.edge_color.get((v, u), self.default_edgecolor)
+                )
+            )
+            widths.append(
+                self.edge_width.get(
+                    edge, self.edge_width.get((v, u), self.default_edgewidth)
+                )
+            )
 
         collection = LineCollection(
             lines,
             linewidths=widths,
             colors=colors,
-            linestyle='solid',
+            linestyle="solid",
             alpha=1.0,
-            zorder=self.zorder_edges
+            zorder=self.zorder_edges,
         )
         self.plotter.axes.add_collection(collection)
         self._edgecollection = collection
 
-    def draw_halfedges(self,
-                       halfedges: Optional[List[Tuple[int, int]]] = None,
-                       color: Union[str, Color, List[Color], Dict[int, Color]] = (0.7, 0.7, 0.7),
-                       distance: float = 0.05,
-                       width: float = 0.01,
-                       shrink: float = 0.8,
-                       ) -> None:
+    def draw_halfedges(
+        self,
+        halfedges: Optional[List[Tuple[int, int]]] = None,
+        color: Union[str, Color, List[Color], Dict[int, Color]] = (0.7, 0.7, 0.7),
+        distance: float = 0.05,
+        width: float = 0.01,
+        shrink: float = 0.8,
+    ) -> None:
         """Draw a selection of halfedges.
 
         Parameters
@@ -429,28 +465,31 @@ class MeshArtist(PlotterArtist, MeshArtist):
                 normal = self.mesh.face_normal(face)
 
             a, b = self.mesh.edge_coordinates(u, v)
-            line = Line(* offset_line((a, b), distance, normal))
+            line = Line(*offset_line((a, b), distance, normal))
             frame = Frame(line.midpoint, [1, 0, 0], [0, 1, 0])
             scale = Scale.from_factors([shrink, shrink, shrink], frame=frame)
             line.transform(scale)
 
             artist = self.plotter.axes.arrow(
-                line.start[0], line.start[1],
-                line.vector[0], line.vector[1],
+                line.start[0],
+                line.start[1],
+                line.vector[0],
+                line.vector[1],
                 width=width,
                 head_width=10 * width,
                 head_length=10 * width,
                 length_includes_head=True,
-                shape='right',
+                shape="right",
                 color=self.halfedge_color.get((u, v), self.default_halfedgecolor),
-                zorder=10000
+                zorder=10000,
             )
             self._halfedgecollection.append(artist)
 
-    def draw_faces(self,
-                   faces: Optional[List[int]] = None,
-                   color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None
-                   ) -> None:
+    def draw_faces(
+        self,
+        faces: Optional[List[int]] = None,
+        color: Optional[Union[str, Color, List[Color], Dict[int, Color]]] = None,
+    ) -> None:
         """Draw a selection of faces.
 
         Parameters
@@ -477,7 +516,9 @@ class MeshArtist(PlotterArtist, MeshArtist):
         edgecolors = []
         linewidths = []
         for face in self.faces:
-            data = [self.vertex_xyz[vertex][:2] for vertex in self.mesh.face_vertices(face)]
+            data = [
+                self.vertex_xyz[vertex][:2] for vertex in self.mesh.face_vertices(face)
+            ]
             polygons.append(PolygonPatch(data))
             facecolors.append(self.face_color.get(face, self.default_facecolor))
             edgecolors.append((0, 0, 0))
@@ -489,8 +530,8 @@ class MeshArtist(PlotterArtist, MeshArtist):
             edgecolors=edgecolors,
             lw=linewidths,
             alpha=1.0,
-            linestyle='solid',
-            zorder=self.zorder_faces
+            linestyle="solid",
+            zorder=self.zorder_faces,
         )
         self.plotter.axes.add_collection(collection)
         self._facecollection = collection
@@ -526,13 +567,15 @@ class MeshArtist(PlotterArtist, MeshArtist):
 
             x, y = self.vertex_xyz[vertex][:2]
             artist = self.plotter.axes.text(
-                x, y,
-                f'{text}',
+                x,
+                y,
+                f"{text}",
                 fontsize=self.plotter.fontsize,
-                family='monospace',
-                ha='center', va='center',
+                family="monospace",
+                ha="center",
+                va="center",
                 zorder=10000,
-                color=color
+                color=color,
             )
             labels.append(artist)
 
@@ -571,13 +614,21 @@ class MeshArtist(PlotterArtist, MeshArtist):
             y = 0.5 * (y0 + y1)
 
             artist = self.plotter.axes.text(
-                x, y, f'{text}',
+                x,
+                y,
+                f"{text}",
                 fontsize=self.plotter.fontsize,
-                family='monospace',
-                ha='center', va='center',
+                family="monospace",
+                ha="center",
+                va="center",
                 zorder=10000,
                 color=(0, 0, 0),
-                bbox=dict(boxstyle='round, pad=0.3', facecolor=(1, 1, 1), edgecolor=None, linewidth=0)
+                bbox=dict(
+                    boxstyle="round, pad=0.3",
+                    facecolor=(1, 1, 1),
+                    edgecolor=None,
+                    linewidth=0,
+                ),
             )
             labels.append(artist)
 
@@ -609,16 +660,26 @@ class MeshArtist(PlotterArtist, MeshArtist):
             if text is None:
                 continue
 
-            x, y, _ = centroid_points_xy([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])
+            x, y, _ = centroid_points_xy(
+                [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
+            )
 
             artist = self.plotter.axes.text(
-                x, y, f'{text}',
+                x,
+                y,
+                f"{text}",
                 fontsize=self.plotter.fontsize,
-                family='monospace',
-                ha='center', va='center',
+                family="monospace",
+                ha="center",
+                va="center",
                 zorder=10000,
                 color=(0, 0, 0),
-                bbox=dict(boxstyle='circle, pad=0.5', facecolor=(1, 1, 1), edgecolor=(0.5, 0.5, 0.5), linestyle=':')
+                bbox=dict(
+                    boxstyle="circle, pad=0.5",
+                    facecolor=(1, 1, 1),
+                    edgecolor=(0.5, 0.5, 0.5),
+                    linestyle=":",
+                ),
             )
             labels.append(artist)
 

@@ -21,9 +21,7 @@ class MeshArtist(GHArtist, MeshArtist):
 
     """
 
-    def __init__(self,
-                 mesh,
-                 **kwargs):
+    def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__(mesh=mesh, **kwargs)
 
     def draw(self, color=None):
@@ -89,11 +87,13 @@ class MeshArtist(GHArtist, MeshArtist):
         vertex_xyz = self.vertex_xyz
         points = []
         for vertex in vertices:
-            points.append({
-                'pos': vertex_xyz[vertex],
-                'name': "{}.vertex.{}".format(self.mesh.name, vertex),
-                'color': self.vertex_color[vertex].rgb255
-            })
+            points.append(
+                {
+                    "pos": vertex_xyz[vertex],
+                    "name": "{}.vertex.{}".format(self.mesh.name, vertex),
+                    "color": self.vertex_color[vertex].rgb255,
+                }
+            )
         return compas_ghpython.draw_points(points)
 
     def draw_faces(self, faces=None, color=None, join_faces=False):
@@ -120,11 +120,15 @@ class MeshArtist(GHArtist, MeshArtist):
         vertex_xyz = self.vertex_xyz
         facets = []
         for face in faces:
-            facets.append({
-                'points': [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
-                'name': "{}.face.{}".format(self.mesh.name, face),
-                'color': self.face_color[face].rgb255
-            })
+            facets.append(
+                {
+                    "points": [
+                        vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)
+                    ],
+                    "name": "{}.face.{}".format(self.mesh.name, face),
+                    "color": self.face_color[face].rgb255,
+                }
+            )
         meshes = compas_ghpython.draw_faces(facets)
         if not join_faces:
             return meshes
@@ -156,12 +160,14 @@ class MeshArtist(GHArtist, MeshArtist):
         lines = []
         for edge in edges:
             u, v = edge
-            lines.append({
-                'start': vertex_xyz[u],
-                'end': vertex_xyz[v],
-                'color': self.edge_color[edge].rgb255,
-                'name': "{}.edge.{}-{}".format(self.mesh.name, u, v)
-            })
+            lines.append(
+                {
+                    "start": vertex_xyz[u],
+                    "end": vertex_xyz[v],
+                    "color": self.edge_color[edge].rgb255,
+                    "name": "{}.edge.{}-{}".format(self.mesh.name, u, v),
+                }
+            )
         return compas_ghpython.draw_lines(lines)
 
     def clear_edges(self):

@@ -15,14 +15,10 @@ from compas.numerical.linalg import normalizerow
 from compas.numerical.linalg import rot90
 
 
-__all__ = [
-    'grad',
-    'div',
-    'curl'
-]
+__all__ = ["grad", "div", "curl"]
 
 
-def grad(V, F, rtype='array'):
+def grad(V, F, rtype="array"):
     """Construct the gradient operator of a trianglular mesh.
 
     Parameters
@@ -59,25 +55,29 @@ def grad(V, F, rtype='array'):
     u = normalizerow(n)  # Unit normals for each face
     v01_ = divide(rot90(v01, u), A2)  # Vector perpendicular to v01, normalized by A2
     v20_ = divide(rot90(v20, u), A2)  # Vector perpendicular to v20, normalized by A2
-    i = hstack((  # Nonzero rows
-        0 * f + tile(arange(f), (1, 4)),
-        1 * f + tile(arange(f), (1, 4)),
-        2 * f + tile(arange(f), (1, 4))
-    )).flatten()
+    i = hstack(
+        (  # Nonzero rows
+            0 * f + tile(arange(f), (1, 4)),
+            1 * f + tile(arange(f), (1, 4)),
+            2 * f + tile(arange(f), (1, 4)),
+        )
+    ).flatten()
     j = tile(hstack((f1, f0, f2, f0)), (1, 3)).flatten()  # Nonzero columns
-    data = hstack((
-        hstack((v20_[:, 0], - v20_[:, 0], v01_[:, 0], - v01_[:, 0])),
-        hstack((v20_[:, 1], - v20_[:, 1], v01_[:, 1], - v01_[:, 1])),
-        hstack((v20_[:, 2], - v20_[:, 2], v01_[:, 2], - v01_[:, 2])),
-    )).flatten()
+    data = hstack(
+        (
+            hstack((v20_[:, 0], -v20_[:, 0], v01_[:, 0], -v01_[:, 0])),
+            hstack((v20_[:, 1], -v20_[:, 1], v01_[:, 1], -v01_[:, 1])),
+            hstack((v20_[:, 2], -v20_[:, 2], v01_[:, 2], -v01_[:, 2])),
+        )
+    ).flatten()
     G = coo_matrix((data, (i, j)), shape=(3 * f, v))
-    if rtype == 'array':
+    if rtype == "array":
         return G.toarray()
-    elif rtype == 'csr':
+    elif rtype == "csr":
         return G.tocsr()
-    elif rtype == 'csc':
+    elif rtype == "csc":
         return G.tocsc()
-    elif rtype == 'coo':
+    elif rtype == "coo":
         return G
     else:
         return G

@@ -6,13 +6,13 @@ from compas.plugins import pluggable
 
 
 __all__ = [
-    'trimesh_remesh',
-    'trimesh_remesh_constrained',
-    'trimesh_remesh_along_isoline',
+    "trimesh_remesh",
+    "trimesh_remesh_constrained",
+    "trimesh_remesh_along_isoline",
 ]
 
 
-@pluggable(category='trimesh')
+@pluggable(category="trimesh")
 def trimesh_remesh(mesh, target_edge_length, number_of_iterations=10, do_project=True):
     """Remeshing of a triangle mesh.
 
@@ -43,8 +43,10 @@ def trimesh_remesh(mesh, target_edge_length, number_of_iterations=10, do_project
     raise NotImplementedError
 
 
-@pluggable(category='trimesh')
-def trimesh_remesh_constrained(mesh, target_edge_length, protected_edges, number_of_iterations=10, do_project=True):
+@pluggable(category="trimesh")
+def trimesh_remesh_constrained(
+    mesh, target_edge_length, protected_edges, number_of_iterations=10, do_project=True
+):
     """Constrained remeshing of a triangle mesh.
 
     Parameters
@@ -71,7 +73,7 @@ def trimesh_remesh_constrained(mesh, target_edge_length, protected_edges, number
     raise NotImplementedError
 
 
-@pluggable(category='trimesh')
+@pluggable(category="trimesh")
 def trimesh_remesh_along_isoline(mesh, scalarfield, scalar):
     """Remesh a mesh along an isoline of a scalarfield over the vertices.
 

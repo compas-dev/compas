@@ -6,9 +6,9 @@ from compas.topology import breadth_first_traverse
 
 
 __all__ = [
-    'mesh_face_adjacency',
-    'mesh_unify_cycles',
-    'mesh_flip_cycles',
+    "mesh_face_adjacency",
+    "mesh_unify_cycles",
+    "mesh_flip_cycles",
 ]
 
 
@@ -177,6 +177,7 @@ def mesh_unify_cycles(mesh, root=None):
         If no all faces are included in the unnification process.
 
     """
+
     def unify(node, nbr):
         # find the common edge
         for u, v in mesh.face_halfedges(nbr):
@@ -198,7 +199,7 @@ def mesh_unify_cycles(mesh, root=None):
 
     visited = breadth_first_traverse(adj, root, unify)
 
-    assert len(list(visited)) == mesh.number_of_faces(), 'Not all faces were visited'
+    assert len(list(visited)) == mesh.number_of_faces(), "Not all faces were visited"
 
     mesh.halfedge = {key: {} for key in mesh.vertices()}
     for fkey in mesh.faces():

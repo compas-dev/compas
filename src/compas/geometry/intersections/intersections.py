@@ -26,27 +26,26 @@ from compas.geometry import is_point_in_triangle
 
 
 __all__ = [
-    'intersection_line_line',
-    'intersection_segment_segment',
-    'intersection_line_segment',
-    'intersection_line_plane',
-    'intersection_polyline_plane',
-    'intersection_line_triangle',
-    'intersection_segment_plane',
-    'intersection_plane_circle',
-    'intersection_plane_plane',
-    'intersection_plane_plane_plane',
-    'intersection_sphere_line',
-    'intersection_sphere_sphere',
-    'intersection_segment_polyline',
-
-    'intersection_line_line_xy',
-    'intersection_segment_segment_xy',
-    'intersection_line_segment_xy',
-    'intersection_line_box_xy',
-    'intersection_circle_circle_xy',
-    'intersection_ellipse_line_xy',
-    'intersection_segment_polyline_xy'
+    "intersection_line_line",
+    "intersection_segment_segment",
+    "intersection_line_segment",
+    "intersection_line_plane",
+    "intersection_polyline_plane",
+    "intersection_line_triangle",
+    "intersection_segment_plane",
+    "intersection_plane_circle",
+    "intersection_plane_plane",
+    "intersection_plane_plane_plane",
+    "intersection_sphere_line",
+    "intersection_sphere_sphere",
+    "intersection_segment_polyline",
+    "intersection_line_line_xy",
+    "intersection_segment_segment_xy",
+    "intersection_line_segment_xy",
+    "intersection_line_box_xy",
+    "intersection_circle_circle_xy",
+    "intersection_ellipse_line_xy",
+    "intersection_segment_polyline_xy",
 ]
 
 
@@ -257,7 +256,7 @@ def intersection_line_plane(line, plane, tol=1e-6):
     # 2) ratio < 0.0: the intersection is on the other side of a
     # 3) ratio > 1.0: the intersection is on the other side of b
     oa = subtract_vectors(a, o)
-    ratio = - dot_vectors(n, oa) / cosa
+    ratio = -dot_vectors(n, oa) / cosa
     ab = scale_vector(ab, ratio)
     return add_vectors(a, ab)
 
@@ -299,7 +298,7 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
     # 2) ratio < 0.0: the intersection is on the other side of a
     # 3) ratio > 1.0: the intersection is on the other side of b
     oa = subtract_vectors(a, o)
-    ratio = - dot_vectors(n, oa) / cosa
+    ratio = -dot_vectors(n, oa) / cosa
 
     if 0.0 <= ratio and ratio <= 1.0:
         ab = scale_vector(ab, ratio)
@@ -308,7 +307,9 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
     return None
 
 
-def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=None, tol=1e-6):
+def intersection_polyline_plane(
+    polyline, plane, expected_number_of_intersections=None, tol=1e-6
+):
     """Calculate the intersection point of a plane with a polyline. Reduce expected_number_of_intersections to speed up.
 
     Parameters
@@ -514,7 +515,7 @@ def intersection_sphere_sphere(sphere1, sphere2):
     # Case 2: point intersection
     elif radius1 + radius2 == distance:
         ipt = subtract_vectors(center2, center1)
-        ipt = scale_vector(ipt, radius1/distance)
+        ipt = scale_vector(ipt, radius1 / distance)
         ipt = add_vectors(center1, ipt)
         return "point", ipt
 
@@ -522,21 +523,21 @@ def intersection_sphere_sphere(sphere1, sphere2):
     elif distance + min(radius1, radius2) == max(radius1, radius2):
         if radius1 > radius2:
             ipt = subtract_vectors(center2, center1)
-            ipt = scale_vector(ipt, radius1/distance)
+            ipt = scale_vector(ipt, radius1 / distance)
             ipt = add_vectors(center1, ipt)
         else:
             ipt = subtract_vectors(center1, center2)
-            ipt = scale_vector(ipt, radius2/distance)
+            ipt = scale_vector(ipt, radius2 / distance)
             ipt = add_vectors(center2, ipt)
         return "point", ipt
 
     # Case 1: circle intersection
-    h = 0.5 + (radius1**2 - radius2**2)/(2 * distance**2)
+    h = 0.5 + (radius1**2 - radius2**2) / (2 * distance**2)
     ci = subtract_vectors(center2, center1)
     ci = scale_vector(ci, h)
     ci = add_vectors(center1, ci)
     ri = sqrt(radius1**2 - h**2 * distance**2)
-    normal = scale_vector(subtract_vectors(center2, center1), 1/distance)
+    normal = scale_vector(subtract_vectors(center2, center1), 1 / distance)
     return "circle", (ci, ri, normal)
 
 
@@ -624,12 +625,23 @@ def intersection_sphere_line(sphere, line):
     l1, l2 = line
     sp, radius = sphere
 
-    a = (l2[0] - l1[0])**2 + (l2[1] - l1[1])**2 + (l2[2] - l1[2])**2
-    b = 2.0 * ((l2[0] - l1[0]) * (l1[0] - sp[0]) +
-               (l2[1] - l1[1]) * (l1[1] - sp[1]) +
-               (l2[2] - l1[2]) * (l1[2] - sp[2]))
+    a = (l2[0] - l1[0]) ** 2 + (l2[1] - l1[1]) ** 2 + (l2[2] - l1[2]) ** 2
+    b = 2.0 * (
+        (l2[0] - l1[0]) * (l1[0] - sp[0])
+        + (l2[1] - l1[1]) * (l1[1] - sp[1])
+        + (l2[2] - l1[2]) * (l1[2] - sp[2])
+    )
 
-    c = sp[0]**2 + sp[1]**2 + sp[2]**2 + l1[0]**2 + l1[1]**2 + l1[2]**2 - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2]) - radius**2
+    c = (
+        sp[0] ** 2
+        + sp[1] ** 2
+        + sp[2] ** 2
+        + l1[0] ** 2
+        + l1[1] ** 2
+        + l1[2] ** 2
+        - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2])
+        - radius**2
+    )
 
     i = b * b - 4.0 * a * c
 
@@ -637,15 +649,27 @@ def intersection_sphere_line(sphere, line):
         return None
     elif i == 0.0:  # case 2: one intersection
         mu = -b / (2.0 * a)
-        ipt = (l1[0] + mu * (l2[0] - l1[0]), l1[1] + mu * (l2[1] - l1[1]), l1[2] + mu * (l2[2] - l1[2]))
+        ipt = (
+            l1[0] + mu * (l2[0] - l1[0]),
+            l1[1] + mu * (l2[1] - l1[1]),
+            l1[2] + mu * (l2[2] - l1[2]),
+        )
         return ipt
     elif i > 0.0:  # case 1: two intersections
         # 1.
         mu = (-b + sqrt(i)) / (2.0 * a)
-        ipt1 = (l1[0] + mu * (l2[0] - l1[0]), l1[1] + mu * (l2[1] - l1[1]), l1[2] + mu * (l2[2] - l1[2]))
+        ipt1 = (
+            l1[0] + mu * (l2[0] - l1[0]),
+            l1[1] + mu * (l2[1] - l1[1]),
+            l1[2] + mu * (l2[2] - l1[2]),
+        )
         # 2.
         mu = (-b - sqrt(i)) / (2.0 * a)
-        ipt2 = (l1[0] + mu * (l2[0] - l1[0]), l1[1] + mu * (l2[1] - l1[1]), l1[2] + mu * (l2[2] - l1[2]))
+        ipt2 = (
+            l1[0] + mu * (l2[0] - l1[0]),
+            l1[1] + mu * (l2[1] - l1[1]),
+            l1[2] + mu * (l2[2] - l1[2]),
+        )
         return ipt1, ipt2
 
 
@@ -730,8 +754,8 @@ def intersection_line_line_xy(l1, l2, tol=1e-6):
     if fabs(d) <= tol:
         return None
 
-    a = (x1 * y2 - y1 * x2)
-    b = (x3 * y4 - y3 * x4)
+    a = x1 * y2 - y1 * x2
+    b = x3 * y4 - y3 * x4
     x = (a * (x3 - x4) - (x1 - x2) * b) / d
     y = (a * (y3 - y4) - (y1 - y2) * b) / d
 
@@ -992,19 +1016,19 @@ def intersection_ellipse_line_xy(ellipse, line):
 
     a, b = ellipse
 
-    A = (x2 - x1)**2/a**2 + (y2 - y1)**2/b**2
-    B = 2*x1*(x2 - x1)/a**2 + 2*y1*(y2 - y1)/b**2
-    C = x1**2/a**2 + y1**2/b**2 - 1
+    A = (x2 - x1) ** 2 / a**2 + (y2 - y1) ** 2 / b**2
+    B = 2 * x1 * (x2 - x1) / a**2 + 2 * y1 * (y2 - y1) / b**2
+    C = x1**2 / a**2 + y1**2 / b**2 - 1
 
-    discriminant = B**2 - 4*A*C
+    discriminant = B**2 - 4 * A * C
     if discriminant == 0:
-        t = -B/(2*A)
-        return (x1 + (x2 - x1)*t, y1 + (y2 - y1)*t, 0.0)
+        t = -B / (2 * A)
+        return (x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, 0.0)
     elif discriminant > 0:
-        t1 = (-B + sqrt(discriminant))/(2*A)
-        t2 = (-B - sqrt(discriminant))/(2*A)
-        p1 = (x1 + (x2 - x1)*t1, y1 + (y2 - y1)*t1, 0.0)
-        p2 = (x1 + (x2 - x1)*t2, y1 + (y2 - y1)*t2, 0.0)
+        t1 = (-B + sqrt(discriminant)) / (2 * A)
+        t2 = (-B - sqrt(discriminant)) / (2 * A)
+        p1 = (x1 + (x2 - x1) * t1, y1 + (y2 - y1) * t1, 0.0)
+        p2 = (x1 + (x2 - x1) * t2, y1 + (y2 - y1) * t2, 0.0)
         return p1, p2
     else:
         return None

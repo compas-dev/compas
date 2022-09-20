@@ -32,39 +32,48 @@ import decimal
 from distutils.version import LooseVersion
 
 import compas._os
-from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender, is_grasshopper  # noqa: F401
+from compas._os import (
+    is_windows,
+    is_linux,
+    is_osx,
+    is_mono,
+    is_ironpython,
+    is_rhino,
+    is_blender,
+    is_grasshopper,
+)
 from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
-__author__ = 'Tom Van Mele and many others (see AUTHORS.md)'
-__copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
-__license__ = 'MIT License'
-__email__ = 'vanmelet@ethz.ch'
+__author__ = "Tom Van Mele and many others (see AUTHORS.md)"
+__copyright__ = "Copyright 2014-2019 - Block Research Group, ETH Zurich"
+__license__ = "MIT License"
+__email__ = "vanmelet@ethz.ch"
 
-__version__ = '1.16.0'
+__version__ = "1.16.0"
 
 version = LooseVersion(compas.__version__)
-versionstring = version.vstring.split('-')[0]
+versionstring = version.vstring.split("-")[0]
 
 HERE = compas._os.realpath(os.path.dirname(__file__))
 """str: Path to the location of the compas package."""
 
-HOME = compas._os.absjoin(HERE, '../..')
+HOME = compas._os.absjoin(HERE, "../..")
 """str: Path to the root of the local installation."""
 
-DATA = compas._os.absjoin(HERE, 'data', 'samples')
+DATA = compas._os.absjoin(HERE, "data", "samples")
 """str: Path to the data folder of the local installation."""
 
-TEMP = compas._os.absjoin(HERE, '../../temp')
+TEMP = compas._os.absjoin(HERE, "../../temp")
 """str: Path to the temp folder of the local installation."""
 
-APPDATA = compas._os.user_data_dir('COMPAS', 'compas-dev', roaming=True)
+APPDATA = compas._os.user_data_dir("COMPAS", "compas-dev", roaming=True)
 """str: Path to the COMPAS directory in APPDATA."""
 
-APPTEMP = compas._os.absjoin(APPDATA, 'temp')
+APPTEMP = compas._os.absjoin(APPDATA, "temp")
 """str: Path to a temp folder in the COMPAS directory in APPDATA."""
 
-PRECISION = '3f'
+PRECISION = "3f"
 """str:
 The precision used by COMPAS for generation of geometric keys,
 for the comparison of point locations,
@@ -107,31 +116,49 @@ BLENDER = is_blender()
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
 try:
-    git_head_file = compas._os.absjoin(HOME, '.git', 'HEAD')
+    git_head_file = compas._os.absjoin(HOME, ".git", "HEAD")
 
     if os.path.exists(git_head_file):
         # git head file contains one line that looks like this:
         # ref: refs/heads/main
-        with open(git_head_file, 'r') as git_head:
-            _, ref_path = git_head.read().strip().split(' ')
-            ref_path = ref_path.split('/')
+        with open(git_head_file, "r") as git_head:
+            _, ref_path = git_head.read().strip().split(" ")
+            ref_path = ref_path.split("/")
 
-            git_head_refs_file = compas._os.absjoin(HOME, '.git', *ref_path)
+            git_head_refs_file = compas._os.absjoin(HOME, ".git", *ref_path)
 
         if os.path.exists(git_head_refs_file):
-            with open(git_head_refs_file, 'r') as git_head_ref:
+            with open(git_head_refs_file, "r") as git_head_ref:
                 git_commit = git_head_ref.read().strip()
-                __version__ += '-' + git_commit[:8]
+                __version__ += "-" + git_commit[:8]
 except Exception:
     pass
 
 
 __all__ = [
-    'WINDOWS', 'LINUX', 'OSX', 'MONO', 'IPY', 'RHINO', 'BLENDER', 'PY2', 'PY3',
-    'is_windows', 'is_linux', 'is_osx', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
-    'set_precision',
-    'get',
-    'json_dump', 'json_load', 'json_dumps', 'json_loads',
+    "WINDOWS",
+    "LINUX",
+    "OSX",
+    "MONO",
+    "IPY",
+    "RHINO",
+    "BLENDER",
+    "PY2",
+    "PY3",
+    "is_windows",
+    "is_linux",
+    "is_osx",
+    "is_mono",
+    "is_ironpython",
+    "is_rhino",
+    "is_blender",
+    "is_grasshopper",
+    "set_precision",
+    "get",
+    "json_dump",
+    "json_load",
+    "json_dumps",
+    "json_loads",
 ]
 
 
@@ -160,13 +187,14 @@ def set_precision(precision):
     precision = str(precision)
     d = decimal.Decimal(precision).as_tuple()
     if d.exponent < 0:
-        e = - d.exponent
+        e = -d.exponent
         PRECISION = "{}f".format(e)
 
 
 # ==============================================================================
 # data
 # ==============================================================================
+
 
 def get(filename):
     """Get the full path to one of the sample data files.
@@ -202,9 +230,9 @@ def get(filename):
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     """
-    filename = filename.strip('/')
+    filename = filename.strip("/")
 
-    if filename.endswith('bunny.ply'):
+    if filename.endswith("bunny.ply"):
         return get_bunny()
 
     localpath = compas._os.absjoin(DATA, filename)
@@ -212,7 +240,9 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/compas-dev/compas/main/src/compas/data/samples/{}".format(filename)
+        return "https://raw.githubusercontent.com/compas-dev/compas/main/src/compas/data/samples/{}".format(
+            filename
+        )
 
 
 def get_bunny(localstorage=None):
@@ -258,19 +288,23 @@ def get_bunny(localstorage=None):
         os.makedirs(localstorage)
 
     if not os.path.isdir(localstorage):
-        raise Exception('Local storage location does not exist: {}'.format(localstorage))
+        raise Exception(
+            "Local storage location does not exist: {}".format(localstorage)
+        )
 
     if not os.access(localstorage, os.W_OK):
-        raise Exception('Local storage location is not writable: {}'.format(localstorage))
+        raise Exception(
+            "Local storage location is not writable: {}".format(localstorage)
+        )
 
-    bunny = compas._os.absjoin(localstorage, 'bunny/reconstruction/bun_zipper.ply')
-    destination = compas._os.absjoin(localstorage, 'bunny.tar.gz')
+    bunny = compas._os.absjoin(localstorage, "bunny/reconstruction/bun_zipper.ply")
+    destination = compas._os.absjoin(localstorage, "bunny.tar.gz")
 
     if not os.path.exists(bunny):
-        url = 'http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz'
+        url = "http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz"
 
-        print('Getting the bunny from {} ...'.format(url))
-        print('This will take a few seconds...')
+        print("Getting the bunny from {} ...".format(url))
+        print("This will take a few seconds...")
 
         urlretrieve(url, destination)
 
@@ -279,6 +313,6 @@ def get_bunny(localstorage=None):
 
         os.remove(destination)
 
-        print('Got it!\n')
+        print("Got it!\n")
 
     return bunny

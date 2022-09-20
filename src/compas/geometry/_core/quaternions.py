@@ -53,12 +53,12 @@ from compas.geometry._core import allclose
 
 
 __all__ = [
-    'quaternion_norm',
-    'quaternion_unitize',
-    'quaternion_is_unit',
-    'quaternion_multiply',
-    'quaternion_canonize',
-    'quaternion_conjugate',
+    "quaternion_norm",
+    "quaternion_unitize",
+    "quaternion_is_unit",
+    "quaternion_multiply",
+    "quaternion_canonize",
+    "quaternion_conjugate",
 ]
 
 ATOL = 1e-6  # absolute tolerance
@@ -154,10 +154,10 @@ def quaternion_multiply(r, q):
     """
     rw, rx, ry, rz = r
     qw, qx, qy, qz = q
-    pw = rw*qw - rx*qx - ry*qy - rz*qz
-    px = rw*qx + rx*qw + ry*qz - rz*qy
-    py = rw*qy - rx*qz + ry*qw + rz*qx
-    pz = rw*qz + rx*qy - ry*qx + rz*qw
+    pw = rw * qw - rx * qx - ry * qy - rz * qz
+    px = rw * qx + rx * qw + ry * qz - rz * qy
+    py = rw * qy - rx * qz + ry * qw + rz * qx
+    pz = rw * qz + rx * qy - ry * qx + rz * qw
     return [pw, px, py, pz]
 
 

@@ -22,17 +22,17 @@ from compas.numerical import face_matrix
 
 
 __all__ = [
-    'mesh_adjacency_matrix',
-    'mesh_connectivity_matrix',
-    'mesh_degree_matrix',
-    'mesh_face_matrix',
-    'mesh_laplacian_matrix',
-    'trimesh_cotangent_laplacian_matrix',
-    'trimesh_vertexarea_matrix'
+    "mesh_adjacency_matrix",
+    "mesh_connectivity_matrix",
+    "mesh_degree_matrix",
+    "mesh_face_matrix",
+    "mesh_laplacian_matrix",
+    "trimesh_cotangent_laplacian_matrix",
+    "trimesh_vertexarea_matrix",
 ]
 
 
-def mesh_adjacency_matrix(mesh, rtype='array'):
+def mesh_adjacency_matrix(mesh, rtype="array"):
     """Creates a vertex adjacency matrix from a Mesh datastructure.
 
     Parameters
@@ -59,11 +59,14 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
 
     """
     key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
+    adjacency = [
+        [key_index[nbr] for nbr in mesh.vertex_neighbors(key)]
+        for key in mesh.vertices()
+    ]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
-def mesh_connectivity_matrix(mesh, rtype='array'):
+def mesh_connectivity_matrix(mesh, rtype="array"):
     """Creates a connectivity matrix from a Mesh datastructure.
 
     Parameters
@@ -98,7 +101,7 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
     return connectivity_matrix(edges, rtype=rtype)
 
 
-def mesh_degree_matrix(mesh, rtype='array'):
+def mesh_degree_matrix(mesh, rtype="array"):
     """Creates a vertex degree matrix from a Mesh datastructure.
 
     Parameters
@@ -129,11 +132,14 @@ def mesh_degree_matrix(mesh, rtype='array'):
 
     """
     key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
+    adjacency = [
+        [key_index[nbr] for nbr in mesh.vertex_neighbors(key)]
+        for key in mesh.vertices()
+    ]
     return degree_matrix(adjacency, rtype=rtype)
 
 
-def mesh_face_matrix(mesh, rtype='array'):
+def mesh_face_matrix(mesh, rtype="array"):
     r"""Construct the face matrix from a Mesh datastructure.
 
     Parameters
@@ -186,11 +192,13 @@ def mesh_face_matrix(mesh, rtype='array'):
 
     """
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
-    face_vertices = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    face_vertices = [
+        [key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()
+    ]
     return face_matrix(face_vertices, rtype=rtype)
 
 
-def mesh_laplacian_matrix(mesh, rtype='csr'):
+def mesh_laplacian_matrix(mesh, rtype="csr"):
     r"""Construct a Laplacian matrix with uniform weights from a mesh data structure.
 
     Parameters
@@ -264,13 +272,13 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     L = coo_matrix((data, (rows, cols)))
 
-    if rtype == 'csr':
+    if rtype == "csr":
         return L.tocsr()
-    if rtype == 'csc':
+    if rtype == "csc":
         return L.tocsc()
-    if rtype == 'array':
+    if rtype == "array":
         return L.toarray()
-    if rtype == 'list':
+    if rtype == "list":
         return L.toarray().tolist()
     return L
 
@@ -328,7 +336,7 @@ def trimesh_edge_cotangents(mesh, u, v):
     return a, b
 
 
-def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
+def trimesh_cotangent_laplacian_matrix(mesh, rtype="csr"):
     r"""Construct the Laplacian of a triangular mesh with cotangent weights.
 
     Parameters
@@ -402,13 +410,13 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
     L = coo_matrix((data, (rows, cols)), shape=(n, n))
 
-    if rtype == 'csr':
+    if rtype == "csr":
         return L.tocsr()
-    if rtype == 'csc':
+    if rtype == "csc":
         return L.tocsc()
-    if rtype == 'array':
+    if rtype == "array":
         return L.toarray()
-    if rtype == 'list':
+    if rtype == "list":
         return L.toarray().tolist()
     return L
 
@@ -440,8 +448,11 @@ def trimesh_vertexarea_matrix(mesh):
 
     """
     key_index = mesh.key_index()
-    xyz = asarray(mesh.vertices_attributes('xyz'), dtype=float)
-    tris = asarray([[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()], dtype=int)
+    xyz = asarray(mesh.vertices_attributes("xyz"), dtype=float)
+    tris = asarray(
+        [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()],
+        dtype=int,
+    )
     e1 = xyz[tris[:, 1]] - xyz[tris[:, 0]]
     e2 = xyz[tris[:, 2]] - xyz[tris[:, 0]]
     n = cross(e1, e2)
@@ -450,5 +461,5 @@ def trimesh_vertexarea_matrix(mesh):
     area = zeros(xyz.shape[0])
     for i in (0, 1, 2):
         b = bincount(tris[:, i], a3)
-        area[:len(b)] += b
+        area[: len(b)] += b
     return spdiags(area, 0, xyz.shape[0], xyz.shape[0])

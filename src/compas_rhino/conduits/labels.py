@@ -78,7 +78,12 @@ class LabelsConduit(BaseConduit):
             # the first item in the list should be a tuple of colors
             # if not, wrap the tuple
             color = [color]
-        color = [(FromArgb(* bg), FromArgb(* text)) for bg, text in iterable_like(self.labels, color, (self.default_color, self.default_textcolor))]
+        color = [
+            (FromArgb(*bg), FromArgb(*text))
+            for bg, text in iterable_like(
+                self.labels, color, (self.default_color, self.default_textcolor)
+            )
+        ]
         self._color = color
 
     def DrawForeground(self, e):
@@ -98,4 +103,6 @@ class LabelsConduit(BaseConduit):
                 color, textcolor = self.color[i]
                 e.Display.DrawDot(Point3d(*pos), text, color, textcolor)
             else:
-                e.Display.DrawDot(Point3d(*pos), text, self.default_color, self.default_textcolor)
+                e.Display.DrawDot(
+                    Point3d(*pos), text, self.default_color, self.default_textcolor
+                )

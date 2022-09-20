@@ -17,7 +17,7 @@ from compas.geometry import circle_from_points_xy
 
 
 __all__ = [
-    'delaunay_from_points',
+    "delaunay_from_points",
 ]
 
 
@@ -74,7 +74,14 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     mesh = Mesh()
 
     # to avoid numerical issues for perfectly structured point sets
-    points = [(point[0] + random.uniform(-tiny, tiny), point[1] + random.uniform(-tiny, tiny), 0.0) for point in points]
+    points = [
+        (
+            point[0] + random.uniform(-tiny, tiny),
+            point[1] + random.uniform(-tiny, tiny),
+            0.0,
+        )
+        for point in points
+    ]
 
     # create super triangle
     pt1, pt2, pt3 = super_triangle(points)
@@ -83,9 +90,9 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     n = len(points)
     super_keys = n, n + 1, n + 2
 
-    mesh.add_vertex(super_keys[0], {'x': pt1[0], 'y': pt1[1], 'z': pt1[2]})
-    mesh.add_vertex(super_keys[1], {'x': pt2[0], 'y': pt2[1], 'z': pt2[2]})
-    mesh.add_vertex(super_keys[2], {'x': pt3[0], 'y': pt3[1], 'z': pt3[2]})
+    mesh.add_vertex(super_keys[0], {"x": pt1[0], "y": pt1[1], "z": pt1[2]})
+    mesh.add_vertex(super_keys[1], {"x": pt2[0], "y": pt2[1], "z": pt2[2]})
+    mesh.add_vertex(super_keys[2], {"x": pt3[0], "y": pt3[1], "z": pt3[2]})
 
     mesh.add_face(super_keys)
 
@@ -99,7 +106,9 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
             if is_point_in_triangle_xy(point, abc, True):
                 # generate 3 new triangles (faces) and delete surrounding triangle
-                key, newtris = mesh.insert_vertex(fkey, key=key, xyz=point, return_fkeys=True)
+                key, newtris = mesh.insert_vertex(
+                    fkey, key=key, xyz=point, return_fkeys=True
+                )
                 break
 
         while newtris:

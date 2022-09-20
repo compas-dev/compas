@@ -14,7 +14,7 @@ Artist.clear()
 artist = Artist(network)
 artist.draw(
     nodecolor={n: Color.pink() for n in [node] + nbrs},
-    edgecolor={e: Color.pink() for e in edges}
+    edgecolor={e: Color.pink() for e in edges},
 )
 
 Artist.redraw()

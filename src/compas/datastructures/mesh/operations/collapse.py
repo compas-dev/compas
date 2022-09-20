@@ -4,8 +4,8 @@ from __future__ import division
 
 
 __all__ = [
-    'mesh_collapse_edge',
-    'trimesh_collapse_edge',
+    "mesh_collapse_edge",
+    "trimesh_collapse_edge",
 ]
 
 
@@ -109,9 +109,9 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     """
     if t < 0.0:
-        raise ValueError('Parameter t should be greater than or equal to 0.')
+        raise ValueError("Parameter t should be greater than or equal to 0.")
     if t > 1.0:
-        raise ValueError('Parameter t should be smaller than or equal to 1.')
+        raise ValueError("Parameter t should be smaller than or equal to 1.")
 
     # check collapse conditions
     if not is_collapse_legal(mesh, u, v, allow_boundary=allow_boundary):
@@ -124,9 +124,9 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     # move U
     x, y, z = mesh.edge_point(u, v, t)
-    mesh.vertex[u]['x'] = x
-    mesh.vertex[u]['y'] = y
-    mesh.vertex[u]['z'] = z
+    mesh.vertex[u]["x"] = x
+    mesh.vertex[u]["y"] = y
+    mesh.vertex[u]["z"] = z
 
     # UV face
     fkey = mesh.halfedge[u][v]
@@ -271,9 +271,9 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     """
     if t < 0.0:
-        raise ValueError('Parameter t should be greater than or equal to 0.')
+        raise ValueError("Parameter t should be greater than or equal to 0.")
     if t > 1.0:
-        raise ValueError('Parameter t should be smaller than or equal to 1.')
+        raise ValueError("Parameter t should be smaller than or equal to 1.")
 
     # check collapse conditions
     if not is_collapse_legal(mesh, u, v, allow_boundary=allow_boundary):
@@ -290,9 +290,9 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
     # move U
     x, y, z = mesh.edge_point(u, v, t)
 
-    mesh.vertex[u]['x'] = x
-    mesh.vertex[u]['y'] = y
-    mesh.vertex[u]['z'] = z
+    mesh.vertex[u]["x"] = x
+    mesh.vertex[u]["y"] = y
+    mesh.vertex[u]["z"] = z
 
     # UV face
     fkey = mesh.halfedge[u][v]

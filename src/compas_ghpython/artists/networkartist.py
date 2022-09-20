@@ -58,11 +58,13 @@ class NetworkArtist(GHArtist, NetworkArtist):
         nodes = nodes or list(self.network.nodes())
         points = []
         for node in nodes:
-            points.append({
-                'pos': node_xyz[node],
-                'name': "{}.node.{}".format(self.network.name, node),
-                'color': self.node_color[node].rgb255
-            })
+            points.append(
+                {
+                    "pos": node_xyz[node],
+                    "name": "{}.node.{}".format(self.network.name, node),
+                    "color": self.node_color[node].rgb255,
+                }
+            )
         return compas_ghpython.draw_points(points)
 
     def draw_edges(self, edges=None, color=None):
@@ -88,20 +90,20 @@ class NetworkArtist(GHArtist, NetworkArtist):
         lines = []
         for edge in edges:
             u, v = edge
-            lines.append({
-                'start': node_xyz[u],
-                'end': node_xyz[v],
-                'color': self.edge_color[edge].rgb255,
-                'name': "{}.edge.{}-{}".format(self.network.name, u, v)
-            })
+            lines.append(
+                {
+                    "start": node_xyz[u],
+                    "end": node_xyz[v],
+                    "color": self.edge_color[edge].rgb255,
+                    "name": "{}.edge.{}-{}".format(self.network.name, u, v),
+                }
+            )
         return compas_ghpython.draw_lines(lines)
 
     def clear_edges(self):
-        """GH Artists are state-less. Therefore, clear does not have any effect.
-        """
+        """GH Artists are state-less. Therefore, clear does not have any effect."""
         pass
 
     def clear_nodes(self):
-        """GH Artists are state-less. Therefore, clear does not have any effect.
-        """
+        """GH Artists are state-less. Therefore, clear does not have any effect."""
         pass

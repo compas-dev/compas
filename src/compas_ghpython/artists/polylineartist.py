@@ -39,5 +39,7 @@ class PolylineArtist(GHArtist, PrimitiveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        polylines = [{'points': map(list, self.primitive.points), 'color': color.rgb255}]
+        polylines = [
+            {"points": map(list, self.primitive.points), "color": color.rgb255}
+        ]
         return compas_ghpython.draw_polylines(polylines)[0]

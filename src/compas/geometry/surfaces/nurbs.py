@@ -10,27 +10,27 @@ from compas.utilities import meshgrid
 from .surface import Surface
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbssurface(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbssurface_from_parameters(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbssurface_from_points(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbssurface_from_fill(cls, *args, **kwargs):
     raise NotImplementedError
 
 
-@pluggable(category='factories')
+@pluggable(category="factories")
 def new_nurbssurface_from_step(cls, *args, **kwargs):
     raise NotImplementedError
 
@@ -72,20 +72,20 @@ class NurbsSurface(Surface):
 
     def __str__(self):
         lines = [
-            'NurbsSurface',
-            '------------',
-            'Points: {}'.format(self.points),
-            'Weights: {}'.format(self.weights),
-            'U Knots: {}'.format(self.u_knots),
-            'V Knots: {}'.format(self.v_knots),
-            'U Mults: {}'.format(self.u_mults),
-            'V Mults: {}'.format(self.v_mults),
-            'U Degree: {}'.format(self.u_degree),
-            'V Degree: {}'.format(self.v_degree),
-            'U Domain: {}'.format(self.u_domain),
-            'V Domain: {}'.format(self.v_domain),
-            'U Periodic: {}'.format(self.is_u_periodic),
-            'V Periodic: {}'.format(self.is_v_periodic),
+            "NurbsSurface",
+            "------------",
+            "Points: {}".format(self.points),
+            "Weights: {}".format(self.weights),
+            "U Knots: {}".format(self.u_knots),
+            "V Knots: {}".format(self.v_knots),
+            "U Mults: {}".format(self.u_mults),
+            "V Mults: {}".format(self.v_mults),
+            "U Degree: {}".format(self.u_degree),
+            "V Degree: {}".format(self.v_degree),
+            "U Domain: {}".format(self.u_domain),
+            "V Domain: {}".format(self.v_domain),
+            "U Periodic: {}".format(self.is_u_periodic),
+            "V Periodic: {}".format(self.is_v_periodic),
         ]
         return "\n".join(lines)
 
@@ -100,18 +100,21 @@ class NurbsSurface(Surface):
         from compas.data import is_float3
         from compas.data import is_sequence_of_int
         from compas.data import is_sequence_of_float
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points),
-            'weights': is_sequence_of_float,
-            'u_knots': is_sequence_of_float,
-            'v_knots': is_sequence_of_float,
-            'u_mults': is_sequence_of_int,
-            'v_mults': is_sequence_of_int,
-            'u_degree': int,
-            'v_degree': int,
-            'is_u_periodic': bool,
-            'is_v_periodic': bool
-        })
+
+        return Schema(
+            {
+                "points": lambda points: all(is_float3(point) for point in points),
+                "weights": is_sequence_of_float,
+                "u_knots": is_sequence_of_float,
+                "v_knots": is_sequence_of_float,
+                "u_mults": is_sequence_of_int,
+                "v_mults": is_sequence_of_int,
+                "u_degree": int,
+                "v_degree": int,
+                "is_u_periodic": bool,
+                "is_v_periodic": bool,
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
@@ -121,22 +124,22 @@ class NurbsSurface(Surface):
     @property
     def dtype(self):
         """str : The type of the object in the form of a '2-level' import and a class name."""
-        return 'compas.geometry/NurbsSurface'
+        return "compas.geometry/NurbsSurface"
 
     @property
     def data(self):
         """dict : Representation of the curve as a dict containing only native Python objects."""
         return {
-            'points': [[point.data for point in row] for row in self.points],
-            'weights': self.weights,
-            'u_knots': self.u_knots,
-            'v_knots': self.v_knots,
-            'u_mults': self.u_mults,
-            'v_mults': self.v_mults,
-            'u_degree': self.u_degree,
-            'v_degree': self.v_degree,
-            'is_u_periodic': self.is_u_periodic,
-            'is_v_periodic': self.is_v_periodic
+            "points": [[point.data for point in row] for row in self.points],
+            "weights": self.weights,
+            "u_knots": self.u_knots,
+            "v_knots": self.v_knots,
+            "u_mults": self.u_mults,
+            "v_mults": self.v_mults,
+            "u_degree": self.u_degree,
+            "v_degree": self.v_degree,
+            "is_u_periodic": self.is_u_periodic,
+            "is_v_periodic": self.is_v_periodic,
         }
 
     @data.setter
@@ -158,23 +161,27 @@ class NurbsSurface(Surface):
             The constructed surface.
 
         """
-        points = [[Point.from_data(point) for point in row] for row in data['points']]
-        weights = data['weights']
-        u_knots = data['u_knots']
-        v_knots = data['v_knots']
-        u_mults = data['u_mults']
-        v_mults = data['v_mults']
-        u_degree = data['u_degree']
-        v_degree = data['v_degree']
-        is_u_periodic = data['is_u_periodic']
-        is_v_periodic = data['is_v_periodic']
+        points = [[Point.from_data(point) for point in row] for row in data["points"]]
+        weights = data["weights"]
+        u_knots = data["u_knots"]
+        v_knots = data["v_knots"]
+        u_mults = data["u_mults"]
+        v_mults = data["v_mults"]
+        u_degree = data["u_degree"]
+        v_degree = data["v_degree"]
+        is_u_periodic = data["is_u_periodic"]
+        is_v_periodic = data["is_v_periodic"]
         return cls.from_parameters(
             points,
             weights,
-            u_knots, v_knots,
-            u_mults, v_mults,
-            u_degree, v_degree,
-            is_u_periodic, is_v_periodic
+            u_knots,
+            v_knots,
+            u_mults,
+            v_mults,
+            u_degree,
+            v_degree,
+            is_u_periodic,
+            is_v_periodic,
         )
 
     # ==============================================================================
@@ -218,7 +225,19 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @classmethod
-    def from_parameters(cls, points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree, is_u_periodic=False, is_v_periodic=False):
+    def from_parameters(
+        cls,
+        points,
+        weights,
+        u_knots,
+        v_knots,
+        u_mults,
+        v_mults,
+        u_degree,
+        v_degree,
+        is_u_periodic=False,
+        is_v_periodic=False,
+    ):
         """Construct a NURBS surface from explicit parameters.
 
         Parameters
@@ -256,7 +275,7 @@ class NurbsSurface(Surface):
             u_degree,
             v_degree,
             is_u_periodic=is_u_periodic,
-            is_v_periodic=is_v_periodic
+            is_v_periodic=is_v_periodic,
         )
 
     @classmethod
@@ -277,7 +296,9 @@ class NurbsSurface(Surface):
         :class:`~compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_points(cls, points, u_degree=u_degree, v_degree=v_degree)
+        return new_nurbssurface_from_points(
+            cls, points, u_degree=u_degree, v_degree=v_degree
+        )
 
     @classmethod
     def from_meshgrid(cls, nu=10, nv=10):
@@ -320,7 +341,7 @@ class NurbsSurface(Surface):
         return new_nurbssurface_from_step(cls, filepath)
 
     @classmethod
-    def from_fill(cls, curve1, curve2, curve3=None, curve4=None, style='stretch'):
+    def from_fill(cls, curve1, curve2, curve3=None, curve4=None, style="stretch"):
         """Construct a NURBS surface from the infill between two, three or four contiguous NURBS curves.
 
         Parameters
@@ -373,5 +394,5 @@ class NurbsSurface(Surface):
             self.u_degree,
             self.v_degree,
             self.is_u_periodic,
-            self.is_v_periodic
+            self.is_v_periodic,
         )

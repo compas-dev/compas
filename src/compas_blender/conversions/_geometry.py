@@ -55,7 +55,7 @@ class BlenderGeometry:
     @property
     def location(self):
         """:class:`~compas.geometry.Point` - The location of the Blender object."""
-        return Point(* self.object.location)
+        return Point(*self.object.location)
 
     @location.setter
     def location(self, location):

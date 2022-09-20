@@ -27,7 +27,7 @@ def update_component(ghenv, delay):
 
     """
     if delay <= 0:
-        raise ValueError('Delay must be greater than zero')
+        raise ValueError("Delay must be greater than zero")
 
     ghcomp = ghenv.Component
     ghdoc = ghcomp.OnPingDocument()
@@ -36,5 +36,4 @@ def update_component(ghenv, delay):
         if ghdoc.SolutionState != gh.Kernel.GH_ProcessStep.Process:
             ghcomp.ExpireSolution(False)
 
-    ghdoc.ScheduleSolution(
-        delay, gh.Kernel.GH_Document.GH_ScheduleDelegate(callback))
+    ghdoc.ScheduleSolution(delay, gh.Kernel.GH_Document.GH_ScheduleDelegate(callback))

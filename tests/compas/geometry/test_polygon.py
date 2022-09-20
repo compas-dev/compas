@@ -8,8 +8,14 @@ from compas.utilities import pairwise
 
 
 if not compas.IPY:
+
     def test_data():
-        p = Polygon([Point(random.random(), random.random(), random.random()) for i in range(10)])
+        p = Polygon(
+            [
+                Point(random.random(), random.random(), random.random())
+                for i in range(10)
+            ]
+        )
         assert p.data == p.validate_data()
         o = Polygon.from_data(p.data)
         assert p == o

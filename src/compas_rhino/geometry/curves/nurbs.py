@@ -9,6 +9,7 @@ from compas.geometry import NurbsCurve
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
+
 # from compas_rhino.conversions import circle_to_rhino
 # from compas_rhino.conversions import ellipse_to_rhino
 from compas_rhino.conversions import line_to_rhino
@@ -22,7 +23,9 @@ def rhino_curve_from_parameters(points, weights, knots, multiplicities, degree):
     rhino_curve = Rhino.Geometry.NurbsCurve(3, True, degree + 1, len(points))
     for index, (point, weight) in enumerate(zip(points, weights)):
         rhino_curve.Points.SetPoint(index, point_to_rhino(point), weight)
-    knotvector = [knot for knot, mult in zip(knots, multiplicities) for _ in range(mult)]
+    knotvector = [
+        knot for knot, mult in zip(knots, multiplicities) for _ in range(mult)
+    ]
     # account for superfluous knots
     # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
     p = len(points)
@@ -89,25 +92,27 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         multiplicities[0] += 1
         multiplicities[-1] += 1
         return {
-            'points': [point.data for point in self.points],
-            'weights': self.weights,
-            'knots': self.knots,
-            'multiplicities': multiplicities,
-            'degree': self.degree,
-            'is_periodic': self.is_periodic,
+            "points": [point.data for point in self.points],
+            "weights": self.weights,
+            "knots": self.knots,
+            "multiplicities": multiplicities,
+            "degree": self.degree,
+            "is_periodic": self.is_periodic,
         }
 
     @data.setter
     def data(self, data):
-        points = [Point.from_data(point) for point in data['points']]
-        weights = data['weights']
-        knots = data['knots']
-        multiplicities = data['multiplicities']
-        degree = data['degree']
+        points = [Point.from_data(point) for point in data["points"]]
+        weights = data["weights"]
+        knots = data["knots"]
+        multiplicities = data["multiplicities"]
+        degree = data["degree"]
         # is_periodic = data['is_periodic']
         # have not found a way to actually set this
         # not sure if that is actually possible...
-        self.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
+        self.rhino_curve = rhino_curve_from_parameters(
+            points, weights, knots, multiplicities, degree
+        )
 
     # ==============================================================================
     # Rhino Properties
@@ -162,7 +167,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
     # ==============================================================================
 
     @classmethod
-    def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
+    def from_parameters(
+        cls, points, weights, knots, multiplicities, degree, is_periodic=False
+    ):
         """Construct a NURBS curve from explicit curve parameters.
 
         Parameters
@@ -187,7 +194,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         """
         curve = cls()
-        curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
+        curve.rhino_curve = rhino_curve_from_parameters(
+            points, weights, knots, multiplicities, degree
+        )
         return curve
 
     @classmethod
@@ -210,7 +219,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         """
         points[:] = [point_to_rhino(point) for point in points]
         curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, points)
+        curve.rhino_curve = Rhino.Geometry.NurbsCurve.Create(
+            is_periodic, degree, points
+        )
         return curve
 
     @classmethod
@@ -231,7 +242,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         """
         curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateHSpline([point_to_rhino(point) for point in points])
+        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateHSpline(
+            [point_to_rhino(point) for point in points]
+        )
         return curve
 
     # @classmethod
@@ -285,7 +298,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         """
         curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromLine(line_to_rhino(line))
+        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromLine(
+            line_to_rhino(line)
+        )
         return curve
 
     # ==============================================================================

@@ -8,6 +8,7 @@ from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import frame_to_rhino
+from compas_rhino.conversions import cylinder_to_rhino
 
 import Rhino
 
@@ -166,6 +167,23 @@ class RhinoBrep(Brep):
         rhino_box = box_to_rhino(box)
         return cls.from_brep(rhino_box.ToBrep())
 
+    @classmethod
+    def from_cylinder(cls, cylinder):
+        """Create a RhinoBrep from a box.
+
+        Parameters
+        ----------
+        box : :class:`~compas.geometry.Box`
+            The box geometry of the brep.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_cylinder = cylinder_to_rhino(cylinder)
+        return cls.from_brep(rhino_cylinder.ToBrep(True, True))
+
     # ==============================================================================
     # Methods
     # ==============================================================================
@@ -211,6 +229,89 @@ class RhinoBrep(Brep):
 
         self._brep = results[0]
 
+    @classmethod
+    def from_boolean_difference(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean difference of two groups of Breps.
+
+        Parameters
+        ----------
+        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One or more Breps from which to substract.
+        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One or more Breps to substract.
+
+        Returns
+        -------
+        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanDifference(
+            [b.native_brep for b in breps_a],
+            [b.native_brep for b in breps_b],
+            TOLERANCE,
+        )
+        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+
+    @classmethod
+    def from_boolean_union(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean union of two groups of Breps.
+
+        Parameters
+        ----------
+        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One of more breps to join.
+        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            Another one of more breps to join.
+
+        Returns
+        -------
+        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
+
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion(
+            [b.native_brep for b in breps_a + breps_b], TOLERANCE
+        )
+        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+
+    @classmethod
+    def from_boolean_intersection(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean intersection of two groups of Breps.
+
+        Parameters
+        ----------
+        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            One or more Breps to instrsect.
+        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            Another one or more Breps to intersect.
+
+        Returns
+        -------
+        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanIntersection(
+            [b.native_brep for b in breps_a],
+            [b.native_brep for b in breps_b],
+            TOLERANCE,
+        )
+        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+
     # ==============================================================================
     # Other Methods
     # ==============================================================================
@@ -229,7 +330,9 @@ class RhinoBrep(Brep):
         for face in faces:
             rhino_face, rhino_surface = self._create_brep_face(face)
             for loop in face.loops:
-                rhino_loop = self._brep.Loops.Add(Rhino.Geometry.BrepLoopType.Outer, rhino_face)
+                rhino_loop = self._brep.Loops.Add(
+                    Rhino.Geometry.BrepLoopType.Outer, rhino_face
+                )
                 for edge in loop.edges:
                     start_vertex, end_vertex = self._add_edge_vertices(edge)
                     rhino_edge = self._add_edge(edge, start_vertex, end_vertex)
@@ -268,15 +371,21 @@ class RhinoBrep(Brep):
         return brep_face, brep_surface
 
     def _add_edge_vertices(self, edge):
-        start_vertex = self._brep.Vertices.Add(point_to_rhino(edge.start_vertex.point), TOLERANCE)
-        end_vertex = self._brep.Vertices.Add(point_to_rhino(edge.end_vertex.point), TOLERANCE)
+        start_vertex = self._brep.Vertices.Add(
+            point_to_rhino(edge.start_vertex.point), TOLERANCE
+        )
+        end_vertex = self._brep.Vertices.Add(
+            point_to_rhino(edge.end_vertex.point), TOLERANCE
+        )
         return start_vertex, end_vertex
 
     def _add_edge(self, edge, start_vertex, end_vertex):
         # Geometry
         curve_index = self._brep.AddEdgeCurve(edge.curve)
         # Topology
-        rhino_edge = self._brep.Edges.Add(start_vertex, end_vertex, curve_index, TOLERANCE)
+        rhino_edge = self._brep.Edges.Add(
+            start_vertex, end_vertex, curve_index, TOLERANCE
+        )
         return rhino_edge
 
     def _add_trim(self, rhino_trim_curve, rhino_edge, rhino_loop):

@@ -23,57 +23,68 @@ _EPS = 1e-16
 """eps for testing whether a number is close to zero"""
 
 _SPEC2TUPLE = {
-    'sxyz': (0, 0, 0, 0), 'sxyx': (0, 0, 1, 0), 'sxzy': (0, 1, 0, 0),
-    'sxzx': (0, 1, 1, 0), 'syzx': (1, 0, 0, 0), 'syzy': (1, 0, 1, 0),
-    'syxz': (1, 1, 0, 0), 'syxy': (1, 1, 1, 0), 'szxy': (2, 0, 0, 0),
-    'szxz': (2, 0, 1, 0), 'szyx': (2, 1, 0, 0), 'szyz': (2, 1, 1, 0),
-    'rzyx': (0, 0, 0, 1), 'rxyx': (0, 0, 1, 1), 'ryzx': (0, 1, 0, 1),
-    'rxzx': (0, 1, 1, 1), 'rxzy': (1, 0, 0, 1), 'ryzy': (1, 0, 1, 1),
-    'rzxy': (1, 1, 0, 1), 'ryxy': (1, 1, 1, 1), 'ryxz': (2, 0, 0, 1),
-    'rzxz': (2, 0, 1, 1), 'rxyz': (2, 1, 0, 1), 'rzyz': (2, 1, 1, 1)}
+    "sxyz": (0, 0, 0, 0),
+    "sxyx": (0, 0, 1, 0),
+    "sxzy": (0, 1, 0, 0),
+    "sxzx": (0, 1, 1, 0),
+    "syzx": (1, 0, 0, 0),
+    "syzy": (1, 0, 1, 0),
+    "syxz": (1, 1, 0, 0),
+    "syxy": (1, 1, 1, 0),
+    "szxy": (2, 0, 0, 0),
+    "szxz": (2, 0, 1, 0),
+    "szyx": (2, 1, 0, 0),
+    "szyz": (2, 1, 1, 0),
+    "rzyx": (0, 0, 0, 1),
+    "rxyx": (0, 0, 1, 1),
+    "ryzx": (0, 1, 0, 1),
+    "rxzx": (0, 1, 1, 1),
+    "rxzy": (1, 0, 0, 1),
+    "ryzy": (1, 0, 1, 1),
+    "rzxy": (1, 1, 0, 1),
+    "ryxy": (1, 1, 1, 1),
+    "ryxz": (2, 0, 0, 1),
+    "rzxz": (2, 0, 1, 1),
+    "rxyz": (2, 1, 0, 1),
+    "rzyz": (2, 1, 1, 1),
+}
 """used for Euler angles: to map rotation type and axes to tuples of inner axis, parity, repetition, frame"""
 
 _NEXT_SPEC = [1, 2, 0, 1]
 
 
 __all__ = [
-    'matrix_determinant',
-    'matrix_inverse',
-    'decompose_matrix',
-    'compose_matrix',
-
-    'identity_matrix',
-
-    'matrix_from_frame',
-    'matrix_from_frame_to_frame',
-    'matrix_from_change_of_basis',
-    'matrix_from_euler_angles',
-    'matrix_from_axis_and_angle',
-    'matrix_from_axis_angle_vector',
-    'matrix_from_basis_vectors',
-    'matrix_from_translation',
-    'matrix_from_orthogonal_projection',
-    'matrix_from_parallel_projection',
-    'matrix_from_perspective_projection',
-    'matrix_from_perspective_entries',
-    'matrix_from_shear_entries',
-    'matrix_from_shear',
-    'matrix_from_scale_factors',
-    'matrix_from_quaternion',
-
-    'euler_angles_from_matrix',
-    'euler_angles_from_quaternion',
-
-    'axis_and_angle_from_matrix',
-    'axis_angle_vector_from_matrix',
-    'axis_angle_from_quaternion',
-
-    'quaternion_from_matrix',
-    'quaternion_from_euler_angles',
-    'quaternion_from_axis_angle',
-
-    'basis_vectors_from_matrix',
-    'translation_from_matrix',
+    "matrix_determinant",
+    "matrix_inverse",
+    "decompose_matrix",
+    "compose_matrix",
+    "identity_matrix",
+    "matrix_from_frame",
+    "matrix_from_frame_to_frame",
+    "matrix_from_change_of_basis",
+    "matrix_from_euler_angles",
+    "matrix_from_axis_and_angle",
+    "matrix_from_axis_angle_vector",
+    "matrix_from_basis_vectors",
+    "matrix_from_translation",
+    "matrix_from_orthogonal_projection",
+    "matrix_from_parallel_projection",
+    "matrix_from_perspective_projection",
+    "matrix_from_perspective_entries",
+    "matrix_from_shear_entries",
+    "matrix_from_shear",
+    "matrix_from_scale_factors",
+    "matrix_from_quaternion",
+    "euler_angles_from_matrix",
+    "euler_angles_from_quaternion",
+    "axis_and_angle_from_matrix",
+    "axis_angle_vector_from_matrix",
+    "axis_angle_from_quaternion",
+    "quaternion_from_matrix",
+    "quaternion_from_euler_angles",
+    "quaternion_from_axis_angle",
+    "basis_vectors_from_matrix",
+    "translation_from_matrix",
 ]
 
 
@@ -123,7 +134,7 @@ def matrix_minor(M, i, j):
         The minor.
 
     """
-    return [row[:j] + row[j + 1:] for row in (M[:i] + M[i + 1:])]
+    return [row[:j] + row[j + 1 :] for row in (M[:i] + M[i + 1 :])]
 
 
 def matrix_determinant(M, check=True):
@@ -164,7 +175,9 @@ def matrix_determinant(M, check=True):
 
     D = 0
     for c in range(dim):
-        D += (-1) ** c * M[0][c] * matrix_determinant(matrix_minor(M, 0, c), check=False)
+        D += (
+            (-1) ** c * M[0][c] * matrix_determinant(matrix_minor(M, 0, c), check=False)
+        )
     return D
 
 
@@ -213,14 +226,15 @@ def matrix_inverse(M):
         ValueError("The matrix is singular.")
 
     if len(M) == 2:
-        return [[M[1][1] / D, -1 * M[0][1] / D],
-                [-1 * M[1][0] / D, M[0][0] / D]]
+        return [[M[1][1] / D, -1 * M[0][1] / D], [-1 * M[1][0] / D, M[0][0] / D]]
 
     cofactors = []
     for r in range(len(M)):
         cofactor_row = []
         for c in range(len(M)):
-            cofactor_row.append((-1) ** (r + c) * matrix_determinant(matrix_minor(M, r, c)))
+            cofactor_row.append(
+                (-1) ** (r + c) * matrix_determinant(matrix_minor(M, r, c))
+            )
         cofactors.append(cofactor_row)
 
     cofactors = transpose_matrix(cofactors)
@@ -295,7 +309,7 @@ def decompose_matrix(M):
 
     Mt = transpose_matrix(M)
     if abs(Mt[3][3]) < _EPS:
-        raise ValueError('The element [3,3] of the matrix is zero.')
+        raise ValueError("The element [3,3] of the matrix is zero.")
 
     for i in range(4):
         for j in range(4):
@@ -347,7 +361,7 @@ def decompose_matrix(M):
         row = [[-x for x in y] for y in row]
 
     # angles
-    if row[0][2] != -1. and row[0][2] != 1.:
+    if row[0][2] != -1.0 and row[0][2] != 1.0:
         beta1 = asin(-row[0][2])
         # beta2 = pi - beta1
         alpha1 = atan2(row[1][2] / cos(beta1), row[2][2] / cos(beta1))
@@ -356,12 +370,12 @@ def decompose_matrix(M):
         # gamma2 = atan2(row[0][1] / cos(beta2), row[0][0] / cos(beta2))
         angles = [alpha1, beta1, gamma1]
     else:
-        gamma = 0.
-        if row[0][2] == -1.:
-            beta = pi / 2.
+        gamma = 0.0
+        if row[0][2] == -1.0:
+            beta = pi / 2.0
             alpha = gamma + atan2(row[1][0], row[2][0])
         else:  # row[0][2] == 1
-            beta = -pi / 2.
+            beta = -pi / 2.0
             alpha = -gamma + atan2(-row[1][0], -row[2][0])
         angles = [alpha, beta, gamma]
 
@@ -370,14 +384,18 @@ def decompose_matrix(M):
         P = deepcopy(Mt)
         P[0][3], P[1][3], P[2][3], P[3][3] = 0.0, 0.0, 0.0, 1.0
         Ptinv = matrix_inverse(transpose_matrix(P))
-        perspective = multiply_matrix_vector(Ptinv, [Mt[0][3], Mt[1][3], Mt[2][3], Mt[3][3]])
+        perspective = multiply_matrix_vector(
+            Ptinv, [Mt[0][3], Mt[1][3], Mt[2][3], Mt[3][3]]
+        )
     else:
         perspective = [0.0, 0.0, 0.0, 1.0]
 
     return scale, shear, angles, translation, perspective
 
 
-def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspective=None):
+def compose_matrix(
+    scale=None, shear=None, angles=None, translation=None, perspective=None
+):
     """Calculates a matrix from the components of scale, shear, euler_angles, translation and perspective.
 
     Parameters
@@ -413,7 +431,7 @@ def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspe
     True
 
     """
-    M = [[1. if i == j else 0. for i in range(4)] for j in range(4)]
+    M = [[1.0 if i == j else 0.0 for i in range(4)] for j in range(4)]
     if perspective is not None:
         P = matrix_from_perspective_entries(perspective)
         M = multiply_matrices(M, P)
@@ -456,7 +474,7 @@ def identity_matrix(dim):
     [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
 
     """
-    return [[1. if i == j else 0. for i in range(dim)] for j in range(dim)]
+    return [[1.0 if i == j else 0.0 for i in range(dim)] for j in range(dim)]
 
 
 def matrix_from_frame(frame):
@@ -551,7 +569,7 @@ def matrix_from_change_of_basis(frame_from, frame_to):
     return multiply_matrices(matrix_inverse(T2), T1)
 
 
-def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
+def matrix_from_euler_angles(euler_angles, static=True, axes="xyz"):
     """Calculates a rotation matrix from Euler angles.
 
     In 3D space any orientation can be achieved by composing three elemental
@@ -611,7 +629,7 @@ def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
     cc, cs = ci * ck, ci * sk
     sc, ss = si * ck, si * sk
 
-    M = [[1. if x == y else 0. for x in range(4)] for y in range(4)]
+    M = [[1.0 if x == y else 0.0 for x in range(4)] for y in range(4)]
 
     if repetition:
         M[i][i] = cj
@@ -637,7 +655,7 @@ def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
     return M
 
 
-def euler_angles_from_matrix(M, static=True, axes='xyz'):
+def euler_angles_from_matrix(M, static=True, axes="xyz"):
     """Returns Euler angles from the rotation matrix M according to specified
     axis sequence and type of rotation.
 
@@ -757,13 +775,13 @@ def matrix_from_axis_and_angle(axis, angle, point=None):
 
     R = [[cosa, 0.0, 0.0], [0.0, cosa, 0.0], [0.0, 0.0, cosa]]
 
-    outer_product = [[axis[i] * axis[j] * (1.0 - cosa) for i in range(3)] for j in range(3)]
+    outer_product = [
+        [axis[i] * axis[j] * (1.0 - cosa) for i in range(3)] for j in range(3)
+    ]
     R = [[R[i][j] + outer_product[i][j] for i in range(3)] for j in range(3)]
 
     axis = scale_vector(axis, sina)
-    m = [[0.0, -axis[2], axis[1]],
-         [axis[2], 0.0, -axis[0]],
-         [-axis[1], axis[0], 0.0]]
+    m = [[0.0, -axis[2], axis[1]], [axis[2], 0.0, -axis[0]], [-axis[1], axis[0], 0.0]]
 
     M = identity_matrix(4)
 
@@ -833,10 +851,12 @@ def axis_and_angle_from_matrix(M):
     eps = 0.01  # margin to allow for rounding errors
     eps2 = 0.1  # margin to distinguish between 0 and 180 degrees
 
-    if all(fabs(M[i][j] - M[j][i]) < eps for i, j in [(0, 1), (0,  2), (1, 2)]):
+    if all(fabs(M[i][j] - M[j][i]) < eps for i, j in [(0, 1), (0, 2), (1, 2)]):
 
-        if (all(fabs(M[i][j] - M[j][i]) < eps2 for i, j in [(0, 1), (0,  2), (1, 2)]) and
-                fabs(M[0][0] + M[1][1] + M[2][2] - 3) < eps2):
+        if (
+            all(fabs(M[i][j] - M[j][i]) < eps2 for i, j in [(0, 1), (0, 2), (1, 2)])
+            and fabs(M[0][0] + M[1][1] + M[2][2] - 3) < eps2
+        ):
             return [0, 0, 0], 0
 
         angle = math.pi
@@ -869,9 +889,10 @@ def axis_and_angle_from_matrix(M):
         return axis, angle
 
     s = sqrt(
-        (M[2][1] - M[1][2]) * (M[2][1] - M[1][2]) +
-        (M[0][2] - M[2][0]) * (M[0][2] - M[2][0]) +
-        (M[1][0] - M[0][1]) * (M[1][0] - M[0][1]))
+        (M[2][1] - M[1][2]) * (M[2][1] - M[1][2])
+        + (M[0][2] - M[2][0]) * (M[0][2] - M[2][0])
+        + (M[1][0] - M[0][1]) * (M[1][0] - M[0][1])
+    )
 
     # should this also be an eps?
     if fabs(s) < 0.001:
@@ -934,7 +955,7 @@ def matrix_from_quaternion(quaternion):
     sqrt = math.sqrt
 
     q = quaternion
-    n = q[0]**2 + q[1]**2 + q[2]**2 + q[3]**2  # dot product
+    n = q[0] ** 2 + q[1] ** 2 + q[2] ** 2 + q[3] ** 2  # dot product
 
     # perhaps this should not be hard-coded?
     eps = 1.0e-15
@@ -949,7 +970,8 @@ def matrix_from_quaternion(quaternion):
         [1.0 - q[2][2] - q[3][3], q[1][2] - q[3][0], q[1][3] + q[2][0], 0.0],
         [q[1][2] + q[3][0], 1.0 - q[1][1] - q[3][3], q[2][3] - q[1][0], 0.0],
         [q[1][3] - q[2][0], q[2][3] + q[1][0], 1.0 - q[1][1] - q[2][2], 0.0],
-        [0.0, 0.0, 0.0, 1.0]]
+        [0.0, 0.0, 0.0, 1.0],
+    ]
     return rotation
 
 
@@ -1209,7 +1231,9 @@ def matrix_from_parallel_projection(plane, direction):
         for i in range(3):
             T[i][j] -= direction[i] * normal[j] / scale
 
-    T[0][3], T[1][3], T[2][3] = scale_vector(direction, dot_vectors(point, normal) / scale)
+    T[0][3], T[1][3], T[2][3] = scale_vector(
+        direction, dot_vectors(point, normal) / scale
+    )
     return T
 
 
@@ -1241,13 +1265,17 @@ def matrix_from_perspective_projection(plane, center_of_projection):
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
-    T[0][0] = T[1][1] = T[2][2] = dot_vectors(subtract_vectors(center_of_projection, point), normal)
+    T[0][0] = T[1][1] = T[2][2] = dot_vectors(
+        subtract_vectors(center_of_projection, point), normal
+    )
 
     for j in range(3):
         for i in range(3):
             T[i][j] -= center_of_projection[i] * normal[j]
 
-    T[0][3], T[1][3], T[2][3] = scale_vector(center_of_projection, dot_vectors(point, normal))
+    T[0][3], T[1][3], T[2][3] = scale_vector(
+        center_of_projection, dot_vectors(point, normal)
+    )
 
     for i in range(3):
         T[3][i] -= normal[i]
@@ -1370,7 +1398,7 @@ def matrix_from_shear(angle, direction, point, normal):
     direction = normalize_vector(direction)
 
     if fabs(dot_vectors(normal, direction)) > _EPS:
-        raise ValueError('Direction and normal vectors are not orthogonal')
+        raise ValueError("Direction and normal vectors are not orthogonal")
 
     angle = math.tan(angle)
     M = identity_matrix(4)
@@ -1379,7 +1407,9 @@ def matrix_from_shear(angle, direction, point, normal):
         for i in range(3):
             M[i][j] += angle * direction[i] * normal[j]
 
-    M[0][3], M[1][3], M[2][3] = scale_vector(direction, -angle * dot_vectors(point, normal))
+    M[0][3], M[1][3], M[2][3] = scale_vector(
+        direction, -angle * dot_vectors(point, normal)
+    )
 
     return M
 
@@ -1419,7 +1449,7 @@ def matrix_from_scale_factors(scale_factors):
     return M
 
 
-def quaternion_from_euler_angles(e, static=True, axes='xyz'):
+def quaternion_from_euler_angles(e, static=True, axes="xyz"):
     """Returns a quaternion from Euler angles.
 
     Parameters
@@ -1443,7 +1473,7 @@ def quaternion_from_euler_angles(e, static=True, axes='xyz'):
     return q
 
 
-def euler_angles_from_quaternion(q, static=True, axes='xyz'):
+def euler_angles_from_quaternion(q, static=True, axes="xyz"):
     """Returns Euler angles from a quaternion.
 
     Parameters

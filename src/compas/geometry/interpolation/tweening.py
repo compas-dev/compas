@@ -8,10 +8,7 @@ from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 
 
-__all__ = [
-    'tween_points',
-    'tween_points_distance'
-]
+__all__ = ["tween_points", "tween_points_distance"]
 
 
 def tween_points(points1, points2, num):
@@ -84,5 +81,10 @@ def tween_points_distance(points1, points2, dist, index=None):
     scale = float(dist) / d
     tweens = []
     for i in range(len(points1)):
-        tweens.append(add_vectors(points1[i], scale_vector(subtract_vectors(points2[i], points1[i]), scale)))
+        tweens.append(
+            add_vectors(
+                points1[i],
+                scale_vector(subtract_vectors(points2[i], points1[i]), scale),
+            )
+        )
     return tweens

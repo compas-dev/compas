@@ -45,6 +45,7 @@ def unify_cycles(vertices, faces, root=0):
     [[0, 1, 2], [2, 3, 0]]
 
     """
+
     def unify(node, nbr):
         # find the common edge
         for u, v in pairwise(faces[nbr] + faces[nbr][0:1]):
@@ -58,9 +59,10 @@ def unify_cycles(vertices, faces, root=0):
                     # flip the neighbor
                     faces[nbr][:] = faces[nbr][::-1]
                     return
+
     adj = face_adjacency(vertices, faces)
     visited = breadth_first_traverse(adj, root, unify)
-    assert len(list(visited)) == len(faces), 'Not all faces were visited'
+    assert len(list(visited)) == len(faces), "Not all faces were visited"
     return faces
 
 

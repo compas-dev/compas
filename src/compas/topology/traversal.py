@@ -400,7 +400,7 @@ def astar_lightest_path(adjacency, weights, heuristic, root, goal):
 
     g_score = dict()
     for v in adjacency:
-        g_score[v] = float('inf')
+        g_score[v] = float("inf")
     g_score[root] = 0
 
     while not best_candidate_heap.empty():
@@ -428,19 +428,23 @@ def astar_lightest_path(adjacency, weights, heuristic, root, goal):
 
 
 def _get_coordinates(key, structure):
-    if hasattr(structure, 'node_attributes'):
-        return structure.node_attributes(key, 'xyz')
-    if hasattr(structure, 'vertex_coordinates'):
+    if hasattr(structure, "node_attributes"):
+        return structure.node_attributes(key, "xyz")
+    if hasattr(structure, "vertex_coordinates"):
         return structure.vertex_coordinates(key)
-    raise Exception("Coordinates cannot be found for object of type {}".format(type(structure)))
+    raise Exception(
+        "Coordinates cannot be found for object of type {}".format(type(structure))
+    )
 
 
 def _get_points(structure):
-    if hasattr(structure, 'nodes'):
+    if hasattr(structure, "nodes"):
         return structure.nodes()
-    if hasattr(structure, 'vertices'):
+    if hasattr(structure, "vertices"):
         return structure.vertices()
-    raise Exception("Points cannot be found for object of type {}".format(type(structure)))
+    raise Exception(
+        "Points cannot be found for object of type {}".format(type(structure))
+    )
 
 
 def astar_shortest_path(graph, root, goal):
@@ -509,7 +513,7 @@ def dijkstra_distances(adjacency, weight, target):
 
     """
     adjacency = {key: set(nbrs) for key, nbrs in adjacency.items()}
-    distance = {key: (0 if key == target else 1e+17) for key in adjacency}
+    distance = {key: (0 if key == target else 1e17) for key in adjacency}
     tovisit = set(adjacency.keys())
     visited = set()
 

@@ -39,7 +39,11 @@ class RhinoSurface(RhinoGeometry):
         """
         if not isinstance(geometry, Rhino.Geometry.Surface):
             if not isinstance(geometry, Rhino.Geometry.Brep):
-                raise TypeError("Geometry cannot be interpreted as a `Rhino.Geometry.Surface`: {}".format(type(geometry)))
+                raise TypeError(
+                    "Geometry cannot be interpreted as a `Rhino.Geometry.Surface`: {}".format(
+                        type(geometry)
+                    )
+                )
         self._geometry = geometry
 
     def to_compas(self):
@@ -59,7 +63,9 @@ class RhinoSurface(RhinoGeometry):
 
         brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
         if brep.Surfaces.Count > 1:
-            raise ConversionError('Conversion of a BRep with multiple underlying surface is currently not supported.')
+            raise ConversionError(
+                "Conversion of a BRep with multiple underlying surface is currently not supported."
+            )
         for geometry in brep.Surfaces:
             return RhinoNurbsSurface.from_rhino(geometry)
 
@@ -237,7 +243,9 @@ class RhinoSurface(RhinoGeometry):
             The XYZ coordinates of the closest point on the surface.
 
         """
-        return compas_rhino.rs.EvaluateSurface(self.guid, * compas_rhino.rs.SurfaceClosestPoint(self.guid, xyz))
+        return compas_rhino.rs.EvaluateSurface(
+            self.guid, *compas_rhino.rs.SurfaceClosestPoint(self.guid, xyz)
+        )
 
     def closest_points(self, points):
         return [self.closest_point(point) for point in points]

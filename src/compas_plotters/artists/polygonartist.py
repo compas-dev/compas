@@ -40,16 +40,18 @@ class PolygonArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 polygon: Polygon,
-                 linewidth: float = 1.0,
-                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 facecolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0, 0, 0),
-                 fill: bool = True,
-                 alpha: float = 1.0,
-                 zorder: int = 1000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        polygon: Polygon,
+        linewidth: float = 1.0,
+        linestyle: Literal["solid", "dotted", "dashed", "dashdot"] = "solid",
+        facecolor: Color = (1.0, 1.0, 1.0),
+        edgecolor: Color = (0, 0, 0),
+        fill: bool = True,
+        alpha: float = 1.0,
+        zorder: int = 1000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=polygon, **kwargs)
 
@@ -82,14 +84,16 @@ class PolygonArtist(PlotterArtist, PrimitiveArtist):
         None
 
         """
-        polygon = PolygonPatch(self.data,
-                               linewidth=self.linewidth,
-                               linestyle=self.linestyle,
-                               facecolor=self.facecolor,
-                               edgecolor=self.edgecolor,
-                               zorder=self.zorder,
-                               alpha=self.alpha,
-                               fill=self.fill)
+        polygon = PolygonPatch(
+            self.data,
+            linewidth=self.linewidth,
+            linestyle=self.linestyle,
+            facecolor=self.facecolor,
+            edgecolor=self.edgecolor,
+            zorder=self.zorder,
+            alpha=self.alpha,
+            fill=self.fill,
+        )
         self._mpl_polygon = self.plotter.axes.add_patch(polygon)
 
     def redraw(self) -> None:

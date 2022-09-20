@@ -111,7 +111,7 @@ class Quaternion(Primitive):
 
     """
 
-    __slots__ = ['_w', '_x', '_y', '_z']
+    __slots__ = ["_w", "_x", "_y", "_z"]
 
     def __init__(self, w, x, y, z, **kwargs):
         super(Quaternion, self).__init__(**kwargs)
@@ -132,24 +132,25 @@ class Quaternion(Primitive):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
-        return Schema({'w': float, 'x': float, 'y': float, 'z': float})
+
+        return Schema({"w": float, "x": float, "y": float, "z": float})
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'quaternion'
+        return "quaternion"
 
     @property
     def data(self):
         """dict : Representation of the quaternion as a dict containing only native Python objects."""
-        return {'w': self.w, 'x': self.x, 'y': self.y, 'z': self.z}
+        return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
 
     @data.setter
     def data(self, data):
-        self.w = data['w']
-        self.x = data['x']
-        self.y = data['y']
-        self.z = data['z']
+        self.w = data["w"]
+        self.x = data["x"]
+        self.y = data["y"]
+        self.z = data["z"]
 
     @classmethod
     def from_data(cls, data):
@@ -170,7 +171,7 @@ class Quaternion(Primitive):
         >>>
 
         """
-        return cls(data['w'], data['x'], data['y'], data['z'])
+        return cls(data["w"], data["x"], data["y"], data["z"])
 
     # ==========================================================================
     # properties
@@ -253,7 +254,11 @@ class Quaternion(Primitive):
         raise KeyError
 
     def __eq__(self, other, tol=1e-05):
-        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+        if (
+            not hasattr(other, "__iter__")
+            or not hasattr(other, "__len__")
+            or len(self) != len(other)
+        ):
             return False
         for v1, v2 in zip(self, other):
             if math.fabs(v1 - v2) > tol:
@@ -267,7 +272,9 @@ class Quaternion(Primitive):
         return 4
 
     def __repr__(self):
-        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(self.w, self.x, self.y, self.z, prec=3)
+        return "Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})".format(
+            self.w, self.x, self.y, self.z, prec=3
+        )
 
     def __mul__(self, other):
         """Multiply operator for two quaternions.

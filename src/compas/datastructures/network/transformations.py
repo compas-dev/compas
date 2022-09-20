@@ -7,8 +7,8 @@ from compas.geometry import transform_points
 
 
 __all__ = [
-    'network_transform',
-    'network_transformed',
+    "network_transform",
+    "network_transformed",
 ]
 
 
@@ -34,9 +34,9 @@ def network_transform(network, transformation):
     vertices = [network.node_coordinates(key) for key in network.nodes()]
     xyz = transform_points(vertices, transformation)
     for index, (key, attr) in enumerate(network.nodes(True)):
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
+        attr["x"] = xyz[index][0]
+        attr["y"] = xyz[index][1]
+        attr["z"] = xyz[index][2]
 
 
 def network_transformed(network, transformation):

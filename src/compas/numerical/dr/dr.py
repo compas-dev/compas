@@ -5,7 +5,7 @@ from __future__ import print_function
 from copy import deepcopy
 from math import sqrt
 
-__all__ = ['dr']
+__all__ = ["dr"]
 
 
 K = [
@@ -16,7 +16,7 @@ K = [
 ]
 
 
-class Coeff():
+class Coeff:
     def __init__(self, c):
         self.c = c
         self.a = (1 - c * 0.5) / (1 + c * 0.5)
@@ -41,7 +41,7 @@ def norm_vector(vector):
     --------
     >>>
     """
-    return sqrt(sum(axis ** 2 for axis in vector))
+    return sqrt(sum(axis**2 for axis in vector))
 
 
 def norm_vectors(vectors):
@@ -90,10 +90,25 @@ def adjacency_from_edges(edges):
     return adj
 
 
-def dr(vertices, edges, fixed, loads, qpre,
-       fpre=None, lpre=None,
-       linit=None, E=None, radius=None,
-       kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
+def dr(
+    vertices,
+    edges,
+    fixed,
+    loads,
+    qpre,
+    fpre=None,
+    lpre=None,
+    linit=None,
+    E=None,
+    radius=None,
+    kmax=100,
+    dt=1.0,
+    tol1=1e-3,
+    tol2=1e-6,
+    c=0.1,
+    callback=None,
+    callback_args=None,
+):
     """Implementation of dynamic relaxation with RK integration scheme in pure Python.
 
     Parameters
@@ -156,7 +171,7 @@ def dr(vertices, edges, fixed, loads, qpre,
     """
     if callback:
         if not callable(callback):
-            raise Exception('The callback is not callable.')
+            raise Exception("The callback is not callable.")
     # --------------------------------------------------------------------------
     # preprocess
     # --------------------------------------------------------------------------
@@ -186,9 +201,12 @@ def dr(vertices, edges, fixed, loads, qpre,
     # initial values
     # --------------------------------------------------------------------------
     Q = [1.0 for _ in range(e)]
-    L = [sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5 for i, j in iter(edges)]
+    L = [
+        sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5
+        for i, j in iter(edges)
+    ]
     F = [q * l for q, l in zip(Q, L)]
-    M = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
+    M = [sum(0.5 * dt**2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
     V = [[0.0, 0.0, 0.0] for _ in range(n)]
     R = [[0.0, 0.0, 0.0] for _ in range(n)]
     dX = [[0.0, 0.0, 0.0] for _ in range(n)]
@@ -221,24 +239,66 @@ def dr(vertices, edges, fixed, loads, qpre,
             B = [0.0, 1.0]
             a0 = a(K[0][0] * dt, V0)
             k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a1 = a(K[1][0] * dt, [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)])
+            a1 = a(
+                K[1][0] * dt,
+                [
+                    [V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)]
+                    for i in range(n)
+                ],
+            )
             k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            return [[B[0] * k0[i][axis] + B[1] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+            return [
+                [B[0] * k0[i][axis] + B[1] * k1[i][axis] for axis in (0, 1, 2)]
+                for i in range(n)
+            ]
 
         if steps == 4:
             B = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
             a0 = a(K[0][0] * dt, V0)
             k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a1 = a(K[1][0] * dt, [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)])
+            a1 = a(
+                K[1][0] * dt,
+                [
+                    [V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)]
+                    for i in range(n)
+                ],
+            )
             k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a2 = a(K[2][0] * dt, [[V0[i][axis] + K[2][1] * k0[i][axis] + K[2][2] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)])
+            a2 = a(
+                K[2][0] * dt,
+                [
+                    [
+                        V0[i][axis] + K[2][1] * k0[i][axis] + K[2][2] * k1[i][axis]
+                        for axis in (0, 1, 2)
+                    ]
+                    for i in range(n)
+                ],
+            )
             k2 = [[dt * a2[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            a3 = a(K[3][0] * dt, [[V0[i][axis] + K[3][1] * k0[i][axis] + K[3][2] * k1[i][axis] + K[3][3] * k2[i][axis] for axis in (0, 1, 2)] for i in range(n)])
+            a3 = a(
+                K[3][0] * dt,
+                [
+                    [
+                        V0[i][axis]
+                        + K[3][1] * k0[i][axis]
+                        + K[3][2] * k1[i][axis]
+                        + K[3][3] * k2[i][axis]
+                        for axis in (0, 1, 2)
+                    ]
+                    for i in range(n)
+                ],
+            )
             k3 = [[dt * a3[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            return [[B[0] * k0[i][axis] +
-                     B[1] * k1[i][axis] +
-                     B[2] * k2[i][axis] +
-                     B[3] * k3[i][axis] for axis in (0, 1, 2)] for i in range(n)]
+            return [
+                [
+                    B[0] * k0[i][axis]
+                    + B[1] * k1[i][axis]
+                    + B[2] * k2[i][axis]
+                    + B[3] * k3[i][axis]
+                    for axis in (0, 1, 2)
+                ]
+                for i in range(n)
+            ]
 
         raise NotImplementedError
 
@@ -250,7 +310,7 @@ def dr(vertices, edges, fixed, loads, qpre,
         Qlpre = [a / b if b else 0 for a, b in zip(F, Lpre)]
 
         Q = [a + b + c for a, b, c in zip(Qpre, Qfpre, Qlpre)]
-        M = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
+        M = [sum(0.5 * dt**2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
 
         X0 = deepcopy(X)
         V0 = [[ca * V[i][axis] for axis in (0, 1, 2)] for i in range(n)]
@@ -264,7 +324,10 @@ def dr(vertices, edges, fixed, loads, qpre,
             dX[i] = [V[i][axis] * dt for axis in (0, 1, 2)]
             X[i] = [X0[i][axis] + dX[i][axis] for axis in (0, 1, 2)]
 
-        L = [sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5 for i, j in iter(edges)]
+        L = [
+            sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5
+            for i, j in iter(edges)
+        ]
         F = [q * l for q, l in zip(Q, L)]
 
         update_R()

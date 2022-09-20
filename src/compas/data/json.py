@@ -36,7 +36,7 @@ def json_dump(data, fp, pretty=False):
     True
 
     """
-    with _iotools.open_file(fp, 'w') as f:
+    with _iotools.open_file(fp, "w") as f:
         kwargs = dict(sort_keys=True, indent=4) if pretty else {}
         return json.dump(data, f, cls=DataEncoder, **kwargs)
 
@@ -95,7 +95,7 @@ def json_load(fp):
     True
 
     """
-    with _iotools.open_file(fp, 'r') as f:
+    with _iotools.open_file(fp, "r") as f:
         return json.load(f, cls=DataDecoder)
 
 

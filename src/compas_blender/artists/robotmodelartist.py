@@ -32,15 +32,19 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
 
     """
 
-    def __init__(self,
-                 model: RobotModel,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        model: RobotModel,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
         super().__init__(model=model, collection=collection or model.name, **kwargs)
 
     # this method should not be here
     # it has nothing to do with the current object
-    def transform(self, native_mesh: bpy.types.Object, transformation: Transformation) -> None:
+    def transform(
+        self, native_mesh: bpy.types.Object, transformation: Transformation
+    ) -> None:
         """Transform the mesh of a robot model.
 
         Parameters
@@ -55,16 +59,21 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
         None
 
         """
-        native_mesh.matrix_world = mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world
+        native_mesh.matrix_world = (
+            mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world
+        )
 
     # again
     # doesn't make sense to me that there is no reference to self (except for the collection)
     # suggests that this method shouldn't be here
-    def create_geometry(self,
-                        geometry: Mesh,
-                        name: str = None,
-                        color: Union[RGBColor, Tuple[int, int, int, int], Tuple[float, float, float, float]] = None
-                        ) -> bpy.types.Object:
+    def create_geometry(
+        self,
+        geometry: Mesh,
+        name: str = None,
+        color: Union[
+            RGBColor, Tuple[int, int, int, int], Tuple[float, float, float, float]
+        ] = None,
+    ) -> bpy.types.Object:
         """Create the scene objecy representing the robot geometry.
 
         Parameters
@@ -82,19 +91,24 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
 
         """
         # Imported colors take priority over a the parameter color
-        if 'mesh_color.diffuse' in geometry.attributes:
-            color = geometry.attributes['mesh_color.diffuse']
+        if "mesh_color.diffuse" in geometry.attributes:
+            color = geometry.attributes["mesh_color.diffuse"]
 
         # If we have a color, we'll discard alpha because draw_mesh is hard coded for a=1
         if color:
             color = color[:3]
         else:
-            color = (1., 1., 1.)
+            color = (1.0, 1.0, 1.0)
 
         v, f = geometry.to_vertices_and_faces(triangulated=False)
 
         native_mesh = compas_blender.draw_mesh(
-            vertices=v, faces=f, name=name, color=color, centroid=False, collection=self.collection
+            vertices=v,
+            faces=f,
+            name=name,
+            color=color,
+            centroid=False,
+            collection=self.collection,
         )
         native_mesh.hide_set(True)
         return native_mesh

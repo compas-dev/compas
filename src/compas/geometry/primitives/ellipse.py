@@ -44,7 +44,7 @@ class Ellipse(Primitive):
 
     """
 
-    __slots__ = ['_plane', '_major', '_minor']
+    __slots__ = ["_plane", "_major", "_minor"]
 
     def __init__(self, plane, major, minor, **kwargs):
         super(Ellipse, self).__init__(**kwargs)
@@ -63,29 +63,30 @@ class Ellipse(Primitive):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
-        return schema.Schema({
-            'plane': Plane.DATASCHEMA.fget(None),
-            'major': schema.And(float, lambda x: x > 0),
-            'minor': schema.And(float, lambda x: x > 0),
-        })
+
+        return schema.Schema(
+            {
+                "plane": Plane.DATASCHEMA.fget(None),
+                "major": schema.And(float, lambda x: x > 0),
+                "minor": schema.And(float, lambda x: x > 0),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'ellipse'
+        return "ellipse"
 
     @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
-        return {'plane': self.plane.data,
-                'major': self.major,
-                'minor': self.minor}
+        return {"plane": self.plane.data, "major": self.major, "minor": self.minor}
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.major = data['major']
-        self.minor = data['minor']
+        self.plane = Plane.from_data(data["plane"])
+        self.major = data["major"]
+        self.minor = data["minor"]
 
     @classmethod
     def from_data(cls, data):
@@ -108,7 +109,7 @@ class Ellipse(Primitive):
         >>> ellipse = Ellipse.from_data(data)
 
         """
-        return cls(Plane.from_data(data['plane']), data['minor'], data['minor'])
+        return cls(Plane.from_data(data["plane"]), data["minor"], data["minor"])
 
     # ==========================================================================
     # properties
@@ -163,7 +164,7 @@ class Ellipse(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Ellipse({0!r}, {1!r}, {2!r})'.format(self.plane, self.major, self.minor)
+        return "Ellipse({0!r}, {1!r}, {2!r})".format(self.plane, self.major, self.minor)
 
     def __len__(self):
         return 3

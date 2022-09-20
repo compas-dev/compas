@@ -9,28 +9,28 @@ from compas.numerical import laplacian_matrix
 
 
 __all__ = [
-    'network_adjacency_matrix',
-    'network_degree_matrix',
-    'network_connectivity_matrix',
-    'network_laplacian_matrix',
+    "network_adjacency_matrix",
+    "network_degree_matrix",
+    "network_connectivity_matrix",
+    "network_laplacian_matrix",
 ]
 
 
 def _return_matrix(M, rtype):
-    if rtype == 'list':
+    if rtype == "list":
         return M.toarray().tolist()
-    if rtype == 'array':
+    if rtype == "array":
         return M.toarray()
-    if rtype == 'csr':
+    if rtype == "csr":
         return M.tocsr()
-    if rtype == 'csc':
+    if rtype == "csc":
         return M.tocsc()
-    if rtype == 'coo':
+    if rtype == "coo":
         return M.tocoo()
     return M
 
 
-def network_adjacency_matrix(network, rtype='array'):
+def network_adjacency_matrix(network, rtype="array"):
     """Creates a node adjacency matrix from a Network datastructure.
 
     Parameters
@@ -47,11 +47,13 @@ def network_adjacency_matrix(network, rtype='array'):
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
+    adjacency = [
+        [key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()
+    ]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
-def network_degree_matrix(network, rtype='array'):
+def network_degree_matrix(network, rtype="array"):
     """Creates a node degree matrix from a Network datastructure.
 
     Parameters
@@ -68,11 +70,13 @@ def network_degree_matrix(network, rtype='array'):
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
+    adjacency = [
+        [key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()
+    ]
     return degree_matrix(adjacency, rtype=rtype)
 
 
-def network_connectivity_matrix(network, rtype='array'):
+def network_connectivity_matrix(network, rtype="array"):
     """Creates a connectivity matrix from a Network datastructure.
 
     Parameters
@@ -93,7 +97,7 @@ def network_connectivity_matrix(network, rtype='array'):
     return connectivity_matrix(edges, rtype=rtype)
 
 
-def network_laplacian_matrix(network, normalize=False, rtype='array'):
+def network_laplacian_matrix(network, normalize=False, rtype="array"):
     r"""Construct a Laplacian matrix from a Network datastructure.
 
     Parameters

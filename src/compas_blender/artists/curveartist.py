@@ -54,10 +54,12 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
     """
 
-    def __init__(self,
-                 curve: Curve,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        curve: Curve,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any
+    ):
 
         super().__init__(curve=curve, collection=collection or curve.name, **kwargs)
 
@@ -76,5 +78,5 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        curves = [{'curve': self.curve, 'color': color, 'name': self.curve.name}]
+        curves = [{"curve": self.curve, "color": color, "name": self.curve.name}]
         return compas_blender.draw_curves(curves, collection=self.collection)

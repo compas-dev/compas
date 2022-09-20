@@ -50,10 +50,16 @@ class LineArtist(RhinoArtist, PrimitiveArtist):
         guids = []
         if show_points:
             points = [
-                {'pos': start, 'color': color, 'name': self.primitive.name},
-                {'pos': end, 'color': color, 'name': self.primitive.name}
+                {"pos": start, "color": color, "name": self.primitive.name},
+                {"pos": end, "color": color, "name": self.primitive.name},
             ]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        lines = [{'start': start, 'end': end, 'color': color, 'name': self.primitive.name}]
-        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+            guids += compas_rhino.draw_points(
+                points, layer=self.layer, clear=False, redraw=False
+            )
+        lines = [
+            {"start": start, "end": end, "color": color, "name": self.primitive.name}
+        ]
+        guids += compas_rhino.draw_lines(
+            lines, layer=self.layer, clear=False, redraw=False
+        )
         return guids

@@ -13,8 +13,8 @@ def start(port, autoreload, **kwargs):
 
 
 def stop(port, **kwargs):
-    print('Trying to stop remote RPC proxy...')
-    server = ServerProxy('http://127.0.0.1:{}'.format(port))
+    print("Trying to stop remote RPC proxy...")
+    server = ServerProxy("http://127.0.0.1:{}".format(port))
 
     success = False
     count = 5
@@ -30,42 +30,52 @@ def stop(port, **kwargs):
             break
 
     if not success:
-        print('RPC server did not respond. Maybe already stopped.')
+        print("RPC server did not respond. Maybe already stopped.")
     else:
         server.remote_shutdown()
-        print('RPC server stopped')
+        print("RPC server stopped")
 
 
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description='COMPAS RPC command-line utility')
+    parser = argparse.ArgumentParser(description="COMPAS RPC command-line utility")
 
-    commands = parser.add_subparsers(help='Valid RPC commands')
+    commands = parser.add_subparsers(help="Valid RPC commands")
 
     # Command: start
-    start_command = commands.add_parser('start', help='Start RPC server')
+    start_command = commands.add_parser("start", help="Start RPC server")
     start_command.add_argument(
-        '--port', '-p', action='store', default=1753, type=int, help='RPC port number')
-    start_command.add_argument('--autoreload', dest='autoreload', action='store_true', help='Autoreload modules')
-    start_command.add_argument('--no-autoreload', dest='autoreload', action='store_false', help='Do not autoreload modules')
+        "--port", "-p", action="store", default=1753, type=int, help="RPC port number"
+    )
+    start_command.add_argument(
+        "--autoreload",
+        dest="autoreload",
+        action="store_true",
+        help="Autoreload modules",
+    )
+    start_command.add_argument(
+        "--no-autoreload",
+        dest="autoreload",
+        action="store_false",
+        help="Do not autoreload modules",
+    )
     start_command.set_defaults(autoreload=True, func=start)
 
     # Command: stop
-    stop_command = commands.add_parser(
-        'stop', help='Try to stop a remote RPC server')
+    stop_command = commands.add_parser("stop", help="Try to stop a remote RPC server")
     stop_command.add_argument(
-        '--port', '-p', action='store', default=1753, type=int, help='RPC port number')
+        "--port", "-p", action="store", default=1753, type=int, help="RPC port number"
+    )
     stop_command.set_defaults(func=stop)
 
     # Invoke
     args = parser.parse_args()
-    if hasattr(args, 'func'):
+    if hasattr(args, "func"):
         args.func(**vars(args))
     else:
         parser.print_help()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

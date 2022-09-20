@@ -42,5 +42,9 @@ class SurfaceArtist(RhinoArtist, SurfaceArtist):
 
         """
         color = Color.coerce(color) or self.color
-        surfaces = [{'surface': self.surface, 'color': color.rgb255, 'name': self.surface.name}]
-        return compas_rhino.draw_surfaces(surfaces, layer=self.layer, clear=False, redraw=False)
+        surfaces = [
+            {"surface": self.surface, "color": color.rgb255, "name": self.surface.name}
+        ]
+        return compas_rhino.draw_surfaces(
+            surfaces, layer=self.layer, clear=False, redraw=False
+        )

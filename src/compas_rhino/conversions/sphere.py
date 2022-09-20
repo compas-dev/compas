@@ -38,17 +38,27 @@ class RhinoSphere(RhinoGeometry):
         if not isinstance(geometry, Rhino.Geometry.Sphere):
             if isinstance(geometry, Rhino.Geometry.Brep):
                 if geometry.Faces.Count != 1:
-                    raise ConversionError('Object brep cannot be converted to a sphere.')
+                    raise ConversionError(
+                        "Object brep cannot be converted to a sphere."
+                    )
                 face = geometry.Faces.Item[0]
                 if not face.IsSphere():
-                    raise ConversionError('Object brep cannot be converted to a sphere.')
+                    raise ConversionError(
+                        "Object brep cannot be converted to a sphere."
+                    )
                 result, geometry = face.TryGetSphere()
                 if not result:
-                    raise ConversionError('Object brep cannot be converted to a sphere.')
+                    raise ConversionError(
+                        "Object brep cannot be converted to a sphere."
+                    )
             elif isinstance(geometry, Sphere):
                 geometry = sphere_to_rhino(geometry)
             else:
-                raise ConversionError('Geometry object cannot be converted to a sphere: {}'.format(geometry))
+                raise ConversionError(
+                    "Geometry object cannot be converted to a sphere: {}".format(
+                        geometry
+                    )
+                )
         self._geometry = geometry
 
     def to_compas(self):

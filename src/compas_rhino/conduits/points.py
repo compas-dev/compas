@@ -92,7 +92,10 @@ class PointsConduit(BaseConduit):
         color = color or self.default_color
         if not is_sequence_of_iterable(color):
             color = [color]
-        color = [FromArgb(* color_to_rgb(c)) for c in iterable_like(self.points, color, self.default_color)]
+        color = [
+            FromArgb(*color_to_rgb(c))
+            for c in iterable_like(self.points, color, self.default_color)
+        ]
         self._color = color
 
     def DrawForeground(self, e):

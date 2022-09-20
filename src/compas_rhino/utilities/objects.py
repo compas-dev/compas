@@ -20,61 +20,62 @@ except AttributeError:
 
 
 __all__ = [
-    'find_object',
-    'get_objects',
-    'get_object_layers',
-    'get_object_types',
-    'get_object_names',
-    'get_object_name',
-    'get_object_attributes',
-    'set_object_attributes',
-    'get_object_attributes_from_name',
-    'delete_object',
-    'delete_objects',
-    'purge_objects',
-    'is_curve_line',
-    'is_curve_polyline',
-    'is_curve_polygon',
-    'get_points',
-    'get_curves',
-    'get_lines',
-    'get_polylines',
-    'get_polygons',
-    'get_point_coordinates',
-    'get_line_coordinates',
-    'get_polyline_coordinates',
-    'get_polygon_coordinates',
-    'get_meshes',
-    'get_mesh_face_vertices',
-    'get_mesh_vertex_coordinates',
-    'get_mesh_vertex_colors',
-    'set_mesh_vertex_colors',
-    'get_mesh_vertices_and_faces',
-    'get_mesh_vertex_index',
-    'get_mesh_face_index',
-    'get_mesh_edge_index',
-    'select_object',
-    'select_objects',
-    'select_point',
-    'select_points',
-    'select_curve',
-    'select_curves',
-    'select_line',
-    'select_lines',
-    'select_polyline',
-    'select_polylines',
-    'select_polygon',
-    'select_polygons',
-    'select_surface',
-    'select_surfaces',
-    'select_mesh',
-    'select_meshes',
+    "find_object",
+    "get_objects",
+    "get_object_layers",
+    "get_object_types",
+    "get_object_names",
+    "get_object_name",
+    "get_object_attributes",
+    "set_object_attributes",
+    "get_object_attributes_from_name",
+    "delete_object",
+    "delete_objects",
+    "purge_objects",
+    "is_curve_line",
+    "is_curve_polyline",
+    "is_curve_polygon",
+    "get_points",
+    "get_curves",
+    "get_lines",
+    "get_polylines",
+    "get_polygons",
+    "get_point_coordinates",
+    "get_line_coordinates",
+    "get_polyline_coordinates",
+    "get_polygon_coordinates",
+    "get_meshes",
+    "get_mesh_face_vertices",
+    "get_mesh_vertex_coordinates",
+    "get_mesh_vertex_colors",
+    "set_mesh_vertex_colors",
+    "get_mesh_vertices_and_faces",
+    "get_mesh_vertex_index",
+    "get_mesh_face_index",
+    "get_mesh_edge_index",
+    "select_object",
+    "select_objects",
+    "select_point",
+    "select_points",
+    "select_curve",
+    "select_curves",
+    "select_line",
+    "select_lines",
+    "select_polyline",
+    "select_polylines",
+    "select_polygon",
+    "select_polygons",
+    "select_surface",
+    "select_surfaces",
+    "select_mesh",
+    "select_meshes",
 ]
 
 
 # ==============================================================================
 # Objects
 # ==============================================================================
+
 
 def get_objects(name=None, color=None, layer=None, type=None):
     """Get identifiers of Rhino objects, potentially filtered by name, color, layer, or type.
@@ -225,7 +226,7 @@ def purge_objects(guids, redraw=True):
 
     """
     if not purge_object:
-        raise RuntimeError('Cannot purge outside Rhino script context')
+        raise RuntimeError("Cannot purge outside Rhino script context")
     rs.EnableRedraw(False)
     for guid in guids:
         if rs.IsObject(guid):
@@ -350,7 +351,11 @@ def set_object_attributes(guid, attr):
         try:
             u.Set(name, value)
         except Exception:
-            print("The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(name, value))
+            print(
+                "The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(
+                    name, value
+                )
+            )
 
 
 def get_object_attributes_from_name(guids, prefix=None):
@@ -402,7 +407,7 @@ def select_object(message="Select an object."):
     return rs.GetObject(message)
 
 
-def select_objects(message='Select multiple objects.'):
+def select_objects(message="Select multiple objects."):
     """Select multiple objects in the Rhino view.
 
     Parameters
@@ -428,7 +433,7 @@ def select_objects(message='Select multiple objects.'):
 # ==============================================================================
 
 
-def select_point(message='Select one point.'):
+def select_point(message="Select one point."):
     """Select one point in the Rhino view.
 
     Parameters
@@ -445,7 +450,7 @@ def select_point(message='Select one point.'):
     return rs.GetObject(message, preselect=True, select=True, filter=rs.filter.point)
 
 
-def select_points(message='Select multiple points.'):
+def select_points(message="Select multiple points."):
     """Select multiple points in the Rhino view.
 
     Parameters
@@ -460,7 +465,9 @@ def select_points(message='Select multiple points.'):
 
     """
     guids = []
-    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.point)
+    temp = rs.GetObjects(
+        message, preselect=True, select=True, group=False, filter=rs.filter.point
+    )
     if temp:
         guids = temp
     return guids
@@ -535,18 +542,33 @@ def is_curve_line(guid):
         False otherwise.
 
     """
-    return rs.IsCurve(guid) and rs.IsLine(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) == 2
+    return (
+        rs.IsCurve(guid)
+        and rs.IsLine(guid)
+        and rs.CurveDegree(guid) == 1
+        and len(rs.CurvePoints(guid)) == 2
+    )
 
 
 def is_curve_polyline(guid):
-    return rs.IsCurve(guid) and rs.IsPolyline(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2
+    return (
+        rs.IsCurve(guid)
+        and rs.IsPolyline(guid)
+        and rs.CurveDegree(guid) == 1
+        and len(rs.CurvePoints(guid)) > 2
+    )
 
 
 def is_curve_polygon(guid):
-    return rs.IsCurve(guid) and rs.IsCurveClosed(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2
+    return (
+        rs.IsCurve(guid)
+        and rs.IsCurveClosed(guid)
+        and rs.CurveDegree(guid) == 1
+        and len(rs.CurvePoints(guid)) > 2
+    )
 
 
-def select_curve(message='Select one curve.'):
+def select_curve(message="Select one curve."):
     """Select one curve in the Rhino view.
 
     Parameters
@@ -563,7 +585,7 @@ def select_curve(message='Select one curve.'):
     return rs.GetObject(message, preselect=True, select=True, filter=rs.filter.curve)
 
 
-def select_curves(message='Select multiple curves.'):
+def select_curves(message="Select multiple curves."):
     """Select multiple curves in the Rhino view.
 
     Parameters
@@ -578,13 +600,15 @@ def select_curves(message='Select multiple curves.'):
 
     """
     guids = []
-    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
+    temp = rs.GetObjects(
+        message, preselect=True, select=True, group=False, filter=rs.filter.curve
+    )
     if temp:
         guids = temp
     return guids
 
 
-def select_line(message='Select line.'):
+def select_line(message="Select line."):
     """Select one line in the Rhino view.
 
     Parameters
@@ -604,7 +628,7 @@ def select_line(message='Select line.'):
     return None
 
 
-def select_lines(message='Select multiple lines.'):
+def select_lines(message="Select multiple lines."):
     """Select multiple lines in the Rhino view.
 
     Parameters
@@ -619,7 +643,9 @@ def select_lines(message='Select multiple lines.'):
 
     """
     guids = []
-    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
+    temp = rs.GetObjects(
+        message, preselect=True, select=True, group=False, filter=rs.filter.curve
+    )
     if temp:
         for guid in temp:
             if is_curve_line(guid):
@@ -627,7 +653,9 @@ def select_lines(message='Select multiple lines.'):
     return guids
 
 
-def select_polyline(message='Select one polyline (curve with degree = 1, and multiple segments).'):
+def select_polyline(
+    message="Select one polyline (curve with degree = 1, and multiple segments).",
+):
     """Select one polyline in the Rhino view.
 
     Parameters
@@ -647,7 +675,9 @@ def select_polyline(message='Select one polyline (curve with degree = 1, and mul
     return None
 
 
-def select_polylines(message='Select multiple polylines (curves with degree = 1, and multiple segments).'):
+def select_polylines(
+    message="Select multiple polylines (curves with degree = 1, and multiple segments).",
+):
     """Select multiple polylines in the Rhino view.
 
     Parameters
@@ -662,7 +692,9 @@ def select_polylines(message='Select multiple polylines (curves with degree = 1,
 
     """
     guids = []
-    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
+    temp = rs.GetObjects(
+        message, preselect=True, select=True, group=False, filter=rs.filter.curve
+    )
     if temp:
         for guid in temp:
             if is_curve_polyline(guid):
@@ -670,7 +702,7 @@ def select_polylines(message='Select multiple polylines (curves with degree = 1,
     return guids
 
 
-def select_polygon(message='Select one polygon (closed curve with degree = 1)'):
+def select_polygon(message="Select one polygon (closed curve with degree = 1)"):
     """Select one polygon in the Rhino view.
 
     Parameters
@@ -690,7 +722,7 @@ def select_polygon(message='Select one polygon (closed curve with degree = 1)'):
     return None
 
 
-def select_polygons(message='Select multiple polygons (closed curves with degree = 1)'):
+def select_polygons(message="Select multiple polygons (closed curves with degree = 1)"):
     """Select multiple polygons in the Rhino view.
 
     Parameters
@@ -705,7 +737,9 @@ def select_polygons(message='Select multiple polygons (closed curves with degree
 
     """
     guids = []
-    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
+    temp = rs.GetObjects(
+        message, preselect=True, select=True, group=False, filter=rs.filter.curve
+    )
     if temp:
         for guid in temp:
             if is_curve_polygon(guid):
@@ -923,7 +957,7 @@ def get_polygon_coordinates(guids):
 # ==============================================================================
 
 
-def select_surface(message='Select one surface.'):
+def select_surface(message="Select one surface."):
     """Select one surface in the Rhino view.
 
     Parameters
@@ -938,11 +972,14 @@ def select_surface(message='Select one surface.'):
 
     """
     return rs.GetObject(
-        message, preselect=True, select=True,
-        filter=rs.filter.surface | rs.filter.polysurface)
+        message,
+        preselect=True,
+        select=True,
+        filter=rs.filter.surface | rs.filter.polysurface,
+    )
 
 
-def select_surfaces(message='Select multiple surfaces.'):
+def select_surfaces(message="Select multiple surfaces."):
     """Select multiple surfaces in the Rhino view.
 
     Parameters
@@ -958,8 +995,12 @@ def select_surfaces(message='Select multiple surfaces.'):
     """
     guids = []
     temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False,
-        filter=rs.filter.surface | rs.filter.polysurface)
+        message,
+        preselect=True,
+        select=True,
+        group=False,
+        filter=rs.filter.surface | rs.filter.polysurface,
+    )
     if temp:
         guids = temp
     return guids
@@ -970,7 +1011,7 @@ def select_surfaces(message='Select multiple surfaces.'):
 # ==============================================================================
 
 
-def select_mesh(message='Select one mesh.'):
+def select_mesh(message="Select one mesh."):
     """Select one mesh in the Rhino view.
 
     Parameters
@@ -984,13 +1025,10 @@ def select_mesh(message='Select one mesh.'):
         The identifer of the selected mesh.
 
     """
-    return rs.GetObject(
-        message, preselect=True, select=True,
-        filter=rs.filter.mesh
-    )
+    return rs.GetObject(message, preselect=True, select=True, filter=rs.filter.mesh)
 
 
-def select_meshes(message='Select multiple meshes.'):
+def select_meshes(message="Select multiple meshes."):
     """Select multiple meshes in the Rhino view.
 
     Parameters
@@ -1005,7 +1043,9 @@ def select_meshes(message='Select multiple meshes.'):
 
     """
     guids = []
-    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.mesh)
+    temp = rs.GetObjects(
+        message, preselect=True, select=True, group=False, filter=rs.filter.mesh
+    )
     if temp:
         guids = temp
     return guids
@@ -1072,8 +1112,9 @@ def get_mesh_vertex_index(guid):
     class CustomGetObject(Rhino.Input.Custom.GetObject):
         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
             return guid == rhino_object.Id
+
     go = CustomGetObject()
-    go.SetCommandPrompt('Select one vertex of the mesh.')
+    go.SetCommandPrompt("Select one vertex of the mesh.")
     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshVertex
     go.AcceptNothing(True)
     if go.Get() != Rhino.Input.GetResult.Object:
@@ -1094,8 +1135,9 @@ def get_mesh_face_index(guid):
     class CustomGetObject(Rhino.Input.Custom.GetObject):
         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
             return guid == rhino_object.Id
+
     go = CustomGetObject()
-    go.SetCommandPrompt('Select one face of the mesh.')
+    go.SetCommandPrompt("Select one face of the mesh.")
     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshFace
     go.AcceptNothing(True)
     if go.Get() != Rhino.Input.GetResult.Object:
@@ -1112,8 +1154,9 @@ def get_mesh_edge_index(guid):
     class CustomGetObject(Rhino.Input.Custom.GetObject):
         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
             return guid == rhino_object.Id
+
     go = CustomGetObject()
-    go.SetCommandPrompt('Select an edge of the mesh.')
+    go.SetCommandPrompt("Select an edge of the mesh.")
     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshEdge
     go.AcceptNothing(True)
     if go.Get() != Rhino.Input.GetResult.Object:
@@ -1127,7 +1170,7 @@ def get_mesh_edge_index(guid):
 
 
 def get_mesh_vertex_indices(guid):
-    tvindices = rs.GetMeshVertices(guid, 'Select mesh vertices.')
+    tvindices = rs.GetMeshVertices(guid, "Select mesh vertices.")
     if not tvindices:
         return
     mobj = sc.doc.Objects.Find(guid)
@@ -1140,7 +1183,7 @@ def get_mesh_vertex_indices(guid):
 
 
 def get_mesh_face_indices(guid):
-    return rs.GetMeshFaces(guid, 'Select mesh faces.')
+    return rs.GetMeshFaces(guid, "Select mesh faces.")
 
 
 def get_mesh_vertex_face_indices(guid):
