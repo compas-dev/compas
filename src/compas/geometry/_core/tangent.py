@@ -56,4 +56,3 @@ def tangent_points_to_circle_xy(circle, point):
     t2 = cx + A * a[0] - B * b[0], cy + A * a[1] - B * b[1], 0
 
     return t1, t2
-    
