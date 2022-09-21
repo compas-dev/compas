@@ -198,6 +198,7 @@ from .drawing import (
     draw_circles,
     draw_curves,
     draw_surfaces,
+    draw_brep,
 )
 from .geometry import uv_points_from_surface
 from .constructors import volmesh_from_polysurfaces
@@ -297,6 +298,7 @@ __all__ = [
     "draw_circles",
     "draw_curves",
     "draw_surfaces",
+    "draw_brep",
     "uv_points_from_surface",
     "volmesh_from_polysurfaces",
 ]

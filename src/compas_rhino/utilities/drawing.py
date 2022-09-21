@@ -82,6 +82,7 @@ __all__ = [
     "draw_mesh",
     "draw_circles",
     "draw_surfaces",
+    "draw_brep",
 ]
 
 
@@ -1096,3 +1097,25 @@ def draw_surfaces(surfaces, **kwargs):
         obj.CommitChanges()
         guids.append(guid)
     return guids
+
+
+@wrap_drawfunc
+def draw_brep(brep, **kwargs):
+    """Draw a brep to the Rhino document.
+
+    Parameters
+    ----------
+    brep : :class:`~compas_rhino.geometry.RhinoBrep`
+        The brep to draw.
+
+    Returns
+    -------
+    :rhino:`System.Guid`
+        The Rhino document GUID of the drawn Brep.
+
+    """
+    guid = add_brep(brep.native_brep)
+    if guid:
+        obj = find_object(guid)
+        # TODO: something here?
+    return guid
