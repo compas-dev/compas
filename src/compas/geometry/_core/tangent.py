@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import math
+from math import sqrt
 
 
 __all__ = ["tangent_points_to_circle_xy"]
