@@ -11,6 +11,7 @@ class BrepArtist(RhinoArtist):
         The Brep to draw.
 
     """
+
     def __init__(self, brep):
         super(BrepArtist, self).__init__()
         self._brep = brep
