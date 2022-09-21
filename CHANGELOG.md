@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added boolean operation operator overloads in `compas.geometry.Brep`
 * Added `format` task using `black` formatter.
 
+* Added a `test_intersection_circle_circle_xy` in the `test_intersections`
+
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`
 
@@ -27,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed linter to `black`.
 * Automatically trigger `invoke format` during `invoke release`.
 
+* Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
+* Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
+* Fixed the `test_tangent` to work with a properly defined circle
 ### Removed
 
 

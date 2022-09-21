@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import math
+from math import sqrt
 
 
 __all__ = ["tangent_points_to_circle_xy"]
@@ -14,7 +14,7 @@ def tangent_points_to_circle_xy(circle, point):
     Parameters
     ----------
     circle : [plane, float] | :class:`~compas.geometry.Circle`
-        center, radius of the circle in the xy plane.
+        Plane and radius of the circle.
     point : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a point in the xy plane.
 
@@ -26,7 +26,7 @@ def tangent_points_to_circle_xy(circle, point):
     Examples
     --------
     >>> from compas.geometry import allclose
-    >>> circle = (0, 0, 0), 1.0
+    >>> circle = ((0, 0, 0), (0, 0, 1)), 1.0
     >>> point = (2, 4, 0)
     >>> t1, t2 = tangent_points_to_circle_xy(circle, point)
     >>> allclose(t1, [-0.772, 0.636, 0.000], 1e-3)
@@ -34,17 +34,25 @@ def tangent_points_to_circle_xy(circle, point):
     >>> allclose(t2, [0.972, -0.236, 0.000], 1e-3)
     True
     """
-    m, r = circle[0], circle[1]
-    cx, cy = m[0], m[1]
-    px = point[0] - cx
-    py = point[1] - cy
+    plane, R = circle
+    center, _ = plane
 
-    a1 = r * (px * r - py * math.sqrt(px**2 + py**2 - r**2)) / (px**2 + py**2)
-    a2 = r * (px * r + py * math.sqrt(px**2 + py**2 - r**2)) / (px**2 + py**2)
+    cx, cy = center[:2]
+    px, py = point[:2]
 
-    b1 = (r**2 - px * a1) / py
-    b2 = (r**2 - px * a2) / py
+    dx = px - cx
+    dy = py - cy
 
-    p1 = [a1 + cx, b1 + cy, 0]
-    p2 = [a2 + cx, b2 + cy, 0]
-    return p1, p2
+    D = sqrt(dx**2 + dy**2)
+    L2 = D**2 - R**2
+
+    a = dx / D, dy / D
+    b = -a[1], a[0]
+
+    A = D - L2 / D
+    B = sqrt(R**2 - A**2)
+
+    t1 = cx + A * a[0] + B * b[0], cy + A * a[1] + B * b[1], 0
+    t2 = cx + A * a[0] - B * b[0], cy + A * a[1] - B * b[1], 0
+
+    return t1, t2
