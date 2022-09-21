@@ -35,6 +35,7 @@ Primitive Artists
     SurfaceArtist
     TorusArtist
     VectorArtist
+    BrepArtist
 
 
 Datastructure Artists
@@ -91,6 +92,7 @@ from compas.geometry import Sphere
 from compas.geometry import Surface
 from compas.geometry import Torus
 from compas.geometry import Vector
+from compas.geometry import Brep
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
@@ -119,6 +121,7 @@ from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
 from .vectorartist import VectorArtist
 from .volmeshartist import VolMeshArtist
+from .brepartist import BrepArtist
 
 
 ShapeArtist.default_color = (255, 255, 255)
@@ -160,6 +163,7 @@ def register_artists():
     Artist.register(Torus, TorusArtist, context="Grasshopper")
     Artist.register(Vector, VectorArtist, context="Grasshopper")
     Artist.register(VolMesh, VolMeshArtist, context="Grasshopper")
+    Artist.register(Brep, BrepArtist, context="Grasshopper")
     print("GH Artists registered.")
 
 
