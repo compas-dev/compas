@@ -46,7 +46,7 @@ class RhinoCylinder(RhinoGeometry):
                 faces = geometry.Faces
                 geometry = None
                 for face in faces:
-                    if face.IsCylinder():
+                    if face.IsCylinder(0.001):
                         result, geometry = face.TryGetFiniteCylinder(0.001)
                         if result:
                             break
