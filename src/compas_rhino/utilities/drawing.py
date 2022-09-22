@@ -1100,13 +1100,15 @@ def draw_surfaces(surfaces, **kwargs):
 
 
 @wrap_drawfunc
-def draw_brep(brep, **kwargs):
+def draw_brep(brep, color=None, **kwargs):
     """Draw a brep to the Rhino document.
 
     Parameters
     ----------
     brep : :class:`~compas_rhino.geometry.RhinoBrep`
         The brep to draw.
+    color : tuple[int, int, int] | tuple[float, float, float], optional
+        The color to draw the brep with.
 
     Returns
     -------
@@ -1114,8 +1116,8 @@ def draw_brep(brep, **kwargs):
         The Rhino document GUID of the drawn Brep.
 
     """
-    guid = add_brep(brep.native_brep)
-    if guid:
-        obj = find_object(guid)
-        # TODO: something here?
-    return guid
+    native_brep = brep.native_brep
+    if color:
+        for face in native_brep.Faces:
+            face.PerFaceColor = FromArgb(*color)
+    return add_brep(native_brep)

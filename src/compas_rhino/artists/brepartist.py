@@ -16,7 +16,7 @@ class BrepArtist(RhinoArtist):
         super(BrepArtist, self).__init__()
         self._brep = brep
 
-    def draw(self):
+    def draw(self, color=None):
         """Bakes the Brep into the current document
 
         Returns
@@ -25,4 +25,4 @@ class BrepArtist(RhinoArtist):
             The guid of the baked Brep.
 
         """
-        return [compas_rhino.draw_brep(self._brep)]
+        return [compas_rhino.draw_brep(self._brep, color)]
