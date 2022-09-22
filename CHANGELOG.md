@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `format` task using `black` formatter.
 
 * Added a `test_intersection_circle_circle_xy` in the `test_intersections`
+* Added split operation to `compas_rhino.geometry.Brep`.
 
 ### Changed
 * Based all gltf data classes on `BaseGLTFDataClass`

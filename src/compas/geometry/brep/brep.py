@@ -911,13 +911,13 @@ class Brep(Geometry):
 
         """
 
-    def split(self, other):
+    def split(self, cutter):
         """Slice through the BRep with a plane.
 
         Parameters
         ----------
-        other : :class:`~compas.geomtery.Brep`
-            Another Brep.
+        cutter : :class:`~compas.geomtery.Brep`
+            Another Brep to use as a cutter.
 
         Returns
         -------
