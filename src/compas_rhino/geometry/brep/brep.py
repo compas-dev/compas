@@ -312,6 +312,23 @@ class RhinoBrep(Brep):
         )
         return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
 
+    def split(self, cutter):
+        """Splits a Brep into pieces using a Brep as a cutter.
+
+        Parameters
+        ----------
+        cutter : :class:`~compas_rhino.geometry.RhinoBrep`
+            Another Brep to use as a cutter.
+
+        Returns
+        -------
+        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+            list of zero or more resulting Breps.
+
+        """
+        resulting_breps = self._brep.Split(cutter.native_brep, TOLERANCE)
+        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+
     # ==============================================================================
     # Other Methods
     # ==============================================================================
