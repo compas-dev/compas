@@ -1,6 +1,7 @@
 from compas.geometry import allclose
 from compas.geometry import intersection_sphere_line
 from compas.geometry import intersection_plane_circle
+from compas.geometry import intersection_circle_circle_xy
 
 
 def test_intersection_sphere_line():
@@ -17,3 +18,11 @@ def test_intersection_plane_circle():
     ipt1, ipt2 = intersection_plane_circle(plane, circle)
     assert allclose(ipt1, (-6.165, 7.000, 0.000), tol=1e-3)
     assert allclose(ipt2, (12.165, 7.000, 0.000), tol=1e-3)
+
+
+def test_intersection_circle_circle_xy():
+    circle1 = ((0.0, 0.0, 0.0), (0, 0, 1)), 10.0
+    circle2 = ((3.0, 7.0, 0.0), (0, 0, 1)), 10.0
+    ipt1, ipt2 = intersection_circle_circle_xy(circle1, circle2)
+    assert allclose(ipt1, (9.999, -0.142, 0.000), tol=1e-3)
+    assert allclose(ipt2, (-6.999, 7.142, 0.000), tol=1e-3)
