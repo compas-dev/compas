@@ -581,7 +581,7 @@ def intersection_segment_polyline(segment, polyline, tol=1e-6):
     """
     for cd in pairwise(polyline):
         pt = intersection_segment_segment(segment, cd, tol)
-        if pt:
+        if pt != (None, None):
             return pt
 
 
