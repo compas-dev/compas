@@ -5,8 +5,11 @@ from compas.geometry import Circle
 from compas_rhino.geometry import RhinoNurbsCurve
 from compas_rhino.conversions import curve_to_compas_line
 from compas_rhino.conversions import curve_to_compas_circle
+from compas_rhino.conversions import curve_to_compas_ellipse
 from compas_rhino.conversions import line_to_rhino_curve
 from compas_rhino.conversions import circle_to_rhino_curve
+from compas_rhino.conversions import ellipse_to_rhino_curve
+
 
 from .vertex import RhinoBrepVertex
 
@@ -58,6 +61,9 @@ class RhinoBrepEdge(BrepEdge):
         elif self.is_circle:
             type_ = "circle"
             curve = curve_to_compas_circle(self._curve)
+        elif self.is_ellipse:
+            type_ = "ellipse"
+            curve = curve_to_compas_ellipse(self._curve)
         else:
             type_ = "nurbs"
             curve = RhinoNurbsCurve.from_rhino(self._curve)
@@ -78,9 +84,11 @@ class RhinoBrepEdge(BrepEdge):
             self._curve = circle_to_rhino_curve(
                 Circle.from_data(value["value"])
             )  # this returns a Nurbs Curve, why?
+        elif curve_type == "ellipse":
+            self._curve = ellipse_to_rhino_curve(value["value"])
         else:
             self._curve = RhinoNurbsCurve.from_data(value["value"]).rhino_curve
-        # TODO: can a single edge be defined with more than start and end vertices?
+
         self._start_vertex, self._end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
         self._start_vertex._point = Point.from_data(value["points"][0])
         self._end_vertex._point = Point.from_data(value["points"][1])
@@ -112,3 +120,7 @@ class RhinoBrepEdge(BrepEdge):
     @property
     def is_line(self):
         return self._curve.IsLinear()
+
+    @property
+    def is_ellipse(self):
+        return self._curve.IsEllipse()
