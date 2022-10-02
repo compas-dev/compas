@@ -10,6 +10,9 @@ from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import plane_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import cylinder_to_rhino
 
 from compas_rhino.geometry.curves import RhinoCurve
 
@@ -75,6 +78,35 @@ class RhinoSurface(Surface):
     # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_plane(cls, plane, u_interval, v_interval, u_degree, v_degree, u_point_count, v_point_count):
+        plane = plane_to_rhino(plane)
+        u_interval = Rhino.Geometry.Interval(u_interval[0], u_interval[1])
+        v_interval = Rhino.Geometry.Interval(v_interval[0], v_interval[1])
+        rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(plane, u_interval, v_interval, u_degree, v_degree, u_point_count, v_point_count)
+        return cls.from_rhino(rhino_surface)
+
+    @classmethod
+    def from_corners(cls, corners):
+        rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
+        return cls.from_rhino(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
+
+    @classmethod
+    def from_sphere(cls, sphere):
+        sphere = sphere_to_rhino(sphere)
+        surface = Rhino.Geometry.NurbsSurface.CreateFromSphere(sphere)
+        return cls.from_rhino(surface)
+
+    @classmethod
+    def from_cylinder(cls, cylinder):
+        cylinder = cylinder_to_rhino(cylinder)
+        surface = Rhino.Geometry.NurbsSurface.CreateFromCylinder(cylinder)
+        return cls.from_rhino(surface)
+
+    @classmethod
+    def from_torus(cls, cylinder):
+        raise NotImplementedError
 
     @classmethod
     def from_rhino(cls, rhino_surface):
@@ -255,3 +287,21 @@ class RhinoSurface(Surface):
         """
         box = self.rhino_surface.GetBoundingBox(optimal)
         return box_to_compas(Rhino.Geometry.Box(box))
+
+    def extend_u_by(self, value):
+        self._extend_domain(0, value)
+
+    def extend_v_by(self, value):
+        self._extend_domain(1, value)
+
+    def _extend_domain(self, domain, value):
+        if not (domain == 0 or domain == 1):
+            raise ValueError("Expected domain: 0 or 1")
+        lower = self.rhino_surface.Domain(domain)[0]
+        upper = self.rhino_surface.Domain(domain)[1]
+        self.rhino_surface.Extend(domain, Rhino.Geometry.Interval(lower - value, upper + value))
+
+    def reverse(self):
+        brep = self.rhino_surface.ToBrep()
+        brep.Flip()
+        self.rhino_surface = brep.Surfaces[0]
