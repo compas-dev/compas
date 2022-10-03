@@ -190,7 +190,7 @@ class RhinoSurface(Surface):
 
         """
         surface_curvature = self.rhino_surface.CurvatureAt(u, v)
-        vector = surface_curvature.Normal
+        vector = surface_curvature.Direction()
         return vector_to_compas(vector)
 
     def frame_at(self, u, v):
