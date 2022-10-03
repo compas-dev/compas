@@ -38,16 +38,18 @@ class RhinoBrepEdge(BrepEdge):
         super(RhinoBrepEdge, self).__init__()
         self._edge = None
         self._curve = None
-        self._start_vertex = None
-        self._end_vertex = None
+        self.start_vertex = None
+        self.end_vertex = None
         if rhino_edge:
             self._set_edge(rhino_edge)
 
     def _set_edge(self, native_edge):
+        print("creating Edge object. nativ:{}".format(native_edge))
         self._edge = native_edge
         self._curve = self._edge.EdgeCurve
-        self._start_vertex = RhinoBrepVertex(self._edge.StartVertex)
-        self._end_vertex = RhinoBrepVertex(self._edge.EndVertex)
+        # print("creating Edge object. StartVertex:{} EndVertex:{}".format(self._edge.StartVertex.Location, self._edge.EndVertex.Location))
+        # self._curve_start = RhinoBrepVertex(self._edge.StartVertex)
+        # self._curve_end = RhinoBrepVertex(self._edge.EndVertex)
 
     # ==============================================================================
     # Data
@@ -70,7 +72,7 @@ class RhinoBrepEdge(BrepEdge):
         return {
             "type": type_,
             "value": curve.data,
-            "points": [self._start_vertex.point.data, self._end_vertex.point.data],
+            "points": [self.start_vertex.point.data, self.end_vertex.point.data],
         }
 
     @data.setter
@@ -89,9 +91,9 @@ class RhinoBrepEdge(BrepEdge):
         else:
             self._curve = RhinoNurbsCurve.from_data(value["value"]).rhino_curve
 
-        self._start_vertex, self._end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
-        self._start_vertex._point = Point.from_data(value["points"][0])
-        self._end_vertex._point = Point.from_data(value["points"][1])
+        self.start_vertex, self.end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
+        self.start_vertex._point = Point.from_data(value["points"][0])
+        self.end_vertex._point = Point.from_data(value["points"][1])
 
     # ==============================================================================
     # Properties
@@ -101,17 +103,17 @@ class RhinoBrepEdge(BrepEdge):
     def curve(self):
         return self._curve
 
-    @property
-    def start_vertex(self):
-        return self._start_vertex
-
-    @property
-    def end_vertex(self):
-        return self._end_vertex
+    # @property
+    # def start_vertex(self):
+    #     return self._start_vertex
+    #
+    # @property
+    # def end_vertex(self):
+    #     return self._end_vertex
 
     @property
     def vertices(self):
-        return [self._start_vertex, self._end_vertex]
+        return [self.start_vertex, self.end_vertex]
 
     @property
     def is_circle(self):

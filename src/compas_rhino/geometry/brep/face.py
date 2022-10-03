@@ -103,18 +103,18 @@ class RhinoBrepFace(BrepFace):
 
     @staticmethod
     def _get_surface_geometry(surface):
-        # success, cast_surface = surface.TryGetPlane()
-        # if success:
-        #     return "plane", plane_to_compas(cast_surface)
-        # success, cast_surface = surface.TryGetSphere()
-        # if success:
-        #     return "sphere", sphere_to_compas(cast_surface)
-        # success, cast_surface = surface.TryGetCylinder()
-        # if success:
-        #     return "cylinder", cylinder_to_compas(cast_surface)
-        # success, cast_surface = surface.TryGetTorus()
-        # if success:
-        #     raise NotImplementedError("Support for torus surface is not yet implemented!")
+        success, cast_surface = surface.TryGetPlane()
+        if success:
+            return "plane", plane_to_compas(cast_surface)
+        success, cast_surface = surface.TryGetSphere()
+        if success:
+            return "sphere", sphere_to_compas(cast_surface)
+        success, cast_surface = surface.TryGetCylinder()
+        if success:
+            return "cylinder", cylinder_to_compas(cast_surface)
+        success, cast_surface = surface.TryGetTorus()
+        if success:
+            raise NotImplementedError("Support for torus surface is not yet implemented!")
         return "nurbs", RhinoNurbsSurface.from_rhino(surface.ToNurbsSurface())
 
     # @staticmethod
@@ -130,9 +130,10 @@ class RhinoBrepFace(BrepFace):
     @staticmethod
     def _make_surface_from_plane_loop(plane, loop):
         # TODO: replace guesswork here with an actual calculation..
-        c0 = loop.edges[0].start_point
-        c1 = loop.edges[1].start_point
-        c2 = loop.edges[2].start_point
-        c3 = loop.edges[3].start_point
-        surface = RhinoNurbsSurface.from_corners([c3, c2, c1, c0])
+        c0 = loop.edges[0].start_vertex._point
+        c1 = loop.edges[1].start_vertex._point
+        c2 = loop.edges[2].start_vertex._point
+        c3 = loop.edges[3].start_vertex._point
+        # flipped order flips the normal of the resulting surface!
+        surface = RhinoNurbsSurface.from_corners([c0, c1, c2, c3])
         return surface
