@@ -189,7 +189,8 @@ class RhinoSurface(Surface):
         :class:`~compas.geometry.Vector`
 
         """
-        vector = self.rhino_surface.CurvatureAt(u, v)
+        surface_curvature = self.rhino_surface.CurvatureAt(u, v)
+        vector = surface_curvature.Normal
         return vector_to_compas(vector)
 
     def frame_at(self, u, v):
