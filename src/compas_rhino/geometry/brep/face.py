@@ -52,23 +52,28 @@ class RhinoBrepFace(BrepFace):
         boundary = self._loops[0].data
         holes = [loop.data for loop in self._loops[1:]]
         surface_type, surface = self._get_surface_geometry(self._surface)
-        return {"boundary": boundary, "holes": holes, "surface_type": surface_type, "surface": surface}
+        surface_data = {"value": surface.data, "type": surface_type}
+        return {"boundary": boundary, "surface": surface_data, "holes": holes}
 
     @data.setter
     def data(self, value):
         boundary = RhinoBrepLoop.from_data(value["boundary"])
         holes = [RhinoBrepLoop.from_data(loop) for loop in value["holes"]]
         self._loops = [boundary] + holes
-        type_ = value["surface_type"]
+
         # TODO: using the new serialization mechanism, surface.to_nurbs() should replace all this branching..
         # TODO: given that Plane, Sphere, Cylinder etc. all implement to_nurbs()
-        surface = value["surface"]
+        surface_data = value["surface"]
+        type_ = surface_data["type"]
+        surface = surface_data["value"]
         if type_ == "plane":
-            surface = self._make_surface_from_plane_loop(surface, boundary)
+            surface = self._make_surface_from_loop(boundary)
         elif type_ == "sphere":
-            surface = RhinoNurbsSurface.from_sphere(surface)
+            surface = RhinoNurbsSurface.from_sphere(Sphere.from_data(surface))
         elif type_ == "cylinder":
-            surface = RhinoNurbsSurface.from_cylinder(surface)
+            surface = RhinoNurbsSurface.from_cylinder(Cylinder.from_data(surface))
+        elif type_ == "nurbs":
+            surface = RhinoNurbsSurface.from_data(surface)
         elif type_ == "torus":
             raise NotImplementedError("Support for torus surface is not yet implemented!")
         self._surface = surface.rhino_surface
@@ -118,7 +123,7 @@ class RhinoBrepFace(BrepFace):
         return "nurbs", RhinoNurbsSurface.from_rhino(surface.ToNurbsSurface())
 
     @staticmethod
-    def _make_surface_from_plane_loop(plane, loop):
+    def _make_surface_from_loop(loop):
         # order of corners determines the normal of the resulting surface
         corners = [loop.edges[i].start_vertex.point for i in range(4)]
         surface = RhinoNurbsSurface.from_corners(corners)
