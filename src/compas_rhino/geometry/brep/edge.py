@@ -15,16 +15,20 @@ from .vertex import RhinoBrepVertex
 
 
 class RhinoBrepEdge(BrepEdge):
-    """A wrapper for Rhino.Geometry.BrepEdge
+    """A wrapper for Rhino.Geometry.BrepEdge.
+
+    The expected native type here is a Rhino.Geometry.BrepTrim.
+    a BrepTrim holds a reference to its associated BrepEdge as well as its start a end vertices
+    in a correct topological order (!).
 
     Attributes
     ----------
     curve : :class:`Rhino.Geometry.Curve3D`
         The underlying geometry of this edge.
     start_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
-        The start vertex of this edge.
+        The start vertex of this edge (taken from BrepTrim).
     end_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
-        The end vertex of this edge.
+        The end vertex of this edge (taken from BrepTrim).
     vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
         The list of vertices which comprise this edge (start and end)
     is_circle : bool, read-only
@@ -34,22 +38,20 @@ class RhinoBrepEdge(BrepEdge):
 
     """
 
-    def __init__(self, rhino_edge=None):
+    def __init__(self, rhino_trim=None):
         super(RhinoBrepEdge, self).__init__()
         self._edge = None
         self._curve = None
-        self.start_vertex = None
-        self.end_vertex = None
-        if rhino_edge:
-            self._set_edge(rhino_edge)
+        self._start_vertex = None
+        self._end_vertex = None
+        if rhino_trim:
+            self._set_edge(rhino_trim)
 
-    def _set_edge(self, native_edge):
-        print("creating Edge object. nativ:{}".format(native_edge))
-        self._edge = native_edge
+    def _set_edge(self, rhino_trim):
+        self._edge = rhino_trim.Edge
         self._curve = self._edge.EdgeCurve
-        # print("creating Edge object. StartVertex:{} EndVertex:{}".format(self._edge.StartVertex.Location, self._edge.EndVertex.Location))
-        # self._curve_start = RhinoBrepVertex(self._edge.StartVertex)
-        # self._curve_end = RhinoBrepVertex(self._edge.EndVertex)
+        self._start_vertex = RhinoBrepVertex(rhino_trim.StartVertex)
+        self._end_vertex = RhinoBrepVertex(rhino_trim.EndVertex)
 
     # ==============================================================================
     # Data
@@ -91,9 +93,9 @@ class RhinoBrepEdge(BrepEdge):
         else:
             self._curve = RhinoNurbsCurve.from_data(value["value"]).rhino_curve
 
-        self.start_vertex, self.end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
-        self.start_vertex._point = Point.from_data(value["points"][0])
-        self.end_vertex._point = Point.from_data(value["points"][1])
+        self._start_vertex, self._end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
+        self._start_vertex._point = Point.from_data(value["points"][0])
+        self._end_vertex._point = Point.from_data(value["points"][1])
 
     # ==============================================================================
     # Properties
@@ -103,13 +105,13 @@ class RhinoBrepEdge(BrepEdge):
     def curve(self):
         return self._curve
 
-    # @property
-    # def start_vertex(self):
-    #     return self._start_vertex
-    #
-    # @property
-    # def end_vertex(self):
-    #     return self._end_vertex
+    @property
+    def start_vertex(self):
+        return self._start_vertex
+
+    @property
+    def end_vertex(self):
+        return self._end_vertex
 
     @property
     def vertices(self):

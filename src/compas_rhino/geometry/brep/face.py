@@ -117,23 +117,9 @@ class RhinoBrepFace(BrepFace):
             raise NotImplementedError("Support for torus surface is not yet implemented!")
         return "nurbs", RhinoNurbsSurface.from_rhino(surface.ToNurbsSurface())
 
-    # @staticmethod
-    # def _make_surface_from_plane_loop(plane, loop):
-    #     # TODO: replace guesswork here with an actual calculation..
-    #     u_degree, v_degree = 1, 1
-    #     u_p_count, v_p_count = 2, 2
-    #     curve_lengths = [edge.curve.GetLength() for edge in loop.edges]
-    #     max_length = max(curve_lengths)
-    #     u_interval, v_interval = (0.0, max_length), (0.0, max_length)
-    #     return RhinoNurbsSurface.from_plane(plane, u_interval, v_interval, u_degree, v_degree, u_p_count, v_p_count)
-
     @staticmethod
     def _make_surface_from_plane_loop(plane, loop):
-        # TODO: replace guesswork here with an actual calculation..
-        c0 = loop.edges[0].start_vertex._point
-        c1 = loop.edges[1].start_vertex._point
-        c2 = loop.edges[2].start_vertex._point
-        c3 = loop.edges[3].start_vertex._point
-        # flipped order flips the normal of the resulting surface!
-        surface = RhinoNurbsSurface.from_corners([c0, c1, c2, c3])
+        # order of corners determines the normal of the resulting surface
+        corners = [loop.edges[i].start_vertex.point for i in range(4)]
+        surface = RhinoNurbsSurface.from_corners(corners)
         return surface
