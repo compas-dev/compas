@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
 * Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
 * Fixed the `test_tangent` to work with a properly defined circle
-
+* `RhinoBrep` serialization works now with surface types other than NURBS.
 ### Removed
 
 
