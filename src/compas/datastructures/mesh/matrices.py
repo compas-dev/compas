@@ -59,10 +59,7 @@ def mesh_adjacency_matrix(mesh, rtype="array"):
 
     """
     key_index = mesh.key_index()
-    adjacency = [
-        [key_index[nbr] for nbr in mesh.vertex_neighbors(key)]
-        for key in mesh.vertices()
-    ]
+    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -132,10 +129,7 @@ def mesh_degree_matrix(mesh, rtype="array"):
 
     """
     key_index = mesh.key_index()
-    adjacency = [
-        [key_index[nbr] for nbr in mesh.vertex_neighbors(key)]
-        for key in mesh.vertices()
-    ]
+    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -192,9 +186,7 @@ def mesh_face_matrix(mesh, rtype="array"):
 
     """
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
-    face_vertices = [
-        [key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()
-    ]
+    face_vertices = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
     return face_matrix(face_vertices, rtype=rtype)
 
 

@@ -61,9 +61,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-        super().__init__(
-            primitive=vector, collection=collection or vector.name, **kwargs
-        )
+        super().__init__(primitive=vector, collection=collection or vector.name, **kwargs)
 
     def draw(
         self,

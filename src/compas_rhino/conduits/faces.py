@@ -68,9 +68,7 @@ class FacesConduit(BaseConduit):
             return
         if not is_sequence_of_iterable(color):
             color = [color]
-        color = [
-            FromArgb(*c) for c in iterable_like(self.faces, color, self.default_color)
-        ]
+        color = [FromArgb(*c) for c in iterable_like(self.faces, color, self.default_color)]
         self._color = color
 
     def DrawForeground(self, e):

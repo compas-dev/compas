@@ -135,9 +135,7 @@ def draw_texts(
 # replace this by a custom point shader
 # https://docs.blender.org/api/current/gpu.html#custom-shader-for-dotted-3d-line
 # https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
-def draw_points(
-    points: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> List[bpy.types.Object]:
+def draw_points(points: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw point objects.
 
     Parameters
@@ -175,9 +173,7 @@ def draw_points(
 # replace this by a custom pointcloud shader
 # https://docs.blender.org/api/current/gpu.html#custom-shader-for-dotted-3d-line
 # https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
-def draw_pointcloud(
-    points: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> bpy.types.Object:
+def draw_pointcloud(points: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> bpy.types.Object:
     """Draw point objects as a single cloud.
 
     Parameters
@@ -194,9 +190,7 @@ def draw_pointcloud(
     """
     P = len(points)
     N = len(str(P))
-    bpy.ops.mesh.primitive_uv_sphere_add(
-        location=[0, 0, 0], radius=1.0, segments=10, ring_count=10
-    )
+    bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=10, ring_count=10)
     empty = bpy.context.object
     _link_object(empty, collection)
     _set_object_color(empty, [1.0, 1.0, 1.0])
@@ -343,9 +337,7 @@ def draw_polygons(
     raise NotImplementedError
 
 
-def draw_faces(
-    faces: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> List[bpy.types.Object]:
+def draw_faces(faces: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw polygonal faces.
 
     Parameters
@@ -379,9 +371,7 @@ def draw_faces(
     return objects
 
 
-def draw_circles(
-    circles: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> List[bpy.types.Object]:
+def draw_circles(circles: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw circle objects as mesh primitives.
 
     Parameters
@@ -420,9 +410,7 @@ def draw_circles(
     return objects
 
 
-def draw_planes(
-    planes: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> List[bpy.types.Object]:
+def draw_planes(planes: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw plane objects as mesh primitives.
 
     Parameters
@@ -486,9 +474,7 @@ def draw_cylinders(
     from math import acos
     from math import atan2
 
-    bpy.ops.mesh.primitive_cylinder_add(
-        location=[0, 0, 0], radius=1, depth=1, vertices=uv
-    )
+    bpy.ops.mesh.primitive_cylinder_add(location=[0, 0, 0], radius=1, depth=1, vertices=uv)
     empty = bpy.context.object
     _link_object(empty, collection)
     objects = [0] * len(cylinders)
@@ -534,9 +520,7 @@ def draw_spheres(
     list[:blender:`bpy.types.Object`]
 
     """
-    bpy.ops.mesh.primitive_uv_sphere_add(
-        location=[0, 0, 0], radius=1.0, segments=uv, ring_count=uv
-    )
+    bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=uv, ring_count=uv)
     empty = bpy.context.object
     _link_object(empty, collection)
     objects = [0] * len(spheres)
@@ -555,9 +539,7 @@ def draw_spheres(
     return objects
 
 
-def draw_cubes(
-    cubes: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> List[bpy.types.Object]:
+def draw_cubes(cubes: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw cube objects as mesh primitives.
 
     Parameters
@@ -701,9 +683,7 @@ def draw_mesh(
 # ==============================================================================
 
 
-def draw_curves(
-    curves: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> List[bpy.types.Object]:
+def draw_curves(curves: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw curve objects.
 
     Parameters
@@ -747,9 +727,7 @@ def draw_curves(
     return objects
 
 
-def draw_surfaces(
-    surfaces: List[Dict], collection: Union[Text, bpy.types.Collection] = None
-) -> List[bpy.types.Object]:
+def draw_surfaces(surfaces: List[Dict], collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
     """Draw surface objects.
 
     Parameters

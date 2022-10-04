@@ -45,9 +45,7 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
 
     key_index = mesh.key_index()
     vertices = mesh.vertices_attributes("xyz")
-    faces = [
-        [key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()
-    ]
+    faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
     V = array(vertices)
     F = array(faces, dtype=int)
@@ -83,11 +81,7 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     unit_e12 = cross(unit, e12)
     unit_e20 = cross(unit, e20)
 
-    grad_u = (
-        unit_e01 * u[F[:, 2], None]
-        + unit_e12 * u[F[:, 0], None]
-        + unit_e20 * u[F[:, 1], None]
-    ) / A2
+    grad_u = (unit_e01 * u[F[:, 2], None] + unit_e12 * u[F[:, 0], None] + unit_e20 * u[F[:, 1], None]) / A2
 
     X = -grad_u / normrow(grad_u)
 

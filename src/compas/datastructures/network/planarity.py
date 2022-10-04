@@ -215,11 +215,7 @@ def network_is_planar_embedding(network):
         Fase otherwise.
 
     """
-    return (
-        network_is_planar(network)
-        and network_is_xy(network)
-        and not network_is_crossed(network)
-    )
+    return network_is_planar(network) and network_is_xy(network) and not network_is_crossed(network)
 
 
 def network_embed_in_plane(network, fixed=None, straightline=True):
@@ -259,11 +255,7 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
     xspan = xmax - xmin
     yspan = ymax - ymin
 
-    edges = [
-        (u, v)
-        for u, v in network.edges()
-        if not network.is_leaf(u) and not network.is_leaf(v)
-    ]
+    edges = [(u, v) for u, v in network.edges() if not network.is_leaf(u) and not network.is_leaf(v)]
 
     is_embedded = False
 

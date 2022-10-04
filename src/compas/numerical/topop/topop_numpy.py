@@ -32,9 +32,7 @@ from scipy.sparse.linalg import spsolve
 __all__ = ["topop_numpy"]
 
 
-def topop_numpy(
-    nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None
-):
+def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None):
     """Topology optimisation in 2D.
 
     Parameters
@@ -80,18 +78,10 @@ def topop_numpy(
     E = 1.0
     Emin = 10 ** (-10)
 
-    A11 = array(
-        [[12, +3, -6, -3], [+3, 12, +3, +0], [-6, +3, 12, -3], [-3, +0, -3, 12]]
-    )
-    A12 = array(
-        [[-6, -3, +0, +3], [-3, -6, -3, -6], [+0, -3, -6, +3], [+3, -6, +3, -6]]
-    )
-    B11 = array(
-        [[-4, +3, -2, +9], [+3, -4, -9, +4], [-2, -9, -4, -3], [+9, +4, -3, -4]]
-    )
-    B12 = array(
-        [[+2, -3, +4, -9], [-3, +2, +9, -2], [+4, +9, +2, +3], [-9, -2, +3, +2]]
-    )
+    A11 = array([[12, +3, -6, -3], [+3, 12, +3, +0], [-6, +3, 12, -3], [-3, +0, -3, 12]])
+    A12 = array([[-6, -3, +0, +3], [-3, -6, -3, -6], [+0, -3, -6, +3], [+3, -6, +3, -6]])
+    B11 = array([[-4, +3, -2, +9], [+3, -4, -9, +4], [-2, -9, -4, -3], [+9, +4, -3, -4]])
+    B12 = array([[+2, -3, +4, -9], [-3, +2, +9, -2], [+4, +9, +2, +3], [-9, -2, +3, +2]])
     A21 = A12.transpose()
     B21 = B12.transpose()
     A = vstack([hstack([A11, A12]), hstack([A21, A11])])
@@ -191,9 +181,7 @@ def topop_numpy(
 
         xrav = ravel(xP, order="F").transpose()
         sK = reshape(Ker * (Emin + xrav**penal * (E - Emin)), (64 * ne), order="F")
-        K = coo_matrix(
-            (sK, (asarray(iK, dtype=int64), asarray(jK, dtype=int64)))
-        ).tocsr()
+        K = coo_matrix((sK, (asarray(iK, dtype=int64), asarray(jK, dtype=int64)))).tocsr()
         Kind = (K.tocsc()[:, free]).tocsr()[free, :]
         U[free] = spsolve(Kind, Find)[:, newaxis]
 
@@ -207,9 +195,7 @@ def topop_numpy(
         c = sum(sum((Emin + xP**penal * (E - Emin)) * ce))
         dc = -penal * (E - Emin) * xP ** (penal - 1) * ce
         xdc = squeeze(H.dot(ravel(x * dc, order="F")[:, newaxis]))
-        dc = reshape(
-            xdc / Hs / maximum(nones, ravel(x, order="F")), (nely, nelx), order="F"
-        )
+        dc = reshape(xdc / Hs / maximum(nones, ravel(x, order="F")), (nely, nelx), order="F")
 
         # Lagrange mulipliers
 

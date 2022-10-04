@@ -51,9 +51,7 @@ class RhinoCone(RhinoGeometry):
             elif isinstance(geometry, Cone):
                 geometry = cone_to_rhino(geometry)
             else:
-                raise ConversionError(
-                    "Geometry object cannot be converted to a cone: {}".format(geometry)
-                )
+                raise ConversionError("Geometry object cannot be converted to a cone: {}".format(geometry))
         self._geometry = geometry
 
     def to_compas(self):

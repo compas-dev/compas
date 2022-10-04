@@ -200,9 +200,7 @@ class Point(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(
-            self.x, self.y, self.z, PRECISION[:1]
-        )
+        return "Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(self.x, self.y, self.z, PRECISION[:1])
 
     def __len__(self):
         return 3
@@ -783,9 +781,7 @@ class Point(Primitive):
         """
         vertices, faces = polyhedron
         polygons = [[vertices[index] for index in face] for face in faces]
-        planes = [
-            [centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons
-        ]
+        planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
         return all(is_point_behind_plane(self, plane) for plane in planes)
 
     # ==========================================================================

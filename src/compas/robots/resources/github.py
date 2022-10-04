@@ -56,9 +56,7 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         str
             The file's url.
         """
-        relative_path_component = (
-            None if self.relative_path == "." else self.relative_path
-        )
+        relative_path_component = None if self.relative_path == "." else self.relative_path
         url_components = [
             GithubPackageMeshLoader.HOST,
             self.repository,

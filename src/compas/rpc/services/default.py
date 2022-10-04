@@ -75,11 +75,7 @@ def start_service(port, autoreload, **kwargs):
     service = DefaultService() if not autoreload else FileWatcherService()
     server.register_instance(service)
 
-    print(
-        "Listening{}...".format(
-            " with autoreload of modules enabled" if autoreload else ""
-        )
-    )
+    print("Listening{}...".format(" with autoreload of modules enabled" if autoreload else ""))
     print("Press CTRL+C to abort")
     server.serve_forever()
 
@@ -92,9 +88,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--port", "-p", action="store", default=1753, type=int, help="RPC port number"
-    )
+    parser.add_argument("--port", "-p", action="store", default=1753, type=int, help="RPC port number")
     parser.add_argument(
         "--autoreload",
         dest="autoreload",

@@ -25,11 +25,7 @@ class ControlPoints(object):
         for i in range(self.rhino_surface.Points.CountU):
             row = []
             for j in range(self.rhino_surface.Points.CountV):
-                row.append(
-                    point_to_compas(
-                        self.rhino_surface.Points.GetControlPoint(i, j).Location
-                    )
-                )
+                row.append(point_to_compas(self.rhino_surface.Points.GetControlPoint(i, j).Location))
             points.append(row)
         return points
 
@@ -44,9 +40,7 @@ class ControlPoints(object):
 
     def __setitem__(self, index, point):
         u, v = index
-        self.rhino_surface.Points.SetControlPoint(
-            u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point))
-        )
+        self.rhino_surface.Points.SetControlPoint(u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point)))
 
     def __len__(self):
         return self.rhino_surface.Points.CountU
@@ -67,9 +61,7 @@ def rhino_surface_from_parameters(
     is_u_periodic=False,
     is_v_periodic=False,
 ):
-    rhino_surface = Rhino.Geometry.NurbsSurface.Create(
-        3, True, u_degree + 1, v_degree + 1, len(points[0]), len(points)
-    )
+    rhino_surface = Rhino.Geometry.NurbsSurface.Create(3, True, u_degree + 1, v_degree + 1, len(points[0]), len(points))
     u_knotvector = [knot for knot, mult in zip(u_knots, u_mults) for _ in range(mult)]
     v_knotvector = [knot for knot, mult in zip(v_knots, v_mults) for _ in range(mult)]
     u_count = len(points[0])
@@ -90,9 +82,7 @@ def rhino_surface_from_parameters(
     # add control points
     for i in range(v_count):
         for j in range(u_count):
-            rhino_surface.Points.SetPoint(
-                i, j, point_to_rhino(points[i][j]), weights[i][j]
-            )
+            rhino_surface.Points.SetPoint(i, j, point_to_rhino(points[i][j]), weights[i][j])
     return rhino_surface
 
 
@@ -371,9 +361,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         """
         surface = cls()
         # these curves probably need to be processed first
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(
-            curve1, curve2
-        )
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(curve1, curve2)
         return surface
 
     # ==============================================================================

@@ -32,19 +32,12 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
 
     """
 
-    def __init__(
-        self,
-        model: RobotModel,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
+    def __init__(self, model: RobotModel, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
         super().__init__(model=model, collection=collection or model.name, **kwargs)
 
     # this method should not be here
     # it has nothing to do with the current object
-    def transform(
-        self, native_mesh: bpy.types.Object, transformation: Transformation
-    ) -> None:
+    def transform(self, native_mesh: bpy.types.Object, transformation: Transformation) -> None:
         """Transform the mesh of a robot model.
 
         Parameters
@@ -59,9 +52,7 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
         None
 
         """
-        native_mesh.matrix_world = (
-            mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world
-        )
+        native_mesh.matrix_world = mathutils.Matrix(transformation.matrix) @ native_mesh.matrix_world
 
     # again
     # doesn't make sense to me that there is no reference to self (except for the collection)
@@ -70,9 +61,7 @@ class RobotModelArtist(BlenderArtist, RobotModelArtist):
         self,
         geometry: Mesh,
         name: str = None,
-        color: Union[
-            RGBColor, Tuple[int, int, int, int], Tuple[float, float, float, float]
-        ] = None,
+        color: Union[RGBColor, Tuple[int, int, int, int], Tuple[float, float, float, float]] = None,
     ) -> bpy.types.Object:
         """Create the scene objecy representing the robot geometry.
 

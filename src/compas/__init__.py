@@ -240,9 +240,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/compas-dev/compas/main/src/compas/data/samples/{}".format(
-            filename
-        )
+        return "https://raw.githubusercontent.com/compas-dev/compas/main/src/compas/data/samples/{}".format(filename)
 
 
 def get_bunny(localstorage=None):
@@ -288,14 +286,10 @@ def get_bunny(localstorage=None):
         os.makedirs(localstorage)
 
     if not os.path.isdir(localstorage):
-        raise Exception(
-            "Local storage location does not exist: {}".format(localstorage)
-        )
+        raise Exception("Local storage location does not exist: {}".format(localstorage))
 
     if not os.access(localstorage, os.W_OK):
-        raise Exception(
-            "Local storage location is not writable: {}".format(localstorage)
-        )
+        raise Exception("Local storage location is not writable: {}".format(localstorage))
 
     bunny = compas._os.absjoin(localstorage, "bunny/reconstruction/bun_zipper.ply")
     destination = compas._os.absjoin(localstorage, "bunny.tar.gz")

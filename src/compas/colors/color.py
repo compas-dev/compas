@@ -825,9 +825,7 @@ class Color(Data):
         bool
 
         """
-        return color and all(
-            isinstance(c, float) and (c >= 0 and c <= 1) for c in color
-        )
+        return color and all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
 
     @staticmethod
     def is_rgb255(color):
@@ -838,9 +836,7 @@ class Color(Data):
         bool
 
         """
-        return color and all(
-            isinstance(c, int) and (c >= 0 and c <= 255) for c in color
-        )
+        return color and all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
 
     @staticmethod
     def is_hex(color):
@@ -877,9 +873,7 @@ class Color(Data):
 
         """
         if factor > 100 or factor < 0:
-            raise ValueError(
-                "Percentage of increased lightness should be in the range 0-100."
-            )
+            raise ValueError("Percentage of increased lightness should be in the range 0-100.")
 
         factor = 1.0 + factor / 100
 
@@ -930,9 +924,7 @@ class Color(Data):
 
         """
         if factor > 100 or factor < 0:
-            raise ValueError(
-                "Percentage of reduced lightness should be in the range 0-100."
-            )
+            raise ValueError("Percentage of reduced lightness should be in the range 0-100.")
 
         factor = 1.0 - factor / 100
 

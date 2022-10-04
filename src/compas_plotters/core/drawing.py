@@ -219,9 +219,7 @@ def create_axes_3d(
 # ==============================================================================
 
 
-def draw_points_xy(
-    points, axes, facecolor="#ffffff", edgecolor="#000000", linewidth=0.5, radius=1.0
-):
+def draw_points_xy(points, axes, facecolor="#ffffff", edgecolor="#000000", linewidth=0.5, radius=1.0):
     """Creates an XY point collection and adds it to the axis.
 
     Parameters
@@ -387,9 +385,7 @@ def draw_points_3d(points, axes, facecolor="#ffffff", edgecolor="#000000"):
 # ==============================================================================
 
 
-def draw_lines_xy(
-    lines, axes, linewidth=1.0, linestyle="-", color="#000000", alpha=1.0
-):
+def draw_lines_xy(lines, axes, linewidth=1.0, linestyle="-", color="#000000", alpha=1.0):
     """Creates an XY line collection and adds it to the axis.
 
     Parameters
@@ -762,12 +758,8 @@ def draw_xpolygons_xy(polygons, axes):
         text = attr.get("text")
         textcolor = color_to_rgb(attr.get("textcolor", "#000000"), normalize=True)
 
-        facecolors.append(
-            color_to_rgb(attr.get("facecolor", "#ffffff"), normalize=True)
-        )
-        edgecolors.append(
-            color_to_rgb(attr.get("edgecolor", "#000000"), normalize=True)
-        )
+        facecolors.append(color_to_rgb(attr.get("facecolor", "#ffffff"), normalize=True))
+        edgecolors.append(color_to_rgb(attr.get("edgecolor", "#000000"), normalize=True))
         linewidths.append(attr.get("edgewidth", 1.0))
 
         patches.append(Polygon([point[0:2] for point in points]))

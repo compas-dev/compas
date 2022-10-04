@@ -209,9 +209,7 @@ class GLTFReader(object):
 
         return data
 
-    def _read_from_buffer_view(
-        self, buffer_view_index, count, component_type, accessor_offset, num_components
-    ):
+    def _read_from_buffer_view(self, buffer_view_index, count, component_type, accessor_offset, num_components):
         buffer_view = self.json["bufferViews"][buffer_view_index]
 
         buffer_view_offset = buffer_view.get("byteOffset", 0)

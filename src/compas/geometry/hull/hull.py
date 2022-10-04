@@ -58,12 +58,8 @@ def convex_hull(points):
         return dot_vectors(normal, vec) >= 0
 
     def _bdry(faces):
-        bdry_fw = set(
-            [(face[i - 1], face[i]) for face in faces for i in range(len(face))]
-        )
-        bdry_bk = set(
-            [(face[i], face[i - 1]) for face in faces for i in range(len(face))]
-        )
+        bdry_fw = set([(face[i - 1], face[i]) for face in faces for i in range(len(face))])
+        bdry_bk = set([(face[i], face[i - 1]) for face in faces for i in range(len(face))])
         return bdry_fw - bdry_bk
 
     def _add_point(hull, p):
@@ -72,11 +68,7 @@ def convex_hull(points):
         if len(seen_faces) == len(hull):
             # if can see all faces, unsee ones looking "down"
             normal = _normal_face(seen_faces[0])
-            seen_faces = [
-                face
-                for face in seen_faces
-                if dot_vectors(_normal_face(face), normal) > 0
-            ]
+            seen_faces = [face for face in seen_faces if dot_vectors(_normal_face(face), normal) > 0]
 
         for face in seen_faces:
             hull.remove(face)

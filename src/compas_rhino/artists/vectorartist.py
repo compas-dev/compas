@@ -57,9 +57,7 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
         guids = []
         if show_point:
             points = [{"pos": start, "color": color, "name": self.primitive.name}]
-            guids += compas_rhino.draw_points(
-                points, layer=self.layer, clear=False, redraw=False
-            )
+            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         lines = [
             {
                 "start": start,
@@ -69,7 +67,5 @@ class VectorArtist(RhinoArtist, PrimitiveArtist):
                 "name": self.primitive.name,
             }
         ]
-        guids += compas_rhino.draw_lines(
-            lines, layer=self.layer, clear=False, redraw=False
-        )
+        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         return guids

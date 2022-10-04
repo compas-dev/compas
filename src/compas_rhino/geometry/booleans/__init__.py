@@ -35,9 +35,7 @@ def boolean_union_mesh_mesh(A, B, remesh=False):
         The faces of the boolean union.
 
     """
-    return _boolean_operation(
-        A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanUnion([a, b])
-    )
+    return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanUnion([a, b]))
 
 
 @plugin(category="booleans", requires=["Rhino"])
@@ -61,9 +59,7 @@ def boolean_difference_mesh_mesh(A, B, remesh=False):
         The faces of the boolean difference.
 
     """
-    return _boolean_operation(
-        A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanDifference([a], [b])
-    )
+    return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanDifference([a], [b]))
 
 
 @plugin(category="booleans", requires=["Rhino"])
@@ -87,9 +83,7 @@ def boolean_intersection_mesh_mesh(A, B, remesh=False):
         The faces of the boolean intersection.
 
     """
-    return _boolean_operation(
-        A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanIntersection([a], [b])
-    )
+    return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanIntersection([a], [b]))
 
 
 def _boolean_operation(A, B, method):

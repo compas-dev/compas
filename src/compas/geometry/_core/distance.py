@@ -575,9 +575,7 @@ def closest_point_in_cloud(point, cloud):
     return sqrt(d), xyz, index
 
 
-def closest_points_in_cloud_numpy(
-    points, cloud, threshold=10**7, distances=True, num_nbrs=1
-):
+def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True, num_nbrs=1):
     """Find the closest points in a point cloud to a set of sample points.
 
     Parameters

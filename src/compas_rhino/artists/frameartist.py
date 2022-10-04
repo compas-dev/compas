@@ -83,10 +83,6 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
                 "arrow": "end",
             },
         ]
-        guids = compas_rhino.draw_points(
-            points, layer=self.layer, clear=False, redraw=False
-        )
-        guids += compas_rhino.draw_lines(
-            lines, layer=self.layer, clear=False, redraw=False
-        )
+        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         return guids

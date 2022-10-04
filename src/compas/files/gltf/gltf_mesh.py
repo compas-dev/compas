@@ -131,15 +131,11 @@ class GLTFMesh(object):
         if not faces:
             return
         if len(faces[0]) > 3:
-            raise Exception(
-                "Invalid mesh. Expected mesh composed of points, lines xor triangles."
-            )
+            raise Exception("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
         for face in faces:
             if len(face) != len(faces[0]):
                 # This restriction could be removed by splitting into multiple primitives.
-                raise NotImplementedError(
-                    "Invalid mesh. Expected mesh composed of points, lines xor triangles."
-                )
+                raise NotImplementedError("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
 
     @classmethod
     def validate_vertices(cls, vertices):
@@ -160,14 +156,10 @@ class GLTFMesh(object):
         positions = list(vertices.values()) if isinstance(vertices, dict) else vertices
         for position in positions:
             if len(position) != 3:
-                raise Exception(
-                    "Invalid mesh.  Vertices are expected to be points in 3-space."
-                )
+                raise Exception("Invalid mesh.  Vertices are expected to be points in 3-space.")
 
     @classmethod
-    def from_vertices_and_faces(
-        cls, context, vertices, faces, mesh_name=None, extras=None
-    ):
+    def from_vertices_and_faces(cls, context, vertices, faces, mesh_name=None, extras=None):
         """Construct a :class:`~compas.files.GLTFMesh` object from lists of vertices and faces.
         Vertices can be given as either a list of xyz-tuples or -lists, in which case
         the faces reference vertices by index, or vertices can be given as a dictionary of
@@ -200,9 +192,7 @@ class GLTFMesh(object):
             positions = vertices
             face_list = list(itertools.chain(*faces))
 
-        primitive = PrimitiveData(
-            {"POSITION": positions}, face_list, None, mode, None, None
-        )
+        primitive = PrimitiveData({"POSITION": positions}, face_list, None, mode, None, None)
 
         return cls([primitive], context, mesh_name=mesh_name, extras=extras)
 

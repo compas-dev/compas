@@ -77,9 +77,7 @@ class Rotation(Transformation):
         if matrix:
             _, _, angles, _, _ = decompose_matrix(matrix)
             if check:
-                if not allclose(
-                    flatten(matrix), flatten(matrix_from_euler_angles(angles))
-                ):
+                if not allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
                     raise ValueError("This is not a proper rotation matrix.")
         super(Rotation, self).__init__(matrix=matrix)
 

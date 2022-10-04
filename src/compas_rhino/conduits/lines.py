@@ -91,9 +91,7 @@ class LinesConduit(BaseConduit):
         color = color or self.default_color
         if not is_sequence_of_iterable(color):
             color = [color]
-        self._color = [
-            FromArgb(*c) for c in iterable_like(self.lines, color, self.default_color)
-        ]
+        self._color = [FromArgb(*c) for c in iterable_like(self.lines, color, self.default_color)]
 
     def DrawForeground(self, e):
         """Draw the lines.
@@ -107,7 +105,5 @@ class LinesConduit(BaseConduit):
         None
 
         """
-        for (start, end), color, thickness in zip(
-            self.lines, self.color, self.thickness
-        ):
+        for (start, end), color, thickness in zip(self.lines, self.color, self.thickness):
             e.Display.DrawLine(Point3d(*start), Point3d(*end), color, thickness)

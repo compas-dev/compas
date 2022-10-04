@@ -43,9 +43,7 @@ class ThreadExceptHookHandler(object):
         threading.Thread.__init__ = self._original_init
 
 
-def await_callback(
-    async_func, callback_name="callback", errback_name=None, *args, **kwargs
-):
+def await_callback(async_func, callback_name="callback", errback_name=None, *args, **kwargs):
     """Wait for the completion of an asynchronous code that uses callbacks to signal completion.
 
     This helper function turns an async function into a synchronous one,

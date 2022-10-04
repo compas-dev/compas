@@ -54,18 +54,11 @@ class CapsuleArtist(BlenderArtist, ShapeArtist):
 
     """
 
-    def __init__(
-        self,
-        capsule: Capsule,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
+    def __init__(self, capsule: Capsule, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
 
         super().__init__(shape=capsule, collection=collection or capsule.name, **kwargs)
 
-    def draw(
-        self, color: Optional[Color] = None, u: int = None, v: int = None
-    ) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, u: int = None, v: int = None) -> List[bpy.types.Object]:
         """Draw the capsule associated with the artist.
 
         Parameters

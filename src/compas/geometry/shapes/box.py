@@ -166,9 +166,7 @@ class Box(Shape):
         >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
         >>> box = Box.from_data(data)
         """
-        return cls(
-            Frame.from_data(data["frame"]), data["xsize"], data["ysize"], data["zsize"]
-        )
+        return cls(Frame.from_data(data["frame"]), data["xsize"], data["ysize"], data["zsize"])
 
     # ==========================================================================
     # properties
@@ -253,11 +251,7 @@ class Box(Shape):
 
     @property
     def area(self):
-        return (
-            2 * self.xsize * self.ysize
-            + 2 * self.ysize * self.zsize
-            + 2 * self.zsize * self.xsize
-        )
+        return 2 * self.xsize * self.ysize + 2 * self.ysize * self.zsize + 2 * self.zsize * self.xsize
 
     @property
     def volume(self):
@@ -275,18 +269,10 @@ class Box(Shape):
         zaxis = self.frame.zaxis
         width, depth, height = self.xsize, self.ysize, self.zsize
 
-        a = point + (
-            xaxis * (-0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height)
-        )
-        b = point + (
-            xaxis * (-0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height)
-        )
-        c = point + (
-            xaxis * (+0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height)
-        )
-        d = point + (
-            xaxis * (+0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height)
-        )
+        a = point + (xaxis * (-0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
+        b = point + (xaxis * (-0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
+        c = point + (xaxis * (+0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
+        d = point + (xaxis * (+0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
 
         e = a + zaxis * height
         f = d + zaxis * height
@@ -335,9 +321,7 @@ class Box(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return "Box({0!r}, {1!r}, {2!r}, {3!r})".format(
-            self.frame, self.xsize, self.ysize, self.zsize
-        )
+        return "Box({0!r}, {1!r}, {2!r}, {3!r})".format(self.frame, self.xsize, self.ysize, self.zsize)
 
     def __len__(self):
         return 4

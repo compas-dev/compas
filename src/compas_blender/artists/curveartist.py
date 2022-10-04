@@ -54,12 +54,7 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
     """
 
-    def __init__(
-        self,
-        curve: Curve,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
+    def __init__(self, curve: Curve, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
 
         super().__init__(curve=curve, collection=collection or curve.name, **kwargs)
 

@@ -146,9 +146,7 @@ def install_plugin(plugin, version=None):
     create_symlinks([(source, destination)])
 
     print("\nPlugIn {} Installed.".format(plugin_name))
-    print(
-        "\nRestart Rhino and open the Python editor at least once to make it available."
-    )
+    print("\nRestart Rhino and open the Python editor at least once to make it available.")
 
 
 # ==============================================================================
@@ -159,9 +157,7 @@ if __name__ == "__main__":
 
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="COMPAS Rhino Plugin Installation command-line utility."
-    )
+    parser = argparse.ArgumentParser(description="COMPAS Rhino Plugin Installation command-line utility.")
 
     parser.add_argument("plugin", help="The path to the plugin directory.")
     parser.add_argument(

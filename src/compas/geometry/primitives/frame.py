@@ -231,11 +231,7 @@ class Frame(Primitive):
         return iter([self.point, self.xaxis, self.yaxis])
 
     def __eq__(self, other, tol=1e-05):
-        if (
-            not hasattr(other, "__iter__")
-            or not hasattr(other, "__len__")
-            or len(self) != len(other)
-        ):
+        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return allclose(self, other)
 

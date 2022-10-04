@@ -181,9 +181,7 @@ class MeshDescriptor(Data):
         self.filename = data["filename"]
         self.scale = data["scale"]
         self.attr = _attr_from_data(data["attr"]) if "attr" in data else {}
-        self.meshes = (
-            [Mesh.from_data(md) for md in data["meshes"]] if "meshes" in data else []
-        )
+        self.meshes = [Mesh.from_data(md) for md in data["meshes"]] if "meshes" in data else []
 
     @classmethod
     def from_data(cls, data):
@@ -415,9 +413,7 @@ class Geometry(Data):
 
     """
 
-    def __init__(
-        self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs
-    ):
+    def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
         super(Geometry, self).__init__()
         self.shape = box or cylinder or sphere or capsule or mesh
         self.attr = kwargs

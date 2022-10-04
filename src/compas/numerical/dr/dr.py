@@ -201,10 +201,7 @@ def dr(
     # initial values
     # --------------------------------------------------------------------------
     Q = [1.0 for _ in range(e)]
-    L = [
-        sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5
-        for i, j in iter(edges)
-    ]
+    L = [sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5 for i, j in iter(edges)]
     F = [q * l for q, l in zip(Q, L)]
     M = [sum(0.5 * dt**2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
     V = [[0.0, 0.0, 0.0] for _ in range(n)]
@@ -241,16 +238,10 @@ def dr(
             k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
             a1 = a(
                 K[1][0] * dt,
-                [
-                    [V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)]
-                    for i in range(n)
-                ],
+                [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)],
             )
             k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
-            return [
-                [B[0] * k0[i][axis] + B[1] * k1[i][axis] for axis in (0, 1, 2)]
-                for i in range(n)
-            ]
+            return [[B[0] * k0[i][axis] + B[1] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
         if steps == 4:
             B = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
@@ -258,31 +249,19 @@ def dr(
             k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
             a1 = a(
                 K[1][0] * dt,
-                [
-                    [V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)]
-                    for i in range(n)
-                ],
+                [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)],
             )
             k1 = [[dt * a1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
             a2 = a(
                 K[2][0] * dt,
-                [
-                    [
-                        V0[i][axis] + K[2][1] * k0[i][axis] + K[2][2] * k1[i][axis]
-                        for axis in (0, 1, 2)
-                    ]
-                    for i in range(n)
-                ],
+                [[V0[i][axis] + K[2][1] * k0[i][axis] + K[2][2] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)],
             )
             k2 = [[dt * a2[i][axis] for axis in (0, 1, 2)] for i in range(n)]
             a3 = a(
                 K[3][0] * dt,
                 [
                     [
-                        V0[i][axis]
-                        + K[3][1] * k0[i][axis]
-                        + K[3][2] * k1[i][axis]
-                        + K[3][3] * k2[i][axis]
+                        V0[i][axis] + K[3][1] * k0[i][axis] + K[3][2] * k1[i][axis] + K[3][3] * k2[i][axis]
                         for axis in (0, 1, 2)
                     ]
                     for i in range(n)
@@ -291,10 +270,7 @@ def dr(
             k3 = [[dt * a3[i][axis] for axis in (0, 1, 2)] for i in range(n)]
             return [
                 [
-                    B[0] * k0[i][axis]
-                    + B[1] * k1[i][axis]
-                    + B[2] * k2[i][axis]
-                    + B[3] * k3[i][axis]
+                    B[0] * k0[i][axis] + B[1] * k1[i][axis] + B[2] * k2[i][axis] + B[3] * k3[i][axis]
                     for axis in (0, 1, 2)
                 ]
                 for i in range(n)
@@ -324,10 +300,7 @@ def dr(
             dX[i] = [V[i][axis] * dt for axis in (0, 1, 2)]
             X[i] = [X0[i][axis] + dX[i][axis] for axis in (0, 1, 2)]
 
-        L = [
-            sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5
-            for i, j in iter(edges)
-        ]
+        L = [sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5 for i, j in iter(edges)]
         F = [q * l for q, l in zip(Q, L)]
 
         update_R()

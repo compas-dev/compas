@@ -106,9 +106,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
             if is_point_in_triangle_xy(point, abc, True):
                 # generate 3 new triangles (faces) and delete surrounding triangle
-                key, newtris = mesh.insert_vertex(
-                    fkey, key=key, xyz=point, return_fkeys=True
-                )
+                key, newtris = mesh.insert_vertex(fkey, key=key, xyz=point, return_fkeys=True)
                 break
 
         while newtris:

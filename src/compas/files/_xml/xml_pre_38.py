@@ -17,9 +17,7 @@ __all__ = [
 
 def xml_from_file(source, tree_parser=None):
     if tree_parser:
-        raise NotImplementedError(
-            "XML parsing on CPython 3.7 and older does not support a custom tree parser"
-        )
+        raise NotImplementedError("XML parsing on CPython 3.7 and older does not support a custom tree parser")
 
     tree_parser = ET.XMLPullParser
     parser = tree_parser(events=("start", "start-ns"))
@@ -32,9 +30,7 @@ def xml_from_file(source, tree_parser=None):
 
 def xml_from_string(text, tree_parser=None):
     if tree_parser:
-        raise NotImplementedError(
-            "XML parsing on CPython 3.7 and older does not support a custom tree parser"
-        )
+        raise NotImplementedError("XML parsing on CPython 3.7 and older does not support a custom tree parser")
 
     tree_parser = ET.XMLPullParser
     parser = tree_parser(events=("start", "end", "start-ns", "end-ns"))

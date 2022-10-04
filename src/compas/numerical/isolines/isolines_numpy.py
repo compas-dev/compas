@@ -94,9 +94,7 @@ def scalarfield_contours_numpy(xy, s, levels=50, density=100):
     s = asarray(s)
     x = xy[:, 0]
     y = xy[:, 1]
-    X, Y = meshgrid(
-        linspace(amin(x), amax(x), 2 * density), linspace(amin(y), amax(y), 2 * density)
-    )
+    X, Y = meshgrid(linspace(amin(x), amax(x), 2 * density), linspace(amin(y), amax(y), 2 * density))
     S = griddata((x, y), s, (X, Y), method="cubic")
 
     fig = plt.figure()

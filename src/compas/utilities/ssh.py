@@ -44,11 +44,7 @@ class SSH(object):
         client.set_missing_host_key_policy(AutoAddPolicy())
         try:
             client.connect(self.server, username=self.username)
-            print(
-                "\n***** Connected to server: {0} with username: {1}".format(
-                    self.server, self.username
-                )
-            )
+            print("\n***** Connected to server: {0} with username: {1}".format(self.server, self.username))
         except Exception:
             print("\n***** Connection failed")
         return client
@@ -79,9 +75,7 @@ class SSH(object):
         None
 
         """
-        command = "scp {0}@{1}:{2} {3}".format(
-            self.username, self.server, remote_file, local_file
-        )
+        command = "scp {0}@{1}:{2} {3}".format(self.username, self.server, remote_file, local_file)
         self.local_command(command)
 
     def send_file(self, local_file):
@@ -131,9 +125,7 @@ class SSH(object):
         None
 
         """
-        command = "rsync -Pa {0} {1}@{2}:{3}".format(
-            local_folder, self.username, self.server, remote_folder
-        )
+        command = "rsync -Pa {0} {1}@{2}:{3}".format(local_folder, self.username, self.server, remote_folder)
         self.local_command(command=command)
 
     @staticmethod

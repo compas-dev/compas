@@ -40,9 +40,7 @@ class RhinoCylinder(RhinoGeometry):
                 geometry = geometry.ToBrep()
             if isinstance(geometry, Rhino.Geometry.Brep):
                 if geometry.Faces.Count > 3:
-                    raise ConversionError(
-                        "Object brep cannot be converted to a cylinder."
-                    )
+                    raise ConversionError("Object brep cannot be converted to a cylinder.")
                 faces = geometry.Faces
                 geometry = None
                 for face in faces:
@@ -51,17 +49,11 @@ class RhinoCylinder(RhinoGeometry):
                         if result:
                             break
                 if not geometry:
-                    raise ConversionError(
-                        "Object brep cannot be converted to a cylinder."
-                    )
+                    raise ConversionError("Object brep cannot be converted to a cylinder.")
             elif isinstance(geometry, Cylinder):
                 geometry = cylinder_to_rhino(geometry)
             else:
-                raise ConversionError(
-                    "Geometry object cannot be converted to a cylinder: {}".format(
-                        geometry
-                    )
-                )
+                raise ConversionError("Geometry object cannot be converted to a cylinder: {}".format(geometry))
         self._geometry = geometry
 
     def to_compas(self):

@@ -125,9 +125,7 @@ class Torus(Shape):
         >>> torus = Torus.from_data(data)
 
         """
-        torus = cls(
-            Plane.from_data(data["plane"]), data["radius_axis"], data["radius_pipe"]
-        )
+        torus = cls(Plane.from_data(data["plane"]), data["radius_axis"], data["radius_pipe"])
         return torus
 
     # ==========================================================================
@@ -175,9 +173,7 @@ class Torus(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return "Torus({0!r}, {1!r}, {2!r})".format(
-            self.plane, self.radius_axis, self.radius_pipe
-        )
+        return "Torus({0!r}, {1!r}, {2!r})".format(self.plane, self.radius_axis, self.radius_pipe)
 
     def __len__(self):
         return 3
@@ -244,12 +240,8 @@ class Torus(Shape):
         vertices = []
         for i in range(u):
             for j in range(v):
-                x = cos(i * theta) * (
-                    self.radius_axis + self.radius_pipe * cos(j * phi)
-                )
-                y = sin(i * theta) * (
-                    self.radius_axis + self.radius_pipe * cos(j * phi)
-                )
+                x = cos(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
+                y = sin(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
                 z = self.radius_pipe * sin(j * phi)
                 vertices.append([x, y, z])
 

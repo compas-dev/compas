@@ -264,9 +264,7 @@ class Mimic(Data):
 class SafetyController(Data):
     """Safety controller properties."""
 
-    def __init__(
-        self, k_velocity, k_position=0.0, soft_lower_limit=0.0, soft_upper_limit=0.0
-    ):
+    def __init__(self, k_velocity, k_position=0.0, soft_lower_limit=0.0, soft_upper_limit=0.0):
         super(SafetyController, self).__init__()
         self.k_velocity = float(k_velocity)
         self.k_position = float(k_position)
@@ -564,9 +562,7 @@ class Joint(Data):
             "calibration": self.calibration.data if self.calibration else None,
             "dynamics": self.dynamics.data if self.dynamics else None,
             "limit": self.limit.data if self.limit else None,
-            "safety_controller": self.safety_controller.data
-            if self.safety_controller
-            else None,
+            "safety_controller": self.safety_controller.data if self.safety_controller else None,
             "mimic": self.mimic.data if self.mimic else None,
             "attr": _attr_to_data(self.attr),
             "position": self.position,
@@ -580,17 +576,11 @@ class Joint(Data):
         self.child = ChildLink.from_data(data["child"])
         self.origin = Frame.from_data(data["origin"]) if data["origin"] else None
         self.axis = Axis.from_data(data["axis"]) if data["axis"] else None
-        self.calibration = (
-            Calibration.from_data(data["calibration"]) if data["calibration"] else None
-        )
-        self.dynamics = (
-            Dynamics.from_data(data["dynamics"]) if data["dynamics"] else None
-        )
+        self.calibration = Calibration.from_data(data["calibration"]) if data["calibration"] else None
+        self.dynamics = Dynamics.from_data(data["dynamics"]) if data["dynamics"] else None
         self.limit = Limit.from_data(data["limit"]) if data["limit"] else None
         self.safety_controller = (
-            SafetyController.from_data(data["safety_controller"])
-            if data["safety_controller"]
-            else None
+            SafetyController.from_data(data["safety_controller"]) if data["safety_controller"] else None
         )
         self.mimic = Mimic.from_data(data["mimic"]) if data["mimic"] else None
         self.attr = _attr_from_data(data["attr"])
@@ -684,9 +674,7 @@ class Joint(Data):
             Transformation of type rotation for the continuous joint.
 
         """
-        return Rotation.from_axis_and_angle(
-            self.current_axis.vector, position, self.current_origin.point
-        )
+        return Rotation.from_axis_and_angle(self.current_axis.vector, position, self.current_origin.point)
 
     def calculate_prismatic_transformation(self, position):
         """Returns a transformation of a prismatic joint.

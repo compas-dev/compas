@@ -10,9 +10,7 @@ __all__ = [
 ]
 
 
-def network_smooth_centroid(
-    network, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None
-):
+def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a network by moving every free node to the centroid of its neighbors.
 
     Parameters
@@ -56,9 +54,7 @@ def network_smooth_centroid(
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_points(
-                [key_xyz[nbr] for nbr in network.neighbors(key)]
-            )
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.neighbors(key)])
 
             attr["x"] += damping * (cx - x)
             attr["y"] += damping * (cy - y)

@@ -296,9 +296,7 @@ class NurbsSurface(Surface):
         :class:`~compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_points(
-            cls, points, u_degree=u_degree, v_degree=v_degree
-        )
+        return new_nurbssurface_from_points(cls, points, u_degree=u_degree, v_degree=v_degree)
 
     @classmethod
     def from_meshgrid(cls, nu=10, nv=10):

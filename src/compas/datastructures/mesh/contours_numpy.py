@@ -82,9 +82,7 @@ def mesh_contours_numpy(mesh, levels=50, density=100):
     x = xy[:, 0]
     y = xy[:, 1]
 
-    X, Y = meshgrid(
-        linspace(amin(x), amax(x), 2 * density), linspace(amin(y), amax(y), 2 * density)
-    )
+    X, Y = meshgrid(linspace(amin(x), amax(x), 2 * density), linspace(amin(y), amax(y), 2 * density))
 
     Z = griddata((x, y), z, (X, Y), method="cubic")
 

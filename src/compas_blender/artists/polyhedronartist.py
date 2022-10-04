@@ -54,15 +54,10 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
     """
 
     def __init__(
-        self,
-        polyhedron: Polyhedron,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
+        self, polyhedron: Polyhedron, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any
     ):
 
-        super().__init__(
-            shape=polyhedron, collection=collection or polyhedron.name, **kwargs
-        )
+        super().__init__(shape=polyhedron, collection=collection or polyhedron.name, **kwargs)
 
     def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
         """Draw the polyhedron associated with the artist.
