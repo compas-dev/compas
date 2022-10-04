@@ -46,6 +46,9 @@ class RhinoCylinder(RhinoGeometry):
                 faces = geometry.Faces
                 geometry = None
                 for face in faces:
+                    # being too strict about what is considered a cylinder
+                    # results in cylinders created by Rhino itself
+                    # to not be recognized...
                     if face.IsCylinder(0.001):
                         result, geometry = face.TryGetFiniteCylinder(0.001)
                         if result:
