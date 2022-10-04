@@ -80,17 +80,23 @@ class RhinoSurface(Surface):
     # ==============================================================================
 
     @classmethod
-    def from_plane(cls, plane, u_interval, v_interval, u_degree, v_degree, u_point_count, v_point_count):
-        plane = plane_to_rhino(plane)
-        u_interval = Rhino.Geometry.Interval(u_interval[0], u_interval[1])
-        v_interval = Rhino.Geometry.Interval(v_interval[0], v_interval[1])
-        rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(plane, u_interval, v_interval, u_degree, v_degree, u_point_count, v_point_count)
-        return cls.from_rhino(rhino_surface)
-
-    @classmethod
     def from_corners(cls, corners):
-        rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
-        return cls.from_rhino(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
+        """
+
+        Parameters
+        ----------
+        corners :
+
+        Returns
+        -------
+
+        """
+        rhino_points = [
+            Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners
+        ]
+        return cls.from_rhino(
+            Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points)
+        )
 
     @classmethod
     def from_sphere(cls, sphere):
