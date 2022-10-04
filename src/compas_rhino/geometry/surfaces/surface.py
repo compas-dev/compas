@@ -287,21 +287,3 @@ class RhinoSurface(Surface):
         """
         box = self.rhino_surface.GetBoundingBox(optimal)
         return box_to_compas(Rhino.Geometry.Box(box))
-
-    def extend_u_by(self, value):
-        self._extend_domain(0, value)
-
-    def extend_v_by(self, value):
-        self._extend_domain(1, value)
-
-    def _extend_domain(self, domain, value):
-        if not (domain == 0 or domain == 1):
-            raise ValueError("Expected domain: 0 or 1")
-        lower = self.rhino_surface.Domain(domain)[0]
-        upper = self.rhino_surface.Domain(domain)[1]
-        self.rhino_surface.Extend(domain, Rhino.Geometry.Interval(lower - value, upper + value))
-
-    def reverse(self):
-        brep = self.rhino_surface.ToBrep()
-        brep.Flip()
-        self.rhino_surface = brep.Surfaces[0]
