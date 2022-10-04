@@ -20,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Based all gltf data classes on `BaseGLTFDataClass`
 
 * Fixed `Color.__get___` AttributeError.
-
 * Fixed  `RhinoSurface.curvature_at` not returning a Vector, but a Rhino SurfaceCurvature class object 
 ### Removed
 
