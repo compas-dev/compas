@@ -82,6 +82,7 @@ __all__ = [
     "draw_mesh",
     "draw_circles",
     "draw_surfaces",
+    "draw_brep",
 ]
 
 
@@ -1096,3 +1097,27 @@ def draw_surfaces(surfaces, **kwargs):
         obj.CommitChanges()
         guids.append(guid)
     return guids
+
+
+@wrap_drawfunc
+def draw_brep(brep, color=None, **kwargs):
+    """Draw a brep to the Rhino document.
+
+    Parameters
+    ----------
+    brep : :class:`~compas_rhino.geometry.RhinoBrep`
+        The brep to draw.
+    color : tuple[int, int, int] | tuple[float, float, float], optional
+        The color to draw the brep with.
+
+    Returns
+    -------
+    :rhino:`System.Guid`
+        The Rhino document GUID of the drawn Brep.
+
+    """
+    native_brep = brep.native_brep
+    if color:
+        for face in native_brep.Faces:
+            face.PerFaceColor = FromArgb(*color)
+    return add_brep(native_brep)
