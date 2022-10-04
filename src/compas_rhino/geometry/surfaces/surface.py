@@ -81,14 +81,18 @@ class RhinoSurface(Surface):
 
     @classmethod
     def from_corners(cls, corners):
-        """
+        """Creates a NURBS surface using the given 4 corners.
+
+        The order of the given points determins the normal direction of the generated surface.
 
         Parameters
         ----------
-        corners :
+        corners : list(:class:`~compas.geometry.Point`)
+            4 points in 3d space to represent the corners of the planar surface.
 
         Returns
         -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         rhino_points = [
@@ -100,18 +104,54 @@ class RhinoSurface(Surface):
 
     @classmethod
     def from_sphere(cls, sphere):
+        """Creates a NURBS surface from a sphere.
+
+        Parameters
+        ----------
+        sphere : :class:`~compas.geometry.Sphere`
+            The surface's geometry.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
         sphere = sphere_to_rhino(sphere)
         surface = Rhino.Geometry.NurbsSurface.CreateFromSphere(sphere)
         return cls.from_rhino(surface)
 
     @classmethod
     def from_cylinder(cls, cylinder):
+        """Create a NURBS surface from a cylinder.
+
+        Parameters
+        ----------
+        cylinder : :class:`~compas.geometry.Cylinder`
+            The surface's geometry.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
         cylinder = cylinder_to_rhino(cylinder)
         surface = Rhino.Geometry.NurbsSurface.CreateFromCylinder(cylinder)
         return cls.from_rhino(surface)
 
     @classmethod
-    def from_torus(cls, cylinder):
+    def from_torus(cls, torus):
+        """Create a NURBS surface from a torus.
+
+        Parameters
+        ----------
+        torus : :class:`~compas.geometry.Torus`
+            The surface's geometry.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
         raise NotImplementedError
 
     @classmethod
