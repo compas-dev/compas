@@ -5,23 +5,30 @@ from compas.geometry import Circle
 from compas_rhino.geometry import RhinoNurbsCurve
 from compas_rhino.conversions import curve_to_compas_line
 from compas_rhino.conversions import curve_to_compas_circle
+from compas_rhino.conversions import curve_to_compas_ellipse
 from compas_rhino.conversions import line_to_rhino_curve
 from compas_rhino.conversions import circle_to_rhino_curve
+from compas_rhino.conversions import ellipse_to_rhino_curve
+
 
 from .vertex import RhinoBrepVertex
 
 
 class RhinoBrepEdge(BrepEdge):
-    """A wrapper for Rhino.Geometry.BrepEdge
+    """A wrapper for Rhino.Geometry.BrepEdge.
+
+    The expected native type here is a Rhino.Geometry.BrepTrim.
+    a BrepTrim holds a reference to its associated BrepEdge as well as its start a end vertices
+    in a correct topological order (!).
 
     Attributes
     ----------
     curve : :class:`Rhino.Geometry.Curve3D`
         The underlying geometry of this edge.
     start_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
-        The start vertex of this edge.
+        The start vertex of this edge (taken from BrepTrim).
     end_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
-        The end vertex of this edge.
+        The end vertex of this edge (taken from BrepTrim).
     vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
         The list of vertices which comprise this edge (start and end)
     is_circle : bool, read-only
@@ -31,20 +38,20 @@ class RhinoBrepEdge(BrepEdge):
 
     """
 
-    def __init__(self, rhino_edge=None):
+    def __init__(self, rhino_trim=None):
         super(RhinoBrepEdge, self).__init__()
         self._edge = None
         self._curve = None
         self._start_vertex = None
         self._end_vertex = None
-        if rhino_edge:
-            self._set_edge(rhino_edge)
+        if rhino_trim:
+            self._set_edge(rhino_trim)
 
-    def _set_edge(self, native_edge):
-        self._edge = native_edge
+    def _set_edge(self, rhino_trim):
+        self._edge = rhino_trim.Edge
         self._curve = self._edge.EdgeCurve
-        self._start_vertex = RhinoBrepVertex(self._edge.StartVertex)
-        self._end_vertex = RhinoBrepVertex(self._edge.EndVertex)
+        self._start_vertex = RhinoBrepVertex(rhino_trim.StartVertex)
+        self._end_vertex = RhinoBrepVertex(rhino_trim.EndVertex)
 
     # ==============================================================================
     # Data
@@ -58,13 +65,16 @@ class RhinoBrepEdge(BrepEdge):
         elif self.is_circle:
             type_ = "circle"
             curve = curve_to_compas_circle(self._curve)
+        elif self.is_ellipse:
+            type_ = "ellipse"
+            curve = curve_to_compas_ellipse(self._curve)
         else:
             type_ = "nurbs"
             curve = RhinoNurbsCurve.from_rhino(self._curve)
         return {
             "type": type_,
             "value": curve.data,
-            "points": [self._start_vertex.point.data, self._end_vertex.point.data],
+            "points": [self.start_vertex.point.data, self.end_vertex.point.data],
         }
 
     @data.setter
@@ -78,9 +88,11 @@ class RhinoBrepEdge(BrepEdge):
             self._curve = circle_to_rhino_curve(
                 Circle.from_data(value["value"])
             )  # this returns a Nurbs Curve, why?
+        elif curve_type == "ellipse":
+            self._curve = ellipse_to_rhino_curve(value["value"])
         else:
             self._curve = RhinoNurbsCurve.from_data(value["value"]).rhino_curve
-        # TODO: can a single edge be defined with more than start and end vertices?
+
         self._start_vertex, self._end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
         self._start_vertex._point = Point.from_data(value["points"][0])
         self._end_vertex._point = Point.from_data(value["points"][1])
@@ -103,7 +115,7 @@ class RhinoBrepEdge(BrepEdge):
 
     @property
     def vertices(self):
-        return [self._start_vertex, self._end_vertex]
+        return [self.start_vertex, self.end_vertex]
 
     @property
     def is_circle(self):
@@ -112,3 +124,7 @@ class RhinoBrepEdge(BrepEdge):
     @property
     def is_line(self):
         return self._curve.IsLinear()
+
+    @property
+    def is_ellipse(self):
+        return self._curve.IsEllipse()

@@ -103,7 +103,7 @@ class RhinoBrep(Brep):
     @property
     def edges(self):
         if self._brep:
-            return [RhinoBrepEdge(edge) for edge in self._brep.Edges]
+            return [RhinoBrepEdge(trim) for trim in self._brep.Trims]
 
     @property
     def loops(self):
