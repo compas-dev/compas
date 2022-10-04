@@ -197,14 +197,10 @@ def test_centroid_polyhedron(polyhedron, centroid):
 # ==============================================================================
 
 
-@pytest.mark.parametrize(
-    ("polyhedron", "volume"), [(Polyhedron.from_platonicsolid(6), None)]
-)
+@pytest.mark.parametrize(("polyhedron", "volume"), [(Polyhedron.from_platonicsolid(6), None)])
 def test_volume_polyhedron(polyhedron, volume):
     if volume is None:
-        L = length_vector(
-            subtract_vectors(polyhedron.vertices[0], polyhedron.vertices[1])
-        )
+        L = length_vector(subtract_vectors(polyhedron.vertices[0], polyhedron.vertices[1]))
         volume = L * L * L
     V = volume_polyhedron(polyhedron)
     assert close(V, volume)

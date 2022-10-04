@@ -84,9 +84,7 @@ def test_scale_points_xy():
 
 
 def test_rotate_points():
-    assert allclose(
-        rotate_points([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 2.0]]
-    )
+    assert allclose(rotate_points([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 2.0]])
 
 
 def test_rotate_points_xy():
@@ -164,9 +162,7 @@ def test_project_points_line():
 
 
 def test_project_points_line_xy():
-    assert project_points_line_xy([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])) == [
-        [0.0, 1.0, 0.0]
-    ]
+    assert project_points_line_xy([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])) == [[0.0, 1.0, 0.0]]
     # TODO: is this correct?
 
 

@@ -17,9 +17,7 @@ def get_names_in_module(module_name):
         [
             i
             for i in all_names
-            if not i.startswith("_")
-            and i not in exceptions
-            and not inspect.ismodule(getattr(module, i))
+            if not i.startswith("_") and i not in exceptions and not inspect.ismodule(getattr(module, i))
         ]
     )
 
@@ -68,9 +66,7 @@ def compas_stubs():
         if name == "compas.rst" or not name.startswith("compas."):
             continue
         stub = os.path.abspath(os.path.join(API, name))
-        subprocess.call(
-            "sphinx-autogen -o {} {}".format(TEMP, stub), shell=True, env=env
-        )
+        subprocess.call("sphinx-autogen -o {} {}".format(TEMP, stub), shell=True, env=env)
 
     _, _, filenames = next(os.walk(TEMP))
 

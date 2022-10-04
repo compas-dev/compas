@@ -11,12 +11,7 @@ from compas.utilities import pairwise
 if not compas.IPY:
 
     def test_data():
-        p = Polyline(
-            [
-                Point(random.random(), random.random(), random.random())
-                for i in range(10)
-            ]
-        )
+        p = Polyline([Point(random.random(), random.random(), random.random()) for i in range(10)])
         assert p.data == p.validate_data()
         o = Polyline.from_data(p.data)
         assert p == o

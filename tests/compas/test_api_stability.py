@@ -15,9 +15,7 @@ def test_no_removed_names_from_any_package(compas_api):
 
     # Raise to indicate the API file needs to be regenerated
     if current_ver["major"] != generated_ver["major"]:
-        raise Exception(
-            "The compas_api.json file needs to be regenerated for the current COMPAS major version"
-        )
+        raise Exception("The compas_api.json file needs to be regenerated for the current COMPAS major version")
 
     mismatches = dict()
     for module_name in compas_api["modules"]:
@@ -30,9 +28,7 @@ def test_no_removed_names_from_any_package(compas_api):
                     mismatches[module_name] = []
                 mismatches[module_name].append(name)
 
-    assert len(mismatches) == 0, "The following names are missing from the API: " + str(
-        mismatches
-    )
+    assert len(mismatches) == 0, "The following names are missing from the API: " + str(mismatches)
 
 
 @pytest.fixture
@@ -62,9 +58,7 @@ def get_names_in_module(module_name):
         [
             i
             for i in all_names
-            if not i.startswith("_")
-            and i not in exceptions
-            and not inspect.ismodule(getattr(module, i))
+            if not i.startswith("_") and i not in exceptions and not inspect.ismodule(getattr(module, i))
         ]
     )
 
@@ -103,21 +97,13 @@ if __name__ == "__main__":
     # but it is not supposed to be in there
     if compas_api["metadata"]["compas_version"] == "1.0.0":
         name = "compas.datastructures"
-        compas_api["modules"][name] = [
-            m for m in compas_api["modules"][name] if m not in ("IPY")
-        ]
+        compas_api["modules"][name] = [m for m in compas_api["modules"][name] if m not in ("IPY")]
 
         name = "compas.robots"
-        compas_api["modules"][name] = [
-            m
-            for m in compas_api["modules"][name]
-            if m not in ("Frame", "Transformation")
-        ]
+        compas_api["modules"][name] = [m for m in compas_api["modules"][name] if m not in ("Frame", "Transformation")]
 
         name = "compas.geometry"
-        compas_api["modules"][name] = [
-            m for m in compas_api["modules"][name] if m not in ("pluggable")
-        ]
+        compas_api["modules"][name] = [m for m in compas_api["modules"][name] if m not in ("pluggable")]
 
     fname = compas_api_filename()
     with open(fname, "w") as f:

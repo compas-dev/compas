@@ -79,9 +79,7 @@ def test_programmatic_robot_model():
     assert ["link0", "joint1", "link1", "joint2", "link2"] == list(robot.iter_chain())
     urdf = URDF.from_robot(robot)
     robot_reincarnated = RobotModel.from_urdf_string(urdf.to_string())
-    assert ["link0", "joint1", "link1", "joint2", "link2"] == list(
-        robot_reincarnated.iter_chain()
-    )
+    assert ["link0", "joint1", "link1", "joint2", "link2"] == list(robot_reincarnated.iter_chain())
     robot.remove_link("link2")
     robot.remove_joint("joint2")
     assert ["link0", "joint1", "link1"] == list(robot.iter_chain())
@@ -413,10 +411,7 @@ def test_link_parser_data(urdf_file):
 def test_geometry_parser(urdf_file_with_shapes):
     r = RobotModel.from_urdf_file(urdf_file_with_shapes)
 
-    assert (
-        r.links[0].visual[0].geometry.shape.filename
-        == "package://franka_description/meshes/visual/link0.dae"
-    )
+    assert r.links[0].visual[0].geometry.shape.filename == "package://franka_description/meshes/visual/link0.dae"
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
     assert isinstance(r.links[0].collision[0].geometry.shape, (Sphere, SphereProxy))
@@ -435,10 +430,7 @@ def test_geometry_parser_to_string(urdf_file_with_shapes):
     urdf = URDF.from_robot(r_original)
     r = RobotModel.from_urdf_string(urdf.to_string())
 
-    assert (
-        r.links[0].visual[0].geometry.shape.filename
-        == "package://franka_description/meshes/visual/link0.dae"
-    )
+    assert r.links[0].visual[0].geometry.shape.filename == "package://franka_description/meshes/visual/link0.dae"
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
     assert isinstance(r.links[0].collision[0].geometry.shape, (Sphere, SphereProxy))
@@ -456,10 +448,7 @@ def test_geometry_parser_data(urdf_file_with_shapes):
     r_original = RobotModel.from_urdf_file(urdf_file_with_shapes)
     r = RobotModel.from_data(r_original.data)
 
-    assert (
-        r.links[0].visual[0].geometry.shape.filename
-        == "package://franka_description/meshes/visual/link0.dae"
-    )
+    assert r.links[0].visual[0].geometry.shape.filename == "package://franka_description/meshes/visual/link0.dae"
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
 
     assert isinstance(r.links[0].collision[0].geometry.shape, (Sphere, SphereProxy))
@@ -485,9 +474,7 @@ def test_root_data(urdf_file):
 
 
 def test_root_getter_without_links():
-    r = RobotModel.from_urdf_string(
-        """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"></robot>"""
-    )
+    r = RobotModel.from_urdf_string("""<?xml version="1.0" encoding="UTF-8"?><robot name="panda"></robot>""")
     assert r.root is None
 
 
@@ -715,8 +702,4 @@ if __name__ == "__main__":
         for error in errors:
             print(" * File=%s, Error=%s" % error)
 
-    print(
-        "\nFound {} files and parsed successfully {} of them.".format(
-            len(all_files), len(all_files) - len(errors)
-        )
-    )
+    print("\nFound {} files and parsed successfully {} of them.".format(len(all_files), len(all_files) - len(errors)))

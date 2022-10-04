@@ -34,9 +34,7 @@ def test_from_json():
 
 def test_from_t0cf_to_tcf(mesh, frame):
     tool = ToolModel(mesh, frame)
-    frames_t0cf = [
-        Frame((-0.363, 0.003, -0.147), (0.388, -0.351, -0.852), (0.276, 0.926, -0.256))
-    ]
+    frames_t0cf = [Frame((-0.363, 0.003, -0.147), (0.388, -0.351, -0.852), (0.276, 0.926, -0.256))]
     result = tool.from_t0cf_to_tcf(frames_t0cf)
     expected = [
         Frame(
@@ -50,9 +48,7 @@ def test_from_t0cf_to_tcf(mesh, frame):
 
 def test_from_tcf_to_t0cf(mesh, frame):
     tool = ToolModel(mesh, frame)
-    frames_tcf = [
-        Frame((-0.309, -0.046, -0.266), (0.276, 0.926, -0.256), (0.879, -0.136, 0.456))
-    ]
+    frames_tcf = [Frame((-0.309, -0.046, -0.266), (0.276, 0.926, -0.256), (0.879, -0.136, 0.456))]
     result = tool.from_tcf_to_t0cf(frames_tcf)
     expected = [
         Frame(
