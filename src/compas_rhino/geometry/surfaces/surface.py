@@ -95,12 +95,8 @@ class RhinoSurface(Surface):
         :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
-        rhino_points = [
-            Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners
-        ]
-        return cls.from_rhino(
-            Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points)
-        )
+        rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
+        return cls.from_rhino(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
 
     @classmethod
     def from_sphere(cls, sphere):
