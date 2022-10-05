@@ -124,6 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added split operation to `compas_rhino.geometry.Brep`.
 * Added a `RhinoArtist` in `compas_rhino`.
 * Added a `RhinoArtist` in `compas_ghpython`.
+* Added option to provide alternative location for the parent folder "McNeel", which is usually in `APPDATA` or `Application Support`.
 
 ### Changed
 
