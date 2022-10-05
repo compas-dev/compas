@@ -186,9 +186,7 @@ def trimesh_mean_curvature(M):
 
     # (3) Main - loop over all vertices
     for i in range(mesh.Vertices.Count):
-        edges = mesh.TopologyVertices.ConnectedEdges(
-            mesh.TopologyVertices.TopologyVertexIndex(i)
-        )
+        edges = mesh.TopologyVertices.ConnectedEdges(mesh.TopologyVertices.TopologyVertexIndex(i))
         vertex = FromPoint3f(mesh.Vertices[i])
         if edges is None:
             H.append(None)
@@ -206,9 +204,7 @@ def trimesh_mean_curvature(M):
             orientation = list(orientation.Value)
             start_pt = mesh.TopologyEdges.EdgeLine(edge).From
             direction = start_pt.EpsilonEquals(vertex, doc.ModelAbsoluteTolerance)
-            normals = dict(
-                zip(orientation, [faces_normal[faces[0]], faces_normal[faces[1]]])
-            )
+            normals = dict(zip(orientation, [faces_normal[faces[0]], faces_normal[faces[1]]]))
             e = mesh.TopologyEdges.EdgeLine(edge).Direction
             e.Unitize()
             n1 = normals[True]

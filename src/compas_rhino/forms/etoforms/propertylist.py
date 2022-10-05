@@ -23,9 +23,7 @@ class PropertyListForm(Eto.Forms.Dialog[bool]):
 
         self.table = table = Eto.Forms.GridView()
         table.ShowHeader = True
-        table.DataStore = [
-            [name, value] for name, value in zip(self.names, self.values)
-        ]
+        table.DataStore = [[name, value] for name, value in zip(self.names, self.values)]
 
         c1 = Eto.Forms.GridColumn()
         c1.HeaderText = "Name"

@@ -93,10 +93,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         tool_model = None
         if self.attached_tool_models:
             link_name = self.model.get_end_effector_link()
-            tool_model = (
-                self.attached_tool_models.get(link_name)
-                or list(self.attached_tool_models.values())[0]
-            )
+            tool_model = self.attached_tool_models.get(link_name) or list(self.attached_tool_models.values())[0]
         return tool_model
 
     def attach_tool_model(self, tool_model):
@@ -120,17 +117,9 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         self.attached_tool_models[tool_model.link_name] = tool_model
 
         ee_frame = link.parent_joint.origin.copy()
-        initial_transformation = Transformation.from_frame_to_frame(
-            Frame.worldXY(), ee_frame
-        )
+        initial_transformation = Transformation.from_frame_to_frame(Frame.worldXY(), ee_frame)
 
-        sample_geometry = (
-            link.collision[0]
-            if link.collision
-            else link.visual[0]
-            if link.visual
-            else None
-        )
+        sample_geometry = link.collision[0] if link.collision else link.visual[0] if link.visual else None
 
         if hasattr(sample_geometry, "current_transformation"):
             relative_transformation = sample_geometry.current_transformation
@@ -186,20 +175,12 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         sample_geometry = None
 
         while sample_geometry is None:
-            sample_geometry = (
-                link.collision[0]
-                if link.collision
-                else link.visual[0]
-                if link.visual
-                else None
-            )
+            sample_geometry = link.collision[0] if link.collision else link.visual[0] if link.visual else None
             link = self.model.get_link_by_name(link.parent_joint.parent.link)
 
         native_mesh = self.create_geometry(mesh)
         init_transformation = transformation * sample_geometry.init_transformation
-        self.transform(
-            native_mesh, sample_geometry.current_transformation * init_transformation
-        )
+        self.transform(native_mesh, sample_geometry.current_transformation * init_transformation)
 
         item = LinkItem()
         item.native_geometry = [native_mesh]
@@ -272,9 +253,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
                             str(i),
                         ]
                     mesh_name = ".".join(mesh_name_components)
-                    native_mesh = self.create_geometry(
-                        mesh, name=mesh_name, color=color
-                    )
+                    native_mesh = self.create_geometry(mesh, name=mesh_name, color=color)
 
                     self.transform(native_mesh, item.init_transformation)
 
@@ -323,9 +302,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
                 mesh.transform(item.current_transformation)
             meshes += new_meshes
         for child_joint in link.joints:
-            meshes += self.meshes(
-                child_joint.child_link, visual, collision, attached_meshes
-            )
+            meshes += self.meshes(child_joint.child_link, visual, collision, attached_meshes)
         return meshes
 
     def scale(self, factor):
@@ -398,9 +375,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
         """
         if getattr(item, "current_transformation"):
-            relative_transformation = (
-                transformation * item.current_transformation.inverse()
-            )
+            relative_transformation = transformation * item.current_transformation.inverse()
         else:
             relative_transformation = transformation
         for native_geometry in item.native_geometry or []:
@@ -431,9 +406,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
                 tool=tool,
                 visual=visual,
                 collision=collision,
-                transformation=Transformation.from_frame_to_frame(
-                    Frame.worldXY(), frame
-                ),
+                transformation=Transformation.from_frame_to_frame(Frame.worldXY(), frame),
             )
 
     def _update(
@@ -444,13 +417,9 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         collision=True,
         parent_transformation=None,
     ):
-        transformations = model.compute_transformations(
-            joint_state, parent_transformation=parent_transformation
-        )
+        transformations = model.compute_transformations(joint_state, parent_transformation=parent_transformation)
         for j in model.iter_joints():
-            self._transform_link_geometry(
-                j.child_link, transformations[j.name], collision
-            )
+            self._transform_link_geometry(j.child_link, transformations[j.name], collision)
         return transformations
 
     def _transform_link_geometry(self, link, transformation, collision=True):
@@ -464,9 +433,7 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         for item in self.attached_items.get(link.name, {}).values():
             self._apply_transformation_on_transformed_link(item, transformation)
 
-    def update_tool(
-        self, tool, joint_state=None, visual=True, collision=True, transformation=None
-    ):
+    def update_tool(self, tool, joint_state=None, visual=True, collision=True, transformation=None):
         """Triggers the update of the robot geometry of the tool.
 
         Parameters

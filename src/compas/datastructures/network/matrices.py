@@ -47,9 +47,7 @@ def network_adjacency_matrix(network, rtype="array"):
 
     """
     key_index = network.key_index()
-    adjacency = [
-        [key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()
-    ]
+    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -70,9 +68,7 @@ def network_degree_matrix(network, rtype="array"):
 
     """
     key_index = network.key_index()
-    adjacency = [
-        [key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()
-    ]
+    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
     return degree_matrix(adjacency, rtype=rtype)
 
 

@@ -389,9 +389,7 @@ class XFunc(object):
             process.StartInfo.RedirectStandardOutput = True
             process.StartInfo.RedirectStandardError = True
             process.StartInfo.FileName = self.python
-            process.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4} {5}'.format(
-                *args
-            )
+            process.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4} {5}'.format(*args)
             process.Start()
             process.WaitForExit()
 

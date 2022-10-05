@@ -136,9 +136,7 @@ class OBJ(object):
         None
 
         """
-        self._writer = OBJWriter(
-            self.filepath, mesh, precision=self.precision, unweld=unweld, **kwargs
-        )
+        self._writer = OBJWriter(self.filepath, mesh, precision=self.precision, unweld=unweld, **kwargs)
         self._writer.write()
 
     @property
@@ -534,19 +532,9 @@ class OBJParser(object):
 
         self.vertices = [xyz for xyz in iter(vertex.values())]
         self.points = [index_index[index] for index in self.reader.points]
-        self.lines = [
-            [index_index[index] for index in line]
-            for line in self.reader.lines
-            if len(line) == 2
-        ]
-        self.polylines = [
-            [index_index[index] for index in line]
-            for line in self.reader.lines
-            if len(line) > 2
-        ]
-        self.faces = [
-            [index_index[index] for index in face] for face in self.reader.faces
-        ]
+        self.lines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
+        self.polylines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
+        self.faces = [[index_index[index] for index in face] for face in self.reader.faces]
         self.groups = self.reader.groups
         self.objects = {}
         for name in self.reader.objects:
@@ -601,15 +589,7 @@ class OBJWriter(object):
         self.precision = precision or compas.PRECISION
         self.unweld = unweld
         self.vertex_tpl = (
-            "v {0:."
-            + self.precision
-            + "}"
-            + " {1:."
-            + self.precision
-            + "}"
-            + " {2:."
-            + self.precision
-            + "}\n"
+            "v {0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
         )
         self.v = sum(mesh.number_of_vertices() for mesh in self.meshes)
         self.f = sum(mesh.number_of_faces() for mesh in self.meshes)

@@ -137,9 +137,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
     @property
     def halfedges(self):
         if not self._halfedges:
-            self._halfedges = [
-                (u, v) for u in self.mesh.halfedge for v in self.mesh.halfedge[u]
-            ]
+            self._halfedges = [(u, v) for u in self.mesh.halfedge for v in self.mesh.halfedge[u]]
         return self._halfedges
 
     @halfedges.setter
@@ -149,38 +147,24 @@ class MeshArtist(PlotterArtist, MeshArtist):
     @property
     def vertex_size(self):
         if not self._vertex_size:
-            factor = (
-                self.plotter.dpi
-                if self.sizepolicy == "absolute"
-                else self.mesh.number_of_vertices()
-            )
+            factor = self.plotter.dpi if self.sizepolicy == "absolute" else self.mesh.number_of_vertices()
             size = self.default_vertexsize / factor
             self._vertex_size = {vertex: size for vertex in self.mesh.vertices()}
         return self._vertex_size
 
     @vertex_size.setter
     def vertex_size(self, vertexsize):
-        factor = (
-            self.plotter.dpi
-            if self.sizepolicy == "absolute"
-            else self.mesh.number_of_vertices()
-        )
+        factor = self.plotter.dpi if self.sizepolicy == "absolute" else self.mesh.number_of_vertices()
         if isinstance(vertexsize, dict):
-            self.vertex_size.update(
-                {vertex: size / factor for vertex, size in vertexsize.items()}
-            )
+            self.vertex_size.update({vertex: size / factor for vertex, size in vertexsize.items()})
         elif isinstance(vertexsize, (int, float)):
-            self._vertex_size = {
-                vertex: vertexsize / factor for vertex in self.mesh.vertices()
-            }
+            self._vertex_size = {vertex: vertexsize / factor for vertex in self.mesh.vertices()}
 
     @property
     def halfedge_color(self):
         if self._halfedge_color is None:
             self._halfedge_color = {
-                (u, v): self.default_halfedgecolor
-                for u in self.mesh.halfedge
-                for v in self.mesh.halfedge[u]
+                (u, v): self.default_halfedgecolor for u in self.mesh.halfedge for v in self.mesh.halfedge[u]
             }
         return self._halfedge_color
 
@@ -189,11 +173,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         if isinstance(halfedge_color, dict):
             self._halfedge_color = halfedge_color
         elif is_color_rgb(halfedge_color):
-            self._halfedge_color = {
-                (u, v): halfedge_color
-                for u in self.mesh.halfedge
-                for v in self.mesh.halfedge[u]
-            }
+            self._halfedge_color = {(u, v): halfedge_color for u in self.mesh.halfedge for v in self.mesh.halfedge[u]}
 
     @property
     def zorder_faces(self):
@@ -402,16 +382,8 @@ class MeshArtist(PlotterArtist, MeshArtist):
         for edge in self.edges:
             u, v = edge
             lines.append([self.vertex_xyz[edge[0]][:2], self.vertex_xyz[edge[1]][:2]])
-            colors.append(
-                self.edge_color.get(
-                    edge, self.edge_color.get((v, u), self.default_edgecolor)
-                )
-            )
-            widths.append(
-                self.edge_width.get(
-                    edge, self.edge_width.get((v, u), self.default_edgewidth)
-                )
-            )
+            colors.append(self.edge_color.get(edge, self.edge_color.get((v, u), self.default_edgecolor)))
+            widths.append(self.edge_width.get(edge, self.edge_width.get((v, u), self.default_edgewidth)))
 
         collection = LineCollection(
             lines,
@@ -516,9 +488,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
         edgecolors = []
         linewidths = []
         for face in self.faces:
-            data = [
-                self.vertex_xyz[vertex][:2] for vertex in self.mesh.face_vertices(face)
-            ]
+            data = [self.vertex_xyz[vertex][:2] for vertex in self.mesh.face_vertices(face)]
             polygons.append(PolygonPatch(data))
             facecolors.append(self.face_color.get(face, self.default_facecolor))
             edgecolors.append((0, 0, 0))
@@ -660,9 +630,7 @@ class MeshArtist(PlotterArtist, MeshArtist):
             if text is None:
                 continue
 
-            x, y, _ = centroid_points_xy(
-                [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
-            )
+            x, y, _ = centroid_points_xy([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])
 
             artist = self.plotter.axes.text(
                 x,

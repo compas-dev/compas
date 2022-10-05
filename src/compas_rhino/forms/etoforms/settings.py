@@ -28,9 +28,7 @@ class SettingsForm(Eto.Forms.Dialog[bool]):
 
         self.table = table = Eto.Forms.GridView()
         table.ShowHeader = True
-        table.DataStore = [
-            [name, value] for name, value in zip(self.names, self.values)
-        ]
+        table.DataStore = [[name, value] for name, value in zip(self.names, self.values)]
         table.Height = 300
 
         c1 = Eto.Forms.GridColumn()

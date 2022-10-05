@@ -44,9 +44,7 @@ class Pointcloud(Primitive):
         from schema import Schema
         from compas.data import is_float3
 
-        return Schema(
-            {"points": lambda points: all(is_float3(point) for point in points)}
-        )
+        return Schema({"points": lambda points: all(is_float3(point) for point in points)})
 
     @property
     def JSONSCHEMANAME(self):

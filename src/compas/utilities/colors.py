@@ -487,9 +487,7 @@ def rgb_to_rgb(rgb, g=None, b=None):
     r = max(0, min(r, 255))
     g = max(0, min(g, 255))
     b = max(0, min(b, 255))
-    if any(isinstance(c, float) for c in (r, g, b)) and all(
-        c <= 1.0 for c in (r, g, b)
-    ):
+    if any(isinstance(c, float) for c in (r, g, b)) and all(c <= 1.0 for c in (r, g, b)):
         r = r * 255.0
         g = g * 255.0
         b = b * 255.0

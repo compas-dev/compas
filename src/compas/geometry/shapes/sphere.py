@@ -70,9 +70,7 @@ class Sphere(Shape):
         import schema
         from compas.data import is_float3
 
-        return schema.Schema(
-            {"point": is_float3, "radius": schema.And(float, lambda x: x > 0)}
-        )
+        return schema.Schema({"point": is_float3, "radius": schema.And(float, lambda x: x > 0)})
 
     @property
     def JSONSCHEMANAME(self):

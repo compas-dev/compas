@@ -45,9 +45,7 @@ def main():
 
     # Command: start
     start_command = commands.add_parser("start", help="Start RPC server")
-    start_command.add_argument(
-        "--port", "-p", action="store", default=1753, type=int, help="RPC port number"
-    )
+    start_command.add_argument("--port", "-p", action="store", default=1753, type=int, help="RPC port number")
     start_command.add_argument(
         "--autoreload",
         dest="autoreload",
@@ -64,9 +62,7 @@ def main():
 
     # Command: stop
     stop_command = commands.add_parser("stop", help="Try to stop a remote RPC server")
-    stop_command.add_argument(
-        "--port", "-p", action="store", default=1753, type=int, help="RPC port number"
-    )
+    stop_command.add_argument("--port", "-p", action="store", default=1753, type=int, help="RPC port number")
     stop_command.set_defaults(func=stop)
 
     # Invoke

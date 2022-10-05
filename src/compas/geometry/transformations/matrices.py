@@ -175,9 +175,7 @@ def matrix_determinant(M, check=True):
 
     D = 0
     for c in range(dim):
-        D += (
-            (-1) ** c * M[0][c] * matrix_determinant(matrix_minor(M, 0, c), check=False)
-        )
+        D += (-1) ** c * M[0][c] * matrix_determinant(matrix_minor(M, 0, c), check=False)
     return D
 
 
@@ -232,9 +230,7 @@ def matrix_inverse(M):
     for r in range(len(M)):
         cofactor_row = []
         for c in range(len(M)):
-            cofactor_row.append(
-                (-1) ** (r + c) * matrix_determinant(matrix_minor(M, r, c))
-            )
+            cofactor_row.append((-1) ** (r + c) * matrix_determinant(matrix_minor(M, r, c)))
         cofactors.append(cofactor_row)
 
     cofactors = transpose_matrix(cofactors)
@@ -384,18 +380,14 @@ def decompose_matrix(M):
         P = deepcopy(Mt)
         P[0][3], P[1][3], P[2][3], P[3][3] = 0.0, 0.0, 0.0, 1.0
         Ptinv = matrix_inverse(transpose_matrix(P))
-        perspective = multiply_matrix_vector(
-            Ptinv, [Mt[0][3], Mt[1][3], Mt[2][3], Mt[3][3]]
-        )
+        perspective = multiply_matrix_vector(Ptinv, [Mt[0][3], Mt[1][3], Mt[2][3], Mt[3][3]])
     else:
         perspective = [0.0, 0.0, 0.0, 1.0]
 
     return scale, shear, angles, translation, perspective
 
 
-def compose_matrix(
-    scale=None, shear=None, angles=None, translation=None, perspective=None
-):
+def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspective=None):
     """Calculates a matrix from the components of scale, shear, euler_angles, translation and perspective.
 
     Parameters
@@ -775,9 +767,7 @@ def matrix_from_axis_and_angle(axis, angle, point=None):
 
     R = [[cosa, 0.0, 0.0], [0.0, cosa, 0.0], [0.0, 0.0, cosa]]
 
-    outer_product = [
-        [axis[i] * axis[j] * (1.0 - cosa) for i in range(3)] for j in range(3)
-    ]
+    outer_product = [[axis[i] * axis[j] * (1.0 - cosa) for i in range(3)] for j in range(3)]
     R = [[R[i][j] + outer_product[i][j] for i in range(3)] for j in range(3)]
 
     axis = scale_vector(axis, sina)
@@ -1231,9 +1221,7 @@ def matrix_from_parallel_projection(plane, direction):
         for i in range(3):
             T[i][j] -= direction[i] * normal[j] / scale
 
-    T[0][3], T[1][3], T[2][3] = scale_vector(
-        direction, dot_vectors(point, normal) / scale
-    )
+    T[0][3], T[1][3], T[2][3] = scale_vector(direction, dot_vectors(point, normal) / scale)
     return T
 
 
@@ -1265,17 +1253,13 @@ def matrix_from_perspective_projection(plane, center_of_projection):
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
-    T[0][0] = T[1][1] = T[2][2] = dot_vectors(
-        subtract_vectors(center_of_projection, point), normal
-    )
+    T[0][0] = T[1][1] = T[2][2] = dot_vectors(subtract_vectors(center_of_projection, point), normal)
 
     for j in range(3):
         for i in range(3):
             T[i][j] -= center_of_projection[i] * normal[j]
 
-    T[0][3], T[1][3], T[2][3] = scale_vector(
-        center_of_projection, dot_vectors(point, normal)
-    )
+    T[0][3], T[1][3], T[2][3] = scale_vector(center_of_projection, dot_vectors(point, normal))
 
     for i in range(3):
         T[3][i] -= normal[i]
@@ -1407,9 +1391,7 @@ def matrix_from_shear(angle, direction, point, normal):
         for i in range(3):
             M[i][j] += angle * direction[i] * normal[j]
 
-    M[0][3], M[1][3], M[2][3] = scale_vector(
-        direction, -angle * dot_vectors(point, normal)
-    )
+    M[0][3], M[1][3], M[2][3] = scale_vector(direction, -angle * dot_vectors(point, normal))
 
     return M
 

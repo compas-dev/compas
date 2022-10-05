@@ -69,9 +69,7 @@ class Translation(Transformation):
         if matrix:
             _, _, _, translation, _ = decompose_matrix(matrix)
             if check:
-                if not allclose(
-                    flatten(matrix), flatten(matrix_from_translation(translation))
-                ):
+                if not allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
                     raise ValueError("This is not a proper translation matrix.")
         super(Translation, self).__init__(matrix=matrix)
 

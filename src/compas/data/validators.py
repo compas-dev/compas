@@ -125,9 +125,7 @@ def is_float4x4(items):
     bool
 
     """
-    return len(items) == 4 and all(
-        len(item) == 4 and all(isinstance(i, float) for i in item) for item in items
-    )
+    return len(items) == 4 and all(len(item) == 4 and all(isinstance(i, float) for i in item) for item in items)
 
 
 def is_sequence_of_list(items):

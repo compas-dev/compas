@@ -75,9 +75,7 @@ class HalfEdge(Datastructure):
 
     def __str__(self):
         tpl = "<HalfEdge with {} vertices, {} faces, {} edges>"
-        return tpl.format(
-            self.number_of_vertices(), self.number_of_faces(), self.number_of_edges()
-        )
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # descriptors
@@ -113,17 +111,10 @@ class HalfEdge(Datastructure):
                 "face": schema.And(
                     dict,
                     is_sequence_of_uint,
-                    lambda x: all(
-                        all(isinstance(item, int) for item in value)
-                        for value in x.values()
-                    ),
-                    lambda x: all(
-                        all(item >= 0 for item in value) for value in x.values()
-                    ),
+                    lambda x: all(all(isinstance(item, int) for item in value) for value in x.values()),
+                    lambda x: all(all(item >= 0 for item in value) for value in x.values()),
                     lambda x: all(len(value) > 2 for value in x.values()),
-                    lambda x: all(
-                        len(value) == len(set(value)) for value in x.values()
-                    ),
+                    lambda x: all(len(value) == len(set(value)) for value in x.values()),
                 ),
                 "facedata": schema.And(
                     dict,
@@ -1252,9 +1243,7 @@ class HalfEdge(Datastructure):
             return
         # use it as a getter
         if not names:
-            return FaceAttributeView(
-                self.default_face_attributes, self.facedata.setdefault(key, {})
-            )
+            return FaceAttributeView(self.default_face_attributes, self.facedata.setdefault(key, {}))
         values = []
         for name in names:
             value = self.face_attribute(key, name)
@@ -1464,9 +1453,7 @@ class HalfEdge(Datastructure):
         if not names:
             key = str(tuple(sorted(edge)))
             # get the entire attribute dict
-            return EdgeAttributeView(
-                self.default_edge_attributes, self.edgedata.setdefault(key, {})
-            )
+            return EdgeAttributeView(self.default_edge_attributes, self.edgedata.setdefault(key, {}))
         # get only the values of the named attributes
         values = []
         for name in names:
@@ -1809,9 +1796,7 @@ class HalfEdge(Datastructure):
             The Euler characteristic.
 
         """
-        V = len(
-            [vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0]
-        )
+        V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
         F = self.number_of_faces()
         return V - E + F
@@ -2576,9 +2561,7 @@ class HalfEdge(Datastructure):
             or None, if the faces are not adjacent.
 
         """
-        return [
-            vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)
-        ]
+        return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
     def is_face_on_boundary(self, key):
         """Verify that a face is on a boundary.

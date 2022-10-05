@@ -281,13 +281,9 @@ class URDFParser(object):
             if "from_urdf" in metadata:
                 obj = metadata["from_urdf"](attributes, children, text)
             else:
-                obj = cls.from_generic_urdf(
-                    parser_type, attributes, children, text, default_ns
-                )
+                obj = cls.from_generic_urdf(parser_type, attributes, children, text, default_ns)
         except Exception as e:
-            raise TypeError(
-                "Cannot create instance of %s. Message=%s" % (parser_type, e)
-            )
+            raise TypeError("Cannot create instance of %s. Message=%s" % (parser_type, e))
 
         obj._urdf_source = element
 
@@ -303,9 +299,7 @@ class URDFParser(object):
         default_namespace=None,
     ):
         kwargs = attributes
-        kwargs.update(
-            cls.build_kwargs_by_type(children, parser_type, default_namespace)
-        )
+        kwargs.update(cls.build_kwargs_by_type(children, parser_type, default_namespace))
 
         return parser_type(**kwargs)
 

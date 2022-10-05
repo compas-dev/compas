@@ -220,11 +220,7 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
                 mesh.UserDictionary["MeshColor.B"],
                 mesh.UserDictionary["MeshColor.A"],
             ]
-        name = (
-            mesh.UserDictionary["MeshName"]
-            if "MeshName" in mesh.UserDictionary
-            else None
-        )
+        name = mesh.UserDictionary["MeshName"] if "MeshName" in mesh.UserDictionary else None
 
         obj = sc.doc.Objects.Find(guid)
 
@@ -235,9 +231,7 @@ class RobotModelArtist(RhinoArtist, RobotModelArtist):
                 attr.ObjectColor = Color.FromArgb(a, r, g, b)
                 attr.ColorSource = ColorFromObject
 
-                material_name = "robotmodelartist.{:.2f}_{:.2f}_{:.2f}_{:.2f}".format(
-                    r, g, b, a
-                )
+                material_name = "robotmodelartist.{:.2f}_{:.2f}_{:.2f}_{:.2f}".format(r, g, b, a)
                 material_index = sc.doc.Materials.Find(material_name, True)
 
                 # Material does not exist, create it

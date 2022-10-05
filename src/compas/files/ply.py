@@ -315,9 +315,7 @@ class PLYReader(object):
                             property_length = parts[2]
                             property_type = parts[3]
                             property_name = parts[4]
-                            self.face_properties.append(
-                                (property_name, property_type, property_length)
-                            )
+                            self.face_properties.append((property_name, property_type, property_length))
                         else:
                             property_type = parts[1]
                             property_name = parts[2]
@@ -351,9 +349,7 @@ class PLYReader(object):
                 elif section == "face":
                     self._read_faces()
                 else:
-                    print(
-                        "user-defined elements are not supported: {0}".format(section)
-                    )
+                    print("user-defined elements are not supported: {0}".format(section))
                     pass
 
     def _read_data_binary(self):
@@ -369,9 +365,7 @@ class PLYReader(object):
                 elif section == "face":
                     self._read_faces_binary_wo_numpy()
                 else:
-                    print(
-                        "user-defined elements are not supported: {0}".format(section)
-                    )
+                    print("user-defined elements are not supported: {0}".format(section))
                     pass
 
     # ==========================================================================
@@ -590,9 +584,7 @@ class PLYParser(object):
         None
 
         """
-        self.vertices = [
-            (vertex["x"], vertex["y"], vertex["z"]) for vertex in self.reader.vertices
-        ]
+        self.vertices = [(vertex["x"], vertex["y"], vertex["z"]) for vertex in self.reader.vertices]
         self.faces = [face["vertex_indices"] for face in self.reader.faces]
 
 
@@ -616,9 +608,7 @@ class PLYWriter(object):
 
     """
 
-    def __init__(
-        self, filepath, mesh, author=None, email=None, date=None, precision=None
-    ):
+    def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
         self.filepath = filepath
         self.mesh = mesh
         self.author = author
@@ -626,15 +616,7 @@ class PLYWriter(object):
         self.date = date
         self.precision = precision or compas.PRECISION
         self.vertex_tpl = (
-            "{0:."
-            + self.precision
-            + "}"
-            + " {1:."
-            + self.precision
-            + "}"
-            + " {2:."
-            + self.precision
-            + "}\n"
+            "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
         )
         self.v = mesh.number_of_vertices()
         self.f = mesh.number_of_faces()
@@ -681,8 +663,4 @@ class PLYWriter(object):
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)
             v = len(vertices)
-            self.file.write(
-                "{0} {1}\n".format(
-                    v, " ".join([str(key_index[key]) for key in vertices])
-                )
-            )
+            self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))

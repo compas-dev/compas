@@ -134,12 +134,8 @@ class LineArtist(PlotterArtist, PrimitiveArtist):
                 )
                 self._mpl_line = self.plotter.axes.add_line(line2d)
                 if self.draw_points:
-                    self._start_artist = self.plotter.add(
-                        self.line.start, edgecolor=self.color
-                    )
-                    self._end_artist = self.plotter.add(
-                        self.line.end, edgecolor=self.color
-                    )
+                    self._start_artist = self.plotter.add(self.line.start, edgecolor=self.color)
+                    self._end_artist = self.plotter.add(self.line.end, edgecolor=self.color)
 
     def redraw(self) -> None:
         """Update the line using the current geometry and visualization settings.

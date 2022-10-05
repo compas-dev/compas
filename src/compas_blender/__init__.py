@@ -77,11 +77,7 @@ def _get_default_blender_installation_path(version):
         raise Exception("Unsupported platform.")
 
     if not os.path.exists(path):
-        raise Exception(
-            "The default installation folder for Blender {} doesn't exist.".format(
-                version
-            )
-        )
+        raise Exception("The default installation folder for Blender {} doesn't exist.".format(version))
 
     return path
 
@@ -91,9 +87,7 @@ def _get_default_blender_installation_path_mac(version):
 
 
 def _get_default_blender_installation_path_windows(version):
-    return os.path.expandvars(
-        "%PROGRAMFILES%/Blender Foundation/Blender {}/{}".format(version, version)
-    )
+    return os.path.expandvars("%PROGRAMFILES%/Blender Foundation/Blender {}/{}".format(version, version))
 
 
 __all__ = [name for name in dir() if not name.startswith("_")]

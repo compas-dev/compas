@@ -504,9 +504,7 @@ def draw_breps(faces, u=10, v=10, join=False, **kwargs):
         geo.Add(pcurve)
         p = len(points)
         if p == 3:
-            brep = Brep.CreateFromCornerPoints(
-                Point3d(*points[0]), Point3d(*points[1]), Point3d(*points[2]), TOL
-            )
+            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]), Point3d(*points[1]), Point3d(*points[2]), TOL)
         elif p == 4:
             brep = Brep.CreateFromCornerPoints(
                 Point3d(*points[0]),

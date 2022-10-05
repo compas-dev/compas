@@ -82,11 +82,7 @@ def uninstall(version=None, packages=None):
 
     # There is nothing to uninstall
     if not symlinks_to_uninstall:
-        print(
-            "\nNo packages to uninstall from Rhino {0} scripts folder: \n{1}.".format(
-                version, scripts_path
-            )
-        )
+        print("\nNo packages to uninstall from Rhino {0} scripts folder: \n{1}.".format(version, scripts_path))
         return
 
     # -------------------------
@@ -146,11 +142,7 @@ def uninstall(version=None, packages=None):
     # Output results
     # -------------------------
 
-    print(
-        "Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}".format(
-            version, scripts_path
-        )
-    )
+    print("Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}".format(version, scripts_path))
     print("\nThe following packages have been detected and will be uninstalled:\n")
 
     for package, status in results:
@@ -248,9 +240,7 @@ if __name__ == "__main__":
         default=compas_rhino.DEFAULT_VERSION,
         help="The version of Rhino to install the packages in.",
     )
-    parser.add_argument(
-        "-p", "--packages", nargs="+", help="The packages to uninstall."
-    )
+    parser.add_argument("-p", "--packages", nargs="+", help="The packages to uninstall.")
 
     args = parser.parse_args()
 

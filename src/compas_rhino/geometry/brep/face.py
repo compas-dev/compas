@@ -75,9 +75,7 @@ class RhinoBrepFace(BrepFace):
         elif type_ == "nurbs":
             surface = RhinoNurbsSurface.from_data(surface)
         elif type_ == "torus":
-            raise NotImplementedError(
-                "Support for torus surface is not yet implemented!"
-            )
+            raise NotImplementedError("Support for torus surface is not yet implemented!")
         self._surface = surface.rhino_surface
 
     # ==============================================================================
@@ -121,9 +119,7 @@ class RhinoBrepFace(BrepFace):
             return "cylinder", cylinder_to_compas(cast_surface)
         success, cast_surface = surface.TryGetTorus()
         if success:
-            raise NotImplementedError(
-                "Support for torus surface is not yet implemented!"
-            )
+            raise NotImplementedError("Support for torus surface is not yet implemented!")
         return "nurbs", RhinoNurbsSurface.from_rhino(surface.ToNurbsSurface())
 
     @staticmethod

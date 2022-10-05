@@ -44,9 +44,7 @@ def trimesh_remesh(mesh, target_edge_length, number_of_iterations=10, do_project
 
 
 @pluggable(category="trimesh")
-def trimesh_remesh_constrained(
-    mesh, target_edge_length, protected_edges, number_of_iterations=10, do_project=True
-):
+def trimesh_remesh_constrained(mesh, target_edge_length, protected_edges, number_of_iterations=10, do_project=True):
     """Constrained remeshing of a triangle mesh.
 
     Parameters

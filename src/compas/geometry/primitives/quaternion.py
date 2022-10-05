@@ -254,11 +254,7 @@ class Quaternion(Primitive):
         raise KeyError
 
     def __eq__(self, other, tol=1e-05):
-        if (
-            not hasattr(other, "__iter__")
-            or not hasattr(other, "__len__")
-            or len(self) != len(other)
-        ):
+        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         for v1, v2 in zip(self, other):
             if math.fabs(v1 - v2) > tol:

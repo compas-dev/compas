@@ -651,10 +651,7 @@ class RobotModel(Data):
         values = []
         for joint in configurable_joints:
             if joint.limit:
-                values.append(
-                    joint.limit.lower
-                    + (joint.limit.upper - joint.limit.lower) * random.random()
-                )
+                values.append(joint.limit.lower + (joint.limit.upper - joint.limit.lower) * random.random())
             else:
                 values.append(0)
         joint_names = self.get_configurable_joint_names()
@@ -711,9 +708,7 @@ class RobotModel(Data):
                             break
 
                     if not shape.meshes:
-                        raise Exception(
-                            "Unable to load meshes for {}".format(shape.filename)
-                        )
+                        raise Exception("Unable to load meshes for {}".format(shape.filename))
 
     def ensure_geometry(self):
         """Check if geometry has been loaded.
@@ -728,9 +723,7 @@ class RobotModel(Data):
             for element in itertools.chain(link.collision, link.visual):
                 shape = element.geometry.shape
                 if not shape.meshes:
-                    raise Exception(
-                        "This method is only callable once the geometry has been loaded."
-                    )
+                    raise Exception("This method is only callable once the geometry has been loaded.")
 
     @property
     def frames(self):
@@ -833,9 +826,7 @@ class RobotModel(Data):
 
         self._scale_factor = factor
 
-    def compute_transformations(
-        self, joint_state, link=None, parent_transformation=None
-    ):
+    def compute_transformations(self, joint_state, link=None, parent_transformation=None):
         """Recursive function to calculate the transformations of each joint.
 
         Parameters
@@ -873,26 +864,16 @@ class RobotModel(Data):
                 child_joint.name in joint_state.keys()
             ):  # if passive/mimicking joint is in the joint_state, the transformation will be calculated according to this value
                 position = joint_state[child_joint.name]
-                transformation = (
-                    parent_transformation
-                    * child_joint.calculate_transformation(position)
-                )
+                transformation = parent_transformation * child_joint.calculate_transformation(position)
             elif child_joint.mimic and child_joint.mimic.joint in joint_state.keys():
                 mimicked_joint_position = joint_state[child_joint.mimic.joint]
                 position = child_joint.mimic.calculate_position(mimicked_joint_position)
-                transformation = (
-                    parent_transformation
-                    * child_joint.calculate_transformation(position)
-                )
+                transformation = parent_transformation * child_joint.calculate_transformation(position)
             else:
                 transformation = parent_transformation
             transformations.update({child_joint.name: transformation})
             # call function on child
-            transformations.update(
-                self.compute_transformations(
-                    joint_state, child_joint.child_link, transformation
-                )
-            )
+            transformations.update(self.compute_transformations(joint_state, child_joint.child_link, transformation))
 
         return transformations
 
@@ -921,10 +902,7 @@ class RobotModel(Data):
 
         """
         transformations = self.compute_transformations(joint_state)
-        return [
-            j.current_origin.transformed(transformations[j.name])
-            for j in self.iter_joints()
-        ]
+        return [j.current_origin.transformed(transformations[j.name]) for j in self.iter_joints()]
 
     def transformed_axes(self, joint_state):
         """Returns the transformed axes based on the joint_state.
@@ -1007,14 +985,7 @@ class RobotModel(Data):
         if name in all_link_names:
             raise ValueError("Link name '%s' already used in chain." % name)
 
-    def add_link(
-        self,
-        name,
-        visual_meshes=None,
-        visual_color=None,
-        collision_meshes=None,
-        **kwargs
-    ):
+    def add_link(self, name, visual_meshes=None, visual_color=None, collision_meshes=None, **kwargs):
         """Adds a link to the robot model.
 
         Provides an easy way to programmatically add a link to the robot model.
@@ -1055,12 +1026,8 @@ class RobotModel(Data):
 
         """
         self._check_link_name(name)
-        visual_meshes, kwargs = self._consolidate_meshes(
-            visual_meshes, "visual_mesh", **kwargs
-        )
-        collision_meshes, kwargs = self._consolidate_meshes(
-            collision_meshes, "collision_mesh", **kwargs
-        )
+        visual_meshes, kwargs = self._consolidate_meshes(visual_meshes, "visual_mesh", **kwargs)
+        collision_meshes, kwargs = self._consolidate_meshes(collision_meshes, "collision_mesh", **kwargs)
         if not visual_color:
             visual_color = (0.8, 0.8, 0.8)
 
@@ -1076,9 +1043,7 @@ class RobotModel(Data):
             v.material = Material(color=Color("%f %f %f 1" % visual_color))
             visuals.append(v)
 
-        for (
-            collision
-        ) in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
+        for collision in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
             if isinstance(collision, Mesh):
                 c = Collision(Geometry(MeshDescriptor("")))
                 c.geometry.shape.meshes = [collision]
@@ -1107,17 +1072,7 @@ class RobotModel(Data):
         """
         self.links = [link for link in self.links if link.name != name]
 
-    def add_joint(
-        self,
-        name,
-        type,
-        parent_link,
-        child_link,
-        origin=None,
-        axis=None,
-        limit=None,
-        **kwargs
-    ):
+    def add_joint(self, name, type, parent_link, child_link, origin=None, axis=None, limit=None, **kwargs):
         """Adds a joint to the robot model.
 
         Provides an easy way to programmatically add a joint to the robot model.
@@ -1178,14 +1133,7 @@ class RobotModel(Data):
         type_str = Joint.SUPPORTED_TYPES[type]
 
         joint = Joint(
-            name,
-            type_str,
-            parent_link.name,
-            child_link.name,
-            origin=origin,
-            axis=axis,
-            limit=limit,
-            **kwargs
+            name, type_str, parent_link.name, child_link.name, origin=origin, axis=axis, limit=limit, **kwargs
         )
 
         self.joints.append(joint)

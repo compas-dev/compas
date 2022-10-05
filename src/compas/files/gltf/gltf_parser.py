@@ -41,24 +41,18 @@ class GLTFParser(object):
         self.content.extras = self._get_extras()
         self.content.extensions = self._get_extensions()
 
-        self.content.images = {
-            key: image_data for key, image_data in enumerate(self.reader.image_data)
-        }
+        self.content.images = {key: image_data for key, image_data in enumerate(self.reader.image_data)}
         self.content.samplers = {
-            key: SamplerData.from_data(sampler)
-            for key, sampler in enumerate(self.reader.json.get("samplers", []))
+            key: SamplerData.from_data(sampler) for key, sampler in enumerate(self.reader.json.get("samplers", []))
         }
         self.content.textures = {
-            key: TextureData.from_data(texture)
-            for key, texture in enumerate(self.reader.json.get("textures", []))
+            key: TextureData.from_data(texture) for key, texture in enumerate(self.reader.json.get("textures", []))
         }
         self.content.materials = {
-            key: MaterialData.from_data(material)
-            for key, material in enumerate(self.reader.json.get("materials", []))
+            key: MaterialData.from_data(material) for key, material in enumerate(self.reader.json.get("materials", []))
         }
         self.content.cameras = {
-            key: CameraData.from_data(camera)
-            for key, camera in enumerate(self.reader.json.get("cameras", []))
+            key: CameraData.from_data(camera) for key, camera in enumerate(self.reader.json.get("cameras", []))
         }
         self.content.skins = {
             key: SkinData.from_data(skin, self.reader.data[skin["inverseBindMatrices"]])
@@ -83,12 +77,8 @@ class GLTFParser(object):
         for index, sampler in enumerate(animation["samplers"]):
             input_ = self.reader.data[sampler["input"]]
             output = self.reader.data[sampler["output"]]
-            sampler_data_dict[index] = AnimationSamplerData.from_data(
-                sampler, input_, output
-            )
-        channel_data_list = [
-            ChannelData.from_data(channel) for channel in animation["channels"]
-        ]
+            sampler_data_dict[index] = AnimationSamplerData.from_data(sampler, input_, output)
+        channel_data_list = [ChannelData.from_data(channel) for channel in animation["channels"]]
         return AnimationData.from_data(animation, channel_data_list, sampler_data_dict)
 
     def _get_extras(self):
@@ -120,15 +110,10 @@ class GLTFParser(object):
 
             target_list = []
             for target in primitive.get("targets", []):
-                target_data = {
-                    attr: self.reader.data[accessor_index]
-                    for attr, accessor_index in target.items()
-                }
+                target_data = {attr: self.reader.data[accessor_index] for attr, accessor_index in target.items()}
                 target_list.append(target_data)
 
-            primitive_data = PrimitiveData.from_data(
-                primitive, attributes, indices, target_list
-            )
+            primitive_data = PrimitiveData.from_data(primitive, attributes, indices, target_list)
 
             primitive_data_list.append(primitive_data)
 

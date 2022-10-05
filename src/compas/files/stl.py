@@ -361,9 +361,7 @@ class STLWriter(object):
             mesh = self.mesh.transformed(T)
         else:
             mesh = self.mesh
-        return {
-            vertex: mesh.vertex_attributes(vertex, "xyz") for vertex in mesh.vertices()
-        }
+        return {vertex: mesh.vertex_attributes(vertex, "xyz") for vertex in mesh.vertices()}
 
     def write(self):
         """Write the data to a file.
@@ -396,14 +394,10 @@ class STLWriter(object):
     def _write_faces(self):
         vertex_xyz = self._vertex_xyz
         for face in self.mesh.faces():
-            self.file.write(
-                "facet normal {0} {1} {2}\n".format(*self.mesh.face_normal(face))
-            )
+            self.file.write("facet normal {0} {1} {2}\n".format(*self.mesh.face_normal(face)))
             self.file.write("    outer loop\n")
             for vertex in self.mesh.face_vertices(face):
-                self.file.write(
-                    "        vertex {0} {1} {2}\n".format(*vertex_xyz[vertex])
-                )
+                self.file.write("        vertex {0} {1} {2}\n".format(*vertex_xyz[vertex]))
             self.file.write("    endloop\n")
             self.file.write("endfacet\n")
 
@@ -414,9 +408,7 @@ class STLWriter(object):
         try:
             self.file.write(struct.pack("<L", self.mesh.number_of_faces()))
         except struct.error:
-            raise ValueError(
-                "Mesh must have fewer than 4294967295 faces to be written to binary STL."
-            )
+            raise ValueError("Mesh must have fewer than 4294967295 faces to be written to binary STL.")
 
     def _write_binary_faces(self):
         vertex_xyz = self._vertex_xyz

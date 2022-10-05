@@ -55,15 +55,8 @@ class CircleArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(
-        self,
-        circle: Circle,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
-        super().__init__(
-            primitive=circle, collection=collection or circle.name, **kwargs
-        )
+    def __init__(self, circle: Circle, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
+        super().__init__(primitive=circle, collection=collection or circle.name, **kwargs)
 
     def draw(
         self,

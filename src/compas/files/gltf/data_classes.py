@@ -112,9 +112,7 @@ class SamplerData(BaseGLTFDataClass):
 
 
 class TextureData(BaseGLTFDataClass):
-    def __init__(
-        self, sampler=None, source=None, name=None, extras=None, extensions=None
-    ):
+    def __init__(self, sampler=None, source=None, name=None, extras=None, extensions=None):
         super(TextureData, self).__init__(extras, extensions)
         self.sampler = sampler
         self.source = source
@@ -179,18 +177,12 @@ class TextureInfoData(BaseGLTFDataClass):
 
 
 class OcclusionTextureInfoData(TextureInfoData):
-    def __init__(
-        self, index, tex_coord=None, extras=None, extensions=None, strength=None
-    ):
-        super(OcclusionTextureInfoData, self).__init__(
-            index, tex_coord, extras, extensions
-        )
+    def __init__(self, index, tex_coord=None, extras=None, extensions=None, strength=None):
+        super(OcclusionTextureInfoData, self).__init__(index, tex_coord, extras, extensions)
         self.strength = strength
 
     def to_data(self, texture_index_by_key):
-        texture_info_dict = super(OcclusionTextureInfoData, self).to_data(
-            texture_index_by_key
-        )
+        texture_info_dict = super(OcclusionTextureInfoData, self).to_data(texture_index_by_key)
         if self.strength is not None:
             texture_info_dict["strength"] = self.strength
         return texture_info_dict
@@ -210,15 +202,11 @@ class OcclusionTextureInfoData(TextureInfoData):
 
 class NormalTextureInfoData(TextureInfoData):
     def __init__(self, index, tex_coord=None, extras=None, extensions=None, scale=None):
-        super(NormalTextureInfoData, self).__init__(
-            index, tex_coord, extras, extensions
-        )
+        super(NormalTextureInfoData, self).__init__(index, tex_coord, extras, extensions)
         self.scale = scale
 
     def to_data(self, texture_index_by_key):
-        texture_info_dict = super(NormalTextureInfoData, self).to_data(
-            texture_index_by_key
-        )
+        texture_info_dict = super(NormalTextureInfoData, self).to_data(texture_index_by_key)
         if self.scale is not None:
             texture_info_dict["scale"] = self.scale
         return texture_info_dict
@@ -259,17 +247,13 @@ class PBRMetallicRoughnessData(BaseGLTFDataClass):
         if self.base_color_factor is not None:
             roughness_dict["baseColorFactor"] = self.base_color_factor
         if self.base_color_texture is not None:
-            roughness_dict["baseColorTexture"] = self.base_color_texture.to_data(
-                texture_index_by_key
-            )
+            roughness_dict["baseColorTexture"] = self.base_color_texture.to_data(texture_index_by_key)
         if self.metallic_factor is not None:
             roughness_dict["metallicFactor"] = self.metallic_factor
         if self.roughness_factor is not None:
             roughness_dict["roughnessFactor"] = self.roughness_factor
         if self.metallic_roughness_texture is not None:
-            roughness_dict[
-                "metallicRoughnessTexture"
-            ] = self.metallic_roughness_texture.to_data(texture_index_by_key)
+            roughness_dict["metallicRoughnessTexture"] = self.metallic_roughness_texture.to_data(texture_index_by_key)
         if self.extras is not None:
             roughness_dict["extras"] = self.extras
         if self.extensions is not None:
@@ -282,14 +266,10 @@ class PBRMetallicRoughnessData(BaseGLTFDataClass):
             return None
         return cls(
             base_color_factor=texture_info.get("baseColorFactor"),
-            base_color_texture=TextureInfoData.from_data(
-                texture_info.get("baseColorTexture")
-            ),
+            base_color_texture=TextureInfoData.from_data(texture_info.get("baseColorTexture")),
             metallic_factor=texture_info.get("metallicFactor"),
             roughness_factor=texture_info.get("roughnessFactor"),
-            metallic_roughness_texture=TextureInfoData.from_data(
-                texture_info.get("metallicRoughnessTexture")
-            ),
+            metallic_roughness_texture=TextureInfoData.from_data(texture_info.get("metallicRoughnessTexture")),
             extras=texture_info.get("extras"),
             extensions=cls.extensions_from_data(texture_info.get("extensions")),
         )
@@ -328,21 +308,13 @@ class MaterialData(BaseGLTFDataClass):
         if self.extras is not None:
             material_dict["extras"] = self.extras
         if self.pbr_metallic_roughness is not None:
-            material_dict["pbrMetallicRoughness"] = self.pbr_metallic_roughness.to_data(
-                texture_index_by_key
-            )
+            material_dict["pbrMetallicRoughness"] = self.pbr_metallic_roughness.to_data(texture_index_by_key)
         if self.normal_texture is not None:
-            material_dict["normalTexture"] = self.normal_texture.to_data(
-                texture_index_by_key
-            )
+            material_dict["normalTexture"] = self.normal_texture.to_data(texture_index_by_key)
         if self.occlusion_texture is not None:
-            material_dict["materialTexture"] = self.occlusion_texture.to_data(
-                texture_index_by_key
-            )
+            material_dict["materialTexture"] = self.occlusion_texture.to_data(texture_index_by_key)
         if self.emissive_texture is not None:
-            material_dict["emissiveTexture"] = self.emissive_texture.to_data(
-                texture_index_by_key
-            )
+            material_dict["emissiveTexture"] = self.emissive_texture.to_data(texture_index_by_key)
         if self.emissive_factor is not None:
             material_dict["emissiveFactor"] = self.emissive_factor
         if self.alpha_mode is not None:
@@ -352,9 +324,7 @@ class MaterialData(BaseGLTFDataClass):
         if self.double_sided is not None:
             material_dict["doubleSided"] = self.double_sided
         if self.extensions is not None:
-            material_dict["extensions"] = self.extensions_to_data(
-                texture_index_by_key=texture_index_by_key
-            )
+            material_dict["extensions"] = self.extensions_to_data(texture_index_by_key=texture_index_by_key)
         return material_dict
 
     @classmethod
@@ -364,15 +334,9 @@ class MaterialData(BaseGLTFDataClass):
         return cls(
             name=material.get("name"),
             extras=material.get("extras"),
-            pbr_metallic_roughness=PBRMetallicRoughnessData.from_data(
-                material.get("pbrMetallicRoughness")
-            ),
-            normal_texture=NormalTextureInfoData.from_data(
-                material.get("normalTexture")
-            ),
-            occlusion_texture=OcclusionTextureInfoData.from_data(
-                material.get("occlusionTexture")
-            ),
+            pbr_metallic_roughness=PBRMetallicRoughnessData.from_data(material.get("pbrMetallicRoughness")),
+            normal_texture=NormalTextureInfoData.from_data(material.get("normalTexture")),
+            occlusion_texture=OcclusionTextureInfoData.from_data(material.get("occlusionTexture")),
             emissive_texture=TextureInfoData.from_data(material.get("emissiveTexture")),
             emissive_factor=material.get("emissiveFactor"),
             alpha_mode=material.get("alphaMode"),
@@ -427,9 +391,7 @@ class CameraData(BaseGLTFDataClass):
 
 
 class AnimationSamplerData(BaseGLTFDataClass):
-    def __init__(
-        self, input_, output, interpolation=None, extras=None, extensions=None
-    ):
+    def __init__(self, input_, output, interpolation=None, extras=None, extensions=None):
         super(AnimationSamplerData, self).__init__(extras, extensions)
         self.input = input_
         self.output = output
@@ -519,9 +481,7 @@ class ChannelData(BaseGLTFDataClass):
 
 
 class AnimationData(BaseGLTFDataClass):
-    def __init__(
-        self, channels, samplers_dict, name=None, extras=None, extensions=None
-    ):
+    def __init__(self, channels, samplers_dict, name=None, extras=None, extensions=None):
         super(AnimationData, self).__init__(extras, extensions)
         self.channels = channels
         self.samplers_dict = samplers_dict
@@ -531,8 +491,7 @@ class AnimationData(BaseGLTFDataClass):
 
     def to_data(self, samplers_list, node_index_by_key):
         channels = [
-            channel_data.to_data(node_index_by_key, self._sampler_index_by_key)
-            for channel_data in self.channels
+            channel_data.to_data(node_index_by_key, self._sampler_index_by_key) for channel_data in self.channels
         ]
         animation_dict = {
             "channels": channels,
@@ -547,9 +506,7 @@ class AnimationData(BaseGLTFDataClass):
         return animation_dict
 
     def get_sampler_index_by_key(self):
-        self._sampler_index_by_key = {
-            key: index for index, key in enumerate(self.samplers_dict)
-        }
+        self._sampler_index_by_key = {key: index for index, key in enumerate(self.samplers_dict)}
         return self._sampler_index_by_key
 
     @classmethod
@@ -582,11 +539,7 @@ class SkinData(BaseGLTFDataClass):
         self.name = name
 
     def to_data(self, node_index_by_key, accessor_index):
-        node_indices = [
-            node_index_by_key.get(item)
-            for item in self.joints
-            if node_index_by_key.get(item) is not None
-        ]
+        node_indices = [node_index_by_key.get(item) for item in self.joints if node_index_by_key.get(item) is not None]
         skin_dict = {"joints": node_indices}
         if self.skeleton is not None:
             skin_dict["skeleton"] = self.skeleton
@@ -680,9 +633,7 @@ class PrimitiveData(BaseGLTFDataClass):
         self.mode = mode
         self.targets = targets
 
-    def to_data(
-        self, indices_accessor, attributes_dict, targets_dict, material_index_by_key
-    ):
+    def to_data(self, indices_accessor, attributes_dict, targets_dict, material_index_by_key):
         primitive_dict = {"indices": indices_accessor}
         if self.material is not None:
             primitive_dict["material"] = material_index_by_key[self.material]

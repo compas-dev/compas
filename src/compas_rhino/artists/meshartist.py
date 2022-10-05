@@ -86,9 +86,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(
-            name="{}.vertexnormal.*".format(self.mesh.name)
-        )
+        guids = compas_rhino.get_objects(name="{}.vertexnormal.*".format(self.mesh.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facenormals(self):
@@ -165,10 +163,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         vertex_index = self.mesh.vertex_index()
         vertex_xyz = self.vertex_xyz
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
-        faces = [
-            [vertex_index[vertex] for vertex in self.mesh.face_vertices(face)]
-            for face in self.mesh.faces()
-        ]
+        faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
         guid = compas_rhino.draw_mesh(
@@ -211,9 +206,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
                     "color": self.vertex_color[vertex].rgb255,
                 }
             )
-        return compas_rhino.draw_points(
-            points, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
@@ -246,9 +239,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
                     "name": "{}.edge.{}-{}".format(self.mesh.name, *edge),
                 }
             )
-        guids = compas_rhino.draw_lines(
-            lines, layer=self.layer, clear=False, redraw=False
-        )
+        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         return guids
 
     def draw_faces(self, faces=None, color=None, join_faces=False):
@@ -278,16 +269,12 @@ class MeshArtist(RhinoArtist, MeshArtist):
         for face in faces:
             facets.append(
                 {
-                    "points": [
-                        vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)
-                    ],
+                    "points": [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                     "name": "{}.face.{}".format(self.mesh.name, face),
                     "color": self.face_color[face].rgb255,
                 }
             )
-        guids = compas_rhino.draw_faces(
-            facets, layer=self.layer, clear=False, redraw=False
-        )
+        guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
         if join_faces:
             guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
             compas_rhino.rs.ObjectLayer(guid, self.layer)
@@ -337,9 +324,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
                     "arrow": "end",
                 }
             )
-        return compas_rhino.draw_lines(
-            lines, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_facenormals(self, faces=None, color=(0, 255, 255), scale=1.0):
         """Draw the normals of the faces.
@@ -365,9 +350,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
         faces = faces or self.faces
         lines = []
         for face in faces:
-            a = centroid_points(
-                [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
-            )
+            a = centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])
             n = self.mesh.face_normal(face)
             b = add_vectors(a, scale_vector(n, scale))
             lines.append(
@@ -379,9 +362,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
                     "arrow": "end",
                 }
             )
-        return compas_rhino.draw_lines(
-            lines, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
     # draw labels
@@ -414,9 +395,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
                     "text": self.vertex_text[vertex],
                 }
             )
-        return compas_rhino.draw_labels(
-            labels, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None):
         """Draw labels for a selection of edges.
@@ -445,9 +424,7 @@ class MeshArtist(RhinoArtist, MeshArtist):
                     "text": self.edge_text[edge],
                 }
             )
-        return compas_rhino.draw_labels(
-            labels, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_facelabels(self, text=None):
         """Draw labels for a selection of faces.
@@ -470,14 +447,10 @@ class MeshArtist(RhinoArtist, MeshArtist):
         for face in self.face_text:
             labels.append(
                 {
-                    "pos": centroid_points(
-                        [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
-                    ),
+                    "pos": centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]),
                     "name": "{}.facelabel.{}".format(self.mesh.name, face),
                     "color": self.face_color[face].rgb255,
                     "text": self.face_text[face],
                 }
             )
-        return compas_rhino.draw_labels(
-            labels, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

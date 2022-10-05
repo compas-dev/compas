@@ -23,11 +23,7 @@ if __name__ == "__main__":
     print("Yay! COMPAS is installed correctly!")
     print()
     print("COMPAS: {}".format(compas.__version__))
-    print(
-        "Python: {} ({})".format(
-            platform.python_version(), platform.python_implementation()
-        )
-    )
+    print("Python: {} ({})".format(platform.python_version(), platform.python_implementation()))
 
     if pkg_resources:
         working_set = pkg_resources.working_set

@@ -161,9 +161,7 @@ def trimesh_remesh(
                 if verbose:
                     print("collapse edge: {0} - {1}".format(u, v))
 
-                trimesh_collapse_edge(
-                    mesh, u, v, allow_boundary=allow_boundary_collapse, fixed=fixed
-                )
+                trimesh_collapse_edge(mesh, u, v, allow_boundary=allow_boundary_collapse, fixed=fixed)
 
                 visited.add(u)
                 visited.add(v)
@@ -207,18 +205,8 @@ def trimesh_remesh(
                 if v2 in boundary:
                     valency4 += 2
 
-                current_error = (
-                    abs(valency1 - 6)
-                    + abs(valency2 - 6)
-                    + abs(valency3 - 6)
-                    + abs(valency4 - 6)
-                )
-                flipped_error = (
-                    abs(valency1 - 7)
-                    + abs(valency2 - 7)
-                    + abs(valency3 - 5)
-                    + abs(valency4 - 5)
-                )
+                current_error = abs(valency1 - 6) + abs(valency2 - 6) + abs(valency3 - 6) + abs(valency4 - 6)
+                flipped_error = abs(valency1 - 7) + abs(valency2 - 7) + abs(valency3 - 5) + abs(valency4 - 5)
 
                 if current_error <= flipped_error:
                     continue

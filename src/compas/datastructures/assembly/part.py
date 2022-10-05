@@ -120,12 +120,8 @@ class Part(Datastructure):
         self.key = data["key"]
         self.frame.data = data["frame"]
         self.shape.data = data["shape"]
-        self.features = [
-            (Shape.from_data(shape), operation) for shape, operation in data["features"]
-        ]
-        self.transformations = deque(
-            [Transformation.from_data(T) for T in data["transformations"]]
-        )
+        self.features = [(Shape.from_data(shape), operation) for shape, operation in data["features"]]
+        self.transformations = deque([Transformation.from_data(T) for T in data["transformations"]])
 
     # ==========================================================================
     # properties

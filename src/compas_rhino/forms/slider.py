@@ -65,9 +65,7 @@ class SliderForm(BaseForm):
         trackbar.Scroll += System.EventHandler(self.on_scroll)
         self.Controls.Add(textbox)
         self.Controls.Add(trackbar)
-        self.ClientSize = Size(
-            10 + textbox.Width + 10 + trackbar.Width + 10, trackbar.Height + 10
-        )
+        self.ClientSize = Size(10 + textbox.Width + 10 + trackbar.Width + 10, trackbar.Height + 10)
         self.textbox = textbox
         self.trackbar = trackbar
 

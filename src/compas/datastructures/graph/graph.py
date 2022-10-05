@@ -42,9 +42,7 @@ class Graph(Datastructure):
 
     """
 
-    def __init__(
-        self, name=None, default_node_attributes=None, default_edge_attributes=None
-    ):
+    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
         super(Graph, self).__init__()
         self._max_node = -1
         self.attributes = {"name": name or "Graph"}
@@ -1493,6 +1491,4 @@ class Graph(Datastructure):
         """
         if directed:
             return u in self.edge and v in self.edge[u]
-        return (u in self.edge and v in self.edge[u]) or (
-            v in self.edge and u in self.edge[v]
-        )
+        return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])

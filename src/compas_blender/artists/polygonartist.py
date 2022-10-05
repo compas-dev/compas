@@ -50,15 +50,8 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(
-        self,
-        polygon: Polygon,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
-        super().__init__(
-            primitive=polygon, collection=collection or polygon.name, **kwargs
-        )
+    def __init__(self, polygon: Polygon, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
+        super().__init__(primitive=polygon, collection=collection or polygon.name, **kwargs)
 
     def draw(
         self,
@@ -101,8 +94,7 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
             objects += compas_blender.draw_points(points, collection=self.collection)
         if show_edges:
             lines = [
-                {"start": a, "end": b, "color": color, "name": self.primitive.name}
-                for a, b in self.primitive.lines
+                {"start": a, "end": b, "color": color, "name": self.primitive.name} for a, b in self.primitive.lines
             ]
             objects += compas_blender.draw_lines(lines, collection=self.collection)
         if show_face:

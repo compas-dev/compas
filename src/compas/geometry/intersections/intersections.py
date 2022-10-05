@@ -307,9 +307,7 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
     return None
 
 
-def intersection_polyline_plane(
-    polyline, plane, expected_number_of_intersections=None, tol=1e-6
-):
+def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=None, tol=1e-6):
     """Calculate the intersection point of a plane with a polyline. Reduce expected_number_of_intersections to speed up.
 
     Parameters
@@ -627,9 +625,7 @@ def intersection_sphere_line(sphere, line):
 
     a = (l2[0] - l1[0]) ** 2 + (l2[1] - l1[1]) ** 2 + (l2[2] - l1[2]) ** 2
     b = 2.0 * (
-        (l2[0] - l1[0]) * (l1[0] - sp[0])
-        + (l2[1] - l1[1]) * (l1[1] - sp[1])
-        + (l2[2] - l1[2]) * (l1[2] - sp[2])
+        (l2[0] - l1[0]) * (l1[0] - sp[0]) + (l2[1] - l1[1]) * (l1[1] - sp[1]) + (l2[2] - l1[2]) * (l1[2] - sp[2])
     )
 
     c = (

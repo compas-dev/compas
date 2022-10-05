@@ -49,7 +49,5 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
                 "name": self.primitive.name,
             }
         ]
-        guids = compas_rhino.draw_points(
-            points, layer=self.layer, clear=False, redraw=False
-        )
+        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         return guids

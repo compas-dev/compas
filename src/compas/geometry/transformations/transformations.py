@@ -248,9 +248,7 @@ def transform_points(points, T):
     >>> points_transformed = transform_points(points, T)
 
     """
-    return dehomogenize(
-        multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T))
-    )
+    return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
 
 
 def transform_vectors(vectors, T):
@@ -275,9 +273,7 @@ def transform_vectors(vectors, T):
     >>> vectors_transformed = transform_vectors(vectors, T)
 
     """
-    return dehomogenize(
-        multiply_matrices(homogenize(vectors, w=0.0), transpose_matrix(T))
-    )
+    return dehomogenize(multiply_matrices(homogenize(vectors, w=0.0), transpose_matrix(T)))
 
 
 def transform_frames(frames, T):
@@ -304,9 +300,7 @@ def transform_frames(frames, T):
 
     """
     points_and_vectors = homogenize_and_flatten_frames(frames)
-    return dehomogenize_and_unflatten_frames(
-        multiply_matrices(points_and_vectors, transpose_matrix(T))
-    )
+    return dehomogenize_and_unflatten_frames(multiply_matrices(points_and_vectors, transpose_matrix(T)))
 
 
 def world_to_local_coordinates(frame, xyz):

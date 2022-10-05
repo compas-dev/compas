@@ -41,88 +41,66 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
         **kwargs: Any,
     ):
 
-        super().__init__(
-            volmesh=volmesh, collection=collection or volmesh.name, **kwargs
-        )
+        super().__init__(volmesh=volmesh, collection=collection or volmesh.name, **kwargs)
 
     @property
     def vertexcollection(self) -> bpy.types.Collection:
         if not self._vertexcollection:
-            self._vertexcollection = compas_blender.create_collection(
-                "Vertices", parent=self.collection
-            )
+            self._vertexcollection = compas_blender.create_collection("Vertices", parent=self.collection)
         return self._vertexcollection
 
     @property
     def edgecollection(self) -> bpy.types.Collection:
         if not self._edgecollection:
-            self._edgecollection = compas_blender.create_collection(
-                "Edges", parent=self.collection
-            )
+            self._edgecollection = compas_blender.create_collection("Edges", parent=self.collection)
         return self._edgecollection
 
     @property
     def facecollection(self) -> bpy.types.Collection:
         if not self._facecollection:
-            self._facecollection = compas_blender.create_collection(
-                "Faces", parent=self.collection
-            )
+            self._facecollection = compas_blender.create_collection("Faces", parent=self.collection)
         return self._facecollection
 
     @property
     def cellcollection(self) -> bpy.types.Collection:
         if not self._cellcollection:
-            self._cellcollection = compas_blender.create_collection(
-                "Cells", parent=self.collection
-            )
+            self._cellcollection = compas_blender.create_collection("Cells", parent=self.collection)
         return self._cellcollection
 
     @property
     def vertexnormalcollection(self) -> bpy.types.Collection:
         if not self._vertexnormalcollection:
-            self._vertexnormalcollection = compas_blender.create_collection(
-                "VertexNormals", parent=self.collection
-            )
+            self._vertexnormalcollection = compas_blender.create_collection("VertexNormals", parent=self.collection)
         return self._vertexnormalcollection
 
     @property
     def facenormalcollection(self) -> bpy.types.Collection:
         if not self._facenormalcollection:
-            self._facenormalcollection = compas_blender.create_collection(
-                "FaceNormals", parent=self.collection
-            )
+            self._facenormalcollection = compas_blender.create_collection("FaceNormals", parent=self.collection)
         return self._facenormalcollection
 
     @property
     def vertexlabelcollection(self) -> bpy.types.Collection:
         if not self._vertexlabelcollection:
-            self._vertexlabelcollection = compas_blender.create_collection(
-                "VertexLabels", parent=self.collection
-            )
+            self._vertexlabelcollection = compas_blender.create_collection("VertexLabels", parent=self.collection)
         return self._vertexlabelcollection
 
     @property
     def edgelabelcollection(self) -> bpy.types.Collection:
         if not self._edgelabelcollection:
-            self._edgelabelcollection = compas_blender.create_collection(
-                "EdgeLabels", parent=self.collection
-            )
+            self._edgelabelcollection = compas_blender.create_collection("EdgeLabels", parent=self.collection)
         return self._edgelabelcollection
 
     @property
     def facelabelcollection(self) -> bpy.types.Collection:
         if not self._facelabelcollection:
-            self._facelabelcollection = compas_blender.create_collection(
-                "FaceLabels", parent=self.collection
-            )
+            self._facelabelcollection = compas_blender.create_collection("FaceLabels", parent=self.collection)
         return self._facelabelcollection
 
     @property
     def celllabelcollection(self) -> bpy.types.Collection:
         if not self._celllabelcollection:
-            self._celllabelcollection = compas_blender.create_collection(
-                "CellLabels", parent=self.collection
-            )
+            self._celllabelcollection = compas_blender.create_collection("CellLabels", parent=self.collection)
         return self._celllabelcollection
 
     # ==========================================================================
@@ -178,9 +156,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
     # draw
     # ==========================================================================
 
-    def draw(
-        self, cells: Optional[List[int]] = None, color: Optional[Color] = None
-    ) -> List[bpy.types.Object]:
+    def draw(self, cells: Optional[List[int]] = None, color: Optional[Color] = None) -> List[bpy.types.Object]:
         """Draw a selection of cells.
 
         Parameters
@@ -297,10 +273,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
         for face in faces:
             facets.append(
                 {
-                    "points": [
-                        self.vertex_xyz[vertex]
-                        for vertex in self.volmesh.face_vertices(face)
-                    ],
+                    "points": [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)],
                     "name": f"{self.volmesh.name}.face.{face}",
                     "color": self.face_color[face],
                 }
@@ -335,14 +308,9 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
         for cell in cells:
             vertices = self.volmesh.cell_vertices(cell)
             faces = self.volmesh.cell_faces(cell)
-            vertex_index = dict(
-                (vertex, index) for index, vertex in enumerate(vertices)
-            )
+            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
             vertices = [vertex_xyz[vertex] for vertex in vertices]
-            faces = [
-                [vertex_index[vertex] for vertex in self.halfface_vertices(face)]
-                for face in faces
-            ]
+            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
             obj = compas_blender.draw_mesh(
                 vertices,
                 faces,
@@ -422,9 +390,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
         faces = faces or self.faces
         lines = []
         for face in faces:
-            a = centroid_points(
-                [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
-            )
+            a = centroid_points([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])
             n = self.mesh.face_normal(face)
             b = add_vectors(a, scale_vector(n, scale))
             lines.append(
@@ -441,9 +407,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
     # draw labels
     # ==========================================================================
 
-    def draw_vertexlabels(
-        self, text: Optional[Dict[int, str]] = None
-    ) -> List[bpy.types.Object]:
+    def draw_vertexlabels(self, text: Optional[Dict[int, str]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection vertices.
 
         Parameters
@@ -470,9 +434,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
             )
         return compas_blender.draw_texts(labels, collection=self.vertexlabelcollection)
 
-    def draw_edgelabels(
-        self, text: Optional[Dict[Tuple[int, int], str]] = None
-    ) -> List[bpy.types.Object]:
+    def draw_edgelabels(self, text: Optional[Dict[Tuple[int, int], str]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters
@@ -500,9 +462,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
             )
         return compas_blender.draw_texts(labels, collection=self.edgelabelcollection)
 
-    def draw_facelabels(
-        self, text: Optional[Dict[int, str]] = None
-    ) -> List[bpy.types.Object]:
+    def draw_facelabels(self, text: Optional[Dict[int, str]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of faces.
 
         Parameters
@@ -521,12 +481,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
         for face in self.face_text:
             labels.append(
                 {
-                    "pos": centroid_points(
-                        [
-                            self.vertex_xyz[vertex]
-                            for vertex in self.mesh.face_vertices(face)
-                        ]
-                    ),
+                    "pos": centroid_points([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]),
                     "name": "{}.facelabel.{}".format(self.mesh.name, face),
                     "text": self.face_text[face],
                     "color": self.face_color[face],

@@ -40,9 +40,7 @@ def assert_axes_dimension(axes, dim):
     bool
         True if the axes object has dim dimensions.
     """
-    assert get_axes_dimension(axes) == dim, "The provided axes are not {0}D.".format(
-        dim
-    )
+    assert get_axes_dimension(axes) == dim, "The provided axes are not {0}D.".format(dim)
 
 
 def width_to_dict(width, dictkeys, defval=None):

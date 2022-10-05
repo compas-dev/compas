@@ -62,9 +62,7 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
     return [(((value - old_min) * new_range) / old_range) + new_min for value in values]
 
 
-def remap_values(
-    values, target_min=0.0, target_max=1.0, original_min=None, original_max=None
-):
+def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
     """Maps a list of numbers from one domain to another.
 
     Parameters

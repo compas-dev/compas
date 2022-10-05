@@ -79,9 +79,7 @@ def test_offset_polyline_equals_offset_line(polyline, distance, normal, tol):
         )
     ],
 )
-def test_variable_offset_on_colinear_polyline(
-    polyline, distance, normal, tol, output_polyline
-):
+def test_variable_offset_on_colinear_polyline(polyline, distance, normal, tol, output_polyline):
     output_polyline = [v for v in output_polyline]
     assert allclose(offset_polyline(polyline, distance, normal, tol), output_polyline)
 

@@ -84,9 +84,7 @@ def test_vertices_where_predicate():
     hf.add_vertex(0)
     hf.add_vertex(1, {"a": 5, "b": 10})
     hf.add_vertex(2, {"a": 15, "b": 20})
-    assert list(
-        hf.vertices_where_predicate(lambda v, attr: attr["b"] - attr["a"] == 5)
-    ) == [1, 2]
+    assert list(hf.vertices_where_predicate(lambda v, attr: attr["b"] - attr["a"] == 5)) == [1, 2]
 
 
 # ==============================================================================
@@ -109,9 +107,7 @@ def test_edges_where_predicate():
         hf.add_vertex(vkey)
     hf.add_halfface([0, 1, 2])
     hf.edge_attribute((0, 1), "a", 5)
-    assert list(hf.edges_where_predicate(lambda e, attr: attr["a"] - attr["b"] == 3))[
-        0
-    ] == (0, 1)
+    assert list(hf.edges_where_predicate(lambda e, attr: attr["a"] - attr["b"] == 3))[0] == (0, 1)
 
 
 # ==============================================================================
@@ -136,10 +132,7 @@ def test_faces_where_predicate():
     for i in range(3):
         hf.add_halfface([i, i + 1, i + 2])
     hf.face_attribute(1, "a", 5)
-    assert (
-        list(hf.faces_where_predicate(lambda e, attr: attr["a"] - attr["b"] == 3))[0]
-        == 1
-    )
+    assert list(hf.faces_where_predicate(lambda e, attr: attr["a"] - attr["b"] == 3))[0] == 1
 
 
 # ==============================================================================
@@ -178,7 +171,4 @@ def test_cells_where_predicate():
             ]
         )
     hf.cell_attribute(1, "a", 5)
-    assert (
-        list(hf.cells_where_predicate(lambda e, attr: attr["a"] - attr["b"] == 3))[0]
-        == 1
-    )
+    assert list(hf.cells_where_predicate(lambda e, attr: attr["a"] - attr["b"] == 3))[0] == 1

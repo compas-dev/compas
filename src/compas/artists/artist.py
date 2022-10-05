@@ -64,9 +64,7 @@ def _get_artist_cls(data, **kwargs):
 
     if cls is None:
         raise DataArtistNotRegistered(
-            "No artist is registered for this data type: {} in this context: {}".format(
-                dtype, Artist.CONTEXT
-            )
+            "No artist is registered for this data type: {} in this context: {}".format(dtype, Artist.CONTEXT)
         )
 
     return cls

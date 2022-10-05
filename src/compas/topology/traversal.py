@@ -432,9 +432,7 @@ def _get_coordinates(key, structure):
         return structure.node_attributes(key, "xyz")
     if hasattr(structure, "vertex_coordinates"):
         return structure.vertex_coordinates(key)
-    raise Exception(
-        "Coordinates cannot be found for object of type {}".format(type(structure))
-    )
+    raise Exception("Coordinates cannot be found for object of type {}".format(type(structure)))
 
 
 def _get_points(structure):
@@ -442,9 +440,7 @@ def _get_points(structure):
         return structure.nodes()
     if hasattr(structure, "vertices"):
         return structure.vertices()
-    raise Exception(
-        "Points cannot be found for object of type {}".format(type(structure))
-    )
+    raise Exception("Points cannot be found for object of type {}".format(type(structure)))
 
 
 def astar_shortest_path(graph, root, goal):

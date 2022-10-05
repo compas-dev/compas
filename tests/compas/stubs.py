@@ -42,9 +42,7 @@ def compas_stubs():
         if name == "compas.rst" or not name.startswith("compas."):
             continue
         stub = os.path.abspath(os.path.join(API, name))
-        subprocess.call(
-            "sphinx-autogen -o {} {}".format(TEMP, stub), shell=True, env=env
-        )
+        subprocess.call("sphinx-autogen -o {} {}".format(TEMP, stub), shell=True, env=env)
 
     _, _, filenames = next(os.walk(TEMP))
 

@@ -24,9 +24,7 @@ class RhinoMesh(RhinoGeometry):
     def faces(self):
         if self.geometry:
             faces = [
-                [face.A, face.B, face.C]
-                if face.IsTriangle
-                else [face.A, face.B, face.C, face.D]
+                [face.A, face.B, face.C] if face.IsTriangle else [face.A, face.B, face.C, face.D]
                 for face in self.geometry.Faces
             ]
         else:
@@ -38,9 +36,7 @@ class RhinoMesh(RhinoGeometry):
         if self.geometry:
             # self.geometry.ComputeNormals()
             # self.geometry.UnitizeNormals()
-            normals = [
-                [vector.X, vector.Y, vector.Z] for vector in self.geometry.Normals
-            ]
+            normals = [[vector.X, vector.Y, vector.Z] for vector in self.geometry.Normals]
         else:
             normals = []
         return normals
@@ -50,9 +46,7 @@ class RhinoMesh(RhinoGeometry):
         if self.geometry:
             # self.geometry.ComputeFaceNormals()
             # self.geometry.UnitizeFaceNormals()
-            normals = [
-                [vector.X, vector.Y, vector.Z] for vector in self.geometry.FaceNormals
-            ]
+            normals = [[vector.X, vector.Y, vector.Z] for vector in self.geometry.FaceNormals]
         else:
             normals = []
         return normals
@@ -60,9 +54,7 @@ class RhinoMesh(RhinoGeometry):
     @property
     def vertexcolors(self):
         if self.geometry:
-            colors = [
-                [color.R, color.G, color.B] for color in self.geometry.VertexColors
-            ]
+            colors = [[color.R, color.G, color.B] for color in self.geometry.VertexColors]
         else:
             colors = []
         return colors
@@ -104,9 +96,7 @@ class RhinoMesh(RhinoGeometry):
         mesh = cls()
 
         for vertex in self.geometry.Vertices:
-            mesh.add_vertex(
-                attr_dict=dict(x=float(vertex.X), y=float(vertex.Y), z=float(vertex.Z))
-            )
+            mesh.add_vertex(attr_dict=dict(x=float(vertex.X), y=float(vertex.Y), z=float(vertex.Z)))
 
         for face in self.geometry.Faces:
             if face.A == face.D or face.C == face.D:
@@ -134,9 +124,7 @@ class RhinoMesh(RhinoGeometry):
         list
             The XYZ coordinates of the closest point.
         """
-        face, point = self.geometry.ClosestPoint(
-            Rhino.Geometry.Point3d(*point), maxdist
-        )
+        face, point = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
         return list(point)
 
     def closest_points(self, points, maxdist=None):

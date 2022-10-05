@@ -163,9 +163,7 @@ def _get_rhino_application_folder(version):
         raise Exception("Unsupported platform")
 
     if not os.path.exists(app):
-        raise Exception(
-            "The application folder does not exist in this location: {}".format(app)
-        )
+        raise Exception("The application folder does not exist in this location: {}".format(app))
 
     return app
 
@@ -180,17 +178,13 @@ def _get_rhino_appdata_folder():
         app = os.path.join(os.getenv("APPDATA"), "McNeel", "Rhinoceros")
 
     elif compas.OSX:
-        app = os.path.join(
-            os.getenv("HOME"), "Library", "Application Support", "McNeel", "Rhinoceros"
-        )
+        app = os.path.join(os.getenv("HOME"), "Library", "Application Support", "McNeel", "Rhinoceros")
 
     else:
         raise Exception("Unsupported platform")
 
     if not os.path.exists(app):
-        raise Exception(
-            "The appdata folder does not exist in this location: {}".format(app)
-        )
+        raise Exception("The appdata folder does not exist in this location: {}".format(app))
 
     return app
 
@@ -206,11 +200,7 @@ def _get_rhino_scripts_path(version):
     scripts_path = os.path.join(appdata, "{}".format(version), "scripts")
 
     if not os.path.exists(scripts_path):
-        raise Exception(
-            "The scripts folder does not exist in this location: {}".format(
-                scripts_path
-            )
-        )
+        raise Exception("The scripts folder does not exist in this location: {}".format(scripts_path))
 
     return scripts_path
 
@@ -239,11 +229,7 @@ def _get_rhino_managedplugins_path(version):
         )
 
     if not os.path.exists(managedplugins_path):
-        raise Exception(
-            "The Managed Plug-ins folder does not exist in this location: {}".format(
-                managedplugins_path
-            )
-        )
+        raise Exception("The Managed Plug-ins folder does not exist in this location: {}".format(managedplugins_path))
 
     return managedplugins_path
 
@@ -267,11 +253,7 @@ def _get_rhino_plugins_path(version):
             plugins_path = os.path.join(appdata, "{}".format(version), "Plug-ins")
 
     if not os.path.exists(plugins_path):
-        raise Exception(
-            "The plugins folder does not exist in this location: {}".format(
-                plugins_path
-            )
-        )
+        raise Exception("The plugins folder does not exist in this location: {}".format(plugins_path))
 
     return plugins_path
 
@@ -320,9 +302,7 @@ def _get_rhino_grasshopperplugin_path(version):
         raise Exception("Unsupported platform")
 
     if not os.path.exists(gh_path):
-        raise Exception(
-            "The grasshopper folder does not exist in this location: {}".format(gh_path)
-        )
+        raise Exception("The grasshopper folder does not exist in this location: {}".format(gh_path))
 
     return gh_path
 
@@ -356,6 +336,4 @@ def _get_rhino_ironpython_lib_path_win32(version):
 # For +6 we should switch to the same path as on windows
 # which is not in the managed plugins but in the appdata plugins
 def _get_rhino_ironpython_lib_path_mac(version):
-    return os.path.join(
-        _get_rhino_managedplugins_path(version), "RhinoDLR_Python.rhp", "Lib"
-    )
+    return os.path.join(_get_rhino_managedplugins_path(version), "RhinoDLR_Python.rhp", "Lib")

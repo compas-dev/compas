@@ -194,9 +194,7 @@ def select_python(python_executable):
         either `python` or `pythonw`.
     """
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
-        python_executables = (
-            [python_executable] if python_executable else ["pythonw", "python"]
-        )
+        python_executables = [python_executable] if python_executable else ["pythonw", "python"]
 
         for python_exe in python_executables:
             python = os.path.join(PYTHON_DIRECTORY, python_exe)
@@ -284,9 +282,7 @@ def _realpath_ipy_win(path):
     parent_path = os.path.join(path, "..")
 
     args = 'dir /c "{}" /Al'.format(parent_path)
-    process = subprocess.Popen(
-        args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
+    process = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     output, _error = process.communicate()
     matches = SYMLINK_REGEX.finditer(output)
@@ -302,9 +298,7 @@ def _realpath_ipy_win(path):
 
 def _realpath_ipy_posix(path):
     args = 'readlink -f "{}"'.format(path)
-    process = subprocess.Popen(
-        args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
+    process = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, _error = process.communicate()
     return output
 
@@ -323,14 +317,8 @@ def _polyfill_symlinks(symlinks, raise_on_error):
         mklink_cmd.write("ECHO ret=%symlink_result%\n")
         for i, (source, link_name) in enumerate(symlinks):
             dir_symlink_arg = "/D" if os.path.isdir(source) else ""
-            mklink_cmd.write(
-                "mklink {} {}\n".format(
-                    dir_symlink_arg, subprocess.list2cmdline([link_name, source])
-                )
-            )
-            mklink_cmd.write(
-                "IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} \n".format(2**i)
-            )
+            mklink_cmd.write("mklink {} {}\n".format(dir_symlink_arg, subprocess.list2cmdline([link_name, source])))
+            mklink_cmd.write("IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} \n".format(2**i))
 
         mklink_cmd.write("EXIT /B %symlink_result%\n")
 
@@ -547,9 +535,7 @@ def _run_command_as_admin(command, arguments):
 
     with open(temp_path, "w") as remove_symlink_cmd:
         remove_symlink_cmd.write("@echo off\n")
-        remove_symlink_cmd.write(
-            "{} {}\n".format(command, subprocess.list2cmdline(arguments))
-        )
+        remove_symlink_cmd.write("{} {}\n".format(command, subprocess.list2cmdline(arguments)))
 
     _run_as_admin([temp_path])
 
@@ -588,10 +574,7 @@ def _run_as_admin(command):
     ctypes.windll.kernel32.WaitForSingleObject(process_handle, INFINITE)
 
     ret = ctypes.wintypes.DWORD()
-    if (
-        ctypes.windll.kernel32.GetExitCodeProcess(process_handle, ctypes.byref(ret))
-        == 0
-    ):
+    if ctypes.windll.kernel32.GetExitCodeProcess(process_handle, ctypes.byref(ret)) == 0:
         raise RuntimeError("Failed to retrieve exit code")
 
     return ret.value

@@ -44,9 +44,7 @@ def test_revolute_ctor():
 
 
 def test_prismatic_revolute_ctor():
-    config = Configuration.from_prismatic_and_revolute_values(
-        [8.312], [1.5, 0.0, 0.0, 0.0, 1.0, 0.8]
-    )
+    config = Configuration.from_prismatic_and_revolute_values([8.312], [1.5, 0.0, 0.0, 0.0, 1.0, 0.8])
     assert config.joint_values == [8.312, 1.5, 0.0, 0.0, 0.0, 1.0, 0.8]
     assert config.joint_types == [Joint.PRISMATIC] + [Joint.REVOLUTE] * 6
 
@@ -69,23 +67,17 @@ def test_scale():
 
 
 def test_cast_to_str():
-    config = Configuration(
-        [math.pi / 2, 3.0, 0.1], [Joint.REVOLUTE, Joint.PRISMATIC, Joint.PLANAR]
-    )
+    config = Configuration([math.pi / 2, 3.0, 0.1], [Joint.REVOLUTE, Joint.PRISMATIC, Joint.PLANAR])
     assert str(config) == "Configuration((1.571, 3.000, 0.100), (0, 2, 5))"
 
 
 def test_from_data():
-    config = Configuration.from_data(
-        dict(joint_values=[8.312, 1.5], joint_types=[Joint.PRISMATIC, Joint.REVOLUTE])
-    )
+    config = Configuration.from_data(dict(joint_values=[8.312, 1.5], joint_types=[Joint.PRISMATIC, Joint.REVOLUTE]))
     assert str(config) == "Configuration((8.312, 1.500), (2, 0))"
 
 
 def test_to_data():
-    config = Configuration.from_prismatic_and_revolute_values(
-        [8.312], [1.5, 0.0, 0.0, 0.0, 1.0, 0.8]
-    )
+    config = Configuration.from_prismatic_and_revolute_values([8.312], [1.5, 0.0, 0.0, 0.0, 1.0, 0.8])
     # joint_types=[Joint.PRISMATIC, Joint.REVOLUTE]))
     data = config.to_data()
 
@@ -116,9 +108,7 @@ def test_joint_names():
             joint_names=["a", "a"],
         )
 
-    config = Configuration(
-        joint_values=[1, 2], joint_types=[Joint.REVOLUTE] * 2, joint_names=["a", "b"]
-    )
+    config = Configuration(joint_values=[1, 2], joint_types=[Joint.REVOLUTE] * 2, joint_names=["a", "b"])
     with pytest.raises(ValueError):
         config.joint_names = ["a", "a"]
 

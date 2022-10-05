@@ -55,19 +55,12 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
     """
 
     def __init__(
-        self,
-        cylinder: Cylinder,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
+        self, cylinder: Cylinder, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any
     ):
 
-        super().__init__(
-            shape=cylinder, collection=collection or cylinder.name, **kwargs
-        )
+        super().__init__(shape=cylinder, collection=collection or cylinder.name, **kwargs)
 
-    def draw(
-        self, color: Optional[Color] = None, u: int = None
-    ) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, u: int = None) -> List[bpy.types.Object]:
         """Draw the cylinder associated with the artist.
 
         Parameters

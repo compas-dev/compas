@@ -147,9 +147,7 @@ class Mesh(HalfEdge):
 
     def __str__(self):
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"
-        return tpl.format(
-            self.number_of_vertices(), self.number_of_faces(), self.number_of_edges()
-        )
+        return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # customisation
@@ -427,21 +425,13 @@ class Mesh(HalfEdge):
             for polyline in boundary_polylines + other_polylines
             for xyz in [polyline[0], polyline[-1]]
         ]
-        boundary_vertices = [
-            geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline
-        ]
+        boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
         mesh = cls.from_lines(
-            [
-                (u, v)
-                for polyline in boundary_polylines + other_polylines
-                for u, v in pairwise(polyline)
-            ]
+            [(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)]
         )
         # remove the vertices that are not from the polyline extremities and the faces with all their vertices on the boundary
         vertex_keys = [
-            vkey
-            for vkey in mesh.vertices()
-            if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
+            vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
         ]
         vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
         vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
@@ -449,8 +439,7 @@ class Mesh(HalfEdge):
         for fkey in mesh.faces():
             if sum(
                 [
-                    geometric_key(mesh.vertex_coordinates(vkey))
-                    not in boundary_vertices
+                    geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices
                     for vkey in mesh.face_vertices(fkey)
                 ]
             ):
@@ -458,8 +447,7 @@ class Mesh(HalfEdge):
                     [
                         vertex_map[vkey]
                         for vkey in mesh.face_vertices(fkey)
-                        if geometric_key(mesh.vertex_coordinates(vkey))
-                        in corner_vertices
+                        if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
                     ]
                 )
         mesh.cull_vertices()
@@ -533,10 +521,7 @@ class Mesh(HalfEdge):
         vertices = [self.vertex_coordinates(key) for key in self.vertices()]
 
         if not triangulated:
-            faces = [
-                [key_index[key] for key in self.face_vertices(fkey)]
-                for fkey in self.faces()
-            ]
+            faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
             return vertices, faces
 
         faces = []
@@ -552,9 +537,7 @@ class Mesh(HalfEdge):
                 faces.append([key_index[a], key_index[b], key_index[c]])
                 faces.append([key_index[a], key_index[c], key_index[d]])
             else:
-                centroid = centroid_polygon(
-                    [vertices[key_index[key]] for key in face_vertices]
-                )
+                centroid = centroid_polygon([vertices[key_index[key]] for key in face_vertices])
                 ckey = len(vertices)
                 vertices.append(centroid)
 
@@ -705,10 +688,7 @@ class Mesh(HalfEdge):
         dy = dy or dx
         ny = ny or nx
 
-        vertices = [
-            [x, y, 0.0]
-            for x, y in product(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))
-        ]
+        vertices = [[x, y, 0.0] for x, y in product(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))]
         faces = [
             [
                 i * (ny + 1) + j,
@@ -934,12 +914,7 @@ class Mesh(HalfEdge):
 
         """
         return scale_vector(
-            sum_vectors(
-                [
-                    scale_vector(self.face_centroid(fkey), self.face_area(fkey))
-                    for fkey in self.faces()
-                ]
-            ),
+            sum_vectors([scale_vector(self.face_centroid(fkey), self.face_area(fkey)) for fkey in self.faces()]),
             1.0 / self.area(),
         )
 
@@ -953,12 +928,7 @@ class Mesh(HalfEdge):
 
         """
         return scale_vector(
-            sum_vectors(
-                [
-                    scale_vector(self.face_normal(fkey), self.face_area(fkey))
-                    for fkey in self.faces()
-                ]
-            ),
+            sum_vectors([scale_vector(self.face_normal(fkey), self.face_area(fkey)) for fkey in self.faces()]),
             1.0 / self.area(),
         )
 
@@ -1053,9 +1023,7 @@ class Mesh(HalfEdge):
             The coordinates of the centroid.
 
         """
-        return centroid_points(
-            [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]
-        )
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
 
     def vertex_normal(self, key):
         """Return the normal vector at the vertex as the weighted average of the
@@ -1072,11 +1040,7 @@ class Mesh(HalfEdge):
             The components of the normal vector.
 
         """
-        vectors = [
-            self.face_normal(fkey, False)
-            for fkey in self.vertex_faces(key)
-            if fkey is not None
-        ]
+        vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
     def vertex_curvature(self, vkey):
@@ -1100,10 +1064,7 @@ class Mesh(HalfEdge):
 
         """
         C = 0
-        for u, v in pairwise(
-            self.vertex_neighbors(vkey, ordered=True)
-            + self.vertex_neighbors(vkey, ordered=True)[:1]
-        ):
+        for u, v in pairwise(self.vertex_neighbors(vkey, ordered=True) + self.vertex_neighbors(vkey, ordered=True)[:1]):
             C += angle_points(
                 self.vertex_coordinates(vkey),
                 self.vertex_coordinates(u),
@@ -1135,9 +1096,7 @@ class Mesh(HalfEdge):
             The coordinates of the end point.
 
         """
-        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(
-            v, axes=axes
-        )
+        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
 
     def edge_length(self, u, v):
         """Return the length of an edge.
@@ -1260,9 +1219,7 @@ class Mesh(HalfEdge):
             The coordinates of the vertices of the face.
 
         """
-        return [
-            self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)
-        ]
+        return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
 
     def face_normal(self, fkey, unitized=True):
         """Compute the normal of a face.
@@ -1382,9 +1339,7 @@ class Mesh(HalfEdge):
         * Wikipedia. *Types of mesh*. Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
 
         """
-        face_edge_lengths = [
-            self.edge_length(u, v) for u, v in self.face_halfedges(fkey)
-        ]
+        face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(fkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
     def face_skewness(self, fkey):
@@ -1442,9 +1397,7 @@ class Mesh(HalfEdge):
         centroid = self.face_centroid(fkey)
         plane = bestfit_plane(points)
         max_deviation = max([distance_point_plane(point, plane) for point in points])
-        average_distances = vector_average(
-            [distance_point_point(point, centroid) for point in points]
-        )
+        average_distances = vector_average([distance_point_point(point, centroid) for point in points])
         return max_deviation / average_distances
 
     def face_plane(self, face):
@@ -1583,11 +1536,7 @@ class Mesh(HalfEdge):
                 nbrs = [vertex for vertex in nbrs if vertex not in vertices]
 
         # remove all boundary vertices that were already identified
-        vertices_all = [
-            vertex
-            for vertex in vertices_all
-            if all(vertex not in vertices for vertices in boundaries)
-        ]
+        vertices_all = [vertex for vertex in vertices_all if all(vertex not in vertices for vertices in boundaries)]
 
         # process the remaining boundary vertices if any
         if vertices_all:

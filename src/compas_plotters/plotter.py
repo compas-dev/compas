@@ -142,9 +142,7 @@ class Plotter:
     @property
     def axes(self) -> matplotlib.axes.Axes:
         if not self._axes:
-            figure = plt.figure(
-                facecolor=self.bgcolor, figsize=self.figsize, dpi=self.dpi
-            )
+            figure = plt.figure(facecolor=self.bgcolor, figsize=self.figsize, dpi=self.dpi)
             axes = figure.add_subplot(111, aspect="equal")
             if self.viewbox:
                 xmin, xmax = self.viewbox[0]
@@ -299,9 +297,7 @@ class Plotter:
         if not artist:
             if self.zstack == "natural":
                 zorder = 1000 + len(self._artists) * 100
-                artist = PlotterArtist(
-                    item, plotter=self, zorder=zorder, context="Plotter", **kwargs
-                )
+                artist = PlotterArtist(item, plotter=self, zorder=zorder, context="Plotter", **kwargs)
             else:
                 artist = PlotterArtist(item, plotter=self, context="Plotter", **kwargs)
         artist.draw()

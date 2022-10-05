@@ -77,40 +77,30 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         **kwargs: Any,
     ):
 
-        super().__init__(
-            network=network, collection=collection or network.name, **kwargs
-        )
+        super().__init__(network=network, collection=collection or network.name, **kwargs)
 
     @property
     def nodecollection(self) -> bpy.types.Collection:
         if not self._nodecollection:
-            self._nodecollection = compas_blender.create_collection(
-                "Nodes", parent=self.collection
-            )
+            self._nodecollection = compas_blender.create_collection("Nodes", parent=self.collection)
         return self._nodecollection
 
     @property
     def edgecollection(self) -> bpy.types.Collection:
         if not self._edgecollection:
-            self._edgecollection = compas_blender.create_collection(
-                "Edges", parent=self.collection
-            )
+            self._edgecollection = compas_blender.create_collection("Edges", parent=self.collection)
         return self._edgecollection
 
     @property
     def nodelabelcollection(self) -> bpy.types.Collection:
         if not self._nodelabelcollection:
-            self._nodelabelcollection = compas_blender.create_collection(
-                "NodeLabels", parent=self.collection
-            )
+            self._nodelabelcollection = compas_blender.create_collection("NodeLabels", parent=self.collection)
         return self._nodelabelcollection
 
     @property
     def edgelabelcollection(self) -> bpy.types.Collection:
         if not self._edgelabelcollection:
-            self._edgelabelcollection = compas_blender.create_collection(
-                "EdgeLabels", parent=self.collection
-            )
+            self._edgelabelcollection = compas_blender.create_collection("EdgeLabels", parent=self.collection)
         return self._edgelabelcollection
 
     # ==========================================================================
@@ -266,9 +256,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
             )
         return compas_blender.draw_lines(lines, self.edgecollection)
 
-    def draw_nodelabels(
-        self, text: Optional[Dict[int, str]] = None
-    ) -> List[bpy.types.Object]:
+    def draw_nodelabels(self, text: Optional[Dict[int, str]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection nodes.
 
         Parameters
@@ -295,9 +283,7 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
             )
         return compas_blender.draw_texts(labels, collection=self.nodelabelcollection)
 
-    def draw_edgelabels(
-        self, text: Optional[Dict[Tuple[int, int], str]] = None
-    ) -> List[bpy.types.Object]:
+    def draw_edgelabels(self, text: Optional[Dict[Tuple[int, int], str]] = None) -> List[bpy.types.Object]:
         """Draw labels for a selection of edges.
 
         Parameters
