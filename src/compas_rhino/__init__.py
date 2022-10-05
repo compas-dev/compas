@@ -44,6 +44,8 @@ IRONPYTHON_PLUGIN_GUID = "814d908a-e25c-493d-97e9-ee3861957f49"
 GRASSHOPPER_PLUGIN_GUID = "b45a29b1-4343-4035-989e-044e8580d9cf"
 RHINOCYCLES_PLUGIN_GUID = "9bc28e9e-7a6c-4b8f-a0c6-3d05e02d1b97"
 
+RHINO_APPDATA = None
+
 
 __all__ = [
     "PURGE_ON_DELETE",
@@ -177,10 +179,14 @@ def _get_rhino_application_folder(version):
 
 def _get_rhino_appdata_folder():
     if compas.WINDOWS:
-        app = os.path.join(os.getenv("APPDATA"), "McNeel", "Rhinoceros")
+        root = RHINO_APPDATA or os.getenv("APPDATA")
+        app = os.path.join(root, "McNeel", "Rhinoceros")
 
     elif compas.OSX:
-        app = os.path.join(os.getenv("HOME"), "Library", "Application Support", "McNeel", "Rhinoceros")
+        root = RHINO_APPDATA or os.path.join(
+            os.getenv("HOME"), "Library", "Application Support"
+        )
+        app = os.path.join(root, "McNeel", "Rhinoceros")
 
     else:
         raise Exception("Unsupported platform")
