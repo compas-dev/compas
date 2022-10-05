@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Based all gltf data classes on `BaseGLTFDataClass`
 * Fixed `Color.__get___` AttributeError.
 * Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
+* Changed identification of cylinder brep face to non-zero in `compas_rhino.conversions.cylinder.Cylinder`.
 * Changed linter to `black`.
 * Automatically trigger `invoke format` during `invoke release`.
 * Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
