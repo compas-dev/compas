@@ -41,7 +41,7 @@ class Box(Shape):
         The size of the box in the box frame's x direction.
     ysize : float
         The size of the box in the box frame's y direction.
-    ysize : float
+    zsize : float
         The size of the box in the box frame's z direction.
     xmin : float, read-only
         Minimum value along local X axis.
