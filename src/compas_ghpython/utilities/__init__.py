@@ -23,6 +23,7 @@ drawing
     draw_spheres
     draw_mesh
     draw_network
+    draw_brep
 
 
 sets
@@ -69,6 +70,7 @@ from .drawing import (
     draw_mesh,
     draw_network,
     draw_circles,
+    draw_brep,
 )
 from .sets import list_to_ghtree, ghtree_to_list
 from .timer import update_component
@@ -87,6 +89,7 @@ __all__ = [
     "draw_mesh",
     "draw_network",
     "draw_circles",
+    "draw_brep",
     "list_to_ghtree",
     "ghtree_to_list",
     "update_component",

@@ -463,3 +463,19 @@ def draw_circles(circles):
         radius = c["radius"]
         rg_circles.append(Circle(Plane(Point3d(*point), Vector3d(*normal)), radius))
     return rg_circles
+
+
+def draw_brep(brep):
+    """Draw a RhinoBrep in Grasshopper.
+
+    Parameters
+    ----------
+    brep : :class:`~compas.geometry.RhinoBrep`
+        The Brep to draw.
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Brep`
+
+    """
+    return brep.native_brep

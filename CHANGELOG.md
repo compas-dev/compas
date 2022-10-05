@@ -20,18 +20,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `format` task using `black` formatter.
 * Added a `test_intersection_circle_circle_xy` in the `test_intersections`
 * Added split operation to `compas_rhino.geometry.Brep`.
+* Added a `RhinoArtist` in `compas_rhino`.
+* Added a `RhinoArtist` in `compas_ghpython`.
 
 ### Changed
 
 * Based all gltf data classes on `BaseGLTFDataClass`
 * Fixed `Color.__get___` AttributeError.
 * Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
+* Changed identification of cylinder brep face to non-zero in `compas_rhino.conversions.cylinder.Cylinder`.
 * Changed linter to `black`.
 * Automatically trigger `invoke format` during `invoke release`.
 * Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
 * Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
 * Fixed the `test_tangent` to work with a properly defined circle
-
+* `RhinoBrep` serialization works now with surface types other than NURBS.
 ### Removed
 
 
