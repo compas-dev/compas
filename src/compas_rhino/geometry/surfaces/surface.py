@@ -261,10 +261,9 @@ class RhinoSurface(Surface):
         Returns
         -------
         tuple[[float, float, float], [float, float, float], float, [float, float, float], float, [float, float, float], float, float] | None
-            A tuple containing the point, normal vector, maximum principal curvature value, maximum principal curvature direction, 
+            A tuple containing the point, normal vector, maximum principal curvature value, maximum principal curvature direction,
             minimun principal curvature value, minimun principal curvature direction, gaussian curvature value and mean curvature
             value for the point at UV. None at failure.
-        
 
         """
         surface_curvature = self.rhino_surface.CurvatureAt(u, v)
