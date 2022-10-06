@@ -45,7 +45,7 @@ class Projection(Transformation):
             _, _, _, _, perspective = decompose_matrix(matrix)
             check = matrix_from_perspective_entries(perspective)
             if not allclose(flatten(matrix), flatten(check)):
-                raise ValueError('This is not a proper projection matrix.')
+                raise ValueError("This is not a proper projection matrix.")
         super(Projection, self).__init__(matrix=matrix)
 
     def __repr__(self):

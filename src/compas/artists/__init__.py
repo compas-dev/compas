@@ -78,15 +78,15 @@ BaseRobotModelArtist = RobotModelArtist
 
 
 __all__ = [
-    'DataArtistNotRegistered',
-    'NoArtistContextError',
-    'Artist',
-    'CurveArtist',
-    'MeshArtist',
-    'NetworkArtist',
-    'PrimitiveArtist',
-    'RobotModelArtist',
-    'ShapeArtist',
-    'SurfaceArtist',
-    'VolMeshArtist',
+    "DataArtistNotRegistered",
+    "NoArtistContextError",
+    "Artist",
+    "CurveArtist",
+    "MeshArtist",
+    "NetworkArtist",
+    "PrimitiveArtist",
+    "RobotModelArtist",
+    "ShapeArtist",
+    "SurfaceArtist",
+    "VolMeshArtist",
 ]

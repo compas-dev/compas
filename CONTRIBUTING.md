@@ -37,7 +37,7 @@ In short, this is how that works.
    ```
 
 5. Start making your changes to the **master** branch (or branch off of it).
-6. Auto-format your code using `black -l 180 <path_to_source_file>`.
+6. Auto-format your code using `black <path_to_source_file>`.
 7. Make sure all tests still pass:
 
    ```bash

@@ -110,6 +110,27 @@ Trimming a Brep in Grasshopper
 .. |pic2| image:: files/trimmed_box.png
    :width: 48%
 
+Splitting a Brep in Grasshopper
+
+.. code-block::
+
+    from compas.geometry import Brep, Box, Frame, Translation
+
+    brep = Brep.from_box(Box.from_width_height_depth(5,5,5))
+    cutter = Brep.from_box(Box.from_width_height_depth(1, 6, 6))
+
+    a, b, c = brep.split(cutter)
+
+    world_xy = Frame.worldXY()
+    translated_frame = Frame((0, 0, 1.), world_xy.xaxis, world_xy.yaxis)
+    t = Translation.from_frame_to_frame(world_xy, translated_frame)
+    a.transform(t)
+    b.transform(t)
+
+    result = [x.native_brep for x in [a, b, c]]
+
+.. image:: files/3_way_split.png
+    :width: 50%
 
 Implementing a new backend
 ==========================

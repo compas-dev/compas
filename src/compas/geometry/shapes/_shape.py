@@ -36,6 +36,7 @@ class Shape(Geometry):
         """
         from compas.geometry import boolean_union_mesh_mesh
         from compas.geometry import Polyhedron
+
         A = self.to_vertices_and_faces(triangulated=True)
         B = other.to_vertices_and_faces(triangulated=True)
         V, F = boolean_union_mesh_mesh(A, B)
@@ -64,6 +65,7 @@ class Shape(Geometry):
         """
         from compas.geometry import boolean_difference_mesh_mesh
         from compas.geometry import Polyhedron
+
         A = self.to_vertices_and_faces(triangulated=True)
         B = other.to_vertices_and_faces(triangulated=True)
         V, F = boolean_difference_mesh_mesh(A, B)
@@ -92,6 +94,7 @@ class Shape(Geometry):
         """
         from compas.geometry import boolean_intersection_mesh_mesh
         from compas.geometry import Polyhedron
+
         A = self.to_vertices_and_faces(triangulated=True)
         B = other.to_vertices_and_faces(triangulated=True)
         V, F = boolean_intersection_mesh_mesh(A, B)

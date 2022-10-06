@@ -14,10 +14,10 @@ from compas.numerical import pca_numpy
 
 
 __all__ = [
-    'bestfit_plane_numpy',
-    'bestfit_frame_numpy',
-    'bestfit_circle_numpy',
-    'bestfit_sphere_numpy',
+    "bestfit_plane_numpy",
+    "bestfit_frame_numpy",
+    "bestfit_circle_numpy",
+    "bestfit_sphere_numpy",
 ]
 
 
@@ -193,17 +193,17 @@ def bestfit_sphere_numpy(points):
     spY = asarray([p[1] for p in points])
     spZ = asarray([p[2] for p in points])
     A = zeros((len(spX), 4))
-    A[:, 0] = spX*2
-    A[:, 1] = spY*2
-    A[:, 2] = spZ*2
+    A[:, 0] = spX * 2
+    A[:, 1] = spY * 2
+    A[:, 2] = spZ * 2
     A[:, 3] = 1
 
     # Assemble the f matrix
     f = zeros((len(spX), 1))
-    f[:, 0] = (spX*spX) + (spY*spY) + (spZ*spZ)
+    f[:, 0] = (spX * spX) + (spY * spY) + (spZ * spZ)
     C, residules, rank, singval = lstsq(A, f)
 
     # solve for the radius
-    t = (C[0]*C[0]) + (C[1]*C[1]) + (C[2]*C[2]) + C[3]
+    t = (C[0] * C[0]) + (C[1] * C[1]) + (C[2] * C[2]) + C[3]
     radius = sqrt(t)
     return [float(C[0][0]), float(C[1][0]), float(C[2][0])], radius

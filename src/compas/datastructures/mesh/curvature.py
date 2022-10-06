@@ -7,10 +7,7 @@ from math import pi
 from compas.geometry import angle_points
 
 
-__all__ = [
-    'trimesh_mean_curvature',
-    'trimesh_gaussian_curvature'
-]
+__all__ = ["trimesh_mean_curvature", "trimesh_gaussian_curvature"]
 
 
 def trimesh_mean_curvature(mesh):
@@ -49,7 +46,7 @@ def trimesh_gaussian_curvature(mesh):
 
     """
     pi2 = 2 * pi
-    key_xyz = {key: mesh.vertex_attributes(key, 'xyz') for key in mesh.vertices()}
+    key_xyz = {key: mesh.vertex_attributes(key, "xyz") for key in mesh.vertices()}
     curvature = []
     for key in mesh.vertices():
         angles = []

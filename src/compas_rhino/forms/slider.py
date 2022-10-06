@@ -14,7 +14,7 @@ from System.Windows.Forms import TrackBar
 import scriptcontext as sc
 
 
-__all__ = ['SliderForm']
+__all__ = ["SliderForm"]
 
 
 class SliderForm(BaseForm):
@@ -110,7 +110,7 @@ class SliderForm(BaseForm):
 # Main
 # ==============================================================================
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     import Rhino
     from Rhino.Geometry import Point3d

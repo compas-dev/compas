@@ -7,13 +7,10 @@ import warnings
 from compas.data import DataEncoder
 from compas.data import DataDecoder
 
-__all__ = [
-    'DataEncoder',
-    'DataDecoder'
-]
+__all__ = ["DataEncoder", "DataDecoder"]
 
 warnings.warn(
     "The encoders module in utilities is deprecated. Use the encoders module from data instead",
     DeprecationWarning,
-    stacklevel=2
+    stacklevel=2,
 )

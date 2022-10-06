@@ -6,8 +6,8 @@ from compas.geometry import transform_points_numpy
 
 
 __all__ = [
-    'mesh_transform_numpy',
-    'mesh_transformed_numpy',
+    "mesh_transform_numpy",
+    "mesh_transformed_numpy",
 ]
 
 
@@ -40,7 +40,7 @@ def mesh_transform_numpy(mesh, transformation):
     xyz = [mesh.vertex_coordinates(vertex) for vertex in vertices]
     xyz[:] = transform_points_numpy(xyz, transformation)
     for index, vertex in enumerate(vertices):
-        mesh.vertex_attributes(vertex, 'xyz', xyz[index])
+        mesh.vertex_attributes(vertex, "xyz", xyz[index])
 
 
 def mesh_transformed_numpy(mesh, transformation):

@@ -114,9 +114,7 @@ The following classes are available for backwards compatibility but are deprecat
 """
 from __future__ import absolute_import
 
-from .configuration import (
-    Configuration
-)
+from .configuration import Configuration
 from .model import (
     Axis,
     Calibration,
@@ -139,13 +137,13 @@ from .model import (
     SafetyController,
     Texture,
     ToolModel,
-    Visual
+    Visual,
 )
 from .resources import (
     AbstractMeshLoader,
     DefaultMeshLoader,
     GithubPackageMeshLoader,
-    LocalPackageMeshLoader
+    LocalPackageMeshLoader,
 )
 
 # Deprecated aliases
@@ -158,43 +156,37 @@ from .model import (
 )
 
 __all__ = [
-    'Geometry',
-    'MeshDescriptor',
-    'Color',
-    'Texture',
-    'Material',
-
-    'Joint',
-    'ParentLink',
-    'ChildLink',
-    'Calibration',
-    'Dynamics',
-    'Limit',
-    'Axis',
-    'Mimic',
-    'SafetyController',
-
-    'Link',
-    'Inertial',
-    'Visual',
-    'Collision',
-    'Mass',
-    'Inertia',
-
-    'RobotModel',
-    'ToolModel',
-
-    'AbstractMeshLoader',
-    'DefaultMeshLoader',
-    'LocalPackageMeshLoader',
-    'GithubPackageMeshLoader',
-
-    'Configuration',
-
+    "Geometry",
+    "MeshDescriptor",
+    "Color",
+    "Texture",
+    "Material",
+    "Joint",
+    "ParentLink",
+    "ChildLink",
+    "Calibration",
+    "Dynamics",
+    "Limit",
+    "Axis",
+    "Mimic",
+    "SafetyController",
+    "Link",
+    "Inertial",
+    "Visual",
+    "Collision",
+    "Mass",
+    "Inertia",
+    "RobotModel",
+    "ToolModel",
+    "AbstractMeshLoader",
+    "DefaultMeshLoader",
+    "LocalPackageMeshLoader",
+    "GithubPackageMeshLoader",
+    "Configuration",
     # Deprecated aliases
-    'Origin',
-    'Box',
-    'Capsule',
-    'Cylinder',
-    'Sphere',
+    "Origin",
+    "Box",
+    "Capsule",
+    "Cylinder",
+    "Sphere",
 ]

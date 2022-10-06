@@ -9,8 +9,8 @@ from compas.geometry import cross_vectors_xy
 
 
 __all__ = [
-    'convex_hull',
-    'convex_hull_xy',
+    "convex_hull",
+    "convex_hull_xy",
 ]
 
 
@@ -46,6 +46,7 @@ def convex_hull(points):
     >>>
 
     """
+
     def _normal_face(face):
         u = subtract_vectors(points[face[1]], points[face[0]])
         v = subtract_vectors(points[face[-1]], points[face[0]])
@@ -54,7 +55,7 @@ def convex_hull(points):
     def _seen(face, p):
         normal = _normal_face(face)
         vec = subtract_vectors(points[p], points[face[0]])
-        return (dot_vectors(normal, vec) >= 0)
+        return dot_vectors(normal, vec) >= 0
 
     def _bdry(faces):
         bdry_fw = set([(face[i - 1], face[i]) for face in faces for i in range(len(face))])
@@ -110,6 +111,7 @@ def convex_hull_xy(points, strict=False):
     >>>
 
     """
+
     def cross(o, a, b):
         u = subtract_vectors(a, o)
         v = subtract_vectors(b, o)

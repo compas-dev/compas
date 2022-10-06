@@ -9,7 +9,7 @@ __all__ = [
     "create_collections",
     "create_collections_from_path",
     "clear_collection",
-    "clear_collections"
+    "clear_collections",
 ]
 
 
@@ -43,10 +43,10 @@ def create_collection(name: Text, parent: bpy.types.Collection = None) -> bpy.ty
 
         if name in bpy.data.collections:
             count = 1
-            newname = f'{name}.{count:04}'
+            newname = f"{name}.{count:04}"
             while newname in bpy.data.collections:
                 count += 1
-                newname = f'{name}.{count:04}'
+                newname = f"{name}.{count:04}"
             name = newname
         collection = bpy.data.collections.new(name)
         bpy.context.scene.collection.children.link(collection)
@@ -78,7 +78,7 @@ def create_collections(names: List[Text]) -> List[bpy.types.Collection]:
     return collections
 
 
-def create_collections_from_path(path: Text, separator: Text = '::') -> List[bpy.types.Collection]:
+def create_collections_from_path(path: Text, separator: Text = "::") -> List[bpy.types.Collection]:
     """Create nested collections from a collection path string.
 
     Parameters

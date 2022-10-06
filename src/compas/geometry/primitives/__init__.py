@@ -17,4 +17,4 @@ from .ellipse import Ellipse  # noqa: F401
 from .curve import Bezier  # noqa: F401
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [name for name in dir() if not name.startswith("_")]

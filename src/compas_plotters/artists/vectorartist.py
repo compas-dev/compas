@@ -40,13 +40,15 @@ class VectorArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 vector: Vector,
-                 point: Optional[Point] = None,
-                 draw_point: bool = False,
-                 color: Color = (0, 0, 0),
-                 zorder: int = 3000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        vector: Vector,
+        point: Optional[Point] = None,
+        draw_point: bool = False,
+        color: Color = (0, 0, 0),
+        zorder: int = 3000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=vector, **kwargs)
 
@@ -78,12 +80,15 @@ class VectorArtist(PlotterArtist, PrimitiveArtist):
 
         """
         style = ArrowStyle("Simple, head_length=0.1, head_width=0.1, tail_width=0.02")
-        arrow = FancyArrowPatch(self.point[:2], (self.point + self.vector)[:2],
-                                arrowstyle=style,
-                                edgecolor=self.color,
-                                facecolor=self.color,
-                                zorder=self.zorder,
-                                mutation_scale=100)
+        arrow = FancyArrowPatch(
+            self.point[:2],
+            (self.point + self.vector)[:2],
+            arrowstyle=style,
+            edgecolor=self.color,
+            facecolor=self.color,
+            zorder=self.zorder,
+            mutation_scale=100,
+        )
         if self.draw_point:
             self._point_artist = self.plotter.add(self.point, edgecolor=self.color)
         self._mpl_vector = self.plotter.axes.add_patch(arrow)

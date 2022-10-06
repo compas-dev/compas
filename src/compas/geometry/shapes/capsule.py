@@ -49,7 +49,7 @@ class Capsule(Shape):
 
     """
 
-    __slots__ = ['_line', '_radius']
+    __slots__ = ["_line", "_radius"]
 
     def __init__(self, line, radius, **kwargs):
         super(Capsule, self).__init__(**kwargs)
@@ -66,26 +66,28 @@ class Capsule(Shape):
     def DATASCHEMA(self):
         """:class:`schema.Schema` : Schema of the data representation."""
         import schema
-        return schema.Schema({
-            'line': Line.DATASCHEMA.fget(None),
-            'radius': schema.And(float, lambda x: x > 0)
-        })
+
+        return schema.Schema(
+            {
+                "line": Line.DATASCHEMA.fget(None),
+                "radius": schema.And(float, lambda x: x > 0),
+            }
+        )
 
     @property
     def JSONSCHEMANAME(self):
         """str : Name of the schema of the data representation in JSON format."""
-        return 'capsule'
+        return "capsule"
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the capsule.
-        """
-        return {'line': self.line.data, 'radius': self.radius}
+        """dict : Returns the data dictionary that represents the capsule."""
+        return {"line": self.line.data, "radius": self.radius}
 
     @data.setter
     def data(self, data):
-        self.line = Line.from_data(data['line'])
-        self.radius = data['radius']
+        self.line = Line.from_data(data["line"])
+        self.radius = data["radius"]
 
     @classmethod
     def from_data(cls, data):
@@ -102,7 +104,7 @@ class Capsule(Shape):
             The constructed capsule.
 
         """
-        capsule = Capsule(Line.from_data(data['line']), data['radius'])
+        capsule = Capsule(Line.from_data(data["line"]), data["radius"])
         return capsule
 
     # ==========================================================================
@@ -141,13 +143,13 @@ class Capsule(Shape):
     def volume(self):
         # cylinder plus 2 half spheres
         cylinder = self.radius**2 * pi * self.length
-        caps = 4./3. * pi * self.radius**3
+        caps = 4.0 / 3.0 * pi * self.radius**3
         return cylinder + caps
 
     @property
     def area(self):
         # cylinder minus caps plus 2 half spheres
-        cylinder = self.radius*2 * pi * self.length
+        cylinder = self.radius * 2 * pi * self.length
         caps = 4 * pi * self.radius**2
         return cylinder + caps
 
@@ -156,7 +158,7 @@ class Capsule(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Capsule({0!r}, {1!r})'.format(self.line, self.radius)
+        return "Capsule({0!r}, {1!r})".format(self.line, self.radius)
 
     def __len__(self):
         return 2
@@ -210,21 +212,21 @@ class Capsule(Shape):
 
         """
         if u < 3:
-            raise ValueError('The value for u should be u > 3.')
+            raise ValueError("The value for u should be u > 3.")
         if v < 3:
-            raise ValueError('The value for v should be v > 3.')
+            raise ValueError("The value for v should be v > 3.")
         if v % 2 == 1:
             v += 1
 
         theta = pi / v
-        phi = pi*2 / u
+        phi = pi * 2 / u
         hpi = pi * 0.5
-        halfheight = self.line.length/2
+        halfheight = self.line.length / 2
         sidemult = -1
         capswitch = 0
 
         vertices = []
-        for i in range(1, v+1):
+        for i in range(1, v + 1):
             for j in range(u):
                 a = i + capswitch
                 tx = self.radius * cos(a * theta - hpi) * cos(j * phi)
@@ -250,9 +252,9 @@ class Capsule(Shape):
         # south pole triangle fan
         sp = len(vertices) - 1
         for j in range(u):
-            faces.append([sp, (j+1) % u, j])
+            faces.append([sp, (j + 1) % u, j])
 
-        for i in range(v-1):
+        for i in range(v - 1):
             for j in range(u):
                 jj = (j + 1) % u
                 a = i * u + j

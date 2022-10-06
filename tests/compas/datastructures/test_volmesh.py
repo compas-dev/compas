@@ -1,4 +1,3 @@
-
 import compas
 from compas.datastructures import VolMesh
 
@@ -8,7 +7,7 @@ def test_volmesh_data():
     # if not os.path.exists("temp"):
     #     os.mkdir("temp")
 
-    vmesh1 = VolMesh.from_obj(compas.get('boxes.obj'))
+    vmesh1 = VolMesh.from_obj(compas.get("boxes.obj"))
 
     data1 = vmesh1.to_data()
 

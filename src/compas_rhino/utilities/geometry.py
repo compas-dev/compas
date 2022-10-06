@@ -6,7 +6,7 @@ import rhinoscriptsyntax as rs
 
 
 __all__ = [
-    'uv_points_from_surface',
+    "uv_points_from_surface",
 ]
 
 

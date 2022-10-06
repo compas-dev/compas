@@ -4,9 +4,7 @@ from __future__ import print_function
 
 from compas.geometry import circle_from_points
 
-__all__ = [
-    'trimesh_face_circle'
-]
+__all__ = ["trimesh_face_circle"]
 
 
 def trimesh_face_circle(mesh, fkey):

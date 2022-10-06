@@ -47,6 +47,7 @@ def unify_cycles_rhino(vertices, faces, root=0):
     [[0, 1, 2], [2, 3, 0]]
 
     """
+
     def unify(node, nbr):
         # find the common edge
         for u, v in pairwise(faces[nbr] + faces[nbr][0:1]):
@@ -60,9 +61,10 @@ def unify_cycles_rhino(vertices, faces, root=0):
                     # flip the neighbor
                     faces[nbr][:] = faces[nbr][::-1]
                     return
+
     adj = face_adjacency_rhino(vertices, faces)
     visited = breadth_first_traverse(adj, root, unify)
-    assert len(list(visited)) == len(faces), 'Not all faces were visited'
+    assert len(list(visited)) == len(faces), "Not all faces were visited"
     return faces
 
 
@@ -126,14 +128,15 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
     points = [centroid_points([xyz[index] for index in face]) for face in faces]
     tree = RTree()
     for i, point in enumerate(points):
-        tree.Insert(Point3d(* point), i)
+        tree.Insert(Point3d(*point), i)
 
     def callback(sender, e):
         data = e.Tag
         data.append(e.Id)
+
     closest = []
     for i, point in enumerate(points):
-        sphere = Sphere(Point3d(* point), radius)
+        sphere = Sphere(Point3d(*point), radius)
         data = []
         tree.Search(sphere, callback, data)
         closest.append(data)

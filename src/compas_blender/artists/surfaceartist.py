@@ -54,10 +54,7 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
 
     """
 
-    def __init__(self,
-                 surface: Surface,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(self, surface: Surface, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
 
         super().__init__(surface=surface, collection=collection or surface.name, **kwargs)
 
@@ -76,5 +73,5 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
 
         """
         color = Color.coerce(color) or self.color
-        surfaces = [{'surface': self.surface, 'color': color, 'name': self.surface.name}]
+        surfaces = [{"surface": self.surface, "color": color, "name": self.surface.name}]
         return compas_blender.draw_surfaces(surfaces, collection=self.collection)

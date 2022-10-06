@@ -42,5 +42,12 @@ class CircleArtist(GHArtist, PrimitiveArtist):
         point = list(self.primitive.plane.point)
         normal = list(self.primitive.plane.normal)
         radius = self.primitive.radius
-        circles = [{'plane': [point, normal], 'radius': radius, 'color': color.rgb255, 'name': self.primitive.name}]
+        circles = [
+            {
+                "plane": [point, normal],
+                "radius": radius,
+                "color": color.rgb255,
+                "name": self.primitive.name,
+            }
+        ]
         return compas_ghpython.draw_circles(circles)[0]

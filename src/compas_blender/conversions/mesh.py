@@ -98,7 +98,7 @@ class BlenderMesh(BlenderGeometry):
         :class:`~compas_blender.conversions.BlenderMesh`
 
         """
-        data = bpy.data.meshes.new(name or 'Mesh')
+        data = bpy.data.meshes.new(name or "Mesh")
         bm.to_mesh(data)
         if free:
             bm.free()
@@ -122,7 +122,7 @@ class BlenderMesh(BlenderGeometry):
         """
         bm = bmesh.new()
         bmesh.ops.create_monkey(bm)
-        data = bpy.data.meshes.new(name or 'Mesh')
+        data = bpy.data.meshes.new(name or "Mesh")
         bm.to_mesh(data)
         bm.free()
         mesh = cls()

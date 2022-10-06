@@ -2,9 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-__all__ = [
-    'mesh_substitute_vertex_in_faces'
-]
+__all__ = ["mesh_substitute_vertex_in_faces"]
 
 
 def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):

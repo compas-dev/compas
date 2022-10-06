@@ -14,7 +14,7 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__all__ = ['dr_numpy']
+__all__ = ["dr_numpy"]
 
 
 K = [
@@ -25,16 +25,28 @@ K = [
 ]
 
 
-class Coeff():
+class Coeff:
     def __init__(self, c):
         self.c = c
         self.a = (1 - c * 0.5) / (1 + c * 0.5)
         self.b = 0.5 * (1 + self.a)
 
 
-def dr_numpy(vertices, edges, fixed, loads, qpre,
-             fpre=None, lpre=None, linit=None, E=None, radius=None,
-             callback=None, callback_args=None, **kwargs):
+def dr_numpy(
+    vertices,
+    edges,
+    fixed,
+    loads,
+    qpre,
+    fpre=None,
+    lpre=None,
+    linit=None,
+    E=None,
+    radius=None,
+    callback=None,
+    callback_args=None,
+    **kwargs
+):
     """Implementation of the dynamic relaxation method for form findong and analysis
     of articulated networks of axial-force members.
 
@@ -96,15 +108,15 @@ def dr_numpy(vertices, edges, fixed, loads, qpre,
     # callback
     # --------------------------------------------------------------------------
     if callback:
-        assert callable(callback), 'The provided callback is not callable.'
+        assert callable(callback), "The provided callback is not callable."
     # --------------------------------------------------------------------------
     # configuration
     # --------------------------------------------------------------------------
-    kmax = kwargs.get('kmax', 10000)
-    dt = kwargs.get('dt', 1.0)
-    tol1 = kwargs.get('tol1', 1e-3)
-    tol2 = kwargs.get('tol2', 1e-6)
-    coeff = Coeff(kwargs.get('c', 0.1))
+    kmax = kwargs.get("kmax", 10000)
+    dt = kwargs.get("dt", 1.0)
+    tol1 = kwargs.get("tol1", 1e-3)
+    tol2 = kwargs.get("tol2", 1e-6)
+    coeff = Coeff(kwargs.get("c", 0.1))
     ca = coeff.a
     cb = coeff.b
     # --------------------------------------------------------------------------
@@ -131,24 +143,24 @@ def dr_numpy(vertices, edges, fixed, loads, qpre,
     # --------------------------------------------------------------------------
     # attribute arrays
     # --------------------------------------------------------------------------
-    x = array(vertices, dtype=float).reshape((-1, 3))                      # m
-    p = array(loads, dtype=float).reshape((-1, 3))                         # kN
+    x = array(vertices, dtype=float).reshape((-1, 3))  # m
+    p = array(loads, dtype=float).reshape((-1, 3))  # kN
     qpre = array(qpre, dtype=float).reshape((-1, 1))
-    fpre = array(fpre, dtype=float).reshape((-1, 1))                       # kN
-    lpre = array(lpre, dtype=float).reshape((-1, 1))                       # m
-    linit = array(linit, dtype=float).reshape((-1, 1))                     # m
-    E = array(E, dtype=float).reshape((-1, 1))                             # kN/mm2 => GPa
-    radius = array(radius, dtype=float).reshape((-1, 1))                   # mm
+    fpre = array(fpre, dtype=float).reshape((-1, 1))  # kN
+    lpre = array(lpre, dtype=float).reshape((-1, 1))  # m
+    linit = array(linit, dtype=float).reshape((-1, 1))  # m
+    E = array(E, dtype=float).reshape((-1, 1))  # kN/mm2 => GPa
+    radius = array(radius, dtype=float).reshape((-1, 1))  # mm
     # --------------------------------------------------------------------------
     # sectional properties
     # --------------------------------------------------------------------------
-    A = 3.14159 * radius ** 2                                              # mm2
-    EA = E * A                                                             # kN
+    A = 3.14159 * radius**2  # mm2
+    EA = E * A  # kN
     # --------------------------------------------------------------------------
     # create the connectivity matrices
     # after spline edges have been aligned
     # --------------------------------------------------------------------------
-    C = connectivity_matrix(edges, 'csr')
+    C = connectivity_matrix(edges, "csr")
     Ct = C.transpose()
     Ci = C[:, free]
     Cit = Ci.transpose()
@@ -191,7 +203,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre,
             return dv
 
         if steps == 4:
-            B = [1. / 6., 1. / 3., 1. / 3., 1. / 6.]
+            B = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
             K0 = dt * a(K[0][0] * dt, v0)
             K1 = dt * a(K[1][0] * dt, v0 + K[1][1] * K0)
             K2 = dt * a(K[2][0] * dt, v0 + K[2][1] * K0 + K[2][2] * K1)
@@ -218,7 +230,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre,
         q = qpre + q_fpre + q_lpre + q_EA
         Q = diags([q[:, 0]], [0])
         D = Cit.dot(Q).dot(C)
-        mass = 0.5 * dt ** 2 * Ct2.dot(qpre + q_fpre + q_lpre + EA / linit)
+        mass = 0.5 * dt**2 * Ct2.dot(qpre + q_fpre + q_lpre + EA / linit)
         # RK
         x0 = x.copy()
         v0 = ca * v.copy()

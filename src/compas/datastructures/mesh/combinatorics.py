@@ -6,10 +6,7 @@ from compas.topology import breadth_first_traverse
 from compas.topology import connected_components
 
 
-__all__ = [
-    'mesh_is_connected',
-    'mesh_connected_components'
-]
+__all__ = ["mesh_is_connected", "mesh_connected_components"]
 
 
 def mesh_is_connected(mesh):

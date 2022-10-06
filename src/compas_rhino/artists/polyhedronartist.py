@@ -44,10 +44,12 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
         color = Color.coerce(color) or self.color
         vertices = [list(vertex) for vertex in self.shape.vertices]
         faces = self.shape.faces
-        guid = compas_rhino.draw_mesh(vertices,
-                                      faces,
-                                      layer=self.layer,
-                                      name=self.shape.name,
-                                      color=color.rgb255,
-                                      disjoint=True)
+        guid = compas_rhino.draw_mesh(
+            vertices,
+            faces,
+            layer=self.layer,
+            name=self.shape.name,
+            color=color.rgb255,
+            disjoint=True,
+        )
         return [guid]

@@ -14,6 +14,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas
+
 if compas.PY2:
     import collections as stdlib_collections
 else:
@@ -79,7 +80,7 @@ class MutableMapping(Mapping):
 
     def pop(self, key, default=__marker):
         """D.pop(k[,d]) => v, remove specified key and return the corresponding value.
-          If key is not found, d is returned if given, otherwise KeyError is raised.
+        If key is not found, d is returned if given, otherwise KeyError is raised.
         """
         try:
             value = self[key]
@@ -93,7 +94,7 @@ class MutableMapping(Mapping):
 
     def popitem(self):
         """D.popitem() => (k, v), remove and return some (key, value) pair
-           as a 2-tuple; but raise KeyError if D is empty.
+        as a 2-tuple; but raise KeyError if D is empty.
         """
         try:
             key = next(iter(self))
@@ -123,8 +124,7 @@ class MutableMapping(Mapping):
         self = args[0]
         args = args[1:]
         if len(args) > 1:
-            raise TypeError('update expected at most 1 arguments, got %d' %
-                            len(args))
+            raise TypeError("update expected at most 1 arguments, got %d" % len(args))
         if args:
             other = args[0]
             if isinstance(other, (Mapping, stdlib_collections.Mapping)):

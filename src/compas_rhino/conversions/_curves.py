@@ -29,8 +29,7 @@ def curve_to_compas_line(curve):
     :class:`~compas.geometry.Line`
 
     """
-    return Line(point_to_compas(curve.PointAtStart),
-                point_to_compas(curve.PointAtEnd))
+    return Line(point_to_compas(curve.PointAtStart), point_to_compas(curve.PointAtEnd))
 
 
 def line_to_rhino_curve(line):
@@ -67,7 +66,7 @@ def curve_to_compas_circle(curve):
     """
     result, circle = curve.TryGetCircle()
     if not result:
-        raise ConversionError('The curve cannot be converted to a circle.')
+        raise ConversionError("The curve cannot be converted to a circle.")
     return circle_to_compas(circle)
 
 
@@ -105,7 +104,7 @@ def curve_to_compas_ellipse(curve):
     """
     result, ellipse = curve.TryGetEllipse()
     if not result:
-        raise ConversionError('The curve cannot be converted to an ellipse.')
+        raise ConversionError("The curve cannot be converted to an ellipse.")
     return ellipse_to_compas(ellipse)
 
 
@@ -143,7 +142,7 @@ def curve_to_compas_polyline(curve):
     """
     result, polyline = curve.TryGetPolyline()
     if not result:
-        raise ConversionError('The curve cannot be converted to a polyline.')
+        raise ConversionError("The curve cannot be converted to a polyline.")
     return polyline_to_compas(polyline)
 
 
@@ -177,12 +176,12 @@ def curve_to_compas_data(curve):
         multiplicities.append(nurbs.Knots.KnotMultiplicity(index))
 
     return {
-        'points': [point.data for point in points],
-        'weights': weights,
-        'knots': knots,
-        'multiplicities': multiplicities,
-        'degree': degree,
-        'is_periodic': is_periodic
+        "points": [point.data for point in points],
+        "weights": weights,
+        "knots": knots,
+        "multiplicities": multiplicities,
+        "degree": degree,
+        "is_periodic": is_periodic,
     }
 
 
@@ -198,13 +197,13 @@ def data_to_rhino_curve(data):
     :rhino:`Rhino.Geometry.NurbsCurve`
 
     """
-    nurbs = RhinoNurbsCurve(data['degree'], len(data['points']))
+    nurbs = RhinoNurbsCurve(data["degree"], len(data["points"]))
 
-    for index, xyz in enumerate(data['points']):
+    for index, xyz in enumerate(data["points"]):
         nurbs.Points.SetPoint(index, *xyz)
 
     knotvector = []
-    for knot, mult in zip(data['knots'], data['multiplicities']):
+    for knot, mult in zip(data["knots"], data["multiplicities"]):
         for i in range(mult):
             knotvector.append(knot)
 

@@ -5,9 +5,9 @@ from __future__ import division
 from compas.topology import connected_components
 
 __all__ = [
-    'network_disconnected_nodes',
-    'network_disconnected_edges',
-    'network_explode'
+    "network_disconnected_nodes",
+    "network_disconnected_edges",
+    "network_explode",
 ]
 
 

@@ -214,16 +214,10 @@ class DataDecoder(json.JSONDecoder):
             )
 
         except ImportError:
-            raise DecoderError(
-                "The module of the data type can't be found: {}.".format(o["dtype"])
-            )
+            raise DecoderError("The module of the data type can't be found: {}.".format(o["dtype"]))
 
         except AttributeError:
-            raise DecoderError(
-                "The data type can't be found in the specified module: {}.".format(
-                    o["dtype"]
-                )
-            )
+            raise DecoderError("The data type can't be found in the specified module: {}.".format(o["dtype"]))
 
         obj_value = o["value"]
 

@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import clr
+
 clr.AddReference("Eto")
 clr.AddReference("Rhino.UI")
 
@@ -12,12 +13,11 @@ import Eto.Drawing  # noqa: E402
 import Eto.Forms  # noqa: E402
 
 
-__all__ = ['TextForm']
+__all__ = ["TextForm"]
 
 
 class TextForm(Eto.Forms.Dialog[bool]):
-
-    def __init__(self, text, title='Message'):
+    def __init__(self, text, title="Message"):
         self.text = text
         self.textbox = textbox = Eto.Forms.TextArea()
 
@@ -41,13 +41,13 @@ class TextForm(Eto.Forms.Dialog[bool]):
 
     @property
     def ok(self):
-        self.DefaultButton = Eto.Forms.Button(Text='OK')
+        self.DefaultButton = Eto.Forms.Button(Text="OK")
         self.DefaultButton.Click += self.on_ok
         return self.DefaultButton
 
     @property
     def cancel(self):
-        self.AbortButton = Eto.Forms.Button(Text='Cancel')
+        self.AbortButton = Eto.Forms.Button(Text="Cancel")
         self.AbortButton.Click += self.on_cancel
         return self.AbortButton
 

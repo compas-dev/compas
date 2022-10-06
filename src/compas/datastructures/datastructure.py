@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from compas.data import Data
 
-__all__ = ['Datastructure']
+__all__ = ["Datastructure"]
 
 
 class Datastructure(Data):

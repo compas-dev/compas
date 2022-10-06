@@ -9,6 +9,7 @@ class DataArtistNotRegistered(Exception):
 
 class NoArtistContextError(Exception):
     """Exception that is raised when no artist context is assigned is registered for a given data type."""
+
     def __init__(self):
         error_message = "No context defined."
         error_message += "\n\nThis usually means that the script that you are running requires"

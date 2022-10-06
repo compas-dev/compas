@@ -11,7 +11,7 @@ from compas.utilities import normalize_values
 
 
 __all__ = [
-    'discrete_coons_patch',
+    "discrete_coons_patch",
 ]
 
 

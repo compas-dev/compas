@@ -7,8 +7,8 @@ from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 
 __all__ = [
-    'FrameProxy',
-    'ProxyObject',
+    "FrameProxy",
+    "ProxyObject",
 ]
 
 
@@ -24,7 +24,7 @@ def _generic_from_data_or_data(data):
 
 
 def _attr_to_data(attr):
-    return {k: v.data if hasattr(v, 'data') else v for k, v in attr.items()}
+    return {k: v.data if hasattr(v, "data") else v for k, v in attr.items()}
 
 
 def _attr_from_data(data):
@@ -67,10 +67,10 @@ class FrameProxy(ProxyObject):
 
     def get_urdf_element(self):
         attributes = {
-            'xyz': "{} {} {}".format(self.point.x, self.point.y, self.point.z),
-            'rpy': "{} {} {}".format(*self.euler_angles())
+            "xyz": "{} {} {}".format(self.point.x, self.point.y, self.point.z),
+            "rpy": "{} {} {}".format(*self.euler_angles()),
         }
-        return URDFElement('origin', attributes)
+        return URDFElement("origin", attributes)
 
     @classmethod
     def from_urdf(cls, attributes, elements=None, text=None):
@@ -98,9 +98,9 @@ class FrameProxy(ProxyObject):
         Frame(Point(0.000, 0.130, 0.000), Vector(0.001, 0.000, -1.000), Vector(0.000, 1.000, 0.000))
 
         """
-        xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
-        rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
-        return cls(Frame.from_euler_angles(rpy, static=True, axes='xyz', point=xyz))
+        xyz = _parse_floats(attributes.get("xyz", "0 0 0"))
+        rpy = _parse_floats(attributes.get("rpy", "0 0 0"))
+        return cls(Frame.from_euler_angles(rpy, static=True, axes="xyz", point=xyz))
 
     def scale(self, factor):
         """Scale the origin by a given factor.

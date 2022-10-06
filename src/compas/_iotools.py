@@ -9,7 +9,7 @@ except ImportError:
 
 
 @contextmanager
-def open_file(file_or_filename, mode='r'):
+def open_file(file_or_filename, mode="r"):
     """Context-manager to open a file, path or URL and return a corresponding file object.
 
     If the argument is a path-like object, it will open it,
@@ -39,12 +39,12 @@ def open_file(file_or_filename, mode='r'):
     file = file_or_filename
     close_source = False
 
-    if not hasattr(file, 'read'):
+    if not hasattr(file, "read"):
         # If it's a URL, open and read its response into an in-memory stream
-        if hasattr(file, 'startswith') and file.startswith('http'):
+        if hasattr(file, "startswith") and file.startswith("http"):
             # support all read modes (r, r+, rb, etc)
-            if not mode.startswith('r'):
-                raise ValueError('URLs can only be opened in read mode.')
+            if not mode.startswith("r"):
+                raise ValueError("URLs can only be opened in read mode.")
             response = urlopen(file)
             file = io.BytesIO(response.read())
         else:

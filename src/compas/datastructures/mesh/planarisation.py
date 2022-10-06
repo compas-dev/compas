@@ -12,8 +12,8 @@ from compas.utilities import window
 
 
 __all__ = [
-    'mesh_flatness',
-    'mesh_planarize_faces',
+    "mesh_flatness",
+    "mesh_planarize_faces",
 ]
 
 
@@ -86,7 +86,7 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
     """
     if callback:
         if not callable(callback):
-            raise Exception('The callback is not callable.')
+            raise Exception("The callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -109,9 +109,9 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
                 continue
 
             x, y, z = centroid_points(positions[key])
-            attr['x'] = x
-            attr['y'] = y
-            attr['z'] = z
+            attr["x"] = x
+            attr["y"] = y
+            attr["z"] = z
 
         if callback:
             callback(k, callback_args)

@@ -9,7 +9,7 @@ import compas_rhino
 from compas._os import remove_symlink
 
 
-__all__ = ['uninstall_plugin']
+__all__ = ["uninstall_plugin"]
 
 
 def uninstall_plugin(plugin, version=None):
@@ -37,7 +37,7 @@ def uninstall_plugin(plugin, version=None):
     version = compas_rhino._check_rhino_version(version)
 
     python_plugins_path = compas_rhino._get_rhino_pythonplugins_path(version)
-    plugin_name = plugin.split('{')[0]
+    plugin_name = plugin.split("{")[0]
 
     symlinks = []
     dirs = []
@@ -46,30 +46,30 @@ def uninstall_plugin(plugin, version=None):
         path = os.path.join(python_plugins_path, name)
 
         if os.path.islink(path):
-            if name.split('{')[0] == plugin_name:
+            if name.split("{")[0] == plugin_name:
                 symlinks.append(name)
 
         elif os.path.isdir(path):
-            if name.split('{')[0] == plugin_name:
+            if name.split("{")[0] == plugin_name:
                 dirs.append(name)
 
-    print('\nUninstalling PlugIn {} from Rhino PythonPlugIns:'.format(plugin_name))
+    print("\nUninstalling PlugIn {} from Rhino PythonPlugIns:".format(plugin_name))
 
     if not symlinks and not dirs:
-        print('Nothing to uninstall...\n')
+        print("Nothing to uninstall...\n")
 
     else:
         for name in symlinks:
-            print('- {}'.format(name))
+            print("- {}".format(name))
             destination = os.path.join(python_plugins_path, name)
             remove_symlink(destination)
 
         for name in dirs:
-            print('- {}'.format(name))
+            print("- {}".format(name))
             destination = os.path.join(python_plugins_path, name)
             os.rmdir(destination)
 
-        print('\nPlugIn {} Uninstalled.\n'.format(plugin_name))
+        print("\nPlugIn {} Uninstalled.\n".format(plugin_name))
 
 
 # ==============================================================================
@@ -82,13 +82,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('plugin', help="The name of the plugin.")
+    parser.add_argument("plugin", help="The name of the plugin.")
     parser.add_argument(
-        '-v',
-        '--version',
+        "-v",
+        "--version",
         choices=compas_rhino.SUPPORTED_VERSIONS,
         default=compas_rhino.DEFAULT_VERSION,
-        help="The version of Rhino."
+        help="The version of Rhino.",
     )
 
     args = parser.parse_args()
