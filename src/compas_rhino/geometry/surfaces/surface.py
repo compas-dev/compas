@@ -201,8 +201,6 @@ class RhinoSurface(Surface):
             cdirection_u = vector_to_compas(direction_u)
             cdirection_v = vector_to_compas(direction_v)
             return (cpoint, cnormal, kappa_u, cdirection_u, kappa_v, cdirection_v, gaussian, mean)
-        else:
-            return None
 
     def frame_at(self, u, v):
         """Compute the local frame at a point on the curve.
