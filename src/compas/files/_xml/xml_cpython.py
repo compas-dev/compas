@@ -10,9 +10,9 @@ from compas.files._xml.xml_shared import shared_xml_from_file
 from compas.files._xml.xml_shared import shared_xml_from_string
 
 __all__ = [
-    'xml_from_file',
-    'xml_from_string',
-    'prettify_string',
+    "xml_from_file",
+    "xml_from_string",
+    "prettify_string",
 ]
 
 
@@ -25,7 +25,7 @@ def prettify_string(rough_string):
         XML string
     """
     reparsed = minidom.parseString(rough_string)
-    return reparsed.toprettyxml(indent="  ", encoding='utf-8')
+    return reparsed.toprettyxml(indent="  ", encoding="utf-8")
 
 
 def xml_from_file(source, tree_parser=None):

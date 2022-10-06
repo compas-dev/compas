@@ -7,11 +7,11 @@ from math import cos
 from math import sin
 
 __all__ = [
-    'circle_evaluate',
-    'ellipse_evaluate',
-    'archimedean_spiral_evaluate',
-    'logarithmic_spiral_evaluate',
-    'helix_evaluate'
+    "circle_evaluate",
+    "ellipse_evaluate",
+    "archimedean_spiral_evaluate",
+    "logarithmic_spiral_evaluate",
+    "helix_evaluate",
 ]
 
 

@@ -30,7 +30,7 @@ class SurfaceArtist(Artist):
 
     """
 
-    default_color = Color.from_hex('#0092D2')
+    default_color = Color.from_hex("#0092D2")
 
     def __init__(self, surface, color=None, **kwargs):
         super(SurfaceArtist, self).__init__()

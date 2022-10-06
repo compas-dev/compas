@@ -9,6 +9,7 @@ from compas.geometry import NurbsCurve
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
+
 # from compas_rhino.conversions import circle_to_rhino
 # from compas_rhino.conversions import ellipse_to_rhino
 from compas_rhino.conversions import line_to_rhino
@@ -89,21 +90,21 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         multiplicities[0] += 1
         multiplicities[-1] += 1
         return {
-            'points': [point.data for point in self.points],
-            'weights': self.weights,
-            'knots': self.knots,
-            'multiplicities': multiplicities,
-            'degree': self.degree,
-            'is_periodic': self.is_periodic,
+            "points": [point.data for point in self.points],
+            "weights": self.weights,
+            "knots": self.knots,
+            "multiplicities": multiplicities,
+            "degree": self.degree,
+            "is_periodic": self.is_periodic,
         }
 
     @data.setter
     def data(self, data):
-        points = [Point.from_data(point) for point in data['points']]
-        weights = data['weights']
-        knots = data['knots']
-        multiplicities = data['multiplicities']
-        degree = data['degree']
+        points = [Point.from_data(point) for point in data["points"]]
+        weights = data["weights"]
+        knots = data["knots"]
+        multiplicities = data["multiplicities"]
+        degree = data["degree"]
         # is_periodic = data['is_periodic']
         # have not found a way to actually set this
         # not sure if that is actually possible...

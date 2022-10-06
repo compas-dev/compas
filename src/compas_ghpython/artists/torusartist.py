@@ -22,7 +22,7 @@ class TorusArtist(GHArtist, ShapeArtist):
     """
 
     def __init__(self, torus, **kwargs):
-        super(TorusArtist, self).__init__(shape=torus,  **kwargs)
+        super(TorusArtist, self).__init__(shape=torus, **kwargs)
 
     def draw(self, color=None, u=None, v=None):
         """Draw the torus associated with the artist.

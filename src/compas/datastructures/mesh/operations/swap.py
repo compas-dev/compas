@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ['trimesh_swap_edge']
+__all__ = ["trimesh_swap_edge"]
 
 
 def trimesh_swap_edge(mesh, u, v, allow_boundary=True):

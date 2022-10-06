@@ -14,7 +14,7 @@ import m2r2
 import sphinx_compas_theme
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '_ext'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "_ext"))
 
 # patches
 
@@ -28,7 +28,9 @@ def patched_m2r2_setup(app):
         app.add_source_suffix(".md", "markdown")
         app.add_source_parser(m2r2.M2RParser)
     return dict(
-        version=m2r2.__version__, parallel_read_safe=True, parallel_write_safe=True,
+        version=m2r2.__version__,
+        parallel_read_safe=True,
+        parallel_write_safe=True,
     )
 
 
@@ -76,7 +78,7 @@ extensions = [
     "m2r2",
     # "nbsphinx",
     "sphinx.ext.autodoc.typehints",
-    "tabs"
+    "tabs",
 ]
 
 # autodoc options
@@ -98,7 +100,7 @@ autodoc_mock_imports = [
     "rhinoscriptsyntax",
     "bpy",
     "bmesh",
-    "mathutils"
+    "mathutils",
 ]
 
 autodoc_default_options = {
@@ -112,7 +114,7 @@ autoclass_content = "class"
 
 
 def skip(app, what, name, obj, would_skip, options):
-    if name.startswith('_'):
+    if name.startswith("_"):
         return True
     return would_skip
 
@@ -134,7 +136,7 @@ autosummary_mock_imports = [
     "rhinoscriptsyntax",
     "bpy",
     "bmesh",
-    "mathutils"
+    "mathutils",
 ]
 
 # graph options
@@ -205,7 +207,7 @@ NumpyDocstring._parse = patched_parse
 plot_include_source = False
 plot_html_show_source_link = False
 plot_html_show_formats = False
-plot_formats = ['png']
+plot_formats = ["png"]
 # plot_pre_code
 # plot_basedir
 # plot_rcparams
@@ -237,26 +239,26 @@ intersphinx_mapping = {
 
 
 def linkcode_resolve(domain, info):
-    if domain != 'py':
+    if domain != "py":
         return None
-    if not info['module']:
+    if not info["module"]:
         return None
-    if not info['fullname']:
-        return None
-
-    package = info['module'].split('.')[0]
-    if not package.startswith('compas'):
+    if not info["fullname"]:
         return None
 
-    module = importlib.import_module(info['module'])
-    parts = info['fullname'].split('.')
+    package = info["module"].split(".")[0]
+    if not package.startswith("compas"):
+        return None
+
+    module = importlib.import_module(info["module"])
+    parts = info["fullname"].split(".")
 
     if len(parts) == 1:
-        obj = getattr(module, info['fullname'])
+        obj = getattr(module, info["fullname"])
         mod = inspect.getmodule(obj)
         if not mod:
             return None
-        filename = mod.__name__.replace('.', '/')
+        filename = mod.__name__.replace(".", "/")
         lineno = inspect.getsourcelines(obj)[1]
     elif len(parts) == 2:
         obj_name, attr_name = parts
@@ -266,7 +268,7 @@ def linkcode_resolve(domain, info):
             mod = inspect.getmodule(attr)
             if not mod:
                 return None
-            filename = mod.__name__.replace('.', '/')
+            filename = mod.__name__.replace(".", "/")
             lineno = inspect.getsourcelines(attr)[1]
         else:
             return None
@@ -281,7 +283,7 @@ def linkcode_resolve(domain, info):
 
 extlinks = {
     "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
-    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s")
+    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s"),
 }
 
 # -- Options for HTML output ----------------------------------------------
@@ -292,7 +294,7 @@ html_theme_options = {
     "navbar_active": "compas",
     "package_version": release,
     "package_docs": "https://compas.dev/compas/",
-    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
+    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt",
 }
 html_context = {}
 html_static_path = sphinx_compas_theme.get_html_static_path()

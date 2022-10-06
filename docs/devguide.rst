@@ -74,7 +74,7 @@ The procedure for submitting a PR is the following.
 Style guide
 ===========
 
-Please run `black -l 180 <path_to_source_file>` to auto-format your code.
+Please run `black <path_to_source_file>` to auto-format your code.
 
 The command ``invoke lint`` runs the entire codebase through ``flake8``.
 As described in the `docs <https://flake8.pycqa.org/en/latest/manpage.html>`_,
@@ -88,7 +88,7 @@ https://flake8.pycqa.org/en/latest/user/error-codes.html
 The PEP-0008 style guide is available here:
 https://www.python.org/dev/peps/pep-0008/
 
-Note that the maximum line length is set to 180 rather 79 in the ``setup.cfg`` of the repo.
+Note that the maximum line length is set to 120 rather 79 in the ``setup.cfg`` of the repo.
 
 
 Naming conventions

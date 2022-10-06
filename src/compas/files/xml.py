@@ -154,7 +154,7 @@ class XML(object):
         xml._reader = XMLReader.from_string(text)
         return xml
 
-    def to_string(self, encoding='utf-8', prettify=False):
+    def to_string(self, encoding="utf-8", prettify=False):
         """Generate a string representation of this XML instance,
         including all sub-elements.
 
@@ -251,10 +251,10 @@ class XMLWriter(object):
 
         """
         string = self.to_string(prettify=prettify)
-        with open(self.xml.filepath, 'wb') as f:
+        with open(self.xml.filepath, "wb") as f:
             f.write(string)
 
-    def to_string(self, encoding='utf-8', prettify=False):
+    def to_string(self, encoding="utf-8", prettify=False):
         """Convert the XML element tree to a string.
 
         Parameters
@@ -269,7 +269,7 @@ class XMLWriter(object):
         str
 
         """
-        rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
+        rough_string = ET.tostring(self.xml.root, encoding=encoding, method="xml")
         if not prettify:
             return rough_string
         return xml_impl.prettify_string(rough_string)

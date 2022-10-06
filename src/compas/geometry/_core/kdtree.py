@@ -7,12 +7,10 @@ import collections
 from compas.geometry._core import distance_point_point_sqrd
 
 
-__all__ = [
-    'KDTree'
-]
+__all__ = ["KDTree"]
 
 
-Node = collections.namedtuple("Node", 'point axis label left right')
+Node = collections.namedtuple("Node", "point axis label left right")
 
 
 class KDTree(object):
@@ -82,7 +80,8 @@ class KDTree(object):
             axis,
             median_label,
             self.build(objects[:median_idx], next_axis),
-            self.build(objects[median_idx + 1:], next_axis))
+            self.build(objects[median_idx + 1 :], next_axis),
+        )
 
     def nearest_neighbor(self, point, exclude=None):
         """Find the nearest neighbor to a given point,
@@ -103,6 +102,7 @@ class KDTree(object):
             Distance to the base point.
 
         """
+
         def search(node):
             if node is None:
                 return
@@ -119,11 +119,11 @@ class KDTree(object):
                 close, far = node.right, node.left
 
             search(close)
-            if d ** 2 < best[2]:
+            if d**2 < best[2]:
                 search(far)
 
         exclude = set(exclude or [])
-        best = [None, None, float('inf')]
+        best = [None, None, float("inf")]
         search(self.root)
         best[2] **= 0.5
         return best

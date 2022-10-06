@@ -28,13 +28,14 @@ def list_to_ghtree(items, none_and_holes=False, base_path=[0]):
     >>> b = list_to_tree(items, none_and_holes=True, base_path=[7, 1])
 
     """
+
     def process_one_item(items, tree, track):
         path = Path(Array[int](track))
         if len(items) == 0 and none_and_holes:
             tree.EnsurePath(path)
             return
         for i, item in enumerate(items):
-            if hasattr(item, '__iter__'):
+            if hasattr(item, "__iter__"):
                 track.append(i)
                 process_one_item(item, tree, track)
                 track.pop()
@@ -43,6 +44,7 @@ def list_to_ghtree(items, none_and_holes=False, base_path=[0]):
                     tree.Insert(item, path, i)
                 elif item is not None:
                     tree.Add(item, path)
+
     tree = Tree[object]()
     if items is not None:
         process_one_item(items, tree, base_path[:])
@@ -67,6 +69,7 @@ def ghtree_to_list(tree):
     >>> items = ghtree_to_list(tree)
 
     """
+
     def extend_at(path, index, simple_input, rest_list):
         target = path[index]
         if len(rest_list) <= target:
@@ -77,6 +80,7 @@ def ghtree_to_list(tree):
             if rest_list[target] is None:
                 rest_list[target] = []
             extend_at(path, index + 1, simple_input, rest_list[target])
+
     items = []
     for i in range(tree.BranchCount):
         path = tree.Path(i)

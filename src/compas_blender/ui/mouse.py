@@ -2,12 +2,11 @@ import bpy
 
 
 __all__ = [
-    'Mouse',
+    "Mouse",
 ]
 
 
 class Mouse(object):
-
     def __init__(self):
         pass
 

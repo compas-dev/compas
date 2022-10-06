@@ -274,10 +274,8 @@ class Proxy(object):
             self._process.StartInfo.RedirectStandardOutput = self.capture_output
             self._process.StartInfo.RedirectStandardError = self.capture_output
             self._process.StartInfo.FileName = self.python
-            self._process.StartInfo.Arguments = (
-                "-m {0} --port {1} --{2}autoreload".format(
-                    self.service, self._port, "" if self.autoreload else "no-"
-                )
+            self._process.StartInfo.Arguments = "-m {0} --port {1} --{2}autoreload".format(
+                self.service, self._port, "" if self.autoreload else "no-"
             )
             self._process.Start()
         else:
@@ -308,11 +306,7 @@ class Proxy(object):
             except Exception:
                 time.sleep(0.1)
                 attempt_count += 1
-                print(
-                    "    {} attempts left.".format(
-                        self.max_conn_attempts - attempt_count
-                    )
-                )
+                print("    {} attempts left.".format(self.max_conn_attempts - attempt_count))
             else:
                 success = True
                 break
@@ -409,7 +403,7 @@ class Proxy(object):
         # this counts as output
         # it should be sent as part of RPC communication
         try:
-            ostring = self._function(istring, self._path or '')
+            ostring = self._function(istring, self._path or "")
         except Exception:
             # not clear what the point of this is
             # self.stop_server()

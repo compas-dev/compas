@@ -70,28 +70,28 @@ from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 
 
-@plugin(category='factories', requires=['matplotlib'])
+@plugin(category="factories", requires=["matplotlib"])
 def register_artists():
-    Artist.register(Point, PointArtist, context='Plotter')
-    Artist.register(Vector, VectorArtist, context='Plotter')
-    Artist.register(Line, LineArtist, context='Plotter')
-    Artist.register(Polyline, PolylineArtist, context='Plotter')
-    Artist.register(Polygon, PolygonArtist, context='Plotter')
-    Artist.register(Circle, CircleArtist, context='Plotter')
-    Artist.register(Ellipse, EllipseArtist, context='Plotter')
-    Artist.register(Mesh, MeshArtist, context='Plotter')
-    Artist.register(Network, NetworkArtist, context='Plotter')
+    Artist.register(Point, PointArtist, context="Plotter")
+    Artist.register(Vector, VectorArtist, context="Plotter")
+    Artist.register(Line, LineArtist, context="Plotter")
+    Artist.register(Polyline, PolylineArtist, context="Plotter")
+    Artist.register(Polygon, PolygonArtist, context="Plotter")
+    Artist.register(Circle, CircleArtist, context="Plotter")
+    Artist.register(Ellipse, EllipseArtist, context="Plotter")
+    Artist.register(Mesh, MeshArtist, context="Plotter")
+    Artist.register(Network, NetworkArtist, context="Plotter")
 
 
 __all__ = [
-    'PlotterArtist',
-    'PointArtist',
-    'VectorArtist',
-    'LineArtist',
-    'PolylineArtist',
-    'PolygonArtist',
-    'CircleArtist',
-    'EllipseArtist',
-    'MeshArtist',
-    'NetworkArtist',
+    "PlotterArtist",
+    "PointArtist",
+    "VectorArtist",
+    "LineArtist",
+    "PolylineArtist",
+    "PolygonArtist",
+    "CircleArtist",
+    "EllipseArtist",
+    "MeshArtist",
+    "NetworkArtist",
 ]

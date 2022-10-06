@@ -5,11 +5,11 @@ from __future__ import print_function
 from compas.datastructures._mutablemapping import MutableMapping
 
 __all__ = [
-    'NodeAttributeView',
-    'VertexAttributeView',
-    'FaceAttributeView',
-    'EdgeAttributeView',
-    'CellAttributeView',
+    "NodeAttributeView",
+    "VertexAttributeView",
+    "FaceAttributeView",
+    "EdgeAttributeView",
+    "CellAttributeView",
 ]
 
 

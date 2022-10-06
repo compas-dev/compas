@@ -16,18 +16,18 @@ from compas.geometry._core import cross_vectors
 
 
 __all__ = [
-    'angles_vectors',
-    'angles_vectors_xy',
-    'angles_vectors',
-    'angles_vectors_xy',
-    'angles_points',
-    'angles_points_xy',
-    'angle_vectors',
-    'angle_vectors_signed',
-    'angle_vectors_xy',
-    'angle_points',
-    'angle_points_xy',
-    'angle_planes',
+    "angles_vectors",
+    "angles_vectors_xy",
+    "angles_vectors",
+    "angles_vectors_xy",
+    "angles_points",
+    "angles_points_xy",
+    "angle_vectors",
+    "angle_vectors_signed",
+    "angle_vectors_xy",
+    "angle_points",
+    "angle_points_xy",
+    "angle_planes",
 ]
 
 
@@ -248,7 +248,7 @@ def angles_vectors(u, v, deg=False):
     """
     if deg:
         a = angle_vectors(u, v, deg)
-        return a, 360. - a
+        return a, 360.0 - a
     a = angle_vectors(u, v)
     return a, pi * 2 - a
 
@@ -283,7 +283,7 @@ def angles_vectors_xy(u, v, deg=False):
     """
     if deg:
         a = angle_vectors_xy(u, v, deg)
-        return a, 360. - a
+        return a, 360.0 - a
     a = angle_vectors_xy(u, v)
     return a, pi * 2 - a
 

@@ -36,7 +36,15 @@ class GLTFMesh(object):
 
     """
 
-    def __init__(self, primitive_data_list, context, mesh_name=None, weights=None, extras=None, extensions=None):
+    def __init__(
+        self,
+        primitive_data_list,
+        context,
+        mesh_name=None,
+        weights=None,
+        extras=None,
+        extensions=None,
+    ):
         self.mesh_name = mesh_name
         self.weights = weights
         self.primitive_data_list = primitive_data_list

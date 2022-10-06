@@ -5,10 +5,7 @@ from __future__ import division
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
 
-__all__ = [
-    'network_join_edges',
-    'network_polylines'
-]
+__all__ = ["network_join_edges", "network_polylines"]
 
 
 def network_join_edges(network, key):
@@ -110,9 +107,15 @@ def network_polylines(network, splits=None):
         while polyline[0] != polyline[-1]:
 
             # ... or until both end are non-two-valent vertices
-            if len(network.neighbors(polyline[-1])) != 2 or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys:
+            if (
+                len(network.neighbors(polyline[-1])) != 2
+                or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
+            ):
                 polyline = list(reversed(polyline))
-                if len(network.neighbors(polyline[-1])) != 2 or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys:
+                if (
+                    len(network.neighbors(polyline[-1])) != 2
+                    or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
+                ):
                     break
 
             # add next edge

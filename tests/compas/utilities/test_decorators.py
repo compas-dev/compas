@@ -6,12 +6,12 @@ def test_memoize():
 
     @memoize
     def func(arg):
-        ctx['calls'] += 1
+        ctx["calls"] += 1
 
     func(444)
     func(444)
     func(444)
-    assert ctx['calls'] == 1
+    assert ctx["calls"] == 1
 
     func(555)
-    assert ctx['calls'] == 2
+    assert ctx["calls"] == 2

@@ -15,8 +15,8 @@ from compas.geometry._core import length_vector_sqrd
 
 
 __all__ = [
-    'circle_from_points',
-    'circle_from_points_xy',
+    "circle_from_points",
+    "circle_from_points_xy",
 ]
 
 

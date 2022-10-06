@@ -3,6 +3,7 @@ from compas.geometry import BrepLoop
 import Rhino
 
 from .edge import RhinoBrepEdge
+from .vertex import RhinoBrepVertex
 
 
 class LoopType(object):
@@ -54,7 +55,7 @@ class RhinoBrepLoop(BrepLoop):
     def _set_loop(self, native_loop):
         self._loop = native_loop
         self._type = int(self._loop.LoopType)
-        self._edges = [RhinoBrepEdge(t.Edge) for t in self._loop.Trims]
+        self._edges = [RhinoBrepEdge(trim) for trim in self._loop.Trims]
 
     # ==============================================================================
     # Data

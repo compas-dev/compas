@@ -14,17 +14,16 @@ compas_plotters
 
 """
 
-__version__ = '1.16.0'
+__version__ = "1.16.0"
 
 from .core import *  # noqa: F401 F403
+
 # from .artists import *  # noqa: F401 F403
 from .plotter import Plotter
 
 
-__all__ = [
-    'Plotter'
-]
+__all__ = ["Plotter"]
 
 __all_plugins__ = [
-    'compas_plotters.artists',
+    "compas_plotters.artists",
 ]

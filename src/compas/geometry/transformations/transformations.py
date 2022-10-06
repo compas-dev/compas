@@ -32,45 +32,35 @@ from compas.geometry.transformations import matrix_from_change_of_basis
 
 
 __all__ = [
-    'local_axes',
-    'orthonormalize_axes',
-
-    'transform_points',
-    'transform_vectors',
-    'transform_frames',
-
-    'local_to_world_coordinates',
-    'world_to_local_coordinates',
-
-    'translate_points',
-    'translate_points_xy',
-
-    'scale_points',
-    'scale_points_xy',
-
-    'rotate_points',
-    'rotate_points_xy',
-
-    'mirror_vector_vector',
-    'mirror_points_point',
-    'mirror_points_point_xy',
-    'mirror_points_line',
-    'mirror_points_line_xy',
-    'mirror_point_plane',
-    'mirror_points_plane',
-
-    'project_point_plane',
-
-    'project_points_plane',
-    'project_point_line',
-    'project_point_line_xy',
-    'project_points_line',
-    'project_points_line_xy',
-
-    'reflect_line_plane',
-    'reflect_line_triangle',
-
-    'orient_points',
+    "local_axes",
+    "orthonormalize_axes",
+    "transform_points",
+    "transform_vectors",
+    "transform_frames",
+    "local_to_world_coordinates",
+    "world_to_local_coordinates",
+    "translate_points",
+    "translate_points_xy",
+    "scale_points",
+    "scale_points_xy",
+    "rotate_points",
+    "rotate_points_xy",
+    "mirror_vector_vector",
+    "mirror_points_point",
+    "mirror_points_point_xy",
+    "mirror_points_line",
+    "mirror_points_line_xy",
+    "mirror_point_plane",
+    "mirror_points_plane",
+    "project_point_plane",
+    "project_points_plane",
+    "project_point_line",
+    "project_point_line_xy",
+    "project_points_line",
+    "project_points_line_xy",
+    "reflect_line_plane",
+    "reflect_line_triangle",
+    "orient_points",
 ]
 
 
@@ -200,8 +190,10 @@ def homogenize_and_flatten_frames(frames):
     [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]]
 
     """
+
     def homogenize_frame(frame):
         return homogenize([frame[0]], w=1.0) + homogenize([frame[1], frame[2]], w=0.0)
+
     return [v for frame in frames for v in homogenize_frame(frame)]
 
 
@@ -226,7 +218,7 @@ def dehomogenize_and_unflatten_frames(points_and_vectors):
 
     """
     frames = dehomogenize(points_and_vectors)
-    return [frames[i:i+3] for i in range(0, len(frames), 3)]
+    return [frames[i : i + 3] for i in range(0, len(frames), 3)]
 
 
 # ==============================================================================
@@ -336,6 +328,7 @@ def world_to_local_coordinates(frame, xyz):
 
     """
     from compas.geometry import Frame  # noqa: F811
+
     T = matrix_from_change_of_basis(Frame.worldXY(), frame)
     return transform_points(xyz, T)
 
@@ -365,6 +358,7 @@ def local_to_world_coordinates(frame, xyz):
 
     """
     from compas.geometry import Frame  # noqa: F811
+
     T = matrix_from_change_of_basis(frame, Frame.worldXY())
     return transform_points(xyz, T)
 

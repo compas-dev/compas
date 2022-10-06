@@ -17,7 +17,7 @@ surface = NurbsSurface.from_points(points=points)
 # Frames
 # ==============================================================================
 
-U, V = meshgrid(surface.u_space(), surface.v_space(), 'ij')
+U, V = meshgrid(surface.u_space(), surface.v_space(), "ij")
 frames = [surface.frame_at(u, v) for u, v in zip(flatten(U), flatten(V))]
 
 # ==============================================================================

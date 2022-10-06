@@ -5,13 +5,13 @@ from __future__ import division
 from compas.plugins import pluggable
 
 __all__ = [
-    'boolean_union_mesh_mesh',
-    'boolean_difference_mesh_mesh',
-    'boolean_intersection_mesh_mesh',
+    "boolean_union_mesh_mesh",
+    "boolean_difference_mesh_mesh",
+    "boolean_intersection_mesh_mesh",
 ]
 
 
-@pluggable(category='booleans')
+@pluggable(category="booleans")
 def boolean_union_mesh_mesh(A, B):
     """Compute the boolean union of two triangle meshes.
 
@@ -53,7 +53,7 @@ def boolean_union_mesh_mesh(A, B):
     raise NotImplementedError
 
 
-@pluggable(category='booleans')
+@pluggable(category="booleans")
 def boolean_difference_mesh_mesh(A, B):
     """Compute the boolean difference of two triangle meshes.
 
@@ -73,7 +73,7 @@ def boolean_difference_mesh_mesh(A, B):
     raise NotImplementedError
 
 
-@pluggable(category='booleans')
+@pluggable(category="booleans")
 def boolean_intersection_mesh_mesh(A, B):
     """Compute the boolean intersection of two triangle meshes.
 

@@ -162,7 +162,10 @@ class GLTFNode(object):
         if self._matrix:
             raise Exception("Cannot set rotation when matrix is set.")
         if not isinstance(value, list) or len(value) != 4 or fabs(sum([q**2 for q in value]) - 1) > 1e-03:
-            raise Exception("Invalid rotation.  Rotations are expected to be given as " "unit quaternions of the form [q1, q2, q3, q4]")
+            raise Exception(
+                "Invalid rotation.  Rotations are expected to be given as "
+                "unit quaternions of the form [q1, q2, q3, q4]"
+            )
         self._rotation = value
 
     @property
@@ -199,7 +202,8 @@ class GLTFNode(object):
             raise Exception("Invalid matrix. A 4x4 matrix is expected.")
         if value[3] != [0, 0, 0, 1]:
             raise Exception(
-                "Invalid matrix.  A matrix without shear or skew is expected.  It must be of " "the form TRS, where T is a translation, R is a rotation and S is a scaling."
+                "Invalid matrix.  A matrix without shear or skew is expected.  It must be of "
+                "the form TRS, where T is a translation, R is a rotation and S is a scaling."
             )
         self._matrix = value
 
@@ -265,7 +269,13 @@ class GLTFNode(object):
         """
         return self.context.add_mesh_to_node(self, mesh)
 
-    def to_data(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
+    def to_data(
+        self,
+        node_index_by_key,
+        mesh_index_by_key,
+        camera_index_by_key,
+        skin_index_by_key,
+    ):
         """Returns a JSONable dictionary object in accordance with glTF specifications.
 
         Parameters

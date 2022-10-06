@@ -12,7 +12,7 @@ curve = NurbsCurve.from_parameters(
     weights=[1.0, 1.0, 1.0, 1.0],
     knots=[0.0, 1.0],
     multiplicities=[4, 4],
-    degree=3
+    degree=3,
 )
 
 # ==============================================================================

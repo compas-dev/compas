@@ -48,10 +48,12 @@ class CylinderArtist(RhinoArtist, ShapeArtist):
         u = u or self.u
         vertices, faces = self.shape.to_vertices_and_faces(u=u)
         vertices = [list(vertex) for vertex in vertices]
-        guid = compas_rhino.draw_mesh(vertices,
-                                      faces,
-                                      layer=self.layer,
-                                      name=self.shape.name,
-                                      color=color.rgb255,
-                                      disjoint=True)
+        guid = compas_rhino.draw_mesh(
+            vertices,
+            faces,
+            layer=self.layer,
+            name=self.shape.name,
+            color=color.rgb255,
+            disjoint=True,
+        )
         return [guid]

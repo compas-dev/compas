@@ -23,7 +23,10 @@ class RhinoMesh(RhinoGeometry):
     @property
     def faces(self):
         if self.geometry:
-            faces = [[face.A, face.B, face.C] if face.IsTriangle else [face.A, face.B, face.C, face.D] for face in self.geometry.Faces]
+            faces = [
+                [face.A, face.B, face.C] if face.IsTriangle else [face.A, face.B, face.C, face.D]
+                for face in self.geometry.Faces
+            ]
         else:
             faces = []
         return faces

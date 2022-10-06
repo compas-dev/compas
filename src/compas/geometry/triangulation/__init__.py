@@ -98,4 +98,4 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
     raise NotImplementedError
 
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [name for name in dir() if not name.startswith("_")]

@@ -44,16 +44,18 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 ellipse: Ellipse,
-                 linewidth: float = 1.0,
-                 linestyle: Literal['solid', 'dotted', 'dashed', 'dashdot'] = 'solid',
-                 facecolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0, 0, 0),
-                 fill: bool = True,
-                 alpha: float = 1.0,
-                 zorder: int = 1000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        ellipse: Ellipse,
+        linewidth: float = 1.0,
+        linestyle: Literal["solid", "dotted", "dashed", "dashdot"] = "solid",
+        facecolor: Color = (1.0, 1.0, 1.0),
+        edgecolor: Color = (0, 0, 0),
+        fill: bool = True,
+        alpha: float = 1.0,
+        zorder: int = 1000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=ellipse, **kwargs)
 
@@ -80,7 +82,7 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
             self.ellipse.center[:2],
             self.ellipse.center[:2],
             self.ellipse.center[:2],
-            self.ellipse.center[:2]
+            self.ellipse.center[:2],
         ]
         points[0][0] -= self.ellipse.major
         points[1][0] += self.ellipse.major
@@ -98,13 +100,14 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
         """
         ellipse = EllipsePatch(
             self.ellipse.center[:2],
-            width=2*self.ellipse.major,
-            height=2*self.ellipse.minor,
+            width=2 * self.ellipse.major,
+            height=2 * self.ellipse.minor,
             facecolor=self.facecolor,
             edgecolor=self.edgecolor,
             fill=self.fill,
             alpha=self.alpha,
-            zorder=self.zorder)
+            zorder=self.zorder,
+        )
         self._mpl_ellipse = self.plotter.axes.add_artist(ellipse)
 
     def redraw(self) -> None:
@@ -116,7 +119,7 @@ class EllipseArtist(PlotterArtist, PrimitiveArtist):
 
         """
         self._mpl_ellipse.center = self.ellipse.center[:2]
-        self._mpl_ellipse.set_width(2*self.ellipse.major)
-        self._mpl_ellipse.set_height(2*self.ellipse.minor)
+        self._mpl_ellipse.set_width(2 * self.ellipse.major)
+        self._mpl_ellipse.set_height(2 * self.ellipse.minor)
         self._mpl_ellipse.set_edgecolor(self.edgecolor)
         self._mpl_ellipse.set_facecolor(self.facecolor)

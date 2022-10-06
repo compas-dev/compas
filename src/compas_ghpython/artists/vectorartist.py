@@ -55,8 +55,16 @@ class VectorArtist(GHArtist, PrimitiveArtist):
         end = list(end)
         result = []
         if show_point:
-            points = [{'pos': start, 'color': color, 'name': self.primitive.name}]
+            points = [{"pos": start, "color": color, "name": self.primitive.name}]
             result += compas_ghpython.draw_points(points)
-        lines = [{'start': start, 'end': end, 'arrow': 'end', 'color': color, 'name': self.primitive.name}]
+        lines = [
+            {
+                "start": start,
+                "end": end,
+                "arrow": "end",
+                "color": color,
+                "name": self.primitive.name,
+            }
+        ]
         result += compas_ghpython.draw_lines(lines)
         return result

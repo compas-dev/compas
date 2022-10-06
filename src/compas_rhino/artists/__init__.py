@@ -21,6 +21,7 @@ Primitive Artists
     PolygonArtist
     PolylineArtist
     VectorArtist
+    BrepArtist
 
 
 Shape Artists
@@ -106,6 +107,7 @@ from compas.geometry import Torus
 
 from compas.geometry import Curve
 from compas.geometry import Surface
+from compas.geometry import Brep
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
@@ -137,6 +139,7 @@ from .robotmodelartist import RobotModelArtist
 
 from .curveartist import CurveArtist
 from .surfaceartist import SurfaceArtist
+from .brepartist import BrepArtist
 
 BaseArtist = RhinoArtist
 
@@ -174,6 +177,7 @@ def register_artists():
     Artist.register(RobotModel, RobotModelArtist, context="Rhino")
     Artist.register(Curve, CurveArtist, context="Rhino")
     Artist.register(Surface, SurfaceArtist, context="Rhino")
+    Artist.register(Brep, BrepArtist, context="Rhino")
     print("Rhino Artists registered.")
 
 
@@ -201,4 +205,5 @@ __all__ = [
     "RobotModelArtist",
     "CurveArtist",
     "SurfaceArtist",
+    "BrepArtist",
 ]

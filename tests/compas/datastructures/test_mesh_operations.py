@@ -12,12 +12,9 @@ def mesh_0():
         [1.0, 2.0, 0.0],
         [0.0, 1.0, 0.0],
         [2.0, 1.0, 0.0],
-        [0.0, 0.0, 0.0]
+        [0.0, 0.0, 0.0],
     ]
-    faces = [
-        [0, 1, 2],
-        [0, 3, 1]
-    ]
+    faces = [[0, 1, 2], [0, 3, 1]]
 
     return Mesh.from_vertices_and_faces(vertices, faces)
 
@@ -32,10 +29,7 @@ def mesh_quads():
         [2.0, 0.0, 0.0],
         [2.0, 1.0, 0.0],
     ]
-    faces = [
-        [0, 1, 2, 3],
-        [1, 4, 5, 2]
-    ]
+    faces = [[0, 1, 2, 3], [1, 4, 5, 2]]
 
     return Mesh.from_vertices_and_faces(vertices, faces)
 

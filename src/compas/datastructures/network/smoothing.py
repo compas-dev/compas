@@ -6,7 +6,7 @@ from compas.geometry import centroid_points
 
 
 __all__ = [
-    'network_smooth_centroid',
+    "network_smooth_centroid",
 ]
 
 
@@ -40,7 +40,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback
     """
     if callback:
         if not callable(callback):
-            raise Exception('Callback is not callable.')
+            raise Exception("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -56,9 +56,9 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback
 
             cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.neighbors(key)])
 
-            attr['x'] += damping * (cx - x)
-            attr['y'] += damping * (cy - y)
-            attr['z'] += damping * (cz - z)
+            attr["x"] += damping * (cx - x)
+            attr["y"] += damping * (cy - y)
+            attr["z"] += damping * (cz - z)
 
         if callback:
             callback(k, callback_args)

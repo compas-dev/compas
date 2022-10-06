@@ -5,10 +5,10 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = ['trimesh_massmatrix']
+__all__ = ["trimesh_massmatrix"]
 
 
-@pluggable(category='trimesh')
+@pluggable(category="trimesh")
 def trimesh_massmatrix(M):
     """Compute massmatrix on a triangle mesh using a scalarfield of data points
     assigned to its vertices.

@@ -17,7 +17,7 @@ from System.Net import WebClient
 from System.IO import MemoryStream
 
 
-__all__ = ['ImageForm', 'image_from_remote', 'image_from_local']
+__all__ = ["ImageForm", "image_from_remote", "image_from_local"]
 
 
 def image_from_remote(source):
@@ -102,7 +102,7 @@ class ImageForm(BaseForm):
 
     """
 
-    def __init__(self, image, title='Image', width=None, height=None):
+    def __init__(self, image, title="Image", width=None, height=None):
         self._image = None
         self.image = image
         super(ImageForm, self).__init__(title, width, height)
@@ -114,7 +114,7 @@ class ImageForm(BaseForm):
     @image.setter
     def image(self, image):
         if isinstance(image, basestring):
-            if image.startswith('http'):
+            if image.startswith("http"):
                 self._image = image_from_remote(image)
             else:
                 self._image = image_from_local(image)

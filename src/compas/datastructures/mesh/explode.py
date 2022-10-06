@@ -5,9 +5,9 @@ from __future__ import division
 from compas.topology import connected_components
 
 __all__ = [
-    'mesh_disconnected_vertices',
-    'mesh_disconnected_faces',
-    'mesh_explode',
+    "mesh_disconnected_vertices",
+    "mesh_disconnected_faces",
+    "mesh_explode",
 ]
 
 

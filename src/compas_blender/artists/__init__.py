@@ -134,61 +134,61 @@ from .vectorartist import VectorArtist
 from .volmeshartist import VolMeshArtist
 
 
-@plugin(category='drawing-utils', pluggable_name='clear', requires=['bpy'])
+@plugin(category="drawing-utils", pluggable_name="clear", requires=["bpy"])
 def clear_blender():
     compas_blender.clear()
 
 
-@plugin(category='drawing-utils', pluggable_name='redraw', requires=['bpy'])
+@plugin(category="drawing-utils", pluggable_name="redraw", requires=["bpy"])
 def redraw_blender():
     compas_blender.redraw()
 
 
-@plugin(category='factories', requires=['bpy'])
+@plugin(category="factories", requires=["bpy"])
 def register_artists():
-    Artist.register(Box, BoxArtist, context='Blender')
-    Artist.register(Capsule, CapsuleArtist, context='Blender')
-    Artist.register(Circle, CircleArtist, context='Blender')
-    Artist.register(Cone, ConeArtist, context='Blender')
-    Artist.register(Curve, CurveArtist, context='Blender')
-    Artist.register(Cylinder, CylinderArtist, context='Blender')
-    Artist.register(Frame, FrameArtist, context='Blender')
-    Artist.register(Line, LineArtist, context='Blender')
-    Artist.register(Mesh, MeshArtist, context='Blender')
-    Artist.register(Network, NetworkArtist, context='Blender')
-    Artist.register(Point, PointArtist, context='Blender')
-    Artist.register(Polygon, PolygonArtist, context='Blender')
-    Artist.register(Polyhedron, PolyhedronArtist, context='Blender')
-    Artist.register(Polyline, PolylineArtist, context='Blender')
-    Artist.register(RobotModel, RobotModelArtist, context='Blender')
-    Artist.register(Sphere, SphereArtist, context='Blender')
-    Artist.register(Surface, SurfaceArtist, context='Blender')
-    Artist.register(Torus, TorusArtist, context='Blender')
-    Artist.register(Vector, VectorArtist, context='Blender')
-    Artist.register(VolMesh, VolMeshArtist, context='Blender')
-    print('Blender Artists registered.')
+    Artist.register(Box, BoxArtist, context="Blender")
+    Artist.register(Capsule, CapsuleArtist, context="Blender")
+    Artist.register(Circle, CircleArtist, context="Blender")
+    Artist.register(Cone, ConeArtist, context="Blender")
+    Artist.register(Curve, CurveArtist, context="Blender")
+    Artist.register(Cylinder, CylinderArtist, context="Blender")
+    Artist.register(Frame, FrameArtist, context="Blender")
+    Artist.register(Line, LineArtist, context="Blender")
+    Artist.register(Mesh, MeshArtist, context="Blender")
+    Artist.register(Network, NetworkArtist, context="Blender")
+    Artist.register(Point, PointArtist, context="Blender")
+    Artist.register(Polygon, PolygonArtist, context="Blender")
+    Artist.register(Polyhedron, PolyhedronArtist, context="Blender")
+    Artist.register(Polyline, PolylineArtist, context="Blender")
+    Artist.register(RobotModel, RobotModelArtist, context="Blender")
+    Artist.register(Sphere, SphereArtist, context="Blender")
+    Artist.register(Surface, SurfaceArtist, context="Blender")
+    Artist.register(Torus, TorusArtist, context="Blender")
+    Artist.register(Vector, VectorArtist, context="Blender")
+    Artist.register(VolMesh, VolMeshArtist, context="Blender")
+    print("Blender Artists registered.")
 
 
 __all__ = [
-    'BlenderArtist',
-    'BoxArtist',
-    'CapsuleArtist',
-    'CircleArtist',
-    'ConeArtist',
-    'CurveArtist',
-    'CylinderArtist',
-    'FrameArtist',
-    'LineArtist',
-    'MeshArtist',
-    'NetworkArtist',
-    'PointArtist',
-    'PolygonArtist',
-    'PolyhedronArtist',
-    'PolylineArtist',
-    'RobotModelArtist',
-    'SphereArtist',
-    'SurfaceArtist',
-    'TorusArtist',
-    'VectorArtist',
-    'VolMeshArtist',
+    "BlenderArtist",
+    "BoxArtist",
+    "CapsuleArtist",
+    "CircleArtist",
+    "ConeArtist",
+    "CurveArtist",
+    "CylinderArtist",
+    "FrameArtist",
+    "LineArtist",
+    "MeshArtist",
+    "NetworkArtist",
+    "PointArtist",
+    "PolygonArtist",
+    "PolyhedronArtist",
+    "PolylineArtist",
+    "RobotModelArtist",
+    "SphereArtist",
+    "SurfaceArtist",
+    "TorusArtist",
+    "VectorArtist",
+    "VolMeshArtist",
 ]

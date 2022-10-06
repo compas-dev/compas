@@ -179,7 +179,9 @@ class GLTFExporter(object):
                     self._add_extensions_recursively(getattr(item, a))
         if item.extensions is not None:
             for ek, e in item.extensions.items():
-                if self._content.extensions_used is None:  # attention: self._content.extension exists if we have general extensions.
+                if (
+                    self._content.extensions_used is None
+                ):  # attention: self._content.extension exists if we have general extensions.
                     self._content.extensions_used = []
                 if ek not in self._content.extensions_used:
                     self._content.extensions_used.append(ek)
@@ -206,7 +208,12 @@ class GLTFExporter(object):
     def _construct_image_data_uri(self, image_data):
         if image_data.data is None:
             return None
-        return "data:" + (image_data.mime_type if image_data.mime_type else "") + ";base64," + base64.b64encode(image_data.data).decode("ascii")
+        return (
+            "data:"
+            + (image_data.mime_type if image_data.mime_type else "")
+            + ";base64,"
+            + base64.b64encode(image_data.data).decode("ascii")
+        )
 
     def _add_extensions(self):
         if not self._content.extensions_used:
@@ -227,7 +234,9 @@ class GLTFExporter(object):
             return
         textures_list = [None] * len(self._content.textures)
         for key, texture_data in self._content.textures.items():
-            textures_list[self._texture_index_by_key[key]] = texture_data.to_data(self._sampler_index_by_key, self._image_index_by_key)
+            textures_list[self._texture_index_by_key[key]] = texture_data.to_data(
+                self._sampler_index_by_key, self._image_index_by_key
+            )
             self._add_extensions_recursively(texture_data)
         self._gltf_dict["textures"] = textures_list
 
@@ -345,7 +354,9 @@ class GLTFExporter(object):
     def _construct_primitives(self, mesh_data):
         primitives = []
         for primitive_data in mesh_data.primitive_data_list:
-            indices_accessor = self._construct_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_SHORT, TYPE_SCALAR)
+            indices_accessor = self._construct_accessor(
+                primitive_data.indices, COMPONENT_TYPE_UNSIGNED_SHORT, TYPE_SCALAR
+            )
 
             attributes = {}
             for attr in primitive_data.attributes:
@@ -355,7 +366,9 @@ class GLTFExporter(object):
                     type_ = TYPE_VEC4
                 if len(primitive_data.attributes[attr][0]) == 2:
                     type_ = TYPE_VEC2
-                attributes[attr] = self._construct_accessor(primitive_data.attributes[attr], component_type, type_, True)
+                attributes[attr] = self._construct_accessor(
+                    primitive_data.attributes[attr], component_type, type_, True
+                )
 
             targets = []
             for target in primitive_data.targets or []:

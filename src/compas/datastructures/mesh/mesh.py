@@ -122,8 +122,14 @@ class Mesh(HalfEdge):
         obb_numpy = mesh_oriented_bounding_box_numpy
         obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy
 
-    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None):
-        _default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+    def __init__(
+        self,
+        name=None,
+        default_vertex_attributes=None,
+        default_edge_attributes=None,
+        default_face_attributes=None,
+    ):
+        _default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
         _default_face_attributes = {}
         if default_vertex_attributes:
@@ -132,10 +138,12 @@ class Mesh(HalfEdge):
             _default_edge_attributes.update(default_edge_attributes)
         if default_face_attributes:
             _default_face_attributes.update(default_face_attributes)
-        super(Mesh, self).__init__(name=name or 'Mesh',
-                                   default_vertex_attributes=_default_vertex_attributes,
-                                   default_edge_attributes=_default_edge_attributes,
-                                   default_face_attributes=_default_face_attributes)
+        super(Mesh, self).__init__(
+            name=name or "Mesh",
+            default_vertex_attributes=_default_vertex_attributes,
+            default_edge_attributes=_default_edge_attributes,
+            default_face_attributes=_default_face_attributes,
+        )
 
     def __str__(self):
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"
@@ -367,6 +375,7 @@ class Mesh(HalfEdge):
         """
         from compas.datastructures import Network
         from compas.datastructures import network_find_cycles
+
         network = Network.from_lines(lines, precision=precision)
         vertices = network.to_points()
         faces = network_find_cycles(network)
@@ -411,17 +420,36 @@ class Mesh(HalfEdge):
             A mesh object.
 
         """
-        corner_vertices = [geometric_key(xyz) for polyline in boundary_polylines + other_polylines for xyz in [polyline[0], polyline[-1]]]
+        corner_vertices = [
+            geometric_key(xyz)
+            for polyline in boundary_polylines + other_polylines
+            for xyz in [polyline[0], polyline[-1]]
+        ]
         boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
-        mesh = cls.from_lines([(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)])
+        mesh = cls.from_lines(
+            [(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)]
+        )
         # remove the vertices that are not from the polyline extremities and the faces with all their vertices on the boundary
-        vertex_keys = [vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices]
+        vertex_keys = [
+            vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
+        ]
         vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
         vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
         faces = []
         for fkey in mesh.faces():
-            if sum([geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices for vkey in mesh.face_vertices(fkey)]):
-                faces.append([vertex_map[vkey] for vkey in mesh.face_vertices(fkey) if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices])
+            if sum(
+                [
+                    geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices
+                    for vkey in mesh.face_vertices(fkey)
+                ]
+            ):
+                faces.append(
+                    [
+                        vertex_map[vkey]
+                        for vkey in mesh.face_vertices(fkey)
+                        if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
+                    ]
+                )
         mesh.cull_vertices()
         return cls.from_vertices_and_faces(vertices, faces)
 
@@ -459,7 +487,7 @@ class Mesh(HalfEdge):
 
         if isinstance(vertices, Mapping):
             for key, xyz in vertices.items():
-                mesh.add_vertex(key=key, attr_dict=dict(zip(('x', 'y', 'z'), xyz)))
+                mesh.add_vertex(key=key, attr_dict=dict(zip(("x", "y", "z"), xyz)))
         else:
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)
@@ -575,6 +603,7 @@ class Mesh(HalfEdge):
 
         """
         from compas.geometry import delaunay_from_points
+
         faces = delaunay_from_points(points, boundary=boundary, holes=holes)
         return cls.from_vertices_and_faces(points, faces)
 
@@ -660,12 +689,15 @@ class Mesh(HalfEdge):
         ny = ny or nx
 
         vertices = [[x, y, 0.0] for x, y in product(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))]
-        faces = [[
-            i * (ny + 1) + j,
-            (i + 1) * (ny + 1) + j,
-            (i + 1) * (ny + 1) + j + 1,
-            i * (ny + 1) + j + 1
-        ] for i, j in product(range(nx), range(ny))]
+        faces = [
+            [
+                i * (ny + 1) + j,
+                (i + 1) * (ny + 1) + j,
+                (i + 1) * (ny + 1) + j + 1,
+                i * (ny + 1) + j + 1,
+            ]
+            for i, j in product(range(nx), range(ny))
+        ]
 
         return cls.from_vertices_and_faces(vertices, faces)
 
@@ -881,7 +913,10 @@ class Mesh(HalfEdge):
             The coordinates of the mesh centroid.
 
         """
-        return scale_vector(sum_vectors([scale_vector(self.face_centroid(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
+        return scale_vector(
+            sum_vectors([scale_vector(self.face_centroid(fkey), self.face_area(fkey)) for fkey in self.faces()]),
+            1.0 / self.area(),
+        )
 
     def normal(self):
         """Calculate the average mesh normal.
@@ -892,13 +927,16 @@ class Mesh(HalfEdge):
             The coordinates of the mesh normal.
 
         """
-        return scale_vector(sum_vectors([scale_vector(self.face_normal(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
+        return scale_vector(
+            sum_vectors([scale_vector(self.face_normal(fkey), self.face_area(fkey)) for fkey in self.faces()]),
+            1.0 / self.area(),
+        )
 
     # --------------------------------------------------------------------------
     # vertex geometry
     # --------------------------------------------------------------------------
 
-    def vertex_coordinates(self, key, axes='xyz'):
+    def vertex_coordinates(self, key, axes="xyz"):
         """Return the coordinates of a vertex.
 
         Parameters
@@ -931,7 +969,7 @@ class Mesh(HalfEdge):
             The tributary are.
 
         """
-        area = 0.
+        area = 0.0
 
         p0 = self.vertex_coordinates(key)
 
@@ -1027,14 +1065,18 @@ class Mesh(HalfEdge):
         """
         C = 0
         for u, v in pairwise(self.vertex_neighbors(vkey, ordered=True) + self.vertex_neighbors(vkey, ordered=True)[:1]):
-            C += angle_points(self.vertex_coordinates(vkey), self.vertex_coordinates(u), self.vertex_coordinates(v))
+            C += angle_points(
+                self.vertex_coordinates(vkey),
+                self.vertex_coordinates(u),
+                self.vertex_coordinates(v),
+            )
         return 2 * pi - C
 
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, u, v, axes='xyz'):
+    def edge_coordinates(self, u, v, axes="xyz"):
         """Return the coordinates of the start and end point of an edge.
 
         Parameters
@@ -1160,7 +1202,7 @@ class Mesh(HalfEdge):
     # face geometry
     # --------------------------------------------------------------------------
 
-    def face_coordinates(self, fkey, axes='xyz'):
+    def face_coordinates(self, fkey, axes="xyz"):
         """Compute the coordinates of the vertices of a face.
 
         Parameters
@@ -1273,7 +1315,7 @@ class Mesh(HalfEdge):
         """
         vertices = self.face_vertices(fkey)
         f = len(vertices)
-        points = self.vertices_attributes('xyz', keys=vertices)
+        points = self.vertices_attributes("xyz", keys=vertices)
         lengths = [distance_point_point(a, b) for a, b in pairwise(points + points[:1])]
         length = sum(lengths) / f
         d = distance_line_line((points[0], points[2]), (points[1], points[3]))
@@ -1327,7 +1369,10 @@ class Mesh(HalfEdge):
             b = self.vertex_coordinates(w)
             angle = angle_points(o, a, b, deg=True)
             angles.append(angle)
-        return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
+        return max(
+            (max(angles) - ideal_angle) / (180 - ideal_angle),
+            (ideal_angle - min(angles)) / ideal_angle,
+        )
 
     def face_curvature(self, fkey):
         """Dimensionless face curvature.
