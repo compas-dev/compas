@@ -71,10 +71,7 @@ def test_edgedata_nondirectionality(mesh):
     mesh.update_default_edge_attributes({"index": 0})
     for index, (u, v) in enumerate(mesh.edges()):
         mesh.edge_attribute((u, v), "index", index)
-    assert all(
-        mesh.edge_attribute((u, v), "index") == mesh.edge_attribute((v, u), "index")
-        for u, v in mesh.edges()
-    )
+    assert all(mesh.edge_attribute((u, v), "index") == mesh.edge_attribute((v, u), "index") for u, v in mesh.edges())
 
 
 def test_edgedata_io(mesh):
@@ -82,10 +79,7 @@ def test_edgedata_io(mesh):
     for index, (u, v) in enumerate(mesh.edges()):
         mesh.edge_attribute((u, v), "index", index)
     other = HalfEdge.from_data(mesh.data)
-    assert all(
-        other.edge_attribute(edge, "index") == index
-        for index, edge in enumerate(other.edges())
-    )
+    assert all(other.edge_attribute(edge, "index") == index for index, edge in enumerate(other.edges()))
 
 
 def test_data_schema(mesh):

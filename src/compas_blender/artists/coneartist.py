@@ -54,18 +54,11 @@ class ConeArtist(BlenderArtist, ShapeArtist):
 
     """
 
-    def __init__(
-        self,
-        cone: Cone,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
+    def __init__(self, cone: Cone, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
 
         super().__init__(shape=cone, collection=collection or cone.name, **kwargs)
 
-    def draw(
-        self, color: Optional[Color] = None, u: int = None
-    ) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, u: int = None) -> List[bpy.types.Object]:
         """Draw the cone associated with the artist.
 
         Parameters

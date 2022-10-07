@@ -108,26 +108,16 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
     @property
     def node_size(self):
         if not self._node_size:
-            factor = (
-                self.plotter.dpi
-                if self.sizepolicy == "absolute"
-                else self.network.number_of_nodes()
-            )
+            factor = self.plotter.dpi if self.sizepolicy == "absolute" else self.network.number_of_nodes()
             size = self.default_nodesize / factor
             self._node_size = {node: size for node in self.network.nodes()}
         return self._node_size
 
     @node_size.setter
     def node_size(self, nodesize):
-        factor = (
-            self.plotter.dpi
-            if self.sizepolicy == "absolute"
-            else self.network.number_of_nodes()
-        )
+        factor = self.plotter.dpi if self.sizepolicy == "absolute" else self.network.number_of_nodes()
         if isinstance(nodesize, dict):
-            self.node_size.update(
-                {node: size / factor for node, size in nodesize.items()}
-            )
+            self.node_size.update({node: size / factor for node, size in nodesize.items()})
         elif isinstance(nodesize, (int, float)):
             self._node_size = {node: nodesize / factor for node in self.network.nodes()}
 
@@ -230,9 +220,7 @@ class NetworkArtist(PlotterArtist, NetworkArtist):
             )
             circles.append(circle)
 
-        collection = PatchCollection(
-            circles, match_original=True, zorder=self.zorder_nodes, alpha=1.0
-        )
+        collection = PatchCollection(circles, match_original=True, zorder=self.zorder_nodes, alpha=1.0)
         self.plotter.axes.add_collection(collection)
         self._nodecollection = collection
 

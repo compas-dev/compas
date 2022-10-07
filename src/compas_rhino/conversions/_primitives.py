@@ -172,9 +172,7 @@ def frame_to_rhino(frame):
     :rhino:`Rhino.Geometry.Plane`
 
     """
-    return RhinoPlane(
-        point_to_rhino(frame[0]), vector_to_rhino(frame[1]), vector_to_rhino(frame[2])
-    )
+    return RhinoPlane(point_to_rhino(frame[0]), vector_to_rhino(frame[1]), vector_to_rhino(frame[2]))
 
 
 def circle_to_compas(circle):

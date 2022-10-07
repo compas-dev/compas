@@ -95,12 +95,8 @@ class RhinoSurface(Surface):
         :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
-        rhino_points = [
-            Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners
-        ]
-        return cls.from_rhino(
-            Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points)
-        )
+        rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
+        return cls.from_rhino(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
 
     @classmethod
     def from_sphere(cls, sphere):
@@ -264,11 +260,20 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        tuple[[float, float, float], [float, float, float], float, [float, float, float], float, [float, float, float], float, float] | None
+            A tuple containing the point, normal vector, maximum principal curvature value, maximum principal curvature direction,
+            minimun principal curvature value, minimun principal curvature direction, gaussian curvature value and mean curvature
+            value for the point at UV. None at failure.
 
         """
-        vector = self.rhino_surface.CurvatureAt(u, v)
-        return vector_to_compas(vector)
+        surface_curvature = self.rhino_surface.CurvatureAt(u, v)
+        if surface_curvature:
+            point, normal, kappa_u, direction_u, kappa_v, direction_v, gaussian, mean = surface_curvature
+            cpoint = point_to_compas(point)
+            cnormal = vector_to_compas(normal)
+            cdirection_u = vector_to_compas(direction_u)
+            cdirection_v = vector_to_compas(direction_v)
+            return (cpoint, cnormal, kappa_u, cdirection_u, kappa_v, cdirection_v, gaussian, mean)
 
     def frame_at(self, u, v):
         """Compute the local frame at a point on the curve.

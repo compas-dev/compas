@@ -122,9 +122,7 @@ class MeshArtist(GHArtist, MeshArtist):
         for face in faces:
             facets.append(
                 {
-                    "points": [
-                        vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)
-                    ],
+                    "points": [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                     "name": "{}.face.{}".format(self.mesh.name, face),
                     "color": self.face_color[face].rgb255,
                 }

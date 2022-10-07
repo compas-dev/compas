@@ -411,11 +411,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
             C = sum(1 if crease else 0 for crease in creases)
 
             if C < 2:
-                fnbrs = [
-                    mesh.face_centroid(fkey)
-                    for fkey in mesh.vertex_faces(key)
-                    if fkey is not None
-                ]
+                fnbrs = [mesh.face_centroid(fkey) for fkey in mesh.vertex_faces(key) if fkey is not None]
                 enbrs = [
                     key_xyz[nbr] for nbr in subd.halfedge[key]
                 ]  # this should be the location of the original neighbour
@@ -536,11 +532,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
             if key in boundary:
                 continue
 
-            face = [
-                fkey_old_new[fkey][key]
-                for fkey in mesh.vertex_faces(key, ordered=True)
-                if fkey is not None
-            ]
+            face = [fkey_old_new[fkey][key] for fkey in mesh.vertex_faces(key, ordered=True) if fkey is not None]
 
             subd.add_face(face[::-1])
 
@@ -697,9 +689,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
         fkey_vertices = {fkey: subd.face_vertices(fkey)[:] for fkey in subd.faces()}
         uv_w = {
-            (u, v): subd.face_vertex_ancestor(fkey, u)
-            for fkey in subd.faces()
-            for u, v in subd.face_halfedges(fkey)
+            (u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)
         }
         boundary = set(subd.vertices_on_boundary())
 
@@ -758,10 +748,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
             if (u, v) in uv_w and (v, u) in uv_w:
                 c = key_xyz[uv_w[(u, v)]]
                 d = key_xyz[uv_w[(v, u)]]
-                xyz = [
-                    (3.0 / 8.0) * (a[i] + b[i]) + (1.0 / 8.0) * (c[i] + d[i])
-                    for i in range(3)
-                ]
+                xyz = [(3.0 / 8.0) * (a[i] + b[i]) + (1.0 / 8.0) * (c[i] + d[i]) for i in range(3)]
 
             else:
                 xyz = [0.5 * (a[i] + b[i]) for i in range(3)]

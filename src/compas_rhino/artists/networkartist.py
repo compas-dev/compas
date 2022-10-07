@@ -72,9 +72,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(
-            name="{}.nodexlabel.*".format(self.network.name)
-        )
+        guids = compas_rhino.get_objects(name="{}.nodexlabel.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
@@ -85,9 +83,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(
-            name="{}.edgelabel.*".format(self.network.name)
-        )
+        guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.network.name))
         compas_rhino.delete_objects(guids, purge=True)
 
     # ==========================================================================
@@ -153,9 +149,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
                     "color": self.node_color[node].rgb255,
                 }
             )
-        return compas_rhino.draw_points(
-            points, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
@@ -189,9 +183,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
                     "name": "{}.edge.{}-{}".format(self.network.name, u, v),
                 }
             )
-        return compas_rhino.draw_lines(
-            lines, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
     # draw labels
@@ -224,9 +216,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
                     "text": self.node_text[node],
                 }
             )
-        return compas_rhino.draw_labels(
-            labels, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None):
         """Draw labels for a selection of edges.
@@ -256,6 +246,4 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
                     "text": self.edge_text[edge],
                 }
             )
-        return compas_rhino.draw_labels(
-            labels, layer=self.layer, clear=False, redraw=False
-        )
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

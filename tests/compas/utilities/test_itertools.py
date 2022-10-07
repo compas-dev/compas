@@ -31,9 +31,7 @@ def test_iterable_like_generator_and_list(target, base, fillvalue):
     assert a == ["a", "b"]
 
 
-@pytest.mark.parametrize(
-    ("mesh_a", "mesh_b"), [("faces.obj", "hypar.obj"), ("hypar.obj", "faces.obj")]
-)
+@pytest.mark.parametrize(("mesh_a", "mesh_b"), [("faces.obj", "hypar.obj"), ("hypar.obj", "faces.obj")])
 def test_iterable_cap_generator(mesh_a, mesh_b):
     ma = Mesh.from_obj(compas.get(mesh_a))
     mb = Mesh.from_obj(compas.get(mesh_b))

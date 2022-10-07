@@ -106,15 +106,7 @@ class MeshArtist(Artist):
     default_edgewidth = 1.0
 
     def __init__(
-        self,
-        mesh,
-        vertices=None,
-        edges=None,
-        faces=None,
-        vertexcolor=None,
-        edgecolor=None,
-        facecolor=None,
-        **kwargs
+        self, mesh, vertices=None, edges=None, faces=None, vertexcolor=None, edgecolor=None, facecolor=None, **kwargs
     ):
         super(MeshArtist, self).__init__()
 
@@ -197,10 +189,7 @@ class MeshArtist(Artist):
     @property
     def vertex_xyz(self):
         if self._vertex_xyz is None:
-            return {
-                vertex: self.mesh.vertex_attributes(vertex, "xyz")
-                for vertex in self.mesh.vertices()
-            }
+            return {vertex: self.mesh.vertex_attributes(vertex, "xyz") for vertex in self.mesh.vertices()}
         return self._vertex_xyz
 
     @vertex_xyz.setter
@@ -218,18 +207,14 @@ class MeshArtist(Artist):
         if text == "key":
             self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}
         elif text == "index":
-            self._vertex_text = {
-                vertex: str(index) for index, vertex in enumerate(self.mesh.vertices())
-            }
+            self._vertex_text = {vertex: str(index) for index, vertex in enumerate(self.mesh.vertices())}
         elif isinstance(text, dict):
             self._vertex_text = text
 
     @property
     def vertex_size(self):
         if not self._vertex_size:
-            self._vertex_size = {
-                vertex: self.default_vertexsize for vertex in self.mesh.vertices()
-            }
+            self._vertex_size = {vertex: self.default_vertexsize for vertex in self.mesh.vertices()}
         return self._vertex_size
 
     @vertex_size.setter
@@ -242,30 +227,22 @@ class MeshArtist(Artist):
     @property
     def edge_text(self):
         if self._edge_text is None:
-            self._edge_text = {
-                edge: "{}-{}".format(*edge) for edge in self.mesh.edges()
-            }
+            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
         return self._edge_text
 
     @edge_text.setter
     def edge_text(self, text):
         if text == "key":
-            self._edge_text = {
-                edge: "{}-{}".format(*edge) for edge in self.mesh.edges()
-            }
+            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}
         elif text == "index":
-            self._edge_text = {
-                edge: str(index) for index, edge in enumerate(self.mesh.edges())
-            }
+            self._edge_text = {edge: str(index) for index, edge in enumerate(self.mesh.edges())}
         elif isinstance(text, dict):
             self._edge_text = text
 
     @property
     def edge_width(self):
         if not self._edge_width:
-            self._edge_width = {
-                edge: self.default_edgewidth for edge in self.mesh.edges()
-            }
+            self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}
         return self._edge_width
 
     @edge_width.setter
@@ -286,9 +263,7 @@ class MeshArtist(Artist):
         if text == "key":
             self._face_text = {face: str(face) for face in self.mesh.faces()}
         elif text == "index":
-            self._face_text = {
-                face: str(index) for index, face in enumerate(self.mesh.faces())
-            }
+            self._face_text = {face: str(index) for index, face in enumerate(self.mesh.faces())}
         elif isinstance(text, dict):
             self._face_text = text
 

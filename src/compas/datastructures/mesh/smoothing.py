@@ -13,9 +13,7 @@ __all__ = [
 ]
 
 
-def mesh_smooth_centroid(
-    mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None
-):
+def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a mesh by moving every free vertex to the centroid of its neighbors.
 
     Parameters
@@ -59,9 +57,7 @@ def mesh_smooth_centroid(
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_points(
-                [key_xyz[nbr] for nbr in mesh.vertex_neighbors(key)]
-            )
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key)])
 
             attr["x"] += damping * (cx - x)
             attr["y"] += damping * (cy - y)
@@ -71,9 +67,7 @@ def mesh_smooth_centroid(
             callback(k, callback_args)
 
 
-def mesh_smooth_centerofmass(
-    mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None
-):
+def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a mesh by moving every free vertex to the center of mass of the polygon formed by the neighboring vertices.
 
     Parameters
@@ -117,9 +111,7 @@ def mesh_smooth_centerofmass(
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_polygon(
-                [key_xyz[nbr] for nbr in mesh.vertex_neighbors(key, ordered=True)]
-            )
+            cx, cy, cz = centroid_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key, ordered=True)])
 
             attr["x"] += damping * (cx - x)
             attr["y"] += damping * (cy - y)
@@ -129,9 +121,7 @@ def mesh_smooth_centerofmass(
             callback(k, callback_args)
 
 
-def mesh_smooth_area(
-    mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None
-):
+def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a mesh by moving each vertex to the barycenter of the centroids of the surrounding faces, weighted by area.
 
     Parameters

@@ -54,12 +54,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
 
     """
 
-    def __init__(
-        self,
-        torus: Torus,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
+    def __init__(self, torus: Torus, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
 
         super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
 

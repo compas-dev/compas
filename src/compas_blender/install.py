@@ -126,18 +126,12 @@ def install(blender_path, version=None):
         remove(compas_bootstrapper)
 
     print("Installing current conda environment into Blender...")
-    print(
-        "  Renaming bundled python folder to original_python: {} => {}".format(
-            blenderpython_src, blenderpython_dst
-        )
-    )
+    print("  Renaming bundled python folder to original_python: {} => {}".format(blenderpython_src, blenderpython_dst))
     rename(blenderpython_src, blenderpython_dst)
     create_symlinks([(os.environ["CONDA_PREFIX"], blenderpython_src)])
 
     # Take either the CONDA environment directory or the current Python executable's directory
-    python_directory = os.environ.get("CONDA_PREFIX", None) or os.path.dirname(
-        sys.executable
-    )
+    python_directory = os.environ.get("CONDA_PREFIX", None) or os.path.dirname(sys.executable)
     environment_name = os.environ.get("CONDA_DEFAULT_ENV", "")
 
     # Get current sys.version value, we will override it inside Blender
@@ -147,11 +141,7 @@ def install(blender_path, version=None):
     _handle, bootstrapper_temp_path = tempfile.mkstemp(suffix=".py", text=True)
 
     with open(bootstrapper_temp_path, "w") as f:
-        f.write(
-            BOOTSTRAPPER_TEMPLATE.format(
-                environment_name, python_directory, sys_version
-            )
-        )
+        f.write(BOOTSTRAPPER_TEMPLATE.format(environment_name, python_directory, sys_version))
 
     print("  Creating bootstrap script: {}".format(compas_bootstrapper))
     copy(bootstrapper_temp_path, compas_bootstrapper)

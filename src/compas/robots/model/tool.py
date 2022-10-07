@@ -44,9 +44,7 @@ class ToolModel(RobotModel):
     ):
         collision = collision or visual
         super(ToolModel, self).__init__(name)
-        self.add_link(
-            "attached_tool_link", visual_mesh=visual, collision_mesh=collision
-        )
+        self.add_link("attached_tool_link", visual_mesh=visual, collision_mesh=collision)
 
         self._rebuild_tree()
         self._create(self.root, Transformation())
@@ -149,10 +147,7 @@ class ToolModel(RobotModel):
 
         """
         Te = Transformation.from_frame_to_frame(self.frame, Frame.worldXY())
-        return [
-            Frame.from_transformation(Transformation.from_frame(f) * Te)
-            for f in frames_tcf
-        ]
+        return [Frame.from_transformation(Transformation.from_frame(f) * Te) for f in frames_tcf]
 
     def from_t0cf_to_tcf(self, frames_t0cf):
         """Converts frames at the robot's flange (tool0 frame) to frames at the robot's tool tip (tcf frame).
@@ -181,7 +176,4 @@ class ToolModel(RobotModel):
 
         """
         Te = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
-        return [
-            Frame.from_transformation(Transformation.from_frame(f) * Te)
-            for f in frames_t0cf
-        ]
+        return [Frame.from_transformation(Transformation.from_frame(f) * Te) for f in frames_t0cf]

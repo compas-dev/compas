@@ -223,12 +223,8 @@ class Visual(LinkItem, Data):
             "name": self.name,
             "material": self.material.data if self.material else None,
             "attr": _attr_to_data(self.attr),
-            "init_transformation": self.init_transformation.data
-            if self.init_transformation
-            else None,
-            "current_transformation": self.current_transformation.data
-            if self.current_transformation
-            else None,
+            "init_transformation": self.init_transformation.data if self.init_transformation else None,
+            "current_transformation": self.current_transformation.data if self.current_transformation else None,
         }
 
     @data.setter
@@ -236,19 +232,13 @@ class Visual(LinkItem, Data):
         self.geometry = Geometry.from_data(data["geometry"])
         self.origin = Frame.from_data(data["origin"]) if data["origin"] else None
         self.name = data["name"]
-        self.material = (
-            Material.from_data(data["material"]) if data["material"] else None
-        )
+        self.material = Material.from_data(data["material"]) if data["material"] else None
         self.attr = _attr_from_data(data["attr"])
         self.init_transformation = (
-            Transformation.from_data(data["init_transformation"])
-            if data["init_transformation"]
-            else None
+            Transformation.from_data(data["init_transformation"]) if data["init_transformation"] else None
         )
         self.current_transformation = (
-            Transformation.from_data(data["current_transformation"])
-            if data["current_transformation"]
-            else None
+            Transformation.from_data(data["current_transformation"]) if data["current_transformation"] else None
         )
 
     @classmethod
@@ -351,12 +341,8 @@ class Collision(LinkItem, Data):
             "origin": self.origin.data if self.origin else None,
             "name": self.name,
             "attr": _attr_to_data(self.attr),
-            "init_transformation": self.init_transformation.data
-            if self.init_transformation
-            else None,
-            "current_transformation": self.current_transformation.data
-            if self.current_transformation
-            else None,
+            "init_transformation": self.init_transformation.data if self.init_transformation else None,
+            "current_transformation": self.current_transformation.data if self.current_transformation else None,
         }
 
     @data.setter
@@ -366,14 +352,10 @@ class Collision(LinkItem, Data):
         self.name = data["name"]
         self.attr = _attr_from_data(data["attr"])
         self.init_transformation = (
-            Transformation.from_data(data["init_transformation"])
-            if data["init_transformation"]
-            else None
+            Transformation.from_data(data["init_transformation"]) if data["init_transformation"] else None
         )
         self.current_transformation = (
-            Transformation.from_data(data["current_transformation"])
-            if data["current_transformation"]
-            else None
+            Transformation.from_data(data["current_transformation"]) if data["current_transformation"] else None
         )
 
     @classmethod
@@ -429,9 +411,7 @@ class Link(Data):
 
     """
 
-    def __init__(
-        self, name, type=None, visual=(), collision=(), inertial=None, **kwargs
-    ):
+    def __init__(self, name, type=None, visual=(), collision=(), inertial=None, **kwargs):
         super(Link, self).__init__()
         self.name = name
         self.type = type
@@ -470,9 +450,7 @@ class Link(Data):
         self.type = data["type"]
         self.visual = [Visual.from_data(d) for d in data["visual"]]
         self.collision = [Collision.from_data(d) for d in data["collision"]]
-        self.inertial = (
-            Inertial.from_data(data["inertial"]) if data["inertial"] else None
-        )
+        self.inertial = Inertial.from_data(data["inertial"]) if data["inertial"] else None
         self.attr = _attr_from_data(data["attr"])
         self.joints = [Joint.from_data(d) for d in data["joints"]]
 
@@ -498,9 +476,7 @@ URDFParser.install_parser(
     "robot/link/collision/origin",
     proxy_type=FrameProxy,
 )
-URDFParser.install_parser(
-    Geometry, "robot/link/visual/geometry", "robot/link/collision/geometry"
-)
+URDFParser.install_parser(Geometry, "robot/link/visual/geometry", "robot/link/collision/geometry")
 URDFParser.install_parser(
     MeshDescriptor,
     "robot/link/visual/geometry/mesh",

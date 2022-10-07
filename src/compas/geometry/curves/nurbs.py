@@ -161,9 +161,7 @@ class NurbsCurve(Curve):
         multiplicities = data["multiplicities"]
         degree = data["degree"]
         is_periodic = data["is_periodic"]
-        return cls.from_parameters(
-            points, weights, knots, multiplicities, degree, is_periodic
-        )
+        return cls.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
 
     # ==============================================================================
     # Properties
@@ -225,9 +223,7 @@ class NurbsCurve(Curve):
         return new_nurbscurve_from_step(cls, filepath)
 
     @classmethod
-    def from_parameters(
-        cls, points, weights, knots, multiplicities, degree, is_periodic=False
-    ):
+    def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
         """Construct a NURBS curve from explicit curve parameters.
 
         Parameters
@@ -250,9 +246,7 @@ class NurbsCurve(Curve):
         :class:`~compas.geometry.NurbsCurve`
 
         """
-        return new_nurbscurve_from_parameters(
-            cls, points, weights, knots, multiplicities, degree, is_periodic=False
-        )
+        return new_nurbscurve_from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False)
 
     @classmethod
     def from_points(cls, points, degree=3):
@@ -336,9 +330,7 @@ class NurbsCurve(Curve):
         knots = [0, 1 / 4, 1 / 2, 3 / 4, 1]
         mults = [3, 2, 2, 2, 3]
         weights = [1, w, 1, w, 1, w, 1, w, 1]
-        return cls.from_parameters(
-            points=points, weights=weights, knots=knots, multiplicities=mults, degree=2
-        )
+        return cls.from_parameters(points=points, weights=weights, knots=knots, multiplicities=mults, degree=2)
 
     @classmethod
     def from_ellipse(cls, ellipse):
@@ -372,9 +364,7 @@ class NurbsCurve(Curve):
         knots = [0, 1 / 4, 1 / 2, 3 / 4, 1]
         mults = [3, 2, 2, 2, 3]
         weights = [1, w, 1, w, 1, w, 1, w, 1]
-        return cls.from_parameters(
-            points=points, weights=weights, knots=knots, multiplicities=mults, degree=2
-        )
+        return cls.from_parameters(points=points, weights=weights, knots=knots, multiplicities=mults, degree=2)
 
     @classmethod
     def from_line(cls, line):

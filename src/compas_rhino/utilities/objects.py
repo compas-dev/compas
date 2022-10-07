@@ -465,9 +465,7 @@ def select_points(message="Select multiple points."):
 
     """
     guids = []
-    temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False, filter=rs.filter.point
-    )
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.point)
     if temp:
         guids = temp
     return guids
@@ -542,30 +540,15 @@ def is_curve_line(guid):
         False otherwise.
 
     """
-    return (
-        rs.IsCurve(guid)
-        and rs.IsLine(guid)
-        and rs.CurveDegree(guid) == 1
-        and len(rs.CurvePoints(guid)) == 2
-    )
+    return rs.IsCurve(guid) and rs.IsLine(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) == 2
 
 
 def is_curve_polyline(guid):
-    return (
-        rs.IsCurve(guid)
-        and rs.IsPolyline(guid)
-        and rs.CurveDegree(guid) == 1
-        and len(rs.CurvePoints(guid)) > 2
-    )
+    return rs.IsCurve(guid) and rs.IsPolyline(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2
 
 
 def is_curve_polygon(guid):
-    return (
-        rs.IsCurve(guid)
-        and rs.IsCurveClosed(guid)
-        and rs.CurveDegree(guid) == 1
-        and len(rs.CurvePoints(guid)) > 2
-    )
+    return rs.IsCurve(guid) and rs.IsCurveClosed(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2
 
 
 def select_curve(message="Select one curve."):
@@ -600,9 +583,7 @@ def select_curves(message="Select multiple curves."):
 
     """
     guids = []
-    temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False, filter=rs.filter.curve
-    )
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         guids = temp
     return guids
@@ -643,9 +624,7 @@ def select_lines(message="Select multiple lines."):
 
     """
     guids = []
-    temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False, filter=rs.filter.curve
-    )
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         for guid in temp:
             if is_curve_line(guid):
@@ -692,9 +671,7 @@ def select_polylines(
 
     """
     guids = []
-    temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False, filter=rs.filter.curve
-    )
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         for guid in temp:
             if is_curve_polyline(guid):
@@ -737,9 +714,7 @@ def select_polygons(message="Select multiple polygons (closed curves with degree
 
     """
     guids = []
-    temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False, filter=rs.filter.curve
-    )
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         for guid in temp:
             if is_curve_polygon(guid):
@@ -1043,9 +1018,7 @@ def select_meshes(message="Select multiple meshes."):
 
     """
     guids = []
-    temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False, filter=rs.filter.mesh
-    )
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.mesh)
     if temp:
         guids = temp
     return guids

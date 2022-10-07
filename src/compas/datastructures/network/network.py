@@ -84,9 +84,7 @@ class Network(Graph):
         is_planar = network_is_planar
         is_planar_embedding = network_is_planar_embedding
 
-    def __init__(
-        self, name=None, default_node_attributes=None, default_edge_attributes=None
-    ):
+    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
         _default_node_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
         if default_node_attributes:
@@ -424,9 +422,7 @@ class Network(Graph):
             The coordinates of the centroid.
 
         """
-        return centroid_points(
-            [self.node_coordinates(nbr) for nbr in self.neighbors(key)]
-        )
+        return centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
 
     # --------------------------------------------------------------------------
     # edge geometry

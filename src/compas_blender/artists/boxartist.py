@@ -53,12 +53,7 @@ class BoxArtist(BlenderArtist, ShapeArtist):
 
     """
 
-    def __init__(
-        self,
-        box: Box,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any
-    ):
+    def __init__(self, box: Box, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
 
         super().__init__(shape=box, collection=collection or box.name, **kwargs)
 

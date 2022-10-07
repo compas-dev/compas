@@ -60,13 +60,9 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-        super().__init__(
-            primitive=polyline, collection=collection or polyline.name, **kwargs
-        )
+        super().__init__(primitive=polyline, collection=collection or polyline.name, **kwargs)
 
-    def draw(
-        self, color: Optional[Color] = None, show_points: Optional[bool] = False
-    ) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the line.
 
         Parameters

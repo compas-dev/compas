@@ -262,8 +262,7 @@ class VolMesh(HalfFace):
         cells = []
         for cell in self.cell:
             faces = [
-                [vertex_index[vertex] for vertex in self.halfface_vertices(face)]
-                for face in self.cell_faces(cell)
+                [vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in self.cell_faces(cell)
             ]
             cells.append(faces)
         return vertices, cells
@@ -305,10 +304,7 @@ class VolMesh(HalfFace):
         faces = self.cell_faces(cell)
         vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
         vertices = [self.vertex_coordinates(vertex) for vertex in vertices]
-        faces = [
-            [vertex_index[vertex] for vertex in self.halfface_vertices(face)]
-            for face in faces
-        ]
+        faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
         return vertices, faces
 
     # --------------------------------------------------------------------------
@@ -374,9 +370,7 @@ class VolMesh(HalfFace):
             The coordinates of the centroid.
 
         """
-        return centroid_points(
-            [self.vertex_coordinates(vertex) for vertex in self.vertices()]
-        )
+        return centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()])
 
     # --------------------------------------------------------------------------
     # vertex geometry
@@ -433,9 +427,7 @@ class VolMesh(HalfFace):
             The coordinates of the centroid.
 
         """
-        return centroid_points(
-            [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(vertex)]
-        )
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(vertex)])
 
     # --------------------------------------------------------------------------
     # edge geometry
@@ -460,9 +452,7 @@ class VolMesh(HalfFace):
 
         """
         u, v = edge
-        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(
-            v, axes=axes
-        )
+        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
 
     def edge_length(self, edge):
         """Return the length of an edge.
@@ -574,10 +564,7 @@ class VolMesh(HalfFace):
             The coordinates of the vertices of the face.
 
         """
-        return [
-            self.vertex_coordinates(vertex, axes=axes)
-            for vertex in self.face_vertices(face)
-        ]
+        return [self.vertex_coordinates(vertex, axes=axes) for vertex in self.face_vertices(face)]
 
     def face_normal(self, face, unitized=True):
         """Compute the oriented normal of a face.
@@ -694,9 +681,7 @@ class VolMesh(HalfFace):
                Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
 
         """
-        face_edge_lengths = [
-            self.edge_length(edge) for edge in self.face_halfedges(face)
-        ]
+        face_edge_lengths = [self.edge_length(edge) for edge in self.face_halfedges(face)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
     halfface_area = face_area
@@ -763,9 +748,5 @@ class VolMesh(HalfFace):
 
         """
         cell_faces = self.cell_faces(cell)
-        vectors = [
-            self.face_normal(face)
-            for face in self.vertex_faces(vertex)
-            if face in cell_faces
-        ]
+        vectors = [self.face_normal(face) for face in self.vertex_faces(vertex) if face in cell_faces]
         return normalize_vector(centroid_points(vectors))

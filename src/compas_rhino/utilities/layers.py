@@ -33,9 +33,7 @@ __all__ = [
 
 
 def show_hidden_objects_on_layer(name):
-    rs.ShowObjects(
-        [guid for guid in rs.HiddenObjects() if rs.ObjectLayer(guid) == name]
-    )
+    rs.ShowObjects([guid for guid in rs.HiddenObjects() if rs.ObjectLayer(guid) == name])
 
 
 def find_objects_on_layer(name, include_hidden=True, include_children=True):
@@ -54,9 +52,7 @@ def find_objects_on_layer(name, include_hidden=True, include_children=True):
     return to_delete
 
 
-def delete_objects_on_layer(
-    name, include_hidden=True, include_children=False, purge=True
-):
+def delete_objects_on_layer(name, include_hidden=True, include_children=False, purge=True):
     guids = find_objects_on_layer(name, include_hidden, include_children)
     if purge and purge_object:
         rs.EnableRedraw(False)

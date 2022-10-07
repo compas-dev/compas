@@ -409,11 +409,7 @@ def is_point_in_triangle(point, triangle):
 
     a, b, c = triangle
 
-    if (
-        is_on_same_side(point, a, (b, c))
-        and is_on_same_side(point, b, (a, c))
-        and is_on_same_side(point, c, (a, b))
-    ):
+    if is_on_same_side(point, a, (b, c)) and is_on_same_side(point, b, (a, c)) and is_on_same_side(point, c, (a, b)):
         return True
 
     return False
@@ -704,7 +700,5 @@ def is_point_in_polyhedron(point, polyhedron):
     """
     vertices, faces = polyhedron
     polygons = [[vertices[index] for index in face] for face in faces]
-    planes = [
-        [centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons
-    ]
+    planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
     return all(is_point_behind_plane(point, plane) for plane in planes)

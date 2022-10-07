@@ -247,9 +247,7 @@ class OFFWriter(object):
 
     """
 
-    def __init__(
-        self, filepath, mesh, author=None, email=None, date=None, precision=None
-    ):
+    def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
         self.filepath = filepath
         self.mesh = mesh
         self.author = author
@@ -257,15 +255,7 @@ class OFFWriter(object):
         self.date = date
         self.precision = precision or compas.PRECISION
         self.vertex_tpl = (
-            "{0:."
-            + self.precision
-            + "}"
-            + " {1:."
-            + self.precision
-            + "}"
-            + " {2:."
-            + self.precision
-            + "}\n"
+            "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
         )
         self.v = mesh.number_of_vertices()
         self.f = mesh.number_of_faces()
@@ -305,8 +295,4 @@ class OFFWriter(object):
         for fkey in self.mesh.faces():
             vertices = self.mesh.face_vertices(fkey)
             v = len(vertices)
-            self.file.write(
-                "{0} {1}\n".format(
-                    v, " ".join([str(key_index[key]) for key in vertices])
-                )
-            )
+            self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))

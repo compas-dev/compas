@@ -86,9 +86,7 @@ def data_to_rhino_surface(data):
     nu = len(points[0])
     nv = len(points)
 
-    nurbs = RhinoNurbsSurface.Create(
-        3, False, data["u_degree"] + 1, data["v_degree"] + 1, nu, nv
-    )
+    nurbs = RhinoNurbsSurface.Create(3, False, data["u_degree"] + 1, data["v_degree"] + 1, nu, nv)
     for i in range(nu):
         for j in range(nv):
             nurbs.Points.SetPoint(i, j, point_to_rhino(points[j][i]))

@@ -143,9 +143,7 @@ class Data(object):
         """dict : The schema of the JSON representation of the data of this object."""
         if not self._JSONSCHEMA:
             schema_filename = "{}.json".format(self.JSONSCHEMANAME.lower())
-            schema_path = os.path.join(
-                os.path.dirname(__file__), "schemas", schema_filename
-            )
+            schema_path = os.path.join(os.path.dirname(__file__), "schemas", schema_filename)
             with open(schema_path, "r") as fp:
                 self._JSONSCHEMA = json.load(fp)
         return self._JSONSCHEMA
@@ -154,9 +152,7 @@ class Data(object):
     def jsondefinitions(self):
         """dict : Reusable schema definitions."""
         if not self._jsondefinitions:
-            schema_path = os.path.join(
-                os.path.dirname(__file__), "schemas", "compas.json"
-            )
+            schema_path = os.path.join(os.path.dirname(__file__), "schemas", "compas.json")
             with open(schema_path, "r") as fp:
                 self._jsondefinitions = json.load(fp)
         return self._jsondefinitions
@@ -173,9 +169,7 @@ class Data(object):
 
     @property
     def dtype(self):
-        return "{}/{}".format(
-            ".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__
-        )
+        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
 
     @property
     def data(self):

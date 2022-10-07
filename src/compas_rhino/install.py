@@ -119,9 +119,7 @@ def install(version=None, packages=None, clean=False):
         symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
 
         package_path = compas_rhino._get_package_path(importlib.import_module(package))
-        symlinks_to_install.append(
-            dict(name=package, source_path=package_path, link=symlink_path)
-        )
+        symlinks_to_install.append(dict(name=package, source_path=package_path, link=symlink_path))
 
         # Handle legacy install location
         # This does not always work,
@@ -244,11 +242,7 @@ def _run_post_execution_steps(steps_generator):
                 print("   {} {}: {}".format(package.ljust(20), status, message))
             except ValueError:
                 post_execution_errors.append(
-                    ValueError(
-                        "Step ran without errors but result is wrongly formatted: {}".format(
-                            str(item)
-                        )
-                    )
+                    ValueError("Step ran without errors but result is wrongly formatted: {}".format(str(item)))
                 )
 
     if post_execution_errors:
@@ -261,9 +255,7 @@ def _run_post_execution_steps(steps_generator):
     return all_steps_succeeded
 
 
-@compas.plugins.plugin(
-    category="install", pluggable_name="installable_rhino_packages", tryfirst=True
-)
+@compas.plugins.plugin(category="install", pluggable_name="installable_rhino_packages", tryfirst=True)
 def default_installable_rhino_packages():
     # While this list could obviously be hard-coded, I think
     # eating our own dogfood and using plugins to define this, just like
@@ -327,9 +319,7 @@ def after_rhino_install(installed_packages):
 
 def _update_bootstrapper(install_path, packages):
     # Take either the CONDA environment directory or the current Python executable's directory
-    python_directory = os.environ.get("CONDA_PREFIX", None) or os.path.dirname(
-        sys.executable
-    )
+    python_directory = os.environ.get("CONDA_PREFIX", None) or os.path.dirname(sys.executable)
     environment_name = os.environ.get("CONDA_DEFAULT_ENV", "")
     conda_exe = os.environ.get("CONDA_EXE", "")
 
@@ -354,13 +344,9 @@ def _filter_installable_packages(version, packages):
 
     if not packages:
         # Flatten list of results (resulting from collect_all pluggable)
-        packages = sorted(
-            set(itertools.chain.from_iterable(installable_rhino_packages()))
-        )
+        packages = sorted(set(itertools.chain.from_iterable(installable_rhino_packages())))
     elif "compas_ghpython" in packages and ghpython_incompatible:
-        print(
-            "Skipping installation of compas_ghpython since it's not supported for Rhino 5 for Mac"
-        )
+        print("Skipping installation of compas_ghpython since it's not supported for Rhino 5 for Mac")
 
     if ghpython_incompatible:
         packages.remove("compas_ghpython")

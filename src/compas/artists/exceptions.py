@@ -12,11 +12,7 @@ class NoArtistContextError(Exception):
 
     def __init__(self):
         error_message = "No context defined."
-        error_message += (
-            "\n\nThis usually means that the script that you are running requires"
-        )
-        error_message += (
-            "\na CAD environment but it is being ran as a standalone script"
-        )
+        error_message += "\n\nThis usually means that the script that you are running requires"
+        error_message += "\na CAD environment but it is being ran as a standalone script"
         error_message += "\n(ie. from the command line or code editor)."
         super(NoArtistContextError, self).__init__(error_message)

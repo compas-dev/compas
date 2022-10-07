@@ -339,9 +339,7 @@ def draw_spheres(spheres):
     return rg_sheres
 
 
-def draw_mesh(
-    vertices, faces, color=None, vertex_normals=None, texture_coordinates=None
-):
+def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordinates=None):
     """Draw mesh in Grasshopper.
 
     Parameters
@@ -426,9 +424,7 @@ def draw_network(network):
         points.append({"pos": network.node_coordinates(key)})
     lines = []
     for u, v in network.edges():
-        lines.append(
-            {"start": network.node_coordinates(u), "end": network.node_coordinates(v)}
-        )
+        lines.append({"start": network.node_coordinates(u), "end": network.node_coordinates(v)})
     points_rg = draw_points(points)
     lines_rg = draw_lines(lines)
 

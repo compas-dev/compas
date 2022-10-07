@@ -65,9 +65,7 @@ class Line(Primitive):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
 
-        return Schema(
-            {"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)}
-        )
+        return Schema({"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)})
 
     @property
     def JSONSCHEMANAME(self):

@@ -1210,9 +1210,7 @@ class HalfFace(Datastructure):
         # use it as a getter
         if not names:
             # return all vertex attributes as a dict
-            return VertexAttributeView(
-                self.default_vertex_attributes, self._vertex[vertex]
-            )
+            return VertexAttributeView(self.default_vertex_attributes, self._vertex[vertex])
         values = []
         for name in names:
             if name in self._vertex[vertex]:
@@ -1425,9 +1423,7 @@ class HalfFace(Datastructure):
             return
         if not names:
             key = str(tuple(sorted(edge)))
-            return EdgeAttributeView(
-                self.default_edge_attributes, self._edge_data.setdefault(key, {})
-            )
+            return EdgeAttributeView(self.default_edge_attributes, self._edge_data.setdefault(key, {}))
         values = []
         for name in names:
             value = self.edge_attribute(edge, name)
@@ -1630,9 +1626,7 @@ class HalfFace(Datastructure):
                 self._face_data[key][name] = value
             return
         if not names:
-            return FaceAttributeView(
-                self.default_face_attributes, self._face_data.setdefault(key, {})
-            )
+            return FaceAttributeView(self.default_face_attributes, self._face_data.setdefault(key, {}))
         values = []
         for name in names:
             value = self.face_attribute(face, name)
@@ -1835,9 +1829,7 @@ class HalfFace(Datastructure):
                 self._cell_data[cell][name] = value
             return
         if not names:
-            return CellAttributeView(
-                self.default_cell_attributes, self._cell_data.setdefault(cell, {})
-            )
+            return CellAttributeView(self.default_cell_attributes, self._cell_data.setdefault(cell, {}))
         values = []
         for name in names:
             value = self.cell_attribute(cell, name)
@@ -2508,15 +2500,7 @@ class HalfFace(Datastructure):
         but in the context of a cell of the `VolMesh`.
 
         """
-        return list(
-            set(
-                [
-                    vertex
-                    for face in self.cell_faces(cell)
-                    for vertex in self.halfface_vertices(face)
-                ]
-            )
-        )
+        return list(set([vertex for face in self.cell_faces(cell) for vertex in self.halfface_vertices(face)]))
 
     def cell_halfedges(self, cell):
         """The halfedges of a cell.

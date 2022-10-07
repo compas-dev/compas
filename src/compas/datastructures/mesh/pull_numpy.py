@@ -46,9 +46,7 @@ def trimesh_pull_points_numpy(mesh, points):
     i_k = mesh.index_key()
     fk_fi = {fkey: index for index, fkey in enumerate(mesh.faces())}
     vertices = array(mesh.vertices_attributes("xyz"), dtype=float64).reshape((-1, 3))
-    triangles = array(
-        [mesh.face_coordinates(fkey) for fkey in mesh.faces()], dtype=float64
-    )
+    triangles = array([mesh.face_coordinates(fkey) for fkey in mesh.faces()], dtype=float64)
     points = array(points, dtype=float64).reshape((-1, 3))
     closest_vis = argmin(distance_matrix(points, vertices), axis=1)
     # transformation matrices
@@ -59,15 +57,9 @@ def trimesh_pull_points_numpy(mesh, points):
         point = points[i]
         closest_vi = closest_vis[i]
         closest_vk = i_k[closest_vi]
-        closest_tris = [
-            fk_fi[fk]
-            for fk in mesh.vertex_faces(closest_vk, ordered=True)
-            if fk is not None
-        ]
+        closest_tris = [fk_fi[fk] for fk in mesh.vertex_faces(closest_vk, ordered=True) if fk is not None]
         # process the connected triangles
-        d, p, c = _find_closest_component(
-            point, vertices, triangles, closest_tris, closest_vi
-        )
+        d, p, c = _find_closest_component(point, vertices, triangles, closest_tris, closest_vi)
         pulled_points.append(p)
     return pulled_points
 
@@ -80,9 +72,7 @@ def trimesh_pull_points_numpy(mesh, points):
 def _is_point_in_edgezone(p, p0, p1):
     n = cross_vectors(p1 - p0, [0, 0, 1.0])
     return (
-        is_ccw_xy(p0 - p0, n, p - p0)
-        and not is_ccw_xy(p0 - p0, p1 - p0, p - p0)
-        and not is_ccw_xy(p1 - p1, n, p - p1)
+        is_ccw_xy(p0 - p0, n, p - p0) and not is_ccw_xy(p0 - p0, p1 - p0, p - p0) and not is_ccw_xy(p1 - p1, n, p - p1)
     )
 
 

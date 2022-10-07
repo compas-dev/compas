@@ -365,9 +365,7 @@ def test_basis_vectors_from_matrix():
     R = matrix_from_frame(f)
     xaxis, yaxis = basis_vectors_from_matrix(R)
     assert allclose(xaxis, [0.6807833515407016, 0.6807833515407016, 0.2703110366411609])
-    assert allclose(
-        yaxis, [-0.6687681911461376, 0.7282315441900513, -0.14975955581430114]
-    )
+    assert allclose(yaxis, [-0.6687681911461376, 0.7282315441900513, -0.14975955581430114])
 
 
 def test_translation_from_matrix():

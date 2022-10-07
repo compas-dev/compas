@@ -166,10 +166,7 @@ def allclose(l1, l2, tol=1e-05):
 
     """
 
-    if any(
-        not allclose(a, b, tol) if hasattr(a, "__iter__") else fabs(a - b) > tol
-        for a, b in zip(l1, l2)
-    ):
+    if any(not allclose(a, b, tol) if hasattr(a, "__iter__") else fabs(a - b) > tol for a, b in zip(l1, l2)):
         return False
     return True
 
@@ -1323,9 +1320,7 @@ def orthonormalize_vectors(vectors):
     basis = []
     for v in vectors:
         if basis:
-            e = subtract_vectors(
-                v, sum_vectors([vector_component(v, b) for b in basis])
-            )
+            e = subtract_vectors(v, sum_vectors([vector_component(v, b) for b in basis]))
         else:
             e = v
         if any(axis > 1e-10 for axis in e):

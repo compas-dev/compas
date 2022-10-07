@@ -81,13 +81,9 @@ class RhinoBrepEdge(BrepEdge):
     def data(self, value):
         curve_type = value["type"]
         if curve_type == "line":
-            self._curve = line_to_rhino_curve(
-                Line.from_data(value["value"])
-            )  # this returns a Nurbs Curve, why?
+            self._curve = line_to_rhino_curve(Line.from_data(value["value"]))  # this returns a Nurbs Curve, why?
         elif curve_type == "circle":
-            self._curve = circle_to_rhino_curve(
-                Circle.from_data(value["value"])
-            )  # this returns a Nurbs Curve, why?
+            self._curve = circle_to_rhino_curve(Circle.from_data(value["value"]))  # this returns a Nurbs Curve, why?
         elif curve_type == "ellipse":
             self._curve = ellipse_to_rhino_curve(value["value"])
         else:

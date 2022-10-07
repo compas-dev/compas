@@ -134,9 +134,7 @@ class Bounds(object):
         yspan = self.points[ymax, 1] - self.points[ymin, 1]
         zspan = self.points[zmax, 2] - self.points[zmin, 2]
         span = max(xspan, yspan, zspan)
-        axes.plot(
-            [self.points[xmin, 0]], [self.points[ymin, 1]], [self.points[zmin, 2]], "w"
-        )
+        axes.plot([self.points[xmin, 0]], [self.points[ymin, 1]], [self.points[zmin, 2]], "w")
         axes.plot(
             [self.points[xmin, 0] + span],
             [self.points[ymin, 1] + span],

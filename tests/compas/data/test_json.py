@@ -69,9 +69,7 @@ def test_json_network():
 
 
 def test_json_mesh():
-    before = Mesh.from_vertices_and_faces(
-        [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]]
-    )
+    before = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
     after = compas.json_loads(compas.json_dumps(before))
     assert before.dtype == after.dtype
     assert before.attributes == after.attributes
@@ -81,10 +79,7 @@ def test_json_mesh():
     assert all(after.has_face(face) for face in before.faces())
     assert all(before.has_edge(edge) for edge in after.edges())
     assert all(after.has_edge(edge) for edge in before.edges())
-    assert all(
-        before.face_vertices(a) == after.face_vertices(b)
-        for a, b in zip(before.faces(), after.faces())
-    )
+    assert all(before.face_vertices(a) == after.face_vertices(b) for a, b in zip(before.faces(), after.faces()))
     assert before.guid == after.guid
 
 

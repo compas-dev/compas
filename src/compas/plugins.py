@@ -183,11 +183,7 @@ class PluginManager(object):
                     modules_to_inspect[module_name] = module
                 else:
                     if self.DEBUG:
-                        print(
-                            "Error importing module {}, skipping entire package.".format(
-                                module_name
-                            )
-                        )
+                        print("Error importing module {}, skipping entire package.".format(module_name))
                     continue
 
                 if "__all_plugins__" in dir(module):
@@ -197,16 +193,10 @@ class PluginManager(object):
                             modules_to_inspect[plugin_module_name] = plugin_module
                         else:
                             if self.DEBUG:
-                                print(
-                                    "Error importing plugin {}, skipping.".format(
-                                        plugin_module_name
-                                    )
-                                )
+                                print("Error importing plugin {}, skipping.".format(plugin_module_name))
 
             if self.DEBUG:
-                print(
-                    "Will inspect modules: {}".format(list(modules_to_inspect.keys()))
-                )
+                print("Will inspect modules: {}".format(list(modules_to_inspect.keys())))
 
             for plugin_module in modules_to_inspect.values():
                 count += self.register_module(plugin_module)
@@ -237,9 +227,7 @@ class PluginManager(object):
 
             if plugin_opts is not None:
                 plugin_impl = PluginImpl(plugin_module, plugin_method, plugin_opts)
-                plugins_list = self._registry.setdefault(
-                    plugin_opts["extension_point_url"], []
-                )
+                plugins_list = self._registry.setdefault(plugin_opts["extension_point_url"], [])
                 plugins_list.append(plugin_impl)
                 plugins_list.sort(key=lambda p: p.key)
 
@@ -307,9 +295,7 @@ def pluggable(
     def pluggable_decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            extension_point_url = _get_extension_point_url_from_method(
-                domain, category, func
-            )
+            extension_point_url = _get_extension_point_url_from_method(domain, category, func)
 
             # Select first matching plugin
             if selector == "first_match":
@@ -331,9 +317,7 @@ def pluggable(
 
                 return results
             else:
-                raise ValueError(
-                    "Unexpected selector type. Must be either: first_match or collect_all"
-                )
+                raise ValueError("Unexpected selector type. Must be either: first_match or collect_all")
 
         return wrapper
 
@@ -389,9 +373,7 @@ def plugin(
 
     def setattr_hookspec_opts(func):
         if tryfirst and trylast:
-            raise ValueError(
-                "You cannot set a plugin to try first and last at the same time."
-            )
+            raise ValueError("You cannot set a plugin to try first and last at the same time.")
 
         name = pluggable_name or getattr(func, "__name__", None)
         extension_point_url = _get_extension_point_url_from_name(domain, category, name)
@@ -482,29 +464,18 @@ class PluginValidator(object):
 
     def is_plugin_selectable(self, plugin):
         if plugin.opts["requires"]:
-            importable_requirements = (
-                self.verify_requirement(requirement)
-                for requirement in plugin.opts["requires"]
-            )
+            importable_requirements = (self.verify_requirement(requirement) for requirement in plugin.opts["requires"])
 
             if not all(importable_requirements):
                 if self.manager.DEBUG:
-                    print(
-                        "Requirements not satisfied. Plugin will not be used: {}".format(
-                            plugin.id
-                        )
-                    )
+                    print("Requirements not satisfied. Plugin will not be used: {}".format(plugin.id))
                 return False
 
         return True
 
     def select_plugin(self, extension_point_url):
         if self.manager.DEBUG:
-            print(
-                "Extension Point URL {} invoked. Will select a matching plugin".format(
-                    extension_point_url
-                )
-            )
+            print("Extension Point URL {} invoked. Will select a matching plugin".format(extension_point_url))
 
         plugins = self.manager.registry.get(extension_point_url) or []
         for plugin in plugins:
@@ -512,17 +483,11 @@ class PluginValidator(object):
                 return plugin
 
         # Nothing found, raise
-        raise PluginNotInstalledError(
-            "Plugin not found for extension point URL: {}".format(extension_point_url)
-        )
+        raise PluginNotInstalledError("Plugin not found for extension point URL: {}".format(extension_point_url))
 
     def collect_plugins(self, extension_point_url):
         if self.manager.DEBUG:
-            print(
-                "Extension Point URL {} invoked. Will select a matching plugin".format(
-                    extension_point_url
-                )
-            )
+            print("Extension Point URL {} invoked. Will select a matching plugin".format(extension_point_url))
 
         plugins = self.manager.registry.get(extension_point_url) or []
         return [plugin for plugin in plugins if self.is_plugin_selectable(plugin)]
@@ -532,9 +497,7 @@ class PluginValidator(object):
         for name, value in inspect.getmembers(cls):
             if inspect.isfunction(value) or inspect.ismethod(value):
                 if hasattr(value, "__isabstractmethod__"):
-                    raise IncompletePluginImplError(
-                        "Abstract method not implemented: {}".format(value)
-                    )
+                    raise IncompletePluginImplError("Abstract method not implemented: {}".format(value))
 
 
 plugin_manager = PluginManager()

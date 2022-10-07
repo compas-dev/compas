@@ -35,10 +35,7 @@ def test_edgedata_io(graph):
     for index, (u, v) in enumerate(graph.edges()):
         graph.edge_attribute((u, v), "index", index)
     other = Graph.from_data(graph.data)
-    assert all(
-        other.edge_attribute(edge, "index") == index
-        for index, edge in enumerate(other.edges())
-    )
+    assert all(other.edge_attribute(edge, "index") == index for index, edge in enumerate(other.edges()))
 
 
 def test_data_schema(graph):

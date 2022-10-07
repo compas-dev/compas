@@ -215,9 +215,7 @@ if not compas.IPY:
     def test_schema_line_valid(line_validator, line):
         line_validator.validate(line)
 
-    @pytest.mark.parametrize(
-        "line", [[[0, 0, 0], [0, 0, 0]], {"START": [0, 0, 0], "END": [0, 0, 0]}]
-    )
+    @pytest.mark.parametrize("line", [[[0, 0, 0], [0, 0, 0]], {"START": [0, 0, 0], "END": [0, 0, 0]}])
     def test_schema_line_invalid(line_validator, line):
         with pytest.raises(jsonschema.exceptions.ValidationError):
             line_validator.validate(line)
@@ -226,16 +224,12 @@ if not compas.IPY:
     def test_schema_plane_valid(plane_validator, plane):
         plane_validator.validate(plane)
 
-    @pytest.mark.parametrize(
-        "plane", [[[0, 0, 0], [0, 0, 1]], {"POINT": [0, 0, 0], "NORMAL": [0, 0, 1]}]
-    )
+    @pytest.mark.parametrize("plane", [[[0, 0, 0], [0, 0, 1]], {"POINT": [0, 0, 0], "NORMAL": [0, 0, 1]}])
     def test_schema_plane_invalid(plane_validator, plane):
         with pytest.raises(jsonschema.exceptions.ValidationError):
             plane_validator.validate(plane)
 
-    @pytest.mark.parametrize(
-        "circle", [{"plane": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "radius": 1.0}]
-    )
+    @pytest.mark.parametrize("circle", [{"plane": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "radius": 1.0}])
     def test_schema_circle_valid(circle_validator, circle):
         circle_validator.validate(circle)
 
@@ -442,9 +436,7 @@ if not compas.IPY:
         with pytest.raises(jsonschema.exceptions.ValidationError):
             box_validator.validate(box)
 
-    @pytest.mark.parametrize(
-        "capsule", [{"line": {"start": [0, 0, 0], "end": [1, 0, 0]}, "radius": 1.0}]
-    )
+    @pytest.mark.parametrize("capsule", [{"line": {"start": [0, 0, 0], "end": [1, 0, 0]}, "radius": 1.0}])
     def test_schema_capsule_valid(capsule_validator, capsule):
         capsule_validator.validate(capsule)
 

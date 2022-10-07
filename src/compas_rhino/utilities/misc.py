@@ -222,9 +222,7 @@ def display_html():
 # ==============================================================================
 
 
-def update_named_values(
-    names, values, message="", title="Update named values", evaluate=False
-):
+def update_named_values(names, values, message="", title="Update named values", evaluate=False):
     try:
         dialog = PropertyListForm(names, values)
     except Exception:

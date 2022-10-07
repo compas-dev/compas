@@ -163,9 +163,7 @@ class Vector(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(
-            self.x, self.y, self.z, PRECISION[:1]
-        )
+        return "Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(self.x, self.y, self.z, PRECISION[:1])
 
     def __len__(self):
         return 3

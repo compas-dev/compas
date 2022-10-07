@@ -51,9 +51,7 @@ class FixedLengthList(list):
     def __setitem__(self, key, value):
         # included to obstruct the all too common `l[1:1] = range(100)`-type usage
         value_length = len(value) if hasattr(value, "__len__") else 1
-        slice_length = (
-            len(range(*key.indices(self.__len__()))) if isinstance(key, slice) else 1
-        )
+        slice_length = len(range(*key.indices(self.__len__()))) if isinstance(key, slice) else 1
         if slice_length != value_length:
             raise TypeError("Cannot change length of FixedLengthList")
         if self.validator:
@@ -153,9 +151,7 @@ class Configuration(Data):
 
         joint_values = FixedLengthList(joint_values or [])
         joint_types = FixedLengthList(joint_types or [])
-        joint_names = FixedLengthList(
-            joint_names or [], validator=joint_names_validator
-        )
+        joint_names = FixedLengthList(joint_names or [], validator=joint_names_validator)
 
         if len(joint_values) != len(joint_types):
             raise ValueError(
@@ -232,21 +228,15 @@ class Configuration(Data):
     def joint_names(self, names):
         if names and len(self._joint_values) != len(names):
             raise ValueError(
-                "joint_types must have length {}, object of length {} given".format(
-                    len(self._joint_values), len(names)
-                )
+                "joint_types must have length {}, object of length {} given".format(len(self._joint_values), len(names))
             )
         self._joint_names = FixedLengthList(names, validator=joint_names_validator)
 
     def __str__(self):
         """Return a human-readable string representation of the instance."""
-        v_str = (
-            "(" + ", ".join(["%." + self._precision] * len(self.joint_values)) + ")"
-        ) % tuple(self.joint_values)
+        v_str = ("(" + ", ".join(["%." + self._precision] * len(self.joint_values)) + ")") % tuple(self.joint_values)
         if len(self.joint_names):
-            return "Configuration({}, {}, {})".format(
-                v_str, tuple(self.joint_types), tuple(self.joint_names)
-            )
+            return "Configuration({}, {}, {})".format(v_str, tuple(self.joint_types), tuple(self.joint_names))
         else:
             return "Configuration({}, {})".format(v_str, tuple(self.joint_types))
 
@@ -326,9 +316,7 @@ class Configuration(Data):
         )
 
     @classmethod
-    def from_prismatic_and_revolute_values(
-        cls, prismatic_values, revolute_values, joint_names=None
-    ):
+    def from_prismatic_and_revolute_values(cls, prismatic_values, revolute_values, joint_names=None):
         """Construct a configuration from prismatic and revolute joint values.
 
         Parameters
@@ -350,9 +338,7 @@ class Configuration(Data):
         revolute_values = list(revolute_values)
         joint_names = list(joint_names or [])
         values = prismatic_values + revolute_values
-        joint_types = [_JOINT_PRISMATIC] * len(prismatic_values) + [
-            _JOINT_REVOLUTE
-        ] * len(revolute_values)
+        joint_types = [_JOINT_PRISMATIC] * len(prismatic_values) + [_JOINT_REVOLUTE] * len(revolute_values)
         return cls.from_data(
             {
                 "joint_values": values,
@@ -378,12 +364,8 @@ class Configuration(Data):
 
     @data.setter
     def data(self, data):
-        self._joint_values = FixedLengthList(
-            data.get("joint_values") or data.get("values") or []
-        )
-        self._joint_types = FixedLengthList(
-            data.get("joint_types") or data.get("types") or []
-        )
+        self._joint_values = FixedLengthList(data.get("joint_values") or data.get("values") or [])
+        self._joint_types = FixedLengthList(data.get("joint_types") or data.get("types") or [])
         self._joint_names = FixedLengthList(data.get("joint_names") or [])
 
     @property
@@ -392,20 +374,12 @@ class Configuration(Data):
 
         E.g. positions on the external axis system.
         """
-        return [
-            v
-            for i, v in enumerate(self.joint_values)
-            if self.joint_types[i] == _JOINT_PRISMATIC
-        ]
+        return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == _JOINT_PRISMATIC]
 
     @property
     def revolute_values(self):
         """list of float : Revolute joint values in radians."""
-        return [
-            v
-            for i, v in enumerate(self.joint_values)
-            if self.joint_types[i] == _JOINT_REVOLUTE
-        ]
+        return [v for i, v in enumerate(self.joint_values) if self.joint_types[i] == _JOINT_REVOLUTE]
 
     def scale(self, scale_factor):
         """Scales the joint positions of the current configuration.
@@ -485,15 +459,11 @@ class Configuration(Data):
             if set(self.joint_names) != set(other.joint_names):
                 raise ValueError("Configurations have different joint names.")
             other_value_by_name = dict(zip(other.joint_names, other.joint_values))
-            sorted_other_values = [
-                other_value_by_name[name] for name in self.joint_names
-            ]
+            sorted_other_values = [other_value_by_name[name] for name in self.joint_names]
             value_pairs = zip(self.joint_values, sorted_other_values)
         else:
             if len(self.joint_values) != len(other.joint_values):
-                raise ValueError(
-                    "Can't compare configurations with different lengths of joint_values."
-                )
+                raise ValueError("Can't compare configurations with different lengths of joint_values.")
             value_pairs = zip(self.joint_values, other.joint_values)
 
         for i, (v1, v2) in enumerate(value_pairs):

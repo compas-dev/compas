@@ -113,12 +113,8 @@ def test_basis_vectors():
     S1 = Scale.from_factors(scale1)
     M = (T1 * R1) * S1
     x, y = M.basis_vectors
-    assert allclose(
-        x, Vector(0.41249169135312663, -0.05897071585157175, -0.9090506362335324)
-    )
-    assert allclose(
-        y, Vector(-0.8335562904208867, -0.4269749553355485, -0.35053715668381935)
-    )
+    assert allclose(x, Vector(0.41249169135312663, -0.05897071585157175, -0.9090506362335324))
+    assert allclose(y, Vector(-0.8335562904208867, -0.4269749553355485, -0.35053715668381935))
 
 
 def test_list():

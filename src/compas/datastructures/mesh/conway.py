@@ -59,13 +59,9 @@ def mesh_conway_dual(mesh):
     vertices = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
     old_faces_to_new_vertices = {fkey: i for i, fkey in enumerate(mesh.faces())}
     faces = [
-        [
-            old_faces_to_new_vertices[fkey]
-            for fkey in reversed(mesh.vertex_faces(vkey, ordered=True))
-        ]
+        [old_faces_to_new_vertices[fkey] for fkey in reversed(mesh.vertex_faces(vkey, ordered=True))]
         for vkey in mesh.vertices()
-        if not mesh.is_vertex_on_boundary(vkey)
-        and len(mesh.vertex_neighbors(vkey)) != 0
+        if not mesh.is_vertex_on_boundary(vkey) and len(mesh.vertex_neighbors(vkey)) != 0
     ]
     return cls.from_vertices_and_faces(vertices, faces)
 
@@ -443,18 +439,13 @@ def mesh_conway_gyro(mesh):
     cls = type(mesh)
     vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
     vertices += [mesh.face_centroid(fkey) for fkey in mesh.faces()]
-    vertices += [
-        mesh.edge_point(u, v, t=0.33) for u in mesh.vertices() for v in mesh.halfedge[u]
-    ]
+    vertices += [mesh.edge_point(u, v, t=0.33) for u in mesh.vertices() for v in mesh.halfedge[u]]
     V = mesh.number_of_vertices()
     F = mesh.number_of_faces()
     vkey_index = {vkey: i for i, vkey in enumerate(mesh.vertices())}
     fkey_index = {fkey: i + V for i, fkey in enumerate(mesh.faces())}
     ekey_index = {
-        halfedge: i + V + F
-        for i, halfedge in enumerate(
-            [(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]]
-        )
+        halfedge: i + V + F for i, halfedge in enumerate([(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]])
     }
     faces = []
     for fkey in mesh.faces():

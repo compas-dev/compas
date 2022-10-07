@@ -22,9 +22,7 @@ e = sqrt(eps)
 __all__ = ["descent_numpy"]
 
 
-def descent_numpy(
-    x0, fn, iterations=1000, gtol=10 ** (-6), bounds=None, limit=0, args=()
-):
+def descent_numpy(x0, fn, iterations=1000, gtol=10 ** (-6), bounds=None, limit=0, args=()):
     """A gradient descent optimisation solver.
 
     Parameters
@@ -106,10 +104,6 @@ def descent_numpy(
         if res < gtol:
             break
 
-        print(
-            "Iteration: {0}  fopt: {1:.3g}  gres: {2:.3g}  step: {3}".format(
-                i, f1, res, a
-            )
-        )
+        print("Iteration: {0}  fopt: {1:.3g}  gres: {2:.3g}  step: {3}".format(i, f1, res, a))
 
     return f1, x0

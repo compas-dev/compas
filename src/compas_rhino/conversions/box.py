@@ -1,17 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import Rhino
 
 from compas.geometry import Box
 
 from ._exceptions import ConversionError
-
-from ._shapes import box_to_rhino
-from ._shapes import box_to_compas
-
 from ._geometry import RhinoGeometry
+from ._shapes import box_to_compas
+from ._shapes import box_to_rhino
 
 
 class RhinoBox(RhinoGeometry):
@@ -43,9 +41,7 @@ class RhinoBox(RhinoGeometry):
             elif isinstance(geometry, Box):
                 geometry = box_to_rhino(geometry)
             else:
-                raise ConversionError(
-                    "Geometry object cannot be converted to a box: {}".format(geometry)
-                )
+                raise ConversionError("Geometry object cannot be converted to a box: {}".format(geometry))
 
         self._geometry = geometry
 

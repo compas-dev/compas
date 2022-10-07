@@ -82,9 +82,7 @@ class Polygon(Primitive):
         from schema import Schema
         from compas.data import is_float3
 
-        return Schema(
-            {"points": lambda points: all(is_float3(point) for point in points)}
-        )
+        return Schema({"points": lambda points: all(is_float3(point) for point in points)})
 
     @property
     def JSONSCHEMANAME(self):
@@ -143,9 +141,7 @@ class Polygon(Primitive):
     @property
     def lines(self):
         if not self._lines:
-            self._lines = [
-                Line(a, b) for a, b in pairwise(self.points + self.points[:1])
-            ]
+            self._lines = [Line(a, b) for a, b in pairwise(self.points + self.points[:1])]
         return self._lines
 
     @property
@@ -184,9 +180,7 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return "Polygon([{0}])".format(
-            ", ".join(["{0!r}".format(point) for point in self.points])
-        )
+        return "Polygon([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -202,11 +196,7 @@ class Polygon(Primitive):
         return iter(self.points)
 
     def __eq__(self, other):
-        if (
-            not hasattr(other, "__iter__")
-            or not hasattr(other, "__len__")
-            or len(self) != len(other)
-        ):
+        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return allclose(self, other)
 

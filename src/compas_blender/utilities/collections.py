@@ -21,9 +21,7 @@ def collection_path(collection, names=[]):
     return names
 
 
-def create_collection(
-    name: Text, parent: bpy.types.Collection = None
-) -> bpy.types.Collection:
+def create_collection(name: Text, parent: bpy.types.Collection = None) -> bpy.types.Collection:
     """Create a collection with the given name.
 
     Parameters
@@ -80,9 +78,7 @@ def create_collections(names: List[Text]) -> List[bpy.types.Collection]:
     return collections
 
 
-def create_collections_from_path(
-    path: Text, separator: Text = "::"
-) -> List[bpy.types.Collection]:
+def create_collections_from_path(path: Text, separator: Text = "::") -> List[bpy.types.Collection]:
     """Create nested collections from a collection path string.
 
     Parameters
