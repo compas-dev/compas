@@ -82,7 +82,7 @@ Every backend is expected to implement some alternative constructors
     >>> import Rhino
     >>> from compas.geometry import Brep
     >>> ...
-    >>> Brep.from_brep(Rhino.Geometry.Brep())
+    >>> Brep.from_native(Rhino.Geometry.Brep())
 
 Brep operations
 ===============
