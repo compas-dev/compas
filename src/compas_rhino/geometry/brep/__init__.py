@@ -16,7 +16,7 @@ __all__ = [
     "RhinoBrepLoop",
     "RhinoBrepFace",
     "new_brep",
-    "from_brep",
+    "from_native",
     "from_box",
 ]
 
@@ -29,8 +29,8 @@ def new_brep(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
-def from_brep(*args, **kwargs):
-    return RhinoBrep.from_brep(*args, **kwargs)
+def from_native(*args, **kwargs):
+    return RhinoBrep.from_native(*args, **kwargs)
 
 
 @plugin(category="factories", requires=["Rhino"])

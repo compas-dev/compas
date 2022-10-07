@@ -12,7 +12,7 @@ def new_brep(*args, **kwargs):
 
 
 @pluggable(category="factories")
-def from_brep(*args, **kwargs):
+def from_native(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
@@ -355,8 +355,8 @@ class Brep(Geometry):
     # ==============================================================================
 
     @classmethod
-    def from_brep(cls, brep):
-        """Create a Brep from an instance of a backend Brep.
+    def from_native(cls, native_brep):
+        """Creates a Brep from an instance of a native backend Brep type.
 
         Parameters
         ----------
@@ -367,11 +367,11 @@ class Brep(Geometry):
         -------
         :class:`~compas.geometry.Brep`
         """
-        return from_brep(brep)
+        return from_native(native_brep)
 
     @classmethod
     def from_step_file(cls, filename):
-        """Conctruct a BRep from the data contained in a STEP file.
+        """Conctruct a Brep from the data contained in a STEP file.
 
         Parameters
         ----------

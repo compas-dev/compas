@@ -134,8 +134,8 @@ class RhinoBrep(Brep):
     # ==============================================================================
 
     @classmethod
-    def from_brep(cls, rhino_brep):
-        """Constructs a RhinoBrep from an instance of a Rhino brep
+    def from_native(cls, rhino_brep):
+        """Constructs a RhinoBrep from an instance of a Rhino.Geometry.Brep.
 
         Parameters
         ----------
@@ -165,7 +165,7 @@ class RhinoBrep(Brep):
 
         """
         rhino_box = box_to_rhino(box)
-        return cls.from_brep(rhino_box.ToBrep())
+        return cls.from_native(rhino_box.ToBrep())
 
     @classmethod
     def from_cylinder(cls, cylinder):
@@ -182,7 +182,7 @@ class RhinoBrep(Brep):
 
         """
         rhino_cylinder = cylinder_to_rhino(cylinder)
-        return cls.from_brep(rhino_cylinder.ToBrep(True, True))
+        return cls.from_native(rhino_cylinder.ToBrep(True, True))
 
     # ==============================================================================
     # Methods
@@ -255,7 +255,7 @@ class RhinoBrep(Brep):
             [b.native_brep for b in breps_b],
             TOLERANCE,
         )
-        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
     @classmethod
     def from_boolean_union(cls, breps_a, breps_b):
@@ -280,7 +280,7 @@ class RhinoBrep(Brep):
             breps_b = [breps_b]
 
         resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in breps_a + breps_b], TOLERANCE)
-        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
     @classmethod
     def from_boolean_intersection(cls, breps_a, breps_b):
@@ -308,7 +308,7 @@ class RhinoBrep(Brep):
             [b.native_brep for b in breps_b],
             TOLERANCE,
         )
-        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
     def split(self, cutter):
         """Splits a Brep into pieces using a Brep as a cutter.
@@ -325,7 +325,7 @@ class RhinoBrep(Brep):
 
         """
         resulting_breps = self._brep.Split(cutter.native_brep, TOLERANCE)
-        return [RhinoBrep.from_brep(brep) for brep in resulting_breps]
+        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
     # ==============================================================================
     # Other Methods
