@@ -3,7 +3,7 @@ line-length = 120
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = ["tests", "src/compas"]
+testpaths = ["tests"]
 python_files = [
     "test_*.py",
     "tests.py"
