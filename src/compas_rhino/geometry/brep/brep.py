@@ -16,9 +16,10 @@ from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 from .loop import RhinoBrepLoop
+from .trim import RhinoBrepTrim
 
 
-TOLERANCE = 1e-6
+TOLERANCE = 1e-3
 
 
 class RhinoBrep(Brep):
@@ -104,6 +105,11 @@ class RhinoBrep(Brep):
     def edges(self):
         if self._brep:
             return [RhinoBrepEdge(trim) for trim in self._brep.Trims]
+
+    @property
+    def trims(self):
+        if self._brep:
+            return [RhinoBrepTrim(trim) for trim in self._brep.Trims]
 
     @property
     def loops(self):
@@ -346,11 +352,12 @@ class RhinoBrep(Brep):
             rhino_face, rhino_surface = self._create_brep_face(face)
             for loop in face.loops:
                 rhino_loop = self._brep.Loops.Add(Rhino.Geometry.BrepLoopType.Outer, rhino_face)
-                for edge in loop.edges:
-                    start_vertex, end_vertex = self._add_edge_vertices(edge)
-                    rhino_edge = self._add_edge(edge, start_vertex, end_vertex)
-                    rhino_2d_curve = self._create_trim_curve(rhino_edge, rhino_surface)
-                    self._add_trim(rhino_2d_curve, rhino_edge, rhino_loop)
+                for trim in loop.trims:
+                    start_vertex, end_vertex = self._add_edge_vertices(trim.edge)
+                    rhino_edge = self._add_edge(trim.edge, start_vertex, end_vertex)
+                    # rhino_2d_curve = self._create_trim_curve(rhino_edge, rhino_surface)
+                    # self._brep.AddTrimCurve(trim.curve)
+                    self._add_trim(trim.curve, rhino_edge, rhino_loop)
 
         self._brep.Repair(TOLERANCE)
         self._brep.JoinNakedEdges(

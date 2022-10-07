@@ -4,6 +4,7 @@ import Rhino
 
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
+from .trim import RhinoBrepTrim
 
 
 class LoopType(object):
@@ -55,7 +56,7 @@ class RhinoBrepLoop(BrepLoop):
     def _set_loop(self, native_loop):
         self._loop = native_loop
         self._type = int(self._loop.LoopType)
-        self._edges = [RhinoBrepEdge(trim) for trim in self._loop.Trims]
+        self._trims = [RhinoBrepTrim(trim) for trim in self._loop.Trims]
 
     # ==============================================================================
     # Data
@@ -63,11 +64,11 @@ class RhinoBrepLoop(BrepLoop):
 
     @property
     def data(self):
-        return [e.data for e in self._edges]
+        return [t.data for t in self._trims]
 
     @data.setter
     def data(self, value):
-        self._edges = [RhinoBrepEdge.from_data(e_data) for e_data in value]
+        self._trims = [RhinoBrepTrim.from_data(t_data) for t_data in value]
 
     # ==============================================================================
     # Properties
@@ -75,7 +76,11 @@ class RhinoBrepLoop(BrepLoop):
 
     @property
     def edges(self):
-        return self._edges
+        return [t.edge for t in self.trims]
+
+    @property
+    def trims(self):
+        return self._trims
 
     @property
     def is_outer(self):

@@ -38,20 +38,20 @@ class RhinoBrepEdge(BrepEdge):
 
     """
 
-    def __init__(self, rhino_trim=None):
+    def __init__(self, rhino_edge=None):
         super(RhinoBrepEdge, self).__init__()
         self._edge = None
         self._curve = None
         self._start_vertex = None
         self._end_vertex = None
-        if rhino_trim:
-            self._set_edge(rhino_trim)
+        if rhino_edge:
+            self._set_edge(rhino_edge)
 
-    def _set_edge(self, rhino_trim):
-        self._edge = rhino_trim.Edge
-        self._curve = self._edge.EdgeCurve
-        self._start_vertex = RhinoBrepVertex(rhino_trim.StartVertex)
-        self._end_vertex = RhinoBrepVertex(rhino_trim.EndVertex)
+    def _set_edge(self, rhino_edge):
+        self._edge = rhino_edge
+        self._curve = rhino_edge.EdgeCurve
+        self._start_vertex = RhinoBrepVertex(rhino_edge.StartVertex)
+        self._end_vertex = RhinoBrepVertex(rhino_edge.EndVertex)
 
     # ==============================================================================
     # Data

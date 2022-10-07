@@ -1,4 +1,6 @@
 from compas.geometry import BrepFace
+from compas.geometry import Cylinder
+from compas.geometry import Sphere
 from compas_rhino.geometry import RhinoNurbsSurface
 from compas_rhino.conversions import plane_to_compas
 from compas_rhino.conversions import sphere_to_compas
@@ -6,6 +8,7 @@ from compas_rhino.conversions import cylinder_to_compas
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
+
 
 from .loop import RhinoBrepLoop
 
@@ -125,6 +128,6 @@ class RhinoBrepFace(BrepFace):
     @staticmethod
     def _make_surface_from_loop(loop):
         # order of corners determines the normal of the resulting surface
-        corners = [loop.edges[i].start_vertex.point for i in range(4)]
+        corners = [loop.trims[i].start_vertex.point for i in range(4)]
         surface = RhinoNurbsSurface.from_corners(corners)
         return surface
