@@ -2,6 +2,7 @@ from compas.geometry import BrepEdge
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Circle
+from compas.geometry import Ellipse
 from compas_rhino.geometry import RhinoNurbsCurve
 from compas_rhino.conversions import curve_to_compas_line
 from compas_rhino.conversions import curve_to_compas_circle
@@ -85,7 +86,7 @@ class RhinoBrepEdge(BrepEdge):
         elif curve_type == "circle":
             self._curve = circle_to_rhino_curve(Circle.from_data(value["value"]))  # this returns a Nurbs Curve, why?
         elif curve_type == "ellipse":
-            self._curve = ellipse_to_rhino_curve(value["value"])
+            self._curve = ellipse_to_rhino_curve(Ellipse.from_data(value["value"]))
         else:
             self._curve = RhinoNurbsCurve.from_data(value["value"]).rhino_curve
 

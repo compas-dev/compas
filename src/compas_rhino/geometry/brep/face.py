@@ -1,4 +1,6 @@
 from compas.geometry import BrepFace
+from compas.geometry import Sphere
+from compas.geometry import Cylinder
 from compas_rhino.geometry import RhinoNurbsSurface
 from compas_rhino.conversions import plane_to_compas
 from compas_rhino.conversions import sphere_to_compas
