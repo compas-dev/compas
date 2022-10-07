@@ -270,6 +270,33 @@ def test_del_edge_attribute_in_view(mesh, edge_key):
 
 
 # ==============================================================================
+# Tests - Halfedges Before/After
+# ==============================================================================
+
+
+def test_halfedge_after_on_boundary(grid):
+    corners = list(grid.vertices_where(vertex_degree=2))
+    corner = corners[0]
+    nbrs = grid.vertex_neighbors(corner, ordered=True)
+    nbr = nbrs[-1]
+    edge = grid.halfedge_after(nbr, corner)
+    assert edge[0] == corner
+    assert grid.is_edge_on_boundary(*edge)
+    assert grid.halfedge_face(*edge) is None
+
+
+def test_halfedge_before_on_boundary(grid):
+    corners = list(grid.vertices_where(vertex_degree=2))
+    corner = corners[0]
+    nbrs = grid.vertex_neighbors(corner, ordered=True)
+    nbr = nbrs[0]
+    edge = grid.halfedge_before(corner, nbr)
+    assert edge[1] == corner
+    assert grid.is_edge_on_boundary(*edge)
+    assert grid.halfedge_face(*edge) is None
+
+
+# ==============================================================================
 # Tests - Loops & Strip
 # ==============================================================================
 
