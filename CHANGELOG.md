@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
 * Fixed the `test_tangent` to work with a properly defined circle
 * `RhinoBrep` serialization works now with surface types other than NURBS.
+* Fixed bug in finding halfedge before a given halfedge if that halfedge is on the boundary (`Mesh.halfedge_before`).
 * Renamed `Brep.from_brep` to `Brep.from_native`.
 
 ### Removed

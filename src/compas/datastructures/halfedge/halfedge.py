@@ -2607,7 +2607,7 @@ class HalfEdge(Datastructure):
         if face is not None:
             w = self.face_vertex_after(face, v)
             return v, w
-        nbrs = self.vertex_neighbors(u, ordered=True)
+        nbrs = self.vertex_neighbors(v, ordered=True)
         w = nbrs[0]
         return v, w
 
