@@ -5,9 +5,6 @@ from compas_rhino.geometry import RhinoNurbsSurface
 from compas_rhino.conversions import plane_to_compas
 from compas_rhino.conversions import sphere_to_compas
 from compas_rhino.conversions import cylinder_to_compas
-from compas_rhino.conversions import plane_to_rhino
-from compas_rhino.conversions import sphere_to_rhino
-from compas_rhino.conversions import cylinder_to_rhino
 
 from .loop import RhinoBrepLoop
 

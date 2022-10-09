@@ -3,7 +3,6 @@ from compas.geometry import BrepLoop
 import Rhino
 
 from .edge import RhinoBrepEdge
-from .vertex import RhinoBrepVertex
 
 
 class LoopType(object):
