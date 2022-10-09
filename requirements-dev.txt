@@ -4,9 +4,8 @@ bump2version >=1.0.1
 check-manifest >=0.36
 compas_invocations
 doc8
-flake8
+flake8>=5.0.4
 graphviz
-importlib_metadata <5.0
 invoke >=0.14
 ipykernel
 ipython >=5.8
