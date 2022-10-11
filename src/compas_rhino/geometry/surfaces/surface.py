@@ -10,7 +10,6 @@ from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import xform_to_rhino
-from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 

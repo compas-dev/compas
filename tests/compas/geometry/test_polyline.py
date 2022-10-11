@@ -261,5 +261,5 @@ def test_polyline_extend(coords, input, expected):
         ([[0, 0, 0], [1, 0, 0], [2, 0, 0], [2, 2, 0]], (1, 2), [[1, 0, 0], [2, 0, 0]]),
     ],
 )
-def test_polyline_extend(coords, input, expected):
+def test_polyline_shortened(coords, input, expected):
     assert expected == Polyline(coords).shortened(input)

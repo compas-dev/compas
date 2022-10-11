@@ -199,7 +199,7 @@ def test_robot_link_nameless_is_allowed_with_custom_namespace():
 
 def test_link_nameless_raises_if_no_custom_namespace():
     with pytest.raises(Exception):
-        r = RobotModel.from_urdf_string(
+        RobotModel.from_urdf_string(
             """<?xml version="1.0" encoding="UTF-8"?><robot name="NamelessLinkRobot"><link/></robot>"""
         )
 
