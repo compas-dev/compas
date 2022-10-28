@@ -206,9 +206,6 @@ class GLTFMesh(object):
         vertex_normals = mesh.vertices_attribute("vertex_normal")
         vertex_colors = mesh.vertices_attribute("vertex_color")
 
-        print("GLTFMesh.from_mesh : texture_coordinate", texture_coordinates[0])  # TODO: in ipy this is None
-        print("GLTFMesh.from_mesh : vertex_normals", vertex_normals[0])  # TODO: in ipy this is None
-
         mesh_data = cls.from_vertices_and_faces(context, vertices, faces)
         pd = mesh_data.primitive_data_list[0]
         if texture_coordinates[0] is not None:
