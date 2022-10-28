@@ -13,9 +13,9 @@ from compas.geometry._core import centroid_points
 
 
 __all__ = [
-    'normal_polygon',
-    'normal_triangle',
-    'normal_triangle_xy',
+    "normal_polygon",
+    "normal_triangle",
+    "normal_triangle_xy",
 ]
 
 

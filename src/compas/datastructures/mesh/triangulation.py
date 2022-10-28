@@ -7,7 +7,7 @@ from .operations import mesh_split_face
 
 
 __all__ = [
-    'mesh_quads_to_triangles',
+    "mesh_quads_to_triangles",
 ]
 
 

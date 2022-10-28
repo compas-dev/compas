@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -25,12 +24,27 @@ from scipy.optimize import fmin_l_bfgs_b
 from time import time
 
 
-__all__ = ['devo_numpy']
+__all__ = ["devo_numpy"]
 
 
-def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, CR=0.5, polish=False, args=(),
-               plot=False, frange=[], printout=10, neutrals=0.05, **kwargs):
-    """ Call the Differential Evolution solver.
+def devo_numpy(
+    fn,
+    bounds,
+    population,
+    generations,
+    limit=0,
+    elites=0.2,
+    F=0.8,
+    CR=0.5,
+    polish=False,
+    args=(),
+    plot=False,
+    frange=[],
+    printout=10,
+    neutrals=0.05,
+    **kwargs
+):
+    """Call the Differential Evolution solver.
 
     Parameters
     ----------
@@ -93,9 +107,9 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
 
     # Heading
     if printout:
-        print('\n' + '-' * 50)
-        print('Differential Evolution started')
-        print('-' * 50)
+        print("\n" + "-" * 50)
+        print("Differential Evolution started")
+        print("-" * 50)
 
     # Bounds
     k = len(bounds)
@@ -104,10 +118,13 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     ub = tile(bounds[:, 1][:, newaxis], (1, population))
 
     # Population
-    agents = (rand(k, population) * (ub - lb) + lb)
-    agents[:, :int(round(population * neutrals))] *= 0
+    agents = rand(k, population) * (ub - lb) + lb
+    agents[:, : int(round(population * neutrals))] *= 0
     candidates = tile(array(range(population)), (1, population))
-    candidates = reshape(delete(candidates, where(eye(population).ravel() == 1)), (population, population - 1))
+    candidates = reshape(
+        delete(candidates, where(eye(population).ravel() == 1)),
+        (population, population - 1),
+    )
 
     # Initial
     f = zeros(population)
@@ -120,7 +137,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     ts = 0
     switch = 1
     if printout:
-        print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
+        print("Generation: {0}  fopt: {1:.5g}".format(ts, fopt))
 
     # Set-up plot
     if plot:
@@ -128,15 +145,15 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
         if len(frange) == 2:
             fmin, fmax = frange
         ydiv = 100
-        dc = 1. / population
+        dc = 1.0 / population
         data = ones((ydiv + 1, generations + 1, 3))
         yticks = list(range(0, ydiv + 1, int(ydiv * 0.1)))
-        ylabels = ['{0:.1f}'.format(i * (fmax - fmin) * 0.1 + fmin) for i in range(11)]
+        ylabels = ["{0:.1f}".format(i * (fmax - fmin) * 0.1 + fmin) for i in range(11)]
         aspect = generations / ydiv
-        plt.plot([generations * 0.5] * 2, [0, ydiv], ':k')
-        plt.yticks(yticks, ylabels, rotation='horizontal')
-        plt.ylabel('Value')
-        plt.xlabel('Generations')
+        plt.plot([generations * 0.5] * 2, [0, ydiv], ":k")
+        plt.yticks(yticks, ylabels, rotation="horizontal")
+        plt.ylabel("Value")
+        plt.xlabel("Generations")
         plt.ion()
 
     # Evolution
@@ -144,10 +161,13 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
         # Elites
         if (ts > generations * 0.5) and switch:
             switch = 0
-            elite_agents = argsort(f)[:int(floor(elites * population))]
+            elite_agents = argsort(f)[: int(floor(elites * population))]
             population = len(elite_agents)
             candidates = tile(array(range(population)), (1, population))
-            candidates = reshape(delete(candidates, where(eye(population).ravel() == 1)), (population, population - 1))
+            candidates = reshape(
+                delete(candidates, where(eye(population).ravel() == 1)),
+                (population, population - 1),
+            )
             f = f[elite_agents]
             ac = ac[:, elite_agents]
             bc = bc[:, elite_agents]
@@ -170,11 +190,11 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
             data[min(fbin), ts, :] = [1, 0, 0]
             data[max(fbin), ts, :] = [0, 0, 1]
             if ts % printout == 0:
-                plt.imshow(data, origin='lower', aspect=aspect)
-                plt.plot([generations * 0.5] * 2, [0, ydiv], ':k')
-                plt.yticks(yticks, ylabels, rotation='horizontal')
-                plt.ylabel('Value')
-                plt.xlabel('Generations')
+                plt.imshow(data, origin="lower", aspect=aspect)
+                plt.plot([generations * 0.5] * 2, [0, ydiv], ":k")
+                plt.yticks(yticks, ylabels, rotation="horizontal")
+                plt.ylabel("Value")
+                plt.xlabel("Generations")
                 plt.pause(0.001)
         # Pick candidates
         for i in range(population):
@@ -204,24 +224,35 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
         bc *= 0
         cc *= 0
         if printout and (ts % printout == 0):
-            print('Generation: {0}  fopt: {1:.5g}'.format(ts, fopt))
+            print("Generation: {0}  fopt: {1:.5g}".format(ts, fopt))
         # Limit check
         if fopt < limit:
             break
 
     # L-BFGS-B
     if polish:
-        opt = fmin_l_bfgs_b(fn, xopt, args=args, approx_grad=1, bounds=bounds, iprint=1, pgtol=10**(-6), factr=10000,
-                            maxfun=10**5, maxiter=10**5, maxls=200)
+        opt = fmin_l_bfgs_b(
+            fn,
+            xopt,
+            args=args,
+            approx_grad=1,
+            bounds=bounds,
+            iprint=1,
+            pgtol=10 ** (-6),
+            factr=10000,
+            maxfun=10**5,
+            maxiter=10**5,
+            maxls=200,
+        )
         xopt = opt[0]
         fopt = opt[1]
 
     # Summary
     if printout:
-        print('\n' + '-' * 50)
-        print('Differential Evolution finished : {0:.4g} s'.format(time() - tic))
-        print('fopt: {0:.5g}'.format(fopt))
-        print('-' * 50)
+        print("\n" + "-" * 50)
+        print("Differential Evolution finished : {0:.4g} s".format(time() - tic))
+        print("fopt: {0:.5g}".format(fopt))
+        print("-" * 50)
 
     # Plot
     if plot:

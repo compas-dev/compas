@@ -238,9 +238,20 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
                 for i, mesh in enumerate(meshes):
                     mesh_type = "visual" if is_visual else "collision"
                     if not context:
-                        mesh_name_components = [self.model.name, mesh_type, link.name, str(i)]
+                        mesh_name_components = [
+                            self.model.name,
+                            mesh_type,
+                            link.name,
+                            str(i),
+                        ]
                     else:
-                        mesh_name_components = [self.model.name, mesh_type, context, link.name, str(i)]
+                        mesh_name_components = [
+                            self.model.name,
+                            mesh_type,
+                            context,
+                            link.name,
+                            str(i),
+                        ]
                     mesh_name = ".".join(mesh_name_components)
                     native_mesh = self.create_geometry(mesh, name=mesh_name, color=color)
 
@@ -391,9 +402,21 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
         _ = self._update(self.model, joint_state, visual, collision)
         for tool in self.attached_tool_models.values():
             frame = self.model.forward_kinematics(joint_state, link_name=tool.link_name)
-            self.update_tool(tool=tool, visual=visual, collision=collision, transformation=Transformation.from_frame_to_frame(Frame.worldXY(), frame))
+            self.update_tool(
+                tool=tool,
+                visual=visual,
+                collision=collision,
+                transformation=Transformation.from_frame_to_frame(Frame.worldXY(), frame),
+            )
 
-    def _update(self, model, joint_state, visual=True, collision=True, parent_transformation=None):
+    def _update(
+        self,
+        model,
+        joint_state,
+        visual=True,
+        collision=True,
+        parent_transformation=None,
+    ):
         transformations = model.compute_transformations(joint_state, parent_transformation=parent_transformation)
         for j in model.iter_joints():
             self._transform_link_geometry(j.child_link, transformations[j.name], collision)

@@ -31,7 +31,7 @@ def coerce_sequence_of_tuple(sequence):
     for item in sequence:
         if not isinstance(item, tuple):
             if not is_item_iterable(item):
-                item = (item, )
+                item = (item,)
             else:
                 item = tuple(item)
         items.append(item)

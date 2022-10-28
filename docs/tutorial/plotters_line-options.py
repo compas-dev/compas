@@ -11,11 +11,13 @@ pointcloud = Pointcloud.from_bounds(8, 5, 0, 10)
 
 for a, b in grouper(pointcloud, 2):
     line = Line(a, b)
-    plotter.add(line,
-                linewidth=2.0,
-                linestyle=random.choice(['dotted', 'dashed', 'solid']),
-                color=i_to_rgb(random.random(), normalize=True),
-                draw_points=True)
+    plotter.add(
+        line,
+        linewidth=2.0,
+        linestyle=random.choice(["dotted", "dashed", "solid"]),
+        color=i_to_rgb(random.random(), normalize=True),
+        draw_points=True,
+    )
 
 plotter.zoom_extents()
 plotter.show()

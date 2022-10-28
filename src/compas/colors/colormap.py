@@ -13,10 +13,10 @@ from .mpl_colormap import _plasma_data
 from .mpl_colormap import _viridis_data
 
 mpl = {
-    'magma': _magma_data,
-    'inferno': _inferno_data,
-    'plasma': _plasma_data,
-    'viridis': _viridis_data
+    "magma": _magma_data,
+    "inferno": _inferno_data,
+    "plasma": _plasma_data,
+    "viridis": _viridis_data,
 }
 
 
@@ -94,7 +94,7 @@ class ColorMap(object):
         """
         key = (value - minval) / (maxval - minval)
         if key > 1.0 or key < 0.0:
-            raise KeyError('The normalized value must be in the range 0 - 1.')
+            raise KeyError("The normalized value must be in the range 0 - 1.")
         index = int(key * (len(self.colors) - 1))
         return self.colors[index]
 
@@ -128,9 +128,9 @@ class ColorMap(object):
 
         """
         here = os.path.dirname(__file__)
-        path = os.path.join(here, 'cmcrameri', '{}.txt'.format(name))
+        path = os.path.join(here, "cmcrameri", "{}.txt".format(name))
         colors = []
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             for line in f:
                 if line:
                     parts = line.split()
@@ -171,7 +171,7 @@ class ColorMap(object):
         return cls(colors)
 
     @classmethod
-    def from_color(cls, color, rangetype='full'):
+    def from_color(cls, color, rangetype="full"):
         """Construct a color map from a single color by varying luminance.
 
         Parameters
@@ -191,17 +191,17 @@ class ColorMap(object):
         n = 256
         h, _, s = color.hls
 
-        if rangetype == 'full':
+        if rangetype == "full":
             step = 1.0 / (n - 1)
             colors = [Color.from_hls(h, 0.0 + i * step, s) for i in range(n)]
             return cls(colors)
 
-        if rangetype == 'light':
+        if rangetype == "light":
             step = 0.5 / (n - 1)
             colors = [Color.from_hls(h, 0.5 + i * step, s) for i in range(n)]
             return cls(colors)
 
-        if rangetype == 'dark':
+        if rangetype == "dark":
             step = 0.5 / (n - 1)
             colors = [Color.from_hls(h, 0.0 + i * step, s) for i in range(n)]
             return cls(colors)
@@ -306,6 +306,7 @@ class ColorMap(object):
         from compas_plotters.plotter import Plotter
         from compas.geometry import Pointcloud
         from compas.geometry import Plane, Circle, Polygon
+
         plotter = Plotter(figsize=(16, 12))
         w = 16
         h = 10
@@ -315,7 +316,14 @@ class ColorMap(object):
         white = Color.white()
         for i, color in enumerate(self.colors):
             c = Circle(Plane(cloud[i], [0, 0, 1]), 0.1)
-            p = Polygon([[i * d, -2, 0], [(i + 1) * d, -2, 0], [(i + 1) * d, -1, 0], [i * d, -1, 0]])
+            p = Polygon(
+                [
+                    [i * d, -2, 0],
+                    [(i + 1) * d, -2, 0],
+                    [(i + 1) * d, -1, 0],
+                    [i * d, -1, 0],
+                ]
+            )
             plotter.add(c, facecolor=color, edgecolor=white, linewidth=0.5)
             plotter.add(p, facecolor=color, edgecolor=color)
         plotter.zoom_extents()

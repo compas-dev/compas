@@ -19,21 +19,20 @@ from compas.geometry._core import sum_vectors
 
 
 __all__ = [
-    'midpoint_point_point',
-    'midpoint_point_point_xy',
-    'midpoint_line',
-    'midpoint_line_xy',
-
-    'centroid_points',
-    'centroid_points_weighted',
-    'centroid_points_xy',
-    'centroid_polygon',
-    'centroid_polygon_xy',
-    'centroid_polygon_vertices',
-    'centroid_polygon_vertices_xy',
-    'centroid_polygon_edges',
-    'centroid_polygon_edges_xy',
-    'centroid_polyhedron',
+    "midpoint_point_point",
+    "midpoint_point_point_xy",
+    "midpoint_line",
+    "midpoint_line_xy",
+    "centroid_points",
+    "centroid_points_weighted",
+    "centroid_points_xy",
+    "centroid_polygon",
+    "centroid_polygon_xy",
+    "centroid_polygon_vertices",
+    "centroid_polygon_vertices_xy",
+    "centroid_polygon_edges",
+    "centroid_polygon_edges_xy",
+    "centroid_polyhedron",
 ]
 
 
@@ -53,9 +52,7 @@ def midpoint_point_point(a, b):
         XYZ coordinates of the midpoint.
 
     """
-    return [0.5 * (a[0] + b[0]),
-            0.5 * (a[1] + b[1]),
-            0.5 * (a[2] + b[2])]
+    return [0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.5 * (a[2] + b[2])]
 
 
 def midpoint_point_point_xy(a, b):
@@ -163,7 +160,7 @@ def centroid_points_weighted(points, weights):
         The coordinates of the weighted centroid.
     """
     vectors = [scale_vector(point, weight) for point, weight in zip(points, weights)]
-    vector = scale_vector(sum_vectors(vectors), 1. / sum(weights))
+    vector = scale_vector(sum_vectors(vectors), 1.0 / sum(weights))
     return vector
 
 
@@ -276,7 +273,7 @@ def centroid_polygon(polygon):
         if dot_vectors(n, n0) > 0:
             a2 = length_vector(n)
         else:
-            a2 = - length_vector(n)
+            a2 = -length_vector(n)
 
         A2 += a2
         cx += a2 * x
@@ -366,7 +363,7 @@ def centroid_polygon_xy(polygon):
         if n[2] * n0[2] > 0:
             a2 = fabs(n[2])
         else:
-            a2 = - fabs(n[2])
+            a2 = -fabs(n[2])
 
         A2 += a2
         cx += a2 * x

@@ -6,8 +6,8 @@ from itertools import islice
 
 
 __all__ = [
-    'bounding_box',
-    'bounding_box_xy',
+    "bounding_box",
+    "bounding_box_xy",
 ]
 
 
@@ -36,14 +36,16 @@ def bounding_box(points):
     max_y = max(y)
     min_z = min(z)
     max_z = max(z)
-    return [[min_x, min_y, min_z],
-            [max_x, min_y, min_z],
-            [max_x, max_y, min_z],
-            [min_x, max_y, min_z],
-            [min_x, min_y, max_z],
-            [max_x, min_y, max_z],
-            [max_x, max_y, max_z],
-            [min_x, max_y, max_z]]
+    return [
+        [min_x, min_y, min_z],
+        [max_x, min_y, min_z],
+        [max_x, max_y, min_z],
+        [min_x, max_y, min_z],
+        [min_x, min_y, max_z],
+        [max_x, min_y, max_z],
+        [max_x, max_y, max_z],
+        [min_x, max_y, max_z],
+    ]
 
 
 def bounding_box_xy(points):
@@ -73,7 +75,9 @@ def bounding_box_xy(points):
     max_x = max(x)
     min_y = min(y)
     max_y = max(y)
-    return [[min_x, min_y, 0.0],
-            [max_x, min_y, 0.0],
-            [max_x, max_y, 0.0],
-            [min_x, max_y, 0.0]]
+    return [
+        [min_x, min_y, 0.0],
+        [max_x, min_y, 0.0],
+        [max_x, max_y, 0.0],
+        [min_x, max_y, 0.0],
+    ]

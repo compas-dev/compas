@@ -5,11 +5,7 @@ from __future__ import division
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
 
-__all__ = [
-    'mesh_weld',
-    'meshes_join',
-    'meshes_join_and_weld'
-]
+__all__ = ["mesh_weld", "meshes_join", "meshes_join_and_weld"]
 
 
 def mesh_weld(mesh, precision=None, cls=None):
@@ -89,7 +85,7 @@ def meshes_join(meshes, cls=None):
     faces = []
 
     for mesh in meshes:
-        key_index = ({key: len(vertices) + i for i, key in enumerate(mesh.vertices())})
+        key_index = {key: len(vertices) + i for i, key in enumerate(mesh.vertices())}
         vertices += [mesh.vertex_coordinates(key) for key in mesh.vertices()]
         faces += [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 

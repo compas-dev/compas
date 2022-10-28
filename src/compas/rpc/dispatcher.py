@@ -116,9 +116,7 @@ class Dispatcher(object):
             try:
                 function = getattr(module, functionname)
             except AttributeError:
-                odict["error"] = "This function is not part of the API: {0}".format(
-                    functionname
-                )
+                odict["error"] = "This function is not part of the API: {0}".format(functionname)
 
             else:
                 try:

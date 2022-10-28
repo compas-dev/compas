@@ -54,10 +54,12 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 point: Point,
-                 collection: Optional[Union[str, bpy.types.Collection]] = None,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        point: Point,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any,
+    ):
         super().__init__(primitive=point, collection=collection or point.name, **kwargs)
 
     def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
@@ -75,11 +77,13 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        points = [{
-            'pos': self.primitive,
-            'name': f"{self.primitive.name}",
-            'color': color,
-            'radius': 0.01
-        }]
+        points = [
+            {
+                "pos": self.primitive,
+                "name": f"{self.primitive.name}",
+                "color": color,
+                "radius": 0.01,
+            }
+        ]
         objects = compas_blender.draw_points(points, self.collection)
         return objects

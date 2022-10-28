@@ -10,10 +10,7 @@ from compas.utilities import pairwise
 from .substitute import mesh_substitute_vertex_in_faces
 
 
-__all__ = [
-    'mesh_unweld_vertices',
-    'mesh_unweld_edges'
-]
+__all__ = ["mesh_unweld_vertices", "mesh_unweld_edges"]
 
 
 def mesh_unweld_vertices(mesh, fkey, where=None):
@@ -86,7 +83,12 @@ def mesh_unweld_edges(mesh, edges):
         network_edges = []
         for nbr in mesh.vertex_neighbors(vkey):
             if not mesh.is_edge_on_boundary(vkey, nbr) and (vkey, nbr) not in edges and (nbr, vkey) not in edges:
-                network_edges.append((old_to_new[mesh.halfedge[vkey][nbr]], old_to_new[mesh.halfedge[nbr][vkey]]))
+                network_edges.append(
+                    (
+                        old_to_new[mesh.halfedge[vkey][nbr]],
+                        old_to_new[mesh.halfedge[nbr][vkey]],
+                    )
+                )
 
         adjacency = adjacency_from_edges(network_edges)
         for key, values in adjacency.items():

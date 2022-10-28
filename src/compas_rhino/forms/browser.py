@@ -45,7 +45,7 @@ class BrowserForm(BaseForm):
 
     """
 
-    def __init__(self, url, title='Browser', width=1024, height=786):
+    def __init__(self, url, title="Browser", width=1024, height=786):
         self._url = None
         self.url = url
         self.FormBorderStyle = FormBorderStyle.Sizable

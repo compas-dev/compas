@@ -134,7 +134,9 @@ class GLTFContent(object):
                     animation.channels.remove(channel)
                 else:
                     visited_sampler_keys.append(channel.sampler)
-            animation.samplers_dict = {key: animation.samplers_dict[key] for key in animation.samplers_dict if key in visited_sampler_keys}
+            animation.samplers_dict = {
+                key: animation.samplers_dict[key] for key in animation.samplers_dict if key in visited_sampler_keys
+            }
             if not animation.samplers_dict:
                 del self.animations[animation_key]
 
@@ -550,7 +552,12 @@ if __name__ == "__main__":
 
     # add extension
     pbr_specular_glossiness = KHR_materials_pbrSpecularGlossiness()
-    pbr_specular_glossiness.diffuse_factor = [0.980392158, 0.980392158, 0.980392158, 1.0]
+    pbr_specular_glossiness.diffuse_factor = [
+        0.980392158,
+        0.980392158,
+        0.980392158,
+        1.0,
+    ]
     pbr_specular_glossiness.specular_factor = [0.0, 0.0, 0.0]
     pbr_specular_glossiness.glossiness_factor = 0.0
     texture_transform = KHR_Texture_Transform()

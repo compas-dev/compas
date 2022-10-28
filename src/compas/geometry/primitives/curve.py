@@ -75,7 +75,7 @@ def bernstein(n, k, t):
         return 0
     if k > n:
         return 0
-    return binomial_coefficient(n, k) * t ** k * (1 - t) ** (n - k)
+    return binomial_coefficient(n, k) * t**k * (1 - t) ** (n - k)
 
 
 class Bezier(Primitive):
@@ -104,7 +104,7 @@ class Bezier(Primitive):
 
     """
 
-    __slots__ = ['_points']
+    __slots__ = ["_points"]
 
     def __init__(self, points):
         super(Bezier, self).__init__()
@@ -118,11 +118,11 @@ class Bezier(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the curve."""
-        return {'points': [list(point) for point in self.points]}
+        return {"points": [list(point) for point in self.points]}
 
     @data.setter
     def data(self, data):
-        self.points = data['points']
+        self.points = data["points"]
 
     @classmethod
     def from_data(cls, data):
@@ -145,7 +145,7 @@ class Bezier(Primitive):
         >>> curve = Bezier.from_data(data)
 
         """
-        return cls(data['points'])
+        return cls(data["points"])
 
     # ==========================================================================
     # properties

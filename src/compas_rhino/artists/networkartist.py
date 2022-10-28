@@ -23,10 +23,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
 
     """
 
-    def __init__(self,
-                 network,
-                 layer=None,
-                 **kwargs):
+    def __init__(self, network, layer=None, **kwargs):
 
         super(NetworkArtist, self).__init__(network=network, layer=layer, **kwargs)
 
@@ -145,11 +142,13 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         node_xyz = self.node_xyz
         points = []
         for node in nodes:
-            points.append({
-                'pos': node_xyz[node],
-                'name': "{}.node.{}".format(self.network.name, node),
-                'color': self.node_color[node].rgb255
-            })
+            points.append(
+                {
+                    "pos": node_xyz[node],
+                    "name": "{}.node.{}".format(self.network.name, node),
+                    "color": self.node_color[node].rgb255,
+                }
+            )
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
@@ -176,12 +175,14 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         lines = []
         for edge in edges:
             u, v = edge
-            lines.append({
-                'start': node_xyz[u],
-                'end': node_xyz[v],
-                'color': self.edge_color[edge].rgb255,
-                'name': "{}.edge.{}-{}".format(self.network.name, u, v)
-            })
+            lines.append(
+                {
+                    "start": node_xyz[u],
+                    "end": node_xyz[v],
+                    "color": self.edge_color[edge].rgb255,
+                    "name": "{}.edge.{}-{}".format(self.network.name, u, v),
+                }
+            )
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
@@ -207,12 +208,14 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         node_xyz = self.node_xyz
         labels = []
         for node in self.node_text:
-            labels.append({
-                'pos': node_xyz[node],
-                'name': "{}.nodelabel.{}".format(self.network.name, node),
-                'color': self.node_color[node].rgb255,
-                'text': self.node_text[node]
-            })
+            labels.append(
+                {
+                    "pos": node_xyz[node],
+                    "name": "{}.nodelabel.{}".format(self.network.name, node),
+                    "color": self.node_color[node].rgb255,
+                    "text": self.node_text[node],
+                }
+            )
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None):
@@ -235,10 +238,12 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         labels = []
         for edge in self.edge_text:
             u, v = edge
-            labels.append({
-                'pos': centroid_points([node_xyz[u], node_xyz[v]]),
-                'name': "{}.edgelabel.{}-{}".format(self.network.name, u, v),
-                'color': self.edge_color[edge].rgb255,
-                'text': self.edge_text[edge]
-            })
+            labels.append(
+                {
+                    "pos": centroid_points([node_xyz[u], node_xyz[v]]),
+                    "name": "{}.edgelabel.{}-{}".format(self.network.name, u, v),
+                    "color": self.edge_color[edge].rgb255,
+                    "text": self.edge_text[edge],
+                }
+            )
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

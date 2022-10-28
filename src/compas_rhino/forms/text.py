@@ -12,7 +12,7 @@ from System.Drawing import FontFamily
 from System.Environment import NewLine
 
 
-__all__ = ['TextForm']
+__all__ = ["TextForm"]
 
 
 class TextForm(BaseForm):
@@ -31,7 +31,7 @@ class TextForm(BaseForm):
 
     """
 
-    def __init__(self, text, title='Message', width=800, height=600):
+    def __init__(self, text, title="Message", width=800, height=600):
         self.text = text
         super(TextForm, self).__init__(title, width, height)
 

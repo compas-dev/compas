@@ -15,7 +15,7 @@ curve1 = NurbsCurve.from_parameters(
     weights=[1.0, 1.0, 1.0],
     knots=[0.0, 1.0],
     multiplicities=[3, 3],
-    degree=2
+    degree=2,
 )
 
 curve2 = NurbsCurve.from_parameters(
@@ -23,7 +23,7 @@ curve2 = NurbsCurve.from_parameters(
     weights=[1.0, 2.0, 1.0],
     knots=[0.0, 1.0],
     multiplicities=[3, 3],
-    degree=2
+    degree=2,
 )
 
 curve3 = NurbsCurve.from_parameters(
@@ -31,7 +31,7 @@ curve3 = NurbsCurve.from_parameters(
     weights=[1.0, 1.0, 1.0],
     knots=[0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
     multiplicities=[1, 1, 1, 1, 1, 1],
-    degree=2
+    degree=2,
 )
 
 # ==============================================================================

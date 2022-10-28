@@ -29,11 +29,11 @@ from compas.data import Data
 Base = Data
 
 __all__ = [
-    'Base',
+    "Base",
 ]
 
 warnings.warn(
     "The base module is deprecated. Use the data module instead",
     DeprecationWarning,
-    stacklevel=2
+    stacklevel=2,
 )

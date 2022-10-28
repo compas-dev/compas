@@ -22,7 +22,7 @@ Artist.clear()
 for row in surface.points:
     Artist(Polyline(row)).draw()
 
-for col in zip(* list(surface.points)):
+for col in zip(*list(surface.points)):
     Artist(Polyline(col)).draw()
 
 Artist(surface).draw()

@@ -4,7 +4,7 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 
 
-__all__ = ['mesh_slice_plane']
+__all__ = ["mesh_slice_plane"]
 
 
 def mesh_slice_plane(mesh, plane):
@@ -45,7 +45,6 @@ def mesh_slice_plane(mesh, plane):
 
 
 class IntersectionMeshPlane(object):
-
     def __init__(self, mesh, plane):
         self.mesh = mesh
         self.plane = plane
@@ -103,7 +102,7 @@ class IntersectionMeshPlane(object):
         o = self.plane.point
         n = self.plane.normal
         if key not in self.intersections:
-            a = self.mesh.vertex_attributes(key, 'xyz')
+            a = self.mesh.vertex_attributes(key, "xyz")
             oa = subtract_vectors(a, o)
             similarity = dot_vectors(n, oa)
             if similarity > 0.0:
@@ -134,7 +133,7 @@ class IntersectionMeshPlane(object):
         n = self.plane.normal
         if key in self.intersections:
             return False
-        a = self.mesh.vertex_attributes(key, 'xyz')
+        a = self.mesh.vertex_attributes(key, "xyz")
         oa = subtract_vectors(a, o)
         similarity = dot_vectors(n, oa)
         return similarity < 0.0
@@ -143,8 +142,8 @@ class IntersectionMeshPlane(object):
         intersections = []
         vertex_intersections = []
         for u, v in list(self.mesh.edges()):
-            a = self.mesh.vertex_attributes(u, 'xyz')
-            b = self.mesh.vertex_attributes(v, 'xyz')
+            a = self.mesh.vertex_attributes(u, "xyz")
+            b = self.mesh.vertex_attributes(v, "xyz")
             x = intersection_segment_plane((a, b), self.plane)
             if not x:
                 continue

@@ -8,8 +8,8 @@ from scipy.spatial import Delaunay
 
 
 __all__ = [
-    'delaunay_from_points_numpy',
-    'voronoi_from_points_numpy',
+    "delaunay_from_points_numpy",
+    "voronoi_from_points_numpy",
 ]
 
 

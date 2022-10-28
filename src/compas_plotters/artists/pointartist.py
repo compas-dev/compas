@@ -40,13 +40,15 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self,
-                 point: Point,
-                 size: int = 5,
-                 facecolor: Color = (1.0, 1.0, 1.0),
-                 edgecolor: Color = (0, 0, 0),
-                 zorder: int = 9000,
-                 **kwargs: Any):
+    def __init__(
+        self,
+        point: Point,
+        size: int = 5,
+        facecolor: Color = (1.0, 1.0, 1.0),
+        edgecolor: Color = (0, 0, 0),
+        zorder: int = 9000,
+        **kwargs: Any
+    ):
 
         super().__init__(primitive=point, **kwargs)
 
@@ -98,7 +100,7 @@ class PointArtist(PlotterArtist, PrimitiveArtist):
             facecolor=self.facecolor,
             edgecolor=self.edgecolor,
             transform=self._T,
-            zorder=self.zorder
+            zorder=self.zorder,
         )
         self._mpl_circle = self.plotter.axes.add_artist(circle)
         self.update_data()

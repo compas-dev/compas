@@ -5,9 +5,7 @@ from __future__ import print_function
 from itertools import combinations
 
 
-__all__ = [
-    'network_complement'
-]
+__all__ = ["network_complement"]
 
 
 def network_complement(network, cls=None):

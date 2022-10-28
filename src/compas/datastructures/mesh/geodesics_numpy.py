@@ -20,7 +20,7 @@ from compas.numerical import normalizerow
 from .matrices import trimesh_cotangent_laplacian_matrix
 
 
-__all__ = ['mesh_geodesic_distances_numpy']
+__all__ = ["mesh_geodesic_distances_numpy"]
 
 
 def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
@@ -44,7 +44,7 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     Lc = trimesh_cotangent_laplacian_matrix(mesh)
 
     key_index = mesh.key_index()
-    vertices = mesh.vertices_attributes('xyz')
+    vertices = mesh.vertices_attributes("xyz")
     faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
     V = array(vertices)
@@ -61,11 +61,11 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     VA = zeros(V.shape[0])
     for i in (0, 1, 2):
         b = bincount(F[:, i], A3)
-        VA[:len(b)] += b
+        VA[: len(b)] += b
     VA = spdiags(VA, 0, V.shape[0], V.shape[0])
 
     h = mean([normrow(e01), normrow(e12), normrow(e20)])
-    t = m * h ** 2
+    t = m * h**2
 
     u0 = zeros(V.shape[0])
     u0[sources] = 1.0
@@ -81,12 +81,9 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     unit_e12 = cross(unit, e12)
     unit_e20 = cross(unit, e20)
 
-    grad_u = (
-        unit_e01 * u[F[:, 2], None] +
-        unit_e12 * u[F[:, 0], None] +
-        unit_e20 * u[F[:, 1], None]) / A2
+    grad_u = (unit_e01 * u[F[:, 2], None] + unit_e12 * u[F[:, 0], None] + unit_e20 * u[F[:, 1], None]) / A2
 
-    X = - grad_u / normrow(grad_u)
+    X = -grad_u / normrow(grad_u)
 
     div_X = zeros(V.shape[0])
 
@@ -105,7 +102,8 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
         div_X += bincount(
             v1,
             0.5 * (a * sum(e1 * X, axis=1) + b * sum(e2 * X, axis=1)),
-            minlength=V.shape[0])
+            minlength=V.shape[0],
+        )
 
     # print(Lc.sum(axis=1))
 

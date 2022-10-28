@@ -1,4 +1,3 @@
-
 """
 ********************************************************************************
 components
@@ -36,7 +35,12 @@ import compas_rhino
 
 def get_version_from_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--version', choices=compas_rhino.SUPPORTED_VERSIONS, default=compas_rhino.DEFAULT_VERSION)
+    parser.add_argument(
+        "-v",
+        "--version",
+        choices=compas_rhino.SUPPORTED_VERSIONS,
+        default=compas_rhino.DEFAULT_VERSION,
+    )
     args = parser.parse_args()
     return _check_rhino_version(args.version)
 
@@ -58,7 +62,7 @@ def install_userobjects(source):
 
     # this dstdir potentially doesn't exist
     dstdir = get_grasshopper_userobjects_path(version)
-    userobjects = glob.glob(os.path.join(source, '*.ghuser'))
+    userobjects = glob.glob(os.path.join(source, "*.ghuser"))
 
     symlinks_to_remove = []
     symlinks_to_add = []
@@ -98,7 +102,7 @@ def uninstall_userobjects(userobjects=None):
     if not userobjects:
         userobjects = []
         for name in os.listdir(dstdir):
-            if name.lower().startswith('compas'):
+            if name.lower().startswith("compas"):
                 userobjects.append(name)
 
     symlinks = []
@@ -111,4 +115,4 @@ def uninstall_userobjects(userobjects=None):
     return list(zip(symlinks, removed))
 
 
-__all__ = ['install_userobjects', 'uninstall_userobjects']
+__all__ = ["install_userobjects", "uninstall_userobjects"]

@@ -14,13 +14,14 @@ from compas_view2.app import App
 
 assembly = Assembly()
 
-a = Part(name='A',
-         geometry=Box.from_width_height_depth(1, 1, 1))
+a = Part(name="A", geometry=Box.from_width_height_depth(1, 1, 1))
 
-b = Part(name='B',
-         frame=Frame([0, 0, 1], [1, 0, 0], [0, 1, 0]),
-         shape=Box.from_width_height_depth(1, 1, 1),
-         features=[(Cylinder(Circle(Plane.worldXY(), 0.2), 1.0), 'difference')])
+b = Part(
+    name="B",
+    frame=Frame([0, 0, 1], [1, 0, 0], [0, 1, 0]),
+    shape=Box.from_width_height_depth(1, 1, 1),
+    features=[(Cylinder(Circle(Plane.worldXY(), 0.2), 1.0), "difference")],
+)
 
 b.transform(Rotation.from_axis_and_angle([0, 0, 1], radians(45)))
 b.transform(Translation.from_vector([0, 0, 1]))

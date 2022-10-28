@@ -54,11 +54,26 @@ class CircleArtist(RhinoArtist, PrimitiveArtist):
         radius = self.primitive.radius
         guids = []
         if show_point:
-            points = [{'pos': point, 'color': color, 'name': self.primitive.name}]
+            points = [{"pos": point, "color": color, "name": self.primitive.name}]
             guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         if show_normal:
-            lines = [{'start': point, 'end': add_vectors(point, normal), 'arrow': 'end', 'color': color, 'name': self.primitive.name}]
+            lines = [
+                {
+                    "start": point,
+                    "end": add_vectors(point, normal),
+                    "arrow": "end",
+                    "color": color,
+                    "name": self.primitive.name,
+                }
+            ]
             guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        circles = [{'plane': plane, 'radius': radius, 'color': color, 'name': self.primitive.name}]
+        circles = [
+            {
+                "plane": plane,
+                "radius": radius,
+                "color": color,
+                "name": self.primitive.name,
+            }
+        ]
         guids += compas_rhino.draw_circles(circles, layer=self.layer, clear=False, redraw=False)
         return guids

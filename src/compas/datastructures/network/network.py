@@ -85,15 +85,17 @@ class Network(Graph):
         is_planar_embedding = network_is_planar_embedding
 
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
-        _default_node_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        _default_node_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
         if default_node_attributes:
             _default_node_attributes.update(default_node_attributes)
         if default_edge_attributes:
             _default_edge_attributes.update(default_edge_attributes)
-        super(Network, self).__init__(name=name or 'Network',
-                                      default_node_attributes=_default_node_attributes,
-                                      default_edge_attributes=_default_edge_attributes)
+        super(Network, self).__init__(
+            name=name or "Network",
+            default_node_attributes=_default_node_attributes,
+            default_edge_attributes=_default_edge_attributes,
+        )
 
     def __str__(self):
         tpl = "<Network with {} nodes, {} edges>"
@@ -370,7 +372,7 @@ class Network(Graph):
     # node geometry
     # --------------------------------------------------------------------------
 
-    def node_coordinates(self, key, axes='xyz'):
+    def node_coordinates(self, key, axes="xyz"):
         """Return the coordinates of a node.
 
         Parameters
@@ -426,7 +428,7 @@ class Network(Graph):
     # edge geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, u, v, axes='xyz'):
+    def edge_coordinates(self, u, v, axes="xyz"):
         """Return the coordinates of the start and end point of an edge.
 
         Parameters

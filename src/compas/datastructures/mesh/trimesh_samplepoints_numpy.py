@@ -10,7 +10,7 @@ from numpy import finfo
 
 
 __all__ = [
-    'trimesh_samplepoints_numpy',
+    "trimesh_samplepoints_numpy",
 ]
 
 
@@ -65,7 +65,7 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
 
     # (1)  Prepare data for computing
     key_index = mesh.key_index()
-    vertices = mesh.vertices_attributes('xyz')
+    vertices = mesh.vertices_attributes("xyz")
     faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
     V = array(vertices, dtype=float64)
     F = array(faces, dtype=int)

@@ -8,8 +8,8 @@ from compas.geometry import bounding_box_xy
 
 
 __all__ = [
-    'mesh_bounding_box',
-    'mesh_bounding_box_xy',
+    "mesh_bounding_box",
+    "mesh_bounding_box_xy",
 ]
 
 
@@ -34,7 +34,7 @@ def mesh_bounding_box(mesh):
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
     """
-    xyz = mesh.vertices_attributes('xyz', keys=list(mesh.vertices()))
+    xyz = mesh.vertices_attributes("xyz", keys=list(mesh.vertices()))
     return bounding_box(xyz)
 
 
@@ -59,5 +59,5 @@ def mesh_bounding_box_xy(mesh):
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
     """
-    xyz = mesh.vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes("xyz")
     return bounding_box_xy(xyz)

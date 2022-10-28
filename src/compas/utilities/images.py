@@ -50,9 +50,7 @@ def gif_from_images(
         files.reverse()
     if pingpong:
         files += files[::-1]
-    with imageio.get_writer(
-        gif_path, mode="I", fps=fps, loop=loop, subrectangles=subrectangles
-    ) as writer:
+    with imageio.get_writer(gif_path, mode="I", fps=fps, loop=loop, subrectangles=subrectangles) as writer:
         for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)

@@ -5,6 +5,7 @@ from compas.geometry import Pointcloud
 
 
 if not compas.IPY:
+
     def test_data():
         p = Pointcloud.from_bounds(10, 10, 10, 100)
         assert p.data == p.validate_data()

@@ -10,6 +10,8 @@ from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import cylinder_to_rhino
 
 from compas_rhino.geometry.curves import RhinoCurve
 
@@ -75,6 +77,77 @@ class RhinoSurface(Surface):
     # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_corners(cls, corners):
+        """Creates a NURBS surface using the given 4 corners.
+
+        The order of the given points determins the normal direction of the generated surface.
+
+        Parameters
+        ----------
+        corners : list(:class:`~compas.geometry.Point`)
+            4 points in 3d space to represent the corners of the planar surface.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
+        rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
+        return cls.from_rhino(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
+
+    @classmethod
+    def from_sphere(cls, sphere):
+        """Creates a NURBS surface from a sphere.
+
+        Parameters
+        ----------
+        sphere : :class:`~compas.geometry.Sphere`
+            The surface's geometry.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
+        sphere = sphere_to_rhino(sphere)
+        surface = Rhino.Geometry.NurbsSurface.CreateFromSphere(sphere)
+        return cls.from_rhino(surface)
+
+    @classmethod
+    def from_cylinder(cls, cylinder):
+        """Create a NURBS surface from a cylinder.
+
+        Parameters
+        ----------
+        cylinder : :class:`~compas.geometry.Cylinder`
+            The surface's geometry.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
+        cylinder = cylinder_to_rhino(cylinder)
+        surface = Rhino.Geometry.NurbsSurface.CreateFromCylinder(cylinder)
+        return cls.from_rhino(surface)
+
+    @classmethod
+    def from_torus(cls, torus):
+        """Create a NURBS surface from a torus.
+
+        Parameters
+        ----------
+        torus : :class:`~compas.geometry.Torus`
+            The surface's geometry.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
+        raise NotImplementedError
 
     @classmethod
     def from_rhino(cls, rhino_surface):
@@ -186,11 +259,20 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        tuple[[float, float, float], [float, float, float], float, [float, float, float], float, [float, float, float], float, float] | None
+            A tuple containing the point, normal vector, maximum principal curvature value, maximum principal curvature direction,
+            minimun principal curvature value, minimun principal curvature direction, gaussian curvature value and mean curvature
+            value for the point at UV. None at failure.
 
         """
-        vector = self.rhino_surface.CurvatureAt(u, v)
-        return vector_to_compas(vector)
+        surface_curvature = self.rhino_surface.CurvatureAt(u, v)
+        if surface_curvature:
+            point, normal, kappa_u, direction_u, kappa_v, direction_v, gaussian, mean = surface_curvature
+            cpoint = point_to_compas(point)
+            cnormal = vector_to_compas(normal)
+            cdirection_u = vector_to_compas(direction_u)
+            cdirection_v = vector_to_compas(direction_v)
+            return (cpoint, cnormal, kappa_u, cdirection_u, kappa_v, cdirection_v, gaussian, mean)
 
     def frame_at(self, u, v):
         """Compute the local frame at a point on the curve.

@@ -9,23 +9,25 @@ from .operations import trimesh_split_edge
 
 
 __all__ = [
-    'trimesh_remesh',
+    "trimesh_remesh",
 ]
 
 
-def trimesh_remesh(mesh,
-                   target,
-                   kmax=100,
-                   tol=0.1,
-                   divergence=0.01,
-                   verbose=False,
-                   allow_boundary_split=False,
-                   allow_boundary_swap=False,
-                   allow_boundary_collapse=False,
-                   smooth=True,
-                   fixed=None,
-                   callback=None,
-                   callback_args=None):
+def trimesh_remesh(
+    mesh,
+    target,
+    kmax=100,
+    tol=0.1,
+    divergence=0.01,
+    verbose=False,
+    allow_boundary_split=False,
+    allow_boundary_swap=False,
+    allow_boundary_collapse=False,
+    smooth=True,
+    fixed=None,
+    callback=None,
+    callback_args=None,
+):
     """Remesh until all edges have a specified target length.
 
     Parameters
@@ -137,7 +139,7 @@ def trimesh_remesh(mesh,
                     continue
 
                 if verbose:
-                    print('split edge: {0} - {1}'.format(u, v))
+                    print("split edge: {0} - {1}".format(u, v))
 
                 trimesh_split_edge(mesh, u, v, allow_boundary=allow_boundary_split)
 
@@ -157,7 +159,7 @@ def trimesh_remesh(mesh,
                 if mesh.edge_length(u, v) >= lmin - dlmin:
                     continue
                 if verbose:
-                    print('collapse edge: {0} - {1}'.format(u, v))
+                    print("collapse edge: {0} - {1}".format(u, v))
 
                 trimesh_collapse_edge(mesh, u, v, allow_boundary=allow_boundary_collapse, fixed=fixed)
 
@@ -210,7 +212,7 @@ def trimesh_remesh(mesh,
                     continue
 
                 if verbose:
-                    print('swap edge: {0} - {1}'.format(u, v))
+                    print("swap edge: {0} - {1}".format(u, v))
 
                 trimesh_swap_edge(mesh, u, v, allow_boundary=allow_boundary_swap)
 

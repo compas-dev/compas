@@ -15,7 +15,13 @@ plotter.zoom_extents()
 plotter.pause(1.0)
 
 
-@plotter.on(interval=0.1, frames=50, record=True, recording='docs/_images/tutorial/plotters_dynamic.gif', dpi=150)
+@plotter.on(
+    interval=0.1,
+    frames=50,
+    record=True,
+    recording="docs/_images/tutorial/plotters_dynamic.gif",
+    dpi=150,
+)
 def move(frame):
     print(frame)
     for a, b in pairwise(pointcloud):
