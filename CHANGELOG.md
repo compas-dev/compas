@@ -9,7 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino.geometry.RhinoCurve.offset`.
+* Added `compas.geometry.Surface.from_plane`.
+* Added `compas.geometry.surfaces.surface.new_surface_from_plane` pluggable.
+* Added `compas_rhino.geometry.surfaces.new_surface_from_plane` plugin.
+* Added `compas_rhino.geometry.RhinoSurface.intersections_with_curve`.
+
 ### Changed
+
+* Fixed bug in `compas_rhino.geometry.RhinoCurve.frame_at`.
+* Changed implementation of `compas.datastructures.mesh_planarize_faces` to include edge midpoints.
 
 ### Removed
 

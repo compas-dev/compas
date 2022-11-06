@@ -8,6 +8,7 @@ from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
@@ -166,6 +167,25 @@ class RhinoSurface(Surface):
         curve = cls()
         curve.rhino_surface = rhino_surface
         return curve
+
+    @classmethod
+    def from_plane(cls, plane, box):
+        """Construct a surface from a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            The plane.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoSurface`
+
+        """
+        plane = plane_to_rhino(plane)
+        box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
+        rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
+        return cls.from_rhino(rhino_surface)
 
     # ==============================================================================
     # Conversions
@@ -337,3 +357,25 @@ class RhinoSurface(Surface):
         """
         box = self.rhino_surface.GetBoundingBox(optimal)
         return box_to_compas(Rhino.Geometry.Box(box))
+
+    def intersections_with_curve(self, curve, tolerance=1e-3, overlap=1e-3):
+        """Compute the intersections with a curve.
+
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Curve`
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Point`]
+
+        """
+        intersections = Rhino.Geometry.Intersect.Intersection.CurveSurface(
+            curve.rhino_curve, self.rhino_surface, tolerance, overlap
+        )
+        points = []
+        for event in intersections:
+            if event.IsPoint:
+                point = point_to_compas(event.PointA)
+                points.append(point)
+        return points

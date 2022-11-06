@@ -4,11 +4,13 @@ from __future__ import division
 
 from compas.geometry import project_points_plane
 from compas.geometry import centroid_points
+from compas.geometry import midpoint_point_point
 from compas.geometry import distance_point_point
 from compas.geometry import distance_line_line
 from compas.geometry import bestfit_plane
 
 from compas.utilities import window
+from compas.utilities import pairwise
 
 
 __all__ = [
@@ -98,7 +100,10 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
         for fkey in mesh.faces():
             vertices = mesh.face_vertices(fkey)
             points = [mesh.vertex_coordinates(key) for key in vertices]
-            plane = bestfit_plane(points)
+            midpoints = []
+            for a, b in pairwise(points + points[:1]):
+                midpoints.append(midpoint_point_point(a, b))
+            plane = bestfit_plane(points + midpoints)
             projections = project_points_plane(points, plane)
 
             for index, key in enumerate(vertices):

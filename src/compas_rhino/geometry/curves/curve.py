@@ -3,12 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry import Curve
+from compas.geometry import Plane
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import box_to_compas
 
 
@@ -227,7 +229,7 @@ class RhinoCurve(Curve):
             The corresponding local frame.
 
         """
-        plane = self.rhino_curve.FrameAt(t)
+        t, plane = self.rhino_curve.FrameAt(t)
         return plane_to_compas_frame(plane)
 
     def torsion_at(self, t):
@@ -346,3 +348,36 @@ class RhinoCurve(Curve):
 
         """
         return self.rhino_curve.GetLength(precision)
+
+    def fair(self, tol=1e-3):
+        raise NotImplementedError
+
+    def offset(self, distance, direction, tolerance=1e-3):
+        """Compute the length of the curve.
+
+        Parameters
+        ----------
+        distance : float
+            The offset distance.
+        direction : :class:`compas.geometry.Vector`
+            The normal direction of the offset plane.
+        tolerance : float, optional
+
+        Returns
+        -------
+        None
+
+        """
+        point = self.point_at(self.domain[0])
+        plane = Plane(point, direction)
+        plane = plane_to_rhino(plane)
+        self.rhino_curve = self.rhino_curve.Offset(plane, distance, tolerance, 0)[0]
+
+    def smooth(self):
+        raise NotImplementedError
+
+    def split(self):
+        raise NotImplementedError
+
+    def trim(self):
+        raise NotImplementedError
