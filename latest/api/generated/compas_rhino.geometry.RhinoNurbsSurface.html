@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.17.0
+            1.17.1
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -192,17 +192,23 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_obj.html#compas_rhino.geometry.RhinoNurbsSurface.from_obj" title="compas_rhino.geometry.RhinoNurbsSurface.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a surface from an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_rhino.html#compas_rhino.geometry.RhinoNurbsSurface.from_rhino" title="compas_rhino.geometry.RhinoNurbsSurface.from_rhino"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhino</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_plane.html#compas_rhino.geometry.RhinoNurbsSurface.from_plane" title="compas_rhino.geometry.RhinoNurbsSurface.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
+<td><p>Construct a surface from a plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_rhino.html#compas_rhino.geometry.RhinoNurbsSurface.from_rhino" title="compas_rhino.geometry.RhinoNurbsSurface.from_rhino"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhino</span></code></a></p></td>
 <td><p>Construct a NURBS surface from an existing Rhino surface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_sphere.html#compas_rhino.geometry.RhinoNurbsSurface.from_sphere" title="compas_rhino.geometry.RhinoNurbsSurface.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_sphere.html#compas_rhino.geometry.RhinoNurbsSurface.from_sphere" title="compas_rhino.geometry.RhinoNurbsSurface.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
 <td><p>Creates a NURBS surface from a sphere.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_step.html#compas_rhino.geometry.RhinoNurbsSurface.from_step" title="compas_rhino.geometry.RhinoNurbsSurface.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_step.html#compas_rhino.geometry.RhinoNurbsSurface.from_step" title="compas_rhino.geometry.RhinoNurbsSurface.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Load a NURBS surface from a STP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_torus.html#compas_rhino.geometry.RhinoNurbsSurface.from_torus" title="compas_rhino.geometry.RhinoNurbsSurface.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.from_torus.html#compas_rhino.geometry.RhinoNurbsSurface.from_torus" title="compas_rhino.geometry.RhinoNurbsSurface.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
 <td><p>Create a NURBS surface from a torus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.intersections_with_curve.html#compas_rhino.geometry.RhinoNurbsSurface.intersections_with_curve" title="compas_rhino.geometry.RhinoNurbsSurface.intersections_with_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_curve</span></code></a></p></td>
+<td><p>Compute the intersections with a curve.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.intersections_with_line.html#compas_rhino.geometry.RhinoNurbsSurface.intersections_with_line" title="compas_rhino.geometry.RhinoNurbsSurface.intersections_with_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_line</span></code></a></p></td>
 <td><p>Compute the intersections with a line.</p></td>
@@ -387,7 +393,7 @@
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.17.0',
+      VERSION: '1.17.1',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

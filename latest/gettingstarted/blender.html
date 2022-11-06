@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.17.0
+            1.17.1
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -122,8 +122,8 @@ If you don’t have an environment yet with Python 3.9 and COMPAS you can create
 </div>
 <p>Configuring Blender to use the newly installed environment is slightly different per OS.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="58b52154-2c42-4dc9-be3d-ee54687f8ff3" name="f8f5ab23-5e30-4340-91f3-90d78f38be04" type="radio">
-</input><label class="compas-tab-item-label" for="58b52154-2c42-4dc9-be3d-ee54687f8ff3">
+<input checked="checked" id="c4f2f04b-fd05-4b07-8976-c987d3a64357" name="1325e891-9c71-407a-acd5-0fc86154405c" type="radio">
+</input><label class="compas-tab-item-label" for="c4f2f04b-fd05-4b07-8976-c987d3a64357">
 Windows</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install -v <span class="m">2</span>.93
@@ -132,8 +132,8 @@ python -m compas_blender.install -v <span class="m">2</span>.93
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.93\\2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="ab156c1c-b14c-4dce-ba6d-c1be241aaee8" name="f8f5ab23-5e30-4340-91f3-90d78f38be04" type="radio">
-</input><label class="compas-tab-item-label" for="ab156c1c-b14c-4dce-ba6d-c1be241aaee8">
+<input id="6f8d5863-707a-4f88-8741-a65f5accd9d8" name="1325e891-9c71-407a-acd5-0fc86154405c" type="radio">
+</input><label class="compas-tab-item-label" for="6f8d5863-707a-4f88-8741-a65f5accd9d8">
 OSX</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.93
@@ -142,8 +142,8 @@ python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="4bd21aca-a99c-4484-89f8-a8fa081d0243" name="f8f5ab23-5e30-4340-91f3-90d78f38be04" type="radio">
-</input><label class="compas-tab-item-label" for="4bd21aca-a99c-4484-89f8-a8fa081d0243">
+<input id="e1fa9d0a-0c09-44c7-b743-4de779d06481" name="1325e891-9c71-407a-acd5-0fc86154405c" type="radio">
+</input><label class="compas-tab-item-label" for="e1fa9d0a-0c09-44c7-b743-4de779d06481">
 Linux</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
 python -m compas_blender.install ~/Blender/2.93
@@ -207,15 +207,15 @@ On Mac or Linux, you should start Blender from the command line.</p>
 <p>By adding the Blender executable to the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable this is really simple.
 Just add the following to your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="73c895c4-fc2f-4137-ab2b-8f9eadad79fe" name="6c918053-ae2b-472d-a893-d2bbc23894bf" type="radio">
-</input><label class="compas-tab-item-label" for="73c895c4-fc2f-4137-ab2b-8f9eadad79fe">
+<input checked="checked" id="e54eebeb-58e3-4122-84c6-21ab042531f6" name="22f78182-57bb-4409-a576-45e327b2b8dc" type="radio">
+</input><label class="compas-tab-item-label" for="e54eebeb-58e3-4122-84c6-21ab042531f6">
 OSX</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
 </div>
-<input id="d62257bf-9666-4202-a58a-1546d7e97429" name="6c918053-ae2b-472d-a893-d2bbc23894bf" type="radio">
-</input><label class="compas-tab-item-label" for="d62257bf-9666-4202-a58a-1546d7e97429">
+<input id="efc99430-ec2c-4238-a0d3-12acfc58628d" name="22f78182-57bb-4409-a576-45e327b2b8dc" type="radio">
+</input><label class="compas-tab-item-label" for="efc99430-ec2c-4238-a0d3-12acfc58628d">
 Linux</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.83:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 
@@ -402,7 +402,7 @@ if that version can be found in the default installation location.</p>
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.17.0',
+      VERSION: '1.17.1',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',
