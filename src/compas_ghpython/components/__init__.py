@@ -26,7 +26,6 @@ import argparse
 import glob
 import os
 
-# from compas._os import create_symlinks
 from compas._os import remove_symlinks
 from compas._os import copy as _copy
 from compas_ghpython import get_grasshopper_userobjects_path
@@ -76,7 +75,6 @@ def install_userobjects(source):
     remove_symlinks(symlinks_to_remove)
 
     # And the create new ones
-    # created = create_symlinks(symlinks_to_add)
     created = []
     for src, dst in symlinks_to_add:
         try:
