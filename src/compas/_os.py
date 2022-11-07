@@ -316,7 +316,7 @@ def _polyfill_symlinks(symlinks, raise_on_error):
         mklink_cmd.write("SET /A symlink_result=0\n")
         mklink_cmd.write("ECHO ret=%symlink_result%\n")
         for i, (source, link_name) in enumerate(symlinks):
-            dir_symlink_arg = "/D" if os.path.isdir(source) else ""
+            dir_symlink_arg = "/J" if os.path.isdir(source) else ""
             mklink_cmd.write("mklink {} {}\n".format(dir_symlink_arg, subprocess.list2cmdline([link_name, source])))
             mklink_cmd.write("IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} \n".format(2**i))
 

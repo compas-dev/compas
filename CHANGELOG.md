@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed `compas._os._polyfill_symlinks` to use junction (/J) instead of symbolic link (/D).
+
 ### Removed
 
 
