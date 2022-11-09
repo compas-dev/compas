@@ -22,7 +22,6 @@ Installation
 """
 from __future__ import absolute_import
 
-import argparse
 import glob
 import os
 
@@ -34,14 +33,7 @@ import compas_rhino
 
 
 def get_version_from_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-v",
-        "--version",
-        choices=compas_rhino.SUPPORTED_VERSIONS,
-        default=compas_rhino.DEFAULT_VERSION,
-    )
-    args = parser.parse_args()
+    args = compas_rhino.INSTALLATION_ARGUMENTS
     return _check_rhino_version(args.version)
 
 
