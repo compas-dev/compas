@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino.INSTALLATION_ARGUMENTS`.
+
 ### Changed
+
+* Fixed bug in Rhino installation due to redefinition of command line arguments in `compas_ghpython.components.get_version_from_args`.
 
 ### Removed
 
