@@ -8,9 +8,6 @@ from compas._os import remove_symlinks
 from .install import install as install_packages
 
 
-__all__ = ["install_plugin"]
-
-
 def install_plugin(plugin, version=None):
     """Install a Rhino Python Command Plugin.
 
