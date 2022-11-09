@@ -3,37 +3,30 @@ on:
     tags:
       - 'v*'
 
-  # Delete this
-  pull_request:
-    branches:
-      - main
-
 name: Create Release
 
 jobs:
-  # build: # uncomment this
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-latest, macos-latest, windows-latest]
-  #       python: ['3.8', '3.9', '3.10']
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ['3.8', '3.9', '3.10']
 
-  #   steps:
-  #     - uses: compas-dev/compas-actions.build@v2
-  #       with:
-  #         python: ${{ matrix.python }}
-  #         test_lint: true
-  #         test_compas: true
+    steps:
+      - uses: compas-dev/compas-actions.build@v2
+        with:
+          python: ${{ matrix.python }}
+          test_lint: true
+          test_compas: true
 
   publish:
-    # needs: build # uncomment this
+    needs: build
     runs-on: windows-latest
     steps:
-    - uses: compas-dev/compas-actions.publish@v2
-      with:
-        pypi_token: ${{ secrets.PYPI }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        python: '3.10'
-        build_ghpython_components: true
-        create_release: false # delete this
-        publish_to_pypi: false # delete this
+      - uses: compas-dev/compas-actions.publish@v2
+        with:
+          pypi_token: ${{ secrets.PYPI }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          python: '3.10'
+          build_ghpython_components: true
