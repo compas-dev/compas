@@ -34,5 +34,6 @@ jobs:
         pypi_token: ${{ secrets.PYPI }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
         python: '3.10'
+        build_ghpython_components: true
         create_release: false # delete this
         publish_to_pypi: false # delete this
