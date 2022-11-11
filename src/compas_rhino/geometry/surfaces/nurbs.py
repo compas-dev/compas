@@ -68,8 +68,8 @@ def rhino_surface_from_parameters(
     is_rational = True  # TODO: check if all weights are equal? https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/
     dimensions = 3
     rhino_surface = Rhino.Geometry.NurbsSurface.Create(
-            dimensions, is_rational, u_order, v_order, u_point_count, v_point_count
-        )
+        dimensions, is_rational, u_order, v_order, u_point_count, v_point_count
+    )
 
     if not rhino_surface:
         message = "dimensions: {} is_rational: {} u_order: {} v_order: {} u_points: {} v_points: {}".format(
