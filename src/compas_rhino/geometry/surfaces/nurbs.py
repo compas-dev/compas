@@ -61,7 +61,7 @@ def rhino_surface_from_parameters(
     is_u_periodic=False,
     is_v_periodic=False,
 ):
-    u_order = u_degree + 1 
+    u_order = u_degree + 1
     v_order = v_degree + 1
     u_point_count = len(points)
     v_point_count = len(points[0])
