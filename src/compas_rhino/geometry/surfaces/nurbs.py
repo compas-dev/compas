@@ -61,18 +61,21 @@ def rhino_surface_from_parameters(
     is_u_periodic=False,
     is_v_periodic=False,
 ):
-    rhino_surface = Rhino.Geometry.NurbsSurface.Create(3, True, u_degree + 1, v_degree + 1, len(points[0]), len(points))
+    u_order = u_degree + 1 
+    v_order = v_degree + 1
+    u_point_count = len(points)
+    v_point_count = len(points[0])
+    is_rational = True  # TODO: check if all weights are the same
+    dimensions = 3
+    rhino_surface = Rhino.Geometry.NurbsSurface.Create(dimensions, is_rational, u_order, v_order, u_point_count, v_point_count)
+
     u_knotvector = [knot for knot, mult in zip(u_knots, u_mults) for _ in range(mult)]
     v_knotvector = [knot for knot, mult in zip(v_knots, v_mults) for _ in range(mult)]
-    u_count = len(points[0])
-    v_count = len(points)
-    u_order = u_degree + 1
-    v_order = v_degree + 1
     # account for superfluous knots
     # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
-    if len(u_knotvector) == u_count + u_order:
+    if len(u_knotvector) == u_point_count + u_order:
         u_knotvector[:] = u_knotvector[1:-1]
-    if len(v_knotvector) == v_count + v_order:
+    if len(v_knotvector) == v_point_count + v_order:
         v_knotvector[:] = v_knotvector[1:-1]
     # add knots
     for index, knot in enumerate(u_knotvector):
@@ -80,8 +83,8 @@ def rhino_surface_from_parameters(
     for index, knot in enumerate(v_knotvector):
         rhino_surface.KnotsV[index] = knot
     # add control points
-    for i in range(v_count):
-        for j in range(u_count):
+    for i in range(u_point_count):
+        for j in range(v_point_count):
             rhino_surface.Points.SetPoint(i, j, point_to_rhino(points[i][j]), weights[i][j])
     return rhino_surface
 
