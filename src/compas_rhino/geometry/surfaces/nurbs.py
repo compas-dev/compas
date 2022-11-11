@@ -67,7 +67,15 @@ def rhino_surface_from_parameters(
     v_point_count = len(points[0])
     is_rational = True  # TODO: check if all weights are equal? https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/
     dimensions = 3
-    rhino_surface = Rhino.Geometry.NurbsSurface.Create(dimensions, is_rational, u_order, v_order, u_point_count, v_point_count)
+    rhino_surface = Rhino.Geometry.NurbsSurface.Create(
+            dimensions, is_rational, u_order, v_order, u_point_count, v_point_count
+        )
+
+    if not rhino_surface:
+        message = "dimensions: {} is_rational: {} u_order: {} v_order: {} u_points: {} v_points: {}".format(
+            dimensions, is_rational, u_order, v_order, u_point_count, v_point_count
+        )
+        raise ValueError("Failed to create NurbsSurface with params:\n{}".format(message))
 
     u_knotvector = [knot for knot, mult in zip(u_knots, u_mults) for _ in range(mult)]
     v_knotvector = [knot for knot, mult in zip(v_knots, v_mults) for _ in range(mult)]
