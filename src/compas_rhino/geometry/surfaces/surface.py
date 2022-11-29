@@ -8,6 +8,7 @@ from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import frame_to_rhino_plane
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import xform_to_rhino
@@ -186,6 +187,51 @@ class RhinoSurface(Surface):
         box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
         rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
         return cls.from_rhino(rhino_surface)
+
+    @classmethod
+    def from_frame(cls, frame, u_interval, v_interval, uv_degrees, uv_point_counts):
+        """Creates a NURBS surface from a frame and parametric domain information.
+
+        Parameters
+        ----------
+        frame : :class:`~compas.geometry.Frame`
+            A frame with point at the center of the wanted plannar surface and
+            x and y axes the direction of u and v respectively.
+        u_interval : tuple(float, float)
+            The parametric domain of the U parameter. u_interval[0] => u_interval[1].
+        v_interval : tuple(float, float)
+            The parametric domain of the V parameter. v_interval[0] => v_interval[1].
+        uv_degrees : tuple(int, int)
+            Degree of U and V parameters. uv_degree[0] => degree_u, uv_degree[1] => degree_v
+        uv_point_counts :
+            Number of control points in each parameter. [0] => cp_count_u, [1] => cp_count_v
+
+        Returns
+        -------
+        :rhino:`Rhino.Geometry.NurbsSurface`
+
+        """
+        # so that parameteric surface starts correctly at corner of the wanted plane section
+        rhino_plane = frame_to_rhino_plane(frame)
+        u_size = abs(u_interval[1] - u_interval[0])
+        v_size = abs(v_interval[1] - v_interval[0])
+        rhino_plane.Origin = rhino_plane.PointAt(-u_size / 2.0, -v_size / 2.0)  # TODO: shift to plane corner
+        surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(
+            rhino_plane,
+            Rhino.Geometry.Interval(*u_interval),
+            Rhino.Geometry.Interval(*v_interval),
+            uv_degrees[0],
+            uv_degrees[1],
+            uv_point_counts[0],
+            uv_point_counts[1],
+        )
+        if not surface:
+            raise ValueError(
+                "Failed creating NurbsSurface from frame:{} u_interval:{} v_interval:{} uv_degrees:{} uv_point_count:{}".format(
+                    frame, u_interval, v_interval, uv_degrees, uv_point_counts
+                )
+            )
+        return cls.from_rhino(surface)
 
     # ==============================================================================
     # Conversions

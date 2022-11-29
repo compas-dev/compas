@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added conversion function `frame_to_rhino_plane` to `compas_rhino.conversions`.
+* Added `RhinoSuface.from_frame` to `compas_rhino.geometry`.
 
 ### Changed
 
