@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added conversion function `frame_to_rhino_plane` to `compas_rhino.conversions`.
+
 ### Changed
 
 * Fixed strange point values in RhinoNurbsCurve caused by conversion `ControlPoint` to COMPAS instead of `ControlPoint.Location`.
