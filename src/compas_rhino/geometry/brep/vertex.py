@@ -13,8 +13,9 @@ class RhinoBrepVertex(BrepVertex):
 
     """
 
-    def __init__(self, rhino_vertex=None):
+    def __init__(self, rhino_vertex=None, builder=None):
         super(RhinoBrepVertex, self).__init__()
+        self._builder = builder
         self._vertex = None
         self._point = None
         if rhino_vertex:
@@ -35,10 +36,15 @@ class RhinoBrepVertex(BrepVertex):
         }
 
     @data.setter
-    def data(self, data):
-        # Rhino.BrepVertex has no public constructor
-        # Vertex creation is via Brep.Vertices.Add(Rhino.Point3D)
+    def data(self, data):      
         self._point = Point.from_data(data["point"])
+        self._vertex = self._builder.add_vertex(self._point)
+
+    @classmethod
+    def from_data(cls, data, builder):
+        obj = cls(builder=builder)
+        obj.data = data
+        return obj
 
     # ==============================================================================
     # Properties

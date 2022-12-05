@@ -12,6 +12,7 @@ from compas_rhino.conversions import cylinder_to_rhino
 
 import Rhino
 
+from .builder import RhinoBrepBuilder
 from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
@@ -70,18 +71,22 @@ class RhinoBrep(Brep):
 
     @property
     def data(self):
-        faces = []
-        for face in self.faces:
-            faces.append(face.data)
-        return {"faces": faces}
+        return {
+            "vertices": [v.data for v in self.vertices],
+            "edges": [e.data for e in self.edges],
+            "faces": [f.data for f in self.faces],
+            }
 
     @data.setter
     def data(self, data):
-        faces = []
-        for facedata in data["faces"]:
-            face = RhinoBrepFace.from_data(facedata)
-            faces.append(face)
-        self._create_native_brep(faces)
+        builder = RhinoBrepBuilder()
+        for v_data in data["vertices"]:
+            RhinoBrepVertex.from_data(v_data, builder)
+        for e_data in data["edges"]:
+            RhinoBrepEdge.from_data(e_data, builder)
+        for f_data in data["faces"]:
+            RhinoBrepFace.from_data(f_data, builder)
+        self._brep = builder.result
 
     # ==============================================================================
     # Properties
@@ -103,7 +108,7 @@ class RhinoBrep(Brep):
     @property
     def edges(self):
         if self._brep:
-            return [RhinoBrepEdge(trim) for trim in self._brep.Trims]
+            return [RhinoBrepEdge(trim) for trim in self._brep.Edges]
 
     @property
     def loops(self):
