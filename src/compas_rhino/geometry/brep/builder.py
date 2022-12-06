@@ -30,7 +30,20 @@ class RhinoLoopBuilder(object):
 
         Parameters
         ==========
-        curve: 
+        curve : :rhino:`Rhino.Geometry.NurbsCurve`
+            The curve representing the geometry of this trim.
+        edge_index : int
+            The index of the already added edge which corresponds with this trim.
+        is_reversed : bool
+            True if this trim is reversed in direction from its associated edge.
+        iso_status : :rhino:`Rhino.Geometry.IsoStatus`
+            The iso status of this trim.
+
+        Returns
+        =======
+        :rhino:`Rhino.Geometry.BrepTrim`
+            The newly added BrepTrim instance.
+
         """
         c_index = self.instance.AddTrimCurve(curve)
         edge = self.instance.Edges[edge_index]
@@ -45,6 +58,16 @@ class RhinoLoopBuilder(object):
 
 
 class RhinoFaceBuilder(object):
+    """Builds a BrepFace.
+
+    Serves as context for reconstructing the loop elements associated with this face.
+
+    Attributes
+    ==========
+    result : :rhino:`Rhino.Geometry.BrepFace`
+        The resulting BrepFace.
+
+    """
     def __init__(self, face=None, instance=None):
         self.face = face
         self.instance = instance
@@ -54,6 +77,20 @@ class RhinoFaceBuilder(object):
         return self.face
 
     def add_loop(self, loop_type):
+        """Add a new loop to this face.
+
+        Returns a new builder to be used by all the trims of the newly added loop.
+
+        Parameters
+        ==========
+        loop_type : :rhino:`Rhino.Geometry.BrepLoopType`
+            The enumeration value representing the type of this loop.
+
+        Returns
+        =======
+        :class:`compas_rhino.geometry.RhinoLoopBuilder`
+
+        """
         loop = self.instance.Loops.Add(loop_type, self.face)
         return RhinoLoopBuilder(loop, self.instance)
 
@@ -103,6 +140,20 @@ class RhinoBrepBuilder(object):
         return self._instance.Edges.Add(s_vertex, e_vertex, curve_index, TOLERANCE)
 
     def add_face(self, surface):
+        """Creates and adds a new face to the brep.
+
+        Returns a new builder to be used by all the loops related to his new face to add themselves.
+
+        Parameters
+        ==========
+        surface : :rhino:`Rhino.Geometry.Surface`
+            The surface of this face.
+        
+        Returns
+        =======
+        :class:`compas_rhino.geometry.RhinoFaceBuilder`
+                
+        """
         surface_index = self._instance.AddSurface(surface.rhino_surface)
         face = self._instance.Faces.Add(surface_index)
         return RhinoFaceBuilder(face=face, instance=self._instance)
