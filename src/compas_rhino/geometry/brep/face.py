@@ -3,7 +3,6 @@ from compas.geometry import Sphere
 from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas_rhino.geometry import RhinoNurbsSurface
-from compas_rhino.conversions import plane_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import sphere_to_compas
 from compas_rhino.conversions import cylinder_to_compas
@@ -73,6 +72,22 @@ class RhinoBrepFace(BrepFace):
 
     @classmethod
     def from_data(cls, data, builder):
+        """Construct an object of this type from the provided data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+            The object reconstructing the current Brep.
+
+        Returns
+        -------
+        :class:`~compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
+
         obj = cls(builder=builder)
         obj.data = data
         return obj

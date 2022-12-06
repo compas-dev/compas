@@ -8,15 +8,30 @@ TOLERANCE = 1e-6
 
 
 class BrepReconstructionError(BaseException):
+    """Indicates that the Brep reconstruction operation has resulted with an invalid Brep."""
     pass
 
 
 class RhinoLoopBuilder(object):
+    """Builds a Brep loop.
+    
+    Attributes
+    ----------
+    result : :rhino: Rhino.Geometry.BrepTrim
+        The created loop.
+
+    """
     def __init__(self, loop=None, instance=None):
         self.loop = loop
         self.instance = instance
 
     def add_trim(self, curve, edge_index, is_reversed, iso_status):
+        """Add trim to the new Brep.
+
+        Parameters
+        ==========
+        curve: 
+        """
         c_index = self.instance.AddTrimCurve(curve)
         edge = self.instance.Edges[edge_index]
         trim = self.instance.Trims.Add(edge, is_reversed, self.loop, c_index)

@@ -4,8 +4,8 @@ from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas_rhino.geometry import RhinoNurbsCurve
 from compas_rhino.conversions import curve_to_compas_line
-from compas_rhino.conversions import curve_to_compas_circle
-from compas_rhino.conversions import curve_to_compas_ellipse
+# from compas_rhino.conversions import curve_to_compas_circle
+# from compas_rhino.conversions import curve_to_compas_ellipse
 from compas_rhino.conversions import line_to_rhino_curve
 from compas_rhino.conversions import circle_to_rhino_curve
 from compas_rhino.conversions import ellipse_to_rhino_curve
@@ -77,6 +77,21 @@ class RhinoBrepEdge(BrepEdge):
 
     @classmethod
     def from_data(cls, data, builder):
+        """Construct an object of this type from the provided data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+            The object reconstructing the current Brep.
+
+        Returns
+        -------
+        :class:`~compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
         obj = cls(builder=builder)
         obj.data = data
         return obj
