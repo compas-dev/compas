@@ -35,6 +35,8 @@ class RhinoBrep(Brep):
         The list of vertex geometries as points in 3D space.
     edges : list[:class:`~compas_rhino.geometry.RhinoBrepEdge`], read-only
         The list of edges which comprise this brep.
+    trims : list[:class:`~compas_rhino.geometry.RhinoBrepTrim`], read-only
+        The list of trims which comprise this brep.
     loops : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`], read-only
         The list of loops which comprise this brep.
     faces : list[:class:`~compas_rhino.geometry.RhinoBrepFace`], read-only
@@ -106,7 +108,12 @@ class RhinoBrep(Brep):
     @property
     def edges(self):
         if self._brep:
-            return [RhinoBrepEdge(trim) for trim in self._brep.Edges]
+            return [RhinoBrepEdge(edge) for edge in self._brep.Edges]
+
+    @property
+    def trims(self):
+        if self._brep:
+            return [RhinoBrepEdge(trim) for trim in self._brep.Trims]
 
     @property
     def loops(self):
