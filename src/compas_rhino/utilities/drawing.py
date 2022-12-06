@@ -783,10 +783,11 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
 
     """
     def average_color(colors):
+        c = len(colors)
         r, g, b = zip(*colors)
-        r = sum(r) / len(face)
-        g = sum(g) / len(face)
-        b = sum(b) / len(face)
+        r = sum(r) / c
+        g = sum(g) / c
+        b = sum(b) / c
         return int(r), int(g), int(b)
 
     vertex_color = vertex_color or {}
