@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added option for per-vertex color specification to `compas_rhino.utilities.drawing.draw_mesh`.
+
 ### Changed
 
 * Fixed strange point values in RhinoNurbsCurve caused by conversion `ControlPoint` to COMPAS instead of `ControlPoint.Location`.
