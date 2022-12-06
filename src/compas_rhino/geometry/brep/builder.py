@@ -11,16 +11,23 @@ TOLERANCE = 1e-6
 class RhinoLoopBuilder(object):
     """Builds a Brep loop.
 
+    Parameters
+    ==========
+    loop : :rhino:`Rhino.Geometry.BrepLoop`
+        The loop currently being constructed.
+    brep : :rhino:`Rhino.Geometry.Brep`
+        The parent brep object.
+
     Attributes
-    ----------
+    ==========
     result : :rhino: Rhino.Geometry.BrepTrim
         The created loop.
 
     """
 
-    def __init__(self, loop=None, instance=None):
-        self.loop = loop
-        self.instance = instance
+    def __init__(self, loop=None, brep=None):
+        self._loop = loop
+        self._brep = brep
 
     def add_trim(self, curve, edge_index, is_reversed, iso_status):
         """Add trim to the new Brep.
@@ -42,22 +49,29 @@ class RhinoLoopBuilder(object):
             The newly added BrepTrim instance.
 
         """
-        c_index = self.instance.AddTrimCurve(curve)
-        edge = self.instance.Edges[edge_index]
-        trim = self.instance.Trims.Add(edge, is_reversed, self.loop, c_index)
+        c_index = self._brep.AddTrimCurve(curve)
+        edge = self._brep.Edges[edge_index]
+        trim = self._brep.Trims.Add(edge, is_reversed, self._loop, c_index)
         trim.IsoStatus = iso_status
         trim.SetTolerances(TOLERANCE, TOLERANCE)
         return trim
 
     @property
     def result(self):
-        return self.loop
+        return self._loop
 
 
 class RhinoFaceBuilder(object):
     """Builds a BrepFace.
 
     Serves as context for reconstructing the loop elements associated with this face.
+
+    Parameters
+    ==========
+    face : :rhino:`Rhino.Geometry.BrepFace`
+        The face currently being constructed.
+    brep : :rhino:`Rhino.Geometry.Brep`
+        The parent brep.
 
     Attributes
     ==========
@@ -66,13 +80,13 @@ class RhinoFaceBuilder(object):
 
     """
 
-    def __init__(self, face=None, instance=None):
-        self.face = face
-        self.instance = instance
+    def __init__(self, face=None, brep=None):
+        self._face = face
+        self._brep = brep
 
     @property
     def result(self):
-        return self.face
+        return self._face
 
     def add_loop(self, loop_type):
         """Add a new loop to this face.
@@ -89,8 +103,8 @@ class RhinoFaceBuilder(object):
         :class:`compas_rhino.geometry.RhinoLoopBuilder`
 
         """
-        loop = self.instance.Loops.Add(loop_type, self.face)
-        return RhinoLoopBuilder(loop, self.instance)
+        loop = self._brep.Loops.Add(loop_type, self._face)
+        return RhinoLoopBuilder(loop, self._brep)
 
 
 class RhinoBrepBuilder(object):
@@ -104,14 +118,14 @@ class RhinoBrepBuilder(object):
     """
 
     def __init__(self):
-        self._instance = Rhino.Geometry.Brep()
+        self._brep = Rhino.Geometry.Brep()
 
     @property
     def result(self):
-        is_valid, log = self._instance.IsValidWithLog()
+        is_valid, log = self._brep.IsValidWithLog()
         if not is_valid:
             raise BrepInvalidError("Brep reconstruction failed!\n{}".format(log))
-        return self._instance
+        return self._brep
 
     def add_vertex(self, point):
         """Add vertext to a new Brep
@@ -123,7 +137,7 @@ class RhinoBrepBuilder(object):
         :rhino:`Rhino.Geometry.BrepVertex`
 
         """
-        return self._instance.Vertices.Add(point_to_rhino(point), TOLERANCE)
+        return self._brep.Vertices.Add(point_to_rhino(point), TOLERANCE)
 
     def add_edge(self, edge_curve, start_vertex, end_vertex):
         """Add edge to the new Brep
@@ -139,10 +153,10 @@ class RhinoBrepBuilder(object):
         :rhino:`Rhino.Geometry.BrepEdge`
 
         """
-        curve_index = self._instance.AddEdgeCurve(edge_curve)
-        s_vertex = self._instance.Vertices[start_vertex]
-        e_vertex = self._instance.Vertices[end_vertex]
-        return self._instance.Edges.Add(s_vertex, e_vertex, curve_index, TOLERANCE)
+        curve_index = self._brep.AddEdgeCurve(edge_curve)
+        s_vertex = self._brep.Vertices[start_vertex]
+        e_vertex = self._brep.Vertices[end_vertex]
+        return self._brep.Edges.Add(s_vertex, e_vertex, curve_index, TOLERANCE)
 
     def add_face(self, surface):
         """Creates and adds a new face to the brep.
@@ -159,6 +173,6 @@ class RhinoBrepBuilder(object):
         :class:`compas_rhino.geometry.RhinoFaceBuilder`
 
         """
-        surface_index = self._instance.AddSurface(surface.rhino_surface)
-        face = self._instance.Faces.Add(surface_index)
-        return RhinoFaceBuilder(face=face, instance=self._instance)
+        surface_index = self._brep.AddSurface(surface.rhino_surface)
+        face = self._brep.Faces.Add(surface_index)
+        return RhinoFaceBuilder(face=face, brep=self._brep)
