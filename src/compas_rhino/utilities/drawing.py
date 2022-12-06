@@ -772,8 +772,8 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
         The base color of the mesh.
     vertex_color : dict[int, tuple[int, int, int]], optional
         A color per vertex of the mesh.
-        Vertices without a color specification in this mapping,
-        will receive the base color.
+        Vertices without a color specification in this mapping, will receive the base color.
+        For example: ``vertex_color = {vertex: Color.from_i(random.random()).rgb255 for face in faces for vertex in face}``
     disjoint : bool, optional
         If True, draw the mesh with disjoint faces.
 
@@ -782,6 +782,13 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
     System.Guid
 
     """
+    def average_color(colors):
+        r, g, b = zip(*colors)
+        r = sum(r) / len(face)
+        g = sum(g) / len(face)
+        b = sum(b) / len(face)
+        return int(r), int(g), int(b)
+
     vertex_color = vertex_color or {}
     vertexcolors = []
     mesh = RhinoMesh()
@@ -811,13 +818,9 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
                 mesh.Faces.AddFace(a, b, c, d)
             else:
                 if MeshNgon:
-                    cornercolors = [vertex_color.get(vertex) for vertex in face]
+                    cornercolors = [vertex_color.get(vertex, color) for vertex in face]
                     vertexcolors += cornercolors
-                    r, g, b = zip(*cornercolors)
-                    r = sum(r) / len(face)
-                    g = sum(g) / len(face)
-                    b = sum(b) / len(face)
-                    vertexcolors.append((int(r), int(g), int(b)))
+                    vertexcolors.append(average_color(cornercolors))
 
                     points = [vertices[vertex] for vertex in face]
                     centroid = centroid_polygon(points)
@@ -847,12 +850,8 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
                 mesh.Faces.AddFace(*face)
             else:
                 if MeshNgon:
-                    cornercolors = [vertex_color.get(index) for index in face]
-                    r, g, b = zip(*cornercolors)
-                    r = sum(r) / len(face)
-                    g = sum(g) / len(face)
-                    b = sum(b) / len(face)
-                    vertexcolors.append((int(r), int(g), int(b)))
+                    cornercolors = [vertex_color.get(index, color) for index in face]
+                    vertexcolors.append(average_color(cornercolors))
 
                     centroid = centroid_polygon([vertices[index] for index in face])
                     c = mesh.Vertices.Add(*centroid)
