@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added conversion function `frame_to_rhino_plane` to `compas_rhino.conversions`.
 * Added `RhinoSuface.from_frame` to `compas_rhino.geometry`.
+* Added representation for trims with `compas.geometry.BrepTrim`.
 
 ### Changed
 
 * Fixed strange point values in RhinoNurbsCurve caused by conversion `ControlPoint` to COMPAS instead of `ControlPoint.Location`.
 * Fixed flipped order of NURBS point count values when creating RhinoNurbsSurface from parameters.
+* Changed serialization format and reconstruction procedure of `RhinoBrep`.
 
 ### Removed
 
