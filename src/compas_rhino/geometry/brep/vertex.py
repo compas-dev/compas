@@ -36,7 +36,7 @@ class RhinoBrepVertex(BrepVertex):
         }
 
     @data.setter
-    def data(self, data):      
+    def data(self, data):
         self._point = Point.from_data(data["point"])
         self._vertex = self._builder.add_vertex(self._point)
 

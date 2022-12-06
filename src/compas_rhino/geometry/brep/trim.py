@@ -18,6 +18,7 @@ class RhinoBrepTrim(BrepTrim):
         True if this trim is reversed from its associated edge curve and False otherwise.
 
     """
+
     def __init__(self, rhino_trim=None, builder=None):
 
         super(RhinoBrepTrim, self).__init__()
@@ -33,7 +34,7 @@ class RhinoBrepTrim(BrepTrim):
         self._trim = rhino_trim
         self._curve = RhinoNurbsCurve.from_rhino(rhino_trim.TrimCurve.ToNurbsCurve())
         self._is_reversed = rhino_trim.IsReversed()
-        self._iso_type  = int(rhino_trim.IsoStatus)
+        self._iso_type = int(rhino_trim.IsoStatus)
 
     @property
     def data(self):
@@ -41,7 +42,7 @@ class RhinoBrepTrim(BrepTrim):
             "edge": self._trim.Edge.EdgeIndex,
             "curve": RhinoNurbsCurve.from_rhino(self._trim.TrimCurve.ToNurbsCurve()).data,
             "iso": str(self._trim.IsoStatus),
-            "is_reversed": "true" if self._trim.IsReversed() else "false"
+            "is_reversed": "true" if self._trim.IsReversed() else "false",
         }
 
     @data.setter

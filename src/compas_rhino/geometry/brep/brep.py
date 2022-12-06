@@ -1,11 +1,9 @@
 from compas.geometry import Frame
 from compas.geometry import Brep
-from compas.geometry import BrepInvalidError
 from compas.geometry import BrepTrimmingError
 from compas.geometry import Plane
 
 from compas_rhino.conversions import box_to_rhino
-from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
@@ -75,7 +73,7 @@ class RhinoBrep(Brep):
             "vertices": [v.data for v in self.vertices],
             "edges": [e.data for e in self.edges],
             "faces": [f.data for f in self.faces],
-            }
+        }
 
     @data.setter
     def data(self, data):

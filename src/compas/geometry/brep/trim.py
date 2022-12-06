@@ -3,8 +3,9 @@ from compas.data import Data
 
 class BrepTrimIsoStatus(object):
     """An enumeration of isoparametric curve direction on the surface."""
-    NONE = 0 
-    X = 1 
+
+    NONE = 0
+    X = 1
     Y = 2
     West = 3
     South = 4
@@ -37,4 +38,3 @@ class BrepTrim(Data):
     @property
     def is_reversed(self):
         raise NotImplementedError
-

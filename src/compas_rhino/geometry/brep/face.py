@@ -54,10 +54,10 @@ class RhinoBrepFace(BrepFace):
     def data(self):
         surface_type, surface, uv_domain = self._get_surface_geometry(self._face.UnderlyingSurface())
         return {
-            "surface_type": surface_type, 
-            "surface": surface.data, 
-            "uv_domain": uv_domain, 
-            "loops": [l.data for l in self._loops]
+            "surface_type": surface_type,
+            "surface": surface.data,
+            "uv_domain": uv_domain,
+            "loops": [loop.data for loop in self._loops],
         }
 
     @data.setter
@@ -91,7 +91,7 @@ class RhinoBrepFace(BrepFace):
         obj = cls(builder=builder)
         obj.data = data
         return obj
-        
+
     # ==============================================================================
     # Properties
     # ==============================================================================
@@ -151,5 +151,5 @@ class RhinoBrepFace(BrepFace):
         elif surface_type == "torus":
             raise NotImplementedError("Support for torus surface is not yet implemented!")
         surface.rhino_surface.SetDomain(0, Interval(*uv_domain[0]))
-        surface.rhino_surface.SetDomain(1, Interval(*uv_domain[1]))    
+        surface.rhino_surface.SetDomain(1, Interval(*uv_domain[1]))
         return surface

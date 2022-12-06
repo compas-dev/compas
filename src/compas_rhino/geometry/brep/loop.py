@@ -57,7 +57,6 @@ class RhinoBrepLoop(BrepLoop):
         self._type = int(self._loop.LoopType)
         self._trims = [RhinoBrepTrim(trim) for trim in self._loop.Trims]
 
-
     # ==============================================================================
     # Data
     # ==============================================================================
@@ -68,7 +67,9 @@ class RhinoBrepLoop(BrepLoop):
 
     @data.setter
     def data(self, value):
-        self._type = Rhino.Geometry.BrepLoopType.Outer if value["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
+        self._type = (
+            Rhino.Geometry.BrepLoopType.Outer if value["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
+        )
         loop_builder = self._builder.add_loop(self._type)
         for trim_data in value["trims"]:
             RhinoBrepTrim.from_data(trim_data, loop_builder)

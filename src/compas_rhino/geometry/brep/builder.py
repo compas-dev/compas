@@ -10,13 +10,14 @@ TOLERANCE = 1e-6
 
 class RhinoLoopBuilder(object):
     """Builds a Brep loop.
-    
+
     Attributes
     ----------
     result : :rhino: Rhino.Geometry.BrepTrim
         The created loop.
 
     """
+
     def __init__(self, loop=None, instance=None):
         self.loop = loop
         self.instance = instance
@@ -64,6 +65,7 @@ class RhinoFaceBuilder(object):
         The resulting BrepFace.
 
     """
+
     def __init__(self, face=None, instance=None):
         self.face = face
         self.instance = instance
@@ -93,14 +95,14 @@ class RhinoFaceBuilder(object):
 
 class RhinoBrepBuilder(object):
     """Reconstructs a Rhino.Geometry.Brep from COMPAS types
-    
+
     Attributes
     ==========
     result : :rhino:`Rhino.Geometry.Brep`
         The Brep resulting from the reconstruction, if successful.
-        
-    """   
-    
+
+    """
+
     def __init__(self):
         self._instance = Rhino.Geometry.Brep()
 
@@ -119,7 +121,7 @@ class RhinoBrepBuilder(object):
         Returns
         -------
         :rhino:`Rhino.Geometry.BrepVertex`
-        
+
         """
         return self._instance.Vertices.Add(point_to_rhino(point), TOLERANCE)
 
@@ -151,7 +153,7 @@ class RhinoBrepBuilder(object):
         ==========
         surface : :rhino:`Rhino.Geometry.Surface`
             The surface of this face.
-        
+
         Returns
         =======
         :class:`compas_rhino.geometry.RhinoFaceBuilder`
@@ -160,5 +162,3 @@ class RhinoBrepBuilder(object):
         surface_index = self._instance.AddSurface(surface.rhino_surface)
         face = self._instance.Faces.Add(surface_index)
         return RhinoFaceBuilder(face=face, instance=self._instance)
-
-

@@ -4,6 +4,7 @@ from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas_rhino.geometry import RhinoNurbsCurve
 from compas_rhino.conversions import curve_to_compas_line
+
 # from compas_rhino.conversions import curve_to_compas_circle
 # from compas_rhino.conversions import curve_to_compas_ellipse
 from compas_rhino.conversions import line_to_rhino_curve
@@ -66,7 +67,7 @@ class RhinoBrepEdge(BrepEdge):
             "curve_type": curve_type,
             "curve": curve.data,
             "start_vertex": self._edge.StartVertex.VertexIndex,
-            "end_vertex": self._edge.EndVertex.VertexIndex
+            "end_vertex": self._edge.EndVertex.VertexIndex,
         }
 
     @data.setter
@@ -142,11 +143,11 @@ class RhinoBrepEdge(BrepEdge):
         #     curve = curve_to_compas_ellipse(curve)
         else:
             type_ = "nurbs"
-            curve = self._curve   
-        return  type_, curve
+            curve = self._curve
+        return type_, curve
 
     @staticmethod
-    def _create_curve_from_data(curve_type, curve_data):       
+    def _create_curve_from_data(curve_type, curve_data):
         if curve_type == "line":
             return line_to_rhino_curve(Line.from_data(curve_data))
         elif curve_type == "circle":
