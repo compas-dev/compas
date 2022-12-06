@@ -782,6 +782,7 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
     System.Guid
 
     """
+
     def average_color(colors):
         c = len(colors)
         r, g, b = zip(*colors)
