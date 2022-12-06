@@ -7,10 +7,10 @@ class BrepTrimIsoStatus(object):
     NONE = 0
     X = 1
     Y = 2
-    West = 3
-    South = 4
-    East = 5
-    North = 6
+    WEST = 3
+    SOUTH = 4
+    EAST = 5
+    NORTH = 6
 
 
 class BrepTrim(Data):
@@ -20,7 +20,7 @@ class BrepTrim(Data):
     ----------
     curve : :class:`~compas.geometry.NurbsCurve`, read_only
         Returns the geometry for this trim as a 2d curve.
-    iso_status : literal(NONE|X|Y|West|South|East|North)
+    iso_status : literal(NONE|X|Y|WEST|SOUTH|EAST|NORTH)
         The isoparametric curve direction on the surface.
     is_reversed : bool
         True if this trim is reversed from its associated edge curve and False otherwise.
