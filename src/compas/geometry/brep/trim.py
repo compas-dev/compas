@@ -1,7 +1,7 @@
 from compas.data import Data
 
 
-class TrimIsoStatus(object):
+class BrepTrimIsoStatus(object):
     """An enumeration of isoparametric curve direction on the surface."""
     NONE = 0 
     X = 1 

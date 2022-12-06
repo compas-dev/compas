@@ -1,3 +1,4 @@
+from compas.geometry import BrepInvalidError
 from compas_rhino.conversions import point_to_rhino
 
 
@@ -5,11 +6,6 @@ import Rhino
 
 
 TOLERANCE = 1e-6
-
-
-class BrepReconstructionError(BaseException):
-    """Indicates that the Brep reconstruction operation has resulted with an invalid Brep."""
-    pass
 
 
 class RhinoLoopBuilder(object):
@@ -96,7 +92,14 @@ class RhinoFaceBuilder(object):
 
 
 class RhinoBrepBuilder(object):
-    """Reconstructs a Rhino.Geometry.Brep from COMPAS types"""   
+    """Reconstructs a Rhino.Geometry.Brep from COMPAS types
+    
+    Attributes
+    ==========
+    result : :rhino:`Rhino.Geometry.Brep`
+        The Brep resulting from the reconstruction, if successful.
+        
+    """   
     
     def __init__(self):
         self._instance = Rhino.Geometry.Brep()
@@ -105,7 +108,7 @@ class RhinoBrepBuilder(object):
     def result(self):
         is_valid, log = self._instance.IsValidWithLog()
         if not is_valid:
-            raise BrepReconstructionError("Brep reconstruction failed!\n{}".format(log))
+            raise BrepInvalidError("Brep reconstruction failed!\n{}".format(log))
         return self._instance
 
     def add_vertex(self, point):
@@ -152,7 +155,7 @@ class RhinoBrepBuilder(object):
         Returns
         =======
         :class:`compas_rhino.geometry.RhinoFaceBuilder`
-                
+
         """
         surface_index = self._instance.AddSurface(surface.rhino_surface)
         face = self._instance.Faces.Add(surface_index)
