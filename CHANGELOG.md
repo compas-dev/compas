@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed Python 3.6 from build workflows as it reached end-of-life at the end of 2021.
+
 
 ## [1.17.3] 2022-11-09
 
