@@ -58,6 +58,7 @@ Primitives
     line_to_rhino
     plane_to_rhino
     frame_to_rhino
+    frame_to_rhino_plane
     circle_to_rhino
     ellipse_to_rhino
     polyline_to_rhino
@@ -134,6 +135,7 @@ from ._primitives import (
     line_to_rhino,
     plane_to_rhino,
     frame_to_rhino,
+    frame_to_rhino_plane,
     circle_to_rhino,
     ellipse_to_rhino,
     polyline_to_rhino,
@@ -196,6 +198,7 @@ __all__ = [
     "line_to_rhino",
     "plane_to_rhino",
     "frame_to_rhino",
+    "frame_to_rhino_plane",
     "circle_to_rhino",
     "ellipse_to_rhino",
     "polyline_to_rhino",

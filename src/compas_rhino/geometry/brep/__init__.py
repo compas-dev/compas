@@ -5,6 +5,10 @@ from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 from .loop import RhinoBrepLoop
+from .trim import RhinoBrepTrim
+from .builder import RhinoBrepBuilder
+from .builder import RhinoFaceBuilder
+from .builder import RhinoLoopBuilder
 
 import Rhino
 
@@ -15,6 +19,10 @@ __all__ = [
     "RhinoBrepEdge",
     "RhinoBrepLoop",
     "RhinoBrepFace",
+    "RhinoBrepTrim",
+    "RhinoBrepBuilder",
+    "RhinoFaceBuilder",
+    "RhinoLoopBuilder",
     "new_brep",
     "from_native",
     "from_box",

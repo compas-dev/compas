@@ -21,7 +21,10 @@ Classes
     RhinoBrepEdge
     RhinoBrepFace
     RhinoBrepLoop
-
+    RhinoBrepTrim
+    RhinoBrepBuilder
+    RhinoFaceBuilder
+    RhinoLoopBuilder
 
 Plugins
 =======
@@ -91,7 +94,10 @@ from .brep import RhinoBrepLoop
 from .brep import RhinoBrepVertex
 from .brep import RhinoBrepFace
 from .brep import RhinoBrepEdge
-
+from .brep import RhinoBrepTrim
+from .brep import RhinoBrepBuilder
+from .brep import RhinoFaceBuilder
+from .brep import RhinoLoopBuilder
 
 __all__ = [
     "RhinoGeometry",
@@ -116,4 +122,8 @@ __all__ = [
     "RhinoBrepEdge",
     "RhinoBrepFace",
     "RhinoBrepLoop",
+    "RhinoBrepTrim",
+    "RhinoBrepBuilder",
+    "RhinoFaceBuilder",
+    "RhinoLoopBuilder",
 ]

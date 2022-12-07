@@ -127,6 +127,8 @@ class Brep(Geometry):
         The vertices of the Brep.
     edges : list[:class:`~compas.geometry.BrepEdge`], read-only
         The edges of the Brep.
+    trims : list[:class:`~compas.geometry.BrepTrim`], read-only
+        The trims of the Brep.
     loops : list[:class:`~compas.geometry.BrepLoop`], read-only
         The loops of the Brep.
     faces : list[:class:`~compas.geometry.BrepFace`], read-only
@@ -312,6 +314,10 @@ class Brep(Geometry):
 
     @property
     def edges(self):
+        raise NotImplementedError
+
+    @property
+    def trims(self):
         raise NotImplementedError
 
     @property

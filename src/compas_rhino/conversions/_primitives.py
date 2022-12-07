@@ -160,6 +160,21 @@ def plane_to_compas_frame(plane):
     )
 
 
+def frame_to_rhino_plane(frame):
+    """Convert a COMPAS frame to a Rhino plane.
+
+    Parameters
+    ----------
+    frame : :class:`~compas.geometry.Frame`
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Plane`
+
+    """
+    return RhinoPlane(point_to_rhino(frame.point), vector_to_rhino(frame.xaxis), vector_to_rhino(frame.yaxis))
+
+
 def frame_to_rhino(frame):
     """Convert a COMPAS frame to a Rhino plane.
 

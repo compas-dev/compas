@@ -2,7 +2,7 @@ from compas.geometry import BrepLoop
 
 import Rhino
 
-from .edge import RhinoBrepEdge
+from .trim import RhinoBrepTrim
 
 
 class LoopType(object):
@@ -43,18 +43,19 @@ class RhinoBrepLoop(BrepLoop):
 
     """
 
-    def __init__(self, rhino_loop=None):
+    def __init__(self, rhino_loop=None, builder=None):
         super(RhinoBrepLoop, self).__init__()
+        self._builder = builder
         self._loop = None
-        self._edges = None
         self._type = LoopType.UNKNOWN
+        self._trims = None
         if rhino_loop:
             self._set_loop(rhino_loop)
 
     def _set_loop(self, native_loop):
         self._loop = native_loop
         self._type = int(self._loop.LoopType)
-        self._edges = [RhinoBrepEdge(trim) for trim in self._loop.Trims]
+        self._trims = [RhinoBrepTrim(trim) for trim in self._loop.Trims]
 
     # ==============================================================================
     # Data
@@ -62,11 +63,38 @@ class RhinoBrepLoop(BrepLoop):
 
     @property
     def data(self):
-        return [e.data for e in self._edges]
+        return {"type": str(self._loop.LoopType), "trims": [t.data for t in self._trims]}
 
     @data.setter
     def data(self, value):
-        self._edges = [RhinoBrepEdge.from_data(e_data) for e_data in value]
+        self._type = (
+            Rhino.Geometry.BrepLoopType.Outer if value["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
+        )
+        loop_builder = self._builder.add_loop(self._type)
+        for trim_data in value["trims"]:
+            RhinoBrepTrim.from_data(trim_data, loop_builder)
+        self._set_loop(loop_builder.result)
+
+    @classmethod
+    def from_data(cls, data, builder):
+        """Construct an object of this type from the provided data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        builder : :class:`~compas_rhino.geometry.BrepFaceBuilder`
+            The object reconstructing the current BrepFace.
+
+        Returns
+        -------
+        :class:`~compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
+        obj = cls(builder=builder)
+        obj.data = data
+        return obj
 
     # ==============================================================================
     # Properties
