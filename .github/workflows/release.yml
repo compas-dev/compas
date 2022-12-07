@@ -14,11 +14,11 @@ jobs:
         python: ['3.8', '3.9', '3.10']
 
     steps:
-      - uses: compas-dev/compas-actions.build@v2
+      - uses: compas-dev/compas-actions.build@v3
         with:
           python: ${{ matrix.python }}
-          test_lint: true
-          test_compas: true
+          invoke_lint: true
+          check_import: true
 
   publish:
     needs: build
@@ -28,7 +28,6 @@ jobs:
         with:
           pypi_token: ${{ secrets.PYPI }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          python: '3.10'
           build_ghpython_components: true
           gh_source: src/compas_ghpython/components
           gh_target: src/compas_ghpython/components/ghuser
