@@ -13,9 +13,7 @@ here = path.abspath(path.dirname(__file__))
 
 
 def read(*names, **kwargs):
-    return io.open(
-        path.join(here, *names), encoding=kwargs.get("encoding", "utf8")
-    ).read()
+    return io.open(path.join(here, *names), encoding=kwargs.get("encoding", "utf8")).read()
 
 
 long_description = read("README.md")
@@ -24,7 +22,7 @@ optional_requirements = {}
 
 setup(
     name="COMPAS",
-    version="1.17.3",
+    version="1.17.4",
     description="The COMPAS framework",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -42,7 +40,6 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",

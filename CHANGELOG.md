@@ -15,11 +15,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+### Removed
+
+
+## [1.17.4] 2022-12-06
+
+### Added
+
+* Added option for per-vertex color specification to `compas_rhino.utilities.drawing.draw_mesh`.
+
+### Changed
+
 * Fixed strange point values in RhinoNurbsCurve caused by conversion `ControlPoint` to COMPAS instead of `ControlPoint.Location`.
 * Fixed flipped order of NURBS point count values when creating RhinoNurbsSurface from parameters.
 * Changed serialization format and reconstruction procedure of `RhinoBrep`.
 
 ### Removed
+
+* Removed Python 3.6 from build workflows as it reached end-of-life at the end of 2021.
 
 
 ## [1.17.3] 2022-11-09

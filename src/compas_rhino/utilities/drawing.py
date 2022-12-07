@@ -757,7 +757,7 @@ def draw_spheres(spheres, **kwargs):
 
 
 @wrap_drawfunc
-def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
+def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoint=False, **kwargs):
     """Draw a mesh and optionally set individual name, color, and layer properties.
 
     Parameters
@@ -767,7 +767,13 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     faces : list[list[int]]
         A list of faces as lists of indices into `vertices`.
     name : str, optional
+        The name of the mesh object in Rhino.
     color : tuple[[int, int, int]], optional
+        The base color of the mesh.
+    vertex_color : dict[int, tuple[int, int, int]], optional
+        A color per vertex of the mesh.
+        Vertices without a color specification in this mapping, will receive the base color.
+        For example: ``vertex_color = {vertex: Color.from_i(random.random()).rgb255 for face in faces for vertex in face}``
     disjoint : bool, optional
         If True, draw the mesh with disjoint faces.
 
@@ -776,7 +782,19 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     System.Guid
 
     """
+
+    def average_color(colors):
+        c = len(colors)
+        r, g, b = zip(*colors)
+        r = sum(r) / c
+        g = sum(g) / c
+        b = sum(b) / c
+        return int(r), int(g), int(b)
+
+    vertex_color = vertex_color or {}
+    vertexcolors = []
     mesh = RhinoMesh()
+
     if disjoint:
         for face in faces:
             f = len(face)
@@ -786,29 +804,44 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
                 a = mesh.Vertices.Add(*vertices[face[0]])
                 b = mesh.Vertices.Add(*vertices[face[1]])
                 c = mesh.Vertices.Add(*vertices[face[2]])
+                vertexcolors.append(vertex_color.get(face[0], color))
+                vertexcolors.append(vertex_color.get(face[1], color))
+                vertexcolors.append(vertex_color.get(face[2], color))
                 mesh.Faces.AddFace(a, b, c)
             elif f == 4:
                 a = mesh.Vertices.Add(*vertices[face[0]])
                 b = mesh.Vertices.Add(*vertices[face[1]])
                 c = mesh.Vertices.Add(*vertices[face[2]])
                 d = mesh.Vertices.Add(*vertices[face[3]])
+                vertexcolors.append(vertex_color.get(face[0], color))
+                vertexcolors.append(vertex_color.get(face[1], color))
+                vertexcolors.append(vertex_color.get(face[2], color))
+                vertexcolors.append(vertex_color.get(face[3], color))
                 mesh.Faces.AddFace(a, b, c, d)
             else:
                 if MeshNgon:
+                    cornercolors = [vertex_color.get(vertex, color) for vertex in face]
+                    vertexcolors += cornercolors
+                    vertexcolors.append(average_color(cornercolors))
+
                     points = [vertices[vertex] for vertex in face]
                     centroid = centroid_polygon(points)
                     indices = []
                     for point in points:
                         indices.append(mesh.Vertices.Add(*point))
                     c = mesh.Vertices.Add(*centroid)
+
                     facets = []
                     for i, j in pairwise(indices + indices[:1]):
                         facets.append(mesh.Faces.AddFace(i, j, c))
                     ngon = MeshNgon.Create(indices, facets)
                     mesh.Ngons.AddNgon(ngon)
+
     else:
-        for x, y, z in vertices:
+        for index, (x, y, z) in enumerate(vertices):
             mesh.Vertices.Add(x, y, z)
+            vertexcolors.append(vertex_color.get(index, color))
+
         for face in faces:
             f = len(face)
             if f < 3:
@@ -819,8 +852,12 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
                 mesh.Faces.AddFace(*face)
             else:
                 if MeshNgon:
+                    cornercolors = [vertex_color.get(index, color) for index in face]
+                    vertexcolors.append(average_color(cornercolors))
+
                     centroid = centroid_polygon([vertices[index] for index in face])
                     c = mesh.Vertices.Add(*centroid)
+
                     facets = []
                     for i, j in pairwise(face + face[:1]):
                         facets.append(mesh.Faces.AddFace(i, j, c))
@@ -833,6 +870,12 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     guid = add_mesh(mesh)
 
     if guid != System.Guid.Empty:
+        if vertexcolors:
+            try:
+                compas_rhino.set_mesh_vertex_colors(guid, vertexcolors)
+            except Exception:
+                pass
+
         obj = find_object(guid)
         if obj:
             attr = obj.Attributes
