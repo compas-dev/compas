@@ -29,7 +29,7 @@ if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = "1.17.2"
+__version__ = "1.17.4"
 
 
 PURGE_ON_DELETE = True
@@ -37,6 +37,8 @@ PURGE_ON_DELETE = True
 INSTALLABLE_PACKAGES = ["compas", "compas_rhino", "compas_ghpython"]
 SUPPORTED_VERSIONS = ["5.0", "6.0", "7.0", "8.0"]
 DEFAULT_VERSION = "7.0"
+
+INSTALLATION_ARGUMENTS = None
 
 IRONPYTHON_PLUGIN_GUID = "814d908a-e25c-493d-97e9-ee3861957f49"
 GRASSHOPPER_PLUGIN_GUID = "b45a29b1-4343-4035-989e-044e8580d9cf"
