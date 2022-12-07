@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="RhinoBrepEdge.ToString" href="compas_rhino.geometry.RhinoBrepEdge.ToString.html" />
+  <link rel="next" title="RhinoBrepEdge.from_data" href="compas_rhino.geometry.RhinoBrepEdge.from_data.html" />
   
 
   
@@ -108,7 +108,7 @@
 <h1>RhinoBrepEdge</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrepEdge">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_trim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/edge.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_edge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/edge.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.BrepEdge.html#compas.geometry.BrepEdge" title="compas.geometry.brep.edge.BrepEdge"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepEdge</span></code></a></p>
 <p>A wrapper for Rhino.Geometry.BrepEdge.</p>
 <p>The expected native type here is a Rhino.Geometry.BrepTrim.
@@ -126,6 +126,18 @@ in a correct topological order (!).</p>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_data.html#compas_rhino.geometry.RhinoBrepEdge.from_data" title="compas_rhino.geometry.RhinoBrepEdge.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
@@ -145,67 +157,64 @@ in a correct topological order (!).</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_curve.html#compas_rhino.geometry.RhinoBrepEdge.from_curve" title="compas_rhino.geometry.RhinoBrepEdge.from_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_curve</span></code></a></p></td>
 <td><p>Construct an edge from a curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_data.html#compas_rhino.geometry.RhinoBrepEdge.from_data" title="compas_rhino.geometry.RhinoBrepEdge.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_ellipse.html#compas_rhino.geometry.RhinoBrepEdge.from_ellipse" title="compas_rhino.geometry.RhinoBrepEdge.from_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ellipse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_ellipse.html#compas_rhino.geometry.RhinoBrepEdge.from_ellipse" title="compas_rhino.geometry.RhinoBrepEdge.from_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ellipse</span></code></a></p></td>
 <td><p>Construct an edge from an ellipse.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_json.html#compas_rhino.geometry.RhinoBrepEdge.from_json" title="compas_rhino.geometry.RhinoBrepEdge.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_json.html#compas_rhino.geometry.RhinoBrepEdge.from_json" title="compas_rhino.geometry.RhinoBrepEdge.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_jsonstring.html#compas_rhino.geometry.RhinoBrepEdge.from_jsonstring" title="compas_rhino.geometry.RhinoBrepEdge.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_jsonstring.html#compas_rhino.geometry.RhinoBrepEdge.from_jsonstring" title="compas_rhino.geometry.RhinoBrepEdge.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_line.html#compas_rhino.geometry.RhinoBrepEdge.from_line" title="compas_rhino.geometry.RhinoBrepEdge.from_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_line</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_line.html#compas_rhino.geometry.RhinoBrepEdge.from_line" title="compas_rhino.geometry.RhinoBrepEdge.from_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_line</span></code></a></p></td>
 <td><p>Construct an edge from a line.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_points.html#compas_rhino.geometry.RhinoBrepEdge.from_points" title="compas_rhino.geometry.RhinoBrepEdge.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_points.html#compas_rhino.geometry.RhinoBrepEdge.from_points" title="compas_rhino.geometry.RhinoBrepEdge.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
 <td><p>Construct an edge from two points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_vertices.html#compas_rhino.geometry.RhinoBrepEdge.from_vertices" title="compas_rhino.geometry.RhinoBrepEdge.from_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.from_vertices.html#compas_rhino.geometry.RhinoBrepEdge.from_vertices" title="compas_rhino.geometry.RhinoBrepEdge.from_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices</span></code></a></p></td>
 <td><p>Construct an edge from two vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.sha256.html#compas_rhino.geometry.RhinoBrepEdge.sha256" title="compas_rhino.geometry.RhinoBrepEdge.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.sha256.html#compas_rhino.geometry.RhinoBrepEdge.sha256" title="compas_rhino.geometry.RhinoBrepEdge.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_bezier.html#compas_rhino.geometry.RhinoBrepEdge.to_bezier" title="compas_rhino.geometry.RhinoBrepEdge.to_bezier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bezier</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_bezier.html#compas_rhino.geometry.RhinoBrepEdge.to_bezier" title="compas_rhino.geometry.RhinoBrepEdge.to_bezier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bezier</span></code></a></p></td>
 <td><p>Get a bezier from this edge's geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_bspline.html#compas_rhino.geometry.RhinoBrepEdge.to_bspline" title="compas_rhino.geometry.RhinoBrepEdge.to_bspline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bspline</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_bspline.html#compas_rhino.geometry.RhinoBrepEdge.to_bspline" title="compas_rhino.geometry.RhinoBrepEdge.to_bspline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bspline</span></code></a></p></td>
 <td><p>Get a bspline from this edge's geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_circle.html#compas_rhino.geometry.RhinoBrepEdge.to_circle" title="compas_rhino.geometry.RhinoBrepEdge.to_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_circle</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_circle.html#compas_rhino.geometry.RhinoBrepEdge.to_circle" title="compas_rhino.geometry.RhinoBrepEdge.to_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_circle</span></code></a></p></td>
 <td><p>Get a circle from this edge's geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_curve.html#compas_rhino.geometry.RhinoBrepEdge.to_curve" title="compas_rhino.geometry.RhinoBrepEdge.to_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_curve</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_curve.html#compas_rhino.geometry.RhinoBrepEdge.to_curve" title="compas_rhino.geometry.RhinoBrepEdge.to_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_curve</span></code></a></p></td>
 <td><p>Get a curve from this edge's geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_data.html#compas_rhino.geometry.RhinoBrepEdge.to_data" title="compas_rhino.geometry.RhinoBrepEdge.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_data.html#compas_rhino.geometry.RhinoBrepEdge.to_data" title="compas_rhino.geometry.RhinoBrepEdge.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_ellipse.html#compas_rhino.geometry.RhinoBrepEdge.to_ellipse" title="compas_rhino.geometry.RhinoBrepEdge.to_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_ellipse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_ellipse.html#compas_rhino.geometry.RhinoBrepEdge.to_ellipse" title="compas_rhino.geometry.RhinoBrepEdge.to_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_ellipse</span></code></a></p></td>
 <td><p>Get an ellipse from this edge's geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_hyperbola.html#compas_rhino.geometry.RhinoBrepEdge.to_hyperbola" title="compas_rhino.geometry.RhinoBrepEdge.to_hyperbola"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_hyperbola</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_hyperbola.html#compas_rhino.geometry.RhinoBrepEdge.to_hyperbola" title="compas_rhino.geometry.RhinoBrepEdge.to_hyperbola"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_hyperbola</span></code></a></p></td>
 <td><p>Get a hyperbola from this edge's geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_json.html#compas_rhino.geometry.RhinoBrepEdge.to_json" title="compas_rhino.geometry.RhinoBrepEdge.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_json.html#compas_rhino.geometry.RhinoBrepEdge.to_json" title="compas_rhino.geometry.RhinoBrepEdge.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_jsonstring.html#compas_rhino.geometry.RhinoBrepEdge.to_jsonstring" title="compas_rhino.geometry.RhinoBrepEdge.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_jsonstring.html#compas_rhino.geometry.RhinoBrepEdge.to_jsonstring" title="compas_rhino.geometry.RhinoBrepEdge.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_line.html#compas_rhino.geometry.RhinoBrepEdge.to_line" title="compas_rhino.geometry.RhinoBrepEdge.to_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_line</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_line.html#compas_rhino.geometry.RhinoBrepEdge.to_line" title="compas_rhino.geometry.RhinoBrepEdge.to_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_line</span></code></a></p></td>
 <td><p>Get a line from this edge's geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_parabola.html#compas_rhino.geometry.RhinoBrepEdge.to_parabola" title="compas_rhino.geometry.RhinoBrepEdge.to_parabola"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_parabola</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.to_parabola.html#compas_rhino.geometry.RhinoBrepEdge.to_parabola" title="compas_rhino.geometry.RhinoBrepEdge.to_parabola"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_parabola</span></code></a></p></td>
 <td><p>Get a parabola from this edge's geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.validate_data.html#compas_rhino.geometry.RhinoBrepEdge.validate_data" title="compas_rhino.geometry.RhinoBrepEdge.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.validate_data.html#compas_rhino.geometry.RhinoBrepEdge.validate_data" title="compas_rhino.geometry.RhinoBrepEdge.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.validate_json.html#compas_rhino.geometry.RhinoBrepEdge.validate_json" title="compas_rhino.geometry.RhinoBrepEdge.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.validate_json.html#compas_rhino.geometry.RhinoBrepEdge.validate_json" title="compas_rhino.geometry.RhinoBrepEdge.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
 <td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 </tbody>
@@ -283,10 +292,10 @@ in a correct topological order (!).</p>
       
 
       
-      <a href="compas_rhino.geometry.RhinoBrepEdge.ToString.html" title="RhinoBrepEdge.ToString" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_rhino.geometry.RhinoBrepEdge.from_data.html" title="RhinoBrepEdge.from_data" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          RhinoBrepEdge.ToString
+          RhinoBrepEdge.from_data
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

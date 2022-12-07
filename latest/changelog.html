@@ -107,6 +107,11 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h2>Unreleased</h2>
 <section id="added">
 <h3>Added</h3>
+<ul class="simple">
+<li><p>Added conversion function <code class="docutils literal notranslate"><span class="pre">frame_to_rhino_plane</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">RhinoSurface.from_frame</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry</span></code>.</p></li>
+<li><p>Added representation for trims with <code class="docutils literal notranslate"><span class="pre">compas.geometry.BrepTrim</span></code>.</p></li>
+</ul>
 </section>
 <section id="changed">
 <h3>Changed</h3>
@@ -128,6 +133,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <ul class="simple">
 <li><p>Fixed strange point values in RhinoNurbsCurve caused by conversion <code class="docutils literal notranslate"><span class="pre">ControlPoint</span></code> to COMPAS instead of <code class="docutils literal notranslate"><span class="pre">ControlPoint.Location</span></code>.</p></li>
 <li><p>Fixed flipped order of NURBS point count values when creating RhinoNurbsSurface from parameters.</p></li>
+<li><p>Changed serialization format and reconstruction procedure of <code class="docutils literal notranslate"><span class="pre">RhinoBrep</span></code>.</p></li>
 </ul>
 </section>
 <section id="id4">
