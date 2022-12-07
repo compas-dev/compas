@@ -203,7 +203,7 @@ class RhinoSurface(Surface):
             The parametric domain of the V parameter. v_interval[0] => v_interval[1].
         uv_degrees : tuple(int, int)
             Degree of U and V parameters. Default is 1 in both directions for a simple planar surface.
-        uv_point_counts :
+        uv_point_counts : tuple(int, int)
             Number of control points in each parameter. Default is 2 in both directions for a simple planar surface.
 
         Returns
