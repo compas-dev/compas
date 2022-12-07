@@ -189,7 +189,7 @@ class RhinoSurface(Surface):
         return cls.from_rhino(rhino_surface)
 
     @classmethod
-    def from_frame(cls, frame, u_interval, v_interval, uv_degrees, uv_point_counts):
+    def from_frame(cls, frame, u_interval, v_interval, uv_degrees=(1, 1), uv_point_counts=(2, 2)):
         """Creates a NURBS surface from a frame and parametric domain information.
 
         Parameters
@@ -202,9 +202,9 @@ class RhinoSurface(Surface):
         v_interval : tuple(float, float)
             The parametric domain of the V parameter. v_interval[0] => v_interval[1].
         uv_degrees : tuple(int, int)
-            Degree of U and V parameters. uv_degree[0] => degree_u, uv_degree[1] => degree_v
+            Degree of U and V parameters. Default is 1 in both directions for a simple planar surface.
         uv_point_counts :
-            Number of control points in each parameter. [0] => cp_count_u, [1] => cp_count_v
+            Number of control points in each parameter. Default is 2 in both directions for a simple planar surface.
 
         Returns
         -------

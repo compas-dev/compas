@@ -139,9 +139,10 @@ class RhinoBrepFace(BrepFace):
 
     @staticmethod
     def _make_surface_from_data(surface_type, surface_data, uv_domain):
+        u_domain, v_domain = uv_domain
         if surface_type == "plane":
             frame = Frame.from_data(surface_data)
-            surface = RhinoNurbsSurface.from_frame(frame, uv_domain[0], uv_domain[1], (1, 1), (2, 2))
+            surface = RhinoNurbsSurface.from_frame(frame, u_domain, v_domain)
         elif surface_type == "sphere":
             surface = RhinoNurbsSurface.from_sphere(Sphere.from_data(surface_data))
         elif surface_type == "cylinder":
@@ -150,6 +151,6 @@ class RhinoBrepFace(BrepFace):
             surface = RhinoNurbsSurface.from_data(surface_data)
         elif surface_type == "torus":
             raise NotImplementedError("Support for torus surface is not yet implemented!")
-        surface.rhino_surface.SetDomain(0, Interval(*uv_domain[0]))
-        surface.rhino_surface.SetDomain(1, Interval(*uv_domain[1]))
+        surface.rhino_surface.SetDomain(0, Interval(*u_domain))
+        surface.rhino_surface.SetDomain(1, Interval(*v_domain))
         return surface
