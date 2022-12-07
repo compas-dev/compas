@@ -189,7 +189,7 @@ class RhinoSurface(Surface):
         return cls.from_rhino(rhino_surface)
 
     @classmethod
-    def from_frame(cls, frame, u_interval, v_interval, uv_degrees=(1, 1), uv_point_counts=(2, 2)):
+    def from_frame(cls, frame, u_interval, v_interval, u_degree=1, v_degree=1, u_point_count=2, v_point_count=2):
         """Creates a NURBS surface from a frame and parametric domain information.
 
         Parameters
@@ -201,10 +201,14 @@ class RhinoSurface(Surface):
             The parametric domain of the U parameter. u_interval[0] => u_interval[1].
         v_interval : tuple(float, float)
             The parametric domain of the V parameter. v_interval[0] => v_interval[1].
-        uv_degrees : tuple(int, int)
-            Degree of U and V parameters. Default is 1 in both directions for a simple planar surface.
-        uv_point_counts : tuple(int, int)
-            Number of control points in each parameter. Default is 2 in both directions for a simple planar surface.
+        u_degree : int
+            Degree of the U parameter. Default is 1 in both directions for a simple planar surface.
+        v_degree : int
+            Degree of the V parameter. Default is 1 in both directions for a simple planar surface.
+        u_point_count : int
+            Number of control points in the U direction. Default is 2 in both directions for a simple planar surface.
+        v_point_count : int
+            Number of control points in the V direction. Default is 2 in both directions for a simple planar surface.
 
         Returns
         -------
@@ -220,16 +224,16 @@ class RhinoSurface(Surface):
             rhino_plane,
             Rhino.Geometry.Interval(*u_interval),
             Rhino.Geometry.Interval(*v_interval),
-            uv_degrees[0],
-            uv_degrees[1],
-            uv_point_counts[0],
-            uv_point_counts[1],
+            v_degree,
+            u_degree,
+            v_point_count,
+            u_point_count,
         )
         if not surface:
+            msg = "Failed creating NurbsSurface from "
+            msg += "frame:{} u_interval:{} v_interval:{} u_degree:{} v_degree:{} u_point_count:{} v_point_count:{}"
             raise ValueError(
-                "Failed creating NurbsSurface from frame:{} u_interval:{} v_interval:{} uv_degrees:{} uv_point_count:{}".format(
-                    frame, u_interval, v_interval, uv_degrees, uv_point_counts
-                )
+                msg.format(frame, u_interval, v_interval, u_degree, v_degree, u_point_count, v_point_count)
             )
         return cls.from_rhino(surface)
 
