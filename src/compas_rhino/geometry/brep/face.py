@@ -6,8 +6,10 @@ from compas_rhino.geometry import RhinoNurbsSurface
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import sphere_to_compas
 from compas_rhino.conversions import cylinder_to_compas
+from compas_rhino.conversions import cylinder_to_rhino
 
 from Rhino.Geometry import Interval
+from Rhino.Geometry import RevSurface
 
 from .loop import RhinoBrepLoop
 
@@ -44,7 +46,7 @@ class RhinoBrepFace(BrepFace):
     def _set_face(self, native_face):
         self._face = native_face
         self._loops = [RhinoBrepLoop(loop) for loop in native_face.Loops]
-        self._surface = RhinoNurbsSurface.from_rhino(self._face.UnderlyingSurface().ToNurbsSurface())
+        self._surface = self._face.UnderlyingSurface()
 
     # ==============================================================================
     # Data
@@ -52,7 +54,7 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def data(self):
-        surface_type, surface, uv_domain = self._get_surface_geometry(self._face.UnderlyingSurface())
+        surface_type, surface, uv_domain = self._get_surface_geometry(self._surface)
         return {
             "surface_type": surface_type,
             "surface": surface.data,
@@ -64,8 +66,8 @@ class RhinoBrepFace(BrepFace):
     def data(self, value):
         # TODO: using the new serialization mechanism, surface.to_nurbs() should replace all this branching..
         # TODO: given that Plane, Sphere, Cylinder etc. all implement to_nurbs()
-        self._surface = self._make_surface_from_data(value["surface_type"], value["surface"], value["uv_domain"])
-        face_builder = self._builder.add_face(self._surface)
+        surface = self._make_surface_from_data(value["surface_type"], value["surface"], value["uv_domain"])
+        face_builder = self._builder.add_face(surface)
         for loop_data in value["loops"]:
             RhinoBrepLoop.from_data(loop_data, face_builder)
         self._set_face(face_builder.result)
@@ -106,7 +108,8 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def surface(self):
-        return self._surface
+        # Some conversions from Surface to NurbsSurface cause info loss (e.g. Cylinder)
+        return RhinoNurbsSurface.from_rhino(self._surface.ToNurbsSurface())
 
     @property
     def boundary(self):
@@ -118,17 +121,19 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def is_plane(self):
-        return
+        return self._surface.IsPlanar()
 
     @staticmethod
     def _get_surface_geometry(surface):
+        # Rhino has many surface types. We know how to serialize NURBS and otherwise can serialize primitives
         uv_domain = [[surface.Domain(0)[0], surface.Domain(0)[1]], [surface.Domain(1)[0], surface.Domain(1)[1]]]
         success, cast_surface = surface.TryGetSphere()
         if success:
             return "sphere", sphere_to_compas(cast_surface), uv_domain
         success, cast_surface = surface.TryGetCylinder()
         if success:
-            return "cylinder", cylinder_to_compas(cast_surface), uv_domain
+            cylinder = cylinder_to_compas(cast_surface)
+            return "cylinder", cylinder, uv_domain
         success, cast_surface = surface.TryGetTorus()
         if success:
             raise NotImplementedError("Support for torus surface is not yet implemented!")
@@ -137,20 +142,27 @@ class RhinoBrepFace(BrepFace):
             return "plane", plane_to_compas_frame(cast_surface), uv_domain
         return "nurbs", RhinoNurbsSurface.from_rhino(surface.ToNurbsSurface()), uv_domain
 
-    @staticmethod
-    def _make_surface_from_data(surface_type, surface_data, uv_domain):
+    def _make_surface_from_data(self, surface_type, surface_data, uv_domain):
         u_domain, v_domain = uv_domain
         if surface_type == "plane":
             frame = Frame.from_data(surface_data)
-            surface = RhinoNurbsSurface.from_frame(frame, u_domain, v_domain)
+            return RhinoNurbsSurface.from_frame(frame, u_domain, v_domain).rhino_surface
         elif surface_type == "sphere":
-            surface = RhinoNurbsSurface.from_sphere(Sphere.from_data(surface_data))
+            # TODO: check if information is lost during this conversion, similarly to cylinder
+            return RhinoNurbsSurface.from_sphere(Sphere.from_data(surface_data)).rhino_surface
         elif surface_type == "cylinder":
-            surface = RhinoNurbsSurface.from_cylinder(Cylinder.from_data(surface_data))
+            return self._make_cylinder_surface(surface_data, u_domain, v_domain)
         elif surface_type == "nurbs":
-            surface = RhinoNurbsSurface.from_data(surface_data)
+            return RhinoNurbsSurface.from_data(surface_data).rhino_surface
         elif surface_type == "torus":
             raise NotImplementedError("Support for torus surface is not yet implemented!")
-        surface.rhino_surface.SetDomain(0, Interval(*u_domain))
-        surface.rhino_surface.SetDomain(1, Interval(*v_domain))
+        raise ValueError("Unknown surface type: {}".format(surface_type))
+
+    @staticmethod
+    def _make_cylinder_surface(surface_data, u_domain, v_domain):
+        cylinder = Cylinder.from_data(surface_data)
+        cylinder = cylinder_to_rhino(cylinder)
+        surface = RevSurface.CreateFromCylinder(cylinder)
+        surface.SetDomain(0, Interval(*u_domain))
+        surface.SetDomain(1, Interval(*v_domain))
         return surface

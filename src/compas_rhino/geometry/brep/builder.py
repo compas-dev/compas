@@ -173,6 +173,6 @@ class RhinoBrepBuilder(object):
         :class:`compas_rhino.geometry.RhinoFaceBuilder`
 
         """
-        surface_index = self._brep.AddSurface(surface.rhino_surface)
+        surface_index = self._brep.AddSurface(surface)
         face = self._brep.Faces.Add(surface_index)
         return RhinoFaceBuilder(face=face, brep=self._brep)
