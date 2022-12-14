@@ -12,10 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added conversion function `frame_to_rhino_plane` to `compas_rhino.conversions`.
 * Added `RhinoSurface.from_frame` to `compas_rhino.geometry`.
 * Added representation for trims with `compas.geometry.BrepTrim`.
+* Added method `transformed` to `compas.geometry.RhinoBrep`.
 
 ### Changed
 
 * Updated workflows to v2.
+* Fixed error when copying a copied `RhinoBrep` which contains cylinder surfaces.
 
 ### Removed
 
