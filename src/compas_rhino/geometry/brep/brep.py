@@ -219,11 +219,11 @@ class RhinoBrep(Brep):
         Parameters
         ----------
         matrix: :class:`~compas.geometry.Transformation`
-            The transformation matrix by which to transform this Brep.
+            The transformation matrix by which to transform the newly created Brep.
 
         Returns
         -------
-        None
+        :class:`~compas_rhino.geometry.RhinoBrep`
 
         """
         brep_copy = self.copy()
