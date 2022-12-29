@@ -58,8 +58,7 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def data(self):
-        surface_type, surface, uv_domain = self._get_surface_geometry(self._face.UnderlyingSurface())
-        _, plane = self._face.UnderlyingSurface().FrameAt(0.0, 0.0)
+        surface_type, surface, uv_domain, plane = self._get_surface_geometry(self._face.UnderlyingSurface())
         return {
             "surface_type": surface_type,
             "surface": surface.data,
@@ -133,16 +132,17 @@ class RhinoBrepFace(BrepFace):
         uv_domain = [[surface.Domain(0)[0], surface.Domain(0)[1]], [surface.Domain(1)[0], surface.Domain(1)[1]]]
         if isinstance(surface, Rhino.Geometry.PlaneSurface):
             _, plane = surface.FrameAt(0.0, 0.0)
-            return "plane", plane_to_compas_frame(plane), uv_domain
+            return "plane", plane_to_compas_frame(plane), uv_domain, plane
         if isinstance(surface, Rhino.Geometry.NurbsSurface):
-            return "nurbs", RhinoNurbsSurface.from_rhino(surface), uv_domain
+            _, plane = surface.FrameAt(0.0, 0.0)
+            return "nurbs", RhinoNurbsSurface.from_rhino(surface), uv_domain, plane
         if isinstance(surface, Rhino.Geometry.RevSurface):
             success, cast_surface = surface.TryGetSphere()
             if success:
-                return "sphere", sphere_to_compas(cast_surface), uv_domain
+                return "sphere", sphere_to_compas(cast_surface), uv_domain, cast_surface.EquatorialPlane
             success, cast_surface = surface.TryGetCylinder()
             if success:
-                return "cylinder", cylinder_to_compas(cast_surface), uv_domain
+                return "cylinder", cylinder_to_compas(cast_surface), uv_domain, cast_surface.BasePlane
             success, cast_surface = surface.TryGetTorus()
         raise NotImplementedError(
             "Support for surface type: {} is not yet implemented.".format(surface.__class__.__name__)
