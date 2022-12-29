@@ -232,7 +232,6 @@ class RhinoBrep(Brep):
         if isinstance(trimming_plane, Plane):
             trimming_plane = Frame.from_plane(trimming_plane)
         rhino_frame = frame_to_rhino(trimming_plane)
-        rhino_frame.Flip()
         results = self._brep.Trim(rhino_frame, tolerance)
         if not results:
             raise BrepTrimmingError("Trim operation ended with no result")
