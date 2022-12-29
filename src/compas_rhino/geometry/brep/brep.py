@@ -237,7 +237,7 @@ class RhinoBrep(Brep):
         if not results:
             raise BrepTrimmingError("Trim operation ended with no result")
 
-        self._brep = results[0]
+        self._brep = results[0].CapPlanarHoles(TOLERANCE)
 
     @classmethod
     def from_boolean_difference(cls, breps_a, breps_b):
