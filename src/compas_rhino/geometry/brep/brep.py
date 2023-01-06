@@ -219,7 +219,7 @@ class RhinoBrep(Brep):
         Parameters
         ----------
         trimming_plane : :class:`~compas.geometry.Frame` or :class:`~compas.geometry.Plane`
-            The frame or plane to use when trimming.
+            The frame or plane to use when trimming. The discarded bit is in the direction of the frame's normal.
 
         tolerance : float
             The precision to use for the trimming operation.
@@ -232,7 +232,6 @@ class RhinoBrep(Brep):
         if isinstance(trimming_plane, Plane):
             trimming_plane = Frame.from_plane(trimming_plane)
         rhino_frame = frame_to_rhino(trimming_plane)
-        rhino_frame.Flip()
         results = self._brep.Trim(rhino_frame, tolerance)
         if not results:
             raise BrepTrimmingError("Trim operation ended with no result")
