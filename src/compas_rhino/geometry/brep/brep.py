@@ -65,6 +65,9 @@ class RhinoBrep(Brep):
         super(RhinoBrep, self).__init__()
         self._brep = brep or Rhino.Geometry.Brep()
 
+    def __deepcopy__(self, *args, **kwargs):
+        return self.copy()
+
     # ==============================================================================
     # Data
     # ==============================================================================
@@ -87,6 +90,16 @@ class RhinoBrep(Brep):
         for f_data in data["faces"]:
             RhinoBrepFace.from_data(f_data, builder)
         self._brep = builder.result
+
+    def copy(self, cls=None):
+        """Creates a copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.
+        
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+        
+        """
+        return RhinoBrep.from_native(self._brep.DuplicateBrep())
 
     # ==============================================================================
     # Properties
