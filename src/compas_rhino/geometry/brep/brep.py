@@ -93,11 +93,11 @@ class RhinoBrep(Brep):
 
     def copy(self, cls=None):
         """Creates a copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.
-        
+
         Returns
         -------
         :class:`~compas_rhino.geometry.RhinoBrep`
-        
+
         """
         return RhinoBrep.from_native(self._brep.DuplicateBrep())
 
