@@ -140,6 +140,7 @@ from ._primitives import (
     ellipse_to_rhino,
     polyline_to_rhino,
     polygon_to_rhino,
+    arc_to_rhino,
     point_to_compas,
     vector_to_compas,
     line_to_compas,
@@ -149,6 +150,7 @@ from ._primitives import (
     ellipse_to_compas,
     polyline_to_compas,
     polygon_to_compas,
+    arc_to_compas,
 )
 from ._shapes import (
     box_to_rhino,
@@ -216,6 +218,8 @@ __all__ = [
     "sphere_to_rhino",
     "cone_to_rhino",
     "cylinder_to_rhino",
+    "arc_to_rhino",
+    "arc_to_compas",
     "box_to_compas",
     "sphere_to_compas",
     "cone_to_compas",

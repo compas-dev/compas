@@ -11,15 +11,17 @@ from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas.geometry import Polyline
 from compas.geometry import Polygon
+from compas.geometry import Arc
 
 from Rhino.Geometry import Point3d
 from Rhino.Geometry import Vector3d
+from Rhino.Geometry import Interval
 from Rhino.Geometry import Line as RhinoLine
 from Rhino.Geometry import Plane as RhinoPlane
 from Rhino.Geometry import Circle as RhinoCircle
 from Rhino.Geometry import Ellipse as RhinoEllipse
 from Rhino.Geometry import Polyline as RhinoPolyline
-
+from Rhino.Geometry import Arc as RhinoArc
 
 def point_to_compas(point):
     """Convert a Rhino point to a COMPAS point.
@@ -232,7 +234,7 @@ def ellipse_to_compas(ellipse):
     :class:`~compas.geometry.Ellipse`
 
     """
-    return Ellipse(plane_to_compas(ellipse.Plane), ellipse.Major, ellipse.Minor)
+    return Ellipse(plane_to_compas(ellipse.Plane), ellipse.Radius1, ellipse.Radius2)
 
 
 def ellipse_to_rhino(ellipse):
@@ -308,3 +310,32 @@ def polygon_to_rhino(polygon):
 
     """
     raise NotImplementedError
+
+
+def arc_to_rhino(arc):
+    """Convert a COMPAS Arc to a Rhino one.
+
+    Parameters
+    ----------
+    arc : :class:`~compas.geometry.Arc`
+        The COMPAS Arc to convert.
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Arc`
+
+    """
+    plane = frame_to_rhino_plane(arc.frame)
+    circle = RhinoCircle(plane, arc.radius)
+    angle_interval = Interval(arc.start_angle, arc.end_angle)
+    return RhinoArc(circle, angle_interval)
+
+
+def arc_to_compas(arc):
+    """
+    """
+    frame = plane_to_compas_frame(arc.Plane)
+    # Arc center point can be set independently of its plane's origin
+    center = point_to_compas(arc.Center)
+    frame.point = center
+    return Arc(frame, arc.Radius, start_angle=arc.StartAngle, end_angle=arc.EndAngle)

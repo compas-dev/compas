@@ -58,6 +58,7 @@ Bases
     Ellipse
     Polygon
     NurbsSurface
+    Arc
 
 3-dimensional
 -------------
@@ -811,6 +812,7 @@ from .primitives import (  # noqa: E402
     Polyline,
     Quaternion,
     Vector,
+    Arc,
 )
 from .shapes import (  # noqa: E402
     Shape,
@@ -1170,6 +1172,7 @@ __all__ = [
     "Geometry",
     "Primitive",
     "Bezier",
+    "Arc",
     "Circle",
     "Ellipse",
     "Frame",
