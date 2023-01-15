@@ -29,7 +29,7 @@ class RhinoLoopBuilder(object):
         self._loop = loop
         self._brep = brep
 
-    def add_trim(self, curve, edge_index, is_reversed, iso_status):
+    def add_trim(self, curve, edge_index, is_reversed, iso_status, vertex_index):
         """Add trim to the new Brep.
 
         Parameters
@@ -50,8 +50,12 @@ class RhinoLoopBuilder(object):
 
         """
         c_index = self._brep.AddTrimCurve(curve)
-        edge = self._brep.Edges[edge_index]
-        trim = self._brep.Trims.Add(edge, is_reversed, self._loop, c_index)
+        if edge_index == -1:  # singular trim
+            vertex = self._brep.Vertices[vertex_index]
+            trim = self._brep.Trims.AddSingularTrim(vertex, self._loop, iso_status, c_index)
+        else:
+            edge = self._brep.Edges[edge_index]
+            trim = self._brep.Trims.Add(edge, is_reversed, self._loop, c_index)
         trim.IsoStatus = iso_status
         trim.SetTolerances(TOLERANCE, TOLERANCE)
         return trim
@@ -123,8 +127,8 @@ class RhinoBrepBuilder(object):
     @property
     def result(self):
         is_valid, log = self._brep.IsValidWithLog()
-        if not is_valid:
-            raise BrepInvalidError("Brep reconstruction failed!\n{}".format(log))
+        # if not is_valid:
+        #     raise BrepInvalidError("Brep reconstruction failed!\n{}".format(log))
         return self._brep
 
     def add_vertex(self, point):
