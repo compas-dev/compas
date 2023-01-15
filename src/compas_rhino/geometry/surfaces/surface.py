@@ -208,15 +208,13 @@ class RhinoSurface(Surface):
 
         """
         surface = Rhino.Geometry.PlaneSurface(
-            frame_to_rhino_plane(frame), 
+            frame_to_rhino_plane(frame),
             Rhino.Geometry.Interval(*u_interval),
             Rhino.Geometry.Interval(*v_interval),
         )
         if not surface:
             msg = "Failed creating PlaneSurface from frame:{} u_interval:{} v_interval:{}"
-            raise ValueError(
-                msg.format(frame, u_interval, v_interval)
-            )
+            raise ValueError(msg.format(frame, u_interval, v_interval))
         return cls.from_rhino(surface)
 
     # ==============================================================================

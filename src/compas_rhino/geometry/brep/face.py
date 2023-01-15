@@ -71,7 +71,7 @@ class RhinoBrepFace(BrepFace):
     def data(self, value):
         self._surface = self._make_surface_from_data(
             value["surface_type"], value["surface"], value["uv_domain"], value["frame"]
-            )
+        )
         face_builder = self._builder.add_face(self._surface)
         for loop_data in value["loops"]:
             RhinoBrepLoop.from_data(loop_data, face_builder)
@@ -146,7 +146,7 @@ class RhinoBrepFace(BrepFace):
             success, cast_surface = surface.TryGetTorus()
         raise NotImplementedError(
             "Support for surface type: {} is not yet implemented.".format(surface.__class__.__name__)
-            )
+        )
 
     def _make_surface_from_data(self, surface_type, surface_data, uv_domain, frame_data):
         u_domain, v_domain = uv_domain

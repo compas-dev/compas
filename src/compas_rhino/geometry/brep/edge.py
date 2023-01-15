@@ -19,14 +19,7 @@ from compas_rhino.conversions import arc_to_rhino
 from Rhino.Geometry import ArcCurve
 from Rhino.Geometry import NurbsCurve
 from Rhino.Geometry import LineCurve
-from Rhino.Geometry import NurbsCurve
 from Rhino.Geometry import Interval
-
-# from compas_rhino.conversions import curve_to_compas_circle
-# from compas_rhino.conversions import curve_to_compas_ellipse
-from compas_rhino.conversions import line_to_rhino_curve
-from compas_rhino.conversions import circle_to_rhino_curve
-from compas_rhino.conversions import ellipse_to_rhino_curve
 
 from .vertex import RhinoBrepVertex
 
@@ -188,6 +181,5 @@ class RhinoBrepEdge(BrepEdge):
             curve = RhinoNurbsCurve.from_data(curve_data).rhino_curve
         else:
             raise ValueError("Unknown curve type: {}".format(curve_type))
-        curve.Domain = (Interval(*domain))
+        curve.Domain = Interval(*domain)
         return curve
-

@@ -23,6 +23,7 @@ from Rhino.Geometry import Ellipse as RhinoEllipse
 from Rhino.Geometry import Polyline as RhinoPolyline
 from Rhino.Geometry import Arc as RhinoArc
 
+
 def point_to_compas(point):
     """Convert a Rhino point to a COMPAS point.
 
@@ -332,8 +333,7 @@ def arc_to_rhino(arc):
 
 
 def arc_to_compas(arc):
-    """
-    """
+    """ """
     frame = plane_to_compas_frame(arc.Plane)
     # Arc center point can be set independently of its plane's origin
     center = point_to_compas(arc.Center)

@@ -16,6 +16,7 @@ class Arc(Primitive):
     end_angle :
 
     """
+
     def __init__(self, frame=None, radius=None, end_angle=None, start_angle=None, **kwargs):
         super(Arc, self).__init__(**kwargs)
 
@@ -26,12 +27,7 @@ class Arc(Primitive):
 
     @property
     def data(self):
-        return {
-            "frame": self._frame.data,
-            "radius": self._radius,
-            "start": self._start_angle,
-            "end": self._end_angle
-        }
+        return {"frame": self._frame.data, "radius": self._radius, "start": self._start_angle, "end": self._end_angle}
 
     @data.setter
     def data(self, value):

@@ -127,8 +127,8 @@ class RhinoBrepBuilder(object):
     @property
     def result(self):
         is_valid, log = self._brep.IsValidWithLog()
-        # if not is_valid:
-        #     raise BrepInvalidError("Brep reconstruction failed!\n{}".format(log))
+        if not is_valid:
+            raise BrepInvalidError("Brep reconstruction failed!\n{}".format(log))
         return self._brep
 
     def add_vertex(self, point):
