@@ -182,7 +182,10 @@ class RhinoBrepFace(BrepFace):
     def _make_sphere_surface(surface_data, u_domain, v_domain, frame):
         sphere = Sphere.from_data(surface_data)
         sphere = sphere_to_rhino(sphere)
-        sphere.EquatorialPlane = frame_to_rhino_plane(frame)
+        # seems Sphere => RevSurface conversion modifies the orientation of the sphere
+        # setting the plane here is overriden by this modification and surface ends up oriented differntly than
+        # original.
+        # sphere.EquatorialPlane = frame_to_rhino_plane(frame)
         surface = RevSurface.CreateFromSphere(sphere)
         surface.SetDomain(0, Interval(*u_domain))
         surface.SetDomain(1, Interval(*v_domain))
