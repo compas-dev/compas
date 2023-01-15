@@ -7,6 +7,7 @@ from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
 
 import Rhino
 
@@ -176,6 +177,23 @@ class RhinoBrep(Brep):
         """
         rhino_box = box_to_rhino(box)
         return cls.from_native(rhino_box.ToBrep())
+
+    @classmethod
+    def from_sphere(cls, sphere):
+        """Create a RhinoBrep from a sphere.
+
+        Parameters
+        ----------
+        sphere : :class:`~compas.geometry.Sphere`
+            The source sphere.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_sphere = sphere_to_rhino(sphere)
+        return cls.from_native(rhino_sphere.ToBrep())
 
     @classmethod
     def from_cylinder(cls, cylinder):

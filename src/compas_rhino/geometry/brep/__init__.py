@@ -49,3 +49,8 @@ def from_box(*args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def from_cylinder(*args, **kwargs):
     return RhinoBrep.from_cylinder(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_sphere(*args, **kwargs):
+    return RhinoBrep.from_sphere(*args, **kwargs)
