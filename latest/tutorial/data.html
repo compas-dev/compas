@@ -261,7 +261,7 @@ of the available data with the object type.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">validate_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span>
 <span class="go">Validation against the JSON schema of this object failed.</span>
 <span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
+<span class="w">   </span><span class="c">...</span>
 
 <span class="go">jsonschema.exceptions.ValidationError: &#39;yaxis&#39; is a required property</span>
 
@@ -294,7 +294,7 @@ of the available data with the object type.</p>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;dict : The data dictionary that represents the data of the object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;dict : The data dictionary that represents the data of the object.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">}</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>

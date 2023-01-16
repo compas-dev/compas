@@ -20,11 +20,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="RhinoBrep.cull_unused_edges" href="compas_rhino.geometry.RhinoBrep.cull_unused_edges.html" />
+  <link rel="next" title="RhinoBrep.from_boolean_difference" href="compas_rhino.geometry.RhinoBrep.from_boolean_difference.html" />
   
 
   
-  <link rel="prev" title="RhinoBrep.contours" href="compas_rhino.geometry.RhinoBrep.contours.html" />
+  <link rel="prev" title="RhinoBrep" href="compas_rhino.geometry.RhinoBrep.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -110,15 +110,11 @@
 <h1>RhinoBrep.copy</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.copy">
-<span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L313"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Make an independent copy of the data object.</p>
+<span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/brep.py#L94"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Creates a deep-copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cls</strong> (Type[<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a>], optional) – The type of data object to return.
-Defaults to the type of the current data object.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a> – An independent copy of this object.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -184,20 +180,20 @@ Defaults to the type of the current data object.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas_rhino.geometry.RhinoBrep.contours.html" title="RhinoBrep.contours" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas_rhino.geometry.RhinoBrep.html" title="RhinoBrep" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          RhinoBrep.contours
+          RhinoBrep
         </div>
       </a>
       
 
       
-      <a href="compas_rhino.geometry.RhinoBrep.cull_unused_edges.html" title="RhinoBrep.cull_unused_edges" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_rhino.geometry.RhinoBrep.from_boolean_difference.html" title="RhinoBrep.from_boolean_difference" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          RhinoBrep.cull_unused_edges
+          RhinoBrep.from_boolean_difference
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

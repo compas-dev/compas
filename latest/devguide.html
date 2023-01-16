@@ -116,20 +116,20 @@ to the code, documentation, and test coverage of the core COMPAS packages:</p>
 <ol class="arabic">
 <li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork.</p></li>
 <li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda create -n compas-dev <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 cython --yes
-conda activate compas-dev
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>compas-dev<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8<span class="w"> </span>cython<span class="w"> </span>--yes
+conda<span class="w"> </span>activate<span class="w"> </span>compas-dev
 </code></pre></div>
 </div>
 </li>
 <li><p>Install development dependencies:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">cd</span> path/to/compas
-pip install -r requirements-dev.txt
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">cd</span><span class="w"> </span>path/to/compas
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
 </code></pre></div>
 </div>
 </li>
 <li><p>Make sure all tests pass and the code is free of lint:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke lint
-invoke <span class="nb">test</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke<span class="w"> </span>lint
+invoke<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
 </div>
 </li>
@@ -148,9 +148,9 @@ invoke <span class="nb">test</span>
 The procedure for submitting a PR is the following.</p>
 <ol class="arabic">
 <li><p>Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke lint
-invoke <span class="nb">test</span>
-invoke docs
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke<span class="w"> </span>lint
+invoke<span class="w"> </span><span class="nb">test</span>
+invoke<span class="w"> </span>docs
 </code></pre></div>
 </div>
 </li>
@@ -281,12 +281,12 @@ The tests are in the <code class="docutils literal notranslate"><span class="pre
 <ol class="arabic">
 <li><p>Apply your changes to the component source code (<code class="docutils literal notranslate"><span class="pre">src/compas_ghpython/components</span></code>).</p></li>
 <li><p>Rebuild them:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke build-ghuser-components
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>invoke<span class="w"> </span>build-ghuser-components
 </code></pre></div>
 </div>
 </li>
 <li><p>Install them on Rhino/Grasshopper as usual:</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_rhino.install
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install
 </code></pre></div>
 </div>
 </li>
