@@ -66,6 +66,9 @@ class RhinoBrep(Brep):
         super(RhinoBrep, self).__init__()
         self._brep = brep or Rhino.Geometry.Brep()
 
+    def __deepcopy__(self, *args, **kwargs):
+        return self.copy()
+
     # ==============================================================================
     # Data
     # ==============================================================================
@@ -88,6 +91,17 @@ class RhinoBrep(Brep):
         for f_data in data["faces"]:
             RhinoBrepFace.from_data(f_data, builder)
         self._brep = builder.result
+
+    def copy(self, cls=None):
+        """Creates a deep-copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        # Avoid reconstruction when just copying. for sake of efficiency and stability
+        return RhinoBrep.from_native(self._brep.DuplicateBrep())
 
     # ==============================================================================
     # Properties
@@ -237,7 +251,7 @@ class RhinoBrep(Brep):
         Parameters
         ----------
         trimming_plane : :class:`~compas.geometry.Frame` or :class:`~compas.geometry.Plane`
-            The frame or plane to use when trimming.
+            The frame or plane to use when trimming. The discarded bit is in the direction of the frame's normal.
 
         tolerance : float
             The precision to use for the trimming operation.
