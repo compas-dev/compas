@@ -10,7 +10,7 @@ from compas.geometry import close
 
 @pytest.fixture
 def frame():
-    return Frame([1.23, 0.44, -4.02], [1., 0., 0.], [0., 1., 0.])
+    return Frame([1.23, 0.44, -4.02], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
 
 
 def test_create_arc(frame):
@@ -21,7 +21,7 @@ def test_create_arc(frame):
 
 
 def test_create_arc_two_angles(frame):
-    arc = Arc(frame,radius=8, start_angle=1.44, end_angle=3.14)
+    arc = Arc(frame, radius=8, start_angle=1.44, end_angle=3.14)
 
     assert close(arc.radius, 8.0)
     assert close(arc.angle, 1.7)
