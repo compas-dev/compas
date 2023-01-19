@@ -342,7 +342,7 @@ def arc_to_compas(arc):
 
     Returns
     -------
-    :rhino:`Rhino.Geometry.Arc`
+    :class:`~compas.geometry.Arc`
 
     """
     frame = plane_to_compas_frame(arc.Plane)
