@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Updated workflows to v2.
+* Fixed attribute error in `compas_rhino.conversions.ellipse_to_compas`.
 
 ### Removed
 
