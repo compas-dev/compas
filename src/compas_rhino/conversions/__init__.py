@@ -63,6 +63,7 @@ Primitives
     ellipse_to_rhino
     polyline_to_rhino
     polygon_to_rhino
+    arc_to_rhino
     point_to_compas
     vector_to_compas
     line_to_compas
@@ -72,6 +73,7 @@ Primitives
     ellipse_to_compas
     polyline_to_compas
     polygon_to_compas
+    arc_to_compas
 
 
 Shapes
