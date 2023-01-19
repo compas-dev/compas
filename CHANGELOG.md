@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Updated workflows to v2.
 * Fixed attribute error in `compas_rhino.conversions.ellipse_to_compas`.
+* Changed deepcopy of `RhinoBrep` to use the native `Rhino.Geometry` mechanism.
+* The normal of the cutting plane is no longer flipped in `compas_rhino.geometry.RhinoBrep`.
 
 ### Removed
 
