@@ -333,7 +333,18 @@ def arc_to_rhino(arc):
 
 
 def arc_to_compas(arc):
-    """ """
+    """Convert a Rhino Arc Structure to a COMPAS Arc.
+
+    Parameters
+    ----------
+    arc : :rhino:`Rhino.Geometry.Arc`
+        The Rhino Arc to convert.
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Arc`
+
+    """
     frame = plane_to_compas_frame(arc.Plane)
     # Arc center point can be set independently of its plane's origin
     center = point_to_compas(arc.Center)
