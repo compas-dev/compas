@@ -132,7 +132,7 @@ class Polygon(Primitive):
     @points.setter
     def points(self, points):
         if points[-1] == points[0]:
-            del points[-1]
+            points = points[:-1]
         self._points = [Point(*xyz) for xyz in points]
         self._lines = None
 
