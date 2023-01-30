@@ -25,6 +25,14 @@ def test_polygon():
     assert polygon.lines == [(a, b) for a, b in pairwise(points + points[:1])]
 
 
+def test_ctor_does_not_modify_input_params():
+    pts = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 0]]
+
+    polygon = Polygon(pts)
+    assert len(pts) == 5
+    assert len(polygon.points) == 4, "The last point (matching the first) should have been removed"
+
+
 def test_equality():
     points1 = [[0, 0, x] for x in range(5)]
     polygon1 = Polygon(points1)

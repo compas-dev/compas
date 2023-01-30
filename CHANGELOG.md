@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed deepcopy of `RhinoBrep` to use the native `Rhino.Geometry` mechanism.
 * The normal of the cutting plane is no longer flipped in `compas_rhino.geometry.RhinoBrep`.
 * Planar holes caused by `RhinoBrep.trim` are now automatically capped.
+* Fixed `Polygon` constructor to not modify the input list of points.
 
 ### Removed
 
