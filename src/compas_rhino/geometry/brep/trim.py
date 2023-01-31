@@ -5,16 +5,6 @@ from compas_rhino.geometry import RhinoNurbsCurve
 import Rhino
 
 
-class TrimType:
-    UNKNOWN = 0
-    BOUNDARY = 1
-    MATED = 2
-    SEAM = 3
-    SINGULAR = 4
-    CURVE_ON_SURFACE = 5
-    POINT_ON_SURFACE = 6
-
-
 class RhinoBrepTrim(BrepTrim):
     """An interface for a Brep Trim
 
