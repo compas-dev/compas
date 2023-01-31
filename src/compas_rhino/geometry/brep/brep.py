@@ -11,12 +11,11 @@ from compas_rhino.conversions import sphere_to_rhino
 
 import Rhino
 
-from .builder import RhinoBrepBuilder
+from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 from .loop import RhinoBrepLoop
-
 
 TOLERANCE = 1e-6
 
@@ -83,7 +82,7 @@ class RhinoBrep(Brep):
 
     @data.setter
     def data(self, data):
-        builder = RhinoBrepBuilder()
+        builder = _RhinoBrepBuilder()
         for v_data in data["vertices"]:
             RhinoBrepVertex.from_data(v_data, builder)
         for e_data in data["edges"]:

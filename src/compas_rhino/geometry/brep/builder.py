@@ -1,14 +1,16 @@
+import Rhino
+
 from compas.geometry import BrepInvalidError
 from compas_rhino.conversions import point_to_rhino
 
-
-import Rhino
-
+__all__ = [
+    "_RhinoBrepBuilder",
+]
 
 TOLERANCE = 1e-6
 
 
-class RhinoLoopBuilder(object):
+class _RhinoLoopBuilder(object):
     """Builds a Brep loop.
 
     Parameters
@@ -65,7 +67,7 @@ class RhinoLoopBuilder(object):
         return self._loop
 
 
-class RhinoFaceBuilder(object):
+class _RhinoFaceBuilder(object):
     """Builds a BrepFace.
 
     Serves as context for reconstructing the loop elements associated with this face.
@@ -108,10 +110,10 @@ class RhinoFaceBuilder(object):
 
         """
         loop = self._brep.Loops.Add(loop_type, self._face)
-        return RhinoLoopBuilder(loop, self._brep)
+        return _RhinoLoopBuilder(loop, self._brep)
 
 
-class RhinoBrepBuilder(object):
+class _RhinoBrepBuilder(object):
     """Reconstructs a Rhino.Geometry.Brep from COMPAS types
 
     Attributes
@@ -179,4 +181,4 @@ class RhinoBrepBuilder(object):
         """
         surface_index = self._brep.AddSurface(surface.rhino_surface)
         face = self._brep.Faces.Add(surface_index)
-        return RhinoFaceBuilder(face=face, brep=self._brep)
+        return _RhinoFaceBuilder(face=face, brep=self._brep)
