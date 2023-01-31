@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added conversion function `frame_to_rhino_plane` to `compas_rhino.conversions`.
 * Added `RhinoSurface.from_frame` to `compas_rhino.geometry`.
 * Added representation for trims with `compas.geometry.BrepTrim`.
+* Added `Arc` to `compas.geometry`.
+* Added `Arc` conversion functions to `compas_rhino.conversions`.
+* Added `from_sphere` alternative constructor to `RhinoBrep`.
+* Added support for singular trims to `RhinoBrep`.
 
 ### Changed
 
@@ -20,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed deepcopy of `RhinoBrep` to use the native `Rhino.Geometry` mechanism.
 * The normal of the cutting plane is no longer flipped in `compas_rhino.geometry.RhinoBrep`.
 * Planar holes caused by `RhinoBrep.trim` are now automatically capped.
+* Fixed serialization of sphere and cylinder Breps in `RhinoBrep`.
+* Fixed serialization of some trimmed shapes in `RhinoBrep`.
 
 ### Removed
 
