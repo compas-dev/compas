@@ -11,7 +11,7 @@ class Arc(Primitive):
     Parameters
     ----------
     frame : :class:`~compas.geometry.Frame`
-        Oriented center of the arc's circle.
+        Coordinate frame at the center of the arc's circle.
     radius : float
         Radius of the arc's circle.
     end_angle : float
@@ -49,7 +49,12 @@ class Arc(Primitive):
 
     @property
     def data(self):
-        return {"frame": self._frame.data, "radius": self._radius, "start": self._start_angle, "end": self._end_angle}
+        return {
+            "frame": self._frame.data,
+            "radius": self._radius,
+            "start": self._start_angle,
+            "end": self._end_angle,
+        }
 
     @data.setter
     def data(self, value):
@@ -62,21 +67,39 @@ class Arc(Primitive):
     def frame(self):
         return self._frame
 
+    @frame.setter
+    def frame(self, value):
+        self._frame = value
+
     @property
     def radius(self):
         return self._radius
 
-    @property
-    def length(self):
-        return self.radius * self.angle
+    @radius.setter
+    def radius(self, value):
+        self._radius = value
 
     @property
     def start_angle(self):
         return self._start_angle
 
+    @start_angle.setter
+    def start_angle(self, value):
+        self._start_angle = value
+        self._verify()
+
     @property
     def end_angle(self):
         return self._end_angle
+
+    @end_angle.setter
+    def end_angle(self, value):
+        self._end_angle = value
+        self._verify
+
+    @property
+    def length(self):
+        return self.radius * self.angle
 
     @property
     def angle(self):
