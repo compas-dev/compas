@@ -15,6 +15,7 @@ from .polygon import Polygon  # noqa: F401
 from .circle import Circle  # noqa: F401
 from .ellipse import Ellipse  # noqa: F401
 from .curve import Bezier  # noqa: F401
+from .arc import Arc  # noqa: F401
 
 
 __all__ = [name for name in dir() if not name.startswith("_")]

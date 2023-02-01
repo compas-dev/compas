@@ -39,7 +39,8 @@ class RhinoBrepTrim(BrepTrim):
     @property
     def data(self):
         return {
-            "edge": self._trim.Edge.EdgeIndex,
+            "vertex": self._trim.StartVertex.VertexIndex,
+            "edge": self._trim.Edge.EdgeIndex if self._trim.Edge else -1,  # singular trims have no associated edge
             "curve": RhinoNurbsCurve.from_rhino(self._trim.TrimCurve.ToNurbsCurve()).data,
             "iso": str(self._trim.IsoStatus),
             "is_reversed": "true" if self._trim.IsReversed() else "false",
@@ -50,7 +51,7 @@ class RhinoBrepTrim(BrepTrim):
         curve = RhinoNurbsCurve.from_data(value["curve"]).rhino_curve
         iso_status = getattr(Rhino.Geometry.IsoStatus, value["iso"])
         is_reversed = True if value["is_reversed"] == "true" else False
-        trim = self._builder.add_trim(curve, value["edge"], is_reversed, iso_status)
+        trim = self._builder.add_trim(curve, value["edge"], is_reversed, iso_status, value["vertex"])
         self._set_trim(trim)
 
     @classmethod

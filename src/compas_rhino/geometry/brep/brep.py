@@ -7,15 +7,15 @@ from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
 
 import Rhino
 
-from .builder import RhinoBrepBuilder
+from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 from .loop import RhinoBrepLoop
-
 
 TOLERANCE = 1e-6
 
@@ -82,7 +82,7 @@ class RhinoBrep(Brep):
 
     @data.setter
     def data(self, data):
-        builder = RhinoBrepBuilder()
+        builder = _RhinoBrepBuilder()
         for v_data in data["vertices"]:
             RhinoBrepVertex.from_data(v_data, builder)
         for e_data in data["edges"]:
@@ -192,6 +192,23 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_box.ToBrep())
 
     @classmethod
+    def from_sphere(cls, sphere):
+        """Create a RhinoBrep from a sphere.
+
+        Parameters
+        ----------
+        sphere : :class:`~compas.geometry.Sphere`
+            The source sphere.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_sphere = sphere_to_rhino(sphere)
+        return cls.from_native(rhino_sphere.ToBrep())
+
+    @classmethod
     def from_cylinder(cls, cylinder):
         """Create a RhinoBrep from a box.
 
@@ -250,7 +267,7 @@ class RhinoBrep(Brep):
         if not results:
             raise BrepTrimmingError("Trim operation ended with no result")
 
-        self._brep = results[0]
+        self._brep = results[0].CapPlanarHoles(TOLERANCE)
 
     @classmethod
     def from_boolean_difference(cls, breps_a, breps_b):
