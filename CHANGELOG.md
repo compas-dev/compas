@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Patched [CVE-2007-4559](https://github.com/advisories/GHSA-gw9q-c7gh-j9vm) vulnerability.
+
 ### Removed
 
 
