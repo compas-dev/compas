@@ -111,15 +111,23 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added conversion function <code class="docutils literal notranslate"><span class="pre">frame_to_rhino_plane</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">RhinoSurface.from_frame</span></code> to <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry</span></code>.</p></li>
 <li><p>Added representation for trims with <code class="docutils literal notranslate"><span class="pre">compas.geometry.BrepTrim</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">Arc</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">Arc</span></code> conversion functions to <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">from_sphere</span></code> alternative constructor to <code class="docutils literal notranslate"><span class="pre">RhinoBrep</span></code>.</p></li>
+<li><p>Added support for singular trims to <code class="docutils literal notranslate"><span class="pre">RhinoBrep</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Updated workflows to v2.</p></li>
+<li><p>Fixed attribute error in <code class="docutils literal notranslate"><span class="pre">compas_rhino.conversions.ellipse_to_compas</span></code>.</p></li>
 <li><p>Changed deepcopy of <code class="docutils literal notranslate"><span class="pre">RhinoBrep</span></code> to use the native <code class="docutils literal notranslate"><span class="pre">Rhino.Geometry</span></code> mechanism.</p></li>
 <li><p>The normal of the cutting plane is no longer flipped in <code class="docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrep</span></code>.</p></li>
+<li><p>Planar holes caused by <code class="docutils literal notranslate"><span class="pre">RhinoBrep.trim</span></code> are now automatically capped.</p></li>
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> constructor to not modify the input list of points.</p></li>
+<li><p>Fixed serialization of sphere and cylinder Breps in <code class="docutils literal notranslate"><span class="pre">RhinoBrep</span></code>.</p></li>
+<li><p>Fixed serialization of some trimmed shapes in <code class="docutils literal notranslate"><span class="pre">RhinoBrep</span></code>.</p></li>
 </ul>
 </section>
 <section id="removed">

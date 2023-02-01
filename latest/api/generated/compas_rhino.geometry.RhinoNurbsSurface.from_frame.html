@@ -110,8 +110,8 @@
 <h1>RhinoNurbsSurface.from_frame</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoNurbsSurface.from_frame">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoNurbsSurface.</span></span><span class="sig-name descname"><span class="pre">from_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_point_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_point_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Creates a NURBS surface from a frame and parametric domain information.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoNurbsSurface.</span></span><span class="sig-name descname"><span class="pre">from_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_interval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_interval</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Creates a planar surface from a frame and parametric domain information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -119,14 +119,10 @@
 x and y axes the direction of u and v respectively.</p></li>
 <li><p><strong>u_interval</strong> (<em>tuple(float, float)</em>) – The parametric domain of the U parameter. u_interval[0] =&gt; u_interval[1].</p></li>
 <li><p><strong>v_interval</strong> (<em>tuple(float, float)</em>) – The parametric domain of the V parameter. v_interval[0] =&gt; v_interval[1].</p></li>
-<li><p><strong>u_degree</strong> (<em>int</em>) – Degree of the U parameter. Default is 1 in both directions for a simple planar surface.</p></li>
-<li><p><strong>v_degree</strong> (<em>int</em>) – Degree of the V parameter. Default is 1 in both directions for a simple planar surface.</p></li>
-<li><p><strong>u_point_count</strong> (<em>int</em>) – Number of control points in the U direction. Default is 2 in both directions for a simple planar surface.</p></li>
-<li><p><strong>v_point_count</strong> (<em>int</em>) – Number of control points in the V direction. Default is 2 in both directions for a simple planar surface.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference external" href="https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino.Geometry.NurbsSurface.htm">Rhino.Geometry.NurbsSurface</a></p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.surface.RhinoSurface</span></code></p>
 </dd>
 </dl>
 </dd></dl>
