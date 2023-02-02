@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `Polygon` constructor to not modify the input list of points.
 * Fixed serialization of sphere and cylinder Breps in `RhinoBrep`.
 * Fixed serialization of some trimmed shapes in `RhinoBrep`.
+* Freeze black version to 22.12.0.
 
 ### Removed
 
