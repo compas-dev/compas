@@ -189,8 +189,8 @@ class RhinoSurface(Surface):
         return cls.from_rhino(rhino_surface)
 
     @classmethod
-    def from_frame(cls, frame, u_interval, v_interval, u_degree=1, v_degree=1, u_point_count=2, v_point_count=2):
-        """Creates a NURBS surface from a frame and parametric domain information.
+    def from_frame(cls, frame, u_interval, v_interval):
+        """Creates a planar surface from a frame and parametric domain information.
 
         Parameters
         ----------
@@ -201,40 +201,20 @@ class RhinoSurface(Surface):
             The parametric domain of the U parameter. u_interval[0] => u_interval[1].
         v_interval : tuple(float, float)
             The parametric domain of the V parameter. v_interval[0] => v_interval[1].
-        u_degree : int
-            Degree of the U parameter. Default is 1 in both directions for a simple planar surface.
-        v_degree : int
-            Degree of the V parameter. Default is 1 in both directions for a simple planar surface.
-        u_point_count : int
-            Number of control points in the U direction. Default is 2 in both directions for a simple planar surface.
-        v_point_count : int
-            Number of control points in the V direction. Default is 2 in both directions for a simple planar surface.
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.NurbsSurface`
+        :class:`compas_rhino.geometry.surface.RhinoSurface`
 
         """
-        # so that parameteric surface starts correctly at corner of the wanted plane section
-        rhino_plane = frame_to_rhino_plane(frame)
-        u_size = abs(u_interval[1] - u_interval[0])
-        v_size = abs(v_interval[1] - v_interval[0])
-        rhino_plane.Origin = rhino_plane.PointAt(-u_size / 2.0, -v_size / 2.0)  # TODO: shift to plane corner
-        surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(
-            rhino_plane,
+        surface = Rhino.Geometry.PlaneSurface(
+            frame_to_rhino_plane(frame),
             Rhino.Geometry.Interval(*u_interval),
             Rhino.Geometry.Interval(*v_interval),
-            v_degree,
-            u_degree,
-            v_point_count,
-            u_point_count,
         )
         if not surface:
-            msg = "Failed creating NurbsSurface from "
-            msg += "frame:{} u_interval:{} v_interval:{} u_degree:{} v_degree:{} u_point_count:{} v_point_count:{}"
-            raise ValueError(
-                msg.format(frame, u_interval, v_interval, u_degree, v_degree, u_point_count, v_point_count)
-            )
+            msg = "Failed creating PlaneSurface from frame:{} u_interval:{} v_interval:{}"
+            raise ValueError(msg.format(frame, u_interval, v_interval))
         return cls.from_rhino(surface)
 
     # ==============================================================================
