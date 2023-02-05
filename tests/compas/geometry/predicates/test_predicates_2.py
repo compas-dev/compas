@@ -9,10 +9,10 @@ def test_is_point_in_circle_xy():
     pt = [1, 2, 0]  # only testing in xy
     circle = [[[2, 2, 10], [0, 0, 1]], 4.7]
 
-    assert is_point_in_circle_xy(pt, circle) == True
+    assert is_point_in_circle_xy(pt, circle) is True
 
     pt_outside = [15, 15, 0]
-    assert is_point_in_circle_xy(pt_outside, circle) == False
+    assert is_point_in_circle_xy(pt_outside, circle) is False
 
 
 def test_is_point_in_circle_xy_class_input():
@@ -20,7 +20,7 @@ def test_is_point_in_circle_xy_class_input():
     plane = Plane(Point(2, 2, 10), Vector(0, 0, 1))
     radius = 4.7
     circle = Circle(plane, radius)
-    assert is_point_in_circle_xy(pt_inside, circle) == True
+    assert is_point_in_circle_xy(pt_inside, circle) is True
 
     pt_outside = Point(15, 15, 0)
-    assert is_point_in_circle_xy(pt_outside, circle) == False
+    assert is_point_in_circle_xy(pt_outside, circle) is False
