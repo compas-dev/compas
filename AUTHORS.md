@@ -35,3 +35,4 @@
 - Gene Ting-Chun Kao <<kao@arch.ethz.ch>> [@GeneKao](https://github.com/GeneKao)
 - Chen Kasirer <<kasirer@arch.ethz.ch>> [@chenkasirer](https://github.com/chenkasirer)
 - Nickolas Maslarinos <<maslarinosnickolas@gmail.com>> [@nmaslarinos](https://github.com/nmaslarinos)
+- Katerina Toumpektsi <<e.toumpeksti@gmail.com>> [@katarametin](https://github.com/katarametin)

@@ -29,7 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed serialization of sphere and cylinder Breps in `RhinoBrep`.
 * Fixed serialization of some trimmed shapes in `RhinoBrep`.
 * Freeze black version to 22.12.0.
-
+* Fixed `is_point_in_circle_xy` second argument to access the origin of the plane of the circle.
+ 
 ### Removed
 
 

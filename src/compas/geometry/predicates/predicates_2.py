@@ -337,7 +337,7 @@ def is_point_in_circle_xy(point, circle):
     ----------
     point : [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a point (Z will be ignored).
-    circle : [point, float]
+    circle : [[point, vector], float] | :class:`~compas.geometry.Circle`
         Center and radius of the circle on the XY plane.
 
     Returns
@@ -347,7 +347,7 @@ def is_point_in_circle_xy(point, circle):
         False otherwise.
 
     """
-    dis = distance_point_point_xy(point, circle[0])
+    dis = distance_point_point_xy(point, circle[0][0])
     if dis <= circle[1]:
         return True
     return False

@@ -36,8 +36,13 @@ In short, this is how that works.
    invoke test
    ```
 
-5. Start making your changes to the **master** branch (or branch off of it).
-6. Auto-format your code using `black <path_to_source_file>`.
+5. Start making your changes to the **main** branch (or branch off of it).
+6. Auto-format your code using:
+
+   ```bash
+   invoke format
+   ```
+
 7. Make sure all tests still pass:
 
    ```bash
