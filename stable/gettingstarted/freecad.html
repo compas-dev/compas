@@ -50,7 +50,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.17.4
+            1.17.5
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,14 +100,14 @@
 <section id="install-freecad">
 <h2>Install FreeCAD</h2>
 <p>If FreeCAD is installed using <code class="docutils literal notranslate"><span class="pre">conda</span></code>, the Python interpreter in FreeCAD automagically has access to all the packages installed in the same environment.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda create -n CAD <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 freecad COMPAS -c conda-forge --yes
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>CAD<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8<span class="w"> </span>freecad<span class="w"> </span>COMPAS<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>--yes
 </code></pre></div>
 </div>
 </section>
 <section id="launch-freecad">
 <h2>Launch FreeCAD</h2>
 <p>To activate this mechanism, you have to launch FreeCAD from the environment it is installed in.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate CAD
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>CAD
 freecad
 </code></pre></div>
 </div>
@@ -227,7 +227,7 @@ freecad
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.17.4',
+      VERSION: '1.17.5',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',

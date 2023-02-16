@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.17.4
+            1.17.5
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -117,36 +117,36 @@ For an alternative procedure see <a class="reference internal" href="#installati
 <h2>Installation</h2>
 <p>These instructions are for the latest Blender 2.93 LTS which ships with Python 3.9
 If you don’t have an environment yet with Python 3.9 and COMPAS you can create one with <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda create -n blender -c conda-forge <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 compas --yes
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>blender<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9<span class="w"> </span>compas<span class="w"> </span>--yes
 </code></pre></div>
 </div>
 <p>Configuring Blender to use the newly installed environment is slightly different per OS.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="d29aca86-1177-4365-96ea-3bab59c8d558" name="36ec85fa-e9fa-41ba-b380-4d44cf2e2661" type="radio">
-</input><label class="compas-tab-item-label" for="d29aca86-1177-4365-96ea-3bab59c8d558">
+<input checked="checked" id="fec169f7-0552-4dfb-842f-6c2d3955bd3d" name="de559d5d-459a-41c0-8748-a7d0d0408d45" type="radio">
+</input><label class="compas-tab-item-label" for="fec169f7-0552-4dfb-842f-6c2d3955bd3d">
 Windows</label><div class="compas-tab-item-content docutils">
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
-python -m compas_blender.install -v <span class="m">2</span>.93
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
+python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>.93
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.93\\2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="ee9c4b83-6094-4113-9c76-6370d6569265" name="36ec85fa-e9fa-41ba-b380-4d44cf2e2661" type="radio">
-</input><label class="compas-tab-item-label" for="ee9c4b83-6094-4113-9c76-6370d6569265">
+<input id="70f56a7c-5de9-4141-ac62-95b3a7e88bdf" name="de559d5d-459a-41c0-8748-a7d0d0408d45" type="radio">
+</input><label class="compas-tab-item-label" for="70f56a7c-5de9-4141-ac62-95b3a7e88bdf">
 OSX</label><div class="compas-tab-item-content docutils">
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
-python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.93
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
+python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>/Applications/blender.app/Contents/Resources/2.93
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="118d4f6c-30eb-4518-aa43-08ccd409018f" name="36ec85fa-e9fa-41ba-b380-4d44cf2e2661" type="radio">
-</input><label class="compas-tab-item-label" for="118d4f6c-30eb-4518-aa43-08ccd409018f">
+<input id="6470195f-88ff-4b31-8c42-85c80af4b28f" name="de559d5d-459a-41c0-8748-a7d0d0408d45" type="radio">
+</input><label class="compas-tab-item-label" for="6470195f-88ff-4b31-8c42-85c80af4b28f">
 Linux</label><div class="compas-tab-item-content docutils">
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
-python -m compas_blender.install ~/Blender/2.93
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
+python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>~/Blender/2.93
 </code></pre></div>
 </div>
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">~/Blender/2.93</span></code> might be different on your system.
@@ -154,8 +154,8 @@ Check your Blender installation and change the path accordingly.</p>
 </div>
 </div>
 <p>On Windows and OSX, if Blender is installed in the default location, you can simply provide the version number.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
-python -m compas_blender.install -v <span class="m">2</span>.93
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
+python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>.93
 </code></pre></div>
 </div>
 </section>
@@ -176,8 +176,8 @@ environment, as instructed above, it is not necessary to activate the environmen
 before using Blender. However, when you want to update the installed packages,
 or add more packages, make sure to activate the Blender environment first.
 Otherwise, the changes will not have any effect.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
-conda install ...
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
+conda<span class="w"> </span>install<span class="w"> </span>...
 </code></pre></div>
 </div>
 <div class="admonition note">
@@ -194,8 +194,8 @@ will not work with the version of Numpy included in the latest COMPAS releases, 
 <p>In those cases, you can simply revert to an earlier version of Numpy that is still compatible with COMPAS
 in the environment you use with Blender. For Sverchok, this would be version <code class="docutils literal notranslate"><span class="pre">1.17.5</span></code>,
 which is the one shipped with Blender originally. To revert simply do</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda activate blender
-conda install <span class="nv">numpy</span><span class="o">=</span><span class="m">1</span>.17.5
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
+conda<span class="w"> </span>install<span class="w"> </span><span class="nv">numpy</span><span class="o">=</span><span class="m">1</span>.17.5
 </code></pre></div>
 </div>
 </section>
@@ -207,19 +207,19 @@ On Mac or Linux, you should start Blender from the command line.</p>
 <p>By adding the Blender executable to the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable this is really simple.
 Just add the following to your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="28d9c95a-e331-4450-83f0-f0b1346acbfa" name="d046dfb9-f60d-47b6-adf7-10812a637262" type="radio">
-</input><label class="compas-tab-item-label" for="28d9c95a-e331-4450-83f0-f0b1346acbfa">
+<input checked="checked" id="2674f3fc-7197-4011-8a7d-016eeb28f49b" name="a7db8b67-49c7-47de-812a-1a554f3af6ac" type="radio">
+</input><label class="compas-tab-item-label" for="2674f3fc-7197-4011-8a7d-016eeb28f49b">
 OSX</label><div class="compas-tab-item-content docutils">
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
 </div>
-<input id="fe799ec2-bb1f-4100-b5d2-6bde8ccdeca5" name="d046dfb9-f60d-47b6-adf7-10812a637262" type="radio">
-</input><label class="compas-tab-item-label" for="fe799ec2-bb1f-4100-b5d2-6bde8ccdeca5">
+<input id="1f21f172-f5e3-46b3-b717-946a3cc68bba" name="a7db8b67-49c7-47de-812a-1a554f3af6ac" type="radio">
+</input><label class="compas-tab-item-label" for="1f21f172-f5e3-46b3-b717-946a3cc68bba">
 Linux</label><div class="compas-tab-item-content docutils">
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.83:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.83:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 
-Note that this path might be different on your system.
+Note<span class="w"> </span>that<span class="w"> </span>this<span class="w"> </span>path<span class="w"> </span>might<span class="w"> </span>be<span class="w"> </span>different<span class="w"> </span>on<span class="w"> </span>your<span class="w"> </span>system.
 </code></pre></div>
 </div>
 </div>
@@ -235,18 +235,18 @@ Note that this path might be different on your system.
 If this is the case, the problem can usually be solved by reinstalling NumPy in your environment using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
 However, to avoid issues with other packages that were already installed and depend on a specific version of NumPy,
 you should install the same version as the one installed originally by <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -c <span class="s2">&quot;import numpy; print(numpy.__version__)&quot;</span>
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import numpy; print(numpy.__version__)&quot;</span>
 </code></pre></div>
 </div>
 <p>If the above is, for example, <code class="docutils literal notranslate"><span class="pre">1.20.3</span></code></p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip install --force-reinstall <span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.20.3
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>pip<span class="w"> </span>install<span class="w"> </span>--force-reinstall<span class="w"> </span><span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.20.3
 </code></pre></div>
 </div>
 <p>Alternatively, you can create a new environment and simply install entire COMPAS using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 cython planarity --yes
-conda activate blender
-pip install compas
-python -m compas_blender.install
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>blender<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9<span class="w"> </span>cython<span class="w"> </span>planarity<span class="w"> </span>--yes
+conda<span class="w"> </span>activate<span class="w"> </span>blender
+pip<span class="w"> </span>install<span class="w"> </span>compas
+python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install
 </code></pre></div>
 </div>
 </section>
@@ -258,19 +258,19 @@ Note that since this procedure is based on installing COMPAS directly using the 
 it is limited to packages that can be installed from the Python Package Index (PyPI).</p>
 <p>The basic command will install <cite>compas</cite> and <cite>compas_blender</cite> (and <cite>compas_rhino</cite> and <cite>compas_ghpython</cite>) for the default version of Blender (2.93),
 if that version can be found in the default installation location.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install_windows
 </code></pre></div>
 </div>
 <p>Install for a different version.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows -v <span class="m">3</span>.1
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install_windows<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span>.1
 </code></pre></div>
 </div>
 <p>Install additional packages.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows -p compas_cloud
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install_windows<span class="w"> </span>-p<span class="w"> </span>compas_cloud
 </code></pre></div>
 </div>
 <p>Install with <cite>pip</cite> configuration options.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python -m compas_blender.install_windows --force-reinstall --no-deps
+<div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install_windows<span class="w"> </span>--force-reinstall<span class="w"> </span>--no-deps
 </code></pre></div>
 </div>
 </section>
@@ -402,7 +402,7 @@ if that version can be found in the default installation location.</p>
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.17.4',
+      VERSION: '1.17.5',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',
