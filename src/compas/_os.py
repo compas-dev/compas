@@ -300,7 +300,7 @@ def _realpath_ipy_posix(path):
     args = 'readlink -f "{}"'.format(path)
     process = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, _error = process.communicate()
-    return output
+    return output.strip()
 
 
 # Cache whatever symlink function works (native or polyfill)
