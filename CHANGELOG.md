@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug that caused a new-line at the end of the `compas.HERE` constant in IronPython for Mac.
+* Fixed unbound method usage of `.cross()` on `Plane`, `Vector` and `Frame`.
 
 ### Removed
 

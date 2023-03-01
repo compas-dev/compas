@@ -628,7 +628,8 @@ class Vector(Primitive):
         [Vector(0.000, 0.000, 1.000), Vector(0.000, -4.000, 0.000)]
 
         """
-        return [Vector.cross(u, v) for u, v in zip(left, right)]
+        # cross_vectors(u,v) from src\compas\geometry\_core\_algebra.py
+        return [Vector(*cross_vectors(u, v)) for u, v in zip(left, right)]
 
     @staticmethod
     def angles_vectors(left, right):

@@ -175,9 +175,9 @@ class Frame(Primitive):
     def yaxis(self, vector):
         yaxis = Vector(*vector)
         yaxis.unitize()
-        zaxis = Vector.cross(self.xaxis, yaxis)
+        zaxis = Vector(*cross_vectors(self.xaxis, yaxis))
         zaxis.unitize()
-        self._yaxis = Vector.cross(zaxis, self.xaxis)
+        self._yaxis = Vector(*cross_vectors(zaxis, self.xaxis))
 
     @property
     def normal(self):
