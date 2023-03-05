@@ -2,32 +2,29 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_rhino.utilities.drawing import _face_to_max_quad
-
-from System.Enum import ToObject
-from System.Array import CreateInstance
-from System.Drawing import Color
-
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
+from Rhino.Geometry import Brep
+from Rhino.Geometry import Circle
+from Rhino.Geometry import Curve
+from Rhino.Geometry import Cylinder
+from Rhino.Geometry import Line
+from Rhino.Geometry import Mesh
+from Rhino.Geometry import PipeCapMode
+from Rhino.Geometry import Plane
+from Rhino.Geometry import Point2f
+from Rhino.Geometry import Point3d
+from Rhino.Geometry import PolylineCurve
+from Rhino.Geometry import Sphere
+from Rhino.Geometry import Vector3d
+from Rhino.Geometry import Vector3f
+from System.Array import CreateInstance
+from System.Drawing import Color
+from System.Enum import ToObject
 
 from compas.geometry import centroid_points
 from compas.utilities import pairwise
-
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Vector3d
-from Rhino.Geometry import Line
-from Rhino.Geometry import Polyline
-from Rhino.Geometry import Brep
-from Rhino.Geometry import Cylinder
-from Rhino.Geometry import Circle
-from Rhino.Geometry import Plane
-from Rhino.Geometry import PipeCapMode
-from Rhino.Geometry import Curve
-from Rhino.Geometry import Sphere
-from Rhino.Geometry import Mesh
-from Rhino.Geometry import Vector3f
-from Rhino.Geometry import Point2f
+from compas_rhino.utilities.drawing import _face_to_max_quad
 
 try:
     from Rhino.Geometry import MeshNgon
@@ -146,7 +143,7 @@ def draw_polylines(polylines):
 
     Returns
     -------
-    list[:rhino:`Rhino.Geometry.Polyline`]
+    list[:rhino:`Rhino.Geometry.PolylineCurve`]
 
     Notes
     -----
@@ -158,10 +155,11 @@ def draw_polylines(polylines):
 
     """
     rg_polylines = []
+    # We need to use PolylineCurve because of this:
+    # https://discourse.mcneel.com/t/polyline-output-wanted-but-got-a-list-of-points/77509
     for p in iter(polylines):
         points = p["points"]
-        poly = Polyline([Point3d(*xyz) for xyz in points])
-        poly.DeleteShortSegments(TOL)
+        poly = PolylineCurve([Point3d(*xyz) for xyz in points])
         rg_polylines.append(poly)
     return rg_polylines
 
