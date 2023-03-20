@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
+
 ### Changed
 
 * Fixed bug that caused a new-line at the end of the `compas.HERE` constant in IronPython for Mac.
