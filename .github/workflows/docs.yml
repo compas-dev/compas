@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - main
-      - *.LTS
+      - '*.LTS'
     tags:
       - 'v*'
   pull_request:
     branches:
       - main
-      - *.LTS
+      - '*.LTS'
 
 jobs:
   docs:

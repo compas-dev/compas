@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - *.LTS
+      - '*.LTS'
   pull_request:
     branches:
       - main
-      - *.LTS
+      - '*.LTS'
 
 jobs:
   build:
