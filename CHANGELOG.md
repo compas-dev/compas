@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug that caused a new-line at the end of the `compas.HERE` constant in IronPython for Mac.
 * Fixed Grasshopper `draw_polylines` method to return `PolylineCurve` instead of `Polyline` because the latter shows as only points.
+* Fixed uninstall post-process.
 
 ### Removed
 
