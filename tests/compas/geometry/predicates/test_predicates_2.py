@@ -35,6 +35,9 @@ def test_is_polygon_in_polygon_xy():
     polygon_outside = Polygon([(15, 5, 0), (20, 5, 0), (20, 10 ,0), (15, 10, 0)])
     assert is_polygon_in_polygon_xy(polygon_contour, polygon_outside) is False
 
-    polygon_intersecting = Polygon([(10, 5, 0), (15, 5, 0), (15, 10 ,0), (10, 10, 0)])
+    polygon_intersecting = Polygon([(10, 10, 0), (10, 5, 0), (15, 5, 0), (15, 10 ,0)])
     assert is_polygon_in_polygon_xy(polygon_contour, polygon_intersecting) is False
-    
+
+    # shifting the vertices list of the same polygon shouldn't affect the containment check output anymore
+    polygon_intersecting_shifted = Polygon(polygon_intersecting[1:] + polygon_intersecting[:1])
+    assert is_polygon_in_polygon_xy(polygon_contour, polygon_intersecting_shifted) is False
