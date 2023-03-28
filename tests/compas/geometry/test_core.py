@@ -232,11 +232,16 @@ def test_area_triangle(triangle, R):
 
 def test_area_polygon():
     # create a test closed (here planar xy) non-convex polygon :
-    polygon = Polygon([Point(-7, -15, 0), Point(-5, 9, 0), Point(13, 0, 0), Point(0, -2, 0), Point(0, -6, 0), Point(-4, -10, 0)])
+    polygon = Polygon(
+        [Point(-7, -15, 0), Point(-5, 9, 0), Point(13, 0, 0), Point(0, -2, 0), Point(0, -6, 0), Point(-4, -10, 0)]
+    )
     assert area_polygon(polygon) >= 0
     # the same polygon with vertices list shifted by 3 positions :
-    polygon_ = Polygon([Point(0, -2, 0), Point(0, -6, 0), Point(-4, -10, 0), Point(-7, -15, 0), Point(-5, 9, 0), Point(13, 0, 0)])
+    polygon_ = Polygon(
+        [Point(0, -2, 0), Point(0, -6, 0), Point(-4, -10, 0), Point(-7, -15, 0), Point(-5, 9, 0), Point(13, 0, 0)]
+    )
     assert area_polygon(polygon_) >= 0
+
 
 # ==============================================================================
 # normals
