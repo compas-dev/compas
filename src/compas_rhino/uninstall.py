@@ -243,5 +243,6 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--packages", nargs="+", help="The packages to uninstall.")
 
     args = parser.parse_args()
+    compas_rhino.INSTALLATION_ARGUMENTS = args
 
     uninstall(version=args.version, packages=args.packages)
