@@ -8,7 +8,7 @@
 
 - Gonzalo Casas <<casas@arch.ethz.ch>> [@gonzalocasas](https://github.com/gonzalocasas)
 - Romana Rust <<rust@arch.ethz.ch>> [@romanarust](https://github.com/romanarust)
-- Mathias Bernhard <<bernhard@arch.ethz.ch>> [@worbit](https://github.com/worbit)
+- Mathias Bernhard <<mathias.bernhard@epfl.ch>> [@worbit](https://github.com/worbit)
 
 ## Contributors
 
