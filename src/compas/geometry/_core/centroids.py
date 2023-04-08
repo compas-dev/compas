@@ -240,9 +240,9 @@ def centroid_polygon(polygon):
     """
     p = len(polygon)
 
-    assert p > 2, "At least three points required"
+    # assert p > 2, "At least three points required"
 
-    if p == 3:
+    if p <= 3:
         return centroid_points(polygon)
 
     o = centroid_points(polygon)
