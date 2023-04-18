@@ -109,8 +109,8 @@ class Part(Datastructure):
         The identifier of the part in the connectivity graph of the parent assembly.
     frame : :class:`~compas.geometry.Frame`
         The local coordinate system of the part.
-    features : list[tuple[:class:`~compas.geometry.Shape`, str]]
-        The features added to the base shape of the part geometry.
+    features : list(:class:`~compas.datastructures.Feature`)
+        The features added to the base shape of the part's geometry.
 
     """
 
