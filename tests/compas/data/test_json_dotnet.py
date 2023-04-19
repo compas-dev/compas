@@ -9,5 +9,5 @@ try:
         after = compas.json_loads(compas.json_dumps(before))
         assert after == 100.0
 
-except:
+except ImportError:
     pass
