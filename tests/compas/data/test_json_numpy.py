@@ -13,5 +13,5 @@ try:
         after = compas.json_loads(compas.json_dumps(before))
         assert after == [[1, 2, 3], [1.0, 2.0, 3.0], 1.0, 1]
 
-except:
+except ImportError:
     pass
