@@ -2,8 +2,18 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas.geometry
+
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
+from compas.geometry.primitives import Vector
+
+from compas.geometry import midpoint_point_point
+from compas.geometry import intersection_line_line
+from compas.geometry import intersection_line_plane
+from compas.geometry import intersection_line_triangle
+
+from compas.geometry import offset_line
 
 
 class Line(Primitive):
@@ -65,7 +75,7 @@ class Line(Primitive):
         """:class:`schema.Schema` : Schema of the data representation."""
         from schema import Schema
 
-        return Schema({"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)})
+        return Schema({"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)})  # type: ignore
 
     @property
     def JSONSCHEMANAME(self):
@@ -106,7 +116,8 @@ class Line(Primitive):
 
     @property
     def start(self):
-        return self._start
+        # type: () -> Point
+        return self._start  # type: ignore
 
     @start.setter
     def start(self, point):
@@ -114,7 +125,8 @@ class Line(Primitive):
 
     @property
     def end(self):
-        return self._end
+        # type: () -> Point
+        return self._end  # type: ignore
 
     @end.setter
     def end(self, point):
@@ -122,18 +134,22 @@ class Line(Primitive):
 
     @property
     def vector(self):
-        return self.end - self.start
+        # type: () -> compas.geometry.Vector
+        return self.end - self.start  # type: ignore
 
     @property
     def length(self):
+        # type: () -> float
         return self.vector.length
 
     @property
     def direction(self):
+        # type: () -> compas.geometry.Vector
         return self.vector * (1 / self.length)
 
     @property
     def midpoint(self):
+        # type: () -> Point
         v = self.direction * (0.5 * self.length)
         return self.start + v
 
@@ -307,3 +323,101 @@ class Line(Primitive):
         """
         self.start.transform(T)
         self.end.transform(T)
+
+    def intersection_with_line(self, line, tol=None, apparent=True):
+        """Compute the intersection point with another line.
+
+        Parameters
+        ----------
+        line : :class:`compas.geometry.Line`
+            The other line.
+        tol : float, optional
+            Tolerance value for membership verfication.
+            Defaults to the global precision setting.
+        apparent : bool, optional
+            If the two lines are skew, compute the apparent intersection.
+
+        Returns
+        -------
+        None | :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, :class:`compas.geometry.Point`]
+            None if the lines are parallel.
+            A point if ``apparent`` is ``True``.
+            Two points if ``apparent`` is ``False``.
+
+        """
+        tol = tol or compas.precision_as_float()
+        x1, x2 = intersection_line_line(self, line, tol=tol)
+        if not x1 or not x2:
+            return None
+        if apparent:
+            x = midpoint_point_point(x1, x2)
+            return Point(*x)
+        return Point(*x1), Point(*x2)
+
+    def intersection_with_plane(self, plane, tol=None):
+        """Compute the intersection point with another line.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            The other line.
+        tol : float, optional
+            Tolerance value for membership verfication.
+            Defaults to the global precision setting.
+
+        Returns
+        -------
+        None | :class:`compas.geometry.Point`
+            None if the line is parallel to the plane.
+            The intersection point otherwise.
+
+        """
+        tol = tol or compas.precision_as_float()
+        x = intersection_line_plane(self, plane, tol=tol)
+        if not x:
+            return None
+        return Point(*x)
+
+    def intersection_with_triangle(self, triangle, tol=None):
+        """Compute the intersection point with another line.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            The other line.
+        tol : float, optional
+            Tolerance value for membership verfication.
+            Defaults to the global precision setting.
+
+        Returns
+        -------
+        None | :class:`compas.geometry.Point`
+            None if the line doesn't intersect with the triangle.
+            The intersection point otherwise.
+
+        """
+        tol = tol or compas.precision_as_float()
+        x = intersection_line_triangle(self, triangle, tol=tol)
+        if not x:
+            return None
+        return Point(*x)
+
+    def offset(self, distance, direction=None):
+        """Offset the line.
+
+        Parameters
+        ----------
+        distance : float
+            The offset distance.
+        direction : :class:`compas.geometry.Vector`, optional
+            The offset direction.
+            If no direction is provided, the Z-axis of the global coordinate system is used.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Line`
+
+        """
+        direction = direction or Vector.Zaxis()
+        a, b = offset_line(self, distance=distance, normal=direction)
+        return Line(a, b)

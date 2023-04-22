@@ -186,9 +186,24 @@ def set_precision(precision):
     global PRECISION
     precision = str(precision)
     d = decimal.Decimal(precision).as_tuple()
-    if d.exponent < 0:
-        e = -d.exponent
+    if d.exponent < 0:  # type: ignore
+        e = -d.exponent  # type: ignore
         PRECISION = "{}f".format(e)
+
+
+def precision_as_float():
+    """Return the global precision setting as a floating point number.
+
+    Returns
+    -------
+    float
+
+    """
+    global PRECISION
+    if PRECISION == "d":
+        return 1.0
+    d = decimal.Decimal("{:.{}}".format(1, PRECISION)).as_tuple()
+    return float("1e{}".format(d.exponent))
 
 
 # ==============================================================================
@@ -277,7 +292,7 @@ def get_bunny(localstorage=None):
     try:
         from urllib.request import urlretrieve
     except ImportError:
-        from urllib import urlretrieve
+        from urllib import urlretrieve  # type: ignore
 
     if not localstorage:
         localstorage = APPDATA
