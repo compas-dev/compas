@@ -19,6 +19,13 @@ from compas.geometry import is_polygon_convex_xy
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_convex_polygon_xy
 from compas.geometry import is_point_behind_plane
+from compas.geometry import closest_point_in_cloud
+from compas.geometry import closest_point_on_line
+from compas.geometry import closest_point_on_plane
+from compas.geometry import closest_point_on_polyline
+from compas.geometry import closest_point_on_segment
+from compas.geometry import project_point_line
+from compas.geometry import project_point_plane
 
 from compas.geometry import transform_points
 
@@ -507,6 +514,82 @@ class Point(Primitive):
     # methods
     # ==========================================================================
 
+    def closest_in_cloud(self, cloud):
+        """Compute the closest point in a cloud.
+
+        Parameters
+        ----------
+        cloud : :class:`~compas.geometry.Pointcloud`
+            A cloud of points.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+
+        """
+        _, point, _ = closest_point_in_cloud(self, cloud)
+        return Point(*point)
+
+    def closest_on_line(self, line):
+        """Compute the closest point on a line.
+
+        Parameters
+        ----------
+        line : :class:`compas.geometry.Line`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+
+        """
+        point = closest_point_on_line(self, line)
+        return Point(*point)
+
+    def closest_on_plane(self, plane):
+        """Compute the closest point on a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+
+        """
+        point = closest_point_on_plane(self, plane)
+        return Point(*point)
+
+    def closest_on_polyline(self, polyline):
+        """Compute the closest point on a polyline.
+
+        Parameters
+        ----------
+        polyline : :class:`compas.geometry.Polyline`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+
+        """
+        point = closest_point_on_polyline(self, polyline)
+        return Point(*point)
+
+    def closest_on_segment(self, segment):
+        """Compute the closest point on a line segment.
+
+        Parameters
+        ----------
+        segment : :class:`compas.geometry.Line`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+
+        """
+        point = closest_point_on_segment(self, segment)
+        return Point(*point)
+
     def distance_to_point(self, point):
         """Compute the distance to another point.
 
@@ -579,11 +662,75 @@ class Point(Primitive):
         """
         return distance_point_plane(self, plane)
 
+    def project_on_line(self, line):
+        """Project the point on a line.
+
+        Parameters
+        ----------
+        line : :class:`compas.geometry.Line`
+
+        Returns
+        -------
+        None
+
+        """
+        point = project_point_line(self, line)
+        self.x = point[0]
+        self.y = point[1]
+        self.z = point[2]
+
+    def project_on_plane(self, plane):
+        """Project the point on a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+
+        Returns
+        -------
+        None
+
+        """
+        point = project_point_plane(self, plane)
+        self.x = point[0]
+        self.y = point[1]
+        self.z = point[2]
+
+    def projected_on_line(self, line):
+        """Construct a projection of this point on a line.
+
+        Parameters
+        ----------
+        line : :class:`compas.geometry.Line`
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+
+        """
+        point = project_point_line(self, line)
+        return Point(*point)
+
+    def projected_on_plane(self, plane):
+        """Construct a projection of this point on a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+
+        """
+        point = project_point_plane(self, plane)
+        return Point(*point)
+
     # ==========================================================================
     # 2D predicates
     # ==========================================================================
 
-    def in_polygon(self, polygon, convex=None):
+    def is_in_polygon(self, polygon, convex=None):
         """Determine if the point lies inside the given polygon.
 
         Parameters
@@ -620,7 +767,7 @@ class Point(Primitive):
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line):
+    def is_on_line(self, line):
         """Determine if the point lies on the given line.
 
         Parameters
@@ -645,7 +792,7 @@ class Point(Primitive):
         """
         return is_point_on_line(self, line)
 
-    def on_segment(self, segment):
+    def is_on_segment(self, segment):
         """Determine if the point lies on the given segment.
 
         Parameters
@@ -670,7 +817,7 @@ class Point(Primitive):
         """
         return is_point_on_segment(self, segment)
 
-    def on_polyline(self, polyline):
+    def is_on_polyline(self, polyline):
         """Determine if the point lies on the given polyline.
 
         Parameters
@@ -695,7 +842,7 @@ class Point(Primitive):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_circle(self, circle):
+    def is_on_circle(self, circle):
         """Determine if the point lies on the given circle.
 
         Parameters
@@ -712,7 +859,7 @@ class Point(Primitive):
         """
         raise NotImplementedError
 
-    def in_triangle(self, triangle):
+    def is_in_triangle(self, triangle):
         """Determine if the point lies inside the given triangle.
 
         Parameters
@@ -737,7 +884,7 @@ class Point(Primitive):
         """
         return is_point_in_triangle(self, triangle)
 
-    def in_circle(self, circle):
+    def is_in_circle(self, circle):
         """Determine if the point lies inside the given circle.
 
         Parameters
@@ -764,7 +911,7 @@ class Point(Primitive):
         """
         return is_point_in_circle(self, circle)
 
-    def in_polyhedron(self, polyhedron):
+    def is_in_polyhedron(self, polyhedron):
         """Determine if the point lies inside the given polyhedron.
 
         Parameters
