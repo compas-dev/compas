@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
+
+import compas
+
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Point
@@ -59,8 +62,8 @@ class Plane(Primitive):
 
         return Schema(
             {
-                "point": Point.DATASCHEMA.fget(None),
-                "normal": Vector.DATASCHEMA.fget(None),
+                "point": Point.DATASCHEMA.fget(None),  # type: ignore
+                "normal": Vector.DATASCHEMA.fget(None),  # type: ignore
             }
         )
 
@@ -110,7 +113,8 @@ class Plane(Primitive):
 
     @property
     def point(self):
-        return self._point
+        # type: () -> Point
+        return self._point  # type: ignore
 
     @point.setter
     def point(self, point):
@@ -118,7 +122,8 @@ class Plane(Primitive):
 
     @property
     def normal(self):
-        return self._normal
+        # type: () -> Vector
+        return self._normal  # type: ignore
 
     @normal.setter
     def normal(self, vector):
@@ -127,12 +132,14 @@ class Plane(Primitive):
 
     @property
     def d(self):
+        # type: () -> float
         a, b, c = self.normal
         x, y, z = self.point
         return -a * x - b * y - c * z
 
     @property
     def abcd(self):
+        # type: () -> tuple[float, float, float, float]
         a, b, c = self.normal
         d = self.d
         return a, b, c, d
@@ -238,6 +245,7 @@ class Plane(Primitive):
         normal = Vector.cross(u, v)
         return cls(point, normal)
 
+    @classmethod
     def from_abcd(cls, abcd):
         """Construct a plane from the plane equation coefficients.
 
@@ -287,6 +295,26 @@ class Plane(Primitive):
 
         """
         return cls(frame.point, frame.normal)
+
+    @classmethod
+    def from_points(cls, points):
+        """Construct a plane from a list of points.
+
+        Parameters
+        ----------
+        points : list[:class:`compas.geometry.Point`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Plane`
+
+        """
+        if compas.NUMPY:
+            from compas.geometry import bestfit_plane_numpy as bestfit_plane
+        else:
+            from compas.geometry import bestfit_plane
+        point, normal = bestfit_plane(points)
+        return Plane(point, normal)
 
     # ==========================================================================
     # methods

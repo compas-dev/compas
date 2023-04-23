@@ -21,6 +21,7 @@ from compas.geometry import is_point_in_convex_polygon_xy
 from compas.geometry import is_point_behind_plane
 from compas.geometry import closest_point_in_cloud
 from compas.geometry import closest_point_on_line
+from compas.geometry import closest_point_on_line_xy
 from compas.geometry import closest_point_on_plane
 from compas.geometry import closest_point_on_polyline
 from compas.geometry import closest_point_on_segment
@@ -545,6 +546,21 @@ class Point(Primitive):
         point = closest_point_on_line(self, line)
         return Point(*point)
 
+    def closest_on_line_xy(self, line):
+        """Compute the closest point on a line in the XY plane.
+
+        Parameters
+        ----------
+        line : :class:`compas.geometry.Line`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+
+        """
+        point = closest_point_on_line_xy(self, line)
+        return Point(*point)
+
     def closest_on_plane(self, plane):
         """Compute the closest point on a plane.
 
@@ -730,7 +746,7 @@ class Point(Primitive):
     # 2D predicates
     # ==========================================================================
 
-    def is_in_polygon(self, polygon, convex=None):
+    def is_in_polygon_xy(self, polygon, convex=None):
         """Determine if the point lies inside the given polygon.
 
         Parameters

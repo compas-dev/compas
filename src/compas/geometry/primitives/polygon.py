@@ -11,11 +11,14 @@ from compas.geometry import centroid_polygon
 from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
+from compas.geometry import offset_polygon
+from compas.geometry import project_points_plane
 
 from compas.geometry.primitives import Line
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
+from compas.geometry.primitives import Plane
 
 from compas.utilities import pairwise
 
@@ -127,34 +130,40 @@ class Polygon(Primitive):
 
     @property
     def points(self):
+        # type: () -> list[Point]
         return self._points
 
     @points.setter
     def points(self, points):
+        points = [Point(*xyz) for xyz in points]
         if points[-1] == points[0]:
             points = points[:-1]
-        self._points = [Point(*xyz) for xyz in points]
+        self._points = points
         self._lines = None
 
     # consider caching below based on point setter
 
     @property
     def lines(self):
+        # type: () -> list[Line]
         if not self._lines:
             self._lines = [Line(a, b) for a, b in pairwise(self.points + self.points[:1])]
         return self._lines
 
     @property
     def length(self):
+        # type: () -> float
         return sum(line.length for line in self.lines)
 
     @property
     def centroid(self):
+        # type: () -> Point
         point = centroid_polygon(self.points)
         return Point(*point)
 
     @property
     def normal(self):
+        # type: () -> Vector
         o = self.centroid
         points = self.points
         a2 = 0
@@ -162,8 +171,8 @@ class Polygon(Primitive):
         for i in range(-1, len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
-            u = [p1[_] - o[_] for _ in range(3)]
-            v = [p2[_] - o[_] for _ in range(3)]
+            u = [p1[_] - o[_] for _ in range(3)]  # type: ignore
+            v = [p2[_] - o[_] for _ in range(3)]  # type: ignore
             w = cross_vectors(u, v)
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)
@@ -173,7 +182,15 @@ class Polygon(Primitive):
 
     @property
     def area(self):
+        # type: () -> float
         return area_polygon(self.points)
+
+    @property
+    def plane(self):
+        # type: () -> Plane
+        points = self.points + [line.midpoint for line in self.lines]
+        points.append(self.centroid)
+        return Plane.from_points(points)
 
     # ==========================================================================
     # customization
@@ -258,6 +275,34 @@ class Polygon(Primitive):
     # methods
     # ==========================================================================
 
+    def transform(self, T):
+        """Transform this polygon.
+
+        Parameters
+        ----------
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+            The transformation.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> polygon = Polygon.from_sides_and_radius_xy(4, 1.0)
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(45))
+        >>> polygon.transform(R)
+        >>> polygon.points[0]
+        Point(-0.707, 0.707, 0.000)
+
+        """
+        for index, point in enumerate(transform_points(self.points, T)):
+            self.points[index].x = point[0]
+            self.points[index].y = point[1]
+            self.points[index].z = point[2]
+
     def is_convex(self):
         """Determine if the polygon is convex.
 
@@ -294,33 +339,48 @@ class Polygon(Primitive):
         """
         return is_coplanar(self.points)
 
-    def transform(self, T):
-        """Transform this polygon.
+    def offset(self, distance):
+        """Construc an offset of the polygon.
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
-            The transformation.
+        distance : float
+            The offset distance.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polygon`
+
+        """
+        points = offset_polygon(self.points, distance=distance)
+        return Polygon(points)
+
+    def project_on_plane(self, plane):
+        """Project the polygon onto a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
 
         Returns
         -------
         None
 
-        Examples
-        --------
-        >>> from math import radians
-        >>> from compas.geometry import Rotation
-        >>> polygon = Polygon.from_sides_and_radius_xy(4, 1.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(45))
-        >>> polygon.transform(R)
-        >>> polygon.points[0]
-        Point(-0.707, 0.707, 0.000)
+        """
+        points = project_points_plane(self.points, plane)
+        self.points = points
+
+    def projected_on_plane(self, plane):
+        """Project a copy of this polygon onto a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polygon`
 
         """
-        for index, point in enumerate(transform_points(self.points, T)):
-            self.points[index].x = point[0]
-            self.points[index].y = point[1]
-            self.points[index].z = point[2]
-
-    def contains(self, point):
-        pass
+        points = project_points_plane(self.points, plane)
+        return Polygon(points)
