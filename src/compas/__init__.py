@@ -112,6 +112,15 @@ RHINO = is_rhino()
 BLENDER = is_blender()
 """bool: True if the current context is Blender, False otherwise."""
 
+NUMPY = False
+"""bool: True if Numpy is available."""
+
+try:
+    import numpy  # noqa: F401
+except ImportError:
+    NUMPY = False
+else:
+    NUMPY = True
 
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
