@@ -776,16 +776,9 @@ from .transformations import (
     reflect_line_plane,
     reflect_line_triangle,
     orient_points,
-    Projection,
-    Reflection,
-    Rotation,
-    Scale,
-    Shear,
-    Transformation,
-    Translation,
 )
 
-if not compas.IPY:
+if compas.NUMPY:
     from .transformations import (
         transform_points_numpy,
         transform_vectors_numpy,
@@ -797,78 +790,54 @@ if not compas.IPY:
         local_to_world_coordinates_numpy,
     )
 
-from .geometry import Geometry
+from .bbox import bounding_box, bounding_box_xy
 
-from .primitives import (  # noqa: E402
-    Primitive,
-    Bezier,
-    Circle,
-    Ellipse,
-    Frame,
-    Line,
-    Plane,
-    Point,
-    Polygon,
-    Polyline,
-    Quaternion,
-    Vector,
-    Arc,
-)
-from .shapes import (  # noqa: E402
-    Shape,
-    Box,
-    Capsule,
-    Cone,
-    Cylinder,
-    Polyhedron,
-    Sphere,
-    Torus,
-)
-from .bbox import bounding_box, bounding_box_xy  # noqa: E402
-
-if not compas.IPY:
+if compas.NUMPY:
     from .bbox import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
         oabb_numpy,
     )
-from .bestfit import bestfit_plane  # noqa: E402
 
-if not compas.IPY:
+from .bestfit import bestfit_plane
+
+if compas.NUMPY:
     from .bestfit import (
         bestfit_plane_numpy,
         bestfit_frame_numpy,
         bestfit_circle_numpy,
         bestfit_sphere_numpy,
     )
-from .booleans import (  # noqa: E402
+
+from .booleans import (
     boolean_union_mesh_mesh,
     boolean_difference_mesh_mesh,
     boolean_intersection_mesh_mesh,
 )
-from .hull import convex_hull, convex_hull_xy  # noqa: E402
+from .hull import convex_hull, convex_hull_xy
 
-if not compas.IPY:
+if compas.NUMPY:
     from .hull import convex_hull_numpy, convex_hull_xy_numpy
-from .interpolation import (  # noqa: E402
+
+from .interpolation import (
     barycentric_coordinates,
     discrete_coons_patch,
     tween_points,
     tween_points_distance,
 )
-from .offset import offset_line, offset_polyline, offset_polygon  # noqa: E402
-from .pointclouds import Pointcloud  # noqa: E402
-from .quadmesh import quadmesh_planarize  # noqa: E402
-from .triangulation import (  # noqa: E402
+from .offset import offset_line, offset_polyline, offset_polygon
+from .quadmesh import quadmesh_planarize
+from .triangulation import (
     conforming_delaunay_triangulation,
     constrained_delaunay_triangulation,
     delaunay_from_points,
     delaunay_triangulation,
 )
 
-if not compas.IPY:
+if compas.NUMPY:
     from .triangulation import delaunay_from_points_numpy, voronoi_from_points_numpy
-from .trimesh import (  # noqa: E402
+
+from .trimesh import (
     trimesh_mean_curvature,
     trimesh_gaussian_curvature,
     trimesh_principal_curvature,
@@ -883,8 +852,48 @@ from .trimesh import (  # noqa: E402
     trimesh_slice,
 )
 
-if not compas.IPY:
+if compas.NUMPY:
     from .icp import icp_numpy
+
+from .transformations import (
+    Projection,
+    Reflection,
+    Rotation,
+    Scale,
+    Shear,
+    Transformation,
+    Translation,
+)
+
+from .geometry import Geometry
+
+from .primitives import (
+    Primitive,
+    Bezier,
+    Circle,
+    Ellipse,
+    Frame,
+    Line,
+    Plane,
+    Point,
+    Polygon,
+    Polyline,
+    Quaternion,
+    Vector,
+    Arc,
+)
+from .shapes import (
+    Shape,
+    Box,
+    Capsule,
+    Cone,
+    Cylinder,
+    Polyhedron,
+    Sphere,
+    Torus,
+)
+
+from .pointclouds import Pointcloud
 
 from .curves import Curve, NurbsCurve
 
@@ -1218,7 +1227,7 @@ __all__ = [
     "BrepTrimmingError",
 ]
 
-if not compas.IPY:
+if compas.NUMPY:
     __all__ += [
         "oriented_bounding_box_numpy",
         "oriented_bounding_box_xy_numpy",

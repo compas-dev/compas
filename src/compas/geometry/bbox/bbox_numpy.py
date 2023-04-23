@@ -21,8 +21,6 @@ from compas.geometry import local_axes
 from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import transform_points_numpy
-from compas.geometry import Frame
-from compas.geometry import Transformation
 from compas.numerical import pca_numpy
 
 from compas.geometry.bbox.bbox import bounding_box
@@ -264,6 +262,9 @@ def oabb_numpy(points):
         XYZ coordinates of 8 points defining a box.
 
     """
+    from compas.geometry import Transformation
+    from compas.geometry import Frame
+
     origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
     frame = Frame(origin, xaxis, yaxis)
     world = Frame.worldXY()

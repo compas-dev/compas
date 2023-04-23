@@ -4,8 +4,11 @@ from __future__ import print_function
 
 import compas
 
-if not compas.IPY:
-    from .icp_numpy import *  # noqa: F401 F403
+if compas.NUMPY:
+    from .icp_numpy import icp_numpy
 
 
-__all__ = [name for name in dir() if not name.startswith("_")]
+__all__ = []
+
+if compas.NUMPY:
+    __all__ += ["icp_numpy"]

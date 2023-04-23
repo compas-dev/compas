@@ -1,4 +1,4 @@
-from compas.geometry import Geometry
+from compas.geometry import Geometry  # type: ignore
 from compas.plugins import pluggable
 from compas.plugins import PluginNotInstalledError
 

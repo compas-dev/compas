@@ -4,10 +4,23 @@ from __future__ import print_function
 
 import compas
 
-from .bestfit import *  # noqa: F401 F403
+from .bestfit import bestfit_plane
 
-if not compas.IPY:
-    from .bestfit_numpy import *  # noqa: F401 F403
+if compas.NUMPY:
+    from .bestfit_numpy import bestfit_circle_numpy
+    from .bestfit_numpy import bestfit_frame_numpy
+    from .bestfit_numpy import bestfit_plane_numpy
+    from .bestfit_numpy import bestfit_sphere_numpy
 
 
-__all__ = [name for name in dir() if not name.startswith("_")]
+__all__ = [
+    "bestfit_plane",
+]
+
+if compas.NUMPY:
+    __all__ += [
+        "bestfit_plane_numpy",
+        "bestfit_frame_numpy",
+        "bestfit_circle_numpy",
+        "bestfit_sphere_numpy",
+    ]

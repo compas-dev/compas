@@ -10,9 +10,6 @@ from compas.geometry import Primitive
 from compas.geometry import Point
 
 
-__all__ = ["Pointcloud"]
-
-
 class Pointcloud(Primitive):
     """Class for working with pointclouds.
 
@@ -68,7 +65,8 @@ class Pointcloud(Primitive):
 
     @property
     def points(self):
-        return self._points
+        # type: () -> list[Point]
+        return self._points  # type: ignore
 
     @points.setter
     def points(self, points):

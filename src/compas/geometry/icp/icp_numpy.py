@@ -12,8 +12,6 @@ from scipy.linalg import norm
 
 from compas.numerical import pca_numpy
 from compas.numerical import normrow
-from compas.geometry import Transformation
-from compas.geometry import Frame
 from compas.geometry import transform_points_numpy
 
 
@@ -84,6 +82,9 @@ def icp_numpy(source, target, tol=1e-3):
     >>>
 
     """
+    from compas.geometry import Transformation
+    from compas.geometry import Frame
+
     A = asarray(source)
     B = asarray(target)
 

@@ -315,18 +315,21 @@ def is_point_in_polygon_xy(point, polygon):
 
     """
     x, y = point[0], point[1]
-    polygon = [(p[0], p[1]) for p in polygon]  # make 2D
     inside = False
     for i in range(-1, len(polygon) - 1):
-        x1, y1 = polygon[i]
-        x2, y2 = polygon[i + 1]
+        x1 = polygon[i][0]
+        y1 = polygon[i][1]
+        x2 = polygon[i + 1][0]
+        y2 = polygon[i + 1][1]
         if y > min(y1, y2):
             if y <= max(y1, y2):
                 if x <= max(x1, x2):
-                    if y1 != y2:
-                        xinters = (y - y1) * (x2 - x1) / (y2 - y1) + x1
-                    if x1 == x2 or x <= xinters:
+                    if x1 == x2:
                         inside = not inside
+                    elif y1 != y2:
+                        xinters = (y - y1) * (x2 - x1) / (y2 - y1) + x1
+                        if x <= xinters:
+                            inside = not inside
     return inside
 
 
