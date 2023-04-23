@@ -25,30 +25,6 @@ from compas.geometry import is_point_on_segment_xy
 from compas.geometry import is_point_in_triangle
 
 
-__all__ = [
-    "intersection_line_line",
-    "intersection_segment_segment",
-    "intersection_line_segment",
-    "intersection_line_plane",
-    "intersection_polyline_plane",
-    "intersection_line_triangle",
-    "intersection_segment_plane",
-    "intersection_plane_circle",
-    "intersection_plane_plane",
-    "intersection_plane_plane_plane",
-    "intersection_sphere_line",
-    "intersection_sphere_sphere",
-    "intersection_segment_polyline",
-    "intersection_line_line_xy",
-    "intersection_segment_segment_xy",
-    "intersection_line_segment_xy",
-    "intersection_line_box_xy",
-    "intersection_circle_circle_xy",
-    "intersection_ellipse_line_xy",
-    "intersection_segment_polyline_xy",
-]
-
-
 def intersection_line_line(l1, l2, tol=1e-6):
     """Computes the intersection of two lines.
 
@@ -307,6 +283,50 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
     return None
 
 
+def intersection_segment_polyline(segment, polyline, tol=1e-6):
+    """Calculate the intersection point of a segment and a polyline.
+
+    Parameters
+    ----------
+    segment : [point, point] | :class:`~compas.geometry.Line`
+        XYZ coordinates of two points defining a line segment.
+    polyline : sequence[point] | :class:`~compas.geometry.Polyline`
+        XYZ coordinates of the points of the polyline.
+    tol : float, optional
+        The tolerance for intersection verification.
+
+    Returns
+    -------
+    [float, float, float] | None
+        The intersection point
+        or None if the segment does not intersect with any of the polyline segments.
+
+    Examples
+    --------
+    >>> from compas.geometry import is_point_on_polyline
+    >>> from compas.geometry import is_point_on_segment
+    >>> from compas.geometry import distance_point_point
+    >>> from compas.geometry import centroid_points
+    >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.5), (2.0, 0.5, 1.0)]
+    >>> s = [(0.5, 0.0, 0.0), (0.5, 0.0, 2.0)]
+    >>> x1, x2 = intersection_segment_polyline(s, p)
+    >>> x = centroid_points([x1, x2])
+
+    >>> is_point_on_polyline(x, p)
+    True
+
+    >>> is_point_on_segment(x, s)
+    True
+
+    >>> distance_point_point((0.5, 0.0, 0.25), x) < 1e-6
+    True
+    """
+    for cd in pairwise(polyline):
+        pt = intersection_segment_segment(segment, cd, tol)
+        if pt:
+            return pt
+
+
 def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=None, tol=1e-6):
     """Calculate the intersection point of a plane with a polyline. Reduce expected_number_of_intersections to speed up.
 
@@ -371,6 +391,145 @@ def intersection_line_triangle(line, triangle, tol=1e-6):
     if x:
         if is_point_in_triangle(x, triangle):
             return x
+
+
+def intersection_line_sphere(line, sphere):
+    """Computes the intersection of a sphere and a line.
+
+    Parameters
+    ----------
+    line : [point, point] | :class:`~compas.geometry.Line`
+        A line defined by two points.
+    sphere : [point, radius] | :class:`~compas.geometry.Sphere`
+        A sphere defined by a point and a radius.
+
+    Returns
+    -------
+    tuple[[float, float, float], [float, float, float]] | [float, float, float] | None
+        Two points (if the line goes through the sphere), one point (if the line is tangent to the sphere), or None (otherwise).
+
+    Notes
+    -----
+    There are 3 cases of sphere-line intersection:
+
+    1. they intersect in 2 points
+    2. they intersect in 1 point (line tangent to sphere), or
+    3. they do not intersect.
+
+    Examples
+    --------
+    >>> from compas.geometry import allclose
+
+    >>> sphere = (3.0, 7.0, 4.0), 10.0
+    >>> line = (1.0, 0, 0.5), (2.0, 1.0, 0.5)
+    >>> x1, x2 = intersection_sphere_line(sphere, line)
+
+    >>> allclose(x1, [11.634, 10.634, 0.500], 1e-3)
+    True
+    >>> allclose(x2, [-0.634, -1.634, 0.50], 1e-3)
+    True
+
+    """
+    l1, l2 = line
+    sp, radius = sphere
+
+    a = (l2[0] - l1[0]) ** 2 + (l2[1] - l1[1]) ** 2 + (l2[2] - l1[2]) ** 2
+    b = 2.0 * (
+        (l2[0] - l1[0]) * (l1[0] - sp[0]) + (l2[1] - l1[1]) * (l1[1] - sp[1]) + (l2[2] - l1[2]) * (l1[2] - sp[2])
+    )
+
+    c = (
+        sp[0] ** 2
+        + sp[1] ** 2
+        + sp[2] ** 2
+        + l1[0] ** 2
+        + l1[1] ** 2
+        + l1[2] ** 2
+        - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2])
+        - radius**2
+    )
+
+    i = b * b - 4.0 * a * c
+
+    if i < 0.0:  # case 3: no intersection
+        return None
+    elif i == 0.0:  # case 2: one intersection
+        mu = -b / (2.0 * a)
+        ipt = (
+            l1[0] + mu * (l2[0] - l1[0]),
+            l1[1] + mu * (l2[1] - l1[1]),
+            l1[2] + mu * (l2[2] - l1[2]),
+        )
+        return ipt
+    elif i > 0.0:  # case 1: two intersections
+        # 1.
+        mu = (-b + sqrt(i)) / (2.0 * a)
+        ipt1 = (
+            l1[0] + mu * (l2[0] - l1[0]),
+            l1[1] + mu * (l2[1] - l1[1]),
+            l1[2] + mu * (l2[2] - l1[2]),
+        )
+        # 2.
+        mu = (-b - sqrt(i)) / (2.0 * a)
+        ipt2 = (
+            l1[0] + mu * (l2[0] - l1[0]),
+            l1[1] + mu * (l2[1] - l1[1]),
+            l1[2] + mu * (l2[2] - l1[2]),
+        )
+        return ipt1, ipt2
+
+
+intersection_sphere_line = intersection_line_sphere
+
+
+def intersection_line_box(line, box, tol=1e-3):
+    """Compute the intersection points between a line and a box.
+
+    Parameters
+    ----------
+    line : tuple[[float, float, float], [float, float, float]]
+    box : tuple[[float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float]]
+    tol : float, optional
+
+    Returns
+    -------
+    list[[float, float, float]] | None
+        A list of intersection point or None.
+
+    """
+    intersections = []
+    point = line[0]
+    direction = normalize_vector(subtract_vectors(line[1], line[0]))
+    a, b, c, d, e, f, g, h = box
+    front = [a, b, f, e]
+    left = [a, e, h, d]
+    right = [c, b, f, g]
+    back = [c, d, h, g]
+    top = [e, f, g, h]
+    bottom = [a, d, c, b]
+    for face in [front, left, right, back, top, bottom]:
+        origin = face[0]
+        ab = subtract_vectors(face[1], face[0])
+        ad = subtract_vectors(face[3], face[0])
+        normal = normalize_vector(cross_vectors(ab, ad))
+        # if the line direction and plane normal are perpendicular
+        # the line and plane are parallel and don't intersect
+        if abs(dot_vectors(normal, direction)) < tol:
+            continue
+        d = dot_vectors(normal, origin)
+        t = (d - dot_vectors(normal, point)) / dot_vectors(normal, direction)
+        x = add_vectors(point, scale_vector(direction, t))
+        # check if the intersection lies within the bounds of the face
+        is_point_in_face = True
+        for a, b in pairwise(face + face[:1]):
+            ab = subtract_vectors(b, a)
+            ax = subtract_vectors(x, a)
+            if dot_vectors(cross_vectors(ab, ax), normal) < 0:
+                is_point_in_face = False
+                break
+        if is_point_in_face:
+            intersections.append(x)
+    return intersections
 
 
 def intersection_plane_plane(plane1, plane2, tol=1e-6):
@@ -537,136 +696,6 @@ def intersection_sphere_sphere(sphere1, sphere2):
     ri = sqrt(radius1**2 - h**2 * distance**2)
     normal = scale_vector(subtract_vectors(center2, center1), 1 / distance)
     return "circle", (ci, ri, normal)
-
-
-def intersection_segment_polyline(segment, polyline, tol=1e-6):
-    """Calculate the intersection point of a segment and a polyline.
-
-    Parameters
-    ----------
-    segment : [point, point] | :class:`~compas.geometry.Line`
-        XYZ coordinates of two points defining a line segment.
-    polyline : sequence[point] | :class:`~compas.geometry.Polyline`
-        XYZ coordinates of the points of the polyline.
-    tol : float, optional
-        The tolerance for intersection verification.
-
-    Returns
-    -------
-    [float, float, float] | None
-        The intersection point
-        or None if the segment does not intersect with any of the polyline segments.
-
-    Examples
-    --------
-    >>> from compas.geometry import is_point_on_polyline
-    >>> from compas.geometry import is_point_on_segment
-    >>> from compas.geometry import distance_point_point
-    >>> from compas.geometry import centroid_points
-    >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.5), (2.0, 0.5, 1.0)]
-    >>> s = [(0.5, 0.0, 0.0), (0.5, 0.0, 2.0)]
-    >>> x1, x2 = intersection_segment_polyline(s, p)
-    >>> x = centroid_points([x1, x2])
-
-    >>> is_point_on_polyline(x, p)
-    True
-
-    >>> is_point_on_segment(x, s)
-    True
-
-    >>> distance_point_point((0.5, 0.0, 0.25), x) < 1e-6
-    True
-    """
-    for cd in pairwise(polyline):
-        pt = intersection_segment_segment(segment, cd, tol)
-        if pt:
-            return pt
-
-
-def intersection_sphere_line(sphere, line):
-    """Computes the intersection of a sphere and a line.
-
-    Parameters
-    ----------
-    sphere : [point, radius] | :class:`~compas.geometry.Sphere`
-        A sphere defined by a point and a radius.
-    line : [point, point] | :class:`~compas.geometry.Line`
-        A line defined by two points.
-
-    Returns
-    -------
-    tuple[[float, float, float], [float, float, float]] | [float, float, float] | None
-        Two points (if the line goes through the sphere), one point (if the line is tangent to the sphere), or None (otherwise).
-
-    Notes
-    -----
-    There are 3 cases of sphere-line intersection:
-
-    1. they intersect in 2 points
-    2. they intersect in 1 point (line tangent to sphere), or
-    3. they do not intersect.
-
-    Examples
-    --------
-    >>> from compas.geometry import allclose
-
-    >>> sphere = (3.0, 7.0, 4.0), 10.0
-    >>> line = (1.0, 0, 0.5), (2.0, 1.0, 0.5)
-    >>> x1, x2 = intersection_sphere_line(sphere, line)
-
-    >>> allclose(x1, [11.634, 10.634, 0.500], 1e-3)
-    True
-    >>> allclose(x2, [-0.634, -1.634, 0.50], 1e-3)
-    True
-
-    """
-    l1, l2 = line
-    sp, radius = sphere
-
-    a = (l2[0] - l1[0]) ** 2 + (l2[1] - l1[1]) ** 2 + (l2[2] - l1[2]) ** 2
-    b = 2.0 * (
-        (l2[0] - l1[0]) * (l1[0] - sp[0]) + (l2[1] - l1[1]) * (l1[1] - sp[1]) + (l2[2] - l1[2]) * (l1[2] - sp[2])
-    )
-
-    c = (
-        sp[0] ** 2
-        + sp[1] ** 2
-        + sp[2] ** 2
-        + l1[0] ** 2
-        + l1[1] ** 2
-        + l1[2] ** 2
-        - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2])
-        - radius**2
-    )
-
-    i = b * b - 4.0 * a * c
-
-    if i < 0.0:  # case 3: no intersection
-        return None
-    elif i == 0.0:  # case 2: one intersection
-        mu = -b / (2.0 * a)
-        ipt = (
-            l1[0] + mu * (l2[0] - l1[0]),
-            l1[1] + mu * (l2[1] - l1[1]),
-            l1[2] + mu * (l2[2] - l1[2]),
-        )
-        return ipt
-    elif i > 0.0:  # case 1: two intersections
-        # 1.
-        mu = (-b + sqrt(i)) / (2.0 * a)
-        ipt1 = (
-            l1[0] + mu * (l2[0] - l1[0]),
-            l1[1] + mu * (l2[1] - l1[1]),
-            l1[2] + mu * (l2[2] - l1[2]),
-        )
-        # 2.
-        mu = (-b - sqrt(i)) / (2.0 * a)
-        ipt2 = (
-            l1[0] + mu * (l2[0] - l1[0]),
-            l1[1] + mu * (l2[1] - l1[1]),
-            l1[2] + mu * (l2[2] - l1[2]),
-        )
-        return ipt1, ipt2
 
 
 def intersection_plane_circle(plane, circle):
