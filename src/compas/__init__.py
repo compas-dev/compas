@@ -122,6 +122,13 @@ except ImportError:
 else:
     NUMPY = True
 
+try:
+    import igl  # noqa: F401
+except ImportError:
+    IGL = False
+else:
+    IGL = True
+
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
 try:
