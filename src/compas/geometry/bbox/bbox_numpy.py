@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import array
 from numpy import asarray
 from numpy import argmax
@@ -10,12 +6,9 @@ from numpy import amax
 from numpy import amin
 from numpy import dot
 
-# from numpy import ptp
 from numpy import sum
 
 from scipy.spatial import ConvexHull
-
-# from scipy.spatial import QhullError
 
 from compas.geometry import local_axes
 from compas.geometry import world_to_local_coordinates_numpy
@@ -26,15 +19,6 @@ from compas.numerical import pca_numpy
 from compas.geometry.bbox.bbox import bounding_box
 
 
-__all__ = [
-    "oriented_bounding_box_numpy",
-    "oriented_bounding_box_xy_numpy",
-    "oabb_numpy",
-]
-
-
-# make alternative implementation using PCA
-# compare results
 def oriented_bounding_box_numpy(points):
     r"""Compute the oriented minimum bounding box of a set of points in 3D space.
 

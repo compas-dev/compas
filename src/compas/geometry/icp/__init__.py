@@ -7,7 +7,6 @@ import compas
 if compas.NUMPY:
     from .icp_numpy import icp_numpy
 
-
 __all__ = []
 
 if compas.NUMPY:

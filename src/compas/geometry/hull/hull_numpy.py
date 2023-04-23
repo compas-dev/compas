@@ -1,15 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import asarray
 from scipy.spatial import ConvexHull
-
-
-__all__ = [
-    "convex_hull_numpy",
-    "convex_hull_xy_numpy",
-]
 
 
 def convex_hull_numpy(points):
