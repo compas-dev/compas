@@ -95,7 +95,7 @@ class Arc(Primitive):
     @end_angle.setter
     def end_angle(self, value):
         self._end_angle = value
-        self._verify
+        self._verify()
 
     @property
     def length(self):
