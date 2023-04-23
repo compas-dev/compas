@@ -532,6 +532,37 @@ def intersection_line_box(line, box, tol=1e-3):
     return intersections
 
 
+def intersection_line_mesh(line, mesh, tol=1e-3):
+    point = line[0]
+    direction = subtract_vectors(line[1], line[0])
+    vertices, faces = mesh
+    intersections = []
+    for index, (u, v, w) in enumerate(faces):
+        a = vertices[u]
+        b = vertices[v]
+        c = vertices[w]
+        ab = subtract_vectors(b, a)
+        ac = subtract_vectors(c, a)
+        bc = subtract_vectors(c, b)
+        ca = subtract_vectors(a, c)
+        normal = cross_vectors(ab, ac)
+        if abs(dot_vectors(normal, direction)) < tol:
+            continue
+        d = dot_vectors(normal, a)
+        t = (d - dot_vectors(normal, point)) / dot_vectors(normal, direction)
+        x = add_vectors(point, scale_vector(direction, t))
+        ax = subtract_vectors(x, a)
+        bx = subtract_vectors(x, b)
+        cx = subtract_vectors(x, c)
+        if (
+            dot_vectors(normal, cross_vectors(ab, ax)) > tol
+            and dot_vectors(normal, cross_vectors(bc, bx)) > tol
+            and dot_vectors(normal, cross_vectors(ca, cx)) > tol
+        ):
+            intersections.append((index, t, x))
+    return intersections
+
+
 def intersection_plane_plane(plane1, plane2, tol=1e-6):
     """Computes the intersection of two planes
 

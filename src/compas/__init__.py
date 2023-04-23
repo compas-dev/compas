@@ -177,6 +177,8 @@ __all__ = [
     "json_loads",
 ]
 
+__all_plugins__ = []
+
 
 def set_precision(precision):
     """Set the precision used by geometric maps.

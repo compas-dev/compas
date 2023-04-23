@@ -10,6 +10,7 @@ from .intersections import intersection_line_plane
 from .intersections import intersection_line_triangle
 from .intersections import intersection_line_box
 from .intersections import intersection_line_sphere
+from .intersections import intersection_line_mesh
 from .intersections import intersection_polyline_plane
 from .intersections import intersection_segment_plane
 from .intersections import intersection_segment_segment
@@ -84,6 +85,7 @@ __all__ = [
     "intersection_line_plane",
     "intersection_line_triangle",
     "intersection_line_sphere",
+    "intersection_line_mesh",
     "intersection_polyline_plane",
     "intersection_segment_segment",
     "intersection_segment_plane",
