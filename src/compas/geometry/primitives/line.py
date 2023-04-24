@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
