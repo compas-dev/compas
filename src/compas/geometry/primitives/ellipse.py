@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import math
-import compas.geometry
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Plane
@@ -51,9 +50,9 @@ class Ellipse(Primitive):
 
     def __init__(self, plane, major, minor, **kwargs):
         super(Ellipse, self).__init__(**kwargs)
-        self._plane = Plane.worldXY()
-        self._major = 1.0
-        self._minor = 1.0
+        self._plane = None
+        self._major = None
+        self._minor = None
         self.plane = plane
         self.major = major
         self.minor = minor
@@ -120,7 +119,6 @@ class Ellipse(Primitive):
 
     @property
     def plane(self):
-        # type: () -> Plane
         return self._plane
 
     @plane.setter
@@ -129,7 +127,6 @@ class Ellipse(Primitive):
 
     @property
     def major(self):
-        # type: () -> float
         return self._major
 
     @major.setter
@@ -138,7 +135,6 @@ class Ellipse(Primitive):
 
     @property
     def minor(self):
-        # type: () -> float
         return self._minor
 
     @minor.setter
@@ -147,12 +143,10 @@ class Ellipse(Primitive):
 
     @property
     def normal(self):
-        # type: () -> compas.geometry.Vector
         return self.plane.normal
 
     @property
     def center(self):
-        # type: () -> compas.geometry.Point
         return self.plane.point
 
     @center.setter
@@ -161,7 +155,6 @@ class Ellipse(Primitive):
 
     @property
     def area(self):
-        # type: () -> float
         return math.pi * self.major * self.minor
 
     @property

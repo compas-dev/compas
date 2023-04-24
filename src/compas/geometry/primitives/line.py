@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas.geometry
-
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
@@ -116,8 +114,7 @@ class Line(Primitive):
 
     @property
     def start(self):
-        # type: () -> Point
-        return self._start  # type: ignore
+        return self._start
 
     @start.setter
     def start(self, point):
@@ -125,8 +122,7 @@ class Line(Primitive):
 
     @property
     def end(self):
-        # type: () -> Point
-        return self._end  # type: ignore
+        return self._end
 
     @end.setter
     def end(self, point):
@@ -134,22 +130,18 @@ class Line(Primitive):
 
     @property
     def vector(self):
-        # type: () -> compas.geometry.Vector
-        return self.end - self.start  # type: ignore
+        return self.end - self.start
 
     @property
     def length(self):
-        # type: () -> float
         return self.vector.length
 
     @property
     def direction(self):
-        # type: () -> compas.geometry.Vector
         return self.vector * (1 / self.length)
 
     @property
     def midpoint(self):
-        # type: () -> Point
         v = self.direction * (0.5 * self.length)
         return self.start + v
 

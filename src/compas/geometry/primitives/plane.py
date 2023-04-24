@@ -113,8 +113,7 @@ class Plane(Primitive):
 
     @property
     def point(self):
-        # type: () -> Point
-        return self._point  # type: ignore
+        return self._point
 
     @point.setter
     def point(self, point):
@@ -122,8 +121,7 @@ class Plane(Primitive):
 
     @property
     def normal(self):
-        # type: () -> Vector
-        return self._normal  # type: ignore
+        return self._normal
 
     @normal.setter
     def normal(self, vector):
@@ -132,14 +130,12 @@ class Plane(Primitive):
 
     @property
     def d(self):
-        # type: () -> float
         a, b, c = self.normal
         x, y, z = self.point
         return -a * x - b * y - c * z
 
     @property
     def abcd(self):
-        # type: () -> tuple[float, float, float, float]
         a, b, c = self.normal
         d = self.d
         return a, b, c, d
