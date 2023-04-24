@@ -1,11 +1,10 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
+import igl
+import numpy as np
 
-from compas.plugins import pluggable
+from compas.plugins import plugin
 
 
-@pluggable(category="trimesh")
+@plugin(category="trimesh", requires=["igl"])
 def trimesh_harmonic(M, boundary, values):
     """Compute the harmonic parametrisation of a triangle mesh within a fixed circular boundary.
 
@@ -28,10 +27,16 @@ def trimesh_harmonic(M, boundary, values):
     >>>
 
     """
-    raise NotImplementedError
+    vertices, faces = M
+    V = np.array(vertices, dtype=np.float64)
+    F = np.array(faces, dtype=np.int32)
+    B = np.array(boundary, dtype=np.int32)
+    BC = np.array(values, dtype=np.float64)
+    _, uv = igl.lscm(V, F, B, BC)  # type: ignore
+    return uv.tolist()
 
 
-@pluggable(category="trimesh")
+@plugin(category="trimesh", requires=["igl"])
 def trimesh_lscm(M, boundary):
     """Compute the least squares conformal map of a triangle mesh.
 
@@ -52,4 +57,10 @@ def trimesh_lscm(M, boundary):
     >>>
 
     """
-    raise NotImplementedError
+    vertices, faces = M
+    V = np.array(vertices, dtype=np.float64)
+    F = np.array(faces, dtype=np.int32)
+    B = np.array([boundary[0], int(len(boundary) / 2)], dtype=np.int32)
+    BC = np.array([[0, 0], [1, 0]], dtype=np.float64)
+    _, uv = igl.lscm(V, F, B, BC)  # type: ignore
+    return uv.tolist()

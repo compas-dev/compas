@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added igl plugin for `compas.geometry.trimesh_principal_curvature`.
 * Added igl plugin for `compas.geometry.trimesh_geodistance`.
 * Added igl plugin for `compas.geometry.trimesh_isolines`.
+* Added igl plugin for `compas.geometry.trimesh_harmonic` and `compas.geometry.trimesh_lscm`.
 * Added `compas.geometry.intersection_line_box`.
 * Added `compas.geometry.intersection_line_mesh`.
 * Added `compas.geometry.intersection_line_sphere`.
