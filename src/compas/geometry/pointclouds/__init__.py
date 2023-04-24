@@ -2,6 +2,4 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from .pointcloud import Pointcloud
-
-__all__ = ["Pointcloud"]
+from .pointcloud import Pointcloud  # noqa: F401

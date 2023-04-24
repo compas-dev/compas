@@ -53,41 +53,6 @@ _SPEC2TUPLE = {
 _NEXT_SPEC = [1, 2, 0, 1]
 
 
-__all__ = [
-    "matrix_determinant",
-    "matrix_inverse",
-    "decompose_matrix",
-    "compose_matrix",
-    "identity_matrix",
-    "matrix_from_frame",
-    "matrix_from_frame_to_frame",
-    "matrix_from_change_of_basis",
-    "matrix_from_euler_angles",
-    "matrix_from_axis_and_angle",
-    "matrix_from_axis_angle_vector",
-    "matrix_from_basis_vectors",
-    "matrix_from_translation",
-    "matrix_from_orthogonal_projection",
-    "matrix_from_parallel_projection",
-    "matrix_from_perspective_projection",
-    "matrix_from_perspective_entries",
-    "matrix_from_shear_entries",
-    "matrix_from_shear",
-    "matrix_from_scale_factors",
-    "matrix_from_quaternion",
-    "euler_angles_from_matrix",
-    "euler_angles_from_quaternion",
-    "axis_and_angle_from_matrix",
-    "axis_angle_vector_from_matrix",
-    "axis_angle_from_quaternion",
-    "quaternion_from_matrix",
-    "quaternion_from_euler_angles",
-    "quaternion_from_axis_angle",
-    "basis_vectors_from_matrix",
-    "translation_from_matrix",
-]
-
-
 def is_matrix_square(M):
     """Verify that a matrix is square.
 
@@ -326,7 +291,7 @@ def decompose_matrix(M):
 
     scale[0] = norm_vector(row[0])
     for i in range(3):
-        row[0][i] /= scale[0]
+        row[0][i] /= scale[0]  # type: ignore
 
     shear[0] = dot_vectors(row[0], row[1])
     for i in range(3):
@@ -334,7 +299,7 @@ def decompose_matrix(M):
 
     scale[1] = norm_vector(row[1])
     for i in range(3):
-        row[1][i] /= scale[1]
+        row[1][i] /= scale[1]  # type: ignore
     shear[0] /= scale[1]
 
     shear[1] = dot_vectors(row[0], row[2])
@@ -347,7 +312,7 @@ def decompose_matrix(M):
 
     scale[2] = norm_vector(row[2])
     for i in range(3):
-        row[2][i] /= scale[2]
+        row[2][i] /= scale[2]  # type: ignore
 
     shear[1] /= scale[2]
     shear[2] /= scale[2]
@@ -441,7 +406,7 @@ def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspe
         M = multiply_matrices(M, S)
     for i in range(4):
         for j in range(4):
-            M[i][j] /= M[3][3]
+            M[i][j] /= M[3][3]  # type: ignore
     return M
 
 

@@ -16,11 +16,6 @@ from compas.geometry import is_point_in_circle_xy
 from compas.geometry import circle_from_points_xy
 
 
-__all__ = [
-    "delaunay_from_points",
-]
-
-
 def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     """Computes the delaunay triangulation for a list of points.
 
@@ -148,78 +143,3 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
                     mesh.delete_face(fkey)
 
     return [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-
-
-# def voronoi_from_delaunay(delaunay):
-#     """Construct the Voronoi dual of the triangulation of a set of points.
-
-#     Parameters
-#     ----------
-#     delaunay : Mesh
-#         A delaunay mesh.
-
-#     Returns
-#     -------
-#     Mesh
-#         The corresponding voronoi mesh.
-
-#     Warnings
-#     --------
-#     This function does not work properly if all vertices of the delaunay
-#     are on the boundary.
-
-#     Examples
-#     --------
-#     .. plot::
-#         :include-source:
-
-#         from compas.datastructures import Mesh
-#         from compas.datastructures import trimesh_remesh
-#         from compas.geometry import delaunay_from_points
-#         from compas.geometry import voronoi_from_delaunay
-#         from compas.geometry import pointcloud_xy
-#         from compas_plotters import MeshPlotter
-
-#         points = pointcloud_xy(10, (0, 10))
-#         faces = delaunay_from_points(points)
-#         delaunay = Mesh.from_vertices_and_faces(points, faces)
-
-#         trimesh_remesh(delaunay, 1.0, allow_boundary_split=True)
-
-#         points = [delaunay.vertex_coordinates(key) for key in delaunay.vertices()]
-#         faces = delaunay_from_points(points)
-#         delaunay = Mesh.from_vertices_and_faces(points, faces)
-
-#         voronoi = voronoi_from_delaunay(delaunay)
-
-#         lines = []
-#         for u, v in voronoi.edges():
-#             lines.append({
-#                 'start': voronoi.vertex_coordinates(u, 'xy'),
-#                 'end'  : voronoi.vertex_coordinates(v, 'xy'),
-#                 'width': 1.0
-#             })
-
-#         plotter = MeshPlotter(delaunay)
-
-#         plotter.draw_lines(lines)
-
-#         plotter.draw_vertices(
-#             radius=0.075,
-#             facecolor={key: '#0092d2' for key in delaunay.vertices() if key not in delaunay.vertices_on_boundary()})
-
-#         plotter.draw_edges(color='#cccccc')
-
-#         plotter.show()
-
-#     """
-#     voronoi = mesh_dual(delaunay)
-
-#     for key in voronoi.vertices():
-#         a, b, c = delaunay.face_coordinates(key)
-#         center, radius, normal = circle_from_points_xy(a, b, c)
-#         voronoi.vertex[key]['x'] = center[0]
-#         voronoi.vertex[key]['y'] = center[1]
-#         voronoi.vertex[key]['z'] = center[2]
-
-#     return voronoi

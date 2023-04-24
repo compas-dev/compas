@@ -4,30 +4,30 @@ from __future__ import print_function
 
 from compas.plugins import pluggable
 
-from .intersections import intersection_line_line
-from .intersections import intersection_line_segment
-from .intersections import intersection_line_plane
-from .intersections import intersection_line_triangle
-from .intersections import intersection_line_box
-from .intersections import intersection_line_sphere
-from .intersections import intersection_line_mesh
-from .intersections import intersection_polyline_plane
-from .intersections import intersection_segment_plane
-from .intersections import intersection_segment_segment
-from .intersections import intersection_plane_circle
-from .intersections import intersection_plane_plane
-from .intersections import intersection_plane_plane_plane
-from .intersections import intersection_sphere_line
-from .intersections import intersection_sphere_sphere
-from .intersections import intersection_segment_polyline
+from .intersections import intersection_line_line  # noqa: F401
+from .intersections import intersection_line_segment  # noqa: F401
+from .intersections import intersection_line_plane  # noqa: F401
+from .intersections import intersection_line_triangle  # noqa: F401
+from .intersections import intersection_line_box  # noqa: F401
+from .intersections import intersection_line_sphere  # noqa: F401
+from .intersections import intersection_line_mesh  # noqa: F401
+from .intersections import intersection_polyline_plane  # noqa: F401
+from .intersections import intersection_segment_plane  # noqa: F401
+from .intersections import intersection_segment_segment  # noqa: F401
+from .intersections import intersection_plane_circle  # noqa: F401
+from .intersections import intersection_plane_plane  # noqa: F401
+from .intersections import intersection_plane_plane_plane  # noqa: F401
+from .intersections import intersection_sphere_line  # noqa: F401
+from .intersections import intersection_sphere_sphere  # noqa: F401
+from .intersections import intersection_segment_polyline  # noqa: F401
 
-from .intersections import intersection_line_line_xy
-from .intersections import intersection_line_segment_xy
-from .intersections import intersection_line_box_xy
-from .intersections import intersection_circle_circle_xy
-from .intersections import intersection_ellipse_line_xy
-from .intersections import intersection_segment_segment_xy
-from .intersections import intersection_segment_polyline_xy
+from .intersections import intersection_line_line_xy  # noqa: F401
+from .intersections import intersection_line_segment_xy  # noqa: F401
+from .intersections import intersection_line_box_xy  # noqa: F401
+from .intersections import intersection_circle_circle_xy  # noqa: F401
+from .intersections import intersection_ellipse_line_xy  # noqa: F401
+from .intersections import intersection_segment_segment_xy  # noqa: F401
+from .intersections import intersection_segment_polyline_xy  # noqa: F401
 
 
 @pluggable(category="intersections")
@@ -77,32 +77,3 @@ def intersection_ray_mesh(ray, mesh):
 
     """
     raise NotImplementedError
-
-
-__all__ = [
-    "intersection_line_line",
-    "intersection_line_segment",
-    "intersection_line_plane",
-    "intersection_line_triangle",
-    "intersection_line_sphere",
-    "intersection_line_mesh",
-    "intersection_polyline_plane",
-    "intersection_segment_segment",
-    "intersection_segment_plane",
-    "intersection_segment_polyline",
-    "intersection_plane_circle",
-    "intersection_plane_plane",
-    "intersection_plane_plane_plane",
-    "intersection_sphere_line",
-    "intersection_sphere_sphere",
-    "intersection_line_line_xy",
-    "intersection_line_segment_xy",
-    "intersection_line_box_xy",
-    "intersection_circle_circle_xy",
-    "intersection_ellipse_line_xy",
-    "intersection_segment_polyline_xy",
-    "intersection_segment_segment_xy",
-    "intersection_mesh_mesh",
-    "intersection_ray_mesh",
-    "intersection_line_box",
-]

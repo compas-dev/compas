@@ -5,9 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = ["trimesh_harmonic", "trimesh_lscm"]
-
-
 @pluggable(category="trimesh")
 def trimesh_harmonic(M):
     """Compute the harmonic parametrisation of a triangle mesh within a fixed circular boundary.

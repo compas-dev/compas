@@ -5,13 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = [
-    "trimesh_remesh",
-    "trimesh_remesh_constrained",
-    "trimesh_remesh_along_isoline",
-]
-
-
 @pluggable(category="trimesh")
 def trimesh_remesh(mesh, target_edge_length, number_of_iterations=10, do_project=True):
     """Remeshing of a triangle mesh.

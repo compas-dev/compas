@@ -5,10 +5,11 @@ from __future__ import print_function
 import compas
 from compas.plugins import pluggable
 
-from .delaunay import *  # noqa: F401 F403
+from .delaunay import delaunay_from_points  # noqa: F401
 
 if not compas.IPY:
-    from .delaunay_numpy import *  # noqa: F401 F403
+    from .delaunay_numpy import delaunay_from_points_numpy  # noqa: F401
+    from .delaunay_numpy import voronoi_from_points_numpy  # noqa: F401
 
 
 @pluggable(category="triangulation")
@@ -96,6 +97,3 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
 
     """
     raise NotImplementedError
-
-
-__all__ = [name for name in dir() if not name.startswith("_")]

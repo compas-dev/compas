@@ -1,12 +1,16 @@
-from .brep import Brep
-from .brep import BrepOrientation
-from .brep import BrepType
-from .edge import BrepEdge
-from .loop import BrepLoop
-from .face import BrepFace
-from .vertex import BrepVertex
-from .trim import BrepTrim
-from .trim import BrepTrimIsoStatus
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+from .brep import Brep  # noqa: F401
+from .brep import BrepOrientation  # noqa: F401
+from .brep import BrepType  # noqa: F401
+from .edge import BrepEdge  # noqa: F401
+from .loop import BrepLoop  # noqa: F401
+from .face import BrepFace  # noqa: F401
+from .vertex import BrepVertex  # noqa: F401
+from .trim import BrepTrim  # noqa: F401
+from .trim import BrepTrimIsoStatus  # noqa: F401
 
 
 class BrepError(Exception):
@@ -25,19 +29,3 @@ class BrepTrimmingError(BrepError):
     """Raised when a trimming operation has failed or had not result"""
 
     pass
-
-
-__all__ = [
-    "Brep",
-    "BrepEdge",
-    "BrepLoop",
-    "BrepFace",
-    "BrepVertex",
-    "BrepTrim",
-    "BrepTrimIsoStatus",
-    "BrepOrientation",
-    "BrepType",
-    "BrepError",
-    "BrepInvalidError",
-    "BrepTrimmingError",
-]

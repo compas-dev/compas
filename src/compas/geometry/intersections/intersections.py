@@ -479,7 +479,8 @@ def intersection_line_sphere(line, sphere):
         return ipt1, ipt2
 
 
-intersection_sphere_line = intersection_line_sphere
+def intersection_sphere_line(sphere, line):
+    return intersection_line_sphere(line, sphere)
 
 
 def intersection_line_box(line, box, tol=1e-3):
