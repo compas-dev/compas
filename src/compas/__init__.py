@@ -174,6 +174,7 @@ __all_plugins__ = [
     "compas.geometry.quadmesh.planarization_igl",
     "compas.geometry.trimesh.curvature_igl",
     "compas.geometry.trimesh.geodistance_igl",
+    "compas.geometry.trimesh.isolines_igl",
 ]
 
 
