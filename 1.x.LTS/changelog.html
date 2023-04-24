@@ -117,6 +117,8 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed bug that caused a new-line at the end of the <code class="docutils literal notranslate"><span class="pre">compas.HERE</span></code> constant in IronPython for Mac.</p></li>
 <li><p>Fixed Grasshopper <code class="docutils literal notranslate"><span class="pre">draw_polylines</span></code> method to return <code class="docutils literal notranslate"><span class="pre">PolylineCurve</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Polyline</span></code> because the latter shows as only points.</p></li>
 <li><p>Fixed uninstall post-process.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">area_polygon</span></code> that was, in some cases, returning a negative area</p></li>
+<li><p>Fixed support for <code class="docutils literal notranslate"><span class="pre">System.Decimal</span></code> data type on json serialization.</p></li>
 </ul>
 </section>
 <section id="removed">
