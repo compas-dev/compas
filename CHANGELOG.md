@@ -10,6 +10,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
+* Added igl plugin for `compas.geometry.trimesh_gaussian_curvature`.
+* Added igl plugin for `compas.geometry.trimesh_principal_curvature`.
+* Added igl plugin for `compas.geometry.trimesh_geodistance`.
+* Added igl plugin for `compas.geometry.trimesh_isolines`.
+* Added `compas.geometry.intersection_line_box`.
+* Added `compas.geometry.intersection_line_mesh`.
+* Added `compas.geometry.intersection_line_sphere`.
+* Added `Point.closest_in_cloud`.
+* Added `Point.closest_on_line`.
+* Added `Point.closest_on_line_xy`.
+* Added `Point.closest_on_plane`.
+* Added `Point.closest_on_polyline`.
+* Added `Point.closest_on_segment`.
+* Added `Point.project_on_line`.
+* Added `Point.project_on_plane`.
+* Added `Point.projected_on_line`.
+* Added `Point.projected_on_plane`.
+* Added `Line.intersection_with_line`.
+* Added `Line.intersection_with_plane`.
+* Added `Line.intersection_with_triangle`.
+* Added `Line.offset`.
+* Added `compas.NUMPY`.
+* Added `Polygon.offset`.
+* Added `Polygon.project_on_plane`.
+* Added `Polygon.projected_on_plane`.
+* Added `Plane.from_points`.
 
 ### Changed
 
@@ -18,6 +44,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `area_polygon` that was, in some cases, returning a negative area.
 * Fixed uninstall post-process.
 * Fixed support for `System.Decimal` data type on json serialization.
+* Changed `Point.on_line` to `Point.is_on_line`.
+* Changed `Point.on_segment` to `Point.is_on_segment`.
+* Changed `Point.on_polyline` to `Point.is_on_polyline`.
+* Changed `Point.on_circle` to `Point.is_on_circle`.
+* Changed `Point.in_triangle` to `Point.is_in_triangle`.
+* Changed `Point.in_circle` to `Point.is_in_circle`.
+* Changed `Point.in_polyhedron` to `Point.is_in_polyhedron`.
+* Fixed bug in `Arc.end_angle`.
 
 ### Removed
 
