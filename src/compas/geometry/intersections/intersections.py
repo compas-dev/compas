@@ -488,8 +488,13 @@ def intersection_line_box(line, box, tol=1e-3):
     Parameters
     ----------
     line : tuple[[float, float, float], [float, float, float]]
-    box : tuple[[float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float], [float, float, float]]
+        The line defined by two points.
+    box : 8-tuple[[float, float, float]]
+        A box defined by 8 points.
+        The first 4 points define the bottom face in clockwise direction,
+        and the next 4 points define the top face in counter-clockwise direction.
     tol : float, optional
+        A tolerance for member checking.
 
     Returns
     -------
@@ -500,7 +505,7 @@ def intersection_line_box(line, box, tol=1e-3):
     intersections = []
     point = line[0]
     direction = normalize_vector(subtract_vectors(line[1], line[0]))
-    a, b, c, d, e, f, g, h = box
+    a, d, c, b, e, f, g, h = box
     front = [a, b, f, e]
     left = [a, e, h, d]
     right = [c, b, f, g]
@@ -519,11 +524,13 @@ def intersection_line_box(line, box, tol=1e-3):
         d = dot_vectors(normal, origin)
         t = (d - dot_vectors(normal, point)) / dot_vectors(normal, direction)
         x = add_vectors(point, scale_vector(direction, t))
+        print(x)
         # check if the intersection lies within the bounds of the face
         is_point_in_face = True
         for a, b in pairwise(face + face[:1]):
             ab = subtract_vectors(b, a)
             ax = subtract_vectors(x, a)
+            print(dot_vectors(cross_vectors(ab, ax), normal))
             if dot_vectors(cross_vectors(ab, ax), normal) < 0:
                 is_point_in_face = False
                 break
@@ -533,6 +540,22 @@ def intersection_line_box(line, box, tol=1e-3):
 
 
 def intersection_line_mesh(line, mesh, tol=1e-3):
+    """Compute the intersections between a line and a mesh.
+
+    Parameters
+    ----------
+    line : tuple[[float, float, float], [float, float, float]]
+        A line defined by two points.
+    mesh : tuple[list[[float, float, float]], list[[int, int, int]]]
+        A mesh defined by a list of vertices and a list of faces.
+    tol : float, optional
+        A tolerance value for member verification.
+
+    Returns
+    -------
+    list[[float, float, float]] | None
+
+    """
     point = line[0]
     direction = subtract_vectors(line[1], line[0])
     vertices, faces = mesh
