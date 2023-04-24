@@ -130,7 +130,6 @@ class Polygon(Primitive):
 
     @property
     def points(self):
-        # type: () -> list[Point]
         return self._points
 
     @points.setter
@@ -145,25 +144,21 @@ class Polygon(Primitive):
 
     @property
     def lines(self):
-        # type: () -> list[Line]
         if not self._lines:
             self._lines = [Line(a, b) for a, b in pairwise(self.points + self.points[:1])]
         return self._lines
 
     @property
     def length(self):
-        # type: () -> float
         return sum(line.length for line in self.lines)
 
     @property
     def centroid(self):
-        # type: () -> Point
         point = centroid_polygon(self.points)
         return Point(*point)
 
     @property
     def normal(self):
-        # type: () -> Vector
         o = self.centroid
         points = self.points
         a2 = 0
@@ -171,8 +166,8 @@ class Polygon(Primitive):
         for i in range(-1, len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
-            u = [p1[_] - o[_] for _ in range(3)]  # type: ignore
-            v = [p2[_] - o[_] for _ in range(3)]  # type: ignore
+            u = [p1[_] - o[_] for _ in range(3)]
+            v = [p2[_] - o[_] for _ in range(3)]
             w = cross_vectors(u, v)
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)
@@ -182,12 +177,10 @@ class Polygon(Primitive):
 
     @property
     def area(self):
-        # type: () -> float
         return area_polygon(self.points)
 
     @property
     def plane(self):
-        # type: () -> Plane
         points = self.points + [line.midpoint for line in self.lines]
         points.append(self.centroid)
         return Plane.from_points(points)
