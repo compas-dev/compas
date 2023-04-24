@@ -171,8 +171,9 @@ __all__ = [
 ]
 
 __all_plugins__ = [
-    'compas.geometry.quadmesh.planarization_igl',
-    'compas.geometry.trimesh.curvature_igl',
+    "compas.geometry.quadmesh.planarization_igl",
+    "compas.geometry.trimesh.curvature_igl",
+    "compas.geometry.trimesh.geodistance_igl",
 ]
 
 
