@@ -17,13 +17,6 @@ from compas.utilities import pairwise
 from compas.utilities import is_item_iterable
 
 
-__all__ = [
-    "offset_line",
-    "offset_polyline",
-    "offset_polygon",
-]
-
-
 def intersect_lines(l1, l2, tol):
     x1, x2 = intersection_line_line(l1, l2, tol)
     if x1 and x2:
