@@ -3,7 +3,7 @@ from math import pi, radians, sqrt
 import pytest
 
 from compas.geometry import Polyhedron
-from compas.geometry import Polygon
+from compas.geometry import Point, Polygon
 from compas.geometry import Rotation
 from compas.geometry import allclose
 from compas.geometry import angle_vectors
@@ -228,6 +228,16 @@ def test_area_triangle(triangle, R):
     assert close(area_triangle(triangle.points), 0.5)
     assert close(area_triangle_xy(triangle.points), 0.0)
     assert close(triangle.area, 0.5)
+
+
+def test_area_polygon():
+    # create a test closed (here planar xy) non-convex polygon :
+    polygon = [Point(-7, -15, 0), Point(-5, 9, 0), Point(13, 0, 0), Point(0, -2, 0), Point(0, -6, 0), Point(-4, -10, 0)]
+
+    assert area_polygon(polygon) >= 0
+    # the same polygon with vertices list shifted by 3 positions :
+    polygon_ = polygon[3:] + polygon[:3]
+    assert area_polygon(polygon_) >= 0
 
 
 # ==============================================================================

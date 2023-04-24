@@ -8,14 +8,26 @@ import uuid
 
 from compas.data.exceptions import DecoderError
 
+IDictionary = None
+numpy_support = False
+dotnet_support = False
+
 # We don't do this from `compas.IPY` to avoid circular imports
 if "ironpython" == platform.python_implementation().lower():
+    dotnet_support = True
+
     try:
+        import System
         from System.Collections.Generic import IDictionary
     except:  # noqa: E722
-        IDictionary = None
-else:
-    IDictionary = None
+        pass
+
+try:
+    import numpy as np
+
+    numpy_support = True
+except ImportError:
+    numpy_support = False
 
 
 def cls_from_dtype(dtype):
@@ -113,11 +125,7 @@ class DataEncoder(json.JSONEncoder):
         if hasattr(o, "__next__"):
             return list(o)
 
-        try:
-            import numpy as np
-        except ImportError:
-            pass
-        else:
+        if numpy_support:
             if isinstance(o, np.ndarray):
                 return o.tolist()
             if isinstance(
@@ -143,6 +151,10 @@ class DataEncoder(json.JSONEncoder):
                 return bool(o)
             if isinstance(o, np.void):
                 return None
+
+        if dotnet_support:
+            if isinstance(o, System.Decimal):
+                return float(o)
 
         return super(DataEncoder, self).default(o)
 
