@@ -233,11 +233,14 @@ Intersections
     intersection_circle_circle_xy
     intersection_ellipse_line_xy
     intersection_line_box_xy
+    intersection_line_box
     intersection_line_line_xy
     intersection_line_line
+    intersection_line_mesh
     intersection_line_plane
     intersection_line_segment_xy
     intersection_line_segment
+    intersection_line_sphere
     intersection_line_triangle
     intersection_mesh_mesh
     intersection_plane_circle
