@@ -122,13 +122,6 @@ except ImportError:
 else:
     NUMPY = True
 
-try:
-    import igl  # noqa: F401
-except ImportError:
-    IGL = False
-else:
-    IGL = True
-
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
 try:
@@ -177,7 +170,9 @@ __all__ = [
     "json_loads",
 ]
 
-__all_plugins__ = []
+__all_plugins__ = [
+    'compas.geometry.quadmesh.planarization_igl'
+]
 
 
 def set_precision(precision):
