@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed Grasshopper `draw_polylines` method to return `PolylineCurve` instead of `Polyline` because the latter shows as only points.
 * Fixed `area_polygon` that was, in some cases, returning a negative area.
 * Fixed uninstall post-process.
+* Fixed support for `System.Decimal` data type on json serialization.
 * Simplified `compas.datastructures.Part` for more generic usage.
 
 ### Removed
