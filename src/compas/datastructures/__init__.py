@@ -21,6 +21,9 @@ Classes
     VolMesh
     Assembly
     Part
+    Feature
+    GeometricFeature
+    ParametricFeature
 
 
 Exceptions
@@ -304,6 +307,9 @@ from .assembly import (
     Part,
     AssemblyError,
     FeatureError,
+    Feature,
+    GeometricFeature,
+    ParametricFeature,
 )
 
 if not compas.IPY:
@@ -448,6 +454,9 @@ __all__ = [
     "Part",
     "AssemblyError",
     "FeatureError",
+    "Feature",
+    "GeometricFeature",
+    "ParametricFeature",
 ]
 
 if not compas.IPY:
