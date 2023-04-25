@@ -32,6 +32,27 @@ class GeometricFeature(Feature):
     An implementation of this class may offer support for various geometry types by adding an entry to OPERATIONS
     mapping the geometry type to its corresponding operation.
 
+    Examples
+    --------
+    >>>    def trim_brep_plane(brep, plane):
+    >>>         # trim brep with plane, return trimmed brep
+    >>>
+    >>>    def trim_mesh_plane(mesh, plane):
+    >>>         # trim mesh with plane, return trimmed mesh
+    >>>
+    >>>    class TrimmingFeature(GeometricFeature):
+    >>>        OPERATIONS = {Brep: trim_brep_plane, Mesh: trim_mesh_plane}
+    >>>
+    >>>            def __init__(self, trimming_plane):
+    >>>                super(TrimmingFeature, self).__init__()
+    >>>                self._geometry = trimming_plane
+    >>>
+    >>>            def apply(self, part):
+    >>>                part_geometry = part.get_geometry(with_features=True)
+    >>>                type_ = Brep if isinstance(part_geometry, Brep) else Mesh
+    >>>                operation = OPERATIONS[type_]
+    >>>                return operation(part_geometry, self._geometry)
+
     """
 
     OPERATIONS = {
@@ -55,6 +76,22 @@ class GeometricFeature(Feature):
 class ParametricFeature(Feature):
     """Base class for Features that may be applied to the parametric definition
     of a :class:`~compas.datastructures.Part`.
+
+    Examples
+    --------
+    >>> class ExtensionFeature(ParametricFeature):
+    >>>     def __init__(self, extend_by):
+    >>>         super(ExtensionFeature, self).__init__()
+    >>>         self.extend_by = extend_by
+    >>>
+    >>>     def apply(self, part):
+    >>>         part.length += self._extend_by
+    >>>
+    >>>     def restore(self, part):
+    >>>         part.length -= self._extend_by
+    >>>
+    >>>     def accumulate(self, other):
+    >>>         return BeamExtensionFeature(max(self.extend_by, other.extend_by))
 
     """
 
