@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Part.to_mesh" href="compas.datastructures.Part.to_mesh.html" />
+  <link rel="next" title="Part.clear_features" href="compas.datastructures.Part.clear_features.html" />
   
 
   
@@ -110,13 +110,13 @@
 <h1>Part.add_feature</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Part.add_feature">
-<span class="sig-prename descclassname"><span class="pre">Part.</span></span><span class="sig-name descname"><span class="pre">add_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/assembly/part.py#L198"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Add a feature to the shape of the part and the operation through which it should be integrated.</p>
+<span class="sig-prename descclassname"><span class="pre">Part.</span></span><span class="sig-name descname"><span class="pre">add_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/assembly/part.py#L214"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Add a Feature to this Part.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a>) – The shape of the feature.</p></li>
-<li><p><strong>operation</strong> (<em>Literal[‘union’, ‘difference’, ‘intersection’]</em>) – The boolean operation through which the feature should be integrated in the base shape.</p></li>
+<li><p><strong>feature</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Feature</span></code>) – The feature to add</p></li>
+<li><p><strong>apply</strong> (<em>:bool:</em>) – If True, feature is also applied. Otherwise, feature is only added and user must call <cite>apply_features</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -202,10 +202,10 @@
       
 
       
-      <a href="compas.datastructures.Part.to_mesh.html" title="Part.to_mesh" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.datastructures.Part.clear_features.html" title="Part.clear_features" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Part.to_mesh
+          Part.clear_features
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>
