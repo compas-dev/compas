@@ -2,21 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import cross_vectors_xy
-from compas.geometry._core import length_vector
-from compas.geometry._core import normalize_vector
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import cross_vectors
+from ._algebra import cross_vectors_xy
+from ._algebra import length_vector
+from ._algebra import normalize_vector
 
-from compas.geometry._core import centroid_points
-
-
-__all__ = [
-    "normal_polygon",
-    "normal_triangle",
-    "normal_triangle_xy",
-]
+from .centroids import centroid_points
 
 
 def normal_polygon(polygon, unitized=True):

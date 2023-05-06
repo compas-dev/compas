@@ -10,12 +10,10 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
-# from compas.utilities import flatten
-# from compas.geometry import allclose
-# from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import matrix_from_shear_entries
-from compas.geometry.transformations import matrix_from_shear
-from compas.geometry.transformations import Transformation
+from .matrices import matrix_from_shear_entries
+from .matrices import matrix_from_shear
+
+from .transformation import Transformation
 
 
 class Shear(Transformation):

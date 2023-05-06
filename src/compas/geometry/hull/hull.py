@@ -8,12 +8,6 @@ from compas.geometry import dot_vectors
 from compas.geometry import cross_vectors_xy
 
 
-__all__ = [
-    "convex_hull",
-    "convex_hull_xy",
-]
-
-
 def convex_hull(points):
     """Construct convex hull for a set of points.
 

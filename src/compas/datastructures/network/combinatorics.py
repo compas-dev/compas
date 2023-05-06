@@ -5,9 +5,6 @@ from __future__ import division
 from compas.topology import breadth_first_traverse
 
 
-__all__ = ["network_is_connected"]
-
-
 def network_is_connected(network):
     """Verify that the network is connected.
 

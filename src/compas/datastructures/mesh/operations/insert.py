@@ -3,9 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ["mesh_add_vertex_to_face_edge", "mesh_insert_vertex_on_edge"]
-
-
 def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
     """Add an existing vertex of the mesh to an existing face.
 

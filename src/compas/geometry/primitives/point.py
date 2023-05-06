@@ -6,7 +6,6 @@ from compas import PRECISION
 
 from compas.geometry import centroid_points
 from compas.geometry import normal_polygon
-
 from compas.geometry import distance_point_point
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
@@ -19,11 +18,10 @@ from compas.geometry import is_polygon_convex_xy
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_convex_polygon_xy
 from compas.geometry import is_point_behind_plane
-
 from compas.geometry import transform_points
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Vector
+from ._primitive import Primitive
+from .vector import Vector
 
 
 class Point(Primitive):

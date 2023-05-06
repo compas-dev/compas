@@ -3,11 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = [
-    "network_split_edge",
-]
-
-
 def network_split_edge(network, u, v, t=0.5):
     """Split and edge by inserting a node along its length.
 

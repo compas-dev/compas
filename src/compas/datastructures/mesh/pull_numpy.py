@@ -18,9 +18,6 @@ from compas.geometry import is_ccw_xy
 from compas.geometry import is_point_in_triangle
 
 
-__all__ = ["trimesh_pull_points_numpy"]
-
-
 def trimesh_pull_points_numpy(mesh, points):
     """Pull points onto a mesh by computing the closest point on the mesh for each of the points.
 

@@ -10,11 +10,6 @@ from compas.geometry import sum_vectors
 from compas.utilities import normalize_values
 
 
-__all__ = [
-    "discrete_coons_patch",
-]
-
-
 def discrete_coons_patch(ab, bc, dc, ad):
     """Creates a coons patch from a set of four or three boundary
     polylines (ab, bc, dc, ad).

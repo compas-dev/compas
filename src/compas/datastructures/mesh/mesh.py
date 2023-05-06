@@ -45,11 +45,11 @@ from compas.utilities import window
 
 from compas.datastructures import HalfEdge
 
-from .operations import mesh_collapse_edge
-from .operations import mesh_split_edge
-from .operations import mesh_split_face
-from .operations import mesh_split_strip
-from .operations import mesh_merge_faces
+from .operations.collapse import mesh_collapse_edge
+from .operations.split import mesh_split_edge
+from .operations.split import mesh_split_face
+from .operations.split import mesh_split_strip
+from .operations.merge import mesh_merge_faces
 
 from .bbox import mesh_bounding_box
 from .bbox import mesh_bounding_box_xy

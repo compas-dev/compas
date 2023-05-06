@@ -13,18 +13,6 @@ from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
 
-__all__ = [
-    "mesh_subdivide",
-    "mesh_subdivide_tri",
-    "mesh_subdivide_corner",
-    "mesh_subdivide_quad",
-    "mesh_subdivide_catmullclark",
-    "mesh_subdivide_doosabin",
-    "mesh_subdivide_frames",
-    "trimesh_subdivide_loop",
-]
-
-
 def subd_factory(cls):
     class SubdMesh(cls):
 

@@ -5,13 +5,6 @@ from __future__ import division
 from compas.topology import breadth_first_traverse
 
 
-__all__ = [
-    "mesh_face_adjacency",
-    "mesh_unify_cycles",
-    "mesh_flip_cycles",
-]
-
-
 def _mesh_face_adjacency(mesh, nmax=10, radius=10.0):
     fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}

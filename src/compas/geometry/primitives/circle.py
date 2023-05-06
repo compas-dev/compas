@@ -4,8 +4,8 @@ from __future__ import division
 
 from math import pi
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Plane
+from ._primitive import Primitive
+from .plane import Plane
 
 
 class Circle(Primitive):

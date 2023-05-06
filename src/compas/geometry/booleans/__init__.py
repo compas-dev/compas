@@ -4,12 +4,6 @@ from __future__ import division
 
 from compas.plugins import pluggable
 
-__all__ = [
-    "boolean_union_mesh_mesh",
-    "boolean_difference_mesh_mesh",
-    "boolean_intersection_mesh_mesh",
-]
-
 
 @pluggable(category="booleans")
 def boolean_union_mesh_mesh(A, B):

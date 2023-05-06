@@ -6,44 +6,20 @@ from math import fabs
 
 from compas.utilities import window
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import normalize_vector
-from compas.geometry._core import centroid_points
-from compas.geometry._core import normal_polygon
-from compas.geometry._core import length_vector_sqrd
+from compas.geometry import subtract_vectors
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import normalize_vector
+from compas.geometry import centroid_points
+from compas.geometry import normal_polygon
+from compas.geometry import length_vector_sqrd
 
-from compas.geometry._core import distance_point_point
-from compas.geometry._core import distance_point_plane
-from compas.geometry._core import distance_point_line
-from compas.geometry._core import closest_point_on_segment
+from compas.geometry import distance_point_point
+from compas.geometry import distance_point_plane
+from compas.geometry import distance_point_line
+from compas.geometry import closest_point_on_segment
 
-from compas.geometry._core import area_triangle
-
-
-__all__ = [
-    "is_colinear",
-    "is_colinear_line_line",
-    "is_coplanar",
-    "is_polygon_convex",
-    "is_point_on_plane",
-    "is_point_infront_plane",
-    "is_point_behind_plane",
-    "is_point_in_halfspace",
-    "is_point_on_line",
-    "is_point_on_segment",
-    "is_point_on_polyline",
-    "is_point_in_triangle",
-    "is_point_in_circle",
-    "is_point_in_polyhedron",
-    "is_intersection_line_line",
-    "is_intersection_segment_segment",
-    "is_intersection_line_triangle",
-    "is_intersection_line_plane",
-    "is_intersection_segment_plane",
-    "is_intersection_plane_plane",
-]
+from compas.geometry import area_triangle
 
 
 def is_colinear(a, b, c, tol=1e-6):

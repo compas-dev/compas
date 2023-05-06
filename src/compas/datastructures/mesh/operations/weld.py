@@ -10,9 +10,6 @@ from compas.utilities import pairwise
 from .substitute import mesh_substitute_vertex_in_faces
 
 
-__all__ = ["mesh_unweld_vertices", "mesh_unweld_edges"]
-
-
 def mesh_unweld_vertices(mesh, fkey, where=None):
     """Unweld a face of the mesh.
 

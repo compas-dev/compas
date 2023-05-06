@@ -9,11 +9,6 @@ from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 
 
-__all__ = [
-    "network_find_cycles",
-]
-
-
 PI2 = 2.0 * pi
 
 

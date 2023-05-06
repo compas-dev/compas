@@ -3,23 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = [
-    "mesh_conway_dual",
-    "mesh_conway_join",
-    "mesh_conway_ambo",
-    "mesh_conway_kis",
-    "mesh_conway_needle",
-    "mesh_conway_zip",
-    "mesh_conway_truncate",
-    "mesh_conway_ortho",
-    "mesh_conway_expand",
-    "mesh_conway_gyro",
-    "mesh_conway_snub",
-    "mesh_conway_meta",
-    "mesh_conway_bevel",
-]
-
-
 def mesh_conway_dual(mesh):
     """Generates the dual mesh from a seed mesh.
 

@@ -16,11 +16,6 @@ from compas.geometry import is_point_in_circle_xy
 from compas.geometry import circle_from_points_xy
 
 
-__all__ = [
-    "delaunay_from_points",
-]
-
-
 def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     """Computes the delaunay triangulation for a list of points.
 

@@ -17,15 +17,15 @@ from compas.data import Data
 from compas.geometry import multiply_matrices
 from compas.geometry import transpose_matrix
 
-from compas.geometry.transformations import basis_vectors_from_matrix
-from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import identity_matrix
-from compas.geometry.transformations import matrix_determinant
-from compas.geometry.transformations import matrix_from_euler_angles
-from compas.geometry.transformations import matrix_from_frame
-from compas.geometry.transformations import matrix_from_translation
-from compas.geometry.transformations import matrix_inverse
-from compas.geometry.transformations import translation_from_matrix
+from .matrices import basis_vectors_from_matrix
+from .matrices import decompose_matrix
+from .matrices import identity_matrix
+from .matrices import matrix_determinant
+from .matrices import matrix_from_euler_angles
+from .matrices import matrix_from_frame
+from .matrices import matrix_from_translation
+from .matrices import matrix_inverse
+from .matrices import translation_from_matrix
 
 
 class Transformation(Data):

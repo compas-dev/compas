@@ -4,9 +4,6 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 
 
-__all__ = ["mesh_slice_plane"]
-
-
 def mesh_slice_plane(mesh, plane):
     """Slice a mesh with a plane and construct the resulting submeshes.
 
