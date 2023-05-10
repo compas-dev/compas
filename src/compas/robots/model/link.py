@@ -11,20 +11,20 @@ from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Sphere
 from compas.geometry import Transformation
-from compas.robots.model.base import FrameProxy
-from compas.robots.model.base import _attr_from_data
-from compas.robots.model.base import _attr_to_data
-from compas.robots.model.geometry import BoxProxy
-from compas.robots.model.geometry import CapsuleProxy
-from compas.robots.model.geometry import Color
-from compas.robots.model.geometry import CylinderProxy
-from compas.robots.model.geometry import Geometry
-from compas.robots.model.geometry import Material
-from compas.robots.model.geometry import MeshDescriptor
-from compas.robots.model.geometry import SphereProxy
-from compas.robots.model.geometry import Texture
 
-__all__ = ["Link", "Inertial", "Visual", "Collision", "Mass", "Inertia"]
+from .base import FrameProxy
+from .base import _attr_from_data
+from .base import _attr_to_data
+
+from .geometry import BoxProxy
+from .geometry import CapsuleProxy
+from .geometry import Color
+from .geometry import CylinderProxy
+from .geometry import Geometry
+from .geometry import Material
+from .geometry import MeshDescriptor
+from .geometry import SphereProxy
+from .geometry import Texture
 
 
 class Mass(Data):
@@ -444,7 +444,7 @@ class Link(Data):
 
     @data.setter
     def data(self, data):
-        from compas.robots.model.joint import Joint
+        from .joint import Joint
 
         self.name = data["name"]
         self.type = data["type"]

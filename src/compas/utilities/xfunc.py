@@ -27,9 +27,6 @@ except ImportError:
         compas.raise_if_ironpython()
 
 
-__all__ = ["XFunc"]
-
-
 WRAPPER = """
 import os
 import sys

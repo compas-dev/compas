@@ -15,19 +15,6 @@ except ImportError:
     from itertools import izip_longest as zip_longest
 
 
-__all__ = [
-    "normalize_values",
-    "remap_values",
-    "meshgrid",
-    "linspace",
-    "flatten",
-    "pairwise",
-    "window",
-    "iterable_like",
-    "grouper",
-]
-
-
 def normalize_values(values, new_min=0.0, new_max=1.0):
     """Normalize a list of numbers to the range between new_min and new_max.
 

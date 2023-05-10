@@ -11,22 +11,11 @@ from compas.geometry import Transformation
 from compas.geometry import Translation
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
-from compas.robots.model.base import FrameProxy
-from compas.robots.model.base import _attr_from_data
-from compas.robots.model.base import _attr_to_data
-from compas.robots.model.base import _parse_floats
 
-__all__ = [
-    "Joint",
-    "ParentLink",
-    "ChildLink",
-    "Calibration",
-    "Dynamics",
-    "Limit",
-    "Axis",
-    "Mimic",
-    "SafetyController",
-]
+from .base import FrameProxy
+from .base import _attr_from_data
+from .base import _attr_to_data
+from .base import _parse_floats
 
 
 class ParentLink(Data):
@@ -489,7 +478,6 @@ class Joint(Data):
         mimic=None,
         **kwargs
     ):
-
         type_idx = type
 
         if isinstance(type_idx, str) and type_idx in Joint.SUPPORTED_TYPES:

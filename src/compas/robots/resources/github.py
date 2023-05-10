@@ -2,15 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.robots.resources.basic import AbstractMeshLoader
-from compas.robots.resources.basic import _mesh_import
-
-__all__ = ["GithubPackageMeshLoader"]
-
 try:
     from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen
+
+from .basic import AbstractMeshLoader
+from .basic import _mesh_import
 
 
 class GithubPackageMeshLoader(AbstractMeshLoader):
