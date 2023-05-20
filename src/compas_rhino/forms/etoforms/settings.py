@@ -15,9 +15,6 @@ import Eto.Drawing  # noqa: E402
 import Eto.Forms  # noqa: E402
 
 
-__all__ = ["SettingsForm"]
-
-
 class SettingsForm(Eto.Forms.Dialog[bool]):
     def __init__(self, settings, title="Settings"):
         # super(SettingsForm, self).__init__()

@@ -4,17 +4,6 @@ from typing import List, Iterable, Text
 from compas_blender.utilities.data import delete_unused_data
 
 
-__all__ = [
-    "delete_object",
-    "delete_objects",
-    "delete_all_objects",
-    "delete_object_by_name",
-    "delete_objects_by_names",
-    "get_object_by_name",
-    "get_objects_by_names",
-]
-
-
 # ==============================================================================
 # Delete
 # ==============================================================================

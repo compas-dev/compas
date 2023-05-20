@@ -4,15 +4,6 @@ from typing import List, Text
 from compas_blender.utilities import delete_objects
 
 
-__all__ = [
-    "create_collection",
-    "create_collections",
-    "create_collections_from_path",
-    "clear_collection",
-    "clear_collections",
-]
-
-
 def collection_path(collection, names=[]):
     for parent in bpy.data.collections:
         if collection.name in parent.children:
@@ -40,7 +31,6 @@ def create_collection(name: Text, parent: bpy.types.Collection = None) -> bpy.ty
         return
 
     if not parent:
-
         if name in bpy.data.collections:
             count = 1
             newname = f"{name}.{count:04}"

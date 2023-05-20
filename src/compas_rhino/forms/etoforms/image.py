@@ -22,9 +22,6 @@ import Eto.Drawing  # noqa: E402
 import Eto.Forms  # noqa: E402
 
 
-__all__ = ["ImageForm"]
-
-
 def image_from_remote(source):
     """Construct an image from a remote source.
 

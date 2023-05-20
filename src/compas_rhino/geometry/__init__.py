@@ -83,15 +83,15 @@ from compas_rhino.conversions import RhinoSphere
 from compas_rhino.conversions import RhinoSurface
 from compas_rhino.conversions import RhinoVector
 
-from .curves import RhinoNurbsCurve
-from .surfaces import RhinoNurbsSurface
+from .curves.nurbs import RhinoNurbsCurve
+from .surfaces.nurbs import RhinoNurbsSurface
 
-from .brep import RhinoBrep
-from .brep import RhinoBrepLoop
-from .brep import RhinoBrepVertex
-from .brep import RhinoBrepFace
-from .brep import RhinoBrepEdge
-from .brep import RhinoBrepTrim
+from .brep.brep import RhinoBrep
+from .brep.loop import RhinoBrepLoop
+from .brep.vertex import RhinoBrepVertex
+from .brep.face import RhinoBrepFace
+from .brep.edge import RhinoBrepEdge
+from .brep.trim import RhinoBrepTrim
 
 __all__ = [
     "RhinoGeometry",
