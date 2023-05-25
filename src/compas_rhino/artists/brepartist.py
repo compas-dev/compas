@@ -12,8 +12,8 @@ class BrepArtist(RhinoArtist):
 
     """
 
-    def __init__(self, brep):
-        super(BrepArtist, self).__init__()
+    def __init__(self, brep, **kwargs):
+        super(BrepArtist, self).__init__(**kwargs)
         self._brep = brep
 
     def draw(self, color=None):
