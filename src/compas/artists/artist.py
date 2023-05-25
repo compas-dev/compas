@@ -27,16 +27,23 @@ def redraw():
 
 @pluggable(category="factories", selector="collect_all")
 def register_artists():
+    """Registers artists available in the current context.
+
+    Returns
+    -------
+    str
+        Name of the available context.
+
+    """
     raise NotImplementedError
 
 
-def identify_context():
+def _gh_or_rhino():
+    # In Grasshopper, both are True. In Rhino only is_rhino() is True.
     if compas.is_grasshopper():
         return "Grasshopper"
     if compas.is_rhino():
         return "Rhino"
-    if compas.is_blender():
-        return "Blender"
     return None
 
 
@@ -44,7 +51,7 @@ def _get_artist_cls(data, **kwargs):
     if "context" in kwargs:
         Artist.CONTEXT = kwargs["context"]
     else:
-        Artist.CONTEXT = identify_context()
+        Artist.CONTEXT = _gh_or_rhino()
 
     if Artist.CONTEXT is None:
         raise NoArtistContextError()
@@ -73,6 +80,14 @@ def _get_artist_cls(data, **kwargs):
 class Artist(object):
     """Base class for all artists.
 
+    Parameters
+    ----------
+    item: Any
+        The item which should be visualized using the created Artist.
+    context: str, optional
+        Explicit context to pick the Artist from. One of :attr:`AVAILABLE_CONTEXTS`.
+        If not specified, an attempt will be made to automatically detect the appropriate context.
+
     Class Attributes
     ----------------
     AVAILABLE_CONTEXTS : list[str]
@@ -94,7 +109,11 @@ class Artist(object):
 
     def __new__(cls, item, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
-            register_artists()
+            contexts = register_artists()
+            # if no context explicitly selected by called, choose random one from contexts detected by the plugin
+            contexts = set([item for item in contexts if item is not None])
+            if "context" not in kwargs and contexts:
+                kwargs.update({"context": contexts.pop()})
             Artist.__ARTISTS_REGISTERED = True
 
         if item is None:
