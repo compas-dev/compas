@@ -81,6 +81,7 @@ def register_artists():
     Artist.register(Ellipse, EllipseArtist, context="Plotter")
     Artist.register(Mesh, MeshArtist, context="Plotter")
     Artist.register(Network, NetworkArtist, context="Plotter")
+    return "Plotter"
 
 
 __all__ = [

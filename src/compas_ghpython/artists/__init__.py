@@ -165,6 +165,7 @@ def register_artists():
     Artist.register(VolMesh, VolMeshArtist, context="Grasshopper")
     Artist.register(Brep, BrepArtist, context="Grasshopper")
     print("GH Artists registered.")
+    return "Grasshopper"
 
 
 __all__ = [

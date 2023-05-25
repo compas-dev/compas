@@ -179,6 +179,7 @@ def register_artists():
     Artist.register(Surface, SurfaceArtist, context="Rhino")
     Artist.register(Brep, BrepArtist, context="Rhino")
     print("Rhino Artists registered.")
+    return "Rhino"
 
 
 __all__ = [
