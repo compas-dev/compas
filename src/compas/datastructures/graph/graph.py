@@ -86,11 +86,28 @@ class Graph(Datastructure):
             "attributes": self.attributes,
             "dna": self.default_node_attributes,
             "dea": self.default_edge_attributes,
-            "node": {},
-            "edge": {},
-            "adjacency": {},
+            "node": self.node,
+            "edge": self.edge,
+            "adjacency": self.adjacency,
             "max_node": self._max_node,
         }
+        return data
+
+    @data.setter
+    def data(self, data):
+        self.node = data.get("node") or {}
+        self.edge = data.get("edge") or {}
+        self.adjacency = data.get("adjacency") or {}
+        self.attributes.update(data.get("attributes") or {})
+        self.default_node_attributes.update(data.get("dna") or {})
+        self.default_edge_attributes.update(data.get("dea") or {})
+        self._max_node = data.get("max_node")
+
+    def to_jsondata(self):
+        data = self.data
+        data["node"] = {}
+        data["edge"] = {}
+        data["adjacency"] = {}
         for key in self.node:
             data["node"][repr(key)] = self.node[key]
         for u in self.edge:
@@ -107,45 +124,36 @@ class Graph(Datastructure):
                 data["adjacency"][ru][rv] = None
         return data
 
-    @data.setter
-    def data(self, data):
-        if "data" in data:
-            data = data["data"]
-        attributes = data.get("attributes") or {}
-        default_node_attributes = data.get("dna") or {}
-        default_edge_attributes = data.get("dea") or {}
-        node = data.get("node") or {}
-        edge = data.get("edge") or {}
-        adjacency = data.get("adjacency") or {}
-        if "max_int_key" in data:
-            max_node = data["max_int_key"]
-        else:
-            max_node = data.get("max_node")
-        self._max_node = max_node
-        self.attributes.update(attributes)
-        self.default_node_attributes.update(default_node_attributes)
-        self.default_edge_attributes.update(default_edge_attributes)
-        # add the nodes
-        self.node = {literal_eval(key): attr for key, attr in iter(node.items())}
-        # add the edges
-        self.edge = {}
-        for u, nbrs in iter(edge.items()):
+    @classmethod
+    def from_jsondata(cls, data):
+        _node = data["node"] or {}
+        _edge = data["edge"] or {}
+        _adjacency = data["adjacency"] or {}
+        # process the nodes
+        node = {literal_eval(key): attr for key, attr in iter(_node.items())}
+        data["node"] = node
+        # process the edges
+        edge = {}
+        for u, nbrs in iter(_edge.items()):
             nbrs = nbrs or {}
             u = literal_eval(u)
-            self.edge[u] = {}
+            edge[u] = {}
             for v, attr in iter(nbrs.items()):
                 attr = attr or {}
                 v = literal_eval(v)
-                self.edge[u][v] = attr
-        # add the adjacency
-        self.adjacency = {}
-        for u, nbrs in iter(adjacency.items()):
+                edge[u][v] = attr
+        data["edge"] = edge
+        # process the adjacency
+        adjacency = {}
+        for u, nbrs in iter(_adjacency.items()):
             nbrs = nbrs or {}
             u = literal_eval(u)
-            self.adjacency[u] = {}
+            adjacency[u] = {}
             for v, _ in iter(nbrs.items()):
                 v = literal_eval(v)
-                self.adjacency[u][v] = None
+                adjacency[u][v] = None
+        data["adjacency"] = adjacency
+        return cls.from_data(data)
 
     # --------------------------------------------------------------------------
     # properties
