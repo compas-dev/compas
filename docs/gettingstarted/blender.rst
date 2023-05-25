@@ -30,10 +30,9 @@ If you don't have an environment yet with Python 3.9 and COMPAS you can create o
 
 Configuring Blender to use the newly installed environment is slightly different per OS.
 
-.. tabs::
+.. tab-set::
 
     .. tab-item:: Windows
-        :active:
 
         .. code-block:: bash
 
@@ -132,10 +131,9 @@ On Mac or Linux, you should start Blender from the command line.
 By adding the Blender executable to the ``PATH`` variable this is really simple.
 Just add the following to your ``.bash_profile`` or ``.bashrc``.
 
-.. tabs::
+.. tab-set::
 
     .. tab-item:: OSX
-        :active:
 
         .. code-block:: bash
 

@@ -36,10 +36,8 @@ Table of Contents
    installation
    gettingstarted
    tutorial
-   api
    plugins
    devguide
-   changelog
    releases
    license
    citing

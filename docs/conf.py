@@ -9,32 +9,33 @@ import sys
 import os
 import inspect
 import importlib
-import m2r2
 
-import sphinx_compas_theme
+# import m2r2
+
+# import sphinx_compas_theme
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "_ext"))
 
 # patches
 
-current_m2r2_setup = m2r2.setup
+# current_m2r2_setup = m2r2.setup
 
 
-def patched_m2r2_setup(app):
-    try:
-        return current_m2r2_setup(app)
-    except (AttributeError):
-        app.add_source_suffix(".md", "markdown")
-        app.add_source_parser(m2r2.M2RParser)
-    return dict(
-        version=m2r2.__version__,
-        parallel_read_safe=True,
-        parallel_write_safe=True,
-    )
+# def patched_m2r2_setup(app):
+#     try:
+#         return current_m2r2_setup(app)
+#     except AttributeError:
+#         app.add_source_suffix(".md", "markdown")
+#         app.add_source_parser(m2r2.M2RParser)
+#     return dict(
+#         version=m2r2.__version__,
+#         parallel_read_safe=True,
+#         parallel_write_safe=True,
+#     )
 
 
-m2r2.setup = patched_m2r2_setup
+# m2r2.setup = patched_m2r2_setup
 
 # -- General configuration ------------------------------------------------
 
@@ -50,13 +51,13 @@ source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
-templates_path = sphinx_compas_theme.get_autosummary_templates_path()
+# templates_path = sphinx_compas_theme.get_autosummary_templates_path()
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
 pygments_style = "sphinx"
 show_authors = True
 add_module_names = True
-language = None
+language = "en"
 
 
 # -- Extension configuration ------------------------------------------------
@@ -75,10 +76,12 @@ extensions = [
     "sphinx.ext.inheritance_diagram",
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
-    "m2r2",
+    # "m2r2",
     # "nbsphinx",
     "sphinx.ext.autodoc.typehints",
-    "tabs",
+    # "tabs",
+    "sphinx_inline_tabs",
+    "sphinx_design",
 ]
 
 # autodoc options
@@ -288,8 +291,8 @@ extlinks = {
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = "compas"
-html_theme_path = sphinx_compas_theme.get_html_theme_path()
+html_theme = "furo"
+# html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
     "navbar_active": "compas",
     "package_version": release,
@@ -297,7 +300,8 @@ html_theme_options = {
     "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt",
 }
 html_context = {}
-html_static_path = sphinx_compas_theme.get_html_static_path()
+# html_static_path = sphinx_compas_theme.get_html_static_path()
+html_static_path = ["_static"]
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False

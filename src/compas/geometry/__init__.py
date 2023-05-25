@@ -532,7 +532,7 @@ Misc
 
     archimedean_spiral_evaluate
     circle_evaluate
-    ellipse_evaluate,
+    ellipse_evaluate
     helix_evaluate
     logarithmic_spiral_evaluate
 

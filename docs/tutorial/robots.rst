@@ -151,10 +151,9 @@ artists.  The basic procedure is the same in
 any of the CAD software (aside from the import statement). Below you can find an example code for both Rhino and Blender.
 
 
-.. tabs::
+.. tab-set::
 
     .. tab-item:: Rhino
-        :active:
 
         Be sure to first install COMPAS for Rhino.  While the following code is incomplete,
         it can be used as a scaffolding for code to be run in a Python script editor within Rhino.
