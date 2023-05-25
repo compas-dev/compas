@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* All `__all__` beyond second level package.
+
 
 ## [1.17.5] 2023-02-16
 
