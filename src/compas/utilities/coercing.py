@@ -4,16 +4,16 @@ from __future__ import division
 
 import warnings
 
-from compas.data.coercion import coerce_sequence_of_list
-from compas.data.coercion import coerce_sequence_of_tuple
-from compas.data.validators import is_sequence_of_str
-from compas.data.validators import is_sequence_of_int
-from compas.data.validators import is_sequence_of_float
-from compas.data.validators import is_sequence_of_tuple
-from compas.data.validators import is_sequence_of_list
-from compas.data.validators import is_sequence_of_dict
-from compas.data.validators import is_sequence_of_iterable
-from compas.data.validators import is_item_iterable
+from compas.data.coercion import coerce_sequence_of_list  # noqa: F401
+from compas.data.coercion import coerce_sequence_of_tuple  # noqa: F401
+from compas.data.validators import is_sequence_of_str  # noqa: F401
+from compas.data.validators import is_sequence_of_int  # noqa: F401
+from compas.data.validators import is_sequence_of_float  # noqa: F401
+from compas.data.validators import is_sequence_of_tuple  # noqa: F401
+from compas.data.validators import is_sequence_of_list  # noqa: F401
+from compas.data.validators import is_sequence_of_dict  # noqa: F401
+from compas.data.validators import is_sequence_of_iterable  # noqa: F401
+from compas.data.validators import is_item_iterable  # noqa: F401
 
 
 warnings.warn(

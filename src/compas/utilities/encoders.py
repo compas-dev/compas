@@ -4,8 +4,8 @@ from __future__ import division
 
 import warnings
 
-from compas.data import DataEncoder
-from compas.data import DataDecoder
+from compas.data import DataEncoder  # noqa: F401
+from compas.data import DataDecoder  # noqa: F401
 
 
 warnings.warn(
