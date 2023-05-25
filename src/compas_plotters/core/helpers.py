@@ -8,17 +8,6 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from compas_plotters.core.utilities import assert_axes_dimension
 
 
-__all__ = [
-    "Axes2D",
-    "Axes3D",
-    "Bounds",
-    "Box",
-    "Cloud2D",
-    "Cloud3D",
-    "Hull",
-]
-
-
 class Axes2D(object):
     """Definition of a 2D Axes object.
 
