@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: F401
 
 import compas
 from compas.artists import Artist
@@ -47,6 +47,7 @@ def test_get_artist_cls_with_out_of_order_registration():
 
 
 if not compas.IPY:
+
     def test_artist_auto_context_discovery(mocker):
         mocker.patch("compas.artists.artist.register_artists")
         compas.artists.artist.register_artists.side_effect = register_fake_context
@@ -56,7 +57,6 @@ if not compas.IPY:
 
         assert Artist.CONTEXT == "fake"
         assert isinstance(artist, FakeArtist)
-
 
     def register_fake_context():
         Artist.register(FakeItem, FakeArtist, context="fake")
