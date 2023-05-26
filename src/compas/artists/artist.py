@@ -47,13 +47,20 @@ def _gh_or_rhino():
     return None
 
 
-def _get_artist_cls(data, **kwargs):
-    if "context" in kwargs:
-        Artist.CONTEXT = kwargs["context"]
-    else:
-        Artist.CONTEXT = _gh_or_rhino()
+def _detect_context(contexts):
+    contexts = set([item for item in contexts if item is not None])
 
-    if Artist.CONTEXT is None:
+    # In Grasshopper and Rhino, Artists for both will be available, determine where we really are
+    if {"Rhino", "Grasshopper"}.issubset(contexts):
+        return _gh_or_rhino()
+    if contexts:
+        return contexts.pop()
+    return None
+
+
+def _get_artist_cls(data, **kwargs):
+    context = kwargs.get("context") or Artist.CONTEXT
+    if context is None:
         raise NoArtistContextError()
 
     dtype = type(data)
@@ -62,7 +69,7 @@ def _get_artist_cls(data, **kwargs):
     if "artist_type" in kwargs:
         cls = kwargs["artist_type"]
     else:
-        context = Artist.ITEM_ARTIST[Artist.CONTEXT]
+        context = Artist.ITEM_ARTIST[context]
 
         for type_ in inspect.getmro(dtype):
             cls = context.get(type_, None)
@@ -71,7 +78,7 @@ def _get_artist_cls(data, **kwargs):
 
     if cls is None:
         raise DataArtistNotRegistered(
-            "No artist is registered for this data type: {} in this context: {}".format(dtype, Artist.CONTEXT)
+            "No artist is registered for this data type: {} in this context: {}".format(dtype, context)
         )
 
     return cls
@@ -108,12 +115,14 @@ class Artist(object):
     ITEM_ARTIST = defaultdict(dict)
 
     def __new__(cls, item, **kwargs):
+        # register all available artists from all available contexts
+        # returns a list of all the a vailable context which have been
+        # if user has specified a context, use that no matter what
+        # if not
+        #
         if not Artist.__ARTISTS_REGISTERED:
-            contexts = cls.register_artists()
-            # if no context explicitly selected by called, choose random one from contexts detected by the plugin
-            contexts = set([item for item in contexts if item is not None])
-            if "context" not in kwargs and contexts:
-                kwargs.update({"context": contexts.pop()})
+            detected_contexts = cls.register_artists()
+            Artist.CONTEXT = _detect_context(detected_contexts)  # caller can still override this in kwargs
             Artist.__ARTISTS_REGISTERED = True
 
         if item is None:
