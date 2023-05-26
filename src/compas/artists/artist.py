@@ -109,7 +109,7 @@ class Artist(object):
 
     def __new__(cls, item, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
-            contexts = register_artists()
+            contexts = cls.register_artists()
             # if no context explicitly selected by called, choose random one from contexts detected by the plugin
             contexts = set([item for item in contexts if item is not None])
             if "context" not in kwargs and contexts:
@@ -187,6 +187,18 @@ class Artist(object):
 
         """
         return redraw()
+
+    @staticmethod
+    def register_artists():
+        """Register Artists using available plugins.
+
+        Returns
+        -------
+        List[str]
+            List containing names of discovered Artist plugins.
+
+        """
+        return register_artists()
 
     @staticmethod
     def register(item_type, artist_type, context=None):

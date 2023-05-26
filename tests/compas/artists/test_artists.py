@@ -49,8 +49,9 @@ def test_get_artist_cls_with_out_of_order_registration():
 if not compas.IPY:
 
     def test_artist_auto_context_discovery(mocker):
-        mocker.patch("compas.artists.artist.register_artists")
-        compas.artists.artist.register_artists.side_effect = register_fake_context
+        mocker.patch("compas.artists.Artist.register_artists")
+        Artist.register_artists.side_effect = register_fake_context
+        Artist._Artist__ARTISTS_REGISTERED = False
 
         item = FakeItem()
         artist = Artist(item)
