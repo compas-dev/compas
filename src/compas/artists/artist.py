@@ -73,7 +73,7 @@ def _get_artist_cls(data, **kwargs):
         cls = Artist.ITEM_ARTIST[context]
 
         for type_ in inspect.getmro(dtype):
-            cls = context.get(type_, None)
+            cls = cls.get(type_, None)
             if cls is not None:
                 break
 
