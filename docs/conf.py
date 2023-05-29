@@ -230,7 +230,7 @@ html_theme_options = {
     "pygment_light_style": "default",
     "pygment_dark_style": "monokai",
     "switcher": {
-        "json_url": "versions.json",  # relative to _static
+        "json_url": "_static/versions.json",  # relative to _static
         "version_match": release,
     },
     # "external_links": [
@@ -254,12 +254,11 @@ html_theme_options = {
     # "navbar_end": ["icon-links"],
     "article_header_start": [
         "toggle-primary-sidebar",  # this is the default
+        # "breadcrumbs",
     ],
     "article_header_end": [
         "article-header-buttons",  # this is the default
     ],
-    "article_footer_start": [],
-    "article_footer_end": [],
     "footer_content_items": ["copyright", "last-updated", "extra-footer"],  # "author"
     # "footer_start": [],
     # "footer_end": ["icon-links"],
@@ -268,14 +267,15 @@ html_theme_options = {
 html_sidebars = {
     "**": [
         "navbar-logo",
-        "version-switcher",
-        "search-field",
+        # "version-switcher",
+        # "search-field",
         "sbt-sidebar-nav",
+        "external-links",
     ],
 }
 
 html_context = {
-    "default_mode": "light",
+    # "default_mode": "light",
 }
 
 html_static_path = ["_static"]

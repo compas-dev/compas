@@ -25,17 +25,18 @@ The package for 2D visualisation (:mod:`compas_plotters`)
 simplifies "plotting" of COMPAS geometry objects and data structures.
 
 
-Getting Started
-===============
+User Guide
+==========
 
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-   :caption: Getting Started
+   :caption: User Guide
 
    installation
    configuration
    tutorial
+   api
    citing
 
 Package Reference
@@ -59,7 +60,6 @@ Development
    :titlesonly:
    :caption: Development
 
-   api
    devguide
    plugins
    releases
