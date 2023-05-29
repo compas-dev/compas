@@ -1,29 +1,3 @@
-"""
-********************************************************************************
-compas
-********************************************************************************
-
-.. currentmodule:: compas
-
-.. toctree::
-    :maxdepth: 1
-    :titlesonly:
-
-    compas.artists
-    compas.colors
-    compas.data
-    compas.datastructures
-    compas.files
-    compas.geometry
-    compas.numerical
-    compas.plugins
-    compas.robots
-    compas.rpc
-    compas.topology
-    compas.utilities
-
-
-"""
 from __future__ import print_function
 
 import os
@@ -305,7 +279,6 @@ def get_bunny(localstorage=None):
         with tarfile.open(destination) as file:
 
             def is_within_directory(directory, target):
-
                 abs_directory = os.path.abspath(directory)
                 abs_target = os.path.abspath(target)
 
@@ -314,7 +287,6 @@ def get_bunny(localstorage=None):
                 return prefix == abs_directory
 
             def safe_extract(tar, path=".", members=None, numeric_owner=False):
-
                 for member in tar.getmembers():
                     member_path = os.path.join(path, member.name)
                     if not is_within_directory(path, member_path):

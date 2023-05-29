@@ -1,5 +1,5 @@
 ********************************************************************************
-Getting started
+Configuration
 ********************************************************************************
 
 .. rst-class:: lead
@@ -12,8 +12,8 @@ as well as in scriptable CAD software such as Blender, Rhino and Grasshopper.
     :maxdepth: 1
     :glob:
 
-    gettingstarted/vscode
-    gettingstarted/rhino
-    gettingstarted/grasshopper
-    gettingstarted/blender
-    gettingstarted/rhino5
+    configuration/vscode
+    configuration/rhino
+    configuration/grasshopper
+    configuration/blender
+    configuration/rhino5

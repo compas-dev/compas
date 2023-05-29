@@ -645,8 +645,8 @@ class VolMesh(HalfFace):
         float
             The flatness.
 
-        Note
-        ----
+        Notes
+        -----
         compas.geometry.mesh_flatness function currently only works for quadrilateral faces.
         This function uses the distance between each face vertex and its projected point
         on the best-fit plane of the face as the flatness metric.

@@ -414,8 +414,8 @@ class Polyline(Primitive):
     def extend(self, length):
         """Extends a polyline by a given length, by modifying the first and/or last point tangentially.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to extend the polyline only at the end,
             or two length values to extend at both ends.
@@ -435,8 +435,8 @@ class Polyline(Primitive):
     def extended(self, length):
         """Returns a copy of this polyline extended by a given length.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to extend the polyline only at the end,
             or two length values to extend at both ends.
@@ -453,8 +453,8 @@ class Polyline(Primitive):
     def shorten(self, length):
         """Shortens a polyline by a given length.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to shorten the polyline only at the end,
             or two length values to shorten at both ends.
@@ -496,8 +496,8 @@ class Polyline(Primitive):
     def shortened(self, length):
         """Returns a copy of this polyline shortened by a given length.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to shorten the polyline only at the end,
             or two length values to shorten at both ends.

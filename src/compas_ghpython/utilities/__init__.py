@@ -104,7 +104,7 @@ def create_id(component, name):
     The resulting string can be used to store data elements in the global sticky dictionary.
     This can be useful when setting variable in a condition activated by a button.
 
-    Paramaters
+    Parameters
     ----------
     components : `ghpythonlib.componentbase.executingcomponent`
         The components instance. Use `self` in advanced (SDK) mode and `ghenv.Components` otherwise.

@@ -348,8 +348,8 @@ class Quaternion(Primitive):
         :class:`~compas.geometry.Quaternion`
             The new quaternion.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from compas.geometry import matrix_from_euler_angles
         >>> ea = [0.2, 0.6, 0.2]
         >>> M = matrix_from_euler_angles(ea)
@@ -372,8 +372,8 @@ class Quaternion(Primitive):
         :class:`~compas.geometry.Quaternion`
             The new quaternion.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from compas.geometry import Frame, Rotation
         >>> R = Rotation.from_frame(Frame.worldYZ())
         >>> Quaternion.from_rotation(R)

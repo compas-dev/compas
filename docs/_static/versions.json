@@ -1,0 +1,15 @@
+[
+    {
+        "name": "v1.17.5 (stable)",
+        "version": "1.17.5",
+        "url": "https://compas.dev/compas/1.17.5/"
+    },
+    {
+        "version": "1.16.0",
+        "url": "https://compas.dev/compas/1.16.0/"
+    },
+    {
+        "version": "1.15.0",
+        "url": "https://compas.dev/compas/1.15.0/"
+    }
+]

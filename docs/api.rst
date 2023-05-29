@@ -1,20 +1,6 @@
 ********************************************************************************
-API Reference
+API Conventions
 ********************************************************************************
-
-Packages
-========
-
-.. toctree::
-    :maxdepth: 1
-    :titlesonly:
-
-    api/compas
-    api/compas_blender
-    api/compas_ghpython
-    api/compas_plotters
-    api/compas_rhino
-
 
 Package Structure
 =================
@@ -135,7 +121,7 @@ Type aliases can also be nested to further improve legibility of more complex ty
     * - ``frame``
       - ``[point, vector, vector]`` | :class:`compas.geometry.Frame`
     * - ``circle``
-      - ``[plane, float]``| :class:`compas.geometry.Circle`
+      - ``[plane, float]`` | :class:`compas.geometry.Circle`
     * - ``ellipse``
       - ``[plane, float, float]`` | :class:`compas.geometry.Ellipse`
     * - ``polyline``

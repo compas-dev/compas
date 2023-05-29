@@ -25,26 +25,65 @@ The package for 2D visualisation (:mod:`compas_plotters`)
 simplifies "plotting" of COMPAS geometry objects and data structures.
 
 
-Table of Contents
+Getting Started
+===============
+
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+   :caption: Getting Started
+
+   installation
+   configuration
+
+Tutorial
+=========
+
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+   :caption: Tutorial
+
+   tutorial/data
+   tutorial/geometry
+   tutorial/brep
+   tutorial/meshes
+   tutorial/robots
+   tutorial/numericaldata
+   tutorial/rpc
+   tutorial/colors
+
+Package Reference
 =================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :titlesonly:
+   :caption: Package Reference
 
-   Introduction <self>
-   installation
-   gettingstarted
-   tutorial
+   api/compas
+   api/compas_blender
+   api/compas_ghpython
+   api/compas_rhino
+
+For Developers
+==============
+
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+   :caption: For Developers
+
+   api
    plugins
-   devguide
    releases
+   devguide
    license
    citing
 
 
-Indices and tables
-==================
+.. Indices and tables
+.. ==================
 
-* :ref:`genindex`
-* :ref:`search`
+.. * :ref:`genindex`
+.. * :ref:`search`

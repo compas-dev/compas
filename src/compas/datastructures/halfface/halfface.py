@@ -1720,7 +1720,7 @@ class HalfFace(Datastructure):
         None
 
         Notes
-        ----
+        -----
         Named arguments overwrite corresponding cell-value pairs in the attribute dictionary.
 
         """
@@ -2215,8 +2215,8 @@ class HalfFace(Datastructure):
             True if the edge is on the boundary.
             False otherwise.
 
-        Note
-        ----
+        Notes
+        -----
         This method simply checks if u-v or v-u is on the edge of the volmesh.
         The direction u-v does not matter.
 

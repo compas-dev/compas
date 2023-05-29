@@ -7,47 +7,7 @@
 # Copyright (c) 2015 holger krekel (rather uses bitbucket/hpk42)
 #
 # https://github.com/pytest-dev/pluggy
-"""
-********************************************************************************
-plugins
-********************************************************************************
 
-.. currentmodule:: compas.plugins
-
-COMPAS has an extensible architecture based on plugins that allows to
-customize and extend the functionality of the core framework.
-
-Check out the developer guide to :ref:`plugins` for additional details.
-
-Decorators
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    pluggable
-    plugin
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    PluginManager
-
-Exceptions
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    IncompletePluginImplError
-    PluginNotInstalledError
-"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function

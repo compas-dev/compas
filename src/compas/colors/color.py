@@ -360,8 +360,8 @@ class Color(Data):
         -------
         :class:`~compas.colors.Color`
 
-        See Also
-        --------
+        References
+        ----------
         https://en.wikipedia.org/wiki/HSL_and_HSV
 
         """
@@ -385,8 +385,8 @@ class Color(Data):
         -------
         :class:`~compas.colors.Color`
 
-        See Also
-        --------
+        References
+        ----------
         https://en.wikipedia.org/wiki/HSL_and_HSV
 
         """
@@ -410,8 +410,8 @@ class Color(Data):
         -------
         :class:`~compas.colors.Color`
 
-        See Also
-        --------
+        References
+        ----------
         https://en.wikipedia.org/wiki/YIQ
 
         """
@@ -435,8 +435,8 @@ class Color(Data):
         -------
         :class:`~compas.colors.Color`
 
-        See Also
-        --------
+        References
+        ----------
         https://en.wikipedia.org/wiki/YUV
 
         """
@@ -474,7 +474,11 @@ class Color(Data):
         elif i == 0.75:
             r, g, b = 255, 255, 0
         elif 0.75 < i < 1.0:
-            r, g, b, = (
+            (
+                r,
+                g,
+                b,
+            ) = (
                 255,
                 int(255 - 255 * 4 * (i - 0.75)),
                 0,
@@ -518,9 +522,10 @@ class Color(Data):
         -------
         :class:`~compas.colors.Color`
 
-        See Also
-        --------
+        References
+        ----------
         https://www.w3.org/TR/css-color-3/#svg-color
+
         """
         rgb255 = HTML_TO_RGB255.get(name.lower())
         if rgb255 is None:

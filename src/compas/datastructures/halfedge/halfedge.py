@@ -599,7 +599,7 @@ class HalfEdge(Datastructure):
             If `data` is True, the next edge as a ((u, v), data) tuple.
 
         Notes
-        ----
+        -----
         Mesh edges have no topological meaning. They are only used to store data.
         Edges are not automatically created when vertices and faces are added to
         the mesh. Instead, they are created when data is stored on them, or when
@@ -1130,7 +1130,7 @@ class HalfEdge(Datastructure):
         None
 
         Notes
-        ----
+        -----
         Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
 
         """
@@ -1335,7 +1335,7 @@ class HalfEdge(Datastructure):
         None
 
         Notes
-        ----
+        -----
         Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
 
         """
@@ -1690,7 +1690,6 @@ class HalfEdge(Datastructure):
             return False
 
         for key in self.vertices():
-
             if list(self.halfedge[key].values()).count(None) > 1:
                 return False
 
