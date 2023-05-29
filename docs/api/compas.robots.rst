@@ -4,6 +4,9 @@ compas.robots
 
 .. currentmodule:: compas.robots
 
+.. rst-class:: lead
+
+This package provides classes for describing robots, their components, and their kinematic behaviour.
 
 .. Model
 .. =====
@@ -91,21 +94,3 @@ compas.robots
 ..     DefaultMeshLoader
 ..     GithubPackageMeshLoader
 ..     LocalPackageMeshLoader
-
-.. Deprecated
-.. ==========
-
-.. .. deprecated:: 1.13.3
-..     Use `compas.geometry` primitives instead
-
-.. The following classes are available for backwards compatibility but are deprecated.
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-
-..     Origin
-..     Cylinder
-..     Box
-..     Sphere
-..     Capsule

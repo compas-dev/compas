@@ -5,42 +5,15 @@
 #
 # needs_sphinx = "1.0"
 
-import sys
-import os
 import inspect
 import importlib
 
-# import m2r2
-
-# import sphinx_compas_theme
-from sphinx.ext.napoleon.docstring import NumpyDocstring
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "_ext"))
-
-# patches
-
-# current_m2r2_setup = m2r2.setup
-
-
-# def patched_m2r2_setup(app):
-#     try:
-#         return current_m2r2_setup(app)
-#     except AttributeError:
-#         app.add_source_suffix(".md", "markdown")
-#         app.add_source_parser(m2r2.M2RParser)
-#     return dict(
-#         version=m2r2.__version__,
-#         parallel_read_safe=True,
-#         parallel_write_safe=True,
-#     )
-
-
-# m2r2.setup = patched_m2r2_setup
+import sphinx_compas_theme
 
 # -- General configuration ------------------------------------------------
 
 project = "COMPAS"
-copyright = "Block Research Group - ETH Zurich"
+copyright = "COMPAS Association"
 author = "Tom Van Mele"
 
 release = "1.17.5"
@@ -51,11 +24,12 @@ source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
-# templates_path = sphinx_compas_theme.get_autosummary_templates_path()
+templates_path = sphinx_compas_theme.get_autosummary_templates_path() + ["_templates"]
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
-pygments_style = "sphinx"
-show_authors = True
+# pygments_style = "sphinx"
+# pygments_dark_style = "monokai"
+# show_authors = True
 add_module_names = True
 language = "en"
 
@@ -68,29 +42,40 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.linkcode",
+    # "sphinx.ext.linkcode",
     "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
     "sphinx.ext.inheritance_diagram",
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
-    # "m2r2",
-    # "nbsphinx",
     "sphinx.ext.autodoc.typehints",
-    # "tabs",
-    "sphinx_inline_tabs",
     "sphinx_design",
+    "sphinx_inline_tabs",
+    "sphinx_togglebutton",
+    "sphinx_remove_toctrees",
+    "sphinx_copybutton",
+    # "sphinxcontrib.bibtex",
+    "numpydoc",
 ]
+
+# remove_from_toctrees = ["api/generated/*"]
+
+numpydoc_show_class_members = False
+numpydoc_class_members_toctree = False
+numpydoc_attributes_as_param_list = True
+
+# bibtex options
+
+# bibtex_bibfiles = ['refs.bib']
 
 # autodoc options
 
 autodoc_type_aliases = {}
 
 # this does not work properly yet
-autodoc_typehints = "none"
-autodoc_typehints_format = "short"
+# autodoc_typehints = "none"
+# autodoc_typehints_format = "short"
 autodoc_typehints_description_target = "documented"
 
 autodoc_mock_imports = [
@@ -147,89 +132,12 @@ autosummary_mock_imports = [
 inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
 inheritance_node_attrs = dict(fontsize=8)
 
-# napoleon options
-
-napoleon_google_docstring = False
-napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = False
-napoleon_include_special_with_doc = True
-napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
-napoleon_use_admonition_for_references = False
-napoleon_use_ivar = False
-napoleon_use_param = False
-napoleon_use_rtype = False
-
-
-# first, we define new methods for any new sections and add them to the class
-def parse_keys_section(self, section):
-    return self._format_fields("Keys", self._consume_fields())
-
-
-NumpyDocstring._parse_keys_section = parse_keys_section
-
-
-def parse_attributes_section(self, section):
-    return self._format_fields("Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_attributes_section = parse_attributes_section
-
-
-def parse_class_attributes_section(self, section):
-    return self._format_fields("Class Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
-
-
-def parse_other_attributes_section(self, section):
-    return self._format_fields("Other Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_other_attributes_section = parse_other_attributes_section
-
-
-# we now patch the parse method to guarantee that the the above methods are
-# assigned to the _section dict
-def patched_parse(self):
-    self._sections["keys"] = self._parse_keys_section
-    self._sections["attributes"] = self._parse_attributes_section
-    self._sections["class attributes"] = self._parse_class_attributes_section
-    self._sections["other attributes"] = self._parse_other_attributes_section
-    self._unpatched_parse()
-
-
-NumpyDocstring._unpatched_parse = NumpyDocstring._parse
-NumpyDocstring._parse = patched_parse
-
-
 # plot options
 
 plot_include_source = False
 plot_html_show_source_link = False
 plot_html_show_formats = False
 plot_formats = ["png"]
-# plot_pre_code
-# plot_basedir
-# plot_rcparams
-# plot_apply_rcparams
-# plot_working_directory
-
-plot_template = """
-{{ only_html }}
-
-   {% for img in images %}
-   {% set has_class = false %}
-
-   .. figure:: {{ build_dir }}/{{ img.basename }}.{{ default_fmt }}
-      :class: figure-img img-fluid
-
-      {{ caption }}
-
-   {% endfor %}
-"""
 
 # intersphinx options
 
@@ -291,22 +199,91 @@ extlinks = {
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = "furo"
-# html_theme_path = sphinx_compas_theme.get_html_theme_path()
+html_theme = "sphinx_book_theme"
+html_logo = "_static/images/compas_icon_white_48.png"  # relative to parent of conf.py
+html_title = "COMPAS core 2.0 documentation"
+
 html_theme_options = {
-    "navbar_active": "compas",
-    "package_version": release,
-    "package_docs": "https://compas.dev/compas/",
-    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt",
+    "announcement": "This is the documentation for the pre-release of COMPAS 2.0.",
+    "repository_url": "https://github.com/compas-dev/compas",
+    "use_source_button": True,
+    "path_to_docs": "docs",
+    "use_edit_page_button": True,
+    "use_repository_button": False,
+    "use_issues_button": True,
+    "use_download_button": True,
+    "logo": {
+        "image_light": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
+        "image_dark": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
+        "text": "COMPAS core 2.0 documentation",
+    },
+    "favicons": [
+        {
+            "rel": "icon",
+            "href": "images/compas.ico",  # relative to the static path
+        }
+    ],
+    "home_page_in_toc": False,
+    "navigation_depth": 2,  # this is currently not used by the theme, therefore line 18 in sphinx_book_theme/theme/sphinx_book_theme/components/sbt-sidebar-nav.html should be modified directly
+    "show_navbar_depth": 1,
+    "show_toc_level": 2,
+    "pygment_light_style": "default",
+    "pygment_dark_style": "monokai",
+    "switcher": {
+        "json_url": "versions.json",  # relative to _static
+        "version_match": release,
+    },
+    # "external_links": [
+    #     {"name": "COMPAS framework", "url": "https://compas.dev"},
+    # ],
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/compas-dev/compas",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        }
+    ],
+    # use navbar to add general COMPAS docs navigation
+    # "navbar_start": [
+    #     "framework-logo",
+    # ],
+    # "navbar_center": [
+    #     "framework-nav",
+    # ],
+    # "navbar_end": ["icon-links"],
+    "article_header_start": [
+        "toggle-primary-sidebar",  # this is the default
+    ],
+    "article_header_end": [
+        "article-header-buttons",  # this is the default
+    ],
+    "article_footer_start": [],
+    "article_footer_end": [],
+    "footer_content_items": ["copyright", "last-updated", "extra-footer"],  # "author"
+    # "footer_start": [],
+    # "footer_end": ["icon-links"],
 }
-html_context = {}
-# html_static_path = sphinx_compas_theme.get_html_static_path()
+
+html_sidebars = {
+    "**": [
+        "navbar-logo",
+        "version-switcher",
+        "search-field",
+        "sbt-sidebar-nav",
+    ],
+}
+
+html_context = {
+    "default_mode": "light",
+}
+
 html_static_path = ["_static"]
+html_css_files = []
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
 html_show_sourcelink = False
 html_permalinks = False
 html_permalinks_icon = ""
-html_experimental_html5_writer = False
 html_compact_lists = True

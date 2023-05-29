@@ -4,6 +4,10 @@ compas.datastructures
 
 .. currentmodule:: compas.datastructures
 
+.. rst-class:: lead
+
+This package provides functionality for working with topologically structured data.
+
 .. Classes
 .. =======
 

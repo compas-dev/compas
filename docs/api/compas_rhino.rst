@@ -4,6 +4,11 @@ compas_rhino
 
 .. currentmodule:: compas_rhino
 
+.. rst-class:: lead
+
+This package provides functionality for reading and writing Rhino geometry, for visualising
+COMPAS geometry and data structures in Rhino, and for basic user inter interaction.
+
 .. .. toctree::
 ..     :maxdepth: 1
 ..     :titlesonly:

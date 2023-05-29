@@ -4,6 +4,10 @@ compas.numerical
 
 .. currentmodule:: compas.numerical
 
+.. rst-class:: lead
+
+This package provides some basic linear algabra functions,
+and matrix-based implementations of various geometric and topological algorithms.
 
 Solvers
 =======

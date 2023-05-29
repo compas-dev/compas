@@ -27,9 +27,8 @@ source_suffix = {
 templates_path = sphinx_compas_theme.get_autosummary_templates_path() + ["_templates"]
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
-# pygments_style = "sphinx"
-# pygments_dark_style = "monokai"
-# show_authors = True
+pygments_style = "tango"
+pygments_dark_style = "monokai"
 add_module_names = True
 language = "en"
 
@@ -54,6 +53,7 @@ extensions = [
     "sphinx_inline_tabs",
     "sphinx_togglebutton",
     "sphinx_remove_toctrees",
+    "sphinx_copybutton",
     # "sphinxcontrib.bibtex",
     "numpydoc",
 ]
@@ -221,6 +221,14 @@ html_theme_options = {
         }
     ],
     "navigation_depth": 1,  # this is currently not used by the theme, therefore line 18 in sphinx_book_theme/theme/sphinx_book_theme/components/sbt-sidebar-nav.html should be modified directly
+    "footer_icons": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/compas-dev/compas",
+            "html": "",
+            "class": "fa-brands fa-solid fa-github fa-2x",
+        },
+    ],
 }
 
 # html_sidebars = {
@@ -233,7 +241,11 @@ html_theme_options = {
 # }
 
 html_static_path = ["_static"]
-html_css_files = ["compas.css"]
+html_css_files = [
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css",
+]
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False

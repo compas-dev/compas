@@ -6,8 +6,7 @@ compas.topology
 
 .. rst-class:: lead
 
-    Package containing topological algorithms for traversal, connectivity, combinatorics, etc.
-
+Package containing topological algorithms for traversal, connectivity, combinatorics, etc.
 
 Connectivity
 ============

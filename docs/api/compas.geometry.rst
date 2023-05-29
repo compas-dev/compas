@@ -4,6 +4,12 @@ compas.geometry
 
 .. currentmodule:: compas.geometry
 
+.. rst-class:: lead
+
+This package provides a wide range of geometry objects and geometric algorithms
+independent from the geometry kernels of CAD software.
+
+
 .. Primitives
 .. ==========
 

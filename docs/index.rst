@@ -35,23 +35,8 @@ Getting Started
 
    installation
    configuration
-
-Tutorial
-=========
-
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
-   :caption: Tutorial
-
-   tutorial/data
-   tutorial/geometry
-   tutorial/brep
-   tutorial/meshes
-   tutorial/robots
-   tutorial/numericaldata
-   tutorial/rpc
-   tutorial/colors
+   tutorial
+   citing
 
 Package Reference
 =================
@@ -66,20 +51,19 @@ Package Reference
    api/compas_ghpython
    api/compas_rhino
 
-For Developers
-==============
+Development
+===========
 
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-   :caption: For Developers
+   :caption: Development
 
    api
+   devguide
    plugins
    releases
-   devguide
    license
-   citing
 
 
 .. Indices and tables

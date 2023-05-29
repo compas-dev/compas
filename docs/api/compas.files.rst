@@ -4,10 +4,10 @@ compas.files
 
 .. currentmodule:: compas.files
 
-.. .. rst-class:: lead
+.. rst-class:: lead
 
-.. This package provides classes for working with selected file formats that are capable
-.. of storing information about 2D and 3D geometry, robots, pointclouds, ...
+This package provides classes for working with selected file formats that are capable
+of storing information about 2D and 3D geometry, robots, pointclouds, ...
 
 
 .. DXF
