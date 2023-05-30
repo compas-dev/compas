@@ -60,8 +60,8 @@ def _get_artist_cls(data, **kwargs):
         Artist.CONTEXT = _gh_or_rhino()
 
     # in any case user gets to override the choice
-    context = kwargs.get("context") or Artist.CONTEXT
-    if context is None:
+    context_name = kwargs.get("context") or Artist.CONTEXT
+    if context_name is None:
         raise NoArtistContextError()
 
     dtype = type(data)
@@ -70,10 +70,10 @@ def _get_artist_cls(data, **kwargs):
     if "artist_type" in kwargs:
         cls = kwargs["artist_type"]
     else:
-        cls = Artist.ITEM_ARTIST[context]
+        context = Artist.ITEM_ARTIST[context_name]
 
         for type_ in inspect.getmro(dtype):
-            cls = cls.get(type_, None)
+            cls = context.get(type_, None)
             if cls is not None:
                 break
 
