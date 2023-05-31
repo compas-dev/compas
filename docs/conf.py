@@ -201,21 +201,21 @@ extlinks = {
 
 html_theme = "sphinx_book_theme"
 html_logo = "_static/images/compas_icon_white_48.png"  # relative to parent of conf.py
-html_title = "COMPAS core 2.0 documentation"
+html_title = "COMPAS.core"
 
 html_theme_options = {
-    "announcement": "This is the documentation for the pre-release of COMPAS 2.0.",
+    # "announcement": "This is the documentation for the pre-release of COMPAS 2.0.",
     "repository_url": "https://github.com/compas-dev/compas",
-    "use_source_button": True,
+    "use_source_button": False,
     "path_to_docs": "docs",
-    "use_edit_page_button": True,
+    "use_edit_page_button": False,
     "use_repository_button": False,
-    "use_issues_button": True,
+    "use_issues_button": False,
     "use_download_button": True,
     "logo": {
         "image_light": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
         "image_dark": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
-        "text": "COMPAS core 2.0 documentation",
+        "text": "COMPAS.core",
     },
     "favicons": [
         {
@@ -245,16 +245,19 @@ html_theme_options = {
         }
     ],
     # use navbar to add general COMPAS docs navigation
-    # "navbar_start": [
-    #     "framework-logo",
-    # ],
-    # "navbar_center": [
-    #     "framework-nav",
-    # ],
-    # "navbar_end": ["icon-links"],
+    "navbar_start": [
+        "navbar-logo",
+        "version-switcher",
+    ],
+    "navbar_center": [
+        "framework-nav",
+    ],
+    "navbar_end": [
+        "icon-links",
+    ],
     "article_header_start": [
-        "toggle-primary-sidebar",  # this is the default
-        # "breadcrumbs",
+        # "toggle-primary-sidebar",  # this is the default
+        "breadcrumbs",
     ],
     "article_header_end": [
         "article-header-buttons",  # this is the default
@@ -266,8 +269,9 @@ html_theme_options = {
 
 html_sidebars = {
     "**": [
-        "navbar-logo",
+        # "navbar-logo",
         # "version-switcher",
+        # "navbar-title",
         # "search-field",
         "sbt-sidebar-nav",
         "external-links",
@@ -279,7 +283,7 @@ html_context = {
 }
 
 html_static_path = ["_static"]
-html_css_files = []
+html_css_files = ["compas.css"]
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
