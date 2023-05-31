@@ -1,5 +1,10 @@
 [
     {
+        "name": "latest",
+        "version": "unreleased",
+        "url": "https://compas.dev/compas/latest/"
+    },
+    {
         "name": "v1.17.5 (stable)",
         "version": "1.17.5",
         "url": "https://compas.dev/compas/1.17.5/"

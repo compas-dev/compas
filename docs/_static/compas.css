@@ -1,38 +1,12 @@
-/* i.fa-square-github {
-    color: #fff;
-} */
-
-/* .bd-header {
-    background-color: #0092d2 !important;
-} */
-
-.bd-breadcrumbs {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+.bd-content {
+    flex-grow: 1;
+    max-width: 100%;
 }
 
-/* label.sidebar-toggle.primary-toggle {
-    color: #fff !important;
-} */
-
-@media (min-width: 768px) {
-    label.sidebar-toggle.primary-toggle {
-        display: none !important;
-    }
+.bd-page-width {
+    max-width: 100%;
 }
 
-@media (max-width: 768px) {
-    label.sidebar-toggle.primary-toggle {
-        display: inline-block !important;
-    }
-}
-
-/* button.btn.version-switcher__button {
-    border-color: #fff;
-    color: #fff;
-} */
-
-.navbar-brand {
-    flex-direction: unset !important;
-    justify-content: unset !important;
+.bd-sidebar-primary {
+    max-width: 20%;
 }

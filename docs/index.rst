@@ -1,5 +1,6 @@
+:html_theme.sidebar_secondary.remove:
 ********************************************************************************
-COMPAS.core
+COMPAS Documentation
 ********************************************************************************
 
 .. rst-class:: lead
@@ -33,11 +34,7 @@ User Guide
    :titlesonly:
    :caption: User Guide
 
-   installation
-   configuration
-   tutorial
-   api
-   citing
+   userguide/index
 
 Package Reference
 =================
@@ -47,27 +44,25 @@ Package Reference
    :titlesonly:
    :caption: Package Reference
 
-   api/compas
-   api/compas_blender
-   api/compas_ghpython
-   api/compas_rhino
+   reference/index
 
-Development
-===========
+Extensions
+==========
 
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-   :caption: Development
+   :caption: Extensions
 
-   devguide
-   plugins
-   releases
-   license
+   extensions/index
 
 
-.. Indices and tables
-.. ==================
+Developer Guide
+===============
 
-.. * :ref:`genindex`
-.. * :ref:`search`
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+   :caption: Developer Guide
+
+   devguide/index

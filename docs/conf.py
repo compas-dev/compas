@@ -199,23 +199,71 @@ extlinks = {
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = "sphinx_book_theme"
+html_theme = "pydata_sphinx_theme"
 html_logo = "_static/images/compas_icon_white_48.png"  # relative to parent of conf.py
-html_title = "COMPAS.core"
+html_title = "COMPAS docs"
+html_favicon = "_static/images/compas.ico"
 
 html_theme_options = {
-    # "announcement": "This is the documentation for the pre-release of COMPAS 2.0.",
-    "repository_url": "https://github.com/compas-dev/compas",
-    "use_source_button": False,
-    "path_to_docs": "docs",
-    "use_edit_page_button": False,
-    "use_repository_button": False,
-    "use_issues_button": False,
-    "use_download_button": True,
+    # theme structure and layout
+    "navbar_start": ["navbar-logo"],
+    "navbar_center": ["navbar-nav"],
+    "navbar_end": ["version-switcher", "navbar-icon-links"],
+    "navbar_persistent": ["search-button"],
+    "navbar_align": "content",
+    "article_header_start": ["breadcrumbs"],
+    "article_header_end": [],
+    "primary_sidebar_end": [
+        # "sidebar-ethical-ads"
+    ],
+    "secondary_sidebar_items": ["page-toc", "edit-this-page", "sourcelink"],
+    "article_footer_items": ["prev-next.html"],
+    "show_prev_next": True,
+    "content_footer_items": [],
+    "footer_start": ["copyright", "sphinx-version"],
+    "footer_end": ["theme-version"],
+    # navigation and links
+    "external_links": [
+        {"name": "Changelog", "url": "https://github.com/compas-dev/compas/releases"},
+        {"name": "COMPAS Framework", "url": "https://compas.dev"},
+        {"name": "COMPAS Association", "url": "https://compas.dev/association"},
+    ],
+    "header_links_before_dropdown": 4,
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/compas-dev/compas",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Discourse",
+            "url": "http://forum.compas-framework.org/",
+            "icon": "fa-brands fa-discourse",
+            "type": "fontawesome",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/COMPAS/",
+            "icon": "fa-brands fa-python",
+            "type": "fontawesome",
+        },
+    ],
+    # "icon_links_label": "Quick Links",
+    "use_edit_page_button": True,
+    # user interface
+    "announcement": "This is the documentation for the pre-release of COMPAS 2.0.",
+    "switcher": {
+        "json_url": "_static/versions.json",  # relative to _static
+        "version_match": release,
+    },
+    "check_switcher": False,
+    # content and features
+    # theming and style
     "logo": {
         "image_light": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
         "image_dark": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
-        "text": "COMPAS.core",
+        "text": "COMPAS docs",
     },
     "favicons": [
         {
@@ -223,63 +271,26 @@ html_theme_options = {
             "href": "images/compas.ico",  # relative to the static path
         }
     ],
-    "home_page_in_toc": False,
-    "navigation_depth": 2,  # this is currently not used by the theme, therefore line 18 in sphinx_book_theme/theme/sphinx_book_theme/components/sbt-sidebar-nav.html should be modified directly
-    "show_navbar_depth": 1,
+    "navigation_depth": 2,
+    "show_nav_level": 1,
     "show_toc_level": 2,
     "pygment_light_style": "default",
     "pygment_dark_style": "monokai",
-    "switcher": {
-        "json_url": "_static/versions.json",  # relative to _static
-        "version_match": release,
-    },
-    # "external_links": [
-    #     {"name": "COMPAS framework", "url": "https://compas.dev"},
-    # ],
-    "icon_links": [
-        {
-            "name": "GitHub",
-            "url": "https://github.com/compas-dev/compas",
-            "icon": "fa-brands fa-square-github",
-            "type": "fontawesome",
-        }
-    ],
-    # use navbar to add general COMPAS docs navigation
-    "navbar_start": [
-        "navbar-logo",
-        "version-switcher",
-    ],
-    "navbar_center": [
-        "framework-nav",
-    ],
-    "navbar_end": [
-        "icon-links",
-    ],
-    "article_header_start": [
-        # "toggle-primary-sidebar",  # this is the default
-        "breadcrumbs",
-    ],
-    "article_header_end": [
-        "article-header-buttons",  # this is the default
-    ],
-    "footer_content_items": ["copyright", "last-updated", "extra-footer"],  # "author"
-    # "footer_start": [],
-    # "footer_end": ["icon-links"],
 }
 
 html_sidebars = {
     "**": [
-        # "navbar-logo",
-        # "version-switcher",
-        # "navbar-title",
-        # "search-field",
-        "sbt-sidebar-nav",
-        "external-links",
+        "sidebar-nav-bs",
+        "sidebar-ethical-ads",
     ],
 }
 
 html_context = {
-    # "default_mode": "light",
+    "github_url": "https://github.com",
+    "github_user": "compas-dev",
+    "github_repo": "compas",
+    "github_version": "main",
+    "doc_path": "docs",
 }
 
 html_static_path = ["_static"]
