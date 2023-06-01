@@ -46,7 +46,7 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
-    "sphinx.ext.inheritance_diagram",
+    # "sphinx.ext.inheritance_diagram",
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.autodoc.typehints",
@@ -129,8 +129,8 @@ autosummary_mock_imports = [
 
 # graph options
 
-inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
-inheritance_node_attrs = dict(fontsize=8)
+# inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
+# inheritance_node_attrs = dict(fontsize=8)
 
 # plot options
 
@@ -302,7 +302,7 @@ html_css_files = ["compas.css"]
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
-html_show_sourcelink = False
+html_show_sourcelink = True
 html_permalinks = False
 html_permalinks_icon = ""
 html_compact_lists = True
