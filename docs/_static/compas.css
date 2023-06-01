@@ -1,3 +1,8 @@
+html[data-theme="light"] {
+    --pst-color-primary: #0092d2;
+    --pst-color-info: #0092d2;
+}
+
 .bd-content {
     flex-grow: 1;
     max-width: 100%;
@@ -7,6 +12,11 @@
     max-width: 100%;
 }
 
-.bd-sidebar-primary {
-    max-width: 20%;
+@media (min-width: 960px) {
+    .bd-sidebar-primary {
+        max-width: 20%;
+    }
+    html[data-theme="light"] .bd-sidebar-primary {
+        background-color: #f8f9fb;
+    }
 }

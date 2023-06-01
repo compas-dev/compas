@@ -208,7 +208,11 @@ html_theme_options = {
     # theme structure and layout
     "navbar_start": ["navbar-logo"],
     "navbar_center": ["navbar-nav"],
-    "navbar_end": ["version-switcher", "navbar-icon-links"],
+    "navbar_end": [
+        # "version-switcher",
+        "theme-switcher",
+        "navbar-icon-links",
+    ],
     "navbar_persistent": ["search-button"],
     "navbar_align": "content",
     "article_header_start": ["breadcrumbs"],

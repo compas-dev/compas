@@ -32,7 +32,6 @@ User Guide
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-   :caption: User Guide
 
    userguide/index
 
@@ -42,7 +41,6 @@ Package Reference
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-   :caption: Package Reference
 
    reference/index
 
@@ -52,7 +50,6 @@ Extensions
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-   :caption: Extensions
 
    extensions/index
 
@@ -63,6 +60,5 @@ Developer Guide
 .. toctree::
    :maxdepth: 2
    :titlesonly:
-   :caption: Developer Guide
 
    devguide/index
