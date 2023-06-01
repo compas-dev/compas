@@ -210,7 +210,7 @@ html_theme_options = {
     "navbar_center": ["navbar-nav"],
     "navbar_end": [
         # "version-switcher",
-        "theme-switcher",
+        # "theme-switcher",
         "navbar-icon-links",
     ],
     "navbar_persistent": ["search-button"],
