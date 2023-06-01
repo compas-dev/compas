@@ -20,3 +20,19 @@ html[data-theme="light"] {
         background-color: #f8f9fb;
     }
 }
+
+/* html[data-theme="light"] .bd-header {
+    background-color: var(--pst-color-primary);
+}
+
+html[data-theme="light"] .bd-header .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+html[data-theme="light"] .bd-header .navbar-nav > .active > .nav-link {
+    color: rgba(255, 255, 255, 1);
+} */
+
+.navbar-brand img {
+    height: 32px;
+}
