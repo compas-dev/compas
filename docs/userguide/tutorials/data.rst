@@ -244,21 +244,3 @@ GH Components
 =============
 
 *Coming soon...*
-
-Inheritance Diagrams
-====================
-
-.. currentmodule:: compas.geometry
-
-.. inheritance-diagram:: Bezier Circle Ellipse Frame Line Plane Point Polygon Polyline Quaternion Vector Box Capsule Cone Cylinder Polyhedron Sphere Torus Projection Reflection Rotation Shear Transformation Translation
-    :parts: 1
-
-.. currentmodule:: compas.datastructures
-
-.. inheritance-diagram:: Mesh Network VolMesh
-    :parts: 1
-
-.. currentmodule:: compas.robots
-
-.. inheritance-diagram:: RobotModel Joint Link ToolModel Configuration
-    :parts: 1
