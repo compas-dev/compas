@@ -73,8 +73,8 @@ def _get_artist_cls(data, **kwargs):
 class Artist(object):
     """Base class for all artists.
 
-    Class Attributes
-    ----------------
+    Attributes
+    ----------
     AVAILABLE_CONTEXTS : list[str]
         The available visualization contexts.
     CONTEXT : str | None

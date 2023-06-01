@@ -22,9 +22,6 @@ class PrimitiveArtist(Artist):
         The geometric primitive associated with the artist.
     color : :class:`~compas.colors.Color`
         The color of the object.
-
-    Class Attributes
-    ----------------
     default_color : :class:`~compas.colors.Color`
         The default rgb color value of the primitive.
 

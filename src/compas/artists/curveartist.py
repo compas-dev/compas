@@ -22,9 +22,6 @@ class CurveArtist(Artist):
         The geometry of the curve.
     color : :class:`~compas.colors.Color`
         The color of the curve.
-
-    Class Attributes
-    ----------------
     default_color : :class:`~compas.colors.Color`
         The default color of the curve.
 

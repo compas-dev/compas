@@ -53,12 +53,18 @@ class MeshArtist(Artist):
     vertex_color : dict[int, :class:`~compas.colors.Color`]
         Vertex colors.
         Missing vertices get the default vertex color :attr:`default_vertexcolor`.
+    default_vertexcolor : :class:`~compas.colors.Color`
+        The default color of the vertices of the mesh.
     edge_color : dict[tuple[int, int], :class:`~compas.colors.Color`]
         Edge colors.
         Missing edges get the default edge color :attr:`default_edgecolor`.
+    default_edgecolor : :class:`~compas.colors.Color`
+        The default color of the edges of the mesh.
     face_color : dict[int, :class:`~compas.colors.Color`]
         Face colors.
         Missing faces get the default face color :attr:`default_facecolor`.
+    default_facecolor : :class:`~compas.colors.Color`
+        The default color of the faces of the mesh.
     vertex_text : dict[int, str]
         Vertex labels.
         Defaults to the vertex identifiers.
@@ -72,21 +78,12 @@ class MeshArtist(Artist):
         Vertex sizes.
         Defaults to 1.
         Visualization of vertices with variable size is not available for all visualization contexts.
+    default_vertexsize : float
+        The default size of the vertices of the mesh.
     edge_width : dict[tuple[int, int], float]
         Edge widths.
         Defaults to 1.
         Visualization of edges with variable width is not available for all visualization contexts.
-
-    Class Attributes
-    ----------------
-    default_vertexcolor : :class:`~compas.colors.Color`
-        The default color of the vertices of the mesh.
-    default_edgecolor : :class:`~compas.colors.Color`
-        The default color of the edges of the mesh.
-    default_facecolor : :class:`~compas.colors.Color`
-        The default color of the faces of the mesh.
-    default_vertexsize : float
-        The default size of the vertices of the mesh.
     default_edgewidth : float
         The default width of the edges of the mesh.
 

@@ -22,15 +22,12 @@ class ShapeArtist(Artist):
         The geometry of the shape.
     color : :class:`~compas.colors.Color`
         The color of the shape.
+    default_color : :class:`~compas.colors.Color`
+        The default color of the shape.
     u : int
         The resolution in the U direction of the discrete shape representation.
     v : int
         The resolution in the V direction of the discrete shape representation.
-
-    Class Attributes
-    ----------------
-    default_color : :class:`~compas.colors.Color`
-        The default color of the shape.
 
     """
 

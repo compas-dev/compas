@@ -39,15 +39,23 @@ class VolMeshArtist(Artist):
     vertex_color : dict[int, :class:`~compas.colors.Color`]
         Mapping between vertices and colors.
         Missing vertices get the default vertex color: :attr:`default_vertexcolor`.
+    default_vertexcolor : :class:`~compas.colors.Color`
+        The default color of the vertices of the mesh that don't have a specified color.
     edge_color : dict[tuple[int, int], :class:`~compas.colors.Color`]
         Mapping between edges and colors.
         Missing edges get the default edge color: :attr:`default_edgecolor`.
+    default_edgecolor : :class:`~compas.colors.Color`
+        The default color of the edges of the mesh that don't have a specified color.
     face_color : dict[int, :class:`~compas.colors.Color`]
         Mapping between faces and colors.
         Missing faces get the default face color: :attr:`default_facecolor`.
+    default_facecolor : :class:`~compas.colors.Color`
+        The default color of the faces of the mesh that don't have a specified color.
     cell_color : dict[int, :class:`~compas.colors.Color`]
         Mapping between cells and colors.
         Missing cells get the default cell color: :attr:`default_facecolor`.
+    default_cellcolor : :class:`~compas.colors.Color`
+        The default color of the cells of the mesh that don't have a specified color.
     vertex_text : dict[int, str]
         Mapping between vertices and text labels.
     edge_text : dict[tuple[int, int], str]
@@ -56,17 +64,6 @@ class VolMeshArtist(Artist):
         Mapping between faces and text lables.
     cell_text : dict[int, str]
         Mapping between cells and text lables.
-
-    Class Attributes
-    ----------------
-    default_vertexcolor : :class:`~compas.colors.Color`
-        The default color of the vertices of the mesh that don't have a specified color.
-    default_edgecolor : :class:`~compas.colors.Color`
-        The default color of the edges of the mesh that don't have a specified color.
-    default_facecolor : :class:`~compas.colors.Color`
-        The default color of the faces of the mesh that don't have a specified color.
-    default_cellcolor : :class:`~compas.colors.Color`
-        The default color of the cells of the mesh that don't have a specified color.
 
     """
 
