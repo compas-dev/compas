@@ -200,8 +200,8 @@ extlinks = {
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "pydata_sphinx_theme"
-html_logo = "_static/images/compas_icon_white_48.png"  # relative to parent of conf.py
-html_title = "COMPAS docs"
+html_logo = "_static/images/compas_icon_white.png"  # relative to parent of conf.py
+# html_title = "COMPAS docs"
 html_favicon = "_static/images/compas.ico"
 
 html_theme_options = {
@@ -265,9 +265,9 @@ html_theme_options = {
     # content and features
     # theming and style
     "logo": {
-        "image_light": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
-        "image_dark": "_static/images/compas_icon_white_48.png",  # relative to parent of conf.py
-        "text": "COMPAS docs",
+        "image_light": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
+        "image_dark": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
+        # "text": "COMPAS docs",
     },
     "favicons": [
         {
