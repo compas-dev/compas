@@ -65,6 +65,11 @@ class NetworkArtist(Artist):
     default_edgewidth : float
         The default width for edges that do not have a specified width.
 
+    See Also
+    --------
+    :class:`compas.artists.MeshArtist`
+    :class:`compas.artists.VolMeshArtist`
+
     """
 
     default_nodecolor = Color.from_hex("#0092D2")

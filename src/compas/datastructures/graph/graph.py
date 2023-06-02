@@ -36,9 +36,9 @@ class Graph(Datastructure):
         It is recommended to add a default to this dictionary using :meth:`update_default_edge_attributes`
         for every edge attribute used in the data structure.
 
-    Examples
+    See Also
     --------
-    >>>
+    :class:`compas.datastructures.Network`
 
     """
 

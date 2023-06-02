@@ -45,6 +45,10 @@ class HalfEdge(Datastructure):
         It is recommended to add a default to this dictionary using :meth:`update_default_face_attributes`
         for every face attribute used in the data structure.
 
+    See Also
+    --------
+    :class:`compas.datastructures.Mesh`
+
     """
 
     def __init__(

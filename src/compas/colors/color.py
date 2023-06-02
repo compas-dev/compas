@@ -98,6 +98,10 @@ class Color(Data):
     >>> Color.navy().is_light
     False
 
+    See Also
+    --------
+    :class:`compas.colors.ColorMap`
+
     """
 
     def __init__(self, red, green, blue, alpha=1.0, **kwargs):

@@ -87,6 +87,11 @@ class MeshArtist(Artist):
     default_edgewidth : float
         The default width of the edges of the mesh.
 
+    See Also
+    --------
+    :class:`compas.artists.NetworkArtist`
+    :class:`compas.artists.VolMeshArtist`
+
     """
 
     color = Color.from_hex("#0092D2").lightened(50)

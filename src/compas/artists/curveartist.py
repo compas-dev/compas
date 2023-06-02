@@ -11,7 +11,7 @@ class CurveArtist(Artist):
 
     Parameters
     ----------
-    curve: :class:`~compas.geometry.Curve`
+    curve : :class:`~compas.geometry.Curve`
         The curve geometry.
     color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
         The RGB color.
@@ -24,6 +24,10 @@ class CurveArtist(Artist):
         The color of the curve.
     default_color : :class:`~compas.colors.Color`
         The default color of the curve.
+
+    See Also
+    --------
+    :class:`compas.artists.SurfaceArtist`
 
     """
 

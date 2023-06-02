@@ -53,6 +53,11 @@ class Data(object):
         This name is not necessarily unique and can be set by the user.
         The default value is the object's class name: ``self.__class__.__name__``.
 
+    See Also
+    --------
+    :class:`compas.data.DataEncoder`
+    :class:`compas.data.DataDecoder`
+
     Notes
     -----
     Objects created from classes that implement this data class

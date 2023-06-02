@@ -65,6 +65,11 @@ class VolMeshArtist(Artist):
     cell_text : dict[int, str]
         Mapping between cells and text lables.
 
+    See Also
+    --------
+    :class:`compas.artists.NetworkArtist`
+    :class:`compas.artists.MeshArtist`
+
     """
 
     color = Color.from_hex("#0092D2").lightened(50)
