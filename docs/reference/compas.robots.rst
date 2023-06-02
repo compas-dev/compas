@@ -8,6 +8,7 @@ compas.robots
 
 This package provides classes for describing robots, their components, and their kinematic behaviour.
 
+
 .. Model
 .. =====
 

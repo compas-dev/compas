@@ -10,10 +10,6 @@ This is the documentation of the main library of COMPAS,
 an open source framework for research and collaboration
 in Architecture, Engineering, Fabrication, and Construction.
 
-.. figure:: /_images/COMPAS.png
-     :figclass: figure
-     :class: figure-img img-fluid
-
 The core package of COMPAS (:mod:`compas`) defines all functionality for geometry processing,
 data structures, topology, numerical methods, robotics, the plugin mechanism, remote procedure calls ...
 and can be used independently of CAD systems in any environment that supports Python programming.
@@ -26,6 +22,9 @@ in Blender, Rhino, and Grasshopper.
 The package for 2D visualisation (:mod:`compas_plotters`)
 simplifies "plotting" of COMPAS geometry objects and data structures.
 
+.. figure:: /_images/COMPAS.png
+     :figclass: figure
+     :class: figure-img img-fluid
 
 User Guide
 ==========

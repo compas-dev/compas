@@ -8,8 +8,7 @@ User Guide
    installation
    configuration
    tutorials
-   examples
    conventions
-   acknowledgements
+   releases
    citing
    license
