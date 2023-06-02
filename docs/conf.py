@@ -197,11 +197,69 @@ extlinks = {
     "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s"),
 }
 
+# from pytorch
+
+from sphinx.writers import html, html5
+
+# def visit_reference(self, node: Element) -> None:
+#     atts = {'class': 'reference'}
+#     if node.get('internal') or 'refuri' not in node:
+#         atts['class'] += ' internal'
+#     else:
+#         atts['class'] += ' external'
+#     if 'refuri' in node:
+#         atts['href'] = node['refuri'] or '#'
+#         if self.settings.cloak_email_addresses and atts['href'].startswith('mailto:'):
+#             atts['href'] = self.cloak_mailto(atts['href'])
+#             self.in_mailto = True
+#     else:
+#         assert 'refid' in node, \
+#                 'References must have "refuri" or "refid" attribute.'
+#         atts['href'] = '#' + node['refid']
+#     if not isinstance(node.parent, nodes.TextElement):
+#         assert len(node) == 1 and isinstance(node[0], nodes.image)  # NoQA: PT018
+#         atts['class'] += ' image-reference'
+#     if 'reftitle' in node:
+#         atts['title'] = node['reftitle']
+#     if 'target' in node:
+#         atts['target'] = node['target']
+#     self.body.append(self.starttag(node, 'a', '', **atts))
+
+#     if node.get('secnumber'):
+#         self.body.append(('%s' + self.secnumber_suffix) %
+#                             '.'.join(map(str, node['secnumber'])))
+
+
+def replace(Klass):
+    old_call = Klass.visit_reference
+
+    def visit_reference(self, node):
+        if "refuri" in node:
+            refuri = node.get("refuri")
+            if "generated" in refuri:
+                href_anchor = refuri.split("#")
+                if len(href_anchor) > 1:
+                    href = href_anchor[0]
+                    anchor = href_anchor[1]
+                    page = href.split("/")[-1]
+                    parts = page.split(".")
+                    if parts[-1] == "html":
+                        pagename = ".".join(parts[:-1])
+                        if anchor == pagename:
+                            node["refuri"] = href
+        return old_call(self, node)
+
+    Klass.visit_reference = visit_reference
+
+
+replace(html.HTMLTranslator)
+replace(html5.HTML5Translator)
+
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "pydata_sphinx_theme"
 html_logo = "_static/images/compas_icon_white.png"  # relative to parent of conf.py
-# html_title = "COMPAS docs"
+html_title = "COMPAS core"
 html_favicon = "_static/images/compas.ico"
 
 html_theme_options = {
@@ -232,7 +290,7 @@ html_theme_options = {
         {"name": "COMPAS Framework", "url": "https://compas.dev"},
         {"name": "COMPAS Association", "url": "https://compas.dev/association"},
     ],
-    "header_links_before_dropdown": 4,
+    "header_links_before_dropdown": 5,
     "icon_links": [
         {
             "name": "GitHub",
@@ -267,7 +325,7 @@ html_theme_options = {
     "logo": {
         "image_light": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
         "image_dark": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
-        # "text": "COMPAS docs",
+        "text": "COMPAS core",
     },
     "favicons": [
         {
@@ -275,7 +333,7 @@ html_theme_options = {
             "href": "images/compas.ico",  # relative to the static path
         }
     ],
-    "navigation_depth": 2,
+    "navigation_depth": 3,
     "show_nav_level": 1,
     "show_toc_level": 2,
     "pygment_light_style": "default",
