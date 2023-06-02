@@ -4,15 +4,16 @@ Pluggables
 
 .. rst-class:: lead
 
-COMPAS has an extensible architecture based on plugins that allows to
+COMPAS has an extensible architecture based on pluggables and plugins that allows to
 customize and extend the functionality of the core framework.
-Check out the developer guide for additional details.
 
-The following *extension points* are currently defined:
+Categories
+==========
 
+The following *extension points* are currently defined.
 
-Category: ``booleans``
-^^^^^^^^^^^^^^^^^^^^^^
+``booleans``
+------------
 
 .. currentmodule:: compas.geometry
 
@@ -20,9 +21,8 @@ Category: ``booleans``
 * :func:`boolean_difference_mesh_mesh`
 * :func:`boolean_intersection_mesh_mesh`
 
-
-Category: ``install``
-^^^^^^^^^^^^^^^^^^^^^
+``install``
+-----------
 
 .. currentmodule:: compas_rhino.uninstall
 
@@ -31,8 +31,8 @@ Category: ``install``
 * :func:`after_rhino_uninstall`
 
 
-Category: ``intersections``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``intersections``
+-----------------
 
 .. currentmodule:: compas.geometry
 
@@ -40,16 +40,16 @@ Category: ``intersections``
 * :func:`intersection_ray_mesh`
 
 
-Category: ``quadmesh``
-^^^^^^^^^^^^^^^^^^^^^^
+``quadmesh``
+------------
 
 .. currentmodule:: compas.geometry
 
 * :func:`quadmesh_planarize`
 
 
-Category: ``triangulation``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``triangulation``
+-----------------
 
 .. currentmodule:: compas.geometry
 
@@ -58,8 +58,8 @@ Category: ``triangulation``
 * :func:`conforming_delaunay_triangulation`
 
 
-Category: ``trimesh``
-^^^^^^^^^^^^^^^^^^^^^
+``trimesh``
+-----------
 
 .. currentmodule:: compas.geometry
 

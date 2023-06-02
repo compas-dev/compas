@@ -1,6 +1,6 @@
-*******************
-Developing a Plugin
-*******************
+*******
+Plugins
+*******
 
 What are plugins?
 -----------------
@@ -172,3 +172,4 @@ accordingly:
 
     from compas.plugins import plugin_manager
     plugin_manager.DEBUG = True
+

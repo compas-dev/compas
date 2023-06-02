@@ -1,9 +1,9 @@
 ***********
-Conventions
+Style Guide
 ***********
 
-Style guide
-===========
+Code formatting
+===============
 
 Please run ``invoke format`` to auto-format your code.
 
@@ -77,16 +77,8 @@ make sure to include it in the docstring of ``compas.geometry.__init__.py``.
 Type hints
 ==========
 
-Type hints should be added to stub files at the public API level
-of the main packages (see :ref:`code-structure`).
-This allows the type hints to be written using Python 3 style
-annotations while maintaining compatibility with Python 2.7 for Rhino/GH.
-
-For example, the type hints for ``compas.datastructures`` should be defined in
-``compas.datastructures.__init__.pyi``.
-
-
 .. _code-structure:
+
 
 Code structure
 ==============
@@ -94,6 +86,8 @@ Code structure
 Each of the core packages is divided into subpackages that group functionality into logical components.
 For example, :mod:`compas` is divided into:
 
+* :mod:`compas.artists`
+* :mod:`compas.data`
 * :mod:`compas.datastructures`
 * :mod:`compas.files`
 * :mod:`compas.geometry`
@@ -121,11 +115,3 @@ For example, in some ``script.py``:
 
     from compas.numerical import pca_numpy
     from compas.numerical import fd_numpy
-
-To allow the public API of the modules and packages contained in a subpackage to reach the subpackage level,
-each module should declare the classes, functions and variables of its public API in the module's ``__all__`` variable.
-Per package, the APIs of the contained module are collected in the ``__all__`` variable of the package (in the ``__init__.py``).
-
-.. code-block:: python
-
-    __all__ = [_ for _ in dir() if not _.startswith('_')]

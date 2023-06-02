@@ -5,11 +5,8 @@ Developer Guide
    :maxdepth: 2
    :titlesonly:
 
-   setup
    workflow
+   style
    gh_components
-   pluggables
    plugins
-   conventions
-   releases
-   roadmap
+   pluggables
