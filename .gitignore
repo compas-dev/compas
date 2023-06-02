@@ -112,6 +112,7 @@ dist/docs
 
 docs/generated/
 docs/api/generated/
+docs/reference/generated
 
 *.3dmbak
 *.rhl
