@@ -54,21 +54,6 @@ class Curve(Geometry):
     # ==============================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data."""
-        raise NotImplementedError
-
-    @property
-    def JSONSCHEMANAME(self):
-        """dict : Schema of the curve data in JSON format."""
-        raise NotImplementedError
-
-    @property
-    def dtype(self):
-        """str : The type of the object in the form of a '2-level' import and a class name."""
-        return "compas.geometry/Curve"
-
-    @property
     def data(self):
         """dict : Representation of the curve as a dict containing only native Python data."""
         raise NotImplementedError

@@ -4,6 +4,8 @@ from __future__ import division
 
 import math
 
+from compas.data import wrap_schema_value
+
 from compas.geometry import quaternion_multiply
 from compas.geometry import quaternion_conjugate
 from compas.geometry import quaternion_unitize
@@ -111,6 +113,19 @@ class Quaternion(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {
+                "w": {"type": "number"},
+                "x": {"type": "number"},
+                "y": {"type": "number"},
+                "z": {"type": "number"},
+            },
+            "required": ["w", "x", "y", "z"],
+        }
+    )
+
     __slots__ = ["_w", "_x", "_y", "_z"]
 
     def __init__(self, w, x, y, z, **kwargs):
@@ -134,11 +149,6 @@ class Quaternion(Primitive):
         from schema import Schema
 
         return Schema({"w": float, "x": float, "y": float, "z": float})
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "quaternion"
 
     @property
     def data(self):

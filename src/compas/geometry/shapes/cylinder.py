@@ -6,6 +6,8 @@ from math import cos
 from math import pi
 from math import sin
 
+from compas.data import wrap_schema_value
+
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Circle
@@ -56,6 +58,14 @@ class Cylinder(Shape):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {"circle": Circle.JSONSCHEMA, "height": {"type": "number", "exclusiveMinimum": 0}},
+            "required": ["circle", "height"],
+        }
+    )
+
     __slots__ = ["_circle", "_height"]
 
     def __init__(self, circle, height, **kwargs):
@@ -85,18 +95,13 @@ class Cylinder(Shape):
         )
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "cylinder"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the cylinder."""
-        return {"circle": self.circle.data, "height": self.height}
+        return {"circle": self.circle, "height": self.height}
 
     @data.setter
     def data(self, data):
-        self.circle = Circle.from_data(data["circle"])
+        self.circle = data["circle"]
         self.height = data["height"]
 
     @classmethod
@@ -122,7 +127,7 @@ class Cylinder(Shape):
         >>> cylinder = Cylinder.from_data(data)
 
         """
-        cylinder = cls(Circle.from_data(data["circle"]), data["height"])
+        cylinder = cls(data["circle"], data["height"])
         return cylinder
 
     # ==========================================================================

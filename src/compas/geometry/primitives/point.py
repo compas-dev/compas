@@ -4,6 +4,8 @@ from __future__ import division
 
 from compas import PRECISION
 
+from compas.data import wrap_schema_value
+
 from compas.geometry import centroid_points
 from compas.geometry import normal_polygon
 from compas.geometry import distance_point_point
@@ -103,6 +105,8 @@ class Point(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value({"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}})
+
     __slots__ = ["_x", "_y", "_z"]
 
     def __init__(self, x, y, z=0.0, **kwargs):
@@ -125,11 +129,6 @@ class Point(Primitive):
         from compas.data import is_float3
 
         return Schema(is_float3)
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "point"
 
     @property
     def data(self):

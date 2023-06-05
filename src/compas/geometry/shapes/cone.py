@@ -7,6 +7,8 @@ from math import pi
 from math import sin
 from math import sqrt
 
+from compas.data import wrap_schema_value
+
 from compas.utilities import pairwise
 
 from compas.geometry import matrix_from_frame
@@ -59,6 +61,14 @@ class Cone(Shape):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {"circle": Circle.JSONSCHEMA, "height": {"type": "number", "exclusiveMinimum": 0}},
+            "required": ["circle", "height"],
+        }
+    )
+
     __slots__ = ["_circle", "_height"]
 
     def __init__(self, circle, height, **kwargs):
@@ -88,18 +98,13 @@ class Cone(Shape):
         )
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "cone"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the cone."""
-        return {"circle": self.circle.data, "height": self.height}
+        return {"circle": self.circle, "height": self.height}
 
     @data.setter
     def data(self, data):
-        self.circle = Circle.from_data(data["circle"])
+        self.circle = data["circle"]
         self.height = data["height"]
 
     @classmethod
@@ -125,7 +130,7 @@ class Cone(Shape):
         >>> cone = Cone.from_data(data)
 
         """
-        cone = cls(Circle.from_data(data["circle"]), data["height"])
+        cone = cls(data["circle"], data["height"])
         return cone
 
     # ==========================================================================

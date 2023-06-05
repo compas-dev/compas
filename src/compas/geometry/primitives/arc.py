@@ -1,5 +1,6 @@
 import math
 
+from compas.data import wrap_schema_value
 from compas.geometry import close
 
 from ._primitive import Primitive
@@ -37,6 +38,19 @@ class Arc(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {
+                "frame": Frame.JSONSCHEMA,
+                "radius": {"type": "number", "exclusiveMinimum": 0},
+                "start": {"type": "number", "exclusiveMinimum": 0},
+                "end": {"type": "number", "exclusiveMinimum": 0, "optional": True},
+            },
+            "required": ["frame", "radius", "start", "end"],
+        }
+    )
+
     def __init__(self, frame=None, radius=None, end_angle=None, start_angle=None, **kwargs):
         super(Arc, self).__init__(**kwargs)
 
@@ -51,7 +65,7 @@ class Arc(Primitive):
     @property
     def data(self):
         return {
-            "frame": self._frame.data,
+            "frame": self._frame,
             "radius": self._radius,
             "start": self._start_angle,
             "end": self._end_angle,
@@ -59,7 +73,7 @@ class Arc(Primitive):
 
     @data.setter
     def data(self, value):
-        self._frame = Frame.from_data(value["frame"])
+        self._frame = value["frame"]
         self._radius = value["radius"]
         self._start_angle = value["start"]
         self._end_angle = value["end"]

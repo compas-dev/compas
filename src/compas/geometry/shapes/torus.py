@@ -6,6 +6,8 @@ from math import cos
 from math import pi
 from math import sin
 
+from compas.data import wrap_schema_value
+
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Frame
@@ -56,6 +58,18 @@ class Torus(Shape):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {
+                "plane": Plane.JSONSCHEMA,
+                "radius_axis": {"type": "number", "exclusiveMinimum": 0},
+                "radius_pipe": {"type": "number", "exclusiveMinimum": 0},
+            },
+            "required": ["plane", "radius_axis", "radius_pipe"],
+        }
+    )
+
     __slots__ = ["_plane", "_radius_axis", "_radius_pipe"]
 
     def __init__(self, plane, radius_axis, radius_pipe, **kwargs):
@@ -85,22 +99,17 @@ class Torus(Shape):
         )
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "torus"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the torus."""
         return {
-            "plane": self.plane.data,
+            "plane": self.plane,
             "radius_axis": self.radius_axis,
             "radius_pipe": self.radius_pipe,
         }
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data["plane"])
+        self.plane = data["plane"]
         self.radius_axis = data["radius_axis"]
         self.radius_pipe = data["radius_pipe"]
 
@@ -125,7 +134,7 @@ class Torus(Shape):
         >>> torus = Torus.from_data(data)
 
         """
-        torus = cls(Plane.from_data(data["plane"]), data["radius_axis"], data["radius_pipe"])
+        torus = cls(data["plane"], data["radius_axis"], data["radius_pipe"])
         return torus
 
     # ==========================================================================

@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.data import wrap_schema_value
 from ._primitive import Primitive
 from .point import Point
 
@@ -47,6 +48,14 @@ class Line(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {"start": Point.JSONSCHEMA, "end": Point.JSONSCHEMA},
+            "required": ["start", "end"],
+        }
+    )
+
     __slots__ = ["_start", "_end"]
 
     def __init__(self, p1, p2, **kwargs):
@@ -68,19 +77,14 @@ class Line(Primitive):
         return Schema({"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)})
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "line"
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the line."""
-        return {"start": self.start.data, "end": self.end.data}
+        return {"start": self.start, "end": self.end}
 
     @data.setter
     def data(self, data):
-        self.start = Point.from_data(data["start"])
-        self.end = Point.from_data(data["end"])
+        self.start = data["start"]
+        self.end = data["end"]
 
     @classmethod
     def from_data(cls, data):
@@ -98,7 +102,7 @@ class Line(Primitive):
         Point(1.000, 0.000, 0.000)
 
         """
-        return cls(Point.from_data(data["start"]), Point.from_data(data["end"]))
+        return cls(data["start"], data["end"])
 
     # ==========================================================================
     # properties

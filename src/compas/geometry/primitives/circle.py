@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import pi
 
+from compas.data import wrap_schema_value
+
 from ._primitive import Primitive
 from .plane import Plane
 
@@ -44,6 +46,14 @@ class Circle(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {"plane": Plane.JSONSCHEMA, "radius": {"type": "number", "exclusiveMinimum": 0}},
+            "required": ["plane", "radius"],
+        }
+    )
+
     __slots__ = ["_plane", "_radius"]
 
     def __init__(self, plane, radius, **kwargs):
@@ -70,18 +80,13 @@ class Circle(Primitive):
         )
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "circle"
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
-        return {"plane": self.plane.data, "radius": self.radius}
+        return {"plane": self.plane, "radius": self.radius}
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data["plane"])
+        self.plane = data["plane"]
         self.radius = data["radius"]
 
     @classmethod
@@ -105,7 +110,7 @@ class Circle(Primitive):
         >>> circle = Circle.from_data(data)
 
         """
-        return cls(Plane.from_data(data["plane"]), data["radius"])
+        return cls(data["plane"], data["radius"])
 
     # ==========================================================================
     # properties
