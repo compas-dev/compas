@@ -8,6 +8,32 @@ from compas.data import DataEncoder
 from compas.data import DataDecoder
 
 
+def wrap_schema_value(value):
+    """Wrap the schema value of a data object with additional meta data.
+
+    Parameters
+    ----------
+    value : dict
+        The json schema of the data value of a data object.
+
+    Returns
+    -------
+    dict
+        The value dict wrapped in a dict with additional (mandatory) meta data.
+
+    """
+    schema = {
+        "type": "object",
+        "properties": {
+            "dtype": {"type": "string"},
+            "value": value,
+            "guid": {"type": "string"},
+        },
+        "required": ["dtype", "value", "guid"],
+    }
+    return schema
+
+
 def json_dump(data, fp, pretty=False):
     """Write a collection of COMPAS object data to a JSON file.
 
