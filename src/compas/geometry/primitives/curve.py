@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import factorial
 
+from compas.data import wrap_schema_value
+
 from ._primitive import Primitive
 from .vector import Vector
 from .point import Point
@@ -104,6 +106,14 @@ class Bezier(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+            "required": ["points"],
+        }
+    )
+
     __slots__ = ["_points"]
 
     def __init__(self, points):
@@ -118,7 +128,7 @@ class Bezier(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the curve."""
-        return {"points": [list(point) for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):

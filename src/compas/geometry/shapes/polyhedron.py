@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
+
+from compas.data import wrap_schema_value
+
 from compas.geometry import transform_points
 from compas.geometry import centroid_polygon
 from compas.utilities import pairwise
@@ -167,6 +170,34 @@ class Polyhedron(Shape):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {
+                "vertices": {
+                    "type": "array",
+                    "minItems": 4,
+                    "items": {
+                        "type": "array",
+                        "minItems": 3,
+                        "maxItems": 3,
+                        "items": {"type": "number"},
+                    },
+                },
+                "faces": {
+                    "type": "array",
+                    "minItems": 3,
+                    "items": {
+                        "type": "array",
+                        "minItems": 3,
+                        "items": {"type": "integer", "exclusiveMinimum": 0},
+                    },
+                },
+            },
+            "required": ["vertices", "faces"],
+        }
+    )
+
     __slots__ = ["_vertices", "_faces"]
 
     def __init__(self, vertices, faces, **kwargs):
@@ -192,11 +223,6 @@ class Polyhedron(Shape):
                 "faces": lambda items: all(is_sequence_of_int(item) for item in items),
             }
         )
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "polyhedron"
 
     @property
     def data(self):

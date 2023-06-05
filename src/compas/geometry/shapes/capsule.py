@@ -6,6 +6,8 @@ from math import cos
 from math import pi
 from math import sin
 
+from compas.data import wrap_schema_value
+
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Frame
@@ -49,6 +51,14 @@ class Capsule(Shape):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {"line": Line.JSONSCHEMA, "radius": {"type": "number", "exclusiveMinimum": 0}},
+            "required": ["line", "radius"],
+        }
+    )
+
     __slots__ = ["_line", "_radius"]
 
     def __init__(self, line, radius, **kwargs):
@@ -75,18 +85,13 @@ class Capsule(Shape):
         )
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "capsule"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the capsule."""
-        return {"line": self.line.data, "radius": self.radius}
+        return {"line": self.line, "radius": self.radius}
 
     @data.setter
     def data(self, data):
-        self.line = Line.from_data(data["line"])
+        self.line = data["line"]
         self.radius = data["radius"]
 
     @classmethod
@@ -104,7 +109,7 @@ class Capsule(Shape):
             The constructed capsule.
 
         """
-        capsule = Capsule(Line.from_data(data["line"]), data["radius"])
+        capsule = Capsule(data["line"], data["radius"])
         return capsule
 
     # ==========================================================================

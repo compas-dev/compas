@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.data import wrap_schema_value
+
 from ._primitive import Primitive
 from .plane import Plane
 
@@ -44,6 +46,18 @@ class Ellipse(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {
+                "plane": Plane.JSONSCHEMA,
+                "major": {"type": "number", "exclusiveMinimum": 0},
+                "minor": {"type": "number", "exclusiveMinimum": 0},
+            },
+            "required": ["plane", "major", "minor"],
+        }
+    )
+
     __slots__ = ["_plane", "_major", "_minor"]
 
     def __init__(self, plane, major, minor, **kwargs):
@@ -73,18 +87,13 @@ class Ellipse(Primitive):
         )
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "ellipse"
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
-        return {"plane": self.plane.data, "major": self.major, "minor": self.minor}
+        return {"plane": self.plane, "major": self.major, "minor": self.minor}
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data["plane"])
+        self.plane = data["plane"]
         self.major = data["major"]
         self.minor = data["minor"]
 
@@ -109,7 +118,7 @@ class Ellipse(Primitive):
         >>> ellipse = Ellipse.from_data(data)
 
         """
-        return cls(Plane.from_data(data["plane"]), data["minor"], data["minor"])
+        return cls(data["plane"], data["minor"], data["minor"])
 
     # ==========================================================================
     # properties

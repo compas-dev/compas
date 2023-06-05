@@ -4,6 +4,8 @@ from __future__ import division
 
 import math
 
+from compas.data import wrap_schema_value
+
 from compas.geometry import allclose
 from compas.geometry import area_polygon
 from compas.geometry import cross_vectors
@@ -64,6 +66,14 @@ class Polygon(Primitive):
 
     """
 
+    JSONSCHEMA = wrap_schema_value(
+        {
+            "type": "object",
+            "properties": {"points": {"type": "array", "minItems": 3, "items": Point.JSONSCHEMA}},
+            "required": ["points"],
+        }
+    )
+
     __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
@@ -85,18 +95,13 @@ class Polygon(Primitive):
         return Schema({"points": lambda points: all(is_float3(point) for point in points)})
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "polygon"
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the polygon."""
-        return {"points": [point.data for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):
-        self.points = [Point.from_data(point) for point in data["points"]]
+        self.points = data["points"]
 
     @classmethod
     def from_data(cls, data):
@@ -119,7 +124,7 @@ class Polygon(Primitive):
         Point(0.000, 0.000, 0.000)
 
         """
-        return cls([Point.from_data(point) for point in data["points"]])
+        return cls(data["points"])
 
     # ==========================================================================
     # properties

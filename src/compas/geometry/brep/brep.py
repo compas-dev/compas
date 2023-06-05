@@ -214,10 +214,6 @@ class Brep(Geometry):
         )
 
     @property
-    def JSONSCHEMANAME(self):
-        return "brep"
-
-    @property
     def data(self):
         faces = []
         for face in self.faces:
