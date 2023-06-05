@@ -12,7 +12,8 @@ from copy import deepcopy
 import compas
 
 from compas.data.encoders import DataEncoder
-from compas.data.encoders import DataDecoder
+
+# from compas.data.encoders import DataDecoder
 
 
 # ==============================================================================
@@ -103,6 +104,10 @@ class Data(object):
 
     """
 
+    JSONSCHEMA = None
+
+    # DATASCHEMA = None
+
     def __init__(self, name=None):
         self._guid = None
         self._name = None
@@ -133,21 +138,14 @@ class Data(object):
         """schema.Schema : The schema of the data of this object."""
         raise NotImplementedError
 
-    @property
-    def JSONSCHEMANAME(self):
-        """str : The schema of the data of this object in JSON format."""
-        raise NotImplementedError
+    # @property
+    # def JSONSCHEMANAME(self):
+    #     """str : The schema of the data of this object in JSON format."""
+    #     raise NotImplementedError
 
-    @property
-    def JSONSCHEMA(self):
-        """dict : The schema of the JSON representation of the data of this object."""
-        if not self._JSONSCHEMA:
-            schema_filename = "{}.json".format(self.JSONSCHEMANAME.lower())
-            schema_path = os.path.join(os.path.dirname(__file__), "schemas", schema_filename)
-            with open(schema_path, "r") as fp:
-                self._JSONSCHEMA = json.load(fp)
-        return self._JSONSCHEMA
-
+    # this is only really necessary if the definitions are external
+    # external definitions are annoying and unnecessary
+    # so we should just remove this
     @property
     def jsondefinitions(self):
         """dict : Reusable schema definitions."""
@@ -161,10 +159,11 @@ class Data(object):
     def jsonvalidator(self):
         """jsonschema.Draft7Validator : JSON schema validator for draft 7."""
         if not self._jsonvalidator:
-            from jsonschema import RefResolver, Draft7Validator
+            # from jsonschema import RefResolver
+            from jsonschema import Draft202012Validator
 
-            resolver = RefResolver.from_schema(self.jsondefinitions)
-            self._jsonvalidator = Draft7Validator(self.JSONSCHEMA, resolver=resolver)
+            # resolver = RefResolver.from_schema(self.jsondefinitions)
+            self._jsonvalidator = Draft202012Validator(self.JSONSCHEMA)
         return self._jsonvalidator
 
     @property
@@ -351,23 +350,55 @@ class Data(object):
             raise e
         return data
 
+    # def compile_jsonschema(self):
+    #     """Compile the complete JSON schema of an object from the snippet describing its specific data.
+
+    #     Returns
+    #     -------
+    #     dict
+    #         The JSON schema snippet describing the data value, supplemented with the data type (``dtype``),
+    #         and the GUID of the data object instance (``guid``).
+
+    #     """
+    #     # schema = {
+    #     #     "type": "object",
+    #     #     "properties": {
+    #     #         "dtype": {"type": "string"},
+    #     #         "value": self.JSONSCHEMA,
+    #     #         "guid": {"type": "string"},
+    #     #     },
+    #     #     "required": ["dtype", "value", "guid"],
+    #     # }
+    #     # return schema
+    #     pass
+
+    def save_jsonschema(self, filepath, schema_id, schema_draft):
+        """"""
+        pass
+
     def validate_json(self):
         """Validate the object's data against its json schema.
+
+        Raises
+        ------
+        jsonschema.exceptions.ValidationError
 
         Returns
         -------
         str
             The validated JSON representation of the data.
 
-        Raises
-        ------
-        jsonschema.exceptions.ValidationError
+        Notes
+        -----
+        The point of JSON validation is to compare a JSON document to the specifications of the corresponding schema.
+        In the context of COMPAS data objects, this means to compare the JSON representation of an object with the schema defined by that object,
+        after the object has first been converted to a JSON string using the COMPAS JSON DataEncoder, and then reloaded into Python without using the COMPAS JSON DataDecoder.
 
         """
         import jsonschema
 
-        jsonstring = json.dumps(self.data, cls=DataEncoder)
-        jsondata = json.loads(jsonstring, cls=DataDecoder)
+        jsonstring = json.dumps(self, cls=DataEncoder)
+        jsondata = json.loads(jsonstring)
         try:
             self.jsonvalidator.validate(jsondata)
         except jsonschema.exceptions.ValidationError as e:
