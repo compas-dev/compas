@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
+* Added representation for features in `compas.datastructures.Part`.
 
 ### Changed
 
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed uninstall post-process.
 * Fixed support for `System.Decimal` data type on json serialization.
 * Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
+* Simplified `compas.datastructures.Part` for more generic usage.
 
 ### Removed
 
