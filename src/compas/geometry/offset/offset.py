@@ -135,6 +135,11 @@ def offset_polygon(polygon, distance, tol=1e-6):
 
     Examples
     --------
+    >>> from compas.geometry import Polygon
+    >>> polygon = Polygon([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
+    >>> offsetted_polygon = offset_polygon(polygon, 0.5)
+    >>> offsetted_polygon
+    Polygon[[0.5, 0.5, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.0]]
     >>>
 
     """
@@ -144,7 +149,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
         distance = [distance]
     distances = iterable_like(polygon, distance, distance[-1])
 
-    polygon = polygon + polygon[:1]
+    polygon = polygon[:] + polygon[:1]
     segments = offset_segments(polygon, distances, normal)
 
     offset = []
