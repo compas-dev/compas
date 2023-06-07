@@ -5,6 +5,11 @@ html {
 html[data-theme="light"] {
     --pst-color-primary: #0092d2;
     --pst-color-info: #0092d2;
+    --pst-color-text-muted: #888;
+}
+
+body {
+    line-height: 1.75;
 }
 
 .bd-content {
@@ -14,6 +19,10 @@ html[data-theme="light"] {
 
 .bd-page-width {
     max-width: 100%;
+}
+
+.bd-sidebar-primary {
+    padding-top: 1rem;
 }
 
 .bd-sidebar-primary .toctree-l3 {
