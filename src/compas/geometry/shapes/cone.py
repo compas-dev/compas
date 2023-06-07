@@ -7,10 +7,7 @@ from math import pi
 from math import sin
 from math import sqrt
 
-from compas.data import wrap_schema_value
-
 from compas.utilities import pairwise
-
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Circle
@@ -61,13 +58,11 @@ class Cone(Shape):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {"circle": Circle.JSONSCHEMA, "height": {"type": "number", "exclusiveMinimum": 0}},
-            "required": ["circle", "height"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {"circle": Circle.JSONSCHEMA, "height": {"type": "number", "exclusiveMinimum": 0}},
+        "required": ["circle", "height"],
+    }
 
     __slots__ = ["_circle", "_height"]
 
