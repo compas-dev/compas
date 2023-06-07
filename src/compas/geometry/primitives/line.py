@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.data import wrap_schema_value
 from ._primitive import Primitive
 from .point import Point
 
@@ -48,13 +47,14 @@ class Line(Primitive):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {"start": Point.JSONSCHEMA, "end": Point.JSONSCHEMA},
-            "required": ["start", "end"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "start": Point.JSONSCHEMA,
+            "end": Point.JSONSCHEMA,
+        },
+        "required": ["start", "end"],
+    }
 
     __slots__ = ["_start", "_end"]
 

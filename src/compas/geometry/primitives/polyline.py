@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.data import wrap_schema_value
-
 from compas.geometry import allclose
 from compas.geometry import transform_points
 from compas.geometry import is_point_on_line
@@ -57,13 +55,11 @@ class Polyline(Primitive):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {"points": {"type": "array", "minItems": 3, "items": Point.JSONSCHEMA}},
-            "required": ["points"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+        "required": ["points"],
+    }
 
     __slots__ = ["_points", "_lines"]
 

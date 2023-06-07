@@ -4,8 +4,6 @@ from __future__ import division
 
 from math import factorial
 
-from compas.data import wrap_schema_value
-
 from ._primitive import Primitive
 from .vector import Vector
 from .point import Point
@@ -106,13 +104,13 @@ class Bezier(Primitive):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
-            "required": ["points"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+        },
+        "required": ["points"],
+    }
 
     __slots__ = ["_points"]
 

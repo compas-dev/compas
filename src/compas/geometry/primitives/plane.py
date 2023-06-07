@@ -4,8 +4,6 @@ from __future__ import division
 
 from math import sqrt
 
-from compas.data import wrap_schema_value
-
 from ._primitive import Primitive
 from .vector import Vector
 from .point import Point
@@ -42,13 +40,14 @@ class Plane(Primitive):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {"point": Point.JSONSCHEMA, "normal": Vector.JSONSCHEMA},
-            "required": ["point", "normal"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "point": Point.JSONSCHEMA,
+            "normal": Vector.JSONSCHEMA,
+        },
+        "required": ["point", "normal"],
+    }
 
     __slots__ = ["_point", "_normal"]
 

@@ -2,8 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.data import wrap_schema_value
-
 from compas.geometry import centroid_points
 from compas.geometry import transform_points
 from compas.geometry import Transformation
@@ -98,19 +96,17 @@ class Box(Shape):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {
-                "frame": Frame.JSONSCHEMA,
-                "xsize": {"type": "number", "exclusiveMinimum": 0},
-                "ysize": {"type": "number", "exclusiveMinimum": 0},
-                "zsize": {"type": "number", "exclusiveMinimum": 0},
-            },
-            "additionalProperties": False,
-            "minProperties": 4,
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "frame": Frame.JSONSCHEMA,
+            "xsize": {"type": "number", "exclusiveMinimum": 0},
+            "ysize": {"type": "number", "exclusiveMinimum": 0},
+            "zsize": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "additionalProperties": False,
+        "minProperties": 4,
+    }
 
     def __init__(self, frame, xsize, ysize, zsize, **kwargs):
         super(Box, self).__init__(**kwargs)

@@ -6,8 +6,6 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.data import wrap_schema_value
-
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Frame
@@ -58,17 +56,15 @@ class Torus(Shape):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {
-                "plane": Plane.JSONSCHEMA,
-                "radius_axis": {"type": "number", "exclusiveMinimum": 0},
-                "radius_pipe": {"type": "number", "exclusiveMinimum": 0},
-            },
-            "required": ["plane", "radius_axis", "radius_pipe"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "plane": Plane.JSONSCHEMA,
+            "radius_axis": {"type": "number", "exclusiveMinimum": 0},
+            "radius_pipe": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "required": ["plane", "radius_axis", "radius_pipe"],
+    }
 
     __slots__ = ["_plane", "_radius_axis", "_radius_pipe"]
 

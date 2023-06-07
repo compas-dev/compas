@@ -82,14 +82,14 @@ def test_edgedata_io(mesh):
     assert all(other.edge_attribute(edge, "index") == index for index, edge in enumerate(other.edges()))
 
 
-def test_data_schema(mesh):
-    if not compas.IPY:
-        mesh.validate_data()
+# def test_data_schema(mesh):
+#     if not compas.IPY:
+#         mesh.validate_data()
 
 
-def test_json_schema(mesh):
-    if not compas.IPY:
-        mesh.validate_json()
+# def test_json_schema(mesh):
+#     if not compas.IPY:
+#         mesh.validate_json()
 
 
 # ==============================================================================

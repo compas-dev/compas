@@ -4,8 +4,6 @@ from __future__ import division
 
 from compas import PRECISION
 
-from compas.data import wrap_schema_value
-
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 from compas.geometry import subtract_vectors
@@ -68,7 +66,12 @@ class Vector(Primitive):
 
     """
 
-    JSONSCHEMA = wrap_schema_value({"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}})
+    JSONSCHEMA = {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {"type": "number"},
+    }
 
     __slots__ = ["_x", "_y", "_z"]
 

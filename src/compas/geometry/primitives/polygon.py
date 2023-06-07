@@ -4,8 +4,6 @@ from __future__ import division
 
 import math
 
-from compas.data import wrap_schema_value
-
 from compas.geometry import allclose
 from compas.geometry import area_polygon
 from compas.geometry import cross_vectors
@@ -66,13 +64,11 @@ class Polygon(Primitive):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {"points": {"type": "array", "minItems": 3, "items": Point.JSONSCHEMA}},
-            "required": ["points"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+        "required": ["points"],
+    }
 
     __slots__ = ["_points", "_lines"]
 

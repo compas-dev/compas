@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.data import wrap_schema_value
-
 from compas.geometry import allclose
 from compas.geometry import argmax
 from compas.geometry import axis_angle_vector_from_matrix
@@ -69,17 +67,15 @@ class Frame(Primitive):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {
-                "point": Point.JSONSCHEMA,
-                "xaxis": Vector.JSONSCHEMA,
-                "yaxis": Vector.JSONSCHEMA,
-            },
-            "required": ["point", "xaxis", "yaxis"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "point": Point.JSONSCHEMA,
+            "xaxis": Vector.JSONSCHEMA,
+            "yaxis": Vector.JSONSCHEMA,
+        },
+        "required": ["point", "xaxis", "yaxis"],
+    }
 
     def __init__(self, point, xaxis, yaxis, **kwargs):
         super(Frame, self).__init__(**kwargs)

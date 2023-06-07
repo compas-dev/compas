@@ -6,8 +6,6 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.data import wrap_schema_value
-
 from compas.geometry import Point
 
 from ._shape import Shape
@@ -53,13 +51,11 @@ class Sphere(Shape):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {"point": Point.JSONSCHEMA, "radius": {"type": "number", "exclusiveMinimum": 0}},
-            "required": ["point", "radius"],
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {"point": Point.JSONSCHEMA, "radius": {"type": "number", "exclusiveMinimum": 0}},
+        "required": ["point", "radius"],
+    }
 
     __slots__ = ["_point", "_radius"]
 
