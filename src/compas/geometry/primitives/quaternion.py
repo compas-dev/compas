@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import math
+import compas
 
 from compas.geometry import quaternion_multiply
 from compas.geometry import quaternion_conjugate
@@ -122,6 +123,18 @@ class Quaternion(Primitive):
         "required": ["w", "x", "y", "z"],
     }
 
+    if not compas.IPY:
+        from schema import Schema
+
+        DATASCHEMA = Schema(
+            {
+                "w": float,
+                "x": float,
+                "y": float,
+                "z": float,
+            }
+        )
+
     __slots__ = ["_w", "_x", "_y", "_z"]
 
     def __init__(self, w, x, y, z, **kwargs):
@@ -138,13 +151,6 @@ class Quaternion(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema({"w": float, "x": float, "y": float, "z": float})
 
     @property
     def data(self):

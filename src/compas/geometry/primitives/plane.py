@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
+import compas
 
 from ._primitive import Primitive
 from .vector import Vector
@@ -49,6 +50,16 @@ class Plane(Primitive):
         "required": ["point", "normal"],
     }
 
+    if not compas.IPY:
+        from schema import Schema
+
+        DATASCHEMA = Schema(
+            {
+                "point": Point.DATASCHEMA,
+                "normal": Vector.DATASCHEMA,
+            }
+        )
+
     __slots__ = ["_point", "_normal"]
 
     def __init__(self, point, normal, **kwargs):
@@ -61,18 +72,6 @@ class Plane(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema(
-            {
-                "point": Point.DATASCHEMA.fget(None),
-                "normal": Vector.DATASCHEMA.fget(None),
-            }
-        )
 
     @property
     def data(self):

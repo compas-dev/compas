@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 from ._primitive import Primitive
 from .plane import Plane
 
@@ -54,6 +55,17 @@ class Ellipse(Primitive):
         "required": ["plane", "major", "minor"],
     }
 
+    if not compas.IPY:
+        import schema
+
+        DATASCHEMA = schema.Schema(
+            {
+                "plane": Plane.DATASCHEMA,
+                "major": schema.And(float, lambda x: x > 0),
+                "minor": schema.And(float, lambda x: x > 0),
+            }
+        )
+
     __slots__ = ["_plane", "_major", "_minor"]
 
     def __init__(self, plane, major, minor, **kwargs):
@@ -68,19 +80,6 @@ class Ellipse(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-
-        return schema.Schema(
-            {
-                "plane": Plane.DATASCHEMA.fget(None),
-                "major": schema.And(float, lambda x: x > 0),
-                "minor": schema.And(float, lambda x: x > 0),
-            }
-        )
 
     @property
     def data(self):

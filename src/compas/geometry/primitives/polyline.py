@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 from compas.geometry import allclose
 from compas.geometry import transform_points
 from compas.geometry import is_point_on_line
@@ -61,6 +62,15 @@ class Polyline(Primitive):
         "required": ["points"],
     }
 
+    if not compas.IPY:
+        from schema import Schema
+
+        DATASCHEMA = Schema(
+            {
+                "points": lambda points: all(Point.DATASCHEMA.validate((point)) for point in points),
+            }
+        )
+
     __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
@@ -72,14 +82,6 @@ class Polyline(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-
-        return Schema({"points": lambda points: all(is_float3(point) for point in points)})
 
     @property
     def data(self):

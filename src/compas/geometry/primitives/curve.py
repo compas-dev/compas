@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import factorial
+import compas
 
 from ._primitive import Primitive
 from .vector import Vector
@@ -111,6 +112,15 @@ class Bezier(Primitive):
         },
         "required": ["points"],
     }
+
+    if not compas.IPY:
+        import schema
+
+        DATASCHEMA = schema.Schema(
+            {
+                "points": lambda points: all(Point.DATASCHEMA.validate(point) for point in points),
+            }
+        )
 
     __slots__ = ["_points"]
 

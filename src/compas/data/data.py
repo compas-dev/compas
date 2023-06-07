@@ -105,7 +105,7 @@ class Data(object):
 
     JSONSCHEMA = None
 
-    # DATASCHEMA = None
+    DATASCHEMA = None
 
     def __init__(self, name=None):
         self._guid = None
@@ -132,10 +132,10 @@ class Data(object):
         if "guid" in state:
             self._guid = UUID(state["guid"])
 
-    @property
-    def DATASCHEMA(self):
-        """schema.Schema : The schema of the data of this object."""
-        raise NotImplementedError
+    # @property
+    # def DATASCHEMA(self):
+    #     """schema.Schema : The schema of the data of this object."""
+    #     raise NotImplementedError
 
     # @property
     # def JSONSCHEMANAME(self):
@@ -318,7 +318,7 @@ class Data(object):
 
     @classmethod
     def validate_data(cls, data):
-        """Validate the given data against the class data schema.
+        """Validate the given data against the object class data schema.
 
         Parameters
         ----------

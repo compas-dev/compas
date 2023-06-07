@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import pi
+import compas
 
 from ._primitive import Primitive
 from .plane import Plane
@@ -53,6 +54,16 @@ class Circle(Primitive):
         "required": ["plane", "radius"],
     }
 
+    if not compas.IPY:
+        import schema
+
+        DATASCHEMA = schema.Schema(
+            {
+                "plane": Plane.DATASCHEMA,
+                "radius": schema.And(float, lambda x: x > 0),
+            }
+        )
+
     __slots__ = ["_plane", "_radius"]
 
     def __init__(self, plane, radius, **kwargs):
@@ -65,18 +76,6 @@ class Circle(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-
-        return schema.Schema(
-            {
-                "plane": Plane.DATASCHEMA.fget(None),
-                "radius": schema.And(float, lambda x: x > 0),
-            }
-        )
 
     @property
     def data(self):
