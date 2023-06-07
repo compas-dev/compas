@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 from compas.geometry import allclose
 from compas.geometry import argmax
 from compas.geometry import axis_angle_vector_from_matrix
@@ -77,6 +78,17 @@ class Frame(Primitive):
         "required": ["point", "xaxis", "yaxis"],
     }
 
+    if not compas.IPY:
+        from schema import Schema
+
+        DATASCHEMA = Schema(
+            {
+                "point": Point.DATASCHEMA,
+                "xaxis": Vector.DATASCHEMA,
+                "yaxis": Vector.DATASCHEMA,
+            }
+        )
+
     def __init__(self, point, xaxis, yaxis, **kwargs):
         super(Frame, self).__init__(**kwargs)
         self._point = None
@@ -89,19 +101,6 @@ class Frame(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema(
-            {
-                "point": Point.DATASCHEMA.fget(None),
-                "xaxis": Vector.DATASCHEMA.fget(None),
-                "yaxis": Vector.DATASCHEMA.fget(None),
-            }
-        )
 
     @property
     def data(self):

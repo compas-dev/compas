@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 from ._primitive import Primitive
 from .point import Point
 
@@ -56,6 +57,16 @@ class Line(Primitive):
         "required": ["start", "end"],
     }
 
+    if not compas.IPY:
+        from schema import Schema
+
+        DATASCHEMA = Schema(
+            {
+                "start": Point.DATASCHEMA,
+                "end": Point.DATASCHEMA,
+            }
+        )
+
     __slots__ = ["_start", "_end"]
 
     def __init__(self, p1, p2, **kwargs):
@@ -68,13 +79,6 @@ class Line(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema({"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)})
 
     @property
     def data(self):
