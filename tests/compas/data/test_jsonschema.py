@@ -1,272 +1,76 @@
-import os
-import json
 import pytest
 import compas
 
+from compas.geometry import Point
+from compas.geometry import Vector
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Circle
+from compas.geometry import Ellipse
+from compas.geometry import Frame
+from compas.geometry import Quaternion
+from compas.geometry import Polygon
+from compas.geometry import Polyline
+from compas.geometry import Box
+from compas.geometry import Capsule
+from compas.geometry import Cone
+from compas.geometry import Cylinder
+from compas.geometry import Polyhedron
+from compas.geometry import Sphere
+from compas.geometry import Torus
+from compas.geometry import Pointcloud
+
+from compas.datastructures import Graph
+from compas.datastructures import HalfEdge
+
 if not compas.IPY:
-    import jsonschema
     import jsonschema.exceptions
 
+    @pytest.mark.parametrize(
+        "point",
+        [
+            [0, 0, 0],
+            [0.0, 0, 0],
+            [0.0, 0.0, 0.0],
+        ],
+    )
+    def test_schema_point_valid(point):
+        Point.validate_jsondata(point)
 
-if not compas.IPY:
-    # @pytest.fixture
-    # def resolver():
-    #     path = os.path.join(compas.HERE, "data", "schemas", "compas.json")
-    #     with open(path) as f:
-    #         definitions = json.load(f)
-    #     return jsonschema.RefResolver.from_schema(definitions)
-
-    @pytest.fixture
-    def point_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "point.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Point
-
-        schema = Point.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def vector_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "vector.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Vector
-
-        schema = Vector.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def line_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "line.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Line
-
-        schema = Line.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def plane_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "plane.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Plane
-
-        schema = Plane.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def circle_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "circle.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Circle
-
-        schema = Circle.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def ellipse_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "ellipse.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Ellipse
-
-        schema = Ellipse.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def frame_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "frame.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Frame
-
-        schema = Frame.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def quaternion_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "quaternion.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Quaternion
-
-        schema = Quaternion.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def polygon_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "polygon.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Polygon
-
-        schema = Polygon.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def polyline_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "polyline.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Polyline
-
-        schema = Polyline.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def box_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "box.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Box
-
-        schema = Box.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def capsule_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "capsule.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Capsule
-
-        schema = Capsule.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def cone_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "cone.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Cone
-
-        schema = Cone.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def cylinder_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "cylinder.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Cylinder
-
-        schema = Cylinder.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def polyhedron_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "polyhedron.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Polyhedron
-
-        schema = Polyhedron.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def sphere_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "sphere.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Sphere
-
-        schema = Sphere.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    @pytest.fixture
-    def torus_validator():
-        # path = os.path.join(compas.HERE, "data", "schemas", "torus.json")
-        # with open(path) as f:
-        #     schema = json.load(f)
-        from compas.geometry import Torus
-
-        schema = Torus.JSONSCHEMA
-        validator = jsonschema.Draft7Validator(schema)
-        return validator
-
-    # @pytest.fixture
-    # def pointcloud_validator():
-    #     # path = os.path.join(compas.HERE, "data", "schemas", "pointcloud.json")
-    #     # with open(path) as f:
-    #     #     schema = json.load(f)
-    #     from compas.geometry import Pointcloud
-
-    #     schema = Pointcloud.JSONSCHEMA
-    #     validator = jsonschema.Draft7Validator(schema)
-    #     return validator
-
-    # @pytest.fixture
-    # def graph_validator():
-    #     # path = os.path.join(compas.HERE, "data", "schemas", "graph.json")
-    #     # with open(path) as f:
-    #     #     schema = json.load(f)
-    #     from compas.datastructures import Graph
-
-    #     schema = Graph.JSONSCHEMA
-    #     validator = jsonschema.Draft7Validator(schema)
-    #     return validator
-
-    # @pytest.fixture
-    # def halfedge_validator():
-    #     # path = os.path.join(compas.HERE, "data", "schemas", "halfedge.json")
-    #     # with open(path) as f:
-    #     #     schema = json.load(f)
-    #     from compas.datastructures import HalfEdge
-
-    #     schema = HalfEdge.JSONSCHEMA
-    #     validator = jsonschema.Draft7Validator(schema)
-    #     return validator
-
-    # @pytest.fixture
-    # def halfface_validator():
-    #     # path = os.path.join(compas.HERE, "data", "schemas", "halfface.json")
-    #     # with open(path) as f:
-    #     #     schema = json.load(f)
-    #     from compas.datastructures import HalfFace
-
-    #     schema = HalfFace.JSONSCHEMA
-    #     validator = jsonschema.Draft7Validator(schema)
-    #     return validator
-
-
-if not compas.IPY:
-
-    @pytest.mark.parametrize("point", [[0, 0, 0], [0.0, 0, 0], [0.0, 0.0, 0.0]])
-    def test_schema_point_valid(point_validator, point):
-        point_validator.validate(point)
-
-    @pytest.mark.parametrize("point", [[0, 0], [0, 0, 0, 0], [0, 0, "0"]])
-    def test_schema_point_invalid(point_validator, point):
+    @pytest.mark.parametrize(
+        "point",
+        [
+            [0, 0],
+            [0, 0, 0, 0],
+            [0, 0, "0"],
+        ],
+    )
+    def test_schema_point_invalid(point):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            point_validator.validate(point)
+            Point.validate_jsondata(point)
 
-    @pytest.mark.parametrize("vector", [[0, 0, 0], [0.0, 0, 0], [0.0, 0.0, 0.0]])
-    def test_schema_vector_valid(vector_validator, vector):
-        vector_validator.validate(vector)
+    @pytest.mark.parametrize(
+        "vector",
+        [
+            [0, 0, 0],
+            [0.0, 0, 0],
+            [0.0, 0.0, 0.0],
+        ],
+    )
+    def test_schema_vector_valid(vector):
+        Vector.validate_jsondata(vector)
 
-    @pytest.mark.parametrize("vector", [[0, 0], [0, 0, 0, 0], [0, 0, "0"]])
-    def test_schema_vector_invalid(vector_validator, vector):
+    @pytest.mark.parametrize(
+        "vector",
+        [
+            [0, 0],
+            [0, 0, 0, 0],
+            [0, 0, "0"],
+        ],
+    )
+    def test_schema_vector_invalid(vector):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            vector_validator.validate(vector)
+            Vector.validate_jsondata(vector)
 
     @pytest.mark.parametrize(
         "line",
@@ -275,26 +79,48 @@ if not compas.IPY:
             {"start": [0, 0, 0], "end": [0, 0, 0], "extra": 0},
         ],
     )
-    def test_schema_line_valid(line_validator, line):
-        line_validator.validate(line)
+    def test_schema_line_valid(line):
+        Line.validate_jsondata(line)
 
-    @pytest.mark.parametrize("line", [[[0, 0, 0], [0, 0, 0]], {"START": [0, 0, 0], "END": [0, 0, 0]}])
-    def test_schema_line_invalid(line_validator, line):
+    @pytest.mark.parametrize(
+        "line",
+        [
+            [[0, 0, 0], [0, 0, 0]],
+            {"START": [0, 0, 0], "END": [0, 0, 0]},
+        ],
+    )
+    def test_schema_line_invalid(line):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            line_validator.validate(line)
+            Line.validate_jsondata(line)
 
-    @pytest.mark.parametrize("plane", [{"point": [0, 0, 0], "normal": [0, 0, 1]}])
-    def test_schema_plane_valid(plane_validator, plane):
-        plane_validator.validate(plane)
+    @pytest.mark.parametrize(
+        "plane",
+        [
+            {"point": [0, 0, 0], "normal": [0, 0, 1]},
+        ],
+    )
+    def test_schema_plane_valid(plane):
+        Plane.validate_jsondata(plane)
 
-    @pytest.mark.parametrize("plane", [[[0, 0, 0], [0, 0, 1]], {"POINT": [0, 0, 0], "NORMAL": [0, 0, 1]}])
-    def test_schema_plane_invalid(plane_validator, plane):
+    @pytest.mark.parametrize(
+        "plane",
+        [
+            [[0, 0, 0], [0, 0, 1]],
+            {"POINT": [0, 0, 0], "NORMAL": [0, 0, 1]},
+        ],
+    )
+    def test_schema_plane_invalid(plane):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            plane_validator.validate(plane)
+            Plane.validate_jsondata(plane)
 
-    @pytest.mark.parametrize("circle", [{"plane": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "radius": 1.0}])
-    def test_schema_circle_valid(circle_validator, circle):
-        circle_validator.validate(circle)
+    @pytest.mark.parametrize(
+        "circle",
+        [
+            {"plane": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "radius": 1.0},
+        ],
+    )
+    def test_schema_circle_valid(circle):
+        Circle.validate_jsondata(circle)
 
     @pytest.mark.parametrize(
         "circle",
@@ -304,9 +130,9 @@ if not compas.IPY:
             {"PLANE": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "RADIUS": 1.0},
         ],
     )
-    def test_schema_circle_invalid(circle_validator, circle):
+    def test_schema_circle_invalid(circle):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            circle_validator.validate(circle)
+            Circle.validate_jsondata(circle)
 
     @pytest.mark.parametrize(
         "ellipse",
@@ -318,8 +144,8 @@ if not compas.IPY:
             }
         ],
     )
-    def test_schema_ellipse_valid(ellipse_validator, ellipse):
-        ellipse_validator.validate(ellipse)
+    def test_schema_ellipse_valid(ellipse):
+        Ellipse.validate_jsondata(ellipse)
 
     @pytest.mark.parametrize(
         "ellipse",
@@ -347,9 +173,9 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_ellipse_invalid(ellipse_validator, ellipse):
+    def test_schema_ellipse_invalid(ellipse):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            ellipse_validator.validate(ellipse)
+            Ellipse.validate_jsondata(ellipse)
 
     @pytest.mark.parametrize(
         "frame",
@@ -370,8 +196,8 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_frame_valid(frame_validator, frame):
-        frame_validator.validate(frame)
+    def test_schema_frame_valid(frame):
+        Frame.validate_jsondata(frame)
 
     @pytest.mark.parametrize(
         "frame",
@@ -380,9 +206,9 @@ if not compas.IPY:
             {"point": [0, 0, 0], "xaxis": [1, 0, 0], "zaxis": [0, 0, 1]},
         ],
     )
-    def test_schema_frame_invalid(frame_validator, frame):
+    def test_schema_frame_invalid(frame):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            frame_validator.validate(frame)
+            Frame.validate_jsondata(frame)
 
     @pytest.mark.parametrize(
         "quaternion",
@@ -392,8 +218,8 @@ if not compas.IPY:
             {"x": 0, "z": 0, "y": 0, "w": 0},
         ],
     )
-    def test_schema_quaternion_valid(quaternion_validator, quaternion):
-        quaternion_validator.validate(quaternion)
+    def test_schema_quaternion_valid(quaternion):
+        Quaternion.validate_jsondata(quaternion)
 
     @pytest.mark.parametrize(
         "quaternion",
@@ -404,9 +230,9 @@ if not compas.IPY:
             {"X": 0, "Y": 0, "Z": 0, "W": 0},
         ],
     )
-    def test_schema_quaternion_invalid(quaternion_validator, quaternion):
+    def test_schema_quaternion_invalid(quaternion):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            quaternion_validator.validate(quaternion)
+            Quaternion.validate_jsondata(quaternion)
 
     @pytest.mark.parametrize(
         "polygon",
@@ -415,8 +241,8 @@ if not compas.IPY:
             {"points": [[0, 0, 0], [1, 0, 0], [1, 1, 0]]},
         ],
     )
-    def test_schema_polygon_valid(polygon_validator, polygon):
-        polygon_validator.validate(polygon)
+    def test_schema_polygon_valid(polygon):
+        Polygon.validate_jsondata(polygon)
 
     @pytest.mark.parametrize(
         "polygon",
@@ -426,9 +252,9 @@ if not compas.IPY:
             {"POINTS": [[0, 0, 0], [1, 0, 0]]},
         ],
     )
-    def test_schema_polygon_invalid(polygon_validator, polygon):
+    def test_schema_polygon_invalid(polygon):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            polygon_validator.validate(polygon)
+            Polygon.validate_jsondata(polygon)
 
     @pytest.mark.parametrize(
         "polyline",
@@ -437,8 +263,8 @@ if not compas.IPY:
             {"points": [[0, 0, 0], [1, 0, 0], [1, 1, 0]]},
         ],
     )
-    def test_schema_polyline_valid(polyline_validator, polyline):
-        polyline_validator.validate(polyline)
+    def test_schema_polyline_valid(polyline):
+        Polyline.validate_jsondata(polyline)
 
     @pytest.mark.parametrize(
         "polyline",
@@ -448,9 +274,9 @@ if not compas.IPY:
             {"POINTS": [[0, 0, 0], [1, 0, 0]]},
         ],
     )
-    def test_schema_polyline_invalid(polyline_validator, polyline):
+    def test_schema_polyline_invalid(polyline):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            polyline_validator.validate(polyline)
+            Polyline.validate_jsondata(polyline)
 
     @pytest.mark.parametrize(
         "box",
@@ -463,8 +289,8 @@ if not compas.IPY:
             }
         ],
     )
-    def test_schema_box_valid(box_validator, box):
-        box_validator.validate(box)
+    def test_schema_box_valid(box):
+        Box.validate_jsondata(box)
 
     @pytest.mark.parametrize(
         "box",
@@ -495,13 +321,13 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_box_invalid(box_validator, box):
+    def test_schema_box_invalid(box):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            box_validator.validate(box)
+            Box.validate_jsondata(box)
 
     @pytest.mark.parametrize("capsule", [{"line": {"start": [0, 0, 0], "end": [1, 0, 0]}, "radius": 1.0}])
-    def test_schema_capsule_valid(capsule_validator, capsule):
-        capsule_validator.validate(capsule)
+    def test_schema_capsule_valid(capsule):
+        Capsule.validate_jsondata(capsule)
 
     @pytest.mark.parametrize(
         "capsule",
@@ -512,9 +338,9 @@ if not compas.IPY:
             {"LINE": {"start": [0, 0, 0], "end": [1, 0, 0]}, "RADIUS": 1.0},
         ],
     )
-    def test_schema_capsule_invalid(capsule_validator, capsule):
+    def test_schema_capsule_invalid(capsule):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            capsule_validator.validate(capsule)
+            Capsule.validate_jsondata(capsule)
 
     @pytest.mark.parametrize(
         "cone",
@@ -528,8 +354,8 @@ if not compas.IPY:
             }
         ],
     )
-    def test_schema_cone_valid(cone_validator, cone):
-        cone_validator.validate(cone)
+    def test_schema_cone_valid(cone):
+        Cone.validate_jsondata(cone)
 
     @pytest.mark.parametrize(
         "cone",
@@ -564,9 +390,9 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_cone_invalid(cone_validator, cone):
+    def test_schema_cone_invalid(cone):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            cone_validator.validate(cone)
+            Cone.validate_jsondata(cone)
 
     @pytest.mark.parametrize(
         "cylinder",
@@ -580,8 +406,8 @@ if not compas.IPY:
             }
         ],
     )
-    def test_schema_cylinder_valid(cylinder_validator, cylinder):
-        cylinder_validator.validate(cylinder)
+    def test_schema_cylinder_valid(cylinder):
+        Cylinder.validate_jsondata(cylinder)
 
     @pytest.mark.parametrize(
         "cylinder",
@@ -616,9 +442,9 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_cylinder_invalid(cylinder_validator, cylinder):
+    def test_schema_cylinder_invalid(cylinder):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            cylinder_validator.validate(cylinder)
+            Cylinder.validate_jsondata(cylinder)
 
     @pytest.mark.parametrize(
         "polyhedron",
@@ -629,8 +455,8 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_polyhedron_valid(polyhedron_validator, polyhedron):
-        polyhedron_validator.validate(polyhedron)
+    def test_schema_polyhedron_valid(polyhedron):
+        Polyhedron.validate_jsondata(polyhedron)
 
     @pytest.mark.parametrize(
         "polyhedron",
@@ -648,13 +474,13 @@ if not compas.IPY:
             {"vertices": [], "faces": []},
         ],
     )
-    def test_schema_polyhedron_invalid(polyhedron_validator, polyhedron):
+    def test_schema_polyhedron_invalid(polyhedron):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            polyhedron_validator.validate(polyhedron)
+            Polyhedron.validate_jsondata(polyhedron)
 
     @pytest.mark.parametrize("sphere", [{"point": [0, 0, 0], "radius": 1.0}])
-    def test_schema_sphere_valid(sphere_validator, sphere):
-        sphere_validator.validate(sphere)
+    def test_schema_sphere_valid(sphere):
+        Sphere.validate_jsondata(sphere)
 
     @pytest.mark.parametrize(
         "sphere",
@@ -665,9 +491,9 @@ if not compas.IPY:
             {"POINT": [0, 0, 0], "RADIUS": 1},
         ],
     )
-    def test_schema_sphere_invalid(sphere_validator, sphere):
+    def test_schema_sphere_invalid(sphere):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            sphere_validator.validate(sphere)
+            Sphere.validate_jsondata(sphere)
 
     @pytest.mark.parametrize(
         "torus",
@@ -679,8 +505,8 @@ if not compas.IPY:
             }
         ],
     )
-    def test_schema_torus_valid(torus_validator, torus):
-        torus_validator.validate(torus)
+    def test_schema_torus_valid(torus):
+        Torus.validate_jsondata(torus)
 
     @pytest.mark.parametrize(
         "torus",
@@ -702,321 +528,321 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_torus_invalid(torus_validator, torus):
+    def test_schema_torus_invalid(torus):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            torus_validator.validate(torus)
+            Torus.validate_jsondata(torus)
 
-    # @pytest.mark.parametrize(
-    #     "pointcloud",
-    #     [
-    #         {"points": [[0, 0, 0]]},
-    #         {"points": [[0, 0, 0], [0, 0, 1]]},
-    #         {"points": [[0, 0, 0], [0, 0, 0]]},
-    #     ],
-    # )
-    # def test_schema_pointcloud_valid(pointcloud_validator, pointcloud):
-    #     pointcloud_validator.validate(pointcloud)
+    @pytest.mark.parametrize(
+        "pointcloud",
+        [
+            {"points": [[0, 0, 0]]},
+            {"points": [[0, 0, 0], [0, 0, 1]]},
+            {"points": [[0, 0, 0], [0, 0, 0]]},
+        ],
+    )
+    def test_schema_pointcloud_valid(pointcloud):
+        Pointcloud.validate_jsondata(pointcloud)
 
-    # @pytest.mark.parametrize(
-    #     "pointcloud",
-    #     [
-    #         {"points": []},
-    #         {"points": [0, 0, 0]},
-    #         {"points": [["0", 0, 0]]},
-    #         {"POINTS": []},
-    #     ],
-    # )
-    # def test_schema_pointcloud_invalid(pointcloud_validator, pointcloud):
-    #     with pytest.raises(jsonschema.exceptions.ValidationError):
-    #         pointcloud_validator.validate(pointcloud)
+    @pytest.mark.parametrize(
+        "pointcloud",
+        [
+            {"points": []},
+            {"points": [0, 0, 0]},
+            {"points": [["0", 0, 0]]},
+            {"POINTS": []},
+        ],
+    )
+    def test_schema_pointcloud_invalid(pointcloud):
+        with pytest.raises(jsonschema.exceptions.ValidationError):
+            Pointcloud.validate_jsondata(pointcloud)
 
-    # @pytest.mark.parametrize(
-    #     "graph",
-    #     [
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": 0,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": 1000,
-    #         },
-    #     ],
-    # )
-    # def test_schema_graph_valid(graph_validator, graph):
-    #     graph_validator.validate(graph)
+    @pytest.mark.parametrize(
+        "graph",
+        [
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": -1,
+            },
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": 0,
+            },
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": 1000,
+            },
+        ],
+    )
+    def test_schema_graph_valid(graph):
+        Graph.validate_jsondata(graph)
 
-    # @pytest.mark.parametrize(
-    #     "graph",
-    #     [
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": -2,
-    #         },
-    #         {
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #             "max_node": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "adjacency": {},
-    #             "max_node": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "max_node": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dna": {},
-    #             "dea": {},
-    #             "node": {},
-    #             "edge": {},
-    #             "adjacency": {},
-    #         },
-    #     ],
-    # )
-    # def test_schema_graph_invalid(graph_validator, graph):
-    #     with pytest.raises(jsonschema.exceptions.ValidationError):
-    #         graph_validator.validate(graph)
+    @pytest.mark.parametrize(
+        "graph",
+        [
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": -2,
+            },
+            {
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": -1,
+            },
+            {
+                "attributes": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": -1,
+            },
+            {
+                "attributes": {},
+                "dna": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": -1,
+            },
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "edge": {},
+                "adjacency": {},
+                "max_node": -1,
+            },
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "adjacency": {},
+                "max_node": -1,
+            },
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "max_node": -1,
+            },
+            {
+                "attributes": {},
+                "dna": {},
+                "dea": {},
+                "node": {},
+                "edge": {},
+                "adjacency": {},
+            },
+        ],
+    )
+    def test_schema_graph_invalid(graph):
+        with pytest.raises(jsonschema.exceptions.ValidationError):
+            Graph.validate_jsondata(graph)
 
-    # @pytest.mark.parametrize(
-    #     "halfedge",
-    #     [
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {},
-    #             "face": {},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {},
-    #             "face": {},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": 0,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {},
-    #             "face": {},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": 0,
-    #             "max_face": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {},
-    #             "face": {},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": 1000,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {},
-    #             "face": {},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": 1000,
-    #             "max_face": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {"0": {}, "1": {}, "2": {}},
-    #             "face": {"0": [0, 1, 2]},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {"0": {}, "1": {}, "2": {}},
-    #             "face": {"0": [0, 1, 2]},
-    #             "facedata": {"0": {}},
-    #             "edgedata": {"0-1": {}},
-    #             "max_vertex": -1,
-    #             "max_face": -1,
-    #         },
-    #     ],
-    # )
-    # def test_schema_halfedge_valid(halfedge_validator, halfedge):
-    #     halfedge_validator.validate(halfedge)
+    @pytest.mark.parametrize(
+        "halfedge",
+        [
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {},
+                "face": {},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": -1,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {},
+                "face": {},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": 0,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {},
+                "face": {},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": 0,
+                "max_face": -1,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {},
+                "face": {},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": 1000,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {},
+                "face": {},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": 1000,
+                "max_face": -1,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {"0": {}, "1": {}, "2": {}},
+                "face": {"0": [0, 1, 2]},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": -1,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {"0": {}, "1": {}, "2": {}},
+                "face": {"0": [0, 1, 2]},
+                "facedata": {"0": {}},
+                "edgedata": {"(0,1)": {}},
+                "max_vertex": -1,
+                "max_face": -1,
+            },
+        ],
+    )
+    def test_schema_halfedge_valid(halfedge):
+        HalfEdge.validate_jsondata(halfedge)
 
-    # @pytest.mark.parametrize(
-    #     "halfedge",
-    #     [
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {},
-    #             "face": {},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": -2,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {},
-    #             "face": {},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -2,
-    #             "max_face": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {"0": {}, "1": {}, "2": {}},
-    #             "face": {"0": [0, 1]},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {"0": {}, "1": {}, "2": {}},
-    #             "face": {"0": [0, 1, 2]},
-    #             "facedata": {"0": {}},
-    #             "edgedata": {"0": {}},
-    #             "max_vertex": -1,
-    #             "max_face": -1,
-    #         },
-    #     ],
-    # )
-    # def test_schema_halfedge_invalid(halfedge_validator, halfedge):
-    #     with pytest.raises(jsonschema.exceptions.ValidationError):
-    #         halfedge_validator.validate(halfedge)
+    @pytest.mark.parametrize(
+        "halfedge",
+        [
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {},
+                "face": {},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": -2,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {},
+                "face": {},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -2,
+                "max_face": -1,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {"0": {}, "1": {}, "2": {}},
+                "face": {"0": [0, 1]},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": -1,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {"0": {}, "1": {}, "2": {}},
+                "face": {"0": [0, 1, 2]},
+                "facedata": {"0": {}},
+                "edgedata": {"0": {}},
+                "max_vertex": -1,
+                "max_face": -1,
+            },
+        ],
+    )
+    def test_schema_halfedge_invalid(halfedge):
+        with pytest.raises(jsonschema.exceptions.ValidationError):
+            HalfEdge.validate_jsondata(halfedge)
 
-    # @pytest.mark.parametrize(
-    #     "halfedge",
-    #     [
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {0: {}, "1": {}, "2": {}},
-    #             "face": {"0": [0, 1, 2]},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": -1,
-    #         },
-    #         {
-    #             "attributes": {},
-    #             "dva": {},
-    #             "dea": {},
-    #             "dfa": {},
-    #             "vertex": {"0": {}, "1": {}, "2": {}},
-    #             "face": {0: [0, 1, 2]},
-    #             "facedata": {},
-    #             "edgedata": {},
-    #             "max_vertex": -1,
-    #             "max_face": -1,
-    #         },
-    #     ],
-    # )
-    # def test_schema_halfedge_failing(halfedge_validator, halfedge):
-    #     with pytest.raises(TypeError):
-    #         halfedge_validator.validate(halfedge)
+    @pytest.mark.parametrize(
+        "halfedge",
+        [
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {0: {}, "1": {}, "2": {}},
+                "face": {"0": [0, 1, 2]},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": -1,
+            },
+            {
+                "attributes": {},
+                "dva": {},
+                "dea": {},
+                "dfa": {},
+                "vertex": {"0": {}, "1": {}, "2": {}},
+                "face": {0: [0, 1, 2]},
+                "facedata": {},
+                "edgedata": {},
+                "max_vertex": -1,
+                "max_face": -1,
+            },
+        ],
+    )
+    def test_schema_halfedge_failing(halfedge):
+        with pytest.raises(TypeError):
+            HalfEdge.validate_jsondata(halfedge)

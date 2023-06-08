@@ -42,6 +42,43 @@ class Graph(Datastructure):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "attributes": {"type": "object"},
+            "dna": {"type": "object"},
+            "dea": {"type": "object"},
+            "node": {
+                "type": "object",
+                "additionalProperties": {"type": "object"},
+            },
+            "edge": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {"type": "object"},
+                },
+            },
+            "adjacency": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {"type": "null"},
+                },
+            },
+            "max_node": {"type": "integer", "minimum": -1},
+        },
+        "required": [
+            "attributes",
+            "dna",
+            "dea",
+            "node",
+            "edge",
+            "adjacency",
+            "max_node",
+        ],
+    }
+
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
         super(Graph, self).__init__()
         self._max_node = -1
@@ -56,29 +93,13 @@ class Graph(Datastructure):
         if default_edge_attributes:
             self.default_edge_attributes.update(default_edge_attributes)
 
+    def __str__(self):
+        tpl = "<Graph with {} nodes, {} edges>"
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
+
     # --------------------------------------------------------------------------
     # data
     # --------------------------------------------------------------------------
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "attributes": dict,
-                "dna": dict,
-                "dea": dict,
-                "node": dict,
-                "edge": dict,
-                "adjacency": dict,
-                "max_node": schema.And(int, lambda x: x >= -1),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "graph"
 
     @property
     def data(self):
@@ -88,26 +109,42 @@ class Graph(Datastructure):
             "dea": self.default_edge_attributes,
             "node": self.node,
             "edge": self.edge,
-            "adjacency": self.adjacency,
             "max_node": self._max_node,
         }
         return data
 
     @data.setter
     def data(self, data):
-        self.node = data.get("node") or {}
-        self.edge = data.get("edge") or {}
-        self.adjacency = data.get("adjacency") or {}
+        self.node = {}
+        self.edge = {}
+        self.adjacency = {}
+        self._max_node = -1
         self.attributes.update(data.get("attributes") or {})
         self.default_node_attributes.update(data.get("dna") or {})
         self.default_edge_attributes.update(data.get("dea") or {})
-        self._max_node = data.get("max_node")
+        node = data.get("node") or {}
+        edge = data.get("edge") or {}
+        for node, attr in iter(node.items()):
+            self.add_node(key=node, attr_dict=attr)
+        for u, nbrs in iter(edge.items()):
+            for v, attr in iter(nbrs.items()):
+                self.add_edge(u, v, attr_dict=attr)
+        self._max_node = data.get("max_node", self._max_node)
 
     def to_jsondata(self):
+        """Returns a dictionary of structured data representing the graph that can be serialised to JSON format.
+
+        This is effectively a post-processing step for the :meth:`to_data` method.
+
+        Returns
+        -------
+        dict
+            The serialisable structured data dictionary.
+
+        """
         data = self.data
         data["node"] = {}
         data["edge"] = {}
-        data["adjacency"] = {}
         for key in self.node:
             data["node"][repr(key)] = self.node[key]
         for u in self.edge:
@@ -116,19 +153,27 @@ class Graph(Datastructure):
             for v in self.edge[u]:
                 rv = repr(v)
                 data["edge"][ru][rv] = self.edge[u][v]
-        for u in self.adjacency:
-            ru = repr(u)
-            data["adjacency"][ru] = {}
-            for v in self.adjacency[u]:
-                rv = repr(v)
-                data["adjacency"][ru][rv] = None
         return data
 
     @classmethod
     def from_jsondata(cls, data):
+        """Construct a graph from structured data representing the graph in JSON format.
+
+        This is effectively a pre-processing step for the :meth:`from_data` method.
+
+        Parameters
+        ----------
+        data : dict
+            The structured data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Graph`
+            The constructed graph.
+
+        """
         _node = data["node"] or {}
         _edge = data["edge"] or {}
-        _adjacency = data["adjacency"] or {}
         # process the nodes
         node = {literal_eval(key): attr for key, attr in iter(_node.items())}
         data["node"] = node
@@ -143,16 +188,6 @@ class Graph(Datastructure):
                 v = literal_eval(v)
                 edge[u][v] = attr
         data["edge"] = edge
-        # process the adjacency
-        adjacency = {}
-        for u, nbrs in iter(_adjacency.items()):
-            nbrs = nbrs or {}
-            u = literal_eval(u)
-            adjacency[u] = {}
-            for v, _ in iter(nbrs.items()):
-                v = literal_eval(v)
-                adjacency[u][v] = None
-        data["adjacency"] = adjacency
         return cls.from_data(data)
 
     # --------------------------------------------------------------------------
@@ -166,14 +201,6 @@ class Graph(Datastructure):
     @name.setter
     def name(self, value):
         self.attributes["name"] = value
-
-    # --------------------------------------------------------------------------
-    # customization
-    # --------------------------------------------------------------------------
-
-    def __str__(self):
-        tpl = "<Graph with {} nodes, {} edges>"
-        return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # constructors
@@ -237,16 +264,16 @@ class Graph(Datastructure):
         """
         import networkx as nx
 
-        graph = nx.DiGraph()
-        graph.graph.update(self.attributes)
+        G = nx.DiGraph()
+        G.graph.update(self.attributes)
 
         for node, attr in self.nodes(data=True):
-            graph.add_node(node, **attr)
+            G.add_node(node, **attr)
 
         for edge, attr in self.edges(data=True):
-            graph.add_edge(*edge, **attr)
+            G.add_edge(*edge, **attr)
 
-        return graph
+        return G
 
     # --------------------------------------------------------------------------
     # helpers

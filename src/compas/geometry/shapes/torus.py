@@ -82,19 +82,6 @@ class Torus(Shape):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-
-        return schema.Schema(
-            {
-                "plane": Plane.DATASCHEMA.fget(None),
-                "radius_axis": schema.And(float, lambda x: x > 0),
-                "radius_pipe": schema.And(float, lambda x: x > 0),
-            }
-        )
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the torus."""
         return {

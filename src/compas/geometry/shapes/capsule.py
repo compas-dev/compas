@@ -6,8 +6,6 @@ from math import cos
 from math import pi
 from math import sin
 
-import compas
-
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Frame
@@ -53,19 +51,12 @@ class Capsule(Shape):
 
     JSONSCHEMA = {
         "type": "object",
-        "properties": {"line": Line.JSONSCHEMA, "radius": {"type": "number", "exclusiveMinimum": 0}},
+        "properties": {
+            "line": Line.JSONSCHEMA,
+            "radius": {"type": "number", "exclusiveMinimum": 0},
+        },
         "required": ["line", "radius"],
     }
-
-    if not compas.IPY:
-        import schema
-
-        DATASCHEMA = schema.Schema(
-            {
-                "line": Line.DATASCHEMA,
-                "radius": schema.And(float, lambda x: x > 0),
-            }
-        )
 
     __slots__ = ["_line", "_radius"]
 

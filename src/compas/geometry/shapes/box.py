@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
 from compas.geometry import centroid_points
 from compas.geometry import transform_points
 from compas.geometry import Transformation
@@ -109,17 +108,7 @@ class Box(Shape):
         "minProperties": 4,
     }
 
-    if not compas.IPY:
-        import schema
-
-        DATASCHEMA = schema.Schema(
-            {
-                "frame": Frame.DATASCHEMA,
-                "xsize": schema.And(float, lambda x: x > 0),
-                "ysize": schema.And(float, lambda x: x > 0),
-                "zsize": schema.And(float, lambda x: x > 0),
-            }
-        )
+    __slots__ = ["_frame", "_xsize", "_ysize", "_zsize"]
 
     def __init__(self, frame, xsize, ysize, zsize, **kwargs):
         super(Box, self).__init__(**kwargs)

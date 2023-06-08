@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# import os
 import json
 import hashlib
 from uuid import uuid4
@@ -10,9 +9,6 @@ from uuid import UUID
 from copy import deepcopy
 
 import compas
-
-# from compas.data.encoders import DataEncoder
-# from compas.data.encoders import DataDecoder
 
 
 # ==============================================================================
@@ -103,16 +99,11 @@ class Data(object):
 
     """
 
-    JSONSCHEMA = None
-
-    DATASCHEMA = None
+    JSONSCHEMA = {}
 
     def __init__(self, name=None):
         self._guid = None
         self._name = None
-        self._jsondefinitions = None
-        self._JSONSCHEMA = None
-        self._jsonvalidator = None
         if name:
             self.name = name
 
@@ -131,28 +122,6 @@ class Data(object):
         self.data = state["data"]
         if "guid" in state:
             self._guid = UUID(state["guid"])
-
-    # @property
-    # def DATASCHEMA(self):
-    #     """schema.Schema : The schema of the data of this object."""
-    #     raise NotImplementedError
-
-    # @property
-    # def JSONSCHEMANAME(self):
-    #     """str : The schema of the data of this object in JSON format."""
-    #     raise NotImplementedError
-
-    # # this is only really necessary if the definitions are external
-    # # external definitions are annoying and unnecessary
-    # # so we should just remove this
-    # @property
-    # def jsondefinitions(self):
-    #     """dict : Reusable schema definitions."""
-    #     if not self._jsondefinitions:
-    #         schema_path = os.path.join(os.path.dirname(__file__), "schemas", "compas.json")
-    #         with open(schema_path, "r") as fp:
-    #             self._jsondefinitions = json.load(fp)
-    #     return self._jsondefinitions
 
     @property
     def dtype(self):
@@ -246,7 +215,7 @@ class Data(object):
         data = compas.json_load(filepath)
         return cls.from_data(data)
 
-    def to_json(self, filepath, pretty=False):
+    def to_json(self, filepath, pretty=False, compact=False):
         """Serialize the data representation of an object to a JSON file.
 
         Parameters
@@ -255,13 +224,15 @@ class Data(object):
             The path or file-like object to the file containing the data.
         pretty : bool, optional
             If True, serialize to a "pretty", human-readable representation.
+        compact : bool, optional
+            If True, serialize to a compact representation without any whitespace.
 
         Returns
         -------
         None
 
         """
-        compas.json_dump(self.data, filepath, pretty)
+        compas.json_dump(self.data, filepath, pretty=pretty, compact=compact)
 
     @classmethod
     def from_jsonstring(cls, string):
@@ -281,13 +252,15 @@ class Data(object):
         data = compas.json_loads(string)
         return cls.from_data(data)
 
-    def to_jsonstring(self, pretty=False):
+    def to_jsonstring(self, pretty=False, compact=False):
         """Serialize the data representation of an object to a JSON string.
 
         Parameters
         ----------
         pretty : bool, optional
             If True serialize a pretty representation of the data.
+        compact : bool, optional
+            If True serialize a compact representation of the data.
 
         Returns
         -------
@@ -295,7 +268,7 @@ class Data(object):
             The object's data dict in JSON string format.
 
         """
-        return compas.json_dumps(self.data, pretty)
+        return compas.json_dumps(self.data, pretty=pretty, compact=compact)
 
     def copy(self, cls=None):
         """Make an independent copy of the data object.
@@ -317,34 +290,6 @@ class Data(object):
         return cls.from_data(deepcopy(self.data))
 
     @classmethod
-    def validate_data(cls, data):
-        """Validate the given data against the object class data schema.
-
-        Parameters
-        ----------
-        data : dict
-            The data to validate.
-
-        Returns
-        -------
-        dict
-            The validated data.
-
-        Raises
-        ------
-        schema.SchemaError
-
-        """
-        import schema
-
-        try:
-            data = cls.DATASCHEMA.validate(data)
-        except schema.SchemaError as e:
-            print("Validation against the data schema of this object failed.")
-            raise e
-        return data
-
-    @classmethod
     def validate_json(cls, filepath):
         """Validate the data contained in the JSON document against the object's JSON data schema.
 
@@ -353,27 +298,16 @@ class Data(object):
         filepath : path string | file-like object | URL string
             The path, file or URL to the file for validation.
 
-        Raises
-        ------
-        jsonschema.exceptions.ValidationError
-
         Returns
         -------
         Any
 
         """
         from jsonschema import Draft202012Validator
-        from jsonschema.exceptions import ValidationError
 
-        validator = Draft202012Validator(cls.JSONSCHEMA)
+        validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
         jsondata = json.load(filepath)
-
-        try:
-            validator.validate(jsondata)
-        except ValidationError as e:
-            print("Validation against the JSON schema of this object failed.")
-            raise e
-
+        validator.validate(jsondata)
         return jsondata
 
     @classmethod
@@ -385,9 +319,28 @@ class Data(object):
         jsonstring : str
             The JSON string for validation.
 
-        Raises
-        ------
-        jsonschema.exceptions.ValidationError
+        Returns
+        -------
+        Any
+
+        """
+        from jsonschema import Draft202012Validator
+
+        validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
+        jsondata = json.loads(jsonstring)
+        validator.validate(jsondata)
+        return jsondata
+
+    @classmethod
+    def validate_jsondata(cls, jsondata):
+        """Validate the JSON data against the objects's JSON data schema.
+
+        The JSON data is the result of parsing a JSON string or a JSON document.
+
+        Parameters
+        ----------
+        jsondata : Any
+            The JSON data for validation.
 
         Returns
         -------
@@ -395,17 +348,9 @@ class Data(object):
 
         """
         from jsonschema import Draft202012Validator
-        from jsonschema.exceptions import ValidationError
 
-        validator = Draft202012Validator(cls.JSONSCHEMA)
-        jsondata = json.loads(jsonstring)
-
-        try:
-            validator.validate(jsondata)
-        except ValidationError as e:
-            print("Validation against the JSON schema of this object failed.")
-            raise e
-
+        validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
+        validator.validate(jsondata)
         return jsondata
 
     def sha256(self, as_string=False):

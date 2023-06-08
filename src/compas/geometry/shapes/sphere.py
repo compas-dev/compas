@@ -53,7 +53,10 @@ class Sphere(Shape):
 
     JSONSCHEMA = {
         "type": "object",
-        "properties": {"point": Point.JSONSCHEMA, "radius": {"type": "number", "exclusiveMinimum": 0}},
+        "properties": {
+            "point": Point.JSONSCHEMA,
+            "radius": {"type": "number", "exclusiveMinimum": 0},
+        },
         "required": ["point", "radius"],
     }
 

@@ -78,7 +78,7 @@ from .encoders import DataEncoder
 from .encoders import DataDecoder
 from .data import Data
 
-from .json import json_load, json_loads, json_dump, json_dumps, wrap_schema_value
+from .json import json_load, json_loads, json_dump, json_dumps
 
 __all__ = [
     "Data",
