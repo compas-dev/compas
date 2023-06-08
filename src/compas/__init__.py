@@ -28,7 +28,6 @@ from __future__ import print_function
 
 import os
 import decimal
-import datetime
 
 from distutils.version import LooseVersion
 
@@ -47,7 +46,7 @@ from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
 __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
-__copyright__ = "Copyright 2014-{} - Block Research Group, ETH Zurich".format(datetime.date.today().year)
+__copyright__ = "Copyright 2014-2022 - ETH Zurich, Copyright 2023 - COMPAS Association"
 __license__ = "MIT License"
 __email__ = "tom.v.mele@gmail.com"
 __version__ = "1.17.5"
