@@ -19,6 +19,9 @@ __all__ = [
     "is_point_in_convex_polygon_xy",
     "is_point_in_circle_xy",
     "is_polygon_in_polygon_xy",
+    "polygon_to_polygon_relationship_xy",
+    "point_to_polygon_relationship_xy",
+    "is_intersection_polygon_polygon_xy",
     "is_intersection_line_line_xy",
     "is_intersection_segment_segment_xy",
 ]
@@ -390,6 +393,118 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
             if is_point_in_polygon_xy(pt, polygon1):
                 return True
         return False
+
+
+def polygon_to_polygon_relationship_xy(polygon1, polygon2):
+    """Determine if a polygon (polygon1) is inside, intersects, is outside or contains another polygon (polygon2) on the XY-plane.
+
+    Parameters
+    ----------
+    polygon1 : sequence[point] | :class:`~compas.geometry.Polygon`
+        List of XY(Z) coordinates of points representing the locations of the corners of the polygon to examine the position regarding the boundary polygon (Z will be ignored).
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+    polygon2 : sequence[point] | :class:`~compas.geometry.Polygon`
+        List of XY(Z) coordinates of points representing the locations of the corners of the boundary polygon (Z will be ignored).
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+
+    Returns
+    -------
+    int
+        1 if polygon1 is inside polygon2.
+        0 if polygon1 intersects polygon2.
+        -1 if polygon1 is outside polygon2.
+        -2 if polygon1 contains polygon2 (polygon2 is inside polygon1).
+    """
+    for i in range(len(polygon1)):
+        line1 = [polygon1[i], polygon1[i - 1]]
+        for j in range(len(polygon2)):
+            line2 = [polygon2[j], polygon2[j - 1]]
+            if is_intersection_segment_segment_xy(line1, line2):
+                return 0
+    for pt in polygon1:
+        if is_point_in_polygon_xy(pt, polygon2):
+            return 1
+    if is_point_in_polygon_xy(polygon2.centroid, polygon1):
+        return -2
+    return -1
+
+
+def point_to_polygon_relationship_xy(point, polygon, tolerance=10**-6):
+    """Determine if a point is inside, outside or on the boundary (with tolerance) of a polygon in the XY-plane.
+
+    Parameters
+    ----------
+    point : [float, float, float] | :class:`~compas.geometry.Point`
+            XY(Z) coordinates of a point (Z will be ignored).
+    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+        List of XY(Z) coordinates of points representing the locations of the corners of the boundary polygon (Z will be ignored).
+        The vertices are assumed to be in order. The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+
+    Returns
+    -------
+    int
+        1 if point is inside polygon.
+        0 if point is on the boundary of polygon.
+        -1 if point is outside polygon.
+    """
+    x, y = point[0], point[1]
+    polygon = [(p[0], p[1]) for p in polygon]  # make 2D
+    flag = -1
+    for i in range(-1, len(polygon) - 1):
+        x1, y1 = polygon[i]
+        x2, y2 = polygon[i + 1]
+        segment = ([x1, y1], [x2, y2])
+        if is_point_on_segment_xy(point, segment, tolerance):
+            return 0
+        elif y > min(y1, y2):
+            if y <= max(y1, y2):
+                if x <= max(x1, x2):
+                    if y1 != y2:
+                        xinters = (y - y1) * (x2 - x1) / (y2 - y1) + x1
+                    if x1 == x2 or x <= xinters:
+                        flag = -flag
+    return flag
+
+
+def is_intersection_polygon_polygon_xy(polygon1, polygon2):
+    """Determines if two polygons intersect, assuming they lie in the XY plane.
+
+    Parameters
+    ----------
+    polygon1 : sequence[point] | :class:`~compas.geometry.Polygon`
+        A Polygon lying in the XY.
+    polygon2 : sequence[point] | :class:`~compas.geometry.Polygon`
+        A Polygon lying in the XY.
+
+    Returns
+    -------
+    bool
+        True if the polygons intersect. False if they don't.
+
+    Examples
+    --------
+    >>> from compas.geometry import Polygon
+    >>> polygon1 = Polygon([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
+    >>> polygon2 = Polygon([[0.5, 0.5], [1.5, 0.5], [1.5, 1.5], [0.5, 1.5]])
+    >>> is_intersection_polygon_polygon_xy(polygon1, polygon2)
+    True
+
+    >>> from compas.geometry import Polygon
+    >>> polygon1 = Polygon([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
+    >>> polygon2 = Polygon([[1.5, 1.5], [2.5, 1.5], [2.5, 2.5], [1.5, 2.5]])
+    >>> is_intersection_polygon_polygon_xy(polygon1, polygon2)
+    False
+    """
+    for i in range(len(polygon1)):
+        line1 = [polygon1[i], polygon1[i - 1]]
+        for j in range(len(polygon2)):
+            line2 = [polygon2[j], polygon2[j - 1]]
+            if is_intersection_segment_segment_xy(line1, line2):
+                return True
+    return False
 
 
 def is_intersection_line_line_xy(l1, l2, tol=1e-6):
