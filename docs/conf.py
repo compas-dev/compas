@@ -267,7 +267,7 @@ html_theme_options = {
     "navbar_start": ["navbar-logo"],
     "navbar_center": ["navbar-nav"],
     "navbar_end": [
-        # "version-switcher",
+        "version-switcher",
         # "theme-switcher",
         "navbar-icon-links",
     ],
@@ -316,7 +316,7 @@ html_theme_options = {
     # user interface
     "announcement": "This is the documentation for the pre-release of COMPAS 2.0.",
     "switcher": {
-        "json_url": "_static/versions.json",  # relative to _static
+        "json_url": "https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json",
         "version_match": release,
     },
     "check_switcher": False,
