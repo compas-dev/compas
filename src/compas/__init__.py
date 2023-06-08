@@ -28,6 +28,7 @@ from __future__ import print_function
 
 import os
 import decimal
+import datetime
 
 from distutils.version import LooseVersion
 
@@ -46,10 +47,9 @@ from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
 __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
-__copyright__ = "Copyright 2014-2019 - Block Research Group, ETH Zurich"
+__copyright__ = "Copyright 2014-{} - Block Research Group, ETH Zurich".format(datetime.date.today().year)
 __license__ = "MIT License"
-__email__ = "vanmelet@ethz.ch"
-
+__email__ = "tom.v.mele@gmail.com"
 __version__ = "1.17.5"
 
 version = LooseVersion(compas.__version__)
@@ -305,7 +305,6 @@ def get_bunny(localstorage=None):
         with tarfile.open(destination) as file:
 
             def is_within_directory(directory, target):
-
                 abs_directory = os.path.abspath(directory)
                 abs_target = os.path.abspath(target)
 
@@ -314,7 +313,6 @@ def get_bunny(localstorage=None):
                 return prefix == abs_directory
 
             def safe_extract(tar, path=".", members=None, numeric_owner=False):
-
                 for member in tar.getmembers():
                     member_path = os.path.join(path, member.name)
                     if not is_within_directory(path, member_path):
