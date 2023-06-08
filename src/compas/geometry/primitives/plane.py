@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
-import compas
 
 from ._primitive import Primitive
 from .vector import Vector
@@ -49,16 +48,6 @@ class Plane(Primitive):
         },
         "required": ["point", "normal"],
     }
-
-    if not compas.IPY:
-        from schema import Schema
-
-        DATASCHEMA = Schema(
-            {
-                "point": Point.DATASCHEMA,
-                "normal": Vector.DATASCHEMA,
-            }
-        )
 
     __slots__ = ["_point", "_normal"]
 

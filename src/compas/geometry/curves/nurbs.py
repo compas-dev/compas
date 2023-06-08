@@ -4,7 +4,6 @@ from __future__ import division
 
 from math import sqrt
 
-from compas.data import wrap_schema_value
 from compas.plugins import pluggable
 from compas.geometry import Point
 from compas.geometry import Frame
@@ -66,21 +65,19 @@ class NurbsCurve(Curve):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {
-                "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
-                "weights": {"type": "array", "items": {"type": "number"}},
-                "knots": {"type": "array", "items": {"type": "number"}},
-                "multiplicities": {"type": "array", "items": {"type": "integer"}},
-                "degree": {"type": "integer", "exclusiveMinimum": 0},
-                "is_periodic": {"type": "boolean"},
-            },
-            "additionalProperties": False,
-            "minProperties": 6,
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+            "weights": {"type": "array", "items": {"type": "number"}},
+            "knots": {"type": "array", "items": {"type": "number"}},
+            "multiplicities": {"type": "array", "items": {"type": "integer"}},
+            "degree": {"type": "integer", "exclusiveMinimum": 0},
+            "is_periodic": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+        "minProperties": 6,
+    }
 
     def __new__(cls, *args, **kwargs):
         return new_nurbscurve(cls, *args, **kwargs)
@@ -111,25 +108,6 @@ class NurbsCurve(Curve):
     # ==============================================================================
     # Data
     # ==============================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data."""
-        from schema import Schema
-        from compas.data import is_float3
-        from compas.data import is_sequence_of_int
-        from compas.data import is_sequence_of_float
-
-        return Schema(
-            {
-                "points": lambda points: all(is_float3(point) for point in points),
-                "weights": is_sequence_of_float,
-                "knots": is_sequence_of_float,
-                "multiplicities": is_sequence_of_int,
-                "degree": int,
-                "is_periodic": bool,
-            }
-        )
 
     @property
     def dtype(self):

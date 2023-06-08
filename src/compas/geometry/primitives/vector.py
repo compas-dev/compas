@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 from compas import PRECISION
 
 from compas.geometry import length_vector
@@ -73,12 +72,6 @@ class Vector(Primitive):
         "maxItems": 3,
         "items": {"type": "number"},
     }
-
-    if not compas.IPY:
-        from schema import Schema
-        from compas.data import is_float3
-
-        DATASCHEMA = Schema(is_float3)
 
     __slots__ = ["_x", "_y", "_z"]
 

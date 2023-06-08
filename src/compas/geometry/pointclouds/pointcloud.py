@@ -31,29 +31,28 @@ class Pointcloud(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "points": {"type": "array", "items": Point.JSONSCHEMA, "minItems": 1},
+        },
+        "required": ["points"],
+    }
+
+    __slots__ = ["_points"]
+
     def __init__(self, points, **kwargs):
         super(Pointcloud, self).__init__(**kwargs)
         self._points = None
         self.points = points
 
     @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-
-        return Schema({"points": lambda points: all(is_float3(point) for point in points)})
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "pointcloud"
-
-    @property
     def data(self):
-        return {"points": [point.data for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):
-        self._points = [Point.from_data(point) for point in data["points"]]
+        self._points = data["points"]
 
     @classmethod
     def from_data(cls, data):

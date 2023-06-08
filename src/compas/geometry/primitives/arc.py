@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import math
-import compas
 
 from compas.geometry import close
 
@@ -52,18 +51,6 @@ class Arc(Primitive):
         },
         "required": ["frame", "radius", "start", "end"],
     }
-
-    if not compas.IPY:
-        import schema
-
-        DATASCHEMA = schema.Schema(
-            {
-                "frame": Frame.DATASCHEMA,
-                "radius": schema.And(float, lambda x: x >= 0),
-                "start": schema.And(float, lambda x: x > 0),
-                "end": schema.Or(schema.And(float, lambda x: x >= 0), None),
-            }
-        )
 
     def __init__(self, frame=None, radius=None, end_angle=None, start_angle=None, **kwargs):
         super(Arc, self).__init__(**kwargs)

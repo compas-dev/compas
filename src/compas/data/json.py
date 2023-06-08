@@ -8,33 +8,7 @@ from compas.data import DataEncoder
 from compas.data import DataDecoder
 
 
-def wrap_schema_value(value):
-    """Wrap the schema value of a data object with additional meta data.
-
-    Parameters
-    ----------
-    value : dict
-        The json schema of the data value of a data object.
-
-    Returns
-    -------
-    dict
-        The value dict wrapped in a dict with additional (mandatory) meta data.
-
-    """
-    schema = {
-        "type": "object",
-        "properties": {
-            "dtype": {"type": "string"},
-            "value": value,
-            "guid": {"type": "string"},
-        },
-        "required": ["dtype", "value", "guid"],
-    }
-    return schema
-
-
-def json_dump(data, fp, pretty=False):
+def json_dump(data, fp, pretty=False, compact=False):
     """Write a collection of COMPAS object data to a JSON file.
 
     Parameters
@@ -46,6 +20,8 @@ def json_dump(data, fp, pretty=False):
         A writeable file-like object or the path to a file.
     pretty : bool, optional
         If True, format the output with newlines and indentation.
+    compact : bool, optional
+        If True, format the output without any whitespace.
 
     Returns
     -------
@@ -63,11 +39,17 @@ def json_dump(data, fp, pretty=False):
 
     """
     with _iotools.open_file(fp, "w") as f:
-        kwargs = dict(sort_keys=True, indent=4) if pretty else {}
+        kwargs = {}
+        if pretty:
+            kwargs["sort_keys"] = True
+            kwargs["indent"] = 4
+        if compact:
+            kwargs["indent"] = None
+            kwargs["separators"] = (",", ":")
         return json.dump(data, f, cls=DataEncoder, **kwargs)
 
 
-def json_dumps(data, pretty=False):
+def json_dumps(data, pretty=False, compact=False):
     """Write a collection of COMPAS objects to a JSON string.
 
     Parameters
@@ -77,6 +59,8 @@ def json_dumps(data, pretty=False):
         This includes any (combination of) COMPAS object(s).
     pretty : bool, optional
         If True, format the output with newlines and indentation.
+    compact : bool, optional
+        If True, format the output without any whitespace.
 
     Returns
     -------
@@ -93,7 +77,13 @@ def json_dumps(data, pretty=False):
     True
 
     """
-    kwargs = dict(sort_keys=True, indent=4) if pretty else {}
+    kwargs = {}
+    if pretty:
+        kwargs["sort_keys"] = True
+        kwargs["indent"] = 4
+    if compact:
+        kwargs["indent"] = None
+        kwargs["separators"] = (",", ":")
     return json.dumps(data, cls=DataEncoder, **kwargs)
 
 
@@ -150,3 +140,43 @@ def json_loads(s):
 
     """
     return json.loads(s, cls=DataDecoder)
+
+
+def json_validate(filepath, schema):
+    """Validates a JSON document with respect to a schema and return the JSON object instance if it is valid.
+
+    Parameters
+    ----------
+    filepath : path string | file-like object | URL string
+        The filepath of the JSON document.
+    schema : string
+        The JSON schema.
+
+    Raises
+    ------
+    jsonschema.exceptions.SchemaError
+        If the schema itself is invalid.
+    jsonschema.exceptions.ValidationError
+        If the document is invalid with respect to the schema.
+
+    Returns
+    -------
+    object
+        The JSON object contained in the document.
+
+    """
+    import jsonschema
+    import jsonschema.exceptions
+
+    data = json_load(filepath)
+
+    try:
+        jsonschema.validate(data, schema)
+    except jsonschema.exceptions.SchemaError as e:
+        print(f"The provided schema is invalid:\n\n{schema}\n\n")
+        raise e
+    except jsonschema.exceptions.ValidationError as e:
+        print(f"The provided JSON document is invalid compared to the provided schema:\n\n{schema}\n\n{data}\n\n")
+        raise e
+
+    return data

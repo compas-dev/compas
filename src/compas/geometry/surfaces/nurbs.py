@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.data import wrap_schema_value
 from compas.plugins import pluggable
 from compas.geometry import Point
 from compas.utilities import linspace
@@ -65,25 +64,23 @@ class NurbsSurface(Surface):
 
     """
 
-    JSONSCHEMA = wrap_schema_value(
-        {
-            "type": "object",
-            "properties": {
-                "points": {"type": "array", "items": {"type": "array", "items": Point.JSONSCHEMA}},
-                "weights": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
-                "u_knots": {"type": "array", "items": {"type": "number"}},
-                "v_knots": {"type": "array", "items": {"type": "number"}},
-                "u_mults": {"type": "array", "items": {"type": "integer"}},
-                "v_mults": {"type": "array", "items": {"type": "integer"}},
-                "u_degree": {"type": "integer", "exclusiveMinimum": 0},
-                "v_degree": {"type": "integer", "exclusiveMinimum": 0},
-                "is_u_periodic": {"type": "boolean"},
-                "is_v_periodic": {"type": "boolean"},
-            },
-            "additionalProperties": False,
-            "minProperties": 10,
-        }
-    )
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "points": {"type": "array", "items": {"type": "array", "items": Point.JSONSCHEMA}},
+            "weights": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
+            "u_knots": {"type": "array", "items": {"type": "number"}},
+            "v_knots": {"type": "array", "items": {"type": "number"}},
+            "u_mults": {"type": "array", "items": {"type": "integer"}},
+            "v_mults": {"type": "array", "items": {"type": "integer"}},
+            "u_degree": {"type": "integer", "exclusiveMinimum": 0},
+            "v_degree": {"type": "integer", "exclusiveMinimum": 0},
+            "is_u_periodic": {"type": "boolean"},
+            "is_v_periodic": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+        "minProperties": 10,
+    }
 
     def __new__(cls, *args, **kwargs):
         return new_nurbssurface(cls, *args, **kwargs)
@@ -113,29 +110,6 @@ class NurbsSurface(Surface):
     # ==============================================================================
     # Data
     # ==============================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : The schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-        from compas.data import is_sequence_of_int
-        from compas.data import is_sequence_of_float
-
-        return Schema(
-            {
-                "points": lambda points: all(is_float3(point) for point in points),
-                "weights": is_sequence_of_float,
-                "u_knots": is_sequence_of_float,
-                "v_knots": is_sequence_of_float,
-                "u_mults": is_sequence_of_int,
-                "v_mults": is_sequence_of_int,
-                "u_degree": int,
-                "v_degree": int,
-                "is_u_periodic": bool,
-                "is_v_periodic": bool,
-            }
-        )
 
     @property
     def dtype(self):

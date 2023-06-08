@@ -58,7 +58,10 @@ class Cylinder(Shape):
 
     JSONSCHEMA = {
         "type": "object",
-        "properties": {"circle": Circle.JSONSCHEMA, "height": {"type": "number", "exclusiveMinimum": 0}},
+        "properties": {
+            "circle": Circle.JSONSCHEMA,
+            "height": {"type": "number", "exclusiveMinimum": 0},
+        },
         "required": ["circle", "height"],
     }
 
@@ -74,21 +77,6 @@ class Cylinder(Shape):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-
-        return schema.Schema(
-            {
-                "circle": {
-                    "plane": Plane.DATASCHEMA.fget(None),
-                    "radius": schema.And(float, lambda x: x > 0),
-                },
-                "height": schema.And(float, lambda x: x > 0),
-            }
-        )
 
     @property
     def data(self):
