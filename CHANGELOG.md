@@ -19,7 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `area_polygon` that was, in some cases, returning a negative area.
 * Fixed uninstall post-process.
 * Fixed support for `System.Decimal` data type on json serialization.
+* Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
 * Simplified `compas.datastructures.Part` for more generic usage.
+* Changed author email address of Tom Van Mele to tom.v.mele@gmail.com.
 
 ### Removed
 

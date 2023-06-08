@@ -20,10 +20,9 @@ from compas.data import json_dump, json_dumps, json_load, json_loads
 
 
 __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
-__copyright__ = "Copyright 2014-2019 - Block Research Group, ETH Zurich"
+__copyright__ = "Copyright 2014-2022 - ETH Zurich, Copyright 2023 - COMPAS Association"
 __license__ = "MIT License"
-__email__ = "vanmelet@ethz.ch"
-
+__email__ = "tom.v.mele@gmail.com"
 __version__ = "1.17.5"
 
 version = LooseVersion(compas.__version__)
