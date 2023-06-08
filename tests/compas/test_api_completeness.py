@@ -56,7 +56,7 @@ def compas_stubs():
     HOME = os.path.abspath(os.path.join(HERE, "../.."))
     TEMP = os.path.abspath(os.path.join(HOME, "temp/stubs"))
     DOCS = os.path.abspath(os.path.join(HOME, "docs"))
-    API = os.path.abspath(os.path.join(DOCS, "api"))
+    API = os.path.abspath(os.path.join(DOCS, "reference"))
 
     shutil.rmtree(TEMP, ignore_errors=True)
 
