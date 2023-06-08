@@ -1,8 +1,6 @@
 import pytest
 import random
 
-import compas
-
 from compas.geometry import Sphere
 from compas.geometry import Box
 
