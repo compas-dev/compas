@@ -173,10 +173,14 @@ def json_validate(filepath, schema):
     try:
         jsonschema.validate(data, schema)
     except jsonschema.exceptions.SchemaError as e:
-        print(f"The provided schema is invalid:\n\n{schema}\n\n")
+        print("The provided schema is invalid:\n\n{}\n\n".format(schema))
         raise e
     except jsonschema.exceptions.ValidationError as e:
-        print(f"The provided JSON document is invalid compared to the provided schema:\n\n{schema}\n\n{data}\n\n")
+        print(
+            "The provided JSON document is invalid compared to the provided schema:\n\n{}\n\n{}\n\n".format(
+                schema, data
+            )
+        )
         raise e
 
     return data
