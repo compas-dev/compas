@@ -17,6 +17,13 @@ from compas.files import OFF
 from compas.files import PLY
 from compas.files import STL
 
+from compas.geometry import Point
+from compas.geometry import Vector
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Polygon
+from compas.geometry import Circle
+from compas.geometry import Frame
 from compas.geometry import Polyhedron
 from compas.geometry import angle_points
 from compas.geometry import area_polygon
@@ -394,7 +401,7 @@ class Mesh(HalfEdge):
             A list of lines each defined by a pair of point coordinates.
 
         """
-        return [self.edge_coordinates(u, v) for u, v in self.edges()]
+        return [self.edge_coordinates(edge) for edge in self.edges()]
 
     @classmethod
     def from_polylines(cls, boundary_polylines, other_polylines):
@@ -955,6 +962,53 @@ class Mesh(HalfEdge):
         """
         return self.vertex_attributes(key, axes)
 
+    def vertex_point(self, key):
+        """Return the point of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point of the vertex.
+        """
+        return Point(*self.vertex_coordinates(key))  # type: ignore
+
+    def vertices_points(self, vertices):
+        """Return the points of multiple vertices.
+
+        Parameters
+        ----------
+        vertices : list[int]
+            The identifiers of the vertices.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Point`]
+            The points of the vertices.
+        """
+        return [self.vertex_point(vertex) for vertex in vertices]
+
+    def set_vertex_point(self, vertex, point):
+        """Set the point of a vertex.
+
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
+        point : :class:`compas.geometry.Point`
+            The point to set.
+
+        Returns
+        -------
+        None
+
+        """
+        self.vertex_attributes(vertex, "xyz", point)
+
     def vertex_area(self, key):
         """Compute the tributary area of a vertex.
 
@@ -1001,13 +1055,13 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The components of the vector.
+        :class:`compas.geometry.Vector`
+            The Laplacian vector.
 
         """
         c = self.vertex_neighborhood_centroid(key)
         p = self.vertex_coordinates(key)
-        return subtract_vectors(c, p)
+        return Vector(*subtract_vectors(c, p))
 
     def vertex_neighborhood_centroid(self, key):
         """Compute the centroid of the neighbors of a vertex.
@@ -1019,11 +1073,11 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The coordinates of the centroid.
+        :class:`compas.geometry.Point`
+            The centroid of the vertex neighbors.
 
         """
-        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
+        return Point(*centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]))
 
     def vertex_normal(self, key):
         """Return the normal vector at the vertex as the weighted average of the
@@ -1036,12 +1090,12 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The components of the normal vector.
+        :class:`compas.geometry.Vector`
+            The normal vector.
 
         """
         vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
-        return normalize_vector(centroid_points(vectors))
+        return Vector(*normalize_vector(centroid_points(vectors)))
 
     def vertex_curvature(self, vkey):
         """Dimensionless vertex curvature.
@@ -1076,37 +1130,64 @@ class Mesh(HalfEdge):
     # edge geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, u, v, axes="xyz"):
+    def edge_coordinates(self, edge, axes="xyz"):
         """Return the coordinates of the start and end point of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple(int, int)
+            The identifier of the edge.
         axes : str, optional
             The axes along which the coordinates should be included.
 
         Returns
         -------
-        list[float]
+        tuple(point, point)
             The coordinates of the start point.
-        list[float]
             The coordinates of the end point.
 
         """
-        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
+        return self.vertex_coordinates(edge[0], axes=axes), self.vertex_coordinates(edge[1], axes=axes)
 
-    def edge_length(self, u, v):
+    def edge_start(self, edge):
+        """Return the point at the start of an edge.
+
+        Parameters
+        ----------
+        edge : tuple(int, int)
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point at the start.
+
+        """
+        return self.vertex_point(edge[0])
+
+    def edge_end(self, edge):
+        """Return the point at the end of an edge.
+
+        Parameters
+        ----------
+        edge : tuple(int, int)
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point at the end.
+
+        """
+        return self.vertex_point(edge[1])
+
+    def edge_length(self, edge):
         """Return the length of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple(int, int)
+            The identifier of the edge.
 
         Returns
         -------
@@ -1114,38 +1195,33 @@ class Mesh(HalfEdge):
             The length of the edge.
 
         """
-        a, b = self.edge_coordinates(u, v)
+        a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
 
-    def edge_vector(self, u, v):
+    def edge_vector(self, edge):
         """Return the vector of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple(int, int)
+            The identifier of the edge.
 
         Returns
         -------
-        list[float]
-            The vector from u to v.
+        :class:`compas.geometry.Vector`
 
         """
-        a, b = self.edge_coordinates(u, v)
+        a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
-        return ab
+        return Vector(*ab)
 
-    def edge_point(self, u, v, t=0.5):
-        """Return the location of a point along an edge.
+    def edge_point(self, edge, t=0.5):
+        """Return a point along an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple(int, int)
+            The identifier of the edge.
         t : float, optional
             The location of the point on the edge.
             If the value of `t` is outside the range 0-1, the point will
@@ -1153,23 +1229,21 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The XYZ coordinates of the point.
+        :class:`compas.geometry.Point`
+            The point at parameter ``t``.
 
         """
-        a, b = self.edge_coordinates(u, v)
+        a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
-        return add_vectors(a, scale_vector(ab, t))
+        return Point(*add_vectors(a, scale_vector(ab, t)))
 
-    def edge_midpoint(self, u, v):
-        """Return the location of the midpoint of an edge.
+    def edge_midpoint(self, edge):
+        """Return the midpoint of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple(int, int)
+            The identifier of the edge.
 
         Returns
         -------
@@ -1177,26 +1251,42 @@ class Mesh(HalfEdge):
             The XYZ coordinates of the midpoint.
 
         """
-        a, b = self.edge_coordinates(u, v)
-        return midpoint_line((a, b))
+        a, b = self.edge_coordinates(edge)
+        return Point(*midpoint_line((a, b)))
 
-    def edge_direction(self, u, v):
+    def edge_direction(self, edge):
         """Return the direction vector of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple(int, int)
+            The identifier of the edge.
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Vector`
             The direction vector of the edge.
 
         """
-        return normalize_vector(self.edge_vector(u, v))
+        vector = self.edge_vector(edge)
+        vector.unitize()
+        return vector
+
+    def edge_line(self, edge):
+        """Return the line of an edge.
+
+        Parameters
+        ----------
+        edge : tuple(int, int)
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Line`
+            The line of the edge.
+
+        """
+        return Line(*self.edge_coordinates(edge))
 
     # --------------------------------------------------------------------------
     # face geometry
@@ -1221,6 +1311,22 @@ class Mesh(HalfEdge):
         """
         return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
 
+    def face_points(self, fkey):
+        """Compute the points of the vertices of a face.
+
+        Parameters
+        ----------
+        fkey : int
+            The identifier of the face.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Point`]
+            The points of the vertices of the face.
+
+        """
+        return [self.vertex_point(key) for key in self.face_vertices(fkey)]
+
     def face_normal(self, fkey, unitized=True):
         """Compute the normal of a face.
 
@@ -1233,14 +1339,13 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The components of the normal vector.
+        :class:`compas.geometry.Vector`
 
         """
-        return normal_polygon(self.face_coordinates(fkey), unitized=unitized)
+        return Vector(*normal_polygon(self.face_coordinates(fkey), unitized=unitized))
 
     def face_centroid(self, fkey):
-        """Compute the location of the centroid of a face.
+        """Compute the point at the centroid of a face.
 
         Parameters
         ----------
@@ -1249,14 +1354,14 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The coordinates of the centroid.
+        :class:`compas.geometry.Point`
+            The point at the centroid.
 
         """
-        return centroid_points(self.face_coordinates(fkey))
+        return Point(*centroid_points(self.face_coordinates(fkey)))
 
     def face_center(self, fkey):
-        """Compute the location of the center of mass of a face.
+        """Compute the point at the center of mass of a face.
 
         Parameters
         ----------
@@ -1265,11 +1370,11 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The coordinates of the center of mass.
+        :class:`compas.geometry.Point`
+            The point at the center of mass.
 
         """
-        return centroid_polygon(self.face_coordinates(fkey))
+        return Point(*centroid_polygon(self.face_coordinates(fkey)))  # type: ignore
 
     def face_area(self, fkey):
         """Compute the area of a face.
@@ -1339,7 +1444,7 @@ class Mesh(HalfEdge):
         * Wikipedia. *Types of mesh*. Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
 
         """
-        face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(fkey)]
+        face_edge_lengths = [self.edge_length(edge) for edge in self.face_halfedges(fkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
     def face_skewness(self, fkey):
@@ -1410,13 +1515,65 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        list[float]
-            The base point of the plane.
-        list[float]
-            The normal vector of the plane.
+        :class:`compas.geometry.Plane`
+            The plane of the face.
 
         """
-        return self.face_centroid(face), self.face_normal(face)
+        return Plane(self.face_centroid(face), self.face_normal(face))
+
+    def face_polygon(self, face):
+        """The polygon of a face.
+
+        Parameters
+        ----------
+        face : int
+            The face identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polygon`
+            The polygon of the face.
+
+        """
+        return Polygon(self.face_coordinates(face))
+
+    def face_circle(self, face):
+        """The circle of a face.
+
+        Parameters
+        ----------
+        face : int
+            The face identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Circle`
+            The circle of the face.
+
+        """
+        from compas.geometry import bestfit_circle_numpy
+
+        point, normal, radius = bestfit_circle_numpy(self.face_coordinates(face))
+        return Circle((point, normal), radius)
+
+    def face_frame(self, face):
+        """The frame of a face.
+
+        Parameters
+        ----------
+        face : int
+            The face identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The frame of the face.
+
+        """
+        from compas.geometry import bestfit_frame_numpy
+
+        point, xaxis, yaxis = bestfit_frame_numpy(self.face_coordinates(face))
+        return Frame(point, xaxis, yaxis)
 
     # --------------------------------------------------------------------------
     # boundary
@@ -1490,7 +1647,7 @@ class Mesh(HalfEdge):
         for key in vertices_all:
             count = 0
             for nbr in self.vertex_neighbors(key):
-                face = self.halfedge_face(key, nbr)
+                face = self.halfedge_face((key, nbr))
                 if face is None:
                     count += 1
                     if count > 1:
@@ -1506,7 +1663,7 @@ class Mesh(HalfEdge):
             # find all neighbors of the current spacial vertex
             # that are on the mesh boundary
             for nbr in self.vertex_neighbors(start):
-                face = self.halfedge_face(start, nbr)
+                face = self.halfedge_face((start, nbr))
                 if face is None:
                     nbrs.append(nbr)
             # for normal mesh vertices
@@ -1524,7 +1681,7 @@ class Mesh(HalfEdge):
                     for nbr in self.vertex_neighbors(vertex):
                         if nbr == vertices[-2]:
                             continue
-                        face = self.halfedge_face(vertex, nbr)
+                        face = self.halfedge_face((vertex, nbr))
                         if face is None:
                             vertices.append(nbr)
                             vertex = nbr
@@ -1546,7 +1703,7 @@ class Mesh(HalfEdge):
                 start = key
                 while True:
                     for nbr in self.vertex_neighbors(key):
-                        face = self.halfedge_face(key, nbr)
+                        face = self.halfedge_face((key, nbr))
                         if face is None:
                             vertices.append(nbr)
                             key = nbr
@@ -1588,7 +1745,7 @@ class Mesh(HalfEdge):
         vertexgroups = self.vertices_on_boundaries()
         facegroups = []
         for vertices in vertexgroups:
-            temp = [self.halfedge_face(v, u) for u, v in pairwise(vertices)]
+            temp = [self.halfedge_face((v, u)) for u, v in pairwise(vertices)]
             faces = []
             for face in temp:
                 if face is None:

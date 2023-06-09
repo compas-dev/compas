@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 from random import sample
-from random import choice
 
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
@@ -223,59 +222,6 @@ class HalfEdge(Datastructure):
         self._max_vertex = -1
         self._max_face = -1
 
-    def get_any_vertex(self):
-        """Get the identifier of a random vertex.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`vertex_sample` instead.
-
-        Returns
-        -------
-        int
-            The identifier of the vertex.
-
-        """
-        return self.get_any_vertices(1)[0]
-
-    def get_any_vertices(self, n, exclude_leaves=False):
-        """Get a list of identifiers of a random set of n vertices.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`vertex_sample` instead.
-
-        Parameters
-        ----------
-        n : int
-            The number of random vertices.
-        exclude_leaves : bool, optional
-            If True, exclude the leaves (vertices with only one connected edge) from the set.
-
-        Returns
-        -------
-        list[int]
-            The identifiers of the vertices.
-
-        """
-        if exclude_leaves:
-            vertices = set(self.vertices()) - set(self.leaves())
-        else:
-            vertices = self.vertices()
-        return sample(list(vertices), n)
-
-    def get_any_face(self):
-        """Get the identifier of a random face.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`face_sample` instead.
-
-        Returns
-        -------
-        int
-            The identifier of the face.
-
-        """
-        return choice(list(self.faces()))
-
     def vertex_sample(self, size=1):
         """A random sample of the vertices.
 
@@ -288,6 +234,10 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             The identifiers of the vertices.
+
+        See Also
+        --------
+        :meth:`edge_sample`, :meth:`face_sample`
 
         """
         return sample(list(self.vertices()), size)
@@ -305,6 +255,10 @@ class HalfEdge(Datastructure):
         list[tuple[int, int]]
             The identifiers of the edges.
 
+        See Also
+        --------
+        :meth:`vertex_sample`, :meth:`face_sample`
+
         """
         return sample(list(self.edges()), size)
 
@@ -320,6 +274,10 @@ class HalfEdge(Datastructure):
         -------
         list[int]
             The identifiers of the faces.
+
+        See Also
+        --------
+        :meth:`vertex_sample`, :meth:`edge_sample`
 
         """
         return sample(list(self.faces()), size)
@@ -1676,14 +1634,14 @@ class HalfEdge(Datastructure):
         if not self.vertex or not self.face:
             return False
 
-        vkey = self.get_any_vertex()
+        vkey = self.vertex_sample(size=1)[0]
         degree = self.vertex_degree(vkey)
 
         for vkey in self.vertices():
             if self.vertex_degree(vkey) != degree:
                 return False
 
-        fkey = self.get_any_face()
+        fkey = self.face_sample(size=1)[0]
         vcount = len(self.face_vertices(fkey))
 
         for fkey in self.faces():
@@ -1804,7 +1762,7 @@ class HalfEdge(Datastructure):
         if self.is_empty():
             return False
         for edge in self.edges():
-            if self.is_edge_on_boundary(*edge):
+            if self.is_edge_on_boundary(edge):
                 return False
         return True
 
@@ -2103,15 +2061,13 @@ class HalfEdge(Datastructure):
         u, v = key
         return u in self.halfedge and v in self.halfedge[u]
 
-    def edge_faces(self, u, v):
+    def edge_faces(self, edge):
         """Find the two faces adjacent to an edge.
 
         Parameters
         ----------
-        u : int
-            The identifier of the first vertex.
-        v : int
-            The identifier of the second vertex.
+        edge : tuple[int, int]
+            The identifier of the edge.
 
         Returns
         -------
@@ -2120,17 +2076,16 @@ class HalfEdge(Datastructure):
             If the edge is on the boundary, one of the identifiers is None.
 
         """
+        u, v = edge
         return self.halfedge[u][v], self.halfedge[v][u]
 
-    def halfedge_face(self, u, v):
+    def halfedge_face(self, edge):
         """Find the face corresponding to a halfedge.
 
         Parameters
         ----------
-        u : int
-            The identifier of the first vertex.
-        v : int
-            The identifier of the second vertex.
+        edge : tuple[int, int]
+            The identifier of the halfedge.
 
         Returns
         -------
@@ -2144,17 +2099,16 @@ class HalfEdge(Datastructure):
             If the halfedge does not exist.
 
         """
+        u, v = edge
         return self.halfedge[u][v]
 
-    def is_edge_on_boundary(self, u, v):
+    def is_edge_on_boundary(self, edge):
         """Verify that an edge is on the boundary.
 
         Parameters
         ----------
-        u : int
-            The identifier of the first vertex.
-        v : int
-            The identifier of the second vertex.
+        edge : tuple[int, int]
+            The identifier of the edge.
 
         Returns
         -------
@@ -2163,6 +2117,7 @@ class HalfEdge(Datastructure):
             False otherwise.
 
         """
+        u, v = edge
         return self.halfedge[v][u] is None or self.halfedge[u][v] is None
 
     # --------------------------------------------------------------------------
@@ -2205,10 +2160,10 @@ class HalfEdge(Datastructure):
             The edges on the same loop as the given edge.
 
         """
-        u, v = edge
-        if self.is_edge_on_boundary(u, v):
+        if self.is_edge_on_boundary(edge):
             return self._halfedge_loop_on_boundary(edge)
-        edges = [(u, v)]
+        edges = [edge]
+        u, v = edge
         while True:
             nbrs = self.vertex_neighbors(v, ordered=True)
             if len(nbrs) != 4:
@@ -2235,8 +2190,8 @@ class HalfEdge(Datastructure):
             The edges on the same loop as the given edge.
 
         """
+        edges = [edge]
         u, v = edge
-        edges = [(u, v)]
         while True:
             nbrs = self.vertex_neighbors(v)
             if len(nbrs) == 2:
@@ -2245,7 +2200,7 @@ class HalfEdge(Datastructure):
             for temp in nbrs:
                 if temp == u:
                     continue
-                if self.is_edge_on_boundary(v, temp):
+                if self.is_edge_on_boundary((v, temp)):
                     nbr = temp
                     break
             if nbr is None:
@@ -2289,7 +2244,7 @@ class HalfEdge(Datastructure):
                 strip = vu_strip[:-1] + uv_strip
         if not return_faces:
             return strip
-        faces = [self.halfedge_face(u, v) for u, v in strip[:-1]]
+        faces = [self.halfedge_face(edge) for edge in strip[:-1]]
         return strip, faces
 
     def halfedge_strip(self, edge):
@@ -2307,7 +2262,7 @@ class HalfEdge(Datastructure):
 
         """
         u, v = edge
-        edges = [(u, v)]
+        edges = [edge]
         while True:
             face = self.halfedge[u][v]
             if face is None:
@@ -2608,15 +2563,13 @@ class HalfEdge(Datastructure):
     face_vertex_after = face_vertex_descendant
     face_vertex_before = face_vertex_ancestor
 
-    def halfedge_after(self, u, v):
+    def halfedge_after(self, edge):
         """Find the halfedge after the given halfedge in the same face.
 
         Parameters
         ----------
-        u : int
-            The first vertex of the halfedge.
-        v : int
-            The second vertex of the halfedge.
+        edge : tuple[int, int]
+            The identifier of the starting halfedge.
 
         Returns
         -------
@@ -2624,7 +2577,8 @@ class HalfEdge(Datastructure):
             The next halfedge.
 
         """
-        face = self.halfedge_face(u, v)
+        u, v = edge
+        face = self.halfedge_face(edge)
         if face is not None:
             w = self.face_vertex_after(face, v)
             return v, w
@@ -2632,15 +2586,13 @@ class HalfEdge(Datastructure):
         w = nbrs[0]
         return v, w
 
-    def halfedge_before(self, u, v):
+    def halfedge_before(self, edge):
         """Find the halfedge before the given halfedge in the same face.
 
         Parameters
         ----------
-        u : int
-            The first vertex of the halfedge.
-        v : int
-            The second vertex of the halfedge.
+        edge : tuple[int, int]
+            The identifier of the starting halfedge.
 
         Returns
         -------
@@ -2648,7 +2600,8 @@ class HalfEdge(Datastructure):
             The previous halfedge.
 
         """
-        face = self.halfedge_face(u, v)
+        u, v = edge
+        face = self.halfedge_face(edge)
         if face is not None:
             t = self.face_vertex_before(face, u)
             return t, u
@@ -2675,3 +2628,36 @@ class HalfEdge(Datastructure):
             else:
                 edges.append((nbr, vertex))
         return edges
+
+    def halfedge_loop_vertices(self, edge):
+        """Find all vertices on the same loop as a given halfedge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The identifier of the starting halfedge.
+        Returns
+        -------
+        list[int]
+            The vertices on the same loop as the given halfedge.
+
+        """
+        loop = self.halfedge_loop(edge)
+        return [loop[0][0]] + [edge[1] for edge in loop]
+
+    def halfedge_strip_faces(self, edge):
+        """Find all faces on the same strip as a given halfedge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The identifier of the starting halfedge.
+
+        Returns
+        -------
+        list[int]
+            The faces on the same strip as the given halfedge.
+
+        """
+        strip = self.halfedge_strip(edge)
+        return [self.halfedge_face(edge) for edge in strip]

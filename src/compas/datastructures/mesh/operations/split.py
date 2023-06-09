@@ -5,17 +5,15 @@ from __future__ import division
 from compas.utilities import pairwise
 
 
-def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
+def mesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
     """Split and edge by inserting a vertex along its length.
 
     Parameters
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of a mesh.
-    u : int
-        The key of the first vertex of the edge.
-    v : int
-        The key of the second vertex of the edge.
+    edge : tuple[int, int]
+        The identifier of the edge to split.
     t : float, optional
         The position of the inserted vertex.
         The value should be between 0.0 and 1.0
@@ -33,10 +31,17 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
         If u and v are not neighbors.
 
     """
-    if t <= 0.0:
-        raise ValueError("t should be greater than 0.0.")
-    if t >= 1.0:
-        raise ValueError("t should be smaller than 1.0.")
+    u, v = edge
+
+    if t < 0.0:
+        raise ValueError("t should be greater than or equal to 0.0.")
+    if t > 1.0:
+        raise ValueError("t should be smaller than or equal to 1.0.")
+
+    if t == 0:
+        return u
+    if t == 1:
+        return v
 
     # check if the split is legal
     # don't split if edge is on boundary
@@ -48,7 +53,7 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
             return
 
     # coordinates
-    x, y, z = mesh.edge_point(u, v, t)
+    x, y, z = mesh.edge_point(edge, t)
 
     # the split vertex
     w = mesh.add_vertex(x=x, y=y, z=z)
@@ -76,17 +81,15 @@ def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     return w
 
 
-def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
+def trimesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
     """Split an edge of a triangle mesh.
 
     Parameters
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of a mesh.
-    u : int
-        Identifier of the first vertex.
-    v : int
-        Identifier of the second vertex.
+    edge : tuple[int, int]
+        The identifier of the edge to split.
     t : float, optional
         The location of the split point along the original edge.
         The value should be between 0.0 and 1.0
@@ -103,6 +106,8 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     This operation only works as expected for triangle meshes.
 
     """
+    u, v = edge
+
     if t <= 0.0:
         raise ValueError("t should be greater than 0.0.")
     if t >= 1.0:
@@ -118,7 +123,7 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
             return
 
     # coordinates
-    x, y, z = mesh.edge_point(u, v, t)
+    x, y, z = mesh.edge_point(edge, t)
 
     # the split vertex
     w = mesh.add_vertex(x=x, y=y, z=z)
@@ -242,15 +247,15 @@ def mesh_split_strip(mesh, edge):
 
     ngons = []
     splits = []
-    for u, v in strip[:-1]:
-        ngons.append(mesh.halfedge_face(u, v))
-        splits.append(mesh.split_edge(u, v, t=0.5, allow_boundary=True))
+    for edge in strip[:-1]:
+        ngons.append(mesh.halfedge_face(edge))
+        splits.append(mesh.split_edge(edge, t=0.5, allow_boundary=True))
 
     if is_closed:
         splits.append(splits[0])
     else:
-        u, v = strip[-1]
-        splits.append(mesh.split_edge(u, v, t=0.5, allow_boundary=True))
+        edge = strip[-1]
+        splits.append(mesh.split_edge(edge, t=0.5, allow_boundary=True))
 
     for (u, v), ngon in zip(pairwise(splits), ngons):
         mesh.split_face(ngon, u, v)

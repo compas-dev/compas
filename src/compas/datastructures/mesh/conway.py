@@ -98,7 +98,7 @@ def mesh_conway_join(mesh):
             fkey_index[mesh.halfedge[u][v]],
         ]
         for u, v in mesh.edges()
-        if not mesh.is_edge_on_boundary(u, v)
+        if not mesh.is_edge_on_boundary((u, v))
     ]
     join_mesh = cls.from_vertices_and_faces(vertices, faces)
     # is this necessary?
@@ -422,7 +422,7 @@ def mesh_conway_gyro(mesh):
     cls = type(mesh)
     vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
     vertices += [mesh.face_centroid(fkey) for fkey in mesh.faces()]
-    vertices += [mesh.edge_point(u, v, t=0.33) for u in mesh.vertices() for v in mesh.halfedge[u]]
+    vertices += [mesh.edge_point((u, v), t=0.33) for u in mesh.vertices() for v in mesh.halfedge[u]]
     V = mesh.number_of_vertices()
     F = mesh.number_of_faces()
     vkey_index = {vkey: i for i, vkey in enumerate(mesh.vertices())}

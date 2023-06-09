@@ -70,7 +70,6 @@ def mesh_unweld_edges(mesh, edges):
     vertex_changes = {}
 
     for vkey in vertices:
-
         # maps between old mesh face index and new network vertex index
         old_to_new = {nbr: i for i, nbr in enumerate(mesh.vertex_faces(vkey))}
         new_to_old = {i: nbr for i, nbr in enumerate(mesh.vertex_faces(vkey))}
@@ -79,7 +78,7 @@ def mesh_unweld_edges(mesh, edges):
         # through the edges to unweld
         network_edges = []
         for nbr in mesh.vertex_neighbors(vkey):
-            if not mesh.is_edge_on_boundary(vkey, nbr) and (vkey, nbr) not in edges and (nbr, vkey) not in edges:
+            if not mesh.is_edge_on_boundary((vkey, nbr)) and (vkey, nbr) not in edges and (nbr, vkey) not in edges:
                 network_edges.append(
                     (
                         old_to_new[mesh.halfedge[vkey][nbr]],

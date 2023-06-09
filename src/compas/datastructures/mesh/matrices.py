@@ -264,17 +264,15 @@ def mesh_laplacian_matrix(mesh, rtype="csr"):
     return L
 
 
-def trimesh_edge_cotangent(mesh, u, v):
+def trimesh_edge_cotangent(mesh, edge):
     """Compute the cotangent of the angle opposite a halfedge of the triangle mesh.
 
     Parameters
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of mesh.
-    u : int
-        The identifier of the first vertex of the halfedge.
-    v : int
-        The identifier of the second vertex of the halfedge.
+    edge : tuple[int, int]
+        The identifier of the halfedge.
 
     Returns
     -------
@@ -282,29 +280,28 @@ def trimesh_edge_cotangent(mesh, u, v):
         The edge cotangent.
 
     """
+    u, v = edge
     fkey = mesh.halfedge[u][v]
     cotangent = 0.0
     if fkey is not None:
         w = mesh.face_vertex_ancestor(fkey, u)
-        wu = mesh.edge_vector(w, u)
-        wv = mesh.edge_vector(w, v)
+        wu = mesh.edge_vector((w, u))
+        wv = mesh.edge_vector((w, v))
         length = length_vector(cross_vectors(wu, wv))
         if length:
             cotangent = dot_vectors(wu, wv) / length
     return cotangent
 
 
-def trimesh_edge_cotangents(mesh, u, v):
+def trimesh_edge_cotangents(mesh, edge):
     """Compute the cotangents of the angles opposite both sides of an edge of the triangle mesh.
 
     Parameters
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of mesh.
-    u : int
-        The identifier of the first vertex of the edge.
-    v : int
-        The identifier of the second vertex of the edge.
+    edge : tuple[int, int]
+        The identifier of the edge.
 
     Returns
     -------
@@ -312,6 +309,7 @@ def trimesh_edge_cotangents(mesh, u, v):
         The two edge cotangents.
 
     """
+    u, v = edge
     a = trimesh_edge_cotangent(mesh, u, v)
     b = trimesh_edge_cotangent(mesh, v, u)
     return a, b
@@ -377,13 +375,13 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype="csr"):
 
         W = 0
         for nbr in nbrs:
-            a, b = trimesh_edge_cotangents(mesh, key, nbr)
+            a, b = trimesh_edge_cotangents(mesh, (key, nbr))
             w = a + b
             W += w
 
         for nbr in nbrs:
             j = key_index[nbr]
-            a, b = trimesh_edge_cotangents(mesh, key, nbr)
+            a, b = trimesh_edge_cotangents(mesh, (key, nbr))
             w = a + b
             data.append(w / W)
             rows.append(i)
