@@ -486,8 +486,6 @@ class Polyline(Primitive):
                 current_length = 0
                 i += 1
                 polyline_points_num = len(polyline_copy)
-                if i > 10:
-                    break
         if not strict and len(divided_polylines):
             divided_polylines.append(segment)  # Add the last segment
         return divided_polylines
