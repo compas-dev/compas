@@ -470,7 +470,7 @@ class Polyline(Primitive):
         i, current_length = 0, 0
         polyline_points_num = len(polyline_copy)
         while i < polyline_points_num - 1:
-            pt1, pt2 = polyline_copy.points[i: i+2]
+            pt1, pt2 = polyline_copy.points[i : i + 2]
             line_length = pt1.distance_to_point(pt2)
             current_length += line_length
             if current_length <= length:
