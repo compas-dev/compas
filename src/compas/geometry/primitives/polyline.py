@@ -450,14 +450,14 @@ class Polyline(Primitive):
         Examples
         --------
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> split_polylines = split_polyline_by_length(polyline, 3)
+        >>> split_polylines = polyline.split_polyline_by_length(3)
         >>> split_polylines
         [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.709, 2.418, 0.000)]),\
         Polyline([Point(1.709, 2.418, 0.000), Point(2.000, 3.000, 0.000), Point(4.000, 4.000, 0.000),\
         Point(4.051, 3.898, 0.000)])]
 
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> split_polylines = split_polyline_by_length(polyline, 3, strict=False)
+        >>> split_polylines = polyline.split_polyline_by_length(3, strict=False)
         >>> split_polylines
         [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.709, 2.418, 0.000)]),\
         Polyline([Point(1.709, 2.418, 0.000), Point(2.000, 3.000, 0.000), Point(4.000, 4.000, 0.000),\
@@ -465,20 +465,29 @@ class Polyline(Primitive):
 
         """
         divided_polylines = []
+        polyline_copy = self.copy()
         segment = Polyline([self[0]])  # Start a new segment
-        current_length = 0
-        for line in self.lines:
-            point2 = line.end
-            current_length += line.length
-            if current_length < length:
-                segment.points.append(point2)
+        i, current_length = 0, 0
+        polyline_points_num = len(polyline_copy)
+        while i < polyline_points_num - 1:
+            pt1, pt2 = polyline_copy.points[i: i+2]
+            line_length = pt1.distance_to_point(pt2)
+            current_length += line_length
+            if current_length <= length:
+                segment.points.append(pt2)
+                i += 1
             else:
-                amp = 1 - ((current_length - length) / line.length)
-                new_pt = line.start + line.vector.scaled(amp)
+                amp = 1 - ((current_length - length) / line_length)
+                new_pt = pt1 + (pt2 - pt1).scaled(amp)
+                polyline_copy.points.insert(i + 1, new_pt)
                 segment.points.append(new_pt)
                 divided_polylines.append(segment)
-                segment = Polyline([new_pt, point2])  # Start a new segment
-                current_length = current_length - length
+                segment = Polyline([new_pt])  # Start a new segment
+                current_length = 0
+                i += 1
+                polyline_points_num = len(polyline_copy)
+                if i > 10:
+                    break
         if not strict and len(divided_polylines):
             divided_polylines.append(segment)  # Add the last segment
         return divided_polylines
@@ -500,7 +509,7 @@ class Polyline(Primitive):
         Examples
         --------
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> split_polylines = split_polyline(polyline, 3)
+        >>> split_polylines = polyline.split_polyline(3)
         >>> split_polylines
         [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.578, 2.157, 0.000)]),\
         Polyline([Point(1.578, 2.157, 0.000), Point(2.000, 3.000, 0.000), Point(3.578, 3.789, 0.000)]),\
@@ -508,6 +517,8 @@ class Polyline(Primitive):
         """
         if num_segments < 1:
             raise ValueError("Number of segments must be greater than or equal to 1.")
+        elif num_segments == 1:
+            return [self]
         total_length = self.length
         segment_length = total_length / num_segments
         return self.split_polyline_by_length(segment_length, False)
