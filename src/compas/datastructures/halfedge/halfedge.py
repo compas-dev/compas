@@ -282,33 +282,41 @@ class HalfEdge(Datastructure):
         """
         return sample(list(self.faces()), size)
 
-    def key_index(self):
-        """Returns a dictionary that maps vertex dictionary keys to the
+    def vertex_index(self):
+        """Returns a dictionary that maps vertex identifiers to the
         corresponding index in a vertex list or array.
 
         Returns
         -------
         dict[int, int]
-            A dictionary of key-index pairs.
+            A dictionary of vertex-index pairs.
+
+        See Also
+        --------
+        :meth:`index_vertex`
 
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
-    vertex_index = key_index
+    key_index = vertex_index
 
-    def index_key(self):
+    def index_vertex(self):
         """Returns a dictionary that maps the indices of a vertex list to
-        keys in a vertex dictionary.
+        the corresponding vertex identifiers.
 
         Returns
         -------
         dict[int, int]
-            A dictionary of index-key pairs.
+            A dictionary of index-vertex pairs.
+
+        See Also
+        --------
+        :meth:`vertex_index`
 
         """
         return dict(enumerate(self.vertices()))
 
-    index_vertex = index_key
+    index_key = index_vertex
 
     # --------------------------------------------------------------------------
     # builders
@@ -330,6 +338,11 @@ class HalfEdge(Datastructure):
         -------
         int
             The identifier of the vertex.
+
+        See Also
+        --------
+        :meth:`add_face`
+        :meth:`delete_vertex`, :meth:`delete_face`
 
         Notes
         -----
@@ -378,6 +391,11 @@ class HalfEdge(Datastructure):
             A dictionary of face attributes.
         **kwattr : dict[str, Any], optional
             A dictionary of additional attributes compiled of remaining named arguments.
+
+        See Also
+        --------
+        :meth:`add_vertex`
+        :meth:`delete_face`, :meth:`delete_vertex`
 
         Returns
         -------
@@ -436,6 +454,11 @@ class HalfEdge(Datastructure):
         -------
         None
 
+        See Also
+        --------
+        :meth:`delete_face`
+        :meth:`add_vertex`, :meth:`add_face`
+
         Notes
         -----
         In some cases, disconnected vertices can remain after application of this
@@ -481,6 +504,11 @@ class HalfEdge(Datastructure):
         -------
         None
 
+        See Also
+        --------
+        :meth:`delete_vertex`
+        :meth:`add_vertex`, :meth:`add_face`
+
         Notes
         -----
         In some cases, disconnected vertices can remain after application of this
@@ -506,6 +534,10 @@ class HalfEdge(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`delete_vertex`
 
         """
         for u in list(self.vertices()):
@@ -536,6 +568,11 @@ class HalfEdge(Datastructure):
             If `data` is False, the next vertex identifier.
             If `data` is True, the next vertex as a (key, attr) tuple.
 
+        See Also
+        --------
+        :meth:`faces`, :meth:`edges`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+
         """
         for key in self.vertex:
             if not data:
@@ -556,6 +593,11 @@ class HalfEdge(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next face identifier.
             If `data` is True, the next face as a (fkey, attr) tuple.
+
+        See Also
+        --------
+        :meth:`vertices`, :meth:`edges`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
 
         """
         for key in self.face:
@@ -578,6 +620,11 @@ class HalfEdge(Datastructure):
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a ((u, v), data) tuple.
 
+        See Also
+        --------
+        :meth:`vertices`, :meth:`faces`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+
         Notes
         ----
         Mesh edges have no topological meaning. They are only used to store data.
@@ -589,10 +636,6 @@ class HalfEdge(Datastructure):
         Unless edges were added explicitly using :meth:`add_edge` the order of
         edges is *as they come out*. However, as long as the toplogy remains
         unchanged, the order is consistent.
-
-        Examples
-        --------
-        >>>
 
         """
         seen = set()
@@ -628,6 +671,11 @@ class HalfEdge(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next vertex that matches the condition.
             If `data` is True, the next vertex and its attributes.
+
+        See Also
+        --------
+        :meth:`faces_where`, :meth:`edges_where`
+        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
 
         """
         conditions = conditions or {}
@@ -703,9 +751,10 @@ class HalfEdge(Datastructure):
             If `data` is False, the next vertex that matches the condition.
             If `data` is True, the next vertex and its attributes.
 
-        Examples
+        See Also
         --------
-        >>>
+        :meth:`faces_where_predicate`, :meth:`edges_where_predicate`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
 
         """
         for key, attr in self.vertices(True):
@@ -734,6 +783,11 @@ class HalfEdge(Datastructure):
         tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a (u, v, data) tuple.
+
+        See Also
+        --------
+        :meth:`vertices_where`, :meth:`faces_where`
+        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
 
         """
         conditions = conditions or {}
@@ -794,6 +848,11 @@ class HalfEdge(Datastructure):
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a (u, v, data) tuple.
 
+        See Also
+        --------
+        :meth:`faces_where_predicate`, :meth:`vertices_where_predicate`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+
         """
         for key, attr in self.edges(True):
             if predicate(key, attr):
@@ -821,6 +880,11 @@ class HalfEdge(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next face that matches the condition.
             If `data` is True, the next face and its attributes.
+
+        See Also
+        --------
+        :meth:`vertices_where`, :meth:`edges_where`
+        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
 
         """
         conditions = conditions or {}
@@ -880,6 +944,11 @@ class HalfEdge(Datastructure):
             If `data` is False, the next face that matches the condition.
             If `data` is True, the next face and its attributes.
 
+        See Also
+        --------
+        :meth:`edges_where_predicate`, :meth:`vertices_where_predicate`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+
         """
         for fkey, attr in self.faces(True):
             if predicate(fkey, attr):
@@ -905,6 +974,11 @@ class HalfEdge(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`update_default_edge_attributes`
+        :meth:`update_default_face_attributes`
 
         Notes
         -----
@@ -939,6 +1013,13 @@ class HalfEdge(Datastructure):
         KeyError
             If the vertex does not exist.
 
+        See Also
+        --------
+        :meth:`vertex_attributes`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
+        :meth:`unset_vertex_attribute`
+        :meth:`edge_attribute`
+        :meth:`face_attribute`
+
         """
         if key not in self.vertex:
             raise KeyError(key)
@@ -969,6 +1050,12 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
+        See Also
+        --------
+        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
+        :meth:`unset_edge_attribute`
+        :meth:`unset_face_attribute`
 
         Notes
         -----
@@ -1004,6 +1091,12 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
+        See Also
+        --------
+        :meth:`vertex_attribute`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
+        :meth:`edge_attributes`
+        :meth:`face_attributes`
 
         """
         if key not in self.vertex:
@@ -1051,6 +1144,12 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the vertices does not exist.
 
+        See Also
+        --------
+        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attributes`
+        :meth:`edges_attribute`
+        :meth:`faces_attribute`
+
         """
         if not keys:
             keys = self.vertices()
@@ -1086,6 +1185,12 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the vertices does not exist.
 
+        See Also
+        --------
+        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attribute`
+        :meth:`edges_attributes`
+        :meth:`faces_attributes`
+
         """
         if not keys:
             keys = self.vertices()
@@ -1108,6 +1213,11 @@ class HalfEdge(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`update_default_vertex_attributes`
+        :meth:`update_default_edge_attributes`
 
         Notes
         ----
@@ -1141,6 +1251,13 @@ class HalfEdge(Datastructure):
         KeyError
             If the face does not exist.
 
+        See Also
+        --------
+        :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`
+        :meth:`unset_face_attribute`
+        :meth:`edge_attribute`
+        :meth:`vertex_attribute`
+
         """
         if key not in self.face:
             raise KeyError(key)
@@ -1172,6 +1289,12 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the face does not exist.
+
+        See Also
+        --------
+        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`
+        :meth:`unset_edge_attribute`
+        :meth:`unset_vertex_attribute`
 
         Notes
         -----
@@ -1210,6 +1333,12 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the face does not exist.
+
+        See Also
+        --------
+        :meth:`face_attribute`, :meth:`faces_attribute`, :meth:`faces_attributes`
+        :meth:`edge_attributes`
+        :meth:`vertex_attributes`
 
         """
         if key not in self.face:
@@ -1254,6 +1383,12 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the faces does not exist.
 
+        See Also
+        --------
+        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attributes`
+        :meth:`edges_attribute`
+        :meth:`vertices_attribute`
+
         """
         if not keys:
             keys = self.faces()
@@ -1291,6 +1426,12 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the faces does not exist.
 
+        See Also
+        --------
+        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attribute`
+        :meth:`edges_attributes`
+        :meth:`vertices_attributes`
+
         """
         if not keys:
             keys = self.faces()
@@ -1313,6 +1454,11 @@ class HalfEdge(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`update_default_vertex_attributes`
+        :meth:`update_default_face_attributes`
 
         Notes
         ----
@@ -1347,6 +1493,13 @@ class HalfEdge(Datastructure):
         KeyError
             If the edge does not exist.
 
+        See Also
+        --------
+        :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        :meth:`unset_edge_attribute`
+        :meth:`vertex_attribute`
+        :meth:`face_attribute`
+
         """
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
@@ -1380,6 +1533,12 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
+        See Also
+        --------
+        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        :meth:`unset_vertex_attribute`
+        :meth:`unset_face_attribute`
 
         Notes
         -----
@@ -1419,6 +1578,12 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
+        See Also
+        --------
+        :meth:`edge_attribute`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        :meth:`vertex_attributes`
+        :meth:`face_attributes`
 
         """
         u, v = edge
@@ -1465,6 +1630,12 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the edges does not exist.
 
+        See Also
+        --------
+        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attributes`
+        :meth:`vertex_attributes`
+        :meth:`face_attributes`
+
         """
         edges = keys or self.edges()
         if value is not None:
@@ -1500,6 +1671,12 @@ class HalfEdge(Datastructure):
         ------
         KeyError
             If any of the edges does not exist.
+
+        See Also
+        --------
+        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`
+        :meth:`vertex_attributes`
+        :meth:`face_attributes`
 
         """
         edges = keys or self.edges()
@@ -1545,6 +1722,11 @@ class HalfEdge(Datastructure):
         -------
         int
 
+        See Also
+        --------
+        :meth:`number_of_edges`
+        :meth:`number_of_faces`
+
         """
         return len(list(self.vertices()))
 
@@ -1555,6 +1737,11 @@ class HalfEdge(Datastructure):
         -------
         int
 
+        See Also
+        --------
+        :meth:`number_of_vertices`
+        :meth:`number_of_faces`
+
         """
         return len(list(self.edges()))
 
@@ -1564,6 +1751,11 @@ class HalfEdge(Datastructure):
         Returns
         -------
         int
+
+        See Also
+        --------
+        :meth:`number_of_vertices`
+        :meth:`number_of_edges`
 
         """
         return len(list(self.faces()))
@@ -1583,6 +1775,10 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is valid.
             False, otherwise.
+
+        See Also
+        --------
+        :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
 
         """
         for key in self.vertices():
@@ -1630,6 +1826,10 @@ class HalfEdge(Datastructure):
             True, if the mesh is regular.
             False, otherwise.
 
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+
         """
         if not self.vertex or not self.face:
             return False
@@ -1664,6 +1864,10 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is manifold.
             False, otherwise.
+
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
 
         """
         if not self.vertex:
@@ -1704,6 +1908,10 @@ class HalfEdge(Datastructure):
             True, if the mesh is orientable.
             False, otherwise.
 
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+
         """
         raise NotImplementedError
 
@@ -1715,6 +1923,10 @@ class HalfEdge(Datastructure):
         bool
             True, if the mesh is a triangle mesh.
             False, otherwise.
+
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_quadmesh`
 
         """
         if not self.face:
@@ -1730,6 +1942,10 @@ class HalfEdge(Datastructure):
             True, if the mesh is a quad mesh.
             False, otherwise.
 
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`
+
         """
         if not self.face:
             return False
@@ -1744,6 +1960,10 @@ class HalfEdge(Datastructure):
             True if the mesh has no vertices.
             False otherwise.
 
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+
         """
         if self.number_of_vertices() == 0:
             return True
@@ -1757,6 +1977,10 @@ class HalfEdge(Datastructure):
         bool
             True if the mesh is not empty and has no naked edges.
             False otherwise.
+
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_trimesh`, :meth:`is_quadmesh`
 
         """
         if self.is_empty():
@@ -1774,6 +1998,10 @@ class HalfEdge(Datastructure):
         int
             The Euler characteristic.
 
+        See Also
+        --------
+        :meth:`genus`
+
         """
         V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
@@ -1787,6 +2015,10 @@ class HalfEdge(Datastructure):
         -------
         int
             The genus.
+
+        See Also
+        --------
+        :meth:`euler`
 
         References
         ----------
