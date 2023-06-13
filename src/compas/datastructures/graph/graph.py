@@ -265,10 +265,10 @@ class Graph(Datastructure):
         import networkx as nx
 
         G = nx.DiGraph()
-        G.graph.update(self.attributes)
+        G.graph.update(self.attributes)  # type: ignore
 
         for node, attr in self.nodes(data=True):
-            G.add_node(node, **attr)
+            G.add_node(node, **attr)  # type: ignore
 
         for edge, attr in self.edges(data=True):
             G.add_edge(*edge, **attr)
@@ -293,78 +293,6 @@ class Graph(Datastructure):
         self.node = {}
         self.edge = {}
         self.adjacency = {}
-
-    def get_any_node(self):
-        """Get the identifier of a random node.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`node_sample` instead.
-
-        Returns
-        -------
-        hashable
-            The identifier of the node.
-
-        """
-        return self.get_any_nodes(1)[0]
-
-    def get_any_nodes(self, n, exclude_leaves=False):
-        """Get a list of identifiers of a random set of n nodes.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`node_sample` instead.
-
-        Parameters
-        ----------
-        n : int
-            The number of random nodes.
-        exclude_leaves : bool, optional
-            If True, exclude the leaves (nodes with only one connected edge) from the set.
-
-        Returns
-        -------
-        list[hashable]
-            The identifiers of the nodes.
-
-        """
-        if exclude_leaves:
-            nodes = set(self.nodes()) - set(self.leaves())
-        else:
-            nodes = self.nodes()
-        return sample(list(nodes), n)
-
-    def get_any_edge(self):
-        """Get the identifier of a random edge.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`edge_sample` instead.
-
-        Returns
-        -------
-        tuple[hashable, hashable]
-            The identifier of the edge in the form of a pair of vertex identifiers.
-
-        """
-        return choice(list(self.edges()))
-
-    def get_any_edges(self, n):
-        """Get the identifiers of a set of random edges.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`edge_sample` instead.
-
-        Parameters
-        ----------
-        n : int
-            The number of edges in the set.
-
-        Returns
-        -------
-        list[tuple[hashable, hashable]]
-            The identifiers of the random edges.
-
-        """
-        return sample(list(self.edges()), n)
 
     def node_sample(self, size=1):
         """Get a list of identifiers of a random set of n nodes.
@@ -398,30 +326,34 @@ class Graph(Datastructure):
         """
         return sample(list(self.edges()), size)
 
-    def key_index(self):
+    def node_index(self):
         """Returns a dictionary that maps node identifiers to their corresponding index in a node list or array.
 
         Returns
         -------
         dict[hashable, int]
-            A dictionary of key-index pairs.
+            A dictionary of node-index pairs.
 
         """
         return {key: index for index, key in enumerate(self.nodes())}
 
-    def index_key(self):
+    key_index = node_index
+
+    def index_node(self):
         """Returns a dictionary that maps the indices of a node list to keys in a node dictionary.
 
         Returns
         -------
         dict[int, hashable]
-            A dictionary of index-key pairs.
+            A dictionary of index-node pairs.
 
         """
         return dict(enumerate(self.nodes()))
 
-    def uv_index(self):
-        """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
+    index_key = index_node
+
+    def edge_index(self):
+        """Returns a dictionary that maps edge identifiers (i.e. pairs of vertex identifiers)
         to the corresponding edge index in a list or array of edges.
 
         Returns
@@ -432,9 +364,11 @@ class Graph(Datastructure):
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges())}
 
-    def index_uv(self):
+    uv_index = edge_index
+
+    def index_edge(self):
         """Returns a dictionary that maps edges in a list to the corresponding
-        vertex key pairs.
+        vertex identifier pairs.
 
         Returns
         -------
@@ -443,6 +377,8 @@ class Graph(Datastructure):
 
         """
         return dict(enumerate(self.edges()))
+
+    index_uv = index_edge
 
     # --------------------------------------------------------------------------
     # builders
@@ -514,7 +450,7 @@ class Graph(Datastructure):
         Returns
         -------
         tuple[hashable, hashable]
-            The identifiers of the edge nodes.
+            The identifier of the edge.
 
         Examples
         --------
@@ -572,15 +508,13 @@ class Graph(Datastructure):
                 if v == key:
                     del self.adjacency[u][v]
 
-    def delete_edge(self, u, v):
+    def delete_edge(self, edge):
         """Delete an edge from the network.
 
         Parameters
         ----------
-        u : hashable
-            The identifier of the first node.
-        v : hashable
-            The identifier of the second node.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge as a pair of node identifiers.
 
         Returns
         -------
@@ -591,6 +525,7 @@ class Graph(Datastructure):
         >>>
 
         """
+        u, v = edge
         del self.adjacency[u][v]
         del self.adjacency[v][u]
         if u in self.edge and v in self.edge[u]:
@@ -1506,15 +1441,13 @@ class Graph(Datastructure):
     # edge topology
     # --------------------------------------------------------------------------
 
-    def has_edge(self, u, v, directed=True):
+    def has_edge(self, edge, directed=True):
         """Verify if the network contains a specific edge.
 
         Parameters
         ----------
-        u : hashable
-            The identifier of the first node of the edge.
-        v : hashable
-            The identifier of the second node of the edge.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge as a pair of node identifiers.
         directed : bool, optional
             If True, the direction of the edge is taken into account.
 
@@ -1524,6 +1457,7 @@ class Graph(Datastructure):
             True if the edge is present, False otherwise.
 
         """
+        u, v = edge
         if directed:
             return u in self.edge and v in self.edge[u]
         return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])

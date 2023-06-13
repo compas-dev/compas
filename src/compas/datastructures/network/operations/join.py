@@ -48,7 +48,7 @@ def network_join_edges(network, key):
     del network.halfedge[key]
     del network.edge[key]
     # set attributes based on average of two joining edges?
-    network.add_edge(a, b)
+    network.add_edge((a, b))
 
 
 def network_polylines(network, splits=None):
@@ -103,7 +103,6 @@ def network_polylines(network, splits=None):
 
         # get adjacent edges until the polyline is closed...
         while polyline[0] != polyline[-1]:
-
             # ... or until both end are non-two-valent vertices
             if (
                 len(network.neighbors(polyline[-1])) != 2
