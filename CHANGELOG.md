@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
 * Simplified `compas.datastructures.Part` for more generic usage.
 * Changed author email address of Tom Van Mele to tom.v.mele@gmail.com.
+* Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
 
 ### Removed
 
