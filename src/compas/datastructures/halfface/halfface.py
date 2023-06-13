@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from random import choice, sample
+from random import sample
 
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
@@ -265,6 +265,10 @@ class HalfFace(Datastructure):
         list[int]
             The identifiers of the vertices.
 
+        See Also
+        --------
+        :meth:`edge_sample`, :meth:`face_sample`, :meth:`cell_sample`
+
         """
         return sample(list(self.vertices()), size)
 
@@ -280,6 +284,10 @@ class HalfFace(Datastructure):
         -------
         list[tuple[int, int]]
             The identifiers of the edges.
+
+        See Also
+        --------
+        :meth:`vertex_sample`, :meth:`face_sample`, :meth:`cell_sample`
 
         """
         return sample(list(self.edges()), size)
@@ -297,6 +305,10 @@ class HalfFace(Datastructure):
         list[int]
             The identifiers of the faces.
 
+        See Also
+        --------
+        :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`cell_sample`
+
         """
         return sample(list(self.faces()), size)
 
@@ -313,6 +325,10 @@ class HalfFace(Datastructure):
         list[int]
             The identifiers of the cells.
 
+        See Also
+        --------
+        :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`face_sample`
+
         """
         return sample(list(self.cells()), size)
 
@@ -325,6 +341,10 @@ class HalfFace(Datastructure):
         dict[int, int]
             A dictionary of vertex-index pairs.
 
+        See Also
+        --------
+        :meth:`index_vertex`
+
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
@@ -336,6 +356,10 @@ class HalfFace(Datastructure):
         -------
         dict[int, int]
             A dictionary of index-vertex pairs.
+
+        See Also
+        --------
+        :meth:`vertex_index`
 
         """
         return dict(enumerate(self.vertices()))
@@ -360,6 +384,10 @@ class HalfFace(Datastructure):
         -------
         int
             The identifier of the vertex.
+
+        See Also
+        --------
+        :meth:`add_halfface`, :meth:`add_cell`
 
         Notes
         -----
@@ -403,6 +431,10 @@ class HalfFace(Datastructure):
         -------
         int
             The key of the face.
+
+        See Also
+        --------
+        :meth:`add_vertex`, :meth:`add_cell`
 
         Notes
         -----
@@ -471,6 +503,10 @@ class HalfFace(Datastructure):
         TypeError
             If the provided cell key is of an unhashable type.
 
+        See also
+        --------
+        :meth:`add_vertex`, :meth:`add_halfface`
+
         Notes
         -----
         If no key is provided for the cell, one is generated
@@ -520,6 +556,10 @@ class HalfFace(Datastructure):
         -------
         None
 
+        See Also
+        --------
+        :meth:`delete_halfface`, :meth:`delete_cell`
+
         """
         for cell in self.vertex_cells(vertex):
             self.delete_cell(cell)
@@ -535,6 +575,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`delete_vertex`, :meth:`delete_halfface`
 
         """
         cell_vertices = self.cell_vertices(cell)
@@ -603,6 +647,10 @@ class HalfFace(Datastructure):
             If `data` is False, the next vertex identifier.
             If `data` is True, the next vertex as a (vertex, attr) a tuple.
 
+        See Also
+        --------
+        :meth:`edges`, :meth:`faces`, :meth:`cells`
+
         """
         for vertex in self._vertex:
             if not data:
@@ -623,6 +671,10 @@ class HalfFace(Datastructure):
         tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a ((u, v), attr) tuple.
+
+        See Also
+        --------
+        :meth:`vertices`, :meth:`faces`, :meth:`cells`
 
         """
         seen = set()
@@ -651,6 +703,11 @@ class HalfFace(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next halfface identifier.
             If `data` is True, the next halfface as a (halfface, attr) tuple.
+
+        See Also
+        --------
+        :meth:`vertices`, :meth:`edges`, :meth:`cells`
+
         """
         for hface in self._halfface:
             if not data:
@@ -671,6 +728,10 @@ class HalfFace(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next face identifier.
             If `data` is True, the next face as a (face, attr) tuple.
+
+        See Also
+        --------
+        :meth:`vertices`, :meth:`edges`, :meth:`cells`
 
         Notes
         -----
@@ -708,6 +769,10 @@ class HalfFace(Datastructure):
             If `data` is False, the next cell identifier.
             If `data` is True, the next cell as a (cell, attr) tuple.
 
+        See Also
+        --------
+        :meth:`vertices`, :meth:`edges`, :meth:`faces`
+
         """
         for cell in self._cell:
             if not data:
@@ -734,6 +799,11 @@ class HalfFace(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next vertex that matches the condition.
             If `data` is True, the next vertex and its attributes.
+
+        See Also
+        --------
+        :meth:`vertices_where_predicate`
+        :meth:`edges_where`, :meth:`faces_where`, :meth:`cells_where`
 
         """
         conditions = conditions or {}
@@ -808,6 +878,11 @@ class HalfFace(Datastructure):
             If `data` is False, the next vertex that matches the condition.
             If `data` is True, the next vertex and its attributes.
 
+        See Also
+        --------
+        :meth:`vertices_where`
+        :meth:`edges_where_predicate`, :meth:`faces_where_predicate`, :meth:`cells_where_predicate`
+
         """
         for key, attr in self.vertices(True):
             if predicate(key, attr):
@@ -835,6 +910,11 @@ class HalfFace(Datastructure):
         tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a (u, v, data) tuple.
+
+        See Also
+        --------
+        :meth:`edges_where_predicate`
+        :meth:`vertices_where`, :meth:`faces_where`, :meth:`cells_where`
 
         """
         conditions = conditions or {}
@@ -893,6 +973,11 @@ class HalfFace(Datastructure):
             If `data` is False, the next edge as a (u, v) tuple.
             If `data` is True, the next edge as a (u, v, data) tuple.
 
+        See Also
+        --------
+        :meth:`edges_where`
+        :meth:`vertices_where_predicate`, :meth:`faces_where_predicate`, :meth:`cells_where_predicate`
+
         """
         for key, attr in self.edges(True):
             if predicate(key, attr):
@@ -920,6 +1005,11 @@ class HalfFace(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next face that matches the condition.
             If `data` is True, the next face and its attributes.
+
+        See Also
+        --------
+        :meth:`faces_where_predicate`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`cells_where`
 
         """
         conditions = conditions or {}
@@ -978,6 +1068,11 @@ class HalfFace(Datastructure):
             If `data` is False, the next face that matches the condition.
             If `data` is True, the next face and its attributes.
 
+        See Also
+        --------
+        :meth:`faces_where`
+        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`cells_where_predicate`
+
         """
         for fkey, attr in self.faces(True):
             if predicate(fkey, attr):
@@ -1005,6 +1100,11 @@ class HalfFace(Datastructure):
         int | tuple[int, dict[str, Any]]
             If `data` is False, the next cell that matches the condition.
             If `data` is True, the next cell and its attributes.
+
+        See Also
+        --------
+        :meth:`cells_where_predicate`
+        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
 
         """
         conditions = conditions or {}
@@ -1063,6 +1163,11 @@ class HalfFace(Datastructure):
             If `data` is False, the next cell that matches the condition.
             If `data` is True, the next cell and its attributes.
 
+        See Also
+        --------
+        :meth:`cells_where`
+        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
+
         """
         for ckey, attr in self.cells(True):
             if predicate(ckey, attr):
@@ -1088,6 +1193,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`update_default_edge_attributes`, :meth:`update_default_face_attributes`, :meth:`update_default_cell_attributes`
 
         Notes
         -----
@@ -1122,6 +1231,12 @@ class HalfFace(Datastructure):
         KeyError
             If the vertex does not exist.
 
+        See Also
+        --------
+        :meth:`unset_vertex_attribute`
+        :meth:`vertex_attributes`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
+        :meth:`edge_attribute`, :meth:`face_attribute`, :meth:`cell_attribute`
+
         """
         if vertex not in self._vertex:
             raise KeyError(vertex)
@@ -1152,6 +1267,10 @@ class HalfFace(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
+        See Also
+        --------
+        :meth:`vertex_attribute`
 
         Notes
         -----
@@ -1187,6 +1306,11 @@ class HalfFace(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
+        See Also
+        --------
+        :meth:`vertex_attribute`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
+        :meth:`edge_attributes`, :meth:`face_attributes`, :meth:`cell_attributes`
 
         """
         if vertex not in self._vertex:
@@ -1234,6 +1358,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the vertices does not exist.
 
+        See Also
+        --------
+        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attributes`
+        :meth:`edges_attribute`, :meth:`faces_attribute`, :meth:`cells_attribute`
+
         """
         vertices = keys or self.vertices()
         if value is not None:
@@ -1270,6 +1399,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the vertices does not exist.
 
+        See Also
+        --------
+        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attribute`
+        :meth:`edges_attributes`, :meth:`faces_attributes`, :meth:`cells_attributes`
+
         """
         vertices = keys or self.vertices()
         if values:
@@ -1295,6 +1429,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`update_default_vertex_attributes`, :meth:`update_default_face_attributes`, :meth:`update_default_cell_attributes`
 
         Notes
         -----
@@ -1327,6 +1465,12 @@ class HalfFace(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
+        See Also
+        --------
+        :meth:`unset_edge_attribute`
+        :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        :meth:`vertex_attribute`, :meth:`face_attribute`, :meth:`cell_attribute`
 
         """
         u, v = edge
@@ -1361,6 +1505,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`edge_attribute`
 
         Notes
         -----
@@ -1398,6 +1546,11 @@ class HalfFace(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
+        See Also
+        --------
+        :meth:`edge_attribute`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        :meth:`vertex_attributes`, :meth:`face_attributes`, :meth:`cell_attributes`
 
         """
         u, v = edge
@@ -1443,6 +1596,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the edges does not exist.
 
+        See Also
+        --------
+        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attributes`
+        :meth:`vertex_attribute`, :meth:`face_attribute`, :meth:`cell_attribute`
+
         """
         edges = edges or self.edges()
         if value is not None:
@@ -1477,6 +1635,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the edges does not exist.
 
+        See Also
+        --------
+        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`
+        :meth:`vertex_attributes`, :meth:`face_attributes`, :meth:`cell_attributes`
+
         """
         edges = edges or self.edges()
         if values:
@@ -1502,6 +1665,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`update_default_vertex_attributes`, :meth:`update_default_edge_attributes`, :meth:`update_default_cell_attributes`
 
         Notes
         -----
@@ -1535,6 +1702,12 @@ class HalfFace(Datastructure):
         KeyError
             If the face does not exist.
 
+        See Also
+        --------
+        :meth:`unset_face_attribute`
+        :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`
+        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`cell_attribute`
+
         """
         if face not in self._halfface:
             raise KeyError(face)
@@ -1567,6 +1740,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`face_attribute`
 
         Notes
         -----
@@ -1603,6 +1780,11 @@ class HalfFace(Datastructure):
         ------
         KeyError
             If the face does not exist.
+
+        See Also
+        --------
+        :meth:`face_attribute`, :meth:`faces_attribute`, :meth:`faces_attributes`
+        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`cell_attributes`
 
         """
         if face not in self._halfface:
@@ -1646,6 +1828,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the faces does not exist.
 
+        See Also
+        --------
+        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attributes`
+        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`cell_attribute`
+
         """
         faces = faces or self.faces()
         if value is not None:
@@ -1682,6 +1869,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the faces does not exist.
 
+        See Also
+        --------
+        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attribute`
+        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`cell_attributes`
+
         """
         faces = faces or self.faces()
         if values:
@@ -1707,6 +1899,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         None
+
+        See Also
+        --------
+        :meth:`update_default_vertex_attributes`, :meth:`update_default_edge_attributes`, :meth:`update_default_face_attributes`
 
         Notes
         ----
@@ -1740,6 +1936,12 @@ class HalfFace(Datastructure):
         KeyError
             If the cell does not exist.
 
+        See Also
+        --------
+        :meth:`unset_cell_attribute`
+        :meth:`cell_attributes`, :meth:`cells_attribute`, :meth:`cells_attributes`
+        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`face_attribute`
+
         """
         if cell not in self._cell:
             raise KeyError(cell)
@@ -1771,6 +1973,10 @@ class HalfFace(Datastructure):
         ------
         KeyError
             If the cell does not exist.
+
+        See Also
+        --------
+        :meth:`cell_attribute`
 
         Notes
         -----
@@ -1807,6 +2013,11 @@ class HalfFace(Datastructure):
         ------
         KeyError
             If the cell does not exist.
+
+        See Also
+        --------
+        :meth:`cell_attribute`, :meth:`cells_attribute`, :meth:`cells_attributes`
+        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`face_attributes`
 
         """
         if cell not in self._cell:
@@ -1848,6 +2059,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the cells does not exist.
 
+        See Also
+        --------
+        :meth:`cell_attribute`, :meth:`cell_attributes`, :meth:`cells_attributes`
+        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`face_attribute`
+
         """
         if not cells:
             cells = self.cells()
@@ -1885,6 +2101,11 @@ class HalfFace(Datastructure):
         KeyError
             If any of the faces does not exist.
 
+        See Also
+        --------
+        :meth:`cell_attribute`, :meth:`cell_attributes`, :meth:`cells_attribute`
+        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`face_attributes`
+
         """
         if not cells:
             cells = self.cells()
@@ -1906,6 +2127,10 @@ class HalfFace(Datastructure):
         int
             The number of vertices.
 
+        See Also
+        --------
+        :meth:`number_of_edges`, :meth:`number_of_faces`, :meth:`number_of_cells`
+
         """
         return len(list(self.vertices()))
 
@@ -1916,6 +2141,10 @@ class HalfFace(Datastructure):
         -------
         int
             The number of edges.
+
+        See Also
+        --------
+        :meth:`number_of_vertices`, :meth:`number_of_faces`, :meth:`number_of_cells`
 
         """
         return len(list(self.edges()))
@@ -1928,6 +2157,10 @@ class HalfFace(Datastructure):
         int
             The number of faces.
 
+        See Also
+        --------
+        :meth:`number_of_vertices`, :meth:`number_of_edges`, :meth:`number_of_cells`
+
         """
         return len(list(self.faces()))
 
@@ -1939,11 +2172,24 @@ class HalfFace(Datastructure):
         int
             The number of cells.
 
+        See Also
+        --------
+        :meth:`number_of_vertices`, :meth:`number_of_edges`, :meth:`number_of_faces`
+
         """
         return len(list(self.cells()))
 
     def is_valid(self):
-        NotImplementedError
+        """Verify that the volmesh is valid.
+
+        Returns
+        -------
+        bool
+            True if the volmesh is valid.
+            False otherwise.
+
+        """
+        raise NotImplementedError
 
     # --------------------------------------------------------------------------
     # vertex topology
@@ -1963,6 +2209,10 @@ class HalfFace(Datastructure):
             True if the vertex is in the volmesh.
             False otherwise.
 
+        See Also
+        --------
+        :meth:`has_edge`, :meth:`has_face`, :meth:`has_cell`
+
         """
         return vertex in self._vertex
 
@@ -1978,6 +2228,12 @@ class HalfFace(Datastructure):
         -------
         list[int]
             The list of neighboring vertices.
+
+        See Also
+        --------
+        :meth:`vertex_degree`, :meth:`vertex_min_degree`, :meth:`vertex_max_degree`
+        :meth:`vertex_faces`, :meth:`vertex_halffaces`, :meth:`vertex_cells`
+        :meth:`vertex_neighborhood`
 
         """
         return self._plane[vertex].keys()
@@ -1996,6 +2252,10 @@ class HalfFace(Datastructure):
         -------
         list[int]
             The vertices in the neighborhood.
+
+        See Also
+        --------
+        :meth:`vertex_neighbors`
 
         Notes
         -----
@@ -2027,6 +2287,10 @@ class HalfFace(Datastructure):
         int
             The degree of the vertex.
 
+        See Also
+        --------
+        :meth:`vertex_neighbors`, :meth:`vertex_min_degree`, :meth:`vertex_max_degree`
+
         """
         return len(self.vertex_neighbors(vertex))
 
@@ -2037,6 +2301,10 @@ class HalfFace(Datastructure):
         -------
         int
             The lowest degree of all vertices.
+
+        See Also
+        --------
+        :meth:`vertex_degree`, :meth:`vertex_max_degree`
 
         """
         if not self._vertex:
@@ -2050,6 +2318,10 @@ class HalfFace(Datastructure):
         -------
         int
             The highest degree of all vertices.
+
+        See Also
+        --------
+        :meth:`vertex_degree`, :meth:`vertex_min_degree`
 
         """
         if not self._vertex:
@@ -2068,6 +2340,10 @@ class HalfFace(Datastructure):
         -------
         list[int]
             The list of halffaces connected to a vertex.
+
+        See Also
+        --------
+        :meth:`vertex_neighbors`, :meth:`vertex_faces`, :meth:`vertex_cells`
 
         """
         cells = self.vertex_cells(vertex)
@@ -2093,6 +2369,10 @@ class HalfFace(Datastructure):
         list[int]
             The list of cells connected to a vertex.
 
+        See Also
+        --------
+        :meth:`vertex_neighbors`, :meth:`vertex_faces`, :meth:`vertex_halffaces`
+
         """
         cells = set()
         for nbr in self._plane[vertex]:
@@ -2114,6 +2394,10 @@ class HalfFace(Datastructure):
         bool
             True if the vertex is on the boundary.
             False otherwise.
+
+        See Also
+        --------
+        :meth:`is_edge_on_boundary`, :meth:`is_face_on_boundary`, :meth:`is_cell_on_boundary`
 
         """
         halffaces = self.vertex_halffaces(vertex)
@@ -2140,6 +2424,10 @@ class HalfFace(Datastructure):
             True if the edge exists.
             False otherwise.
 
+        See Also
+        --------
+        :meth:`has_vertex`, :meth:`has_face`, :meth:`has_cell`
+
         """
         return edge in set(self.edges())
 
@@ -2155,6 +2443,10 @@ class HalfFace(Datastructure):
         -------
         list[int]
             Ordered list of halfface identifiers.
+
+        See Also
+        --------
+        :meth:`edge_cells`
 
         """
         u, v = edge
@@ -2186,6 +2478,10 @@ class HalfFace(Datastructure):
         list[int]
             Ordered list of keys identifying the ordered cells.
 
+        See Also
+        --------
+        :meth:`edge_halffaces`
+
         """
         halffaces = self.edge_halffaces(edge)
         return [self.halfface_cell(halfface) for halfface in halffaces]
@@ -2203,6 +2499,10 @@ class HalfFace(Datastructure):
         bool
             True if the edge is on the boundary.
             False otherwise.
+
+        See Also
+        --------
+        :meth:`is_vertex_on_boundary`, :meth:`is_face_on_boundary`, :meth:`is_cell_on_boundary`
 
         Note
         ----
@@ -2231,6 +2531,10 @@ class HalfFace(Datastructure):
             True if the face exists.
             False otherwise.
 
+        See Also
+        --------
+        :meth:`has_vertex`, :meth:`has_edge`, :meth:`has_cell`
+
         """
         return halfface in self._halfface
 
@@ -2247,6 +2551,10 @@ class HalfFace(Datastructure):
         list[int]
             Ordered vertex identifiers.
 
+        See Also
+        --------
+        :meth:`halfface_edges`, :meth:`halfface_halfedges`
+
         """
         return self._halfface[halfface]
 
@@ -2262,6 +2570,10 @@ class HalfFace(Datastructure):
         -------
         list[tuple[int, int]]
             The halfedges of a halfface.
+
+        See Also
+        --------
+        :meth:`halfface_edges`, :meth:`halfface_vertices`
 
         """
         vertices = self.halfface_vertices(halfface)
@@ -2280,6 +2592,10 @@ class HalfFace(Datastructure):
         int
             Identifier of the cell.
 
+        See Also
+        --------
+        :meth:`halfface_opposite_cell`
+
         """
         u, v, w = self._halfface[halfface][0:3]
         return self._plane[u][v][w]
@@ -2297,6 +2613,10 @@ class HalfFace(Datastructure):
         int
             Identifier of the cell.
 
+        See Also
+        --------
+        :meth:`halfface_cell`
+
         """
         u, v, w = self._halfface[halfface][0:3]
         return self._plane[w][v][u]
@@ -2313,6 +2633,10 @@ class HalfFace(Datastructure):
         -------
         int
             Identifier of the opposite face.
+
+        See Also
+        --------
+        :meth:`halfface_adjacent_halfface`
 
         Notes
         -----
@@ -2341,6 +2665,10 @@ class HalfFace(Datastructure):
         int | None
             The identifier of the adjacent half-face, or None if `halfedge` is on the boundary.
 
+        See Also
+        --------
+        :meth:`halfface_opposite_halfface`
+
         Notes
         -----
         The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.
@@ -2350,7 +2678,7 @@ class HalfFace(Datastructure):
         u, v = halfedge
         cell = self.halfface_cell(halfface)
         nbr_halfface = self._cell[cell][v][u]
-        w = self.face_vertex_ancestor(nbr_halfface, v)
+        w = self.halfface_vertex_ancestor(nbr_halfface, v)
         nbr_cell = self._plane[u][v][w]
         if nbr_cell is None:
             return None
@@ -2376,6 +2704,10 @@ class HalfFace(Datastructure):
         ValueError
             If the vertex is not part of the face.
 
+        See Also
+        --------
+        :meth:`halfface_vertex_descendent`
+
         """
         i = self._halfface[halfface].index(vertex)
         return self._halfface[halfface][i - 1]
@@ -2400,6 +2732,10 @@ class HalfFace(Datastructure):
         ValueError
             If the vertex is not part of the face.
 
+        See Also
+        --------
+        :meth:`halfface_vertex_ancestor`
+
         """
         if self._halfface[halfface][-1] == vertex:
             return self._halfface[halfface][0]
@@ -2407,6 +2743,27 @@ class HalfFace(Datastructure):
         return self._halfface[halfface][i + 1]
 
     def halfface_manifold_neighbors(self, halfface):
+        """Return the halfface neighbors of a halfface that are on the same manifold.
+
+        Parameters
+        ----------
+        halfface : int
+            The identifier of the halfface.
+
+        Returns
+        -------
+        list[int]
+            The list of neighboring halffaces.
+
+        See Also
+        --------
+        :meth:`halfface_manifold_neighborhood`
+
+        Notes
+        -----
+        Neighboring halffaces on the same cell are not included.
+
+        """
         nbrs = []
         cell = self.halfface_cell(halfface)
         for u, v in self.halfface_halfedges(halfface):
@@ -2418,12 +2775,12 @@ class HalfFace(Datastructure):
                 nbrs.append(nbr)
         return nbrs
 
-    def halfface_manifold_neighborhood(self, hfkey, ring=1):
+    def halfface_manifold_neighborhood(self, halfface, ring=1):
         """Return the halfface neighborhood of a halfface across their edges.
 
         Parameters
         ----------
-        key : int
+        halfface : int
             The identifier of the halfface.
 
         Returns
@@ -2431,22 +2788,26 @@ class HalfFace(Datastructure):
         list[int]
             The list of neighboring halffaces.
 
+        See Also
+        --------
+        :meth:`halfface_manifold_neighbors`
+
         Notes
         -----
         Neighboring halffaces on the same cell are not included.
 
         """
-        nbrs = set(self.halfface_manifold_neighbors(hfkey))
+        nbrs = set(self.halfface_manifold_neighbors(halfface))
         i = 1
         while True:
             if i == ring:
                 break
             temp = []
-            for nbr_hfkey in nbrs:
-                temp += self.halfface_manifold_neighbors(nbr_hfkey)
+            for nbr in nbrs:
+                temp += self.halfface_manifold_neighbors(nbr)
             nbrs.update(temp)
             i += 1
-        return list(nbrs - set([hfkey]))
+        return list(nbrs - set([halfface]))
 
     def is_halfface_on_boundary(self, halfface):
         """Verify that a face is on the boundary.
@@ -2461,6 +2822,10 @@ class HalfFace(Datastructure):
         bool
             True if the face is on the boundary.
             False otherwise.
+
+        See Also
+        --------
+        :meth:`is_vertex_on_boundary`, :meth:`is_edge_on_boundary`, :meth:`is_cell_on_boundary`
 
         """
         u, v, w = self._halfface[halfface][0:3]
@@ -2483,6 +2848,10 @@ class HalfFace(Datastructure):
         list[int]
             The vertex identifiers of a cell.
 
+        See Also
+        --------
+        :meth:`cell_edges`, :meth:`cell_faces`, :meth:`cell_halfedges`
+
         Notes
         -----
         This method is similar to :meth:`~compas.datastructures.HalfEdge.vertices`,
@@ -2503,6 +2872,10 @@ class HalfFace(Datastructure):
         -------
         list[tuple[int, int]]
             The halfedges of a cell.
+
+        See Also
+        --------
+        :meth:`cell_edges`, :meth:`cell_faces`, :meth:`cell_vertices`
 
         Notes
         -----
@@ -2528,6 +2901,10 @@ class HalfFace(Datastructure):
         list[tuple[int, int]]
             The edges of the cell.
 
+        See Also
+        --------
+        :meth:`cell_halfedges`, :meth:`cell_faces`, :meth:`cell_vertices`
+
         Notes
         -----
         This method is similar to :meth:`~compas.datastructures.HalfEdge.edges`,
@@ -2548,6 +2925,10 @@ class HalfFace(Datastructure):
         -------
         list[int]
             The faces of a cell.
+
+        See Also
+        --------
+        :meth:`cell_halfedges`, :meth:`cell_edges`, :meth:`cell_vertices`
 
         Notes
         -----
@@ -2574,6 +2955,10 @@ class HalfFace(Datastructure):
         -------
         list[int]
             The list of neighboring vertices.
+
+        See Also
+        --------
+        :meth:`cell_vertex_faces`
 
         Notes
         -----
@@ -2609,6 +2994,10 @@ class HalfFace(Datastructure):
         list[int]
             The ordered list of faces connected to a vertex of a cell.
 
+        See Also
+        --------
+        :meth:`cell_vertex_neighbors`
+
         Notes
         -----
         All of the returned faces should are part of the same cell.
@@ -2642,6 +3031,10 @@ class HalfFace(Datastructure):
         int
             The identifier of the face.
 
+        See Also
+        --------
+        :meth:`cell_halfedge_opposite_face`
+
         Notes
         -----
         This method is similar to :meth:`~compas.datastructures.HalfEdge.halfedge_face`,
@@ -2666,6 +3059,10 @@ class HalfFace(Datastructure):
         int
             The identifier of the face.
 
+        See Also
+        --------
+        :meth:`cell_halfedge_face`
+
         """
         u, v = halfedge
         return self._cell[cell][v][u]
@@ -2684,6 +3081,10 @@ class HalfFace(Datastructure):
         -------
         int
             The identifier of the face.
+
+        See Also
+        --------
+        :meth:`cell_neighbors`
 
         Notes
         -----
@@ -2711,6 +3112,10 @@ class HalfFace(Datastructure):
         list[int]
             The identifiers of the adjacent cells.
 
+        See Also
+        --------
+        :meth:`cell_face_neighbors`
+
         """
         nbrs = []
         for face in self.cell_faces(cell):
@@ -2733,6 +3138,10 @@ class HalfFace(Datastructure):
             True if the face is on the boundary.
             False otherwise.
 
+        See Also
+        --------
+        :meth:`is_vertex_on_boundary`, :meth:`is_edge_on_boundary`, :meth:`is_face_on_boundary`
+
         """
         faces = self.cell_faces(cell)
         for face in faces:
@@ -2752,6 +3161,10 @@ class HalfFace(Datastructure):
         list[int]
             The vertices of the boundary.
 
+        See Also
+        --------
+        :meth:`faces_on_boundaries`, :meth:`cells_on_boundaries`
+
         """
         vertices = set()
         for face in self._halfface:
@@ -2767,6 +3180,10 @@ class HalfFace(Datastructure):
         list[int]
             The faces of the boundary.
 
+        See Also
+        --------
+        :meth:`vertices_on_boundaries`, :meth:`cells_on_boundaries`
+
         """
         faces = set()
         for face in self._halfface:
@@ -2781,6 +3198,10 @@ class HalfFace(Datastructure):
         -------
         list[int]
             The cells of the boundary.
+
+        See Also
+        --------
+        :meth:`vertices_on_boundaries`, :meth:`faces_on_boundaries`
 
         """
         cells = set()
