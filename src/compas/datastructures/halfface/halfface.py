@@ -252,34 +252,6 @@ class HalfFace(Datastructure):
         self._max_face = -1
         self._max_cell = -1
 
-    def get_any_vertex(self):
-        """Get the identifier of a random vertex.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`vertex_sample` instead.
-
-        Returns
-        -------
-        int
-            The identifier of the vertex.
-
-        """
-        return choice(list(self.vertices()))
-
-    def get_any_face(self):
-        """Get the identifier of a random face.
-
-        .. deprecated:: 1.13.3
-            Use :meth:`face_sample` instead.
-
-        Returns
-        -------
-        int
-            The identifier of the face.
-
-        """
-        return choice(list(self.faces()))
-
     def vertex_sample(self, size=1):
         """Get the identifiers of a set of random vertices.
 
