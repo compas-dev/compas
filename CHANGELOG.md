@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed support for `System.Decimal` data type on json serialization.
 * Fixed `AttributeError` in Plotter's `PolylineArtist` and `SegementArtist`.
 * Fixed wrong key type when de-serializing `Graph` with integer keys leading to node not found.
+* Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
 
 ### Removed
 
