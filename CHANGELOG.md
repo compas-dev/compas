@@ -12,6 +12,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
 * Added representation for features in `compas.datastructures.Part`.
 * Added `compas.rpc.XFunc`.
+* Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
+* Added `compas.datastructures.Halfedge.halfedge_strip_faces`.
+* Added `compas.datastructures.Mesh.vertex_point`.
+* Added `compas.datastructures.Mesh.vertices_points`.
+* Added `compas.datastructures.Mesh.set_vertex_point`.
+* Added `compas.datastructures.Mesh.edge_start`.
+* Added `compas.datastructures.Mesh.edge_end`.
+* Added `compas.datastructures.Mesh.edge_line`.
+* Added `compas.datastructures.Mesh.face_points`.
+* Added `compas.datastructures.Mesh.face_polygon`.
+* Added `compas.datastructures.Mesh.face_circle`.
+* Added `compas.datastructures.Mesh.face_frame`.
+
 
 ### Changed
 
@@ -22,9 +35,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed support for `System.Decimal` data type on json serialization.
 * Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
 * Simplified `compas.datastructures.Part` for more generic usage.
-* Changed author email address of Tom Van Mele to tom.v.mele@gmail.com.
 * Changed `GLTFMesh.from_mesh` to read texture coordinates, vertex normals and colors if available and add to `GLTFMesh`
 * Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
+* Changed edge parameter of `compas.datastructures.Halfedge.edge_faces` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_face` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.is_edge_on_boundary` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_after` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_before` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangent` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangents` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_coordinates` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_length` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_vector` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_point` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_midpoint` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_direction` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.is_collapse_legal` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_insert_vertex_on_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_swap_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed `compas.datastructures.Mesh.vertex_laplacian` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.neighborhood_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.vertex_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_vector` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_direction` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_point` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.edge_midpoint` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.face_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_center` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_plane` to return `compas.geometry.Plane`.
+
 
 ### Removed
 
@@ -32,6 +76,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed deprecated `compas.utilities.coercing`.
 * Removed deprecated `compas.utilities.encoders`.
 * Removed deprecated `compas.utilities.xfunc`.
+* Removed `compas.datastructures.Halfedge.get_any_vertex`.
+* Removed `compas.datastructures.Halfedge.get_any_vertices`.
+* Removed `compas.datastructures.Halfedge.get_any_face`.
 
 ## [1.17.5] 2023-02-16
 
