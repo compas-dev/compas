@@ -49,14 +49,10 @@ def network_find_cycles(network, breakpoints=None):
 
     leaves = list(network.leaves())
     if leaves:
-        u = sorted(
-            [(key, network.node_coordinates(key, "xy")) for key in leaves],
-            key=lambda x: (x[1][1], x[1][0]),
-        )[
-            0
-        ][0]
+        key_xy = list(zip(leaves, network.nodes_attributes("xy", keys=leaves)))
     else:
-        u = sorted(network.nodes(True), key=lambda x: (x[1]["y"], x[1]["x"]))[0][0]
+        key_xy = list(zip(network.nodes(), network.nodes_attributes("xy")))
+    u = sorted(key_xy, key=lambda x: (x[1][1], x[1][0]))[0][0]
 
     cycles = {}
     found = {}
