@@ -31,3 +31,4 @@ jobs:
           build_ghpython_components: true
           gh_source: src/compas_ghpython/components
           gh_target: src/compas_ghpython/components/ghuser
+          release_name_prefix: COMPAS
