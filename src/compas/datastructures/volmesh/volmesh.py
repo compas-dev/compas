@@ -9,6 +9,9 @@ from compas.datastructures import Mesh
 
 from compas.files import OBJ
 
+from compas.geometry import Point
+from compas.geometry import Vector
+from compas.geometry import Line
 from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
 from compas.geometry import centroid_points
@@ -366,11 +369,11 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
-            The coordinates of the centroid.
+        :class:`compas.geometry.Point`
+            The point at the centroid.
 
         """
-        return centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()])
+        return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()]))
 
     # --------------------------------------------------------------------------
     # vertex geometry
@@ -395,6 +398,22 @@ class VolMesh(HalfFace):
         """
         return [self._vertex[vertex][axis] for axis in axes]
 
+    def vertex_point(self, vertex):
+        """Return the point representation of a vertex.
+
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point.
+
+        """
+        return Point(*self.vertex_coordinates(vertex))
+
     def vertex_laplacian(self, vertex):
         """Compute the vector from a vertex to the centroid of its neighbors.
 
@@ -405,16 +424,16 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
-            The components of the vector.
+        :class:`compas.geometry.Vector`
+            The laplacian vector.
 
         """
         c = self.vertex_neighborhood_centroid(vertex)
         p = self.vertex_coordinates(vertex)
-        return subtract_vectors(c, p)
+        return Vector(*subtract_vectors(c, p))
 
     def vertex_neighborhood_centroid(self, vertex):
-        """Compute the centroid of the neighbors of a vertex.
+        """Compute the point at the centroid of the neighbors of a vertex.
 
         Parameters
         ----------
@@ -423,11 +442,11 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Point`
             The coordinates of the centroid.
 
         """
-        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(vertex)])
+        return Point(*centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(vertex)]))
 
     # --------------------------------------------------------------------------
     # edge geometry
@@ -445,14 +464,140 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
+        tuple[list[float], list[float]]
             The coordinates of the start point.
-        list[float]
             The coordinates of the end point.
 
         """
         u, v = edge
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
+
+    def edge_start(self, edge):
+        """Return the start point of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The start point.
+
+        """
+        return self.vertex_point(edge[0])
+
+    def edge_end(self, edge):
+        """Return the end point of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The end point.
+
+        """
+        return self.vertex_point(edge[1])
+
+    def edge_vector(self, edge):
+        """Return the vector of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The vector from start to end.
+
+        """
+        a, b = self.edge_coordinates(edge)
+        return Vector.from_start_end(a, b)
+
+    def edge_midpoint(self, edge):
+        """Return the midpoint of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The midpoint.
+
+        """
+        a, b = self.edge_coordinates(edge)
+        return Point(0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.5 * (a[2] + b[2]))
+
+    def edge_point(self, edge, t=0.5):
+        """Return the point at a parametric location along an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+        t : float, optional
+            The location of the point on the edge.
+            If the value of `t` is outside the range 0-1, the point will
+            lie in the direction of the edge, but not on the edge vector.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The XYZ coordinates of the point.
+
+        """
+        if t == 0:
+            return self.edge_start(edge)
+        if t == 1:
+            return self.edge_end(edge)
+        if t == 0.5:
+            return self.edge_midpoint(edge)
+
+        a, b = self.edge_coordinates(edge)
+        ab = subtract_vectors(b, a)
+        return Point(*add_vectors(a, scale_vector(ab, t)))
+
+    def edge_direction(self, edge):
+        """Return the direction vector of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The direction vector of the edge.
+
+        """
+        return Vector(*normalize_vector(self.edge_vector(edge)))
+
+    def edge_line(self, edge):
+        """Return the line representation of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Line`
+            The line.
+
+        """
+        return Line(self.edge_start(edge), self.edge_end(edge))
 
     def edge_length(self, edge):
         """Return the length of an edge.
@@ -470,62 +615,6 @@ class VolMesh(HalfFace):
         """
         a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
-
-    def edge_vector(self, edge):
-        """Return the vector of an edge.
-
-        Parameters
-        ----------
-        edge : tuple[int, int]
-            The edge identifier.
-
-        Returns
-        -------
-        list[float]
-            The vector from u to v.
-
-        """
-        a, b = self.edge_coordinates(edge)
-        ab = subtract_vectors(b, a)
-        return ab
-
-    def edge_point(self, edge, t=0.5):
-        """Return the location of a point along an edge.
-
-        Parameters
-        ----------
-        edge : tuple[int, int]
-            The edge identifier.
-        t : float, optional
-            The location of the point on the edge.
-            If the value of `t` is outside the range 0-1, the point will
-            lie in the direction of the edge, but not on the edge vector.
-
-        Returns
-        -------
-        list[float]
-            The XYZ coordinates of the point.
-
-        """
-        a, b = self.edge_coordinates(edge)
-        ab = subtract_vectors(b, a)
-        return add_vectors(a, scale_vector(ab, t))
-
-    def edge_direction(self, edge):
-        """Return the direction vector of an edge.
-
-        Parameters
-        ----------
-        edge : tuple[int, int]
-            The edge identifier.
-
-        Returns
-        -------
-        list[float]
-            The direction vector of the edge.
-
-        """
-        return normalize_vector(self.edge_vector(edge))
 
     # --------------------------------------------------------------------------
     # face geometry
@@ -566,6 +655,22 @@ class VolMesh(HalfFace):
         """
         return [self.vertex_coordinates(vertex, axes=axes) for vertex in self.face_vertices(face)]
 
+    def face_points(self, face):
+        """Compute the points of the vertices of a face.
+
+        Parameters
+        ----------
+        face : int
+            The identifier of the face.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Point`]
+            The points of the vertices of the face.
+
+        """
+        return [self.vertex_point(vertex) for vertex in self.face_vertices(face)]
+
     def face_normal(self, face, unitized=True):
         """Compute the oriented normal of a face.
 
@@ -578,14 +683,14 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
-            The components of the normal vector.
+        :class:`compas.geometry.Vector`
+            The normal vector.
 
         """
-        return normal_polygon(self.face_coordinates(face), unitized=unitized)
+        return Vector(*normal_polygon(self.face_coordinates(face), unitized=unitized))
 
     def face_centroid(self, face):
-        """Compute the location of the centroid of a face.
+        """Compute the point at the centroid of a face.
 
         Parameters
         ----------
@@ -594,14 +699,14 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Point`
             The coordinates of the centroid.
 
         """
-        return centroid_points(self.face_coordinates(face))
+        return Point(*centroid_points(self.face_coordinates(face)))
 
     def face_center(self, face):
-        """Compute the location of the center of mass of a face.
+        """Compute the point at the center of mass of a face.
 
         Parameters
         ----------
@@ -610,11 +715,11 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Point`
             The coordinates of the center of mass.
 
         """
-        return centroid_polygon(self.face_coordinates(face))
+        return Point(*centroid_polygon(self.face_coordinates(face)))
 
     def face_area(self, face):
         """Compute the oriented area of a face.
@@ -697,7 +802,7 @@ class VolMesh(HalfFace):
     # --------------------------------------------------------------------------
 
     def cell_centroid(self, cell):
-        """Compute the location of the centroid of a cell.
+        """Compute the point at the centroid of a cell.
 
         Parameters
         ----------
@@ -706,15 +811,15 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Point`
             The coordinates of the centroid.
 
         """
         vertices = self.cell_vertices(cell)
-        return centroid_points([self.vertex_coordinates(vertex) for vertex in vertices])
+        return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in vertices]))
 
     def cell_center(self, cell):
-        """Compute the location of the center of mass of a cell.
+        """Compute the point at the center of mass of a cell.
 
         Parameters
         ----------
@@ -723,12 +828,12 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Point`
             The coordinates of the center of mass.
 
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
-        return centroid_polyhedron((vertices, faces))
+        return Point(*centroid_polyhedron((vertices, faces)))
 
     def cell_vertex_normal(self, cell, vertex):
         """Return the normal vector at the vertex of a boundary cell as the weighted average of the
@@ -743,10 +848,10 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Vector`
             The components of the normal vector.
 
         """
         cell_faces = self.cell_faces(cell)
-        vectors = [self.face_normal(face) for face in self.vertex_faces(vertex) if face in cell_faces]
-        return normalize_vector(centroid_points(vectors))
+        vectors = [self.face_normal(face) for face in self.vertex_halffaces(vertex) if face in cell_faces]
+        return Vector(*normalize_vector(centroid_points(vectors)))
