@@ -15,8 +15,8 @@ from compas.geometry import dot_vectors
 from compas.geometry import cross_vectors
 from compas.geometry import normalize_vector
 
-from compas.geometry.transformations import identity_matrix
-from compas.geometry.transformations import Transformation
+from .matrices import identity_matrix
+from .transformation import Transformation
 
 
 class Reflection(Transformation):

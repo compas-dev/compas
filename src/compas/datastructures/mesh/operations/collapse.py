@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = [
-    "mesh_collapse_edge",
-    "trimesh_collapse_edge",
-]
-
-
 def is_collapse_legal(mesh, u, v, allow_boundary=False):
     """Verify if the requested collapse is legal for a triangle mesh.
 

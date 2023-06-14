@@ -4,12 +4,6 @@ from __future__ import division
 
 from compas.topology import connected_components
 
-__all__ = [
-    "mesh_disconnected_vertices",
-    "mesh_disconnected_faces",
-    "mesh_explode",
-]
-
 
 def mesh_disconnected_vertices(mesh):
     """Get the disconnected vertex groups in a mesh.

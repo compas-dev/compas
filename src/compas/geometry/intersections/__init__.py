@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.plugins import pluggable
-from .intersections import *  # noqa: F401 F403
 
 
 @pluggable(category="intersections")
@@ -53,6 +52,3 @@ def intersection_ray_mesh(ray, mesh):
 
     """
     raise NotImplementedError
-
-
-__all__ = [name for name in dir() if not name.startswith("_")]

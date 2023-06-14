@@ -4,7 +4,8 @@ from __future__ import print_function
 
 from compas.geometry import Frame
 from compas.geometry import Transformation
-from compas.robots.model.robot import RobotModel
+
+from .robot import RobotModel
 
 
 class ToolModel(RobotModel):

@@ -9,11 +9,6 @@ from numpy import clip
 from numpy import finfo
 
 
-__all__ = [
-    "trimesh_samplepoints_numpy",
-]
-
-
 def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
     """Compute sample points on a triangle mesh surface.
 

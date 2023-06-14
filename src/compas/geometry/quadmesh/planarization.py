@@ -5,9 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = ["quadmesh_planarize"]
-
-
 @pluggable(category="quadmesh")
 def quadmesh_planarize(M, kmax=500, maxdev=0.005):
     """Planarize the faces of a quad mesh.

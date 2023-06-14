@@ -21,17 +21,6 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import face_matrix
 
 
-__all__ = [
-    "mesh_adjacency_matrix",
-    "mesh_connectivity_matrix",
-    "mesh_degree_matrix",
-    "mesh_face_matrix",
-    "mesh_laplacian_matrix",
-    "trimesh_cotangent_laplacian_matrix",
-    "trimesh_vertexarea_matrix",
-]
-
-
 def mesh_adjacency_matrix(mesh, rtype="array"):
     """Creates a vertex adjacency matrix from a Mesh datastructure.
 

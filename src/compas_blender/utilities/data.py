@@ -1,11 +1,6 @@
 import bpy
 
 
-__all__ = [
-    "delete_unused_data",
-]
-
-
 def delete_unused_data():
     """Delete all collections, mesh and curve objects, meshes, curves, materials.
 

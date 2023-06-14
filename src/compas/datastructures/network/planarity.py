@@ -14,18 +14,6 @@ from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
 
 
-__all__ = [
-    "network_is_crossed",
-    "network_count_crossings",
-    "network_find_crossings",
-    "network_is_xy",
-    "network_is_planar",
-    "network_is_planar_embedding",
-    "network_embed_in_plane",
-    "network_embed_in_plane_proxy",
-]
-
-
 def network_embed_in_plane_proxy(data, fixed=None, straightline=True):
     from compas.datastructures import Network
 

@@ -2,14 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.files.urdf import URDFElement
-from compas.files.urdf import URDFGenericElement
+from compas.files import URDFElement
+from compas.files import URDFGenericElement
 from compas.geometry import Frame
-
-__all__ = [
-    "FrameProxy",
-    "ProxyObject",
-]
 
 
 def _parse_floats(values):

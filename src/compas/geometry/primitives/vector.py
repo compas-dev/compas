@@ -13,7 +13,7 @@ from compas.geometry import angle_vectors_signed
 from compas.geometry import angles_vectors
 from compas.geometry import transform_vectors
 
-from compas.geometry.primitives import Primitive
+from ._primitive import Primitive
 
 
 class Vector(Primitive):

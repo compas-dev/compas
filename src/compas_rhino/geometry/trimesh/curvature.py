@@ -17,16 +17,8 @@ from System import Array
 from compas.plugins import plugin
 
 
-__all__ = [
-    "trimesh_gaussian_curvature",
-    "trimesh_mean_curvature",
-    "trimesh_principal_curvature",
-]
-
-
 @plugin(category="trimesh", requires=["Rhino"])
 def trimesh_gaussian_curvature(M):
-
     r"""Compute the discrete Gaussian curvature of a triangle mesh.
 
     Parameters

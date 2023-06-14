@@ -8,14 +8,6 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import laplacian_matrix
 
 
-__all__ = [
-    "network_adjacency_matrix",
-    "network_degree_matrix",
-    "network_connectivity_matrix",
-    "network_laplacian_matrix",
-]
-
-
 def _return_matrix(M, rtype):
     if rtype == "list":
         return M.toarray().tolist()

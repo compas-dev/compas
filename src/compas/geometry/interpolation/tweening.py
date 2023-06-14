@@ -8,9 +8,6 @@ from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 
 
-__all__ = ["tween_points", "tween_points_distance"]
-
-
 def tween_points(points1, points2, num):
     """Compute the interpolated points between two sets of points.
 

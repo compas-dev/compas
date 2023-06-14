@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
 * Added representation for features in `compas.datastructures.Part`.
+* Added `compas.rpc.XFunc`.
 
 ### Changed
 
@@ -26,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed all `__all__` beyond second level package.
+* Removed deprecated `compas.utilities.coercing`.
+* Removed deprecated `compas.utilities.encoders`.
+* Removed deprecated `compas.utilities.xfunc`.
 
 ## [1.17.5] 2023-02-16
 

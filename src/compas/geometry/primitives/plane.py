@@ -3,9 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Vector
-from compas.geometry.primitives import Point
+from ._primitive import Primitive
+from .vector import Vector
+from .point import Point
 
 
 class Plane(Primitive):

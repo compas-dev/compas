@@ -16,22 +16,6 @@ from compas.geometry import midpoint_line_xy
 from compas.utilities import color_to_rgb
 
 
-__all__ = [
-    "create_axes_xy",
-    "create_axes_3d",
-    "draw_points_xy",
-    "draw_xpoints_xy",
-    "draw_points_3d",
-    "draw_lines_xy",
-    "draw_xlines_xy",
-    "draw_lines_3d",
-    "draw_xarrows_xy",
-    "draw_xlabels_xy",
-    "draw_xpolygons_xy",
-    "draw_xpolylines_xy",
-]
-
-
 ZORDER_POLYGONS = 1000
 ZORDER_LINES = 2000
 ZORDER_POINTS = 3000

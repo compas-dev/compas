@@ -4,9 +4,9 @@ from __future__ import division
 
 from math import factorial
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Point
-from compas.geometry.primitives import Vector
+from ._primitive import Primitive
+from .vector import Vector
+from .point import Point
 
 
 def binomial_coefficient(n, k):

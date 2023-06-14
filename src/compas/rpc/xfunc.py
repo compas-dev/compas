@@ -9,8 +9,8 @@ import tempfile
 import compas
 import compas._os
 
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
+from compas.data import DataEncoder
+from compas.data import DataDecoder
 
 try:
     import cPickle as pickle
@@ -25,9 +25,6 @@ except ImportError:
         from System.Diagnostics import Process
     except ImportError:
         compas.raise_if_ironpython()
-
-
-__all__ = ["XFunc"]
 
 
 WRAPPER = """
@@ -51,8 +48,8 @@ import cProfile
 import pstats
 import traceback
 
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
+from compas.data import DataEncoder
+from compas.data import DataDecoder
 
 basedir    = sys.argv[1]
 funcname   = sys.argv[2]

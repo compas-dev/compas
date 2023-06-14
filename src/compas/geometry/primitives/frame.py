@@ -15,12 +15,13 @@ from compas.geometry import matrix_from_euler_angles
 from compas.geometry import matrix_from_quaternion
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import subtract_vectors
+
 from compas.geometry import Transformation
 
-from compas.geometry.primitives import Point
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Quaternion
-from compas.geometry.primitives import Vector
+from ._primitive import Primitive
+from .vector import Vector
+from .point import Point
+from .quaternion import Quaternion
 
 
 class Frame(Primitive):
