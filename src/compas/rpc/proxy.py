@@ -8,8 +8,8 @@ import time
 import compas
 import compas._os
 from compas.rpc import RPCServerError
-from compas.utilities import DataDecoder
-from compas.utilities import DataEncoder
+from compas.data import DataDecoder
+from compas.data import DataEncoder
 
 try:
     from xmlrpclib import ServerProxy

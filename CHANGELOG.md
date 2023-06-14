@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
 * Added representation for features in `compas.datastructures.Part`.
+* Added `compas.rpc.XFunc`.
 
 ### Changed
 
@@ -23,9 +24,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Simplified `compas.datastructures.Part` for more generic usage.
 * Changed author email address of Tom Van Mele to tom.v.mele@gmail.com.
 * Changed `GLTFMesh.from_mesh` to read texture coordinates, vertex normals and colors if available and add to `GLTFMesh`
+* Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
 
 ### Removed
 
+* Removed all `__all__` beyond second level package.
+* Removed deprecated `compas.utilities.coercing`.
+* Removed deprecated `compas.utilities.encoders`.
+* Removed deprecated `compas.utilities.xfunc`.
 
 ## [1.17.5] 2023-02-16
 

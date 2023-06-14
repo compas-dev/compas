@@ -12,7 +12,7 @@ from compas.geometry import quaternion_norm
 from compas.geometry import quaternion_is_unit
 from compas.geometry import quaternion_from_matrix
 
-from compas.geometry.primitives import Primitive
+from ._primitive import Primitive
 
 
 class Quaternion(Primitive):

@@ -4,13 +4,12 @@ from __future__ import division
 
 from compas.geometry import allclose
 from compas.geometry import transform_points
-
-from compas.geometry.predicates import is_point_on_line
-from compas.geometry.primitives import Line
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Point
-
+from compas.geometry import is_point_on_line
 from compas.utilities import pairwise
+
+from ._primitive import Primitive
+from .point import Point
+from .line import Line
 
 
 class Polyline(Primitive):

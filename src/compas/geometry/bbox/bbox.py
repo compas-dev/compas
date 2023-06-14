@@ -5,12 +5,6 @@ from __future__ import division
 from itertools import islice
 
 
-__all__ = [
-    "bounding_box",
-    "bounding_box_xy",
-]
-
-
 def bounding_box(points):
     """Computes the axis-aligned minimum bounding box of a list of points.
 

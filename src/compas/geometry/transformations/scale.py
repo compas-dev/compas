@@ -13,11 +13,13 @@ Ippoliti for providing code and documentation.
 from compas.utilities import flatten
 from compas.geometry import allclose
 from compas.geometry import multiply_matrices
-from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import matrix_from_scale_factors
-from compas.geometry.transformations import matrix_from_frame
-from compas.geometry.transformations import matrix_inverse
-from compas.geometry.transformations import Transformation
+
+from .matrices import decompose_matrix
+from .matrices import matrix_from_scale_factors
+from .matrices import matrix_from_frame
+from .matrices import matrix_inverse
+
+from .transformation import Transformation
 
 
 class Scale(Transformation):

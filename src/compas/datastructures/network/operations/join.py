@@ -5,8 +5,6 @@ from __future__ import division
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
 
-__all__ = ["network_join_edges", "network_polylines"]
-
 
 def network_join_edges(network, key):
     """Join the edges incidental on the given node, if there are exactly two incident edges.

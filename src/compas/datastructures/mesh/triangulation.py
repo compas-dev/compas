@@ -3,12 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-from .operations import mesh_split_face
-
-
-__all__ = [
-    "mesh_quads_to_triangles",
-]
+from .operations.split import mesh_split_face
 
 
 def mesh_quads_to_triangles(mesh, check_angles=False):

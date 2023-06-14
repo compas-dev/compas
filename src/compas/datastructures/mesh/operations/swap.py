@@ -3,9 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ["trimesh_swap_edge"]
-
-
 def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.

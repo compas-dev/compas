@@ -1,11 +1,3 @@
-__all__ = [
-    "get_axes_dimension",
-    "assert_axes_dimension",
-    "width_to_dict",
-    "size_to_sizedict",
-]
-
-
 def get_axes_dimension(axes):
     """Returns the number of dimensions of a matplotlib axes object.
 

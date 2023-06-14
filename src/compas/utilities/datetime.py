@@ -6,9 +6,6 @@ import time
 import datetime
 
 
-__all__ = ["timestamp", "now"]
-
-
 def timestamp():
     """Generate a timestamp using the current date and time.
 

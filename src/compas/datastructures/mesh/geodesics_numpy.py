@@ -20,9 +20,6 @@ from compas.numerical import normalizerow
 from .matrices import trimesh_cotangent_laplacian_matrix
 
 
-__all__ = ["mesh_geodesic_distances_numpy"]
-
-
 def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     """Compute geodesic from the vertices of a mesh to given source vertices.
 

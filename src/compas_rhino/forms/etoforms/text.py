@@ -13,9 +13,6 @@ import Eto.Drawing  # noqa: E402
 import Eto.Forms  # noqa: E402
 
 
-__all__ = ["TextForm"]
-
-
 class TextForm(Eto.Forms.Dialog[bool]):
     def __init__(self, text, title="Message"):
         self.text = text

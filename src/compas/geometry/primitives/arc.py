@@ -1,8 +1,9 @@
 import math
 
 from compas.geometry import close
-from compas.geometry.primitives import Frame
-from compas.geometry.primitives import Primitive
+
+from ._primitive import Primitive
+from .frame import Frame
 
 
 class Arc(Primitive):

@@ -11,11 +11,6 @@ from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
 
 
-__all__ = [
-    "scalarfield_contours_numpy",
-]
-
-
 # def trimesh_descent(trimesh):
 #     """"""
 #     vertices, faces = trimesh.to_vertices_and_faces()

@@ -8,9 +8,6 @@ import json
 import copy
 
 
-__all__ = ["ga"]
-
-
 TPL = """
 GA summary
 ==========
@@ -298,7 +295,6 @@ class GA(object):
             start_gen_number = 0
 
         for generation in range(start_gen_number, self.num_gen):
-
             self.current_pop["decoded"] = self.decode_binary_pop(self.current_pop["binary"])
             self.current_pop["scaled"] = self.scale_population(self.current_pop["decoded"])
 

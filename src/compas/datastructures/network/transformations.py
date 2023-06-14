@@ -6,12 +6,6 @@ from __future__ import division
 from compas.geometry import transform_points
 
 
-__all__ = [
-    "network_transform",
-    "network_transformed",
-]
-
-
 def network_transform(network, transformation):
     """Transform a network.
 

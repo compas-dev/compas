@@ -22,7 +22,7 @@ from compas.geometry import scale_vector
 
 from compas.datastructures import Graph
 
-from .operations import network_split_edge
+from .operations.split import network_split_edge
 
 from .combinatorics import network_is_connected
 from .complementarity import network_complement

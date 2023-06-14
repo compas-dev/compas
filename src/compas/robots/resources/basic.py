@@ -4,14 +4,12 @@ from __future__ import print_function
 
 import os
 
-from compas.datastructures import Mesh
-
-__all__ = ["AbstractMeshLoader", "DefaultMeshLoader", "LocalPackageMeshLoader"]
-
 try:
     from urllib.parse import urlparse
 except ImportError:
     from urlparse import urlparse
+
+from compas.datastructures import Mesh
 
 SUPPORTED_FORMATS = ("obj", "stl", "ply")
 

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
-from ..geometry import Geometry
+from compas.geometry import Geometry
 
 
 class Shape(Geometry):

@@ -19,9 +19,6 @@ eps = finfo(float64).eps
 e = sqrt(eps)
 
 
-__all__ = ["descent_numpy"]
-
-
 def descent_numpy(x0, fn, iterations=1000, gtol=10 ** (-6), bounds=None, limit=0, args=()):
     """A gradient descent optimisation solver.
 
@@ -75,7 +72,6 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10 ** (-6), bounds=None, limit=0
     mu = 1
 
     while i < iterations:
-
         p0 = phi(x0, mu, *args)
 
         for j in range(n):
