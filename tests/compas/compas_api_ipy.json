@@ -505,7 +505,7 @@
       "vector_standard_deviation",
       "vector_variance",
       "volume_polyhedron",
-      "world_to_local_coordinates",
+      "world_to_local_coordinates"
     ],
     "compas.numerical": [],
     "compas.plugins": [
