@@ -121,7 +121,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
     @property
     def points(self):
         if self.rhino_curve:
-            return [point_to_compas(point) for point in self.rhino_curve.Points]
+            return [point_to_compas(point.Location) for point in self.rhino_curve.Points]
 
     @property
     def weights(self):

@@ -9,9 +9,108 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
+* Added representation for features in `compas.datastructures.Part`.
+
 ### Changed
 
+* Fixed bug that caused a new-line at the end of the `compas.HERE` constant in IronPython for Mac.
+* Fixed Grasshopper `draw_polylines` method to return `PolylineCurve` instead of `Polyline` because the latter shows as only points.
+* Fixed `area_polygon` that was, in some cases, returning a negative area.
+* Fixed uninstall post-process.
+* Fixed support for `System.Decimal` data type on json serialization.
+* Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
+* Simplified `compas.datastructures.Part` for more generic usage.
+* Changed author email address of Tom Van Mele to tom.v.mele@gmail.com.
 * Changed `GLTFMesh.from_mesh` to read texture coordinates, vertex normals and colors if available and add to `GLTFMesh`
+
+### Removed
+
+
+## [1.17.5] 2023-02-16
+
+### Added
+
+* Added conversion function `frame_to_rhino_plane` to `compas_rhino.conversions`.
+* Added `RhinoSurface.from_frame` to `compas_rhino.geometry`.
+* Added representation for trims with `compas.geometry.BrepTrim`.
+* Added `Arc` to `compas.geometry`.
+* Added `Arc` conversion functions to `compas_rhino.conversions`.
+* Added `from_sphere` alternative constructor to `RhinoBrep`.
+* Added support for singular trims to `RhinoBrep`.
+
+### Changed
+
+* Patched [CVE-2007-4559](https://github.com/advisories/GHSA-gw9q-c7gh-j9vm) vulnerability.
+* Updated workflows to v2.
+* Fixed attribute error in `compas_rhino.conversions.ellipse_to_compas`.
+* Changed deepcopy of `RhinoBrep` to use the native `Rhino.Geometry` mechanism.
+* The normal of the cutting plane is no longer flipped in `compas_rhino.geometry.RhinoBrep`.
+* Planar holes caused by `RhinoBrep.trim` are now automatically capped.
+* Fixed `Polygon` constructor to not modify the input list of points.
+* Fixed serialization of sphere and cylinder Breps in `RhinoBrep`.
+* Fixed serialization of some trimmed shapes in `RhinoBrep`.
+* Freeze black version to 22.12.0.
+* Fixed `is_point_in_circle_xy` second argument to access the origin of the plane of the circle.
+ 
+### Removed
+
+
+## [1.17.4] 2022-12-06
+
+### Added
+
+* Added option for per-vertex color specification to `compas_rhino.utilities.drawing.draw_mesh`.
+
+### Changed
+
+* Fixed strange point values in RhinoNurbsCurve caused by conversion `ControlPoint` to COMPAS instead of `ControlPoint.Location`.
+* Fixed flipped order of NURBS point count values when creating RhinoNurbsSurface from parameters.
+* Changed serialization format and reconstruction procedure of `RhinoBrep`.
+
+### Removed
+
+* Removed Python 3.6 from build workflows as it reached end-of-life at the end of 2021.
+
+
+## [1.17.3] 2022-11-09
+
+### Added
+
+* Added `compas_rhino.INSTALLATION_ARGUMENTS`.
+
+### Changed
+
+* Fixed bug in Rhino installation due to redefinition of command line arguments in `compas_ghpython.components.get_version_from_args`.
+
+### Removed
+
+
+## [1.17.2] 2022-11-07
+
+### Added
+
+### Changed
+
+* Changed `compas._os._polyfill_symlinks` to use junction (/J) instead of symbolic link (/D).
+
+### Removed
+
+
+## [1.17.1] 2022-11-06
+
+### Added
+
+* Added `compas_rhino.geometry.RhinoCurve.offset`.
+* Added `compas.geometry.Surface.from_plane`.
+* Added `compas.geometry.surfaces.surface.new_surface_from_plane` pluggable.
+* Added `compas_rhino.geometry.surfaces.new_surface_from_plane` plugin.
+* Added `compas_rhino.geometry.RhinoSurface.intersections_with_curve`.
+
+### Changed
+
+* Fixed bug in `compas_rhino.geometry.RhinoCurve.frame_at`.
+* Changed implementation of `compas.datastructures.mesh_planarize_faces` to include edge midpoints.
 
 ### Removed
 

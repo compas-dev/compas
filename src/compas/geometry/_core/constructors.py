@@ -34,12 +34,8 @@ def circle_from_points(a, b, c):
 
     Returns
     -------
-    [float, float, float]
-        Center of the circle.
-    float
-        Radius of the circle.
-    [float, float, float]
-        Normal of the plane containing the circle.
+    ([float, float, float], [float, float, float]), float
+        Center, normal and radius of the circle respectively.
 
     Notes
     -----
@@ -71,7 +67,7 @@ def circle_from_points(a, b, c):
     Cc = scale_vector(c, C)
     center = sum_vectors([Aa, Bb, Cc])
     radius = length_vector(subtract_vectors(a, center))
-    return center, radius, normal
+    return (center, normal), radius
 
 
 def circle_from_points_xy(a, b, c):
@@ -88,12 +84,8 @@ def circle_from_points_xy(a, b, c):
 
     Returns
     -------
-    [float, float, 0.0]
-        Center of the circle in the XY plane.
-    float
-        Radius of the circle.
-    [0.0, 0.0, 1.0]
-        Normal of the plane containing the circle.
+    ([float, float, float], [float, float, float]), float
+        Center, normal and radius of the circle respectively.
 
     Notes
     -----
@@ -124,4 +116,4 @@ def circle_from_points_xy(a, b, c):
     centerx = (d * e - b * f) / g
     centery = (a * f - c * e) / g
     radius = sqrt((ax - centerx) ** 2 + (ay - centery) ** 2)
-    return [centerx, centery, 0.0], radius, [0.0, 0.0, 1.0]
+    return ([centerx, centery, 0.0], [0.0, 0.0, 1.0]), radius

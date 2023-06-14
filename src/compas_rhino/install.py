@@ -372,8 +372,9 @@ if __name__ == "__main__":
         help="The version of Rhino to install the packages in.",
     )
     parser.add_argument("-p", "--packages", nargs="+", help="The packages to install.")
-    parser.add_argument("--clean", dest="clean", default=False, action="store_true")
+    parser.add_argument("-c", "--clean", default=False, action="store_true", help="Clean up the installation directory")
 
     args = parser.parse_args()
+    compas_rhino.INSTALLATION_ARGUMENTS = args
 
     install(version=args.version, packages=args.packages, clean=args.clean)

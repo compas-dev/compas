@@ -14,6 +14,11 @@ def new_surface(cls, *args, **kwargs):
     raise NotImplementedError
 
 
+@pluggable(category="factories")
+def new_surface_from_plane(cls, *args, **kwargs):
+    raise NotImplementedError
+
+
 class Surface(Geometry):
     """Class representing a general surface object.
 
@@ -106,6 +111,22 @@ class Surface(Geometry):
 
         """
         raise NotImplementedError
+
+    @classmethod
+    def from_plane(cls, plane, *args, **kwargs):
+        """Construct a surface from a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            The plane.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Surface`
+
+        """
+        return new_surface_from_plane(cls, plane, *args, **kwargs)
 
     # ==============================================================================
     # Conversions
@@ -386,6 +407,20 @@ class Surface(Geometry):
         Parameters
         ----------
         line : :class:`~compas.geometry.Line`
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Point`]
+
+        """
+        raise NotImplementedError
+
+    def intersections_with_curve(self, curve):
+        """Compute the intersections with a curve.
+
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Curve`
 
         Returns
         -------

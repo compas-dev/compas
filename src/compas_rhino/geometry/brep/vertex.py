@@ -13,8 +13,9 @@ class RhinoBrepVertex(BrepVertex):
 
     """
 
-    def __init__(self, rhino_vertex=None):
+    def __init__(self, rhino_vertex=None, builder=None):
         super(RhinoBrepVertex, self).__init__()
+        self._builder = builder
         self._vertex = None
         self._point = None
         if rhino_vertex:
@@ -36,9 +37,29 @@ class RhinoBrepVertex(BrepVertex):
 
     @data.setter
     def data(self, data):
-        # Rhino.BrepVertex has no public constructor
-        # Vertex creation is via Brep.Vertices.Add(Rhino.Point3D)
         self._point = Point.from_data(data["point"])
+        self._vertex = self._builder.add_vertex(self._point)
+
+    @classmethod
+    def from_data(cls, data, builder):
+        """Construct an object of this type from the provided data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+            The object reconstructing the current Brep.
+
+        Returns
+        -------
+        :class:`~compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
+        obj = cls(builder=builder)
+        obj.data = data
+        return obj
 
     # ==============================================================================
     # Properties

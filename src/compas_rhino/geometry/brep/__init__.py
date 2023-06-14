@@ -5,6 +5,7 @@ from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 from .loop import RhinoBrepLoop
+from .trim import RhinoBrepTrim
 
 import Rhino
 
@@ -15,6 +16,7 @@ __all__ = [
     "RhinoBrepEdge",
     "RhinoBrepLoop",
     "RhinoBrepFace",
+    "RhinoBrepTrim",
     "new_brep",
     "from_native",
     "from_box",
@@ -41,3 +43,8 @@ def from_box(*args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def from_cylinder(*args, **kwargs):
     return RhinoBrep.from_cylinder(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_sphere(*args, **kwargs):
+    return RhinoBrep.from_sphere(*args, **kwargs)

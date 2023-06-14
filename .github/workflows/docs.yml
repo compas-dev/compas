@@ -11,53 +11,9 @@ on:
       - main
 
 jobs:
-  build:
-    name: build and deploy docs
+  docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: compas-dev/compas-actions.docs@v1.4.1
-        id: docs
+      - uses: compas-dev/compas-actions.docs@v2
         with:
-          dest: deploy
-          build_to_subfolder: true
-          test_docs: true
-
-      - name: Deploy docs
-        if: success() && steps.docs.outputs.commit_type != 'pull'
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh-pages
-          build_dir: deploy
-          keep_history: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    outputs:
-      commit_type: ${{ steps.docs.outputs.commit_type }}
-      current_version: ${{ steps.docs.outputs.current_version }}
-  
-  docVersions:
-    needs: build
-    if: needs.build.outputs.commit_type == 'tag'
-    name: update doc versions
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-
-      - uses: compas-dev/compas-actions.docversions@v1.3.0
-        with:
-          current_version: ${{ needs.build.outputs.current_version }}
-
-      - name: Deploy docs
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh-pages
-          build_dir: ./
-          keep_history: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

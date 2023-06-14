@@ -65,7 +65,7 @@ def area_polygon(polygon):
             area += 0.5 * length_vector(n)
         else:
             area -= 0.5 * length_vector(n)
-    return area
+    return abs(area)
 
 
 def area_polygon_xy(polygon):

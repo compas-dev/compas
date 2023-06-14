@@ -20,7 +20,7 @@ import zipfile
 import compas
 import compas_rhino
 
-__version__ = "1.17.0"
+__version__ = "1.17.5"
 
 if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403

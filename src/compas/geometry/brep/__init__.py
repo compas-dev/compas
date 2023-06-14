@@ -5,6 +5,8 @@ from .edge import BrepEdge
 from .loop import BrepLoop
 from .face import BrepFace
 from .vertex import BrepVertex
+from .trim import BrepTrim
+from .trim import BrepTrimIsoStatus
 
 
 class BrepError(Exception):
@@ -31,6 +33,8 @@ __all__ = [
     "BrepLoop",
     "BrepFace",
     "BrepVertex",
+    "BrepTrim",
+    "BrepTrimIsoStatus",
     "BrepOrientation",
     "BrepType",
     "BrepError",

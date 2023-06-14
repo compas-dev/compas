@@ -712,7 +712,7 @@ class HalfEdge(Datastructure):
         ----------
         predicate : callable
             The condition you want to evaluate.
-            The callable takes 2 parameters: the vertex identifier and the vertex attributs,
+            The callable takes 2 parameters: the vertex identifier and the vertex attributes,
             and should return True or False.
         data : bool, optional
             If True, yield the vertex attributes in addition to the vertex identifiers.

@@ -8,6 +8,8 @@ from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import vector_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import frame_to_rhino_plane
+from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import xform_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
@@ -166,6 +168,54 @@ class RhinoSurface(Surface):
         curve = cls()
         curve.rhino_surface = rhino_surface
         return curve
+
+    @classmethod
+    def from_plane(cls, plane, box):
+        """Construct a surface from a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            The plane.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoSurface`
+
+        """
+        plane = plane_to_rhino(plane)
+        box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
+        rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
+        return cls.from_rhino(rhino_surface)
+
+    @classmethod
+    def from_frame(cls, frame, u_interval, v_interval):
+        """Creates a planar surface from a frame and parametric domain information.
+
+        Parameters
+        ----------
+        frame : :class:`~compas.geometry.Frame`
+            A frame with point at the center of the wanted plannar surface and
+            x and y axes the direction of u and v respectively.
+        u_interval : tuple(float, float)
+            The parametric domain of the U parameter. u_interval[0] => u_interval[1].
+        v_interval : tuple(float, float)
+            The parametric domain of the V parameter. v_interval[0] => v_interval[1].
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.surface.RhinoSurface`
+
+        """
+        surface = Rhino.Geometry.PlaneSurface(
+            frame_to_rhino_plane(frame),
+            Rhino.Geometry.Interval(*u_interval),
+            Rhino.Geometry.Interval(*v_interval),
+        )
+        if not surface:
+            msg = "Failed creating PlaneSurface from frame:{} u_interval:{} v_interval:{}"
+            raise ValueError(msg.format(frame, u_interval, v_interval))
+        return cls.from_rhino(surface)
 
     # ==============================================================================
     # Conversions
@@ -337,3 +387,25 @@ class RhinoSurface(Surface):
         """
         box = self.rhino_surface.GetBoundingBox(optimal)
         return box_to_compas(Rhino.Geometry.Box(box))
+
+    def intersections_with_curve(self, curve, tolerance=1e-3, overlap=1e-3):
+        """Compute the intersections with a curve.
+
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Curve`
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Point`]
+
+        """
+        intersections = Rhino.Geometry.Intersect.Intersection.CurveSurface(
+            curve.rhino_curve, self.rhino_surface, tolerance, overlap
+        )
+        points = []
+        for event in intersections:
+            if event.IsPoint:
+                point = point_to_compas(event.PointA)
+                points.append(point)
+        return points

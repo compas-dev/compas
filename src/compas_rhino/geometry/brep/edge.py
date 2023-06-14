@@ -1,16 +1,25 @@
 from compas.geometry import BrepEdge
 from compas.geometry import Line
-from compas.geometry import Point
 from compas.geometry import Circle
 from compas.geometry import Ellipse
+from compas.geometry import Frame
+from compas.geometry import Arc
 from compas_rhino.geometry import RhinoNurbsCurve
 from compas_rhino.conversions import curve_to_compas_line
-from compas_rhino.conversions import curve_to_compas_circle
-from compas_rhino.conversions import curve_to_compas_ellipse
-from compas_rhino.conversions import line_to_rhino_curve
-from compas_rhino.conversions import circle_to_rhino_curve
-from compas_rhino.conversions import ellipse_to_rhino_curve
+from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import circle_to_compas
+from compas_rhino.conversions import ellipse_to_compas
+from compas_rhino.conversions import ellipse_to_rhino
+from compas_rhino.conversions import circle_to_rhino
+from compas_rhino.conversions import frame_to_rhino_plane
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import arc_to_compas
+from compas_rhino.conversions import arc_to_rhino
 
+from Rhino.Geometry import ArcCurve
+from Rhino.Geometry import NurbsCurve
+from Rhino.Geometry import LineCurve
+from Rhino.Geometry import Interval
 
 from .vertex import RhinoBrepVertex
 
@@ -39,20 +48,22 @@ class RhinoBrepEdge(BrepEdge):
 
     """
 
-    def __init__(self, rhino_trim=None):
+    def __init__(self, rhino_edge=None, builder=None):
         super(RhinoBrepEdge, self).__init__()
+        self._builder = builder
         self._edge = None
         self._curve = None
+        self._curve_type = None
         self._start_vertex = None
         self._end_vertex = None
-        if rhino_trim:
-            self._set_edge(rhino_trim)
+        if rhino_edge:
+            self._set_edge(rhino_edge)
 
-    def _set_edge(self, rhino_trim):
-        self._edge = rhino_trim.Edge
-        self._curve = self._edge.EdgeCurve
-        self._start_vertex = RhinoBrepVertex(rhino_trim.StartVertex)
-        self._end_vertex = RhinoBrepVertex(rhino_trim.EndVertex)
+    def _set_edge(self, rhino_edge):
+        self._edge = rhino_edge
+        self._curve = RhinoNurbsCurve.from_rhino(rhino_edge.EdgeCurve.ToNurbsCurve())
+        self._start_vertex = RhinoBrepVertex(rhino_edge.StartVertex)
+        self._end_vertex = RhinoBrepVertex(rhino_edge.EndVertex)
 
     # ==============================================================================
     # Data
@@ -60,39 +71,42 @@ class RhinoBrepEdge(BrepEdge):
 
     @property
     def data(self):
-        if self.is_line:
-            type_ = "line"
-            curve = curve_to_compas_line(self._curve)
-        elif self.is_circle:
-            type_ = "circle"
-            curve = curve_to_compas_circle(self._curve)
-        elif self.is_ellipse:
-            type_ = "ellipse"
-            curve = curve_to_compas_ellipse(self._curve)
-        else:
-            type_ = "nurbs"
-            curve = RhinoNurbsCurve.from_rhino(self._curve)
+        curve_type, curve, plane, domain = self._get_curve_geometry()
         return {
-            "type": type_,
-            "value": curve.data,
-            "points": [self.start_vertex.point.data, self.end_vertex.point.data],
+            "curve_type": curve_type,
+            "curve": curve.data,
+            "frame": plane_to_compas_frame(plane).data,
+            "start_vertex": self._edge.StartVertex.VertexIndex,
+            "end_vertex": self._edge.EndVertex.VertexIndex,
+            "domain": domain,
         }
 
     @data.setter
     def data(self, value):
-        curve_type = value["type"]
-        if curve_type == "line":
-            self._curve = line_to_rhino_curve(Line.from_data(value["value"]))  # this returns a Nurbs Curve, why?
-        elif curve_type == "circle":
-            self._curve = circle_to_rhino_curve(Circle.from_data(value["value"]))  # this returns a Nurbs Curve, why?
-        elif curve_type == "ellipse":
-            self._curve = ellipse_to_rhino_curve(Ellipse.from_data(value["value"]))
-        else:
-            self._curve = RhinoNurbsCurve.from_data(value["value"]).rhino_curve
+        edge_curve = self._create_curve_from_data(value["curve_type"], value["curve"], value["frame"], value["domain"])
+        edge = self._builder.add_edge(edge_curve, value["start_vertex"], value["end_vertex"])
+        self._set_edge(edge)
 
-        self._start_vertex, self._end_vertex = RhinoBrepVertex(), RhinoBrepVertex()
-        self._start_vertex._point = Point.from_data(value["points"][0])
-        self._end_vertex._point = Point.from_data(value["points"][1])
+    @classmethod
+    def from_data(cls, data, builder):
+        """Construct an object of this type from the provided data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+            The object reconstructing the current Brep.
+
+        Returns
+        -------
+        :class:`~compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
+        obj = cls(builder=builder)
+        obj.data = data
+        return obj
 
     # ==============================================================================
     # Properties
@@ -116,12 +130,56 @@ class RhinoBrepEdge(BrepEdge):
 
     @property
     def is_circle(self):
-        return self._curve.IsCircle()
+        return self._edge.EdgeCurve.IsCircle()
 
     @property
     def is_line(self):
-        return self._curve.IsLinear()
+        return self._edge.EdgeCurve.IsLinear()
 
     @property
     def is_ellipse(self):
-        return self._curve.IsEllipse()
+        return self._edge.EdgeCurve.IsEllipse()
+
+    def _get_curve_geometry(self):
+        curve = self._edge.EdgeCurve
+        domain = [self._edge.Domain[0], self._edge.Domain[1]]
+        _, frame = curve.FrameAt(0)
+        if isinstance(curve, LineCurve):
+            return "line", curve_to_compas_line(curve), frame, domain
+        if isinstance(curve, NurbsCurve):
+            return "nurbs", RhinoNurbsCurve.from_rhino(curve), frame, domain
+        if isinstance(curve, ArcCurve):
+            if not curve.IsClosed:
+                return "arc", arc_to_compas(curve.Arc), curve.Arc.Plane, domain
+            is_circle, circle = curve.TryGetCircle()
+            if is_circle:
+                return "circle", circle_to_compas(circle), circle.Plane, domain
+            is_ellipse, ellipse = curve.TryGetEllipse()
+            if is_ellipse:
+                return "ellipse", ellipse_to_compas(ellipse), ellipse.Plane, domain
+            return "nurbs", curve.ToNurbsCurve(), frame, domain
+        raise ValueError("Unknown curve type: {}".format(curve.__class__.__name__))
+
+    @staticmethod
+    def _create_curve_from_data(curve_type, curve_data, frame_data, domain):
+        frame = Frame.from_data(frame_data)
+        if curve_type == "line":
+            line = Line.from_data(curve_data)
+            curve = LineCurve(line_to_rhino(line))
+        elif curve_type == "circle":
+            circle = circle_to_rhino(Circle.from_data(curve_data))
+            circle.Plane = frame_to_rhino_plane(frame)
+            curve = ArcCurve(circle)
+        elif curve_type == "ellipse":
+            ellipse = ellipse_to_rhino(Ellipse.from_data(curve_data))
+            ellipse.Plane = frame_to_rhino_plane(frame)
+            curve = NurbsCurve.CreateFromEllipse(ellipse)
+        elif curve_type == "arc":
+            arc = arc_to_rhino(Arc.from_data(curve_data))
+            curve = ArcCurve(arc)
+        elif curve_type == "nurbs":
+            curve = RhinoNurbsCurve.from_data(curve_data).rhino_curve
+        else:
+            raise ValueError("Unknown curve type: {}".format(curve_type))
+        curve.Domain = Interval(*domain)
+        return curve

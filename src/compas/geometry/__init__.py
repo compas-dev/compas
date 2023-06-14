@@ -58,6 +58,7 @@ Bases
     Ellipse
     Polygon
     NurbsSurface
+    Arc
 
 3-dimensional
 -------------
@@ -86,6 +87,8 @@ Boundary Representation (Brep)
     BrepEdge
     BrepLoop
     BrepFace
+    BrepTrim
+    BrepTrimIsoStatus
 
     BrepType
     BrepOrientation
@@ -809,6 +812,7 @@ from .primitives import (  # noqa: E402
     Polyline,
     Quaternion,
     Vector,
+    Arc,
 )
 from .shapes import (  # noqa: E402
     Shape,
@@ -892,6 +896,8 @@ from .brep import (
     BrepFace,
     BrepLoop,
     BrepEdge,
+    BrepTrim,
+    BrepTrimIsoStatus,
     BrepType,
     BrepOrientation,
     BrepError,
@@ -1166,6 +1172,7 @@ __all__ = [
     "Geometry",
     "Primitive",
     "Bezier",
+    "Arc",
     "Circle",
     "Ellipse",
     "Frame",
@@ -1202,6 +1209,8 @@ __all__ = [
     "BrepEdge",
     "BrepVertex",
     "BrepFace",
+    "BrepTrim",
+    "BrepTrimIsoStatus",
     "BrepType",
     "BrepOrientation",
     "BrepError",

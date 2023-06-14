@@ -22,26 +22,18 @@ Installation
 """
 from __future__ import absolute_import
 
-import argparse
 import glob
 import os
 
-from compas._os import create_symlinks
 from compas._os import remove_symlinks
+from compas._os import copy as _copy
 from compas_ghpython import get_grasshopper_userobjects_path
 from compas_rhino import _check_rhino_version
 import compas_rhino
 
 
 def get_version_from_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-v",
-        "--version",
-        choices=compas_rhino.SUPPORTED_VERSIONS,
-        default=compas_rhino.DEFAULT_VERSION,
-    )
-    args = parser.parse_args()
+    args = compas_rhino.INSTALLATION_ARGUMENTS
     return _check_rhino_version(args.version)
 
 
@@ -75,7 +67,14 @@ def install_userobjects(source):
     remove_symlinks(symlinks_to_remove)
 
     # And the create new ones
-    created = create_symlinks(symlinks_to_add)
+    created = []
+    for src, dst in symlinks_to_add:
+        try:
+            _copy(src, dst)
+        except Exception:
+            created.append(False)
+        else:
+            created.append(True)
 
     return list(zip(symlinks_to_add, created))
 

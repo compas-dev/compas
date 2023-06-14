@@ -1,10 +1,19 @@
 from compas.geometry import BrepFace
 from compas.geometry import Sphere
 from compas.geometry import Cylinder
+from compas.geometry import Frame
 from compas_rhino.geometry import RhinoNurbsSurface
-from compas_rhino.conversions import plane_to_compas
+from compas_rhino.geometry.surfaces import RhinoSurface
+from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import sphere_to_compas
 from compas_rhino.conversions import cylinder_to_compas
+from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import frame_to_rhino_plane
+
+import Rhino
+from Rhino.Geometry import Interval
+from Rhino.Geometry import RevSurface
 
 from .loop import RhinoBrepLoop
 
@@ -29,8 +38,9 @@ class RhinoBrepFace(BrepFace):
 
     """
 
-    def __init__(self, rhino_face=None):
+    def __init__(self, rhino_face=None, builder=None):
         super(RhinoBrepFace, self).__init__()
+        self._builder = builder
         self._loops = None
         self._surface = None
         self._face = None
@@ -39,8 +49,8 @@ class RhinoBrepFace(BrepFace):
 
     def _set_face(self, native_face):
         self._face = native_face
-        self._loops = [RhinoBrepLoop(loop) for loop in self._face.Loops]
-        self._surface = self._face.UnderlyingSurface()
+        self._loops = [RhinoBrepLoop(loop) for loop in native_face.Loops]
+        self._surface = RhinoNurbsSurface.from_rhino(self._face.UnderlyingSurface().ToNurbsSurface())
 
     # ==============================================================================
     # Data
@@ -48,34 +58,46 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def data(self):
-        boundary = self._loops[0].data
-        holes = [loop.data for loop in self._loops[1:]]
-        surface_type, surface = self._get_surface_geometry(self._surface)
-        surface_data = {"value": surface.data, "type": surface_type}
-        return {"boundary": boundary, "surface": surface_data, "holes": holes}
+        surface_type, surface, uv_domain, plane = self._get_surface_geometry(self._face.UnderlyingSurface())
+        return {
+            "surface_type": surface_type,
+            "surface": surface.data,
+            "uv_domain": uv_domain,
+            "frame": plane_to_compas_frame(plane).data,  # until all shapes have a frame
+            "loops": [loop.data for loop in self._loops],
+        }
 
     @data.setter
     def data(self, value):
-        boundary = RhinoBrepLoop.from_data(value["boundary"])
-        holes = [RhinoBrepLoop.from_data(loop) for loop in value["holes"]]
-        self._loops = [boundary] + holes
+        self._surface = self._make_surface_from_data(
+            value["surface_type"], value["surface"], value["uv_domain"], value["frame"]
+        )
+        face_builder = self._builder.add_face(self._surface)
+        for loop_data in value["loops"]:
+            RhinoBrepLoop.from_data(loop_data, face_builder)
+        self._set_face(face_builder.result)
 
-        # TODO: using the new serialization mechanism, surface.to_nurbs() should replace all this branching..
-        # TODO: given that Plane, Sphere, Cylinder etc. all implement to_nurbs()
-        surface_data = value["surface"]
-        type_ = surface_data["type"]
-        surface = surface_data["value"]
-        if type_ == "plane":
-            surface = self._make_surface_from_loop(boundary)
-        elif type_ == "sphere":
-            surface = RhinoNurbsSurface.from_sphere(Sphere.from_data(surface))
-        elif type_ == "cylinder":
-            surface = RhinoNurbsSurface.from_cylinder(Cylinder.from_data(surface))
-        elif type_ == "nurbs":
-            surface = RhinoNurbsSurface.from_data(surface)
-        elif type_ == "torus":
-            raise NotImplementedError("Support for torus surface is not yet implemented!")
-        self._surface = surface.rhino_surface
+    @classmethod
+    def from_data(cls, data, builder):
+        """Construct an object of this type from the provided data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+            The object reconstructing the current Brep.
+
+        Returns
+        -------
+        :class:`~compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
+
+        obj = cls(builder=builder)
+        obj.data = data
+        return obj
 
     # ==============================================================================
     # Properties
@@ -107,23 +129,64 @@ class RhinoBrepFace(BrepFace):
 
     @staticmethod
     def _get_surface_geometry(surface):
-        success, cast_surface = surface.TryGetPlane()
-        if success:
-            return "plane", plane_to_compas(cast_surface)
-        success, cast_surface = surface.TryGetSphere()
-        if success:
-            return "sphere", sphere_to_compas(cast_surface)
-        success, cast_surface = surface.TryGetCylinder()
-        if success:
-            return "cylinder", cylinder_to_compas(cast_surface)
-        success, cast_surface = surface.TryGetTorus()
-        if success:
+        uv_domain = [[surface.Domain(0)[0], surface.Domain(0)[1]], [surface.Domain(1)[0], surface.Domain(1)[1]]]
+        if isinstance(surface, Rhino.Geometry.PlaneSurface):
+            _, plane = surface.FrameAt(0.0, 0.0)
+            return "plane", plane_to_compas_frame(plane), uv_domain, plane
+        if isinstance(surface, Rhino.Geometry.NurbsSurface):
+            _, plane = surface.FrameAt(0.0, 0.0)
+            return "nurbs", RhinoNurbsSurface.from_rhino(surface), uv_domain, plane
+        if isinstance(surface, Rhino.Geometry.RevSurface):
+            success, cast_surface = surface.TryGetSphere()
+            if success:
+                return "sphere", sphere_to_compas(cast_surface), uv_domain, cast_surface.EquatorialPlane
+            success, cast_surface = surface.TryGetCylinder()
+            if success:
+                return "cylinder", cylinder_to_compas(cast_surface), uv_domain, cast_surface.BasePlane
+            success, cast_surface = surface.TryGetTorus()
+        raise NotImplementedError(
+            "Support for surface type: {} is not yet implemented.".format(surface.__class__.__name__)
+        )
+
+    def _make_surface_from_data(self, surface_type, surface_data, uv_domain, frame_data):
+        u_domain, v_domain = uv_domain
+        frame = Frame.from_data(frame_data)  # workaround until all shapes have a frame
+        if surface_type == "plane":
+            frame = Frame.from_data(surface_data)  # redundancy in shapes which already have a frame
+            surface = RhinoSurface.from_frame(frame, u_domain, v_domain)
+        elif surface_type == "sphere":
+            sphere = self._make_sphere_surface(surface_data, u_domain, v_domain, frame)
+            surface = RhinoSurface.from_rhino(sphere)
+        elif surface_type == "cylinder":
+            cylinder = self._make_cylinder_surface(surface_data, u_domain, v_domain, frame)
+            surface = RhinoSurface.from_rhino(cylinder)
+        elif surface_type == "nurbs":
+            surface = RhinoNurbsSurface.from_data(surface_data)
+        elif surface_type == "torus":
             raise NotImplementedError("Support for torus surface is not yet implemented!")
-        return "nurbs", RhinoNurbsSurface.from_rhino(surface.ToNurbsSurface())
+        surface.rhino_surface.SetDomain(0, Interval(*u_domain))
+        surface.rhino_surface.SetDomain(1, Interval(*v_domain))
+        return surface
 
     @staticmethod
-    def _make_surface_from_loop(loop):
-        # order of corners determines the normal of the resulting surface
-        corners = [loop.edges[i].start_vertex.point for i in range(4)]
-        surface = RhinoNurbsSurface.from_corners(corners)
+    def _make_cylinder_surface(surface_data, u_domain, v_domain, frame):
+        cylinder = Cylinder.from_data(surface_data)
+        cylinder = cylinder_to_rhino(cylinder)
+        cylinder.BasePlane = frame_to_rhino_plane(frame)
+        surface = RevSurface.CreateFromCylinder(cylinder)
+        surface.SetDomain(0, Interval(*u_domain))
+        surface.SetDomain(1, Interval(*v_domain))
+        return surface
+
+    @staticmethod
+    def _make_sphere_surface(surface_data, u_domain, v_domain, frame):
+        sphere = Sphere.from_data(surface_data)
+        sphere = sphere_to_rhino(sphere)
+        # seems Sphere => RevSurface conversion modifies the orientation of the sphere
+        # setting the plane here is overriden by this modification and surface ends up oriented differntly than
+        # original.
+        # sphere.EquatorialPlane = frame_to_rhino_plane(frame)
+        surface = RevSurface.CreateFromSphere(sphere)
+        surface.SetDomain(0, Interval(*u_domain))
+        surface.SetDomain(1, Interval(*v_domain))
         return surface
