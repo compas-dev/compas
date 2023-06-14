@@ -81,5 +81,4 @@ def check_compas_stubs(api, stubs):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     check_compas_stubs(compas_api(), compas_stubs())

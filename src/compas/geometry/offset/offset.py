@@ -12,9 +12,10 @@ from compas.geometry import intersection_line_line
 from compas.geometry import normal_polygon
 from compas.geometry import is_colinear
 
+from compas.data import is_item_iterable
+
 from compas.utilities import iterable_like
 from compas.utilities import pairwise
-from compas.utilities import is_item_iterable
 
 
 def intersect_lines(l1, l2, tol):
