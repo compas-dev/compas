@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed support for `System.Decimal` data type on json serialization.
 * Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
 * Simplified `compas.datastructures.Part` for more generic usage.
+* Changed `GLTFMesh.from_mesh` to read texture coordinates, vertex normals and colors if available and add to `GLTFMesh`
 * Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
 * Changed JSON validation to Draft202012.
 * Changed `compas.data.Data.to_json` to include `compact=False` parameter.
