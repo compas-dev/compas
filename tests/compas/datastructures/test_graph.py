@@ -38,20 +38,6 @@ def test_edgedata_io(graph):
     assert all(other.edge_attribute(edge, "index") == index for index, edge in enumerate(other.edges()))
 
 
-# def test_data_schema(graph):
-#     if compas.IPY:
-#         return
-
-#     graph.validate_data()
-
-
-# def test_graph_json_schema(graph):
-#     if compas.IPY:
-#         return
-
-#     graph.validate_json()
-
-
 # ==============================================================================
 # Tests - Samples
 # ==============================================================================
