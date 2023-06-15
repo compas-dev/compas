@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Torus.validate_json" href="compas.geometry.Torus.validate_json.html" />
+  <link rel="prev" title="Torus.validate_jsonstring" href="compas.geometry.Torus.validate_jsonstring.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,7 +108,7 @@
 <h1>Polyhedron</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Polyhedron">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Polyhedron</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/shapes/polyhedron.py#L149"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Polyhedron</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/shapes/polyhedron.py#L150"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.shapes._shape.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
 <p>A polyhedron is defined by its vertices and faces.</p>
 <dl class="field-list simple">
@@ -190,11 +190,14 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.transformed.html#compas.geometry.Polyhedron.transformed" title="compas.geometry.Polyhedron.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_data.html#compas.geometry.Polyhedron.validate_data" title="compas.geometry.Polyhedron.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
-<td><p>Validate the object's data against its data schema.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_json.html#compas.geometry.Polyhedron.validate_json" title="compas.geometry.Polyhedron.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_json.html#compas.geometry.Polyhedron.validate_json" title="compas.geometry.Polyhedron.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the object's data against its json schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_jsondata.html#compas.geometry.Polyhedron.validate_jsondata" title="compas.geometry.Polyhedron.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
+<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_jsonstring.html#compas.geometry.Polyhedron.validate_jsonstring" title="compas.geometry.Polyhedron.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
+<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -267,11 +270,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Torus.validate_json.html" title="Torus.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Torus.validate_jsonstring.html" title="Torus.validate_jsonstring" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Torus.validate_json
+          Torus.validate_jsonstring
         </div>
       </a>
       

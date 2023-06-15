@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Pointcloud.validate_json" href="compas.geometry.Pointcloud.validate_json.html" />
+  <link rel="prev" title="Pointcloud.validate_jsonstring" href="compas.geometry.Pointcloud.validate_jsonstring.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -108,7 +108,7 @@
 <h1>Plane</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Plane">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/plane.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/primitives/plane.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.primitives._primitive.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">Primitive</span></code></a></p>
 <p>A plane is defined by a base point and a normal vector.</p>
 <dl class="field-list simple">
@@ -202,11 +202,14 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.transformed.html#compas.geometry.Plane.transformed" title="compas.geometry.Plane.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_data.html#compas.geometry.Plane.validate_data" title="compas.geometry.Plane.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
-<td><p>Validate the object's data against its data schema.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_json.html#compas.geometry.Plane.validate_json" title="compas.geometry.Plane.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
+<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_json.html#compas.geometry.Plane.validate_json" title="compas.geometry.Plane.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the object's data against its json schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_jsondata.html#compas.geometry.Plane.validate_jsondata" title="compas.geometry.Plane.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
+<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_jsonstring.html#compas.geometry.Plane.validate_jsonstring" title="compas.geometry.Plane.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
+<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -279,11 +282,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas.geometry.Pointcloud.validate_json.html" title="Pointcloud.validate_json" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas.geometry.Pointcloud.validate_jsonstring.html" title="Pointcloud.validate_jsonstring" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Pointcloud.validate_json
+          Pointcloud.validate_jsonstring
         </div>
       </a>
       

@@ -110,11 +110,14 @@
 <h1>Brep.to_jsonstring</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Brep.to_jsonstring">
-<span class="sig-prename descclassname"><span class="pre">Brep.</span></span><span class="sig-name descname"><span class="pre">to_jsonstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pretty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L297"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Brep.</span></span><span class="sig-name descname"><span class="pre">to_jsonstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pretty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/data.py#L255"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Serialize the data representation of an object to a JSON string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pretty</strong> (<em>bool, optional</em>) – If True serialize a pretty representation of the data.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pretty</strong> (<em>bool, optional</em>) – If True serialize a pretty representation of the data.</p></li>
+<li><p><strong>compact</strong> (<em>bool, optional</em>) – If True serialize a compact representation of the data.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>str</em> – The object’s data dict in JSON string format.</p>
