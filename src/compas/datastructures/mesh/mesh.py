@@ -524,11 +524,11 @@ class Mesh(HalfEdge):
             The faces as a list of lists of vertex indices.
 
         """
-        key_index = self.key_index()
-        vertices = [self.vertex_coordinates(key) for key in self.vertices()]
+        vertex_index = self.vertex_index()
+        vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
 
         if not triangulated:
-            faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
+            faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
             return vertices, faces
 
         faces = []
@@ -538,18 +538,18 @@ class Mesh(HalfEdge):
 
             if len(face_vertices) == 3:
                 a, b, c = face_vertices
-                faces.append([key_index[a], key_index[b], key_index[c]])
+                faces.append([vertex_index[a], vertex_index[b], vertex_index[c]])
             elif len(face_vertices) == 4:
                 a, b, c, d = face_vertices
-                faces.append([key_index[a], key_index[b], key_index[c]])
-                faces.append([key_index[a], key_index[c], key_index[d]])
+                faces.append([vertex_index[a], vertex_index[b], vertex_index[c]])
+                faces.append([vertex_index[a], vertex_index[c], vertex_index[d]])
             else:
-                centroid = centroid_polygon([vertices[key_index[key]] for key in face_vertices])
-                ckey = len(vertices)
+                centroid = centroid_polygon([vertices[vertex_index[vertex]] for vertex in face_vertices])
+                c = len(vertices)
                 vertices.append(centroid)
 
                 for a, b in pairwise(face_vertices + face_vertices[:1]):
-                    faces.append([key_index[a], key_index[b], ckey])
+                    faces.append([vertex_index[a], vertex_index[b], c])
 
         return vertices, faces
 

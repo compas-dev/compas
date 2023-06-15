@@ -199,19 +199,19 @@ class XFunc(object):
         for key, attr in mesh.vertices(True):
             attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-        key_index = mesh.key_index()
-        vertices  = mesh.vertices_attributes('xyz')
-        edges     = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-        fixed     = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
-        q         = mesh.edges_attribute('q')
-        loads     = mesh.vertices_attributes(('px', 'py', 'pz'))
+        vertex_index = mesh.vertex_index()
+        vertices     = mesh.vertices_attributes('xyz')
+        edges        = [(vertex_index[u], vertex_index[v]) for u, v in mesh.edges()]
+        fixed        = [vertex_index[vertex] for vertex in mesh.vertices_where({'is_fixed': True})]
+        q            = mesh.edges_attribute('q')
+        loads        = mesh.vertices_attributes(('px', 'py', 'pz'))
 
         xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
-        for key, attr in mesh.vertices(True):
-            attr['x'] = xyz[key][0]
-            attr['y'] = xyz[key][1]
-            attr['z'] = xyz[key][2]
+        for vertex, attr in mesh.vertices(True):
+            attr['x'] = xyz[vertex][0]
+            attr['y'] = xyz[vertex][1]
+            attr['z'] = xyz[vertex][2]
 
         artist = MeshArtist(mesh)
         artist.draw_vertices()

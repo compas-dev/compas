@@ -298,8 +298,6 @@ class HalfEdge(Datastructure):
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
-    key_index = vertex_index
-
     def index_vertex(self):
         """Returns a dictionary that maps the indices of a vertex list to
         the corresponding vertex identifiers.
@@ -315,8 +313,6 @@ class HalfEdge(Datastructure):
 
         """
         return dict(enumerate(self.vertices()))
-
-    index_key = index_vertex
 
     # --------------------------------------------------------------------------
     # builders

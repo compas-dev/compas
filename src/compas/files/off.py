@@ -291,8 +291,8 @@ class OFFWriter(object):
             self.file.write(self.vertex_tpl.format(x, y, z))
 
     def _write_faces(self):
-        key_index = self.mesh.key_index()
-        for fkey in self.mesh.faces():
-            vertices = self.mesh.face_vertices(fkey)
+        vertex_index = self.mesh.vertex_index()
+        for face in self.mesh.faces():
+            vertices = self.mesh.face_vertices(face)
             v = len(vertices)
-            self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))
+            self.file.write("{0} {1}\n".format(v, " ".join([str(vertex_index[vertex]) for vertex in vertices])))

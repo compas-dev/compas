@@ -47,8 +47,8 @@ def mesh_adjacency_matrix(mesh, rtype="array"):
     >>> A = mesh_adjacency_matrix(mesh, rtype='csr')
 
     """
-    key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
+    vertex_index = mesh.vertex_index()
+    adjacency = [[vertex_index[nbr] for nbr in mesh.vertex_neighbors(vertex)] for vertex in mesh.vertices()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -82,8 +82,8 @@ def mesh_connectivity_matrix(mesh, rtype="array"):
     >>> uv = C.dot(xyz)
 
     """
-    key_index = mesh.key_index()
-    edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
+    vertex_index = mesh.vertex_index()
+    edges = [(vertex_index[u], vertex_index[v]) for u, v in mesh.edges()]
     return connectivity_matrix(edges, rtype=rtype)
 
 
@@ -117,8 +117,8 @@ def mesh_degree_matrix(mesh, rtype="array"):
     array([3., 3., 3., 3., 3., 3., 3., 3.])
 
     """
-    key_index = mesh.key_index()
-    adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
+    vertex_index = mesh.vertex_index()
+    adjacency = [[vertex_index[nbr] for nbr in mesh.vertex_neighbors(vertex)] for vertex in mesh.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -174,8 +174,8 @@ def mesh_face_matrix(mesh, rtype="array"):
     True
 
     """
-    key_index = {key: index for index, key in enumerate(mesh.vertices())}
-    face_vertices = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    vertex_index = {vertex: index for index, vertex in enumerate(mesh.vertices())}
+    face_vertices = [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
     return face_matrix(face_vertices, rtype=rtype)
 
 
@@ -235,18 +235,18 @@ def mesh_laplacian_matrix(mesh, rtype="csr"):
 
     """
     data, rows, cols = [], [], []
-    key_index = mesh.key_index()
+    vertex_index = mesh.vertex_index()
 
-    for key in mesh.vertices():
-        i = key_index[key]
-        nbrs = mesh.vertex_neighbors(key)
+    for vertex in mesh.vertices():
+        i = vertex_index[vertex]
+        nbrs = mesh.vertex_neighbors(vertex)
         w = len(nbrs)
         data.append(-1.0)
         rows.append(i)
         cols.append(i)
         d = 1.0 / w
         for nbr in nbrs:
-            j = key_index[nbr]
+            j = vertex_index[nbr]
             data.append(d)
             rows.append(i)
             cols.append(j)
@@ -281,10 +281,10 @@ def trimesh_edge_cotangent(mesh, edge):
 
     """
     u, v = edge
-    fkey = mesh.halfedge[u][v]
+    face = mesh.halfedge[u][v]
     cotangent = 0.0
-    if fkey is not None:
-        w = mesh.face_vertex_ancestor(fkey, u)
+    if face is not None:
+        w = mesh.face_vertex_ancestor(face, u)
         wu = mesh.edge_vector((w, u))
         wv = mesh.edge_vector((w, v))
         length = length_vector(cross_vectors(wu, wv))
@@ -310,8 +310,8 @@ def trimesh_edge_cotangents(mesh, edge):
 
     """
     u, v = edge
-    a = trimesh_edge_cotangent(mesh, u, v)
-    b = trimesh_edge_cotangent(mesh, v, u)
+    a = trimesh_edge_cotangent(mesh, (u, v))
+    b = trimesh_edge_cotangent(mesh, (v, u))
     return a, b
 
 
@@ -360,28 +360,28 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype="csr"):
         `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
-    key_index = mesh.key_index()
+    vertex_index = mesh.vertex_index()
     n = mesh.number_of_vertices()
     data = []
     rows = []
     cols = []
 
-    for key in mesh.vertices():
-        nbrs = mesh.vertex_neighbors(key)
-        i = key_index[key]
+    for vertex in mesh.vertices():
+        nbrs = mesh.vertex_neighbors(vertex)
+        i = vertex_index[vertex]
         data.append(-1.0)
         rows.append(i)
         cols.append(i)
 
         W = 0
         for nbr in nbrs:
-            a, b = trimesh_edge_cotangents(mesh, (key, nbr))
+            a, b = trimesh_edge_cotangents(mesh, (vertex, nbr))
             w = a + b
             W += w
 
         for nbr in nbrs:
-            j = key_index[nbr]
-            a, b = trimesh_edge_cotangents(mesh, (key, nbr))
+            j = vertex_index[nbr]
+            a, b = trimesh_edge_cotangents(mesh, (vertex, nbr))
             w = a + b
             data.append(w / W)
             rows.append(i)
@@ -426,10 +426,10 @@ def trimesh_vertexarea_matrix(mesh):
     [0.1666, 0.1666, 0.1666]
 
     """
-    key_index = mesh.key_index()
+    vertex_index = mesh.vertex_index()
     xyz = asarray(mesh.vertices_attributes("xyz"), dtype=float)
     tris = asarray(
-        [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()],
+        [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()],
         dtype=int,
     )
     e1 = xyz[tris[:, 1]] - xyz[tris[:, 0]]

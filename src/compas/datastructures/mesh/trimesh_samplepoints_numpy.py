@@ -59,9 +59,9 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
         raise ValueError("Mesh is invalid.")
 
     # (1)  Prepare data for computing
-    key_index = mesh.key_index()
+    vertex_index = mesh.vertex_index()
     vertices = mesh.vertices_attributes("xyz")
-    faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    faces = [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
     V = array(vertices, dtype=float64)
     F = array(faces, dtype=int)
 
@@ -94,7 +94,6 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
 
     # (5) (if True) Return the normal vector of the sampled points
     if return_normals:
-
         samples_points_normals = cross((v1 - v0), (v2 - v1), axis=1)
         samples_points_normals_norm = norm(samples_points_normals, ord=2, axis=1, keepdims=True)
         samples_points_normals = samples_points_normals / samples_points_normals_norm

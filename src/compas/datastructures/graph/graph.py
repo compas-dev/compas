@@ -370,8 +370,6 @@ class Graph(Datastructure):
         """
         return {key: index for index, key in enumerate(self.nodes())}
 
-    key_index = node_index
-
     def index_node(self):
         """Returns a dictionary that maps the indices of a node list to keys in a node dictionary.
 
@@ -387,8 +385,6 @@ class Graph(Datastructure):
 
         """
         return dict(enumerate(self.nodes()))
-
-    index_key = index_node
 
     def edge_index(self):
         """Returns a dictionary that maps edge identifiers (i.e. pairs of vertex identifiers)
@@ -407,8 +403,6 @@ class Graph(Datastructure):
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges())}
 
-    uv_index = edge_index
-
     def index_edge(self):
         """Returns a dictionary that maps edges in a list to the corresponding
         vertex identifier pairs.
@@ -425,8 +419,6 @@ class Graph(Datastructure):
 
         """
         return dict(enumerate(self.edges()))
-
-    index_uv = index_edge
 
     # --------------------------------------------------------------------------
     # builders

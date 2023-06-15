@@ -40,9 +40,9 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
     """
     Lc = trimesh_cotangent_laplacian_matrix(mesh)
 
-    key_index = mesh.key_index()
+    vertex_index = mesh.vertex_index()
     vertices = mesh.vertices_attributes("xyz")
-    faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    faces = [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
 
     V = array(vertices)
     F = array(faces, dtype=int)
