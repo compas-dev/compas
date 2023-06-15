@@ -150,7 +150,7 @@ class HalfFace(Datastructure):
     def data(self):
         """Returns a dictionary of structured data representing the volmesh data object.
 
-        Note that some of the data stored internally in the data structure object is not included in teh dictionary representation of the object.
+        Note that some of the data stored internally in the data structure object is not included in the dictionary representation of the object.
         This is the case for data that is considered private and/or redundant.
         Specifically, the halfface dictionary and the plane dictionary are not included.
         This is because the information in these dictionaries can be reconstructed from the other data.
