@@ -44,6 +44,54 @@ class HalfFace(Datastructure):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "attributes": {"type": "object"},
+            "dva": {"type": "object"},
+            "dea": {"type": "object"},
+            "dfa": {"type": "object"},
+            "dca": {"type": "object"},
+            "vertex": {
+                "type": "object",
+                "patternProperties": {"^[0-9]+$": {"type": "object"}},
+                "additionalProperties": False,
+            },
+            "cell": {
+                "type": "object",
+                "patternProperties": {
+                    "^[0-9]+$": {
+                        "type": "array",
+                        "minItems": 3,
+                        "items": {"type": "integer", "minimum": 0},
+                    }
+                },
+                "additionalProperties": False,
+            },
+            "edge_data": {"type": "object"},
+            "face_data": {"type": "object"},
+            "cell_data": {"type": "object"},
+            "max_vertex": {"type": "number"},
+            "max_face": {"type": "number"},
+            "max_cell": {"type": "number"},
+        },
+        "required": [
+            "attributes",
+            "dva",
+            "dea",
+            "dfa",
+            "dca",
+            "vertex",
+            "cell",
+            "edge_data",
+            "face_data",
+            "cell_data",
+            "max_vertex",
+            "max_face",
+            "max_cell",
+        ],
+    }
+
     def __init__(
         self,
         name=None,
@@ -99,41 +147,31 @@ class HalfFace(Datastructure):
         self.attributes["name"] = value
 
     @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "attributes": dict,
-                "dva": dict,
-                "dea": dict,
-                "dfa": dict,
-                "dca": dict,
-                "vertex": dict,
-                "cell": dict,
-                "edge_data": dict,
-                "face_data": dict,
-                "cell_data": dict,
-                "max_vertex": schema.And(int, lambda x: x >= -1),
-                "max_face": schema.And(int, lambda x: x >= -1),
-                "max_cell": schema.And(int, lambda x: x >= -1),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "halfface"
-
-    @property
     def data(self):
+        """Returns a dictionary of structured data representing the volmesh data object.
+
+        Note that some of the data stored internally in the data structure object is not included in teh dictionary representation of the object.
+        This is the case for data that is considered private and/or redundant.
+        Specifically, the halfface dictionary and the plane dictionary are not included.
+        This is because the information in these dictionaries can be reconstructed from the other data.
+        Therefore, to keep the dictionary representation as compact as possible, these dictionaries are not included.
+
+        To reconstruct the complete object representation from the compact data, the setter of the data property uses the vertex and cell builder methods (:meth:`add_vertex`, :meth:`add_cell`).
+
+        Returns
+        -------
+        dict
+            The structured data representing the volmesh.
+
+        """
         cell = {}
         for c in self._cell:
-            cell[c] = {}
-            for u in self._cell[c]:
-                cell[c].setdefault(u, {})
-                for v in self._cell[c][u]:
-                    cell[c][u][v] = self._halfface[self._cell[c][u][v]]
-        data = {
+            faces = []
+            for u in sorted(self._cell[c]):
+                for v in sorted(self._cell[c][u]):
+                    faces.append(self._halfface[self._cell[c][u][v]])
+            cell[c] = faces
+        return {
             "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
@@ -148,33 +186,9 @@ class HalfFace(Datastructure):
             "max_face": self._max_face,
             "max_cell": self._max_cell,
         }
-        return data
 
     @data.setter
     def data(self, data):
-        attributes = data.get("attributes") or {}
-        dva = data.get("dva") or {}
-        dea = data.get("dea") or {}
-        dfa = data.get("dfa") or {}
-        dca = data.get("dca") or {}
-        vertex = data.get("vertex") or {}
-        cell = data.get("cell") or {}
-        edge_data = data.get("edge_data") or {}
-        face_data = data.get("face_data") or {}
-        cell_data = data.get("cell_data") or {}
-        max_vertex = data.get("max_vertex", -1)
-        max_face = data.get("max_face", -1)
-        max_cell = data.get("max_cell", -1)
-
-        if not vertex or not cell:
-            return
-
-        self.attributes.update(attributes)
-        self.default_vertex_attributes.update(dva)
-        self.default_edge_attributes.update(dea)
-        self.default_face_attributes.update(dfa)
-        self.default_cell_attributes.update(dca)
-
         self._vertex = {}
         self._halfface = {}
         self._cell = {}
@@ -182,28 +196,31 @@ class HalfFace(Datastructure):
         self._edge_data = {}
         self._face_data = {}
         self._cell_data = {}
-
-        for v in vertex:
-            attr = vertex[v] or {}
-            self.add_vertex(int(v), attr_dict=attr)
-
-        for c in cell:
-            attr = cell_data.get(c) or {}
-            faces = []
-            for u in cell[c]:
-                for v in cell[c][u]:
-                    faces.append(cell[c][u][v])
-            self.add_cell(faces, ckey=int(c), attr_dict=attr)
-
-        for e in edge_data:
-            self._edge_data[e] = edge_data[e] or {}
-
-        for f in face_data:
-            self._face_data[f] = face_data[f] or {}
-
-        self._max_vertex = max_vertex
-        self._max_face = max_face
-        self._max_cell = max_cell
+        self._max_vertex = -1
+        self._max_face = -1
+        self._max_cell = -1
+        vertex = data.get("vertex") or {}
+        cell = data.get("cell") or {}
+        edge_data = data.get("edge_data") or {}
+        face_data = data.get("face_data") or {}
+        cell_data = data.get("cell_data") or {}
+        self.attributes.update(data.get("attributes") or {})
+        self.default_vertex_attributes.update(data.get("dva") or {})
+        self.default_edge_attributes.update(data.get("dea") or {})
+        self.default_face_attributes.update(data.get("dfa") or {})
+        self.default_cell_attributes.update(data.get("dca") or {})
+        for key, attr in iter(vertex.items()):
+            self.add_vertex(key=key, attr_dict=attr)
+        for ckey, faces in iter(cell.items()):
+            attr = cell_data.get(ckey) or {}
+            self.add_cell(faces, ckey=ckey, attr_dict=attr)
+        for edge in edge_data:
+            self._edge_data[edge] = edge_data[edge] or {}
+        for face in face_data:
+            self._face_data[face] = face_data[face] or {}
+        self._max_vertex = data.get("max_vertex", self._max_vertex)
+        self._max_face = data.get("max_face", self._max_face)
+        self._max_cell = data.get("max_cell", self._max_cell)
 
     # --------------------------------------------------------------------------
     # helpers
@@ -384,9 +401,9 @@ class HalfFace(Datastructure):
         """
         if key is None:
             key = self._max_vertex = self._max_vertex + 1
+        key = int(key)
         if key > self._max_vertex:
             self._max_vertex = key
-        key = int(key)
         if key not in self._vertex:
             self._vertex[key] = {}
             self._plane[key] = {}
@@ -432,9 +449,9 @@ class HalfFace(Datastructure):
         vertices = [int(key) for key in vertices]
         if fkey is None:
             fkey = self._max_face = self._max_face + 1
+        fkey = int(fkey)
         if fkey > self._max_face:
             self._max_face = fkey
-        fkey = int(fkey)
         attr = attr_dict or {}
         attr.update(kwattr)
         self._halfface[fkey] = vertices
@@ -494,9 +511,9 @@ class HalfFace(Datastructure):
         """
         if ckey is None:
             ckey = self._max_cell = self._max_cell + 1
+        ckey = int(ckey)
         if ckey > self._max_cell:
             self._max_cell = ckey
-        ckey = int(ckey)
         attr = attr_dict or {}
         attr.update(kwattr)
         self._cell[ckey] = {}

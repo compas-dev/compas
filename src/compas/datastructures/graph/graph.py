@@ -42,6 +42,43 @@ class Graph(Datastructure):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "attributes": {"type": "object"},
+            "dna": {"type": "object"},
+            "dea": {"type": "object"},
+            "node": {
+                "type": "object",
+                "additionalProperties": {"type": "object"},
+            },
+            "edge": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {"type": "object"},
+                },
+            },
+            "adjacency": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {"type": "null"},
+                },
+            },
+            "max_node": {"type": "integer", "minimum": -1},
+        },
+        "required": [
+            "attributes",
+            "dna",
+            "dea",
+            "node",
+            "edge",
+            "adjacency",
+            "max_node",
+        ],
+    }
+
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
         super(Graph, self).__init__()
         self._max_node = -1
@@ -56,29 +93,13 @@ class Graph(Datastructure):
         if default_edge_attributes:
             self.default_edge_attributes.update(default_edge_attributes)
 
+    def __str__(self):
+        tpl = "<Graph with {} nodes, {} edges>"
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
+
     # --------------------------------------------------------------------------
     # data
     # --------------------------------------------------------------------------
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "attributes": dict,
-                "dna": dict,
-                "dea": dict,
-                "node": dict,
-                "edge": dict,
-                "adjacency": dict,
-                "max_node": schema.And(int, lambda x: x >= -1),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "graph"
 
     @property
     def data(self):
@@ -86,11 +107,44 @@ class Graph(Datastructure):
             "attributes": self.attributes,
             "dna": self.default_node_attributes,
             "dea": self.default_edge_attributes,
-            "node": {},
-            "edge": {},
-            "adjacency": {},
+            "node": self.node,
+            "edge": self.edge,
             "max_node": self._max_node,
         }
+        return data
+
+    @data.setter
+    def data(self, data):
+        self.node = {}
+        self.edge = {}
+        self.adjacency = {}
+        self._max_node = -1
+        self.attributes.update(data.get("attributes") or {})
+        self.default_node_attributes.update(data.get("dna") or {})
+        self.default_edge_attributes.update(data.get("dea") or {})
+        node = data.get("node") or {}
+        edge = data.get("edge") or {}
+        for node, attr in iter(node.items()):
+            self.add_node(key=node, attr_dict=attr)
+        for u, nbrs in iter(edge.items()):
+            for v, attr in iter(nbrs.items()):
+                self.add_edge(u, v, attr_dict=attr)
+        self._max_node = data.get("max_node", self._max_node)
+
+    def to_jsondata(self):
+        """Returns a dictionary of structured data representing the graph that can be serialised to JSON format.
+
+        This is effectively a post-processing step for the :meth:`to_data` method.
+
+        Returns
+        -------
+        dict
+            The serialisable structured data dictionary.
+
+        """
+        data = self.data
+        data["node"] = {}
+        data["edge"] = {}
         for key in self.node:
             data["node"][repr(key)] = self.node[key]
         for u in self.edge:
@@ -99,53 +153,42 @@ class Graph(Datastructure):
             for v in self.edge[u]:
                 rv = repr(v)
                 data["edge"][ru][rv] = self.edge[u][v]
-        for u in self.adjacency:
-            ru = repr(u)
-            data["adjacency"][ru] = {}
-            for v in self.adjacency[u]:
-                rv = repr(v)
-                data["adjacency"][ru][rv] = None
         return data
 
-    @data.setter
-    def data(self, data):
-        if "data" in data:
-            data = data["data"]
-        attributes = data.get("attributes") or {}
-        default_node_attributes = data.get("dna") or {}
-        default_edge_attributes = data.get("dea") or {}
-        node = data.get("node") or {}
-        edge = data.get("edge") or {}
-        adjacency = data.get("adjacency") or {}
-        if "max_int_key" in data:
-            max_node = data["max_int_key"]
-        else:
-            max_node = data.get("max_node")
-        self._max_node = max_node
-        self.attributes.update(attributes)
-        self.default_node_attributes.update(default_node_attributes)
-        self.default_edge_attributes.update(default_edge_attributes)
-        # add the nodes
-        self.node = {literal_eval(key): attr for key, attr in iter(node.items())}
-        # add the edges
-        self.edge = {}
-        for u, nbrs in iter(edge.items()):
+    @classmethod
+    def from_jsondata(cls, data):
+        """Construct a graph from structured data representing the graph in JSON format.
+
+        This is effectively a pre-processing step for the :meth:`from_data` method.
+
+        Parameters
+        ----------
+        data : dict
+            The structured data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Graph`
+            The constructed graph.
+
+        """
+        _node = data["node"] or {}
+        _edge = data["edge"] or {}
+        # process the nodes
+        node = {literal_eval(key): attr for key, attr in iter(_node.items())}
+        data["node"] = node
+        # process the edges
+        edge = {}
+        for u, nbrs in iter(_edge.items()):
             nbrs = nbrs or {}
             u = literal_eval(u)
-            self.edge[u] = {}
+            edge[u] = {}
             for v, attr in iter(nbrs.items()):
                 attr = attr or {}
                 v = literal_eval(v)
-                self.edge[u][v] = attr
-        # add the adjacency
-        self.adjacency = {}
-        for u, nbrs in iter(adjacency.items()):
-            nbrs = nbrs or {}
-            u = literal_eval(u)
-            self.adjacency[u] = {}
-            for v, _ in iter(nbrs.items()):
-                v = literal_eval(v)
-                self.adjacency[u][v] = None
+                edge[u][v] = attr
+        data["edge"] = edge
+        return cls.from_data(data)
 
     # --------------------------------------------------------------------------
     # properties
@@ -158,14 +201,6 @@ class Graph(Datastructure):
     @name.setter
     def name(self, value):
         self.attributes["name"] = value
-
-    # --------------------------------------------------------------------------
-    # customization
-    # --------------------------------------------------------------------------
-
-    def __str__(self):
-        tpl = "<Graph with {} nodes, {} edges>"
-        return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # constructors
@@ -229,16 +264,16 @@ class Graph(Datastructure):
         """
         import networkx as nx
 
-        graph = nx.DiGraph()
-        graph.graph.update(self.attributes)
+        G = nx.DiGraph()
+        G.graph.update(self.attributes)
 
         for node, attr in self.nodes(data=True):
-            graph.add_node(node, **attr)
+            G.add_node(node, **attr)
 
         for edge, attr in self.edges(data=True):
-            graph.add_edge(*edge, **attr)
+            G.add_edge(*edge, **attr)
 
-        return graph
+        return G
 
     # --------------------------------------------------------------------------
     # helpers

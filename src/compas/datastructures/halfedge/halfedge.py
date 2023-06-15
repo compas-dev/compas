@@ -47,6 +47,56 @@ class HalfEdge(Datastructure):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "attributes": {"type": "object"},
+            "dva": {"type": "object"},
+            "dea": {"type": "object"},
+            "dfa": {"type": "object"},
+            "vertex": {
+                "type": "object",
+                "patternProperties": {"^[0-9]+$": {"type": "object"}},
+                "additionalProperties": False,
+            },
+            "face": {
+                "type": "object",
+                "patternProperties": {
+                    "^[0-9]+$": {
+                        "type": "array",
+                        "items": {"type": "integer", "minimum": 0},
+                        "minItems": 3,
+                    }
+                },
+                "additionalProperties": False,
+            },
+            "facedata": {
+                "type": "object",
+                "patternProperties": {"^[0-9]+$": {"type": "object"}},
+                "additionalProperties": False,
+            },
+            "edgedata": {
+                "type": "object",
+                "patternProperties": {"^\\([0-9]+,[0-9]+\\)$": {"type": "object"}},
+                "additionalProperties": False,
+            },
+            "max_vertex": {"type": "integer", "minimum": -1},
+            "max_face": {"type": "integer", "minimum": -1},
+        },
+        "required": [
+            "attributes",
+            "dva",
+            "dea",
+            "dfa",
+            "vertex",
+            "face",
+            "facedata",
+            "edgedata",
+            "max_vertex",
+            "max_face",
+        ],
+    }
+
     def __init__(
         self,
         name=None,
@@ -94,49 +144,22 @@ class HalfEdge(Datastructure):
         return self.halfedge
 
     @property
-    def DATASCHEMA(self):
-        import schema
-        from compas.data import is_sequence_of_uint
-
-        return schema.Schema(
-            {
-                "attributes": dict,
-                "dva": dict,
-                "dea": dict,
-                "dfa": dict,
-                "vertex": schema.And(
-                    dict,
-                    is_sequence_of_uint,
-                ),
-                "face": schema.And(
-                    dict,
-                    is_sequence_of_uint,
-                    lambda x: all(all(isinstance(item, int) for item in value) for value in x.values()),
-                    lambda x: all(all(item >= 0 for item in value) for value in x.values()),
-                    lambda x: all(len(value) > 2 for value in x.values()),
-                    lambda x: all(len(value) == len(set(value)) for value in x.values()),
-                ),
-                "facedata": schema.And(
-                    dict,
-                    is_sequence_of_uint,
-                    lambda x: all(isinstance(value, dict) for value in x.values()),
-                ),
-                "edgedata": schema.And(
-                    dict,
-                    lambda x: all(isinstance(key, str) for key in x),
-                    lambda x: all(isinstance(value, dict) for value in x.values()),
-                ),
-                "max_vertex": schema.And(int, lambda x: x >= -1),
-                "max_face": schema.And(int, lambda x: x >= -1),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "halfedge"
-
-    @property
     def data(self):
+        """Returns a dictionary of structured data representing the data structure.
+
+        Note that some of the data stored internally is not included in the dictionary representation of the data structure.
+        This is the case for data that is considered private and/or redundant.
+        Specifially, the half-edge dictionary is not included in the dictionary representation of the data structure.
+        This is because the half-edge dictionary can be reconstructed from the face dictionary.
+        The face dictionary contains the same information as the half-edge dictionary, but in a more compact form.
+        Therefore, to keep the dictionary representation of the data structure as compact as possible, the half-edge dictionary is not included.
+
+        Returns
+        -------
+        dict
+            The data dictionary.
+
+        """
         return {
             "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
@@ -152,30 +175,28 @@ class HalfEdge(Datastructure):
 
     @data.setter
     def data(self, data):
-        if "data" in data:
-            data = data["data"]
+        self.vertex = {}
+        self.halfedge = {}
+        self.face = {}
+        self.facedata = {}
+        self.edgedata = {}
+        self._max_vertex = -1
+        self._max_face = -1
         self.attributes.update(data.get("attributes") or {})
         self.default_vertex_attributes.update(data.get("dva") or {})
         self.default_face_attributes.update(data.get("dfa") or {})
         self.default_edge_attributes.update(data.get("dea") or {})
-        self.vertex = {}
-        self.face = {}
-        self.halfedge = {}
-        self.facedata = {}
-        self.edgedata = {}
         vertex = data.get("vertex") or {}
         face = data.get("face") or {}
         facedata = data.get("facedata") or {}
-        edgedata = data.get("edgedata") or {}
         for key, attr in iter(vertex.items()):
-            self.add_vertex(int(key), attr_dict=attr)
+            self.add_vertex(key=key, attr_dict=attr)
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
-            self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
-        for uv, attr in iter(edgedata.items()):
-            self.edgedata[uv] = attr or {}
-        self._max_vertex = data.get("max_vertex", -1)
-        self._max_face = data.get("max_face", -1)
+            self.add_face(vertices, fkey=fkey, attr_dict=attr)
+        self.edgedata.update(data.get("edgedata") or {})
+        self._max_vertex = data.get("max_vertex", self._max_vertex)
+        self._max_face = data.get("max_face", self._max_face)
 
     # --------------------------------------------------------------------------
     # helpers
@@ -377,9 +398,9 @@ class HalfEdge(Datastructure):
         """
         if key is None:
             key = self._max_vertex = self._max_vertex + 1
+        key = int(key)
         if key > self._max_vertex:
             self._max_vertex = key
-        key = int(key)
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
@@ -428,6 +449,7 @@ class HalfEdge(Datastructure):
             return
         if fkey is None:
             fkey = self._max_face = self._max_face + 1
+        fkey = int(fkey)
         if fkey > self._max_face:
             self._max_face = fkey
         attr = attr_dict or {}
@@ -1690,7 +1712,6 @@ class HalfEdge(Datastructure):
             return False
 
         for key in self.vertices():
-
             if list(self.halfedge[key].values()).count(None) > 1:
                 return False
 

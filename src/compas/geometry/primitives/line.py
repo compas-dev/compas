@@ -47,6 +47,15 @@ class Line(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "start": Point.JSONSCHEMA,
+            "end": Point.JSONSCHEMA,
+        },
+        "required": ["start", "end"],
+    }
+
     __slots__ = ["_start", "_end"]
 
     def __init__(self, p1, p2, **kwargs):
@@ -61,26 +70,14 @@ class Line(Primitive):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema({"start": Point.DATASCHEMA.fget(None), "end": Point.DATASCHEMA.fget(None)})
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "line"
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the line."""
-        return {"start": self.start.data, "end": self.end.data}
+        return {"start": self.start, "end": self.end}
 
     @data.setter
     def data(self, data):
-        self.start = Point.from_data(data["start"])
-        self.end = Point.from_data(data["end"])
+        self.start = data["start"]
+        self.end = data["end"]
 
     @classmethod
     def from_data(cls, data):
@@ -98,7 +95,7 @@ class Line(Primitive):
         Point(1.000, 0.000, 0.000)
 
         """
-        return cls(Point.from_data(data["start"]), Point.from_data(data["end"]))
+        return cls(data["start"], data["end"])
 
     # ==========================================================================
     # properties

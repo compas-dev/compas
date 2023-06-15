@@ -55,6 +55,12 @@ class Polyline(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+        "required": ["points"],
+    }
+
     __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
@@ -68,26 +74,13 @@ class Polyline(Primitive):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-
-        return Schema({"points": lambda points: all(is_float3(point) for point in points)})
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "polyline"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the polyline."""
-        return {"points": [point.data for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):
-        self.points = [Point.from_data(point) for point in data["points"]]
+        self.points = data["points"]
 
     @classmethod
     def from_data(cls, data):
@@ -109,7 +102,7 @@ class Polyline(Primitive):
         Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
 
         """
-        return cls([Point.from_data(point) for point in data["points"]])
+        return cls(data["points"])
 
     # ==========================================================================
     # properties

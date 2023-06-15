@@ -103,6 +103,13 @@ class Point(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {"type": "number"},
+    }
+
     __slots__ = ["_x", "_y", "_z"]
 
     def __init__(self, x, y, z=0.0, **kwargs):
@@ -117,19 +124,6 @@ class Point(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-
-        return Schema(is_float3)
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "point"
 
     @property
     def data(self):
