@@ -48,6 +48,7 @@ Validators
     is_int3
     is_float3
     is_float4x4
+    is_item_iterable
     validate_data
 
 

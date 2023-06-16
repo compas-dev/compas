@@ -223,6 +223,10 @@
         
     
 
+    
+        
+    
+
 
 Color
 =====
@@ -301,7 +305,8 @@ Color
         ~Color.to_data
         ~Color.to_json
         ~Color.to_jsonstring
-        ~Color.validate_data
         ~Color.validate_json
+        ~Color.validate_jsondata
+        ~Color.validate_jsonstring
     
     

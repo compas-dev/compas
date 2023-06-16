@@ -38,17 +38,6 @@ colors
     color_to_rgb
 
 
-encoders
-========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    DataEncoder
-    DataDecoder
-
-
 itertools
 =========
 

@@ -47,6 +47,10 @@
         
     
 
+    
+        
+    
+
 
 Data
 ====
@@ -72,8 +76,9 @@ Data
         ~Data.to_data
         ~Data.to_json
         ~Data.to_jsonstring
-        ~Data.validate_data
         ~Data.validate_json
+        ~Data.validate_jsondata
+        ~Data.validate_jsonstring
     
 
     
