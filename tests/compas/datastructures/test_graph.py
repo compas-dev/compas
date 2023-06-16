@@ -11,7 +11,7 @@ from compas.datastructures import Graph
 
 @pytest.fixture
 def graph():
-    edges = [[0, 1], [0, 2], [0, 3], [0, 4]]
+    edges = [(0, 1), (0, 2), (0, 3), (0, 4)]
     graph = Graph()
     for u, v in edges:
         graph.add_edge(u, v)
@@ -32,24 +32,10 @@ def graph():
 
 def test_edgedata_io(graph):
     graph.update_default_edge_attributes({"index": 0})
-    for index, (u, v) in enumerate(graph.edges()):
-        graph.edge_attribute((u, v), "index", index)
+    for index, edge in enumerate(graph.edges()):
+        graph.edge_attribute(edge, "index", index)
     other = Graph.from_data(graph.data)
     assert all(other.edge_attribute(edge, "index") == index for index, edge in enumerate(other.edges()))
-
-
-# def test_data_schema(graph):
-#     if compas.IPY:
-#         return
-
-#     graph.validate_data()
-
-
-# def test_graph_json_schema(graph):
-#     if compas.IPY:
-#         return
-
-#     graph.validate_json()
 
 
 # ==============================================================================
@@ -66,9 +52,9 @@ def test_node_sample(graph):
 
 def test_edge_sample(graph):
     for edge in graph.edge_sample():
-        assert graph.has_edge(*edge)
+        assert graph.has_edge(edge)
     for edge in graph.edge_sample(size=graph.number_of_edges()):
-        assert graph.has_edge(*edge)
+        assert graph.has_edge(edge)
 
 
 # ==============================================================================

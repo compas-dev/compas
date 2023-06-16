@@ -42,7 +42,7 @@ def mesh_is_connected(mesh):
     """
     if not mesh.vertex:
         return False
-    nodes = breadth_first_traverse(mesh.adjacency, mesh.get_any_vertex())
+    nodes = breadth_first_traverse(mesh.adjacency, mesh.vertex_sample(size=1)[0])
     return len(nodes) == mesh.number_of_vertices()
 
 

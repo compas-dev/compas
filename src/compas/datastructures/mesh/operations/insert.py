@@ -67,7 +67,7 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
         del mesh.edgedata[v, u]
 
 
-def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
+def mesh_insert_vertex_on_edge(mesh, edge, vkey=None):
     """Insert a vertex in the faces adjacent to an edge, between the two edge vertices.
 
     If no vertex key is specified or if the key does not exist yet, a vertex is added and located at the edge midpoint.
@@ -75,10 +75,8 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
 
     Parameters
     ----------
-    u: int
-        The first edge vertex.
-    v: int
-        The second edge vertex.
+    edge : tuple[int, int]
+        The edge identifier.
     vkey: int, optional
         The vertex key to insert.
         Default is to auto-generate a new vertex identifier.
@@ -94,24 +92,25 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
     face_1 = [a, b, c] and
     face_2 = [b, a, d]
     applying
-    mesh_insert_vertex_on_edge(mesh, a, b, e)
+    mesh_insert_vertex_on_edge(mesh, (a, b), e)
     yields the two new faces
     face_1 = [a, e, b, c] and
     face_2 = [b, e, a, d].
 
     """
+    u, v = edge
 
     # add new vertex if there is none or if vkey not in vertices
     if vkey is None:
-        vkey = mesh.add_vertex(attr_dict={attr: xyz for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(u, v))})
+        vkey = mesh.add_vertex(attr_dict={attr: xyz for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(edge))})
     elif vkey not in list(mesh.vertices()):
         vkey = mesh.add_vertex(
             key=vkey,
-            attr_dict={attr: xyz for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(u, v))},
+            attr_dict={attr: xyz for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(edge))},
         )
 
     # insert vertex
-    for fkey, halfedge in zip(mesh.edge_faces(u, v), [(u, v), (v, u)]):
+    for fkey, halfedge in zip(mesh.edge_faces(edge), [(u, v), (v, u)]):
         if fkey is not None:
             face_vertices = mesh.face_vertices(fkey)[:]
             face_vertices.insert(face_vertices.index(halfedge[-1]), vkey)

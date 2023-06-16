@@ -49,8 +49,8 @@ def test_json_network():
     assert before.attributes == after.attributes
     assert all(before.has_node(node) for node in after.nodes())
     assert all(after.has_node(node) for node in before.nodes())
-    assert all(before.has_edge(*edge) for edge in after.edges())
-    assert all(after.has_edge(*edge) for edge in before.edges())
+    assert all(before.has_edge(edge) for edge in after.edges())
+    assert all(after.has_edge(edge) for edge in before.edges())
     assert before.guid == after.guid
 
 

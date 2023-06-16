@@ -43,6 +43,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Torus.JSONSCHEMA`.
 * Added `compas.geometry.Quaternion.JSONSCHEMA`.
 * Added `compas.geometry.Vector.JSONSCHEMA`.
+* Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
+* Added `compas.datastructures.Halfedge.halfedge_strip_faces`.
+* Added `compas.datastructures.Mesh.vertex_point`.
+* Added `compas.datastructures.Mesh.vertices_points`.
+* Added `compas.datastructures.Mesh.set_vertex_point`.
+* Added `compas.datastructures.Mesh.edge_start`.
+* Added `compas.datastructures.Mesh.edge_end`.
+* Added `compas.datastructures.Mesh.edge_line`.
+* Added `compas.datastructures.Mesh.face_points`.
+* Added `compas.datastructures.Mesh.face_polygon`.
+* Added `compas.datastructures.Mesh.face_circle`.
+* Added `compas.datastructures.Mesh.face_frame`.
+* Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
+* Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
+* Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
 
 ### Changed
 
@@ -55,6 +70,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Simplified `compas.datastructures.Part` for more generic usage.
 * Changed `GLTFMesh.from_mesh` to read texture coordinates, vertex normals and colors if available and add to `GLTFMesh`
 * Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
+* Changed edge parameter of `compas.datastructures.Halfedge.edge_faces` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_face` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.is_edge_on_boundary` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_after` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_before` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangent` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangents` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_coordinates` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_length` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_vector` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_point` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_midpoint` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_direction` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.is_collapse_legal` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_insert_vertex_on_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_swap_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed `compas.datastructures.Mesh.vertex_laplacian` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.neighborhood_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.vertex_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_vector` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_direction` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_point` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.edge_midpoint` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.face_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_center` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_plane` to return `compas.geometry.Plane`.
 * Changed JSON validation to Draft202012.
 * Changed `compas.data.Data.to_json` to include `compact=False` parameter.
 * Changed `compas.data.Data.to_jsonstring` to include `compact=False` parameter.
@@ -68,6 +114,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed deprecated `compas.utilities.coercing`.
 * Removed deprecated `compas.utilities.encoders`.
 * Removed deprecated `compas.utilities.xfunc`.
+* Removed `compas.datastructures.Halfedge.get_any_vertex`.
+* Removed `compas.datastructures.Halfedge.get_any_vertices`.
+* Removed `compas.datastructures.Halfedge.get_any_face`.
 * Removed "schemas" folder and all contained `.json` files from `compas.data`.
 * Removed `compas.data.Data.DATASCHEMA`.
 * Removed `compas.data.Data.JSONSCHEMANAME`.
@@ -99,6 +148,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.geometry.Torus.DATASCHEMA` and `compas.geometry.Torus.JSONSCHEMANAME`.
 * Removed `compas.geometry.Quaternion.DATASCHEMA` and `compas.geometry.Quaternion.JSONSCHEMANAME`.
 * Removed `compas.geometry.Vector.DATASCHEMA` and `compas.geometry.Vector.JSONSCHEMANAME`.
+* Removed `compas.datastructures.Graph.key_index`and `compas.datastructures.Graph.index_key`.
+* Removed `compas.datastructures.Graph.uv_index`and `compas.datastructures.Graph.index_uv`.
+* Removed `compas.datastructures.Halfedge.key_index` and `compas.datastructures.Halfedge.index_key`.
 
 ## [1.17.5] 2023-02-16
 

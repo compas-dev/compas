@@ -80,16 +80,6 @@ def test_edgedata_io(mesh):
     assert all(other.edge_attribute(edge, "index") == index for index, edge in enumerate(other.edges()))
 
 
-# def test_data_schema(mesh):
-#     if not compas.IPY:
-#         mesh.validate_data()
-
-
-# def test_json_schema(mesh):
-#     if not compas.IPY:
-#         mesh.validate_json()
-
-
 # ==============================================================================
 # Tests - Samples
 # ==============================================================================
@@ -137,12 +127,12 @@ def test_vertex_attributes_key_not_found(mesh):
 
 def test_vertex_attributes_from_defaults(mesh):
     mesh.update_default_vertex_attributes({"foo": "bar"})
-    assert mesh.vertex_attributes(mesh.get_any_vertex())["foo"] == "bar"
+    assert mesh.vertex_attributes(mesh.vertex_sample(size=1)[0])["foo"] == "bar"
 
 
 def test_vertex_attributes_not_in_defaults(mesh):
     mesh.update_default_vertex_attributes({"foo": "bar"})
-    attrs = mesh.vertex_attributes(mesh.get_any_vertex())
+    attrs = mesh.vertex_attributes(mesh.vertex_sample(size=1)[0])
     with pytest.raises(KeyError):
         attrs["baz"]
 
@@ -182,17 +172,17 @@ def test_default_face_attributes():
 
 
 def test_face_attributes_is_empty(mesh):
-    assert mesh.face_attributes(mesh.get_any_face()) == {}
+    assert mesh.face_attributes(mesh.face_sample(size=1)[0]) == {}
 
 
 def test_face_attributes_from_defaults(mesh):
     mesh.update_default_face_attributes({"foo": "bar"})
-    assert mesh.face_attributes(mesh.get_any_face())["foo"] == "bar"
+    assert mesh.face_attributes(mesh.face_sample(size=1)[0])["foo"] == "bar"
 
 
 def test_face_attributes_not_in_defaults(mesh):
     mesh.update_default_face_attributes({"foo": "bar"})
-    attrs = mesh.face_attributes(mesh.get_any_face())
+    attrs = mesh.face_attributes(mesh.face_sample(size=1)[0])
     with pytest.raises(KeyError):
         attrs["baz"]
 
@@ -277,10 +267,10 @@ def test_halfedge_after_on_boundary(grid):
     corner = corners[0]
     nbrs = grid.vertex_neighbors(corner, ordered=True)
     nbr = nbrs[-1]
-    edge = grid.halfedge_after(nbr, corner)
+    edge = grid.halfedge_after((nbr, corner))
     assert edge[0] == corner
-    assert grid.is_edge_on_boundary(*edge)
-    assert grid.halfedge_face(*edge) is None
+    assert grid.is_edge_on_boundary(edge)
+    assert grid.halfedge_face(edge) is None
 
 
 def test_halfedge_before_on_boundary(grid):
@@ -288,10 +278,10 @@ def test_halfedge_before_on_boundary(grid):
     corner = corners[0]
     nbrs = grid.vertex_neighbors(corner, ordered=True)
     nbr = nbrs[0]
-    edge = grid.halfedge_before(corner, nbr)
+    edge = grid.halfedge_before((corner, nbr))
     assert edge[1] == corner
-    assert grid.is_edge_on_boundary(*edge)
-    assert grid.halfedge_face(*edge) is None
+    assert grid.is_edge_on_boundary(edge)
+    assert grid.halfedge_face(edge) is None
 
 
 # ==============================================================================
@@ -316,7 +306,7 @@ def test_loops_and_strips_closed(sphere):
             assert strip[0] == strip[-1]
 
         for edge in meridian[1:-1]:
-            ring = sphere.edge_loop(sphere.halfedge_before(*edge))
+            ring = sphere.edge_loop(sphere.halfedge_before(edge))
 
             assert len(ring) == 16, ring
             assert ring[0][0] == ring[-1][1]
@@ -331,8 +321,8 @@ def test_loops_and_strips_open(grid):
 
     assert edge in strip
     assert len(strip) == 11
-    assert grid.is_edge_on_boundary(*strip[0])
-    assert grid.is_edge_on_boundary(*strip[-1])
+    assert grid.is_edge_on_boundary(strip[0])
+    assert grid.is_edge_on_boundary(strip[-1])
 
     assert edge in loop
     assert len(loop) == 10
@@ -349,8 +339,8 @@ def test_loops_and_strips_open_corner(grid):
 
     assert edge in strip
     assert len(strip) == 11
-    assert grid.is_edge_on_boundary(*strip[0])
-    assert grid.is_edge_on_boundary(*strip[-1])
+    assert grid.is_edge_on_boundary(strip[0])
+    assert grid.is_edge_on_boundary(strip[-1])
     assert edge == strip[-1]
 
     assert edge in loop
@@ -363,8 +353,8 @@ def test_loops_and_strips_open_corner(grid):
 
     assert edge in strip
     assert len(strip) == 11
-    assert grid.is_edge_on_boundary(*strip[0])
-    assert grid.is_edge_on_boundary(*strip[-1])
+    assert grid.is_edge_on_boundary(strip[0])
+    assert grid.is_edge_on_boundary(strip[-1])
     assert edge == strip[0]
 
     assert edge in loop
@@ -383,8 +373,8 @@ def test_loops_and_strips_open_boundary(grid):
 
     assert edge in strip
     assert len(strip) == 11
-    assert grid.is_edge_on_boundary(*strip[0])
-    assert grid.is_edge_on_boundary(*strip[-1])
+    assert grid.is_edge_on_boundary(strip[0])
+    assert grid.is_edge_on_boundary(strip[-1])
 
     assert edge in loop
     assert len(loop) == 10
@@ -430,7 +420,7 @@ def test_strip_faces_closed(box):
 
     assert len(strip) == 5
     assert len(faces) == 4
-    assert box.edge_faces(*strip[0]) == box.edge_faces(*strip[-1])
+    assert box.edge_faces(strip[0]) == box.edge_faces(strip[-1])
 
 
 def test_strip_faces_open(grid):

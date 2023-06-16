@@ -12,6 +12,9 @@ else:
 from compas.files import OBJ
 
 from compas.utilities import geometric_key
+from compas.geometry import Point
+from compas.geometry import Vector
+from compas.geometry import Line
 from compas.geometry import centroid_points
 from compas.geometry import subtract_vectors
 from compas.geometry import distance_point_point
@@ -129,16 +132,22 @@ class Network(Graph):
         :class:`~compas.datastructures.Network`
             A network object.
 
+        See Also
+        --------
+        :meth:`to_obj`
+        :meth:`from_lines`, :meth:`from_nodes_and_edges`, :meth:`from_pointcloud`
+        :class:`compas.files.OBJ`
+
         """
         network = cls()
         obj = OBJ(filepath, precision)
         obj.read()
         nodes = obj.vertices
         edges = obj.lines
-        for i, (x, y, z) in enumerate(nodes):
+        for i, (x, y, z) in enumerate(nodes):  # type: ignore
             network.add_node(i, x=x, y=y, z=z)
-        for u, v in edges:
-            network.add_edge(u, v)
+        for edge in edges:  # type: ignore
+            network.add_edge(*edge)
         return network
 
     @classmethod
@@ -156,6 +165,11 @@ class Network(Graph):
         -------
         :class:`~compas.datastructures.Network`
             A network object.
+
+        See Also
+        --------
+        :meth:`to_lines`
+        :meth:`from_obj`, :meth:`from_nodes_and_edges`, :meth:`from_pointcloud`
 
         """
         network = cls()
@@ -194,6 +208,11 @@ class Network(Graph):
         :class:`~compas.datastructures.Network`
             A network object.
 
+        See Also
+        --------
+        :meth:`to_nodes_and_edges`
+        :meth:`from_obj`, :meth:`from_lines`, :meth:`from_pointcloud`
+
         """
         network = cls()
 
@@ -225,6 +244,11 @@ class Network(Graph):
         :class:`~compas.datastructures.Network`
             A network object.
 
+        See Also
+        --------
+        :meth:`to_points`
+        :meth:`from_obj`, :meth:`from_lines`, :meth:`from_nodes_and_edges`
+
         """
         network = cls()
         for x, y, z in cloud:
@@ -250,6 +274,11 @@ class Network(Graph):
         -------
         None
 
+        See Also
+        --------
+        :meth:`from_obj`
+        :meth:`to_lines`, :meth:`to_nodes_and_edges`, :meth:`to_points`
+
         """
         raise NotImplementedError
 
@@ -260,6 +289,11 @@ class Network(Graph):
         -------
         list[list[float]]
             A list with the coordinates of the vertices of the network.
+
+        See Also
+        --------
+        :meth:`from_pointcloud`
+        :meth:`to_lines`, :meth:`to_nodes_and_edges`, :meth:`to_obj`
 
         """
         return [self.node_coordinates(key) for key in self.nodes()]
@@ -272,8 +306,13 @@ class Network(Graph):
         list[tuple[list[float], list[float]]]
             A list of lines each defined by a pair of point coordinates.
 
+        See Also
+        --------
+        :meth:`from_lines`
+        :meth:`to_nodes_and_edges`, :meth:`to_obj`, :meth:`to_points`
+
         """
-        return [self.edge_coordinates(u, v) for u, v in self.edges()]
+        return [self.edge_coordinates(edge) for edge in self.edges()]
 
     def to_nodes_and_edges(self):
         """Return the nodes and edges of a network.
@@ -285,6 +324,11 @@ class Network(Graph):
         list[tuple[hashable, hashable]]
             A list of edges, with each edge represented by a pair of indices in the node list.
 
+        See Also
+        --------
+        :meth:`from_nodes_and_edges`
+        :meth:`to_lines`, :meth:`to_obj`, :meth:`to_points`
+
         """
         key_index = dict((key, index) for index, key in enumerate(self.nodes()))
         nodes = [self.node_coordinates(key) for key in self.nodes()]
@@ -295,8 +339,8 @@ class Network(Graph):
     # helpers
     # --------------------------------------------------------------------------
 
-    def key_gkey(self, precision=None):
-        """Returns a dictionary that maps node dictionary keys to the corresponding
+    def node_gkey(self, precision=None):
+        """Returns a dictionary that maps node identifiers to the corresponding
         *geometric key* up to a certain precision.
 
         Parameters
@@ -307,16 +351,23 @@ class Network(Graph):
         Returns
         -------
         dict[hashable, str]
-            A dictionary of key-geometric key pairs.
+            A dictionary of (node, geometric key) pairs.
+
+        See Also
+        --------
+        :meth:`gkey_node`
+        :func:`compas.geometry.geometric_key`
 
         """
         gkey = geometric_key
         xyz = self.node_coordinates
         return {key: gkey(xyz(key), precision) for key in self.nodes()}
 
-    def gkey_key(self, precision=None):
+    key_gkey = node_gkey
+
+    def gkey_node(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
-        to the keys of the corresponding nodes.
+        to the identifiers of the corresponding nodes.
 
         Parameters
         ----------
@@ -326,15 +377,19 @@ class Network(Graph):
         Returns
         -------
         dict[str, hashable]
-            A dictionary of geometric key-key pairs.
+            A dictionary of (geometric key, node) pairs.
+
+        See Also
+        --------
+        :meth:`node_gkey`
+        :func:`compas.geometry.geometric_key`
 
         """
         gkey = geometric_key
         xyz = self.node_coordinates
         return {gkey(xyz(key), precision): key for key in self.nodes()}
 
-    node_gkey = key_gkey
-    gkey_node = gkey_key
+    gkey_key = gkey_node
 
     # --------------------------------------------------------------------------
     # builders
@@ -387,8 +442,32 @@ class Network(Graph):
         list[float]
             The coordinates of the node.
 
+        See Also
+        --------
+        :meth:`node_point`, :meth:`node_laplacian`, :meth:`node_neighborhood_centroid`
+
         """
         return [self.node[key][axis] for axis in axes]
+
+    def node_point(self, node):
+        """Return the point of a node.
+
+        Parameters
+        ----------
+        node : hashable
+            The identifier of the node.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point of the node.
+
+        See Also
+        --------
+        :meth:`node_coordinates`, :meth:`node_laplacian`, :meth:`node_neighborhood_centroid`
+
+        """
+        return Point(*self.node_coordinates(node))
 
     def node_laplacian(self, key):
         """Return the vector from the node to the centroid of its 1-ring neighborhood.
@@ -400,16 +479,20 @@ class Network(Graph):
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Vector`
             The laplacian vector.
+
+        See Also
+        --------
+        :meth:`node_coordinates`, :meth:`node_point`, :meth:`node_neighborhood_centroid`
 
         """
         c = centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
         p = self.node_coordinates(key)
-        return subtract_vectors(c, p)
+        return Vector(*subtract_vectors(c, p))
 
     def node_neighborhood_centroid(self, key):
-        """Compute the centroid of the neighboring nodes.
+        """Return the computed centroid of the neighboring nodes.
 
         Parameters
         ----------
@@ -418,86 +501,91 @@ class Network(Graph):
 
         Returns
         -------
-        list[float]
-            The coordinates of the centroid.
+        :class:`compas.geometry.Point`
+            The point at the centroid.
+
+        See Also
+        --------
+        :meth:`node_coordinates`, :meth:`node_point`, :meth:`node_laplacian`
 
         """
-        return centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
+        return Point(*centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)]))
 
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, u, v, axes="xyz"):
+    def edge_coordinates(self, edge, axes="xyz"):
         """Return the coordinates of the start and end point of an edge.
 
         Parameters
         ----------
-        u : hashable
-            The key of the start node.
-        v : hashable
-            The key of the end node.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
         axes : str, optional
             The axes along which the coordinates should be included.
 
         Returns
         -------
-        list[float]
+        tuple[list[float], list[float]]
             The coordinates of the start point.
-        list[float]
             The coordinates of the end point.
 
+        See Also
+        --------
+        :meth:`edge_point`, :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`
+
         """
+        u, v = edge
         return self.node_coordinates(u, axes=axes), self.node_coordinates(v, axes=axes)
 
-    def edge_length(self, u, v):
-        """Return the length of an edge.
+    def edge_start(self, edge):
+        """Return the start point of an edge.
 
         Parameters
         ----------
-        u : hashable
-            The key of the start node.
-        v : hashable
-            The key of the end node.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
 
         Returns
         -------
-        float
-            The length of the edge.
+        :class:`compas.geometry.Point`
+            The start point of the edge.
+
+        See Also
+        --------
+        :meth:`edge_point`, :meth:`edge_end`, :meth:`edge_midpoint`
 
         """
-        a, b = self.edge_coordinates(u, v)
-        return distance_point_point(a, b)
+        return self.node_point(edge[0])
 
-    def edge_vector(self, u, v):
-        """Return the vector of an edge.
+    def edge_end(self, edge):
+        """Return the end point of an edge.
 
         Parameters
         ----------
-        u : hashable
-            The key of the start node.
-        v : hashable
-            The key of the end node.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
 
         Returns
         -------
-        list[float]
-            The vector from u to v.
+        :class:`compas.geometry.Point`
+            The end point of the edge.
+
+        See Also
+        --------
+        :meth:`edge_point`, :meth:`edge_start`, :meth:`edge_midpoint`
 
         """
-        a, b = self.edge_coordinates(u, v)
-        ab = subtract_vectors(b, a)
-        return ab
+        return self.node_point(edge[1])
 
-    def edge_point(self, u, v, t=0.5):
-        """Return the location of a point along an edge.
+    def edge_point(self, edge, t=0.5):
+        """Return the point at a parametric location along an edge.
 
         Parameters
         ----------
-        u : hashable
-            The key of the start node.
-        v : hashable
-            The key of the end node.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
         t : float, optional
             The location of the point on the edge.
             If the value of `t` is outside the range 0-1, the point will
@@ -505,47 +593,124 @@ class Network(Graph):
 
         Returns
         -------
-        list[float]
-            The XYZ coordinates of the point.
+        :class:`compas.geometry.Point`
+            The point at the specified location.
+
+        See Also
+        --------
+        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`
 
         """
-        a, b = self.edge_coordinates(u, v)
-        ab = subtract_vectors(b, a)
-        return add_vectors(a, scale_vector(ab, t))
+        if t == 0.0:
+            return self.edge_start(edge)
+        if t == 1.0:
+            return self.edge_end(edge)
+        if t == 0.5:
+            return self.edge_midpoint(edge)
 
-    def edge_midpoint(self, u, v):
+        a, b = self.edge_coordinates(edge)
+        ab = subtract_vectors(b, a)
+        return Point(*add_vectors(a, scale_vector(ab, t)))
+
+    def edge_midpoint(self, edge):
         """Return the location of the midpoint of an edge.
 
         Parameters
         ----------
-        u : hashable
-            The key of the start node.
-        v : hashable
-            The key of the end node.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
 
         Returns
         -------
-        list[float]
-            The XYZ coordinates of the midpoint.
+        :class:`compas.geometry.Point`
+            The midpoint of the edge.
+
+        See Also
+        --------
+        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_point`
 
         """
-        a, b = self.edge_coordinates(u, v)
-        return midpoint_line((a, b))
+        a, b = self.edge_coordinates(edge)
+        return Point(*midpoint_line((a, b)))
 
-    def edge_direction(self, u, v):
+    def edge_vector(self, edge):
+        """Return the vector of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The vector from start to end.
+
+        See Also
+        --------
+        :meth:`edge_direction`, :meth:`edge_line`, :meth:`edge_length`
+
+        """
+        a, b = self.edge_coordinates(edge)
+        return Vector.from_start_end(a, b)
+
+    def edge_direction(self, edge):
         """Return the direction vector of an edge.
 
         Parameters
         ----------
-        u : hashable
-            The key of the start node.
-        v : hashable
-            The key of the end node.
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
 
         Returns
         -------
-        list[float]
+        :class:`compas.geometry.Vector`
             The direction vector of the edge.
 
+        See Also
+        --------
+        :meth:`edge_vector`, :meth:`edge_line`, :meth:`edge_length`
+
         """
-        return normalize_vector(self.edge_vector(u, v))
+        return Vector(*normalize_vector(self.edge_vector(edge)))
+
+    def edge_line(self, edge):
+        """Return the line of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Line`
+            The line of the edge.
+
+        See Also
+        --------
+        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_length`
+
+        """
+        return Line(*self.edge_coordinates(edge))
+
+    def edge_length(self, edge):
+        """Return the length of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        float
+            The length of the edge.
+
+        See Also
+        --------
+        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_line`
+
+        """
+        a, b = self.edge_coordinates(edge)
+        return distance_point_point(a, b)

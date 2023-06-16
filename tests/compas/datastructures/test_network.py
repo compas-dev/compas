@@ -50,5 +50,5 @@ def test_planar(k5_network):
 
     from compas.datastructures import network_is_planar
 
-    k5_network.delete_edge("a", "b")  # Delete (a, b) edge to make K5 planar
+    k5_network.delete_edge(("a", "b"))  # Delete (a, b) edge to make K5 planar
     assert network_is_planar(k5_network) is True

@@ -88,7 +88,7 @@ def trimesh_remesh(
     lmin = (1 - tol) * (4.0 / 5.0) * target
     lmax = (1 + tol) * (4.0 / 3.0) * target
 
-    edge_lengths = [mesh.edge_length(u, v) for u, v in mesh.edges()]
+    edge_lengths = [mesh.edge_length(edge) for edge in mesh.edges()]
     target_start = max(edge_lengths) / 2.0
 
     fac = target_start / target
@@ -103,7 +103,6 @@ def trimesh_remesh(
     kmax_start = kmax / 2.0
 
     for k in range(kmax):
-
         if k <= kmax_start:
             scale = fac * (1.0 - k / kmax_start)
             dlmin = lmin * scale
@@ -130,13 +129,13 @@ def trimesh_remesh(
 
                 if u in visited or v in visited:
                     continue
-                if mesh.edge_length(u, v) <= lmax + dlmax:
+                if mesh.edge_length((u, v)) <= lmax + dlmax:
                     continue
 
                 if verbose:
                     print("split edge: {0} - {1}".format(u, v))
 
-                trimesh_split_edge(mesh, u, v, allow_boundary=allow_boundary_split)
+                trimesh_split_edge(mesh, (u, v), allow_boundary=allow_boundary_split)
 
                 visited.add(u)
                 visited.add(v)
@@ -151,12 +150,12 @@ def trimesh_remesh(
 
                 if u in visited or v in visited:
                     continue
-                if mesh.edge_length(u, v) >= lmin - dlmin:
+                if mesh.edge_length((u, v)) >= lmin - dlmin:
                     continue
                 if verbose:
                     print("collapse edge: {0} - {1}".format(u, v))
 
-                trimesh_collapse_edge(mesh, u, v, allow_boundary=allow_boundary_collapse, fixed=fixed)
+                trimesh_collapse_edge(mesh, (u, v), allow_boundary=allow_boundary_collapse, fixed=fixed)
 
                 visited.add(u)
                 visited.add(v)
@@ -209,7 +208,7 @@ def trimesh_remesh(
                 if verbose:
                     print("swap edge: {0} - {1}".format(u, v))
 
-                trimesh_swap_edge(mesh, u, v, allow_boundary=allow_boundary_swap)
+                trimesh_swap_edge(mesh, (u, v), allow_boundary=allow_boundary_swap)
 
                 visited.add(u)
                 visited.add(v)
