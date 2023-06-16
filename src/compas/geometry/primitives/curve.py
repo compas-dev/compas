@@ -104,6 +104,14 @@ class Bezier(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+        },
+        "required": ["points"],
+    }
+
     __slots__ = ["_points"]
 
     def __init__(self, points):
@@ -118,7 +126,7 @@ class Bezier(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the curve."""
-        return {"points": [list(point) for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):

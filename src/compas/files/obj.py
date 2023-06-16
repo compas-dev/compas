@@ -527,8 +527,8 @@ class OBJParser(object):
             index_key[i] = key
             vertex[key] = xyz
 
-        key_index = {key: index for index, key in enumerate(vertex)}
-        index_index = {index: key_index[key] for index, key in iter(index_key.items())}
+        vertex_index = {key: index for index, key in enumerate(vertex)}
+        index_index = {index: vertex_index[key] for index, key in iter(index_key.items())}
 
         self.vertices = [xyz for xyz in iter(vertex.values())]
         self.points = [index_index[index] for index in self.reader.points]
@@ -642,10 +642,10 @@ class OBJWriter(object):
             self.file.write(self.vertex_tpl.format(x, y, z))
 
     def _write_faces(self, mesh):
-        key_index = mesh.key_index()
-        for fkey in mesh.faces():
-            vertices = mesh.face_vertices(fkey)
-            vertices = [key_index[key] + self._v for key in vertices]
+        vertex_index = mesh.vertex_index()
+        for face in mesh.faces():
+            vertices = mesh.face_vertices(face)
+            vertices = [vertex_index[key] + self._v for key in vertices]
             vertices_str = " ".join([str(index) for index in vertices])
             self.file.write("f {0}\n".format(vertices_str))
 

@@ -38,8 +38,8 @@ def network_adjacency_matrix(network, rtype="array"):
         Constructed adjacency matrix.
 
     """
-    key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
+    node_index = network.node_index()
+    adjacency = [[node_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
@@ -59,8 +59,8 @@ def network_degree_matrix(network, rtype="array"):
         Constructed node degree matrix.
 
     """
-    key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
+    node_index = network.node_index()
+    adjacency = [[node_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -80,8 +80,8 @@ def network_connectivity_matrix(network, rtype="array"):
         Constructed connectivity matrix.
 
     """
-    key_index = network.key_index()
-    edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
+    node_index = network.node_index()
+    edges = [(node_index[u], node_index[v]) for u, v in network.edges()]
     return connectivity_matrix(edges, rtype=rtype)
 
 
@@ -109,6 +109,6 @@ def network_laplacian_matrix(network, normalize=False, rtype="array"):
     vectors could be used in a more natural way ``c = xyz + d``.
 
     """
-    key_index = network.key_index()
-    edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
+    node_index = network.node_index()
+    edges = [(node_index[u], node_index[v]) for u, v in network.edges()]
     return laplacian_matrix(edges, normalize=normalize, rtype=rtype)

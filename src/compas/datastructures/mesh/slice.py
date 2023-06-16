@@ -148,7 +148,7 @@ class IntersectionMeshPlane(object):
                 L_ax = length_vector(subtract_vectors(x, a))
                 L_ab = length_vector(subtract_vectors(b, a))
                 t = L_ax / L_ab
-                key = self.mesh.split_edge(u, v, t=t, allow_boundary=True)
+                key = self.mesh.split_edge((u, v), t=t, allow_boundary=True)
                 intersections.append(key)
             else:
                 if u in vertex_intersections:

@@ -67,6 +67,16 @@ class Frame(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "point": Point.JSONSCHEMA,
+            "xaxis": Vector.JSONSCHEMA,
+            "yaxis": Vector.JSONSCHEMA,
+        },
+        "required": ["point", "xaxis", "yaxis"],
+    }
+
     def __init__(self, point, xaxis, yaxis, **kwargs):
         super(Frame, self).__init__(**kwargs)
         self._point = None
@@ -81,37 +91,19 @@ class Frame(Primitive):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema(
-            {
-                "point": Point.DATASCHEMA.fget(None),
-                "xaxis": Vector.DATASCHEMA.fget(None),
-                "yaxis": Vector.DATASCHEMA.fget(None),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "frame"
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the frame."""
         return {
-            "point": self.point.data,
-            "xaxis": self.xaxis.data,
-            "yaxis": self.yaxis.data,
+            "point": self.point,
+            "xaxis": self.xaxis,
+            "yaxis": self.yaxis,
         }
 
     @data.setter
     def data(self, data):
-        self.point = Point.from_data(data["point"])
-        self.xaxis = Vector.from_data(data["xaxis"])
-        self.yaxis = Vector.from_data(data["yaxis"])
+        self.point = data["point"]
+        self.xaxis = data["xaxis"]
+        self.yaxis = data["yaxis"]
 
     @classmethod
     def from_data(cls, data):
@@ -139,11 +131,7 @@ class Frame(Primitive):
         Vector(0.000, 1.000, 0.000)
 
         """
-        frame = cls(
-            Point.from_data(data["point"]),
-            Vector.from_data(data["xaxis"]),
-            Vector.from_data(data["yaxis"]),
-        )
+        frame = cls(data["point"], data["xaxis"], data["yaxis"])
         return frame
 
     # ==========================================================================

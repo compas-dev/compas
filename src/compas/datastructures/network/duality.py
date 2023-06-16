@@ -49,18 +49,17 @@ def network_find_cycles(network, breakpoints=None):
 
     leaves = list(network.leaves())
     if leaves:
-        u = sorted([(key, network.node_coordinates(key, "xy")) for key in leaves], key=lambda x: (x[1][1], x[1][0]),)[
-            0
-        ][0]
+        key_xy = list(zip(leaves, network.nodes_attributes("xy", keys=leaves)))
     else:
-        u = sorted(network.nodes(True), key=lambda x: (x[1]["y"], x[1]["x"]))[0][0]
+        key_xy = list(zip(network.nodes(), network.nodes_attributes("xy")))
+    u = sorted(key_xy, key=lambda x: (x[1][1], x[1][0]))[0][0]
 
     cycles = {}
     found = {}
     ckey = 0
 
     v = network_node_find_first_neighbor(network, u)
-    cycle = network_find_edge_cycle(network, u, v)
+    cycle = network_find_edge_cycle(network, (u, v))
     frozen = frozenset(cycle)
     found[frozen] = ckey
     cycles[ckey] = cycle
@@ -70,7 +69,7 @@ def network_find_cycles(network, breakpoints=None):
 
     for u, v in network.edges():
         if network.adjacency[u][v] is None:
-            cycle = network_find_edge_cycle(network, u, v)
+            cycle = network_find_edge_cycle(network, (u, v))
             frozen = frozenset(cycle)
             if frozen not in found:
                 found[frozen] = ckey
@@ -79,7 +78,7 @@ def network_find_cycles(network, breakpoints=None):
             for a, b in pairwise(cycle + cycle[:1]):
                 network.adjacency[a][b] = found[frozen]
         if network.adjacency[v][u] is None:
-            cycle = network_find_edge_cycle(network, v, u)
+            cycle = network_find_edge_cycle(network, (v, u))
             frozen = frozenset(cycle)
             if frozen not in found:
                 found[frozen] = ckey
@@ -150,7 +149,8 @@ def node_sort_neighbors(key, nbrs, xyz, ccw=True):
     return ordered
 
 
-def network_find_edge_cycle(network, u, v):
+def network_find_edge_cycle(network, edge):
+    u, v = edge
     cycle = [u]
     while True:
         cycle.append(v)

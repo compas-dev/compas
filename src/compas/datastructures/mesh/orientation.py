@@ -186,7 +186,7 @@ def mesh_unify_cycles(mesh, root=None):
                     return
 
     if root is None:
-        root = mesh.get_any_face()
+        root = mesh.face_sample(size=1)[0]
 
     adj = mesh_face_adjacency(mesh)
 
