@@ -142,6 +142,21 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Torus.JSONSCHEMA</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Quaternion.JSONSCHEMA</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector.JSONSCHEMA</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.halfedge_loop_vertices</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.halfedge_strip_faces</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.vertex_point</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.vertices_points</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.set_vertex_point</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_start</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_end</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_line</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_points</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_polygon</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_circle</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_frame</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.node_index</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.index_node</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.edge_index</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.index_edge</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.vertex_index</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.index_vertex</span></code>.</p></li>
 </ul>
 </section>
 <section id="changed">
@@ -156,6 +171,37 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Simplified <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Part</span></code> for more generic usage.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">GLTFMesh.from_mesh</span></code> to read texture coordinates, vertex normals and colors if available and add to <code class="docutils literal notranslate"><span class="pre">GLTFMesh</span></code></p></li>
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">VolMeshArtist.draw_cells</span></code> for Rhino, Blender and Grasshopper.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.edge_faces</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.halfedge_face</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.is_edge_on_boundary</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.halfedge_after</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.halfedge_before</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.trimesh_edge_cotangent</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.trimesh_edge_cotangents</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_coordinates</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_length</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_vector</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_point</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_midpoint</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_direction</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.is_collapse_legal</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_collapse_edge</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.trimesh_collapse_edge</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_insert_vertex_on_edge</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.mesh_split_edge</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.trimesh_split_edge</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed edge parameter of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.trimesh_swap_edge</span></code> to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.vertex_laplacian</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.neighborhood_centroid</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.vertex_normal</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_vector</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_direction</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_point</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.edge_midpoint</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_normal</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_centroid</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_center</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_plane</span></code> to return <code class="docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code>.</p></li>
 <li><p>Changed JSON validation to Draft202012.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.data.Data.to_json</span></code> to include <code class="docutils literal notranslate"><span class="pre">compact=False</span></code> parameter.</p></li>
 <li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.data.Data.to_jsonstring</span></code> to include <code class="docutils literal notranslate"><span class="pre">compact=False</span></code> parameter.</p></li>
@@ -171,6 +217,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Removed deprecated <code class="docutils literal notranslate"><span class="pre">compas.utilities.coercing</span></code>.</p></li>
 <li><p>Removed deprecated <code class="docutils literal notranslate"><span class="pre">compas.utilities.encoders</span></code>.</p></li>
 <li><p>Removed deprecated <code class="docutils literal notranslate"><span class="pre">compas.utilities.xfunc</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.get_any_vertex</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.get_any_vertices</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.get_any_face</span></code>.</p></li>
 <li><p>Removed “schemas” folder and all contained <code class="docutils literal notranslate"><span class="pre">.json</span></code> files from <code class="docutils literal notranslate"><span class="pre">compas.data</span></code>.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.data.Data.DATASCHEMA</span></code>.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.data.Data.JSONSCHEMANAME</span></code>.</p></li>
@@ -202,6 +251,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Torus.DATASCHEMA</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.Torus.JSONSCHEMANAME</span></code>.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Quaternion.DATASCHEMA</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.Quaternion.JSONSCHEMANAME</span></code>.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector.DATASCHEMA</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.Vector.JSONSCHEMANAME</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.key_index</span></code>and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.index_key</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.uv_index</span></code>and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph.index_uv</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.key_index</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge.index_key</span></code>.</p></li>
 </ul>
 </section>
 </section>

@@ -110,7 +110,7 @@
 <h1>Mesh.unset_edge_attribute</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh.unset_edge_attribute">
-<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">unset_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1407"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">unset_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1514"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Unset the attribute of an edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -126,6 +126,10 @@
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.11)"><strong>KeyError</strong></a> – If the edge does not exist.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.Mesh.edge_attribute.html#compas.datastructures.Mesh.edge_attribute" title="compas.datastructures.Mesh.edge_attribute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_attribute()</span></code></a>, <a class="reference internal" href="compas.datastructures.Mesh.edge_attributes.html#compas.datastructures.Mesh.edge_attributes" title="compas.datastructures.Mesh.edge_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_attributes()</span></code></a>, <a class="reference internal" href="compas.datastructures.Mesh.edges_attribute.html#compas.datastructures.Mesh.edges_attribute" title="compas.datastructures.Mesh.edges_attribute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edges_attribute()</span></code></a>, <a class="reference internal" href="compas.datastructures.Mesh.edges_attributes.html#compas.datastructures.Mesh.edges_attributes" title="compas.datastructures.Mesh.edges_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edges_attributes()</span></code></a>, <a class="reference internal" href="compas.datastructures.Mesh.unset_vertex_attribute.html#compas.datastructures.Mesh.unset_vertex_attribute" title="compas.datastructures.Mesh.unset_vertex_attribute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unset_vertex_attribute()</span></code></a>, <a class="reference internal" href="compas.datastructures.Mesh.unset_face_attribute.html#compas.datastructures.Mesh.unset_face_attribute" title="compas.datastructures.Mesh.unset_face_attribute"><code class="xref py py-meth docutils literal notranslate"><span class="pre">unset_face_attribute()</span></code></a></p>
+</div>
 <p class="rubric">Notes</p>
 <p>Unsetting the value of an edge attribute implicitly sets it back to the value
 stored in the default edge attribute dict.</p>

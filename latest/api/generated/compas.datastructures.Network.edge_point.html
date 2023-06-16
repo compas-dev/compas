@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Network.edge_vector" href="compas.datastructures.Network.edge_vector.html" />
+  <link rel="next" title="Network.edge_start" href="compas.datastructures.Network.edge_start.html" />
   
 
   
@@ -110,22 +110,25 @@
 <h1>Network.edge_point</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Network.edge_point">
-<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">edge_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L492"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Return the location of a point along an edge.</p>
+<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">edge_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L582"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Return the point at a parametric location along an edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>hashable</em>) – The key of the start node.</p></li>
-<li><p><strong>v</strong> (<em>hashable</em>) – The key of the end node.</p></li>
+<li><p><strong>edge</strong> (<em>tuple[hashable, hashable]</em>) – The identifier of the edge.</p></li>
 <li><p><strong>t</strong> (<em>float, optional</em>) – The location of the point on the edge.
 If the value of <cite>t</cite> is outside the range 0-1, the point will
 lie in the direction of the edge, but not on the edge vector.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list[float]</em> – The XYZ coordinates of the point.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a> – The point at the specified location.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.Network.edge_start.html#compas.datastructures.Network.edge_start" title="compas.datastructures.Network.edge_start"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_start()</span></code></a>, <a class="reference internal" href="compas.datastructures.Network.edge_end.html#compas.datastructures.Network.edge_end" title="compas.datastructures.Network.edge_end"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_end()</span></code></a>, <a class="reference internal" href="compas.datastructures.Network.edge_midpoint.html#compas.datastructures.Network.edge_midpoint" title="compas.datastructures.Network.edge_midpoint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edge_midpoint()</span></code></a></p>
+</div>
 </dd></dl>
 
 </section>
@@ -205,10 +208,10 @@ lie in the direction of the edge, but not on the edge vector.</p></li>
       
 
       
-      <a href="compas.datastructures.Network.edge_vector.html" title="Network.edge_vector" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.datastructures.Network.edge_start.html" title="Network.edge_start" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Network.edge_vector
+          Network.edge_start
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

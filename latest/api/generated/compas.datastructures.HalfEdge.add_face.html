@@ -110,7 +110,7 @@
 <h1>HalfEdge.add_face</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfEdge.add_face">
-<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">add_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fkey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L412"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">add_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fkey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L379"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add a face to the mesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -120,11 +120,17 @@
 <li><p><strong>**kwattr</strong> (<em>dict[str, Any], optional</em>) – A dictionary of additional attributes compiled of remaining named arguments.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>int</em> – The key of the face.</p>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.HalfEdge.add_vertex.html#compas.datastructures.HalfEdge.add_vertex" title="compas.datastructures.HalfEdge.add_vertex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_vertex()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfEdge.delete_face.html#compas.datastructures.HalfEdge.delete_face" title="compas.datastructures.HalfEdge.delete_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_face()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfEdge.delete_vertex.html#compas.datastructures.HalfEdge.delete_vertex" title="compas.datastructures.HalfEdge.delete_vertex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_vertex()</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>int</em> – The key of the face.</p>
 </dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – If the provided face key is of an unhashable type.</p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – If the provided face key is of an unhashable type.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

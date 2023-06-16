@@ -110,7 +110,7 @@
 <h1>Mesh.delete_vertex</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh.delete_vertex">
-<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">delete_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L469"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">delete_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L441"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Delete a vertex from the mesh and everything that is attached to it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -120,6 +120,10 @@
 <dd class="field-even"><p><em>None</em></p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.Mesh.delete_face.html#compas.datastructures.Mesh.delete_face" title="compas.datastructures.Mesh.delete_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_face()</span></code></a>, <a class="reference internal" href="compas.datastructures.Mesh.add_vertex.html#compas.datastructures.Mesh.add_vertex" title="compas.datastructures.Mesh.add_vertex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_vertex()</span></code></a>, <a class="reference internal" href="compas.datastructures.Mesh.add_face.html#compas.datastructures.Mesh.add_face" title="compas.datastructures.Mesh.add_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_face()</span></code></a></p>
+</div>
 <p class="rubric">Notes</p>
 <p>In some cases, disconnected vertices can remain after application of this
 method. To remove these vertices as well, combine this method with vertex

@@ -110,7 +110,7 @@
 <h1>HalfFace.add_cell</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfFace.add_cell">
-<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">add_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ckey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L478"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">add_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ckey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L482"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add a cell to the volmesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -128,6 +128,10 @@
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.11)"><strong>TypeError</strong></a> – If the provided cell key is of an unhashable type.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.HalfFace.add_vertex.html#compas.datastructures.HalfFace.add_vertex" title="compas.datastructures.HalfFace.add_vertex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_vertex()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfFace.add_halfface.html#compas.datastructures.HalfFace.add_halfface" title="compas.datastructures.HalfFace.add_halfface"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_halfface()</span></code></a></p>
+</div>
 <p class="rubric">Notes</p>
 <p>If no key is provided for the cell, one is generated
 automatically. An automatically generated key is an integer that increments

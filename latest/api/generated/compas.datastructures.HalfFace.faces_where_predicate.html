@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="HalfFace.get_any_face" href="compas.datastructures.HalfFace.get_any_face.html" />
+  <link rel="next" title="HalfFace.halfface_adjacent_halfface" href="compas.datastructures.HalfFace.halfface_adjacent_halfface.html" />
   
 
   
@@ -110,7 +110,7 @@
 <h1>HalfFace.faces_where_predicate</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfFace.faces_where_predicate">
-<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">faces_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L992"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfFace.</span></span><span class="sig-name descname"><span class="pre">faces_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfface/halfface.py#L1054"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get faces for which a certain condition or set of conditions is true using a lambda function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -125,6 +125,10 @@ The callable takes 2 parameters: the face identifier and the the face attributes
 If <cite>data</cite> is True, the next face and its attributes.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.HalfFace.faces_where.html#compas.datastructures.HalfFace.faces_where" title="compas.datastructures.HalfFace.faces_where"><code class="xref py py-meth docutils literal notranslate"><span class="pre">faces_where()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfFace.vertices_where_predicate.html#compas.datastructures.HalfFace.vertices_where_predicate" title="compas.datastructures.HalfFace.vertices_where_predicate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">vertices_where_predicate()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfFace.edges_where_predicate.html#compas.datastructures.HalfFace.edges_where_predicate" title="compas.datastructures.HalfFace.edges_where_predicate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edges_where_predicate()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfFace.cells_where_predicate.html#compas.datastructures.HalfFace.cells_where_predicate" title="compas.datastructures.HalfFace.cells_where_predicate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cells_where_predicate()</span></code></a></p>
+</div>
 </dd></dl>
 
 </section>
@@ -204,10 +208,10 @@ If <cite>data</cite> is True, the next face and its attributes.</p>
       
 
       
-      <a href="compas.datastructures.HalfFace.get_any_face.html" title="HalfFace.get_any_face" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.datastructures.HalfFace.halfface_adjacent_halfface.html" title="HalfFace.halfface_adjacent_halfface" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          HalfFace.get_any_face
+          HalfFace.halfface_adjacent_halfface
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

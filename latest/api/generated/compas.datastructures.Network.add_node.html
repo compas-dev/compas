@@ -110,7 +110,7 @@
 <h1>Network.add_node</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Network.add_node">
-<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L451"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/graph/graph.py#L427"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add a node and specify its attributes (optional).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -125,6 +125,10 @@ Defaults to None, in which case an identifier of type int is automatically gener
 <dd class="field-even"><p><em>hashable</em> – The identifier of the node.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.Network.add_edge.html#compas.datastructures.Network.add_edge" title="compas.datastructures.Network.add_edge"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_edge()</span></code></a>, <a class="reference internal" href="compas.datastructures.Network.delete_node.html#compas.datastructures.Network.delete_node" title="compas.datastructures.Network.delete_node"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_node()</span></code></a></p>
+</div>
 <p class="rubric">Notes</p>
 <p>If no key is provided for the node, one is generated
 automatically. An automatically generated key increments the highest

@@ -110,17 +110,21 @@
 <h1>Network.gkey_key</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Network.gkey_key">
-<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">gkey_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L317"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">gkey_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L368"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision
-to the keys of the corresponding nodes.</p>
+to the identifiers of the corresponding nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>precision</strong> (<em>str, optional</em>) – The float precision specifier used in string formatting.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dict[str, hashable]</em> – A dictionary of geometric key-key pairs.</p>
+<dd class="field-even"><p><em>dict[str, hashable]</em> – A dictionary of (geometric key, node) pairs.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.Network.node_gkey.html#compas.datastructures.Network.node_gkey" title="compas.datastructures.Network.node_gkey"><code class="xref py py-meth docutils literal notranslate"><span class="pre">node_gkey()</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.geometric_key()</span></code></p>
+</div>
 </dd></dl>
 
 </section>

@@ -110,7 +110,7 @@
 <h1>HalfEdge.edges</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.HalfEdge.edges">
-<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L609"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">HalfEdge.</span></span><span class="sig-name descname"><span class="pre">edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/halfedge/halfedge.py#L605"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Iterate over the edges of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -121,6 +121,10 @@
 If <cite>data</cite> is True, the next edge as a ((u, v), data) tuple.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.HalfEdge.vertices.html#compas.datastructures.HalfEdge.vertices" title="compas.datastructures.HalfEdge.vertices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">vertices()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfEdge.faces.html#compas.datastructures.HalfEdge.faces" title="compas.datastructures.HalfEdge.faces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">faces()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfEdge.vertices_where.html#compas.datastructures.HalfEdge.vertices_where" title="compas.datastructures.HalfEdge.vertices_where"><code class="xref py py-meth docutils literal notranslate"><span class="pre">vertices_where()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfEdge.edges_where.html#compas.datastructures.HalfEdge.edges_where" title="compas.datastructures.HalfEdge.edges_where"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edges_where()</span></code></a>, <a class="reference internal" href="compas.datastructures.HalfEdge.faces_where.html#compas.datastructures.HalfEdge.faces_where" title="compas.datastructures.HalfEdge.faces_where"><code class="xref py py-meth docutils literal notranslate"><span class="pre">faces_where()</span></code></a></p>
+</div>
 <p class="rubric">Notes</p>
 <p>Mesh edges have no topological meaning. They are only used to store data.
 Edges are not automatically created when vertices and faces are added to
@@ -130,10 +134,6 @@ they are accessed using this method.</p>
 Unless edges were added explicitly using <code class="xref py py-meth docutils literal notranslate"><span class="pre">add_edge()</span></code> the order of
 edges is <em>as they come out</em>. However, as long as the toplogy remains
 unchanged, the order is consistent.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

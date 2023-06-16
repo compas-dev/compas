@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="VolMesh.face_vertices" href="compas.datastructures.VolMesh.face_vertices.html" />
+  <link rel="next" title="VolMesh.face_points" href="compas.datastructures.VolMesh.face_points.html" />
   
 
   
@@ -110,7 +110,7 @@
 <h1>VolMesh.face_normal</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.VolMesh.face_normal">
-<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">face_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L569"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">VolMesh.</span></span><span class="sig-name descname"><span class="pre">face_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L794"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the oriented normal of a face.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -120,9 +120,13 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list[float]</em> – The components of the normal vector.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a> – The normal vector.</p>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="compas.datastructures.VolMesh.face_points.html#compas.datastructures.VolMesh.face_points" title="compas.datastructures.VolMesh.face_points"><code class="xref py py-meth docutils literal notranslate"><span class="pre">face_points()</span></code></a>, <a class="reference internal" href="compas.datastructures.VolMesh.face_polygon.html#compas.datastructures.VolMesh.face_polygon" title="compas.datastructures.VolMesh.face_polygon"><code class="xref py py-meth docutils literal notranslate"><span class="pre">face_polygon()</span></code></a>, <a class="reference internal" href="compas.datastructures.VolMesh.face_centroid.html#compas.datastructures.VolMesh.face_centroid" title="compas.datastructures.VolMesh.face_centroid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">face_centroid()</span></code></a>, <a class="reference internal" href="compas.datastructures.VolMesh.face_center.html#compas.datastructures.VolMesh.face_center" title="compas.datastructures.VolMesh.face_center"><code class="xref py py-meth docutils literal notranslate"><span class="pre">face_center()</span></code></a></p>
+</div>
 </dd></dl>
 
 </section>
@@ -202,10 +206,10 @@
       
 
       
-      <a href="compas.datastructures.VolMesh.face_vertices.html" title="VolMesh.face_vertices" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.datastructures.VolMesh.face_points.html" title="VolMesh.face_points" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          VolMesh.face_vertices
+          VolMesh.face_points
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

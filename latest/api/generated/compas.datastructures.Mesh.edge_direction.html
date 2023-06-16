@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="Mesh.edge_length" href="compas.datastructures.Mesh.edge_length.html" />
+  <link rel="next" title="Mesh.edge_end" href="compas.datastructures.Mesh.edge_end.html" />
   
 
   
@@ -110,17 +110,14 @@
 <h1>Mesh.edge_direction</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh.edge_direction">
-<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">edge_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/mesh.py#L1183"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">edge_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/mesh.py#L1257"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return the direction vector of an edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>int</em>) – The key of the start vertex.</p></li>
-<li><p><strong>v</strong> (<em>int</em>) – The key of the end vertex.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>edge</strong> (<em>tuple(int, int)</em>) – The identifier of the edge.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list[float]</em> – The direction vector of the edge.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a> – The direction vector of the edge.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -202,10 +199,10 @@
       
 
       
-      <a href="compas.datastructures.Mesh.edge_length.html" title="Mesh.edge_length" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas.datastructures.Mesh.edge_end.html" title="Mesh.edge_end" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          Mesh.edge_length
+          Mesh.edge_end
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

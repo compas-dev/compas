@@ -108,7 +108,7 @@
 <h1>VolMesh</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.VolMesh">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">VolMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_vertex_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_edge_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_face_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_cell_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L33"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">VolMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_vertex_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_edge_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_face_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_cell_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/volmesh/volmesh.py#L38"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.HalfFace.html#compas.datastructures.HalfFace" title="compas.datastructures.halfface.halfface.HalfFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalfFace</span></code></a></p>
 <p>Geometric implementation of a face data structure for volumetric meshes.</p>
 <dl class="field-list simple">
@@ -133,10 +133,16 @@
 <td><p>Compute the (axis aligned) bounding box of a volmesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.cell_center.html#compas.datastructures.VolMesh.cell_center" title="compas.datastructures.VolMesh.cell_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_center</span></code></a></p></td>
-<td><p>Compute the location of the center of mass of a cell.</p></td>
+<td><p>Compute the point at the center of mass of a cell.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.cell_centroid.html#compas.datastructures.VolMesh.cell_centroid" title="compas.datastructures.VolMesh.cell_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_centroid</span></code></a></p></td>
-<td><p>Compute the location of the centroid of a cell.</p></td>
+<td><p>Compute the point at the centroid of a cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.cell_points.html#compas.datastructures.VolMesh.cell_points" title="compas.datastructures.VolMesh.cell_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_points</span></code></a></p></td>
+<td><p>Compute the points of the vertices of a cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.cell_polyhedron.html#compas.datastructures.VolMesh.cell_polyhedron" title="compas.datastructures.VolMesh.cell_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_polyhedron</span></code></a></p></td>
+<td><p>Construct a polyhedron from the vertices and faces of a cell.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.cell_to_mesh.html#compas.datastructures.VolMesh.cell_to_mesh" title="compas.datastructures.VolMesh.cell_to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_to_mesh</span></code></a></p></td>
 <td><p>Construct a mesh object from from a cell of a volmesh.</p></td>
@@ -156,11 +162,23 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_direction.html#compas.datastructures.VolMesh.edge_direction" title="compas.datastructures.VolMesh.edge_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_direction</span></code></a></p></td>
 <td><p>Return the direction vector of an edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_length.html#compas.datastructures.VolMesh.edge_length" title="compas.datastructures.VolMesh.edge_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_length</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_end.html#compas.datastructures.VolMesh.edge_end" title="compas.datastructures.VolMesh.edge_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_end</span></code></a></p></td>
+<td><p>Return the end point of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_length.html#compas.datastructures.VolMesh.edge_length" title="compas.datastructures.VolMesh.edge_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_length</span></code></a></p></td>
 <td><p>Return the length of an edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_point.html#compas.datastructures.VolMesh.edge_point" title="compas.datastructures.VolMesh.edge_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_point</span></code></a></p></td>
-<td><p>Return the location of a point along an edge.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_line.html#compas.datastructures.VolMesh.edge_line" title="compas.datastructures.VolMesh.edge_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_line</span></code></a></p></td>
+<td><p>Return the line representation of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_midpoint.html#compas.datastructures.VolMesh.edge_midpoint" title="compas.datastructures.VolMesh.edge_midpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_midpoint</span></code></a></p></td>
+<td><p>Return the midpoint of an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_point.html#compas.datastructures.VolMesh.edge_point" title="compas.datastructures.VolMesh.edge_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_point</span></code></a></p></td>
+<td><p>Return the point at a parametric location along an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_start.html#compas.datastructures.VolMesh.edge_start" title="compas.datastructures.VolMesh.edge_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_start</span></code></a></p></td>
+<td><p>Return the start point of an edge.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.edge_vector.html#compas.datastructures.VolMesh.edge_vector" title="compas.datastructures.VolMesh.edge_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_vector</span></code></a></p></td>
 <td><p>Return the vector of an edge.</p></td>
@@ -172,10 +190,10 @@
 <td><p>Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.face_center.html#compas.datastructures.VolMesh.face_center" title="compas.datastructures.VolMesh.face_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_center</span></code></a></p></td>
-<td><p>Compute the location of the center of mass of a face.</p></td>
+<td><p>Compute the point at the center of mass of a face.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.face_centroid.html#compas.datastructures.VolMesh.face_centroid" title="compas.datastructures.VolMesh.face_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_centroid</span></code></a></p></td>
-<td><p>Compute the location of the centroid of a face.</p></td>
+<td><p>Compute the point at the centroid of a face.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.face_coordinates.html#compas.datastructures.VolMesh.face_coordinates" title="compas.datastructures.VolMesh.face_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_coordinates</span></code></a></p></td>
 <td><p>Compute the coordinates of the vertices of a face.</p></td>
@@ -185,6 +203,12 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.face_normal.html#compas.datastructures.VolMesh.face_normal" title="compas.datastructures.VolMesh.face_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_normal</span></code></a></p></td>
 <td><p>Compute the oriented normal of a face.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.face_points.html#compas.datastructures.VolMesh.face_points" title="compas.datastructures.VolMesh.face_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_points</span></code></a></p></td>
+<td><p>Compute the points of the vertices of a face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.face_polygon.html#compas.datastructures.VolMesh.face_polygon" title="compas.datastructures.VolMesh.face_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_polygon</span></code></a></p></td>
+<td><p>Compute the polygon of a face.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.face_vertices.html#compas.datastructures.VolMesh.face_vertices" title="compas.datastructures.VolMesh.face_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertices</span></code></a></p></td>
 <td><p>The vertices of a face.</p></td>
@@ -208,10 +232,10 @@
 <td><p>Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.halfface_center.html#compas.datastructures.VolMesh.halfface_center" title="compas.datastructures.VolMesh.halfface_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_center</span></code></a></p></td>
-<td><p>Compute the location of the center of mass of a face.</p></td>
+<td><p>Compute the point at the center of mass of a face.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.halfface_centroid.html#compas.datastructures.VolMesh.halfface_centroid" title="compas.datastructures.VolMesh.halfface_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_centroid</span></code></a></p></td>
-<td><p>Compute the location of the centroid of a face.</p></td>
+<td><p>Compute the point at the centroid of a face.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.halfface_coordinates.html#compas.datastructures.VolMesh.halfface_coordinates" title="compas.datastructures.VolMesh.halfface_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_coordinates</span></code></a></p></td>
 <td><p>Compute the coordinates of the vertices of a face.</p></td>
@@ -244,7 +268,10 @@
 <td><p>Compute the vector from a vertex to the centroid of its neighbors.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_neighborhood_centroid.html#compas.datastructures.VolMesh.vertex_neighborhood_centroid" title="compas.datastructures.VolMesh.vertex_neighborhood_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood_centroid</span></code></a></p></td>
-<td><p>Compute the centroid of the neighbors of a vertex.</p></td>
+<td><p>Compute the point at the centroid of the neighbors of a vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_point.html#compas.datastructures.VolMesh.vertex_point" title="compas.datastructures.VolMesh.vertex_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_point</span></code></a></p></td>
+<td><p>Return the point representation of a vertex.</p></td>
 </tr>
 </tbody>
 </table>
@@ -402,12 +429,6 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.from_jsonstring.html#compas.datastructures.VolMesh.from_jsonstring" title="compas.datastructures.VolMesh.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object from serialized data contained in a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.get_any_face.html#compas.datastructures.VolMesh.get_any_face" title="compas.datastructures.VolMesh.get_any_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code></a></p></td>
-<td><p>Get the identifier of a random face.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.get_any_vertex.html#compas.datastructures.VolMesh.get_any_vertex" title="compas.datastructures.VolMesh.get_any_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code></a></p></td>
-<td><p>Get the identifier of a random vertex.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.halfface_adjacent_halfface.html#compas.datastructures.VolMesh.halfface_adjacent_halfface" title="compas.datastructures.VolMesh.halfface_adjacent_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_adjacent_halfface</span></code></a></p></td>
 <td><p>Return the halfface adjacent to the halfface across the halfedge.</p></td>
 </tr>
@@ -421,7 +442,7 @@
 <td><p>Return the halfface neighborhood of a halfface across their edges.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.halfface_manifold_neighbors.html#compas.datastructures.VolMesh.halfface_manifold_neighbors" title="compas.datastructures.VolMesh.halfface_manifold_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighbors</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Return the halfface neighbors of a halfface that are on the same manifold.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.halfface_opposite_cell.html#compas.datastructures.VolMesh.halfface_opposite_cell" title="compas.datastructures.VolMesh.halfface_opposite_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_cell</span></code></a></p></td>
 <td><p>The cell to which the opposite halfface belongs to.</p></td>
@@ -466,7 +487,7 @@
 <td><p>Verify that a face is on the boundary.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.is_valid.html#compas.datastructures.VolMesh.is_valid" title="compas.datastructures.VolMesh.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Verify that the volmesh is valid.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.is_vertex_on_boundary.html#compas.datastructures.VolMesh.is_vertex_on_boundary" title="compas.datastructures.VolMesh.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a></p></td>
 <td><p>Verify that a vertex is on a boundary.</p></td>
