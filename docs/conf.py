@@ -7,7 +7,7 @@
 
 import inspect
 import importlib
-
+import re
 import sphinx_compas_theme
 
 # -- General configuration ------------------------------------------------
@@ -16,8 +16,25 @@ project = "COMPAS"
 copyright = "COMPAS Association"
 author = "Tom Van Mele"
 
-release = "1.17.5"
-version = ".".join(release.split(".")[0:2])
+
+def get_latest_version():
+    with open("../CHANGELOG.md", "r") as file:
+        content = file.read()
+        pattern = re.compile(r"## (Unreleased|\[\d+\.\d+\.\d+\])")
+        versions = pattern.findall(content)
+        latest_version = versions[0] if versions else None
+        if latest_version and latest_version.startswith("[") and latest_version.endswith("]"):
+            latest_version = latest_version[1:-1]
+        return latest_version
+
+
+latest_version = get_latest_version()
+if latest_version == "Unreleased":
+    release = "Unreleased"
+    version = "latest"
+else:
+    release = latest_version
+    version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
 source_suffix = {
@@ -317,7 +334,7 @@ html_theme_options = {
     "announcement": "This is the documentation for the pre-release of COMPAS 2.0.",
     "switcher": {
         "json_url": "https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json",
-        "version_match": release,
+        "version_match": version,
     },
     "check_switcher": False,
     # content and features
