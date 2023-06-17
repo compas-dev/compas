@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     modules = [
         "compas",
-        "compas.base",
+        "compas.data",
         "compas.datastructures",
         "compas.files",
         "compas.geometry",

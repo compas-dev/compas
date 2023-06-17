@@ -2,15 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
-
-
-__all__ = [
-    "mesh_bounding_box",
-    "mesh_bounding_box_xy",
-]
 
 
 def mesh_bounding_box(mesh):

@@ -6,9 +6,6 @@ from numpy import array
 from compas.numerical import grad
 
 
-__all__ = ["trimesh_descent"]
-
-
 def trimesh_descent(trimesh):
     """Compute the gradient per face of the heightfield of the vertices of the mesh.
 

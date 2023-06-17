@@ -13,7 +13,7 @@ from compas.geometry import angle_vectors_signed
 from compas.geometry import angles_vectors
 from compas.geometry import transform_vectors
 
-from compas.geometry.primitives import Primitive
+from ._primitive import Primitive
 
 
 class Vector(Primitive):
@@ -66,6 +66,13 @@ class Vector(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {"type": "number"},
+    }
+
     __slots__ = ["_x", "_y", "_z"]
 
     def __init__(self, x, y, z=0.0, **kwargs):
@@ -80,19 +87,6 @@ class Vector(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-
-        return Schema(is_float3)
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "vector"
 
     @property
     def data(self):

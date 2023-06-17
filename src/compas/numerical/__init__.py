@@ -141,17 +141,17 @@ if not compas.IPY:
         unset_array_print_precision,
     )
 
-if not compas.IPY:
-    from .descent import descent_numpy
-    from .topop import topop_numpy
-    from .pca import pca_numpy
-    from .fd import fd_numpy
-    from .dr import dr_numpy
-    from .devo import devo_numpy
-    from .isolines import scalarfield_contours_numpy
+    from .descent.descent_numpy import descent_numpy
+    from .topop.topop_numpy import topop_numpy
+    from .pca.pca_numpy import pca_numpy
+    from .fd.fd_numpy import fd_numpy
+    from .dr.dr_numpy import dr_numpy
+    from .devo.devo_numpy import devo_numpy
+    from .isolines.isolines_numpy import scalarfield_contours_numpy
 
-from .dr import dr  # noqa: E402
-from .ga import ga, moga  # noqa: E402
+from .dr.dr import dr
+from .ga.ga import ga
+from .ga.moga import moga
 
 __all__ = [
     "dr",

@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ..geometry import Geometry
+from compas.geometry import Geometry
 
 
 class Primitive(Geometry):

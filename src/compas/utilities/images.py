@@ -9,9 +9,6 @@ if not compas.IPY:
     import imageio
 
 
-__all__ = ["gif_from_images"]
-
-
 def gif_from_images(
     files,
     gif_path,

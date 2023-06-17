@@ -132,7 +132,12 @@ XML
 from __future__ import absolute_import
 
 from .dxf import DXF, DXFParser, DXFReader
-from .gltf import GLTF, GLTFContent, GLTFExporter, GLTFMesh, GLTFParser, GLTFReader
+from .gltf.gltf import GLTF
+from .gltf.gltf_content import GLTFContent
+from .gltf.gltf_exporter import GLTFExporter
+from .gltf.gltf_mesh import GLTFMesh
+from .gltf.gltf_parser import GLTFParser
+from .gltf.gltf_reader import GLTFReader
 from .las import LAS, LASParser, LASReader
 from .obj import OBJ, OBJParser, OBJReader, OBJWriter
 from .off import OFF, OFFReader, OFFWriter

@@ -6,9 +6,6 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 
 
-__all__ = ["barycentric_coordinates"]
-
-
 def barycentric_coordinates(point, triangle):
     """Compute the barycentric coordinates of a point wrt to a triangle.
 

@@ -5,9 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = ["trimesh_geodistance"]
-
-
 @pluggable(category="trimesh")
 def trimesh_geodistance(M, source, method="exact"):
     """Compute the geodesic distance from every vertex of the mesh to a source vertex.

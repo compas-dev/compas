@@ -167,7 +167,7 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
             faces = self.volmesh.cell_faces(cell)
             vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
             vertices = [vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
+            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]
             mesh = compas_ghpython.draw_mesh(vertices, faces, color=self.cell_color[cell].rgb255)
             meshes.append(mesh)
         return meshes

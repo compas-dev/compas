@@ -2,15 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 from compas.geometry import oriented_bounding_box_numpy
 from compas.geometry import oriented_bounding_box_xy_numpy
-
-
-__all__ = [
-    "mesh_oriented_bounding_box_numpy",
-    "mesh_oriented_bounding_box_xy_numpy",
-]
 
 
 def mesh_oriented_bounding_box_numpy(mesh):

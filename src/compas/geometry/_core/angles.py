@@ -6,29 +6,13 @@ from math import pi
 from math import degrees
 from math import acos
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import dot_vectors_xy
-from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_xy
-from compas.geometry._core import cross_vectors
-
-
-__all__ = [
-    "angles_vectors",
-    "angles_vectors_xy",
-    "angles_vectors",
-    "angles_vectors_xy",
-    "angles_points",
-    "angles_points_xy",
-    "angle_vectors",
-    "angle_vectors_signed",
-    "angle_vectors_xy",
-    "angle_points",
-    "angle_points_xy",
-    "angle_planes",
-]
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import dot_vectors
+from ._algebra import dot_vectors_xy
+from ._algebra import length_vector
+from ._algebra import length_vector_xy
+from ._algebra import cross_vectors
 
 
 def angle_vectors(u, v, deg=False, tol=0.0):

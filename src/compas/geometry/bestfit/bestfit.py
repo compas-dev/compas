@@ -7,9 +7,6 @@ from compas.geometry import normalize_vector
 from compas.geometry import centroid_points
 
 
-__all__ = ["bestfit_plane"]
-
-
 def bestfit_plane(points):
     """Fit a plane to a list of (more than three) points.
 

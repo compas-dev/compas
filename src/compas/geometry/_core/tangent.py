@@ -5,9 +5,6 @@ from __future__ import division
 from math import sqrt
 
 
-__all__ = ["tangent_points_to_circle_xy"]
-
-
 def tangent_points_to_circle_xy(circle, point):
     """Calculates the tangent points on a circle in the XY plane.
 

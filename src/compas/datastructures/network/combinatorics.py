@@ -5,9 +5,6 @@ from __future__ import division
 from compas.topology import breadth_first_traverse
 
 
-__all__ = ["network_is_connected"]
-
-
 def network_is_connected(network):
     """Verify that the network is connected.
 
@@ -38,5 +35,5 @@ def network_is_connected(network):
     """
     if network.number_of_nodes() == 0:
         return False
-    nodes = breadth_first_traverse(network.adjacency, network.get_any_node())
+    nodes = breadth_first_traverse(network.adjacency, network.node_sample(size=1)[0])
     return len(nodes) == network.number_of_nodes()

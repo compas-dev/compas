@@ -5,8 +5,6 @@ from __future__ import division
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
 
-__all__ = ["mesh_weld", "meshes_join", "meshes_join_and_weld"]
-
 
 def mesh_weld(mesh, precision=None, cls=None):
     """Weld vertices of a mesh within some precision distance.

@@ -5,13 +5,6 @@ from __future__ import division
 import compas
 
 
-__all__ = [
-    "geometric_key",
-    "reverse_geometric_key",
-    "geometric_key_xy",
-]
-
-
 def geometric_key(xyz, precision=None, sanitize=True):
     """Convert XYZ coordinates to a string that can be used as a dict key.
 

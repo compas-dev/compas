@@ -5,9 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = ["trimesh_slice"]
-
-
 @pluggable(category="trimesh")
 def trimesh_slice(mesh, planes):
     """Slice a mesh by a list of planes.

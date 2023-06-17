@@ -8,14 +8,26 @@ import uuid
 
 from compas.data.exceptions import DecoderError
 
+IDictionary = None
+numpy_support = False
+dotnet_support = False
+
 # We don't do this from `compas.IPY` to avoid circular imports
 if "ironpython" == platform.python_implementation().lower():
+    dotnet_support = True
+
     try:
+        import System
         from System.Collections.Generic import IDictionary
     except:  # noqa: E722
-        IDictionary = None
-else:
-    IDictionary = None
+        pass
+
+try:
+    import numpy as np
+
+    numpy_support = True
+except ImportError:
+    numpy_support = False
 
 
 def cls_from_dtype(dtype):
@@ -98,6 +110,18 @@ class DataEncoder(json.JSONEncoder):
             The serialized object.
 
         """
+        if hasattr(o, "to_jsondata"):
+            value = o.to_jsondata()
+            if hasattr(o, "dtype"):
+                dtype = o.dtype
+            else:
+                dtype = "{}/{}".format(
+                    ".".join(o.__class__.__module__.split(".")[:-1]),
+                    o.__class__.__name__,
+                )
+
+            return {"dtype": dtype, "value": value, "guid": str(o.guid)}
+
         if hasattr(o, "to_data"):
             value = o.to_data()
             if hasattr(o, "dtype"):
@@ -113,11 +137,7 @@ class DataEncoder(json.JSONEncoder):
         if hasattr(o, "__next__"):
             return list(o)
 
-        try:
-            import numpy as np
-        except ImportError:
-            pass
-        else:
+        if numpy_support:
             if isinstance(o, np.ndarray):
                 return o.tolist()
             if isinstance(
@@ -143,6 +163,10 @@ class DataEncoder(json.JSONEncoder):
                 return bool(o)
             if isinstance(o, np.void):
                 return None
+
+        if dotnet_support:
+            if isinstance(o, System.Decimal):
+                return float(o)
 
         return super(DataEncoder, self).default(o)
 
@@ -225,7 +249,11 @@ class DataDecoder(json.JSONDecoder):
         if IDictionary and isinstance(o, IDictionary[str, object]):
             obj_value = {key: obj_value[key] for key in obj_value.Keys}
 
-        obj = cls.from_data(obj_value)
+        if hasattr(cls, "from_jsondata"):
+            obj = cls.from_jsondata(obj_value)
+        else:
+            obj = cls.from_data(obj_value)
+
         if "guid" in o:
             obj._guid = uuid.UUID(o["guid"])
 

@@ -24,9 +24,6 @@ except ImportError:
 #         raise
 
 
-__all__ = ["download_file_from_remote"]
-
-
 def download_file_from_remote(source, target, overwrite=True):
     """Download a file from a remote source and save it to a local destination.
 

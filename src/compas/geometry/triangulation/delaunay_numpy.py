@@ -7,12 +7,6 @@ from scipy.spatial import Voronoi
 from scipy.spatial import Delaunay
 
 
-__all__ = [
-    "delaunay_from_points_numpy",
-    "voronoi_from_points_numpy",
-]
-
-
 def delaunay_from_points_numpy(points):
     """Computes the delaunay triangulation for a list of points using Numpy.
 

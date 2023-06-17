@@ -2,26 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry._core import distance_point_point_xy
-from compas.geometry._core import distance_point_line_xy
-from compas.geometry._core import closest_point_on_segment_xy
-
-
-__all__ = [
-    "is_ccw_xy",
-    "is_colinear_xy",
-    "is_polygon_convex_xy",
-    "is_point_on_line_xy",
-    "is_point_on_segment_xy",
-    "is_point_on_polyline_xy",
-    "is_point_in_triangle_xy",
-    "is_point_in_polygon_xy",
-    "is_point_in_convex_polygon_xy",
-    "is_point_in_circle_xy",
-    "is_polygon_in_polygon_xy",
-    "is_intersection_line_line_xy",
-    "is_intersection_segment_segment_xy",
-]
+from compas.geometry import distance_point_point_xy
+from compas.geometry import distance_point_line_xy
+from compas.geometry import closest_point_on_segment_xy
 
 
 def is_ccw_xy(a, b, c, colinear=False):

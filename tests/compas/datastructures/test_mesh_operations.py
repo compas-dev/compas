@@ -35,13 +35,13 @@ def mesh_quads():
 
 
 def test_insert_vertex_on_edge(mesh_0):
-    mesh_insert_vertex_on_edge(mesh_0, 0, 1)
+    mesh_insert_vertex_on_edge(mesh_0, (0, 1))
     assert len(mesh_0.face_vertices(0)) == 4
     assert len(mesh_0.face_vertices(1)) == 4
     assert mesh_0.face_vertex_descendant(0, 0) == 5
     assert mesh_0.face_vertex_descendant(1, 1) == 5
 
-    mesh_insert_vertex_on_edge(mesh_0, 0, 2, 4)
+    mesh_insert_vertex_on_edge(mesh_0, (0, 2), 4)
     assert len(mesh_0.face_vertices(0)) == 5
     assert mesh_0.face_vertex_descendant(0, 2) == 4
 

@@ -7,11 +7,6 @@ from copy import deepcopy
 
 from compas.data import Data
 
-__all__ = [
-    "Configuration",
-    "FixedLengthList",
-]
-
 # These joint types known to configuration are a match
 # to the ones defined in `Joint` class, but we redefine here
 # to avoid a circular dependency

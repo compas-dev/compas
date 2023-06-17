@@ -3,9 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ["mesh_merge_faces"]
-
-
 def mesh_merge_faces(mesh, faces):
     """Merge two faces of a mesh over their shared edge.
 
@@ -64,11 +61,11 @@ def mesh_merge_faces(mesh, faces):
     key = mesh.add_face(vertices)
     # remove internal edges
     remove = []
-    for u, v in mesh.face_halfedges(key):
-        f1, f2 = mesh.edge_faces(u, v)
+    for edge in mesh.face_halfedges(key):
+        f1, f2 = mesh.edge_faces(edge)
         if f1 == f2:
             # an internal edge has the same face on both sides
-            remove.append((u, v))
+            remove.append(edge)
     for u, v in remove:
         if u in mesh.halfedge and v in mesh.halfedge[u]:
             del mesh.halfedge[u][v]

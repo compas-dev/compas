@@ -1,32 +1,18 @@
 import compas
-
-from compas.geometry import Point, Vector, Frame
-from compas.geometry import Box
-from compas.geometry import Transformation
-
-from compas.datastructures import Network
 from compas.datastructures import Mesh
+from compas.datastructures import Network
 from compas.datastructures import VolMesh
+from compas.geometry import Box
+from compas.geometry import Frame
+from compas.geometry import Point
+from compas.geometry import Transformation
+from compas.geometry import Vector
 
 
 def test_json_native():
     before = [[], (), {}, "", 1, 1.0, True, None]
     after = compas.json_loads(compas.json_dumps(before))
     assert after == [[], [], {}, "", 1, 1.0, True, None]
-
-
-if not compas.IPY:
-    import numpy as np
-
-    def test_json_numpy():
-        before = [
-            np.array([1, 2, 3]),
-            np.array([1.0, 2.0, 3.0]),
-            np.float64(1.0),
-            np.int32(1),
-        ]
-        after = compas.json_loads(compas.json_dumps(before))
-        assert after == [[1, 2, 3], [1.0, 2.0, 3.0], 1.0, 1]
 
 
 def test_json_primitive():
@@ -63,8 +49,8 @@ def test_json_network():
     assert before.attributes == after.attributes
     assert all(before.has_node(node) for node in after.nodes())
     assert all(after.has_node(node) for node in before.nodes())
-    assert all(before.has_edge(*edge) for edge in after.edges())
-    assert all(after.has_edge(*edge) for edge in before.edges())
+    assert all(before.has_edge(edge) for edge in after.edges())
+    assert all(after.has_edge(edge) for edge in before.edges())
     assert before.guid == after.guid
 
 
