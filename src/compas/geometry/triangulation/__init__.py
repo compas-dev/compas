@@ -2,13 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
 from compas.plugins import pluggable
-
-from .delaunay import *  # noqa: F401 F403
-
-if not compas.IPY:
-    from .delaunay_numpy import *  # noqa: F401 F403
 
 
 @pluggable(category="triangulation")
@@ -96,6 +90,3 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
 
     """
     raise NotImplementedError
-
-
-__all__ = [name for name in dir() if not name.startswith("_")]

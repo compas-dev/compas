@@ -17,15 +17,16 @@ from compas.geometry import cross_vectors
 from compas.geometry import length_vector
 from compas.geometry import allclose
 
-from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import matrix_from_euler_angles
-from compas.geometry.transformations import euler_angles_from_matrix
-from compas.geometry.transformations import matrix_from_axis_and_angle
-from compas.geometry.transformations import axis_and_angle_from_matrix
-from compas.geometry.transformations import matrix_from_quaternion
-from compas.geometry.transformations import matrix_from_frame
-from compas.geometry.transformations import basis_vectors_from_matrix
-from compas.geometry.transformations import Transformation
+from .matrices import decompose_matrix
+from .matrices import matrix_from_euler_angles
+from .matrices import euler_angles_from_matrix
+from .matrices import matrix_from_axis_and_angle
+from .matrices import axis_and_angle_from_matrix
+from .matrices import matrix_from_quaternion
+from .matrices import matrix_from_frame
+from .matrices import basis_vectors_from_matrix
+
+from .transformation import Transformation
 
 
 class Rotation(Transformation):

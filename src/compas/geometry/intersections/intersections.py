@@ -25,30 +25,6 @@ from compas.geometry import is_point_on_segment_xy
 from compas.geometry import is_point_in_triangle
 
 
-__all__ = [
-    "intersection_line_line",
-    "intersection_segment_segment",
-    "intersection_line_segment",
-    "intersection_line_plane",
-    "intersection_polyline_plane",
-    "intersection_line_triangle",
-    "intersection_segment_plane",
-    "intersection_plane_circle",
-    "intersection_plane_plane",
-    "intersection_plane_plane_plane",
-    "intersection_sphere_line",
-    "intersection_sphere_sphere",
-    "intersection_segment_polyline",
-    "intersection_line_line_xy",
-    "intersection_segment_segment_xy",
-    "intersection_line_segment_xy",
-    "intersection_line_box_xy",
-    "intersection_circle_circle_xy",
-    "intersection_ellipse_line_xy",
-    "intersection_segment_polyline_xy",
-]
-
-
 def intersection_line_line(l1, l2, tol=1e-6):
     """Computes the intersection of two lines.
 

@@ -115,45 +115,16 @@ The following classes are available for backwards compatibility but are deprecat
 from __future__ import absolute_import
 
 from .configuration import Configuration
-from .model import (
-    Axis,
-    Calibration,
-    ChildLink,
-    Collision,
-    Color,
-    Dynamics,
-    Geometry,
-    Inertia,
-    Inertial,
-    Joint,
-    Limit,
-    Link,
-    Mass,
-    Material,
-    MeshDescriptor,
-    Mimic,
-    ParentLink,
-    RobotModel,
-    SafetyController,
-    Texture,
-    ToolModel,
-    Visual,
-)
-from .resources import (
-    AbstractMeshLoader,
-    DefaultMeshLoader,
-    GithubPackageMeshLoader,
-    LocalPackageMeshLoader,
-)
 
-# Deprecated aliases
-from .model import (
-    Origin,
-    Box,
-    Capsule,
-    Cylinder,
-    Sphere,
-)
+from .resources.basic import AbstractMeshLoader, DefaultMeshLoader, LocalPackageMeshLoader
+from .resources.github import GithubPackageMeshLoader
+
+# from .model.base import FrameProxy, ProxyObject
+from .model.geometry import Box, Capsule, Color, Cylinder, Geometry, Material, MeshDescriptor, Origin, Sphere, Texture
+from .model.joint import Axis, Calibration, ChildLink, Dynamics, Joint, Limit, Mimic, ParentLink, SafetyController
+from .model.link import Collision, Inertia, Inertial, Link, Mass, Visual
+from .model.robot import RobotModel
+from .model.tool import ToolModel
 
 __all__ = [
     "Geometry",

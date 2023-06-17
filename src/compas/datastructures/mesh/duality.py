@@ -5,8 +5,6 @@ from __future__ import division
 from math import pi
 from compas.utilities import flatten
 
-__all__ = ["mesh_dual"]
-
 
 PI2 = 2.0 * pi
 

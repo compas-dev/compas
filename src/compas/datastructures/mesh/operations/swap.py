@@ -3,10 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = ["trimesh_swap_edge"]
-
-
-def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
+def trimesh_swap_edge(mesh, edge, allow_boundary=True):
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.
 
@@ -14,16 +11,15 @@ def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of mesh.
-    u : int
-        The key of one of the vertices of the edge.
-    v : int
-        The key of the other vertex of the edge.
+    edge : tuple[int, int]
+        The identifier of the edge to swap.
 
     Returns
     -------
     None
 
     """
+    u, v = edge
 
     # check legality of the swap
     # swapping on the boundary is not allowed

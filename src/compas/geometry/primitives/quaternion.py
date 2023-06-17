@@ -12,7 +12,7 @@ from compas.geometry import quaternion_norm
 from compas.geometry import quaternion_is_unit
 from compas.geometry import quaternion_from_matrix
 
-from compas.geometry.primitives import Primitive
+from ._primitive import Primitive
 
 
 class Quaternion(Primitive):
@@ -111,6 +111,17 @@ class Quaternion(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "w": {"type": "number"},
+            "x": {"type": "number"},
+            "y": {"type": "number"},
+            "z": {"type": "number"},
+        },
+        "required": ["w", "x", "y", "z"],
+    }
+
     __slots__ = ["_w", "_x", "_y", "_z"]
 
     def __init__(self, w, x, y, z, **kwargs):
@@ -127,18 +138,6 @@ class Quaternion(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema({"w": float, "x": float, "y": float, "z": float})
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "quaternion"
 
     @property
     def data(self):

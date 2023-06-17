@@ -13,18 +13,6 @@ from scipy.linalg import solve
 from compas.geometry import cross_vectors
 
 
-__all__ = [
-    "transform_points_numpy",
-    "transform_vectors_numpy",
-    "homogenize_numpy",
-    "dehomogenize_numpy",
-    "homogenize_and_flatten_frames_numpy",
-    "dehomogenize_and_unflatten_frames_numpy",
-    "world_to_local_coordinates_numpy",
-    "local_to_world_coordinates_numpy",
-]
-
-
 def transform_points_numpy(points, T):
     """Transform multiple points with one Transformation using numpy.
 

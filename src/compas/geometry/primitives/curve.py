@@ -4,9 +4,9 @@ from __future__ import division
 
 from math import factorial
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Point
-from compas.geometry.primitives import Vector
+from ._primitive import Primitive
+from .vector import Vector
+from .point import Point
 
 
 def binomial_coefficient(n, k):
@@ -104,6 +104,14 @@ class Bezier(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+        },
+        "required": ["points"],
+    }
+
     __slots__ = ["_points"]
 
     def __init__(self, points):
@@ -118,7 +126,7 @@ class Bezier(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the curve."""
-        return {"points": [list(point) for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):

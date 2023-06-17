@@ -7,46 +7,21 @@ from math import sqrt
 
 from compas.utilities import pairwise
 
-from compas.geometry._core import add_vectors
-from compas.geometry._core import add_vectors_xy
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import scale_vector
-from compas.geometry._core import normalize_vector
-from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_xy
-from compas.geometry._core import length_vector_sqrd
-from compas.geometry._core import length_vector_sqrd_xy
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import cross_vectors_xy
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import vector_component
-from compas.geometry._core import vector_component_xy
-
-
-__all__ = [
-    "distance_point_point",
-    "distance_point_point_xy",
-    "distance_point_point_sqrd",
-    "distance_point_point_sqrd_xy",
-    "distance_point_line",
-    "distance_point_line_xy",
-    "distance_point_line_sqrd",
-    "distance_point_line_sqrd_xy",
-    "distance_point_plane",
-    "distance_point_plane_signed",
-    "distance_line_line",
-    "closest_point_in_cloud",
-    "closest_point_in_cloud_xy",
-    "closest_point_on_line",
-    "closest_point_on_line_xy",
-    "closest_point_on_segment",
-    "closest_point_on_segment_xy",
-    "closest_point_on_polyline",
-    "closest_point_on_polyline_xy",
-    "closest_point_on_plane",
-    "closest_line_to_point",
-]
+from ._algebra import add_vectors
+from ._algebra import add_vectors_xy
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import scale_vector
+from ._algebra import normalize_vector
+from ._algebra import length_vector
+from ._algebra import length_vector_xy
+from ._algebra import length_vector_sqrd
+from ._algebra import length_vector_sqrd_xy
+from ._algebra import cross_vectors
+from ._algebra import cross_vectors_xy
+from ._algebra import dot_vectors
+from ._algebra import vector_component
+from ._algebra import vector_component_xy
 
 
 def distance_point_point(a, b):

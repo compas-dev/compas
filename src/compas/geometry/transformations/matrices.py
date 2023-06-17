@@ -53,41 +53,6 @@ _SPEC2TUPLE = {
 _NEXT_SPEC = [1, 2, 0, 1]
 
 
-__all__ = [
-    "matrix_determinant",
-    "matrix_inverse",
-    "decompose_matrix",
-    "compose_matrix",
-    "identity_matrix",
-    "matrix_from_frame",
-    "matrix_from_frame_to_frame",
-    "matrix_from_change_of_basis",
-    "matrix_from_euler_angles",
-    "matrix_from_axis_and_angle",
-    "matrix_from_axis_angle_vector",
-    "matrix_from_basis_vectors",
-    "matrix_from_translation",
-    "matrix_from_orthogonal_projection",
-    "matrix_from_parallel_projection",
-    "matrix_from_perspective_projection",
-    "matrix_from_perspective_entries",
-    "matrix_from_shear_entries",
-    "matrix_from_shear",
-    "matrix_from_scale_factors",
-    "matrix_from_quaternion",
-    "euler_angles_from_matrix",
-    "euler_angles_from_quaternion",
-    "axis_and_angle_from_matrix",
-    "axis_angle_vector_from_matrix",
-    "axis_angle_from_quaternion",
-    "quaternion_from_matrix",
-    "quaternion_from_euler_angles",
-    "quaternion_from_axis_angle",
-    "basis_vectors_from_matrix",
-    "translation_from_matrix",
-]
-
-
 def is_matrix_square(M):
     """Verify that a matrix is square.
 

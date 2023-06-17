@@ -96,6 +96,20 @@ class Box(Shape):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "frame": Frame.JSONSCHEMA,
+            "xsize": {"type": "number", "exclusiveMinimum": 0},
+            "ysize": {"type": "number", "exclusiveMinimum": 0},
+            "zsize": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "additionalProperties": False,
+        "minProperties": 4,
+    }
+
+    __slots__ = ["_frame", "_xsize", "_ysize", "_zsize"]
+
     def __init__(self, frame, xsize, ysize, zsize, **kwargs):
         super(Box, self).__init__(**kwargs)
         self._frame = None
@@ -112,29 +126,10 @@ class Box(Shape):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-
-        return schema.Schema(
-            {
-                "frame": Frame.DATASCHEMA.fget(None),
-                "xsize": schema.And(float, lambda x: x > 0),
-                "ysize": schema.And(float, lambda x: x > 0),
-                "zsize": schema.And(float, lambda x: x > 0),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the  schema of the data representation in JSON format."""
-        return "box"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the box."""
         return {
-            "frame": self.frame.data,
+            "frame": self.frame,
             "xsize": self.xsize,
             "ysize": self.ysize,
             "zsize": self.zsize,
@@ -142,7 +137,7 @@ class Box(Shape):
 
     @data.setter
     def data(self, data):
-        self.frame = Frame.from_data(data["frame"])
+        self.frame = data["frame"]
         self.xsize = data["xsize"]
         self.ysize = data["ysize"]
         self.zsize = data["zsize"]
@@ -166,7 +161,7 @@ class Box(Shape):
         >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
         >>> box = Box.from_data(data)
         """
-        return cls(Frame.from_data(data["frame"]), data["xsize"], data["ysize"], data["zsize"])
+        return cls(data["frame"], data["xsize"], data["ysize"], data["zsize"])
 
     # ==========================================================================
     # properties
