@@ -197,10 +197,11 @@ def test_polyline_split_at_corners(coords, input, expected):
 
 
 @pytest.mark.parametrize(
-    "coords,expected",
+    "coords,segments_number,expected",
     [
         (
             [[0.0, 0.0, 0.0], [100.0, 0.0, 0.0]],
+            5,
             [
                 ([0.0, 0.0, 0.0], [20.0, 0.0, 0.0]),
                 ([20.0, 0.0, 0.0], [40.0, 0.0, 0.0]),
@@ -211,6 +212,7 @@ def test_polyline_split_at_corners(coords, input, expected):
         ),
         (
             [[0.0, 0.0, 0.0], [100.0, 0.0, 0.0], [300.0, 0.0, 0.0]],
+            5,
             [
                 ([0.0, 0.0, 0.0], [60.0, 0.0, 0.0]),
                 ([60.0, 0.0, 0.0], [100.0, 0.0, 0.0], [120.0, 0.0, 0.0]),
@@ -227,6 +229,7 @@ def test_polyline_split_at_corners(coords, input, expected):
                 [0.0, 200.0, 0.0],
                 [0.0, 0.0, 0.0],
             ],
+            5,
             [
                 ([0.0, 0.0, 0.0], [160.0, 0.0, 0.0]),
                 ([160.0, 0.0, 0.0], [200.0, 0.0, 0.0], [200.0, 120.0, 0.0]),
@@ -235,17 +238,31 @@ def test_polyline_split_at_corners(coords, input, expected):
                 ([0.0, 160.0, 0.0], [0.0, 0.0, 0.0]),
             ],
         ),
+        (
+            [[0.0, 0.0, 0.0], [100.0, 0.0, 0.0]],
+            1,
+            [([0.0, 0.0, 0.0], [100.0, 0.0, 0.0])]
+        ),
+        (
+            [[0.0, 0.0, 0.0], [100.0, 0.0, 0.0]],
+            0,
+            "error"
+        ),
     ],
 )
-def test_polyline_split(coords, expected):
-    assert expected == Polyline(coords).split(5)
+def test_polyline_split(coords, segments_number, expected):
+    if segments_number > 0:
+        assert expected == Polyline(coords).split(segments_number)
+    else:
+        pytest.raises(ValueError)
 
 
 @pytest.mark.parametrize(
-    "coords,expected",
+    "coords,length,expected",
     [
         (
             [[0.0, 0.0, 0.0], [100.0, 0.0, 0.0]],
+            70,
             [
                 ([0.0, 0.0, 0.0], [70.0, 0.0, 0.0]),
                 ([70.0, 0.0, 0.0], [100.0, 0.0, 0.0]),
@@ -253,6 +270,7 @@ def test_polyline_split(coords, expected):
         ),
         (
             [[0.0, 0.0, 0.0], [100.0, 0.0, 0.0], [300.0, 0.0, 0.0]],
+            70,
             [
                 ([0.0, 0.0, 0.0], [70.0, 0.0, 0.0]),
                 ([70.0, 0.0, 0.0], [100.0, 0.0, 0.0], [140.0, 0.0, 0.0]),
@@ -269,22 +287,35 @@ def test_polyline_split(coords, expected):
                 [0.0, 100.0, 0.0],
                 [0.0, 0.0, 0.0],
             ],
+            70,
             [
                 ([0.0, 0.0, 0.0], [70.0, 0.0, 0.0]),
                 ([70.0, 0.0, 0.0], [100.0, 0.0, 0.0], [100.0, 40.0, 0.0]),
                 ([100.0, 40.0, 0.0], [100.0, 100.0, 0.0], [90.0, 100.0, 0.0]),
-                (
-                    [90.0, 100.0, 0.0],
-                    [20.0, 100.0, 0.0],
-                ),
+                ([90.0, 100.0, 0.0], [20.0, 100.0, 0.0],),
                 ([20.0, 100.0, 0.0], [0.0, 100.0, 0.0], [0.0, 50.0, 0.0]),
                 ([0.0, 50.0, 0.0], [0.0, 0.0, 0.0]),
             ],
+
+        ),
+        (
+            [[0.0, 0.0, 0.0], [60.0, 0.0, 0.0]],
+            70,
+            "error",
+        ),
+        (
+            [[0.0, 0.0, 0.0], [60.0, 0.0, 0.0]],
+            0,
+            "error",
         ),
     ],
 )
-def test_polyline_split_by_length_strict1(coords, expected):
-    assert expected == Polyline(coords).split_by_length(70, strict=False)
+def test_polyline_split_by_length_strict1(coords, length, expected):
+    polyline = Polyline(coords)
+    if length > 0 and length < polyline.length:
+        assert expected == polyline.split_by_length(length, strict=False)
+    else:
+        pytest.raises(ValueError)
 
 
 @pytest.mark.parametrize(
