@@ -449,6 +449,7 @@ class Polyline(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import Polyline
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
         >>> split_polylines = polyline.split_polyline_by_length(3)
         >>> split_polylines
@@ -456,6 +457,7 @@ class Polyline(Primitive):
         Polyline([Point(1.709, 2.418, 0.000), Point(2.000, 3.000, 0.000), Point(4.000, 4.000, 0.000),\
         Point(4.051, 3.898, 0.000)])]
 
+        >>> from compas.geometry import Polyline
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
         >>> split_polylines = polyline.split_polyline_by_length(3, strict=False)
         >>> split_polylines
@@ -464,6 +466,10 @@ class Polyline(Primitive):
         Point(4.051, 3.898, 0.000)]), Polyline([Point(4.051, 3.898, 0.000), Point(5.000, 2.000, 0.000)])]
 
         """
+        if length <= 0:
+            raise ValueError("Length should be bigger than 0.")
+        elif length > self.length:
+            raise ValueError("Polyline length {0} is smaller than input length {1}.".format(self.length, length))
         divided_polylines = []
         polyline_copy = self.copy()
         segment = Polyline([self[0]])  # Start a new segment
@@ -506,6 +512,7 @@ class Polyline(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import Polyline
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
         >>> split_polylines = polyline.split_polyline(3)
         >>> split_polylines
