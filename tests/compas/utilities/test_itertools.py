@@ -44,16 +44,16 @@ def test_iterable_cap_generator(mesh_a, mesh_b):
 
 def test_reshape():
     a = [1, 2, 3, 4, 5, 6]
-    assert(allclose(reshape(a, (2, 3)), [[1, 2, 3], [4, 5, 6]]))
-    assert(allclose(reshape(a, (3, 2)), [[1, 2], [3, 4], [5, 6]]))
+    assert allclose(reshape(a, (2, 3)), [[1, 2, 3], [4, 5, 6]])
+    assert allclose(reshape(a, (3, 2)), [[1, 2], [3, 4], [5, 6]])
     a = [[1, 2], [3, 4], [5, 6]]
-    assert(allclose(reshape(a, (2, 3)), [[1, 2, 3], [4, 5, 6]]))
+    assert allclose(reshape(a, (2, 3)), [[1, 2, 3], [4, 5, 6]])
     a = [1, 2, 3, 4]
-    assert(allclose(reshape(a, (4, 1)), [[1], [2], [3], [4]]))
+    assert allclose(reshape(a, (4, 1)), [[1], [2], [3], [4]])
 
 
 def test_flatten():
     a = [[1, 2, 3], [4, 5, 6]]
-    assert(allclose(flatten(a), [1, 2, 3, 4, 5, 6]))
+    assert allclose(flatten(a), [1, 2, 3, 4, 5, 6])
     a = [[1], [2], [3], [4]]
-    assert(allclose(flatten(a), [1, 2, 3, 4]))
+    assert allclose(flatten(a), [1, 2, 3, 4])
