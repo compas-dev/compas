@@ -234,6 +234,7 @@ def reshape(lst, shape):
     .. [1] ``numpy.reshape`` Available at https://numpy.org/doc/stable/reference/generated/numpy.reshape.html
 
     """
+
     def helper(l, shape):  # noqa E741
         if len(shape) == 1:
             if len(l) % shape[0] != 0:
@@ -241,7 +242,7 @@ def reshape(lst, shape):
             return l
         else:
             n = reduce(mul, shape[1:])
-            return [helper(l[i * n:(i + 1) * n], shape[1:]) for i in range(len(l) // n)]
+            return [helper(l[i * n : (i + 1) * n], shape[1:]) for i in range(len(l) // n)]
 
     shape = (shape,) if isinstance(shape, int) else shape
     flattened_list = flatten(lst)
