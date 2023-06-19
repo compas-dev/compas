@@ -120,6 +120,13 @@
 <dd class="field-even"><p><em>list</em> – list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>]</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span> <span class="o">=</span> <span class="n">Polyline</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">divided_polylines</span> <span class="o">=</span> <span class="n">polyline</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">divided_polyline</span>
+<span class="go">[Point(0.000, 0.000, 0.000), Point(1.578, 2.157, 0.000), Point(3.578, 3.789, 0.000), Point(5.000, 2.000, 0.000)]</span>
+</code></pre></div>
+</div>
 </dd></dl>
 
 </section>
