@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
 * Added representation for features in `compas.datastructures.Part`.
+* Added  `split` and `split_by_length` to `compas.geometry.Polyline`.
 * Added `compas.rpc.XFunc`.
 * Added `compas.data.Data.validate_jsonstring`.
 * Added `compas.data.Data.validate_jsondata`.
