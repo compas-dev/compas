@@ -458,7 +458,7 @@ class VolMesh(HalfFace):
 
         See Also
         --------
-        :meth:`vertex_laplacian`, :meth:`vertex_neighborhood_centroid
+        :meth:`vertex_laplacian`, :meth:`vertex_neighborhood_centroid`
 
         """
         return Point(*self.vertex_coordinates(vertex))
@@ -890,8 +890,8 @@ class VolMesh(HalfFace):
         --------
         :meth:`face_area`, :meth:`face_aspect_ratio`
 
-        Note
-        ----
+        Notes
+        -----
         compas.geometry.mesh_flatness function currently only works for quadrilateral faces.
         This function uses the distance between each face vertex and its projected point
         on the best-fit plane of the face as the flatness metric.

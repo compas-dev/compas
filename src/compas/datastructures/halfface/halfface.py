@@ -42,6 +42,10 @@ class HalfFace(Datastructure):
     default_cell_attributes: dict[str, Any]
         Default values for cell attributes.
 
+    See Also
+    --------
+    :class:`compas.datastructures.VolMesh`
+
     """
 
     JSONSCHEMA = {
@@ -1905,7 +1909,7 @@ class HalfFace(Datastructure):
         :meth:`update_default_vertex_attributes`, :meth:`update_default_edge_attributes`, :meth:`update_default_face_attributes`
 
         Notes
-        ----
+        -----
         Named arguments overwrite corresponding cell-value pairs in the attribute dictionary.
 
         """

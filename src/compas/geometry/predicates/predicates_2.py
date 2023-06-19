@@ -388,7 +388,7 @@ def is_intersection_line_line_xy(l1, l2, tol=1e-6):
         A tolerance for intersection verification.
 
     Returns
-    --------
+    -------
     bool
         True if the lines intersect in one point
         False if the lines are skew, parallel or lie on top of each other.

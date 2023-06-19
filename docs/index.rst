@@ -1,5 +1,7 @@
+:html_theme.sidebar_secondary.remove:
+
 ********************************************************************************
-COMPAS Docs
+COMPAS Documentation
 ********************************************************************************
 
 .. rst-class:: lead
@@ -24,29 +26,62 @@ in Blender, Rhino, and Grasshopper.
 The package for 2D visualisation (:mod:`compas_plotters`)
 simplifies "plotting" of COMPAS geometry objects and data structures.
 
-
 Table of Contents
 =================
 
-.. toctree::
-   :maxdepth: 3
-   :titlesonly:
+.. grid:: 2
+   :gutter: 4
 
-   Introduction <self>
-   installation
-   gettingstarted
-   tutorial
-   api
-   plugins
-   devguide
-   changelog
-   releases
-   license
-   citing
+   .. grid-item-card::
+
+      User Guide
+      ^^^^^^^^^^
+
+      If you want to use COMPAS for your research or in one of your projects,
+      this is the place to start.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         userguide/index
 
 
-Indices and tables
-==================
+   .. grid-item-card::
 
-* :ref:`genindex`
-* :ref:`search`
+      Package Reference
+      ^^^^^^^^^^^^^^^^^
+
+      The reference documentation of the core package and the CAD packages.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         reference/index
+
+   .. grid-item-card::
+
+      Extensions
+      ^^^^^^^^^^
+
+      The core extensions to COMPAS and the AEC toolboxes manages by the compas-dev team are listed here.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         extensions/index
+
+   .. grid-item-card::
+
+      Developer Guide
+      ^^^^^^^^^^^^^^^
+
+      If you want to contribute to COMPAS, this is the place to start.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         devguide/index
