@@ -1,406 +1,676 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>COMPAS Documentation &#8212; COMPAS core</title>
   
-  <title> - COMPAS Docs</title>
   
-
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-  <meta name="author" content="Tom Van Mele and many others" />
-  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
-
-  <link rel="shortcut icon" href="_static/images/compas.ico" type="image/x-icon">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/mono-blue.min.css">
-  <link rel="stylesheet" type="text/css" href="_static/css/compas.css" />
-  <link rel="stylesheet" type="text/css" href="_static/css/compas-reference.css" />
-
   
-  <link rel="next" title="Installation" href="installation.html" />
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
   
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-</head>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-<body data-spy="scroll" data-target="#compas-toc">
-  <!-- header -->
-  <header id="header" class="compas-header d-flex align-items-center">
-    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
-      <!-- brand -->
-      <a class="navbar-brand" href="/index.html">
-        <img src="_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
-      </a>
-      <!-- brand -->
-      <!-- primary -->
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
-        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
-        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
-        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
-        <li class="nav-item"><a class="nav-link" href="/contribute.html">Contribute</a></li>
-      </ul>
-      <!-- primary -->
-      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
-        <!-- version -->
-        
-        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
-        <li class="nav-item nav-versions dropdown">
-          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.17.5
-          </a>
-          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
-        </li>
-        
-        <!-- version -->
-        <!-- social -->
-        <li class="nav-item">
-          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
-            <span class="fab fa-github fa-1x"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
-            <span class="fab fa-discourse fa-1x"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
-            <span class="fab fa-python fa-1x"></span>
-          </a>
-        </li>
-        <!-- social -->
-      </ul>
-    </nav>
-  </header>
-  <!-- header -->
-  <!-- main -->
-  <div class="container-fluid">
-    <div class="row">
-      <!-- content -->
-      <main class="col-12 col-md-9 col-xl-7 px-4 px-md-5 pt-2 pb-5 compas-content" role="main">
-        
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb mb-3 bg-white px-0">
-            <li class="breadcrumb-item"><a href="#">docs</a></li>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/tabs.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="_static/compas.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User Guide" href="userguide/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.17.5 is available <a href='https://compas.dev/compas/1.17.5/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS core</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="reference/index.html">
+                        Package Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="extensions/index.html">
+                        Extensions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/compas-dev/compas/releases">
+                    Changelog
+                  </a>
+                </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev/association">
+                    COMPAS Association
+                  </a>
+                </li>
+                
+                </div>
+            </div>
             
-            <!-- <li class="breadcrumb-item active" aria-current="page">COMPAS Docs</li> -->
-          </ol>
-        </nav>
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="reference/index.html">
+                        Package Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="extensions/index.html">
+                        Extensions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://github.com/compas-dev/compas/releases">
+                    Changelog
+                  </a>
+                </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev/association">
+                    COMPAS Association
+                  </a>
+                </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
         
-        <section id="compas-docs">
-<h1>COMPAS Docs</h1>
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="compas-documentation">
+<h1>COMPAS Documentation</h1>
 <p class="lead">This is the documentation of the main library of COMPAS,
 an open source framework for research and collaboration
 in Architecture, Engineering, Fabrication, and Construction.</p>
 <figure class="figure align-default">
 <img alt="_images/COMPAS.png" class="figure-img img-fluid" src="_images/COMPAS.png" />
 </figure>
-<p>The core package of COMPAS (<a class="reference internal" href="api/compas.html#module-compas" title="compas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a>) defines all functionality for geometry processing,
+<p>The core package of COMPAS (<a class="reference external" href="https://compas.dev/compas/latest/api/compas.html#module-compas" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a>) defines all functionality for geometry processing,
 data structures, topology, numerical methods, robotics, the plugin mechanism, remote procedure calls …
 and can be used independently of CAD systems in any environment that supports Python programming.</p>
-<p>The CAD packages (<a class="reference internal" href="api/compas_rhino.html#module-compas_rhino" title="compas_rhino"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_rhino</span></code></a>, <a class="reference internal" href="api/compas_ghpython.html#module-compas_ghpython" title="compas_ghpython"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_ghpython</span></code></a>, <a class="reference internal" href="api/compas_blender.html#module-compas_blender" title="compas_blender"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code></a>)
+<p>The CAD packages (<a class="reference external" href="https://compas.dev/compas/latest/api/compas_rhino.html#module-compas_rhino" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_rhino</span></code></a>, <a class="reference external" href="https://compas.dev/compas/latest/api/compas_ghpython.html#module-compas_ghpython" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_ghpython</span></code></a>, <a class="reference external" href="https://compas.dev/compas/latest/api/compas_blender.html#module-compas_blender" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code></a>)
 provide a unified framework for reading and writing CAD geometry, for visualization
 of COMPAS geometry and data structures, and for basic user inter interaction
 in Blender, Rhino, and Grasshopper.</p>
-<p>The package for 2D visualisation (<a class="reference internal" href="api/compas_plotters.html#module-compas_plotters" title="compas_plotters"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_plotters</span></code></a>)
+<p>The package for 2D visualisation (<a class="reference external" href="https://compas.dev/compas/latest/api/compas_plotters.html#module-compas_plotters" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_plotters</span></code></a>)
 simplifies “plotting” of COMPAS geometry objects and data structures.</p>
 <section id="table-of-contents">
 <h2>Table of Contents</h2>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-2 sd-row-cols-xs-2 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-4 sd-g-xs-4 sd-g-sm-4 sd-g-md-4 sd-g-lg-4 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header docutils">
+<p class="sd-card-text">User Guide</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">If you want to use COMPAS for your research or in one of your projects,
+this is the place to start.</p>
 <div class="toctree-wrapper compound">
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/vscode.html">Visual Studio Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/rhino.html">Rhino (Windows and Mac)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/grasshopper.html">Grasshopper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/blender.html">Blender</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/rhino5.html">Rhino 5 on Windows</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="userguide/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userguide/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide/configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide/tutorials.html">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide/conventions.html">Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide/releases.html">Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide/citing.html">Citing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide/license.html">License</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/data.html">Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/geometry.html">Geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/brep.html">Boundary Representation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/networks.html">Networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/meshes.html">Meshes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/volmeshes.html">Vol(umetric) Meshes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/robots.html">Robots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/numericaldata.html">Numerical Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/rpc.html">Remote Procedure Calls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/geomaps.html">Geometric Maps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/plotters.html">Plotters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/colors.html">Colors and Color Maps</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/compas.html">compas</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.artists.html">artists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.colors.html">colors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.data.html">data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.datastructures.html">datastructures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.files.html">files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.geometry.html">geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.numerical.html">numerical</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.plugins.html">plugins</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.robots.html">robots</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.rpc.html">rpc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.topology.html">topology</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas.utilities.html">utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/compas_blender.html">compas_blender</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_blender.artists.html">artists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_blender.conversions.html">conversions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_blender.geometry.html">geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_blender.ui.html">ui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_blender.utilities.html">utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/compas_ghpython.html">compas_ghpython</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_ghpython.artists.html">artists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_ghpython.utilities.html">utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/compas_plotters.html">compas_plotters</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_plotters.artists.html">artists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_plotters.plotter.html">plotter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/compas_rhino.html">compas_rhino</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_rhino.artists.html">artists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_rhino.conversions.html">conversions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_rhino.forms.html">forms</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_rhino.geometry.html">geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/compas_rhino.utilities.html">utilities</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Extension points</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 </ul>
 </div>
-</section>
-<section id="indices-and-tables">
-<h2>Indices and tables</h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-</section>
-</section>
-
-        
-      </main>
-      <!-- content -->
-      <!-- sidebar -->
-      <div class="col-12 col-md-3 compas-sidebar" role="navigation">
-        <form id="search" class="d-flex align-items-center compas-searchbox" action="search.html" method="get">
-          <input class="form-control" type="text" name="q" placeholder="Search docs" />
-          <input type="hidden" name="check_keywords" value="yes" />
-          <input type="hidden" name="area" value="default" />
-          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </form>
-        
-        
-        <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column collapse show active">
-<li class="toctree-l1 nav-item active"><a class="nav-link active reference internal" href="#">Introduction</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="api.html">API Reference</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="plugins.html">Extension points</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="devguide.html">Developer Guide</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="changelog.html">Changelog</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="releases.html">Releases</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="license.html">License</a></li>
-<li class="toctree-l1 nav-item"><a class="nav-link reference internal" href="citing.html">Citing</a></li>
-</ul>
-
-          </div>
-        
-      </div>
-      <!-- sidebar -->
-      <!-- toc -->
-      
-      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-        
-        <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">COMPAS Docs</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#table-of-contents">Table of Contents</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header docutils">
+<p class="sd-card-text">Package Reference</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">The reference documentation of the core package and the CAD packages.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Package Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/compas.html">compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/compas_blender.html">compas_blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/compas_ghpython.html">compas_ghpython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/compas_rhino.html">compas_rhino</a></li>
 </ul>
 </li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header docutils">
+<p class="sd-card-text">Extensions</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">The core extensions to COMPAS and the AEC toolboxes manages by the compas-dev team are listed here.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions/index.html">Extensions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions/core.html">Core Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions/aec.html">AEC Extensions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-header docutils">
+<p class="sd-card-text">Developer Guide</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">If you want to contribute to COMPAS, this is the place to start.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="devguide/index.html">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="devguide/workflow.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devguide/style.html">Style Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devguide/gh_components.html">Grasshopper Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devguide/plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devguide/pluggables.html">Pluggables</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
 
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="right-next"
+       href="userguide/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">User Guide</p>
       </div>
-      
-      <!-- toc -->
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
   </div>
-  <!-- main -->
-  <!-- footer -->
-  <footer class="compas-footer">
-    <nav class="nav p-2">
-      
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
       
-      <a href="installation.html" title="Installation" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
-        <div class="nav-title footer-link flex-grow-1 align-self-center">
-          <div class="nav-direction small font-weight-light">Next</div>
-          Installation
-        </div>
-        <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
-      </a>
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
       
-    </nav>
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
   </footer>
-  <!-- footer -->
-  <!-- below -->
-  <div class="below py-5">
-    <div class="container">
-      <div class="row flex-column">
-        <div class="col-12 col-md-6 mx-md-auto text-center">
-          <h4 class="mb-4 mt-0 below-text">COMPAS</h4>
-          <p class="below-text">
-            A computational framework for collaboration and research in Architecture, Engineering, Fabrication, and Construction.
-          </p>
-          <!-- <nav class="nav justify-content-center my-4">
-            <a href="#" class="nav-link btn btn-light mx-2" target="_blank">Newsletter</a>
-          </nav> -->
-          <nav class="nav justify-content-center pb-3">
-            <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
-              <span class="fab fa-github fa-1x"></span>
-            </a>
-            <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
-              <span class="fab fa-discourse fa-1x"></span>
-            </a>
-            <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
-              <span class="fab fa-python fa-1x"></span>
-            </a>
-          </nav>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col text-center">
-          <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- below -->
-  <!-- scripts -->
-  <!-- <script type="text/javascript">
-    var DOCUMENTATION_OPTIONS = {
-      URL_ROOT: '',
-      VERSION: '1.17.5',
-      COLLAPSE_INDEX: false,
-      FILE_SUFFIX: '.html',
-      HAS_SOURCE: 'false',
-      SOURCELINK_SUFFIX: '.txt'
-    };
-  </script> -->
-
-  <script id="documentation_options" src="_static/documentation_options.js"
-          data-url_root=""
-          data-has_source="true" ></script>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-
-  <script src="_static/underscore.js"></script>
-  <script src="_static/doctools.js"></script>
-  <script src="_static/js/searchtools.js"></script>
-  <script src="_static/language_data.js"></script>
-
-  <script>
-    $(document).ready(function () {
-      $(".language-default code").addClass("python");
-      $(".language-python code").addClass("python");
-      $(".language-bash code").addClass("bash");
-      $(".language-cpp code").addClass("cpp");
-      $(".language-json code").addClass("json");
-      $(".language-none code").addClass("plaintext");
-
-      hljs.initHighlighting();
-      anchors.add();
-
-      new ClipboardJS('.btn.copy', {
-        target: function(trigger) {
-          return trigger.nextElementSibling;
-        }
-      });
-
-      $("#compas-navigation li.active > ul").each(function() {
-        var ul = $(this);
-        if (! ul.hasClass("show")) {
-          ul.addClass("show");
-        }
-      });
-
-      $("#compas-navigation li.toctree-l1").has("ul").each(function() {
-        var li = $(this);
-        li.addClass("has-children");
-        if (li.hasClass("active")) {
-          li.prepend('<span class="menu-toggle"><i class="fas fa-chevron-up"></i></span>');
-        }
-        else {
-          li.prepend('<span class="menu-toggle"><i class="fas fa-chevron-down"></i></span>');
-        }
-      });
-
-      $(".menu-toggle").click(function() {
-        var toggle = $(this);
-        toggle.siblings("ul").toggleClass("show");
-      });
-
-    });
-
-    var url = $("#doc_versions").data("url");
-    var docs_site = $("#doc_versions").data("docs");
-
-    if (url) {
-      $.get(url, res => {
-        var lines = res.match(/[^\r\n]+/g);
-        lines.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-        lines.reverse();
-        lines.forEach(version => {
-          $("#doc_version_list").append("<a class=\"dropdown-item\" href=\"" + docs_site + version + "/\">" + version + "</a>");
-        });
-
-        var selected_version = $('.nav-versions .dropdown-item').filter(function (i, ver) {
-          return window.location.href.startsWith(ver.href);
-        });
-        selected_version.addClass('active');
-        $("#bd-versions").text(selected_version.text());
-
-      })
-    }
-  </script>
-  <!-- scripts -->
-  
-  
-</body>
-
+  </body>
 </html>
