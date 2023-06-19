@@ -8,17 +8,9 @@ from numpy import zeros
 from numpy.linalg import lstsq
 from scipy.optimize import leastsq
 
+from compas.numerical import pca_numpy
 from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
-from compas.numerical import pca_numpy
-
-
-__all__ = [
-    'bestfit_plane_numpy',
-    'bestfit_frame_numpy',
-    'bestfit_circle_numpy',
-    'bestfit_sphere_numpy',
-]
 
 
 def bestfit_plane_numpy(points):
@@ -26,13 +18,15 @@ def bestfit_plane_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple
-        A point on the plane, and the normal vector.
+    [float, float, float]
+        A point on the plane.
+    [float, float, float]
+        The normal vector.
 
     Examples
     --------
@@ -48,13 +42,17 @@ def bestfit_frame_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    3-tuple
-        The frame origin, and the local X and Y axes.
+    [float, float, float]
+        The frame origin.
+    [float, float, float]
+        The local X axis.
+    [float, float, float]
+        The local Y axis.
 
     Examples
     --------
@@ -70,14 +68,17 @@ def bestfit_circle_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple
-        XYZ coordinates of the center of the circle, the normal vector of the
-        local frame, and the radius of the circle.
+    [float, float, float]
+        XYZ coordinates of the center of the circle.
+    [float, float, float]
+        The normal vector of the local frame.
+    float
+        The radius of the circle.
 
     Notes
     -----
@@ -149,13 +150,15 @@ def bestfit_sphere_numpy(points):
 
     Parameters
     ----------
-    points: list of points
+    points: array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    tuple: center, radius
-        sphere center (XYZ coordinates) and sphere radius.
+    [float, float, float]
+        Sphere center (XYZ coordinates).
+    float
+        Sphere radius.
 
     Notes
     -----
@@ -174,6 +177,7 @@ def bestfit_sphere_numpy(points):
                   (683.247, -327.154, 179.113), (231.606, -430.659, 115.458),\
                   (87.278, -419.178, -18.863), (24.731, -340.222, -127.158)]
     >>> center, radius = bestfit_sphere_numpy(points)
+
     """
 
     # Assemble the A matrix
@@ -181,17 +185,17 @@ def bestfit_sphere_numpy(points):
     spY = asarray([p[1] for p in points])
     spZ = asarray([p[2] for p in points])
     A = zeros((len(spX), 4))
-    A[:, 0] = spX*2
-    A[:, 1] = spY*2
-    A[:, 2] = spZ*2
+    A[:, 0] = spX * 2
+    A[:, 1] = spY * 2
+    A[:, 2] = spZ * 2
     A[:, 3] = 1
 
     # Assemble the f matrix
     f = zeros((len(spX), 1))
-    f[:, 0] = (spX*spX) + (spY*spY) + (spZ*spZ)
+    f[:, 0] = (spX * spX) + (spY * spY) + (spZ * spZ)
     C, residules, rank, singval = lstsq(A, f)
 
     # solve for the radius
-    t = (C[0]*C[0]) + (C[1]*C[1]) + (C[2]*C[2]) + C[3]
+    t = (C[0] * C[0]) + (C[1] * C[1]) + (C[2] * C[2]) + C[3]
     radius = sqrt(t)
     return [float(C[0][0]), float(C[1][0]), float(C[2][0])], radius

@@ -4,20 +4,14 @@ from __future__ import division
 
 from math import sqrt
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import sum_vectors
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import scale_vector
-from compas.geometry._core import normalize_vector
-from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_sqrd
-
-
-__all__ = [
-    'circle_from_points',
-    'circle_from_points_xy',
-]
+from ._algebra import subtract_vectors
+from ._algebra import sum_vectors
+from ._algebra import cross_vectors
+from ._algebra import dot_vectors
+from ._algebra import scale_vector
+from ._algebra import normalize_vector
+from ._algebra import length_vector
+from ._algebra import length_vector_sqrd
 
 
 def circle_from_points(a, b, c):
@@ -25,17 +19,17 @@ def circle_from_points(a, b, c):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    b : sequence of float
+    b : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    c : sequence of float
+    c : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
 
     Returns
     -------
-    circle : tuple
-        Center, radius, normal  of the circle.
+    ([float, float, float], [float, float, float]), float
+        Center, normal and radius of the circle respectively.
 
     Notes
     -----
@@ -67,7 +61,7 @@ def circle_from_points(a, b, c):
     Cc = scale_vector(c, C)
     center = sum_vectors([Aa, Bb, Cc])
     radius = length_vector(subtract_vectors(a, center))
-    return center, radius, normal
+    return (center, normal), radius
 
 
 def circle_from_points_xy(a, b, c):
@@ -75,17 +69,17 @@ def circle_from_points_xy(a, b, c):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    b : sequence of float
+    b : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    c : sequence of float
+    c : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
 
     Returns
     -------
-    tuple
-        XYZ coordinates of center in the XY-plane (Z = 0.0) and radius of the circle.
+    ([float, float, float], [float, float, float]), float
+        Center, normal and radius of the circle respectively.
 
     Notes
     -----
@@ -116,4 +110,4 @@ def circle_from_points_xy(a, b, c):
     centerx = (d * e - b * f) / g
     centery = (a * f - c * e) / g
     radius = sqrt((ax - centerx) ** 2 + (ay - centery) ** 2)
-    return [centerx, centery, 0.0], radius, [0, 0, 1]
+    return ([centerx, centery, 0.0], [0.0, 0.0, 1.0]), radius

@@ -16,14 +16,14 @@ except AttributeError:
 
 
 __all__ = [
-    'create_layers_from_path',
-    'create_layers_from_paths',
-    'create_layers_from_dict',
-    'create_layers',
-    'clear_layer',
-    'clear_current_layer',
-    'clear_layers',
-    'delete_layers',
+    "create_layers_from_path",
+    "create_layers_from_paths",
+    "create_layers_from_dict",
+    "create_layers",
+    "clear_layer",
+    "clear_current_layer",
+    "clear_layers",
+    "delete_layers",
 ]
 
 
@@ -70,7 +70,8 @@ def delete_objects_on_layer(name, include_hidden=True, include_children=False, p
 # create
 # ==============================================================================
 
-def create_layers_from_path(path, separator='::'):
+
+def create_layers_from_path(path, separator="::"):
     """Create a nested layer structure from a hierarchical path string.
 
     Parameters
@@ -78,6 +79,11 @@ def create_layers_from_path(path, separator='::'):
     path : str
         The path string.
     separator : str, optional
+        Separator between components of the layer path.
+
+    Returns
+    -------
+    None
 
     Examples
     --------
@@ -103,14 +109,19 @@ def create_layers_from_path(path, separator='::'):
         parent = name
 
 
-def create_layers_from_paths(names, separator='::'):
+def create_layers_from_paths(names, separator="::"):
     """Create nested layers from a lst of hierarchical path strings.
 
     Parameters
     ----------
-    names : list of str
+    names : list[str]
         The path strings of the nested layer structures.
     separator : str, optional
+        Separator between components of the layer path.
+
+    Returns
+    -------
+    None
 
     Examples
     --------
@@ -143,10 +154,14 @@ def create_layers_from_dict(layers):
 
     Parameters
     ----------
-    layers : dict
+    layers : dict[str, dict]
         A dictionary of nested layer definitions.
         The keys of the dict are the layer names.
         The corresponding values define optional layer properties and nested layers.
+
+    Returns
+    -------
+    None
 
     Examples
     --------
@@ -166,25 +181,27 @@ def create_layers_from_dict(layers):
         create_layers_from_dict(layers)
 
     """
+
     def recurse(layers, parent=None):
         for name in layers:
             if not name:
                 continue
             fullname = name
             if parent:
-                fullname = parent + '::' + name
+                fullname = parent + "::" + name
             try:
                 attr = layers[name]
             except TypeError:
                 attr = {}
             attr = attr or {}
-            color = attr.get('color', (0, 0, 0))
-            visible = attr.get('visible', True)
-            locked = attr.get('locked', False)
+            color = attr.get("color", (0, 0, 0))
+            visible = attr.get("visible", True)
+            locked = attr.get("locked", False)
             if not rs.IsLayer(fullname):
                 rs.AddLayer(fullname, color, visible, locked)
-            if 'layers' in attr:
-                recurse(attr['layers'], fullname)
+            if "layers" in attr:
+                recurse(attr["layers"], fullname)
+
     rs.EnableRedraw(False)
     recurse(layers)
     rs.EnableRedraw(True)
@@ -197,6 +214,7 @@ create_layers = create_layers_from_dict
 # clear
 # ==============================================================================
 
+
 def clear_layer(name, include_hidden=True, include_children=True, purge=True):
     """Delete all objects of a layer.
 
@@ -205,14 +223,16 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
     name : str
         The full, hierarchical name of the layer.
     include_hidden : bool, optional
-        Include all hidden objects.
-        Default is ``True``.
+        If True, include all hidden objects.
     include_children : bool, optional
-        Include the objects of any child layers.
-        Default is ``True``.
+        If True, include the objects of child layers.
     purge : bool, optional
-        Purge history after deleting.
-        Default is ``True``.
+        If True, purge history after deleting.
+
+    Returns
+    -------
+    None
+
     """
     if not rs.IsLayer(name):
         return
@@ -230,7 +250,13 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
 
 
 def clear_current_layer():
-    """Delete all objects from the current layer."""
+    """Delete all objects from the current layer.
+
+    Returns
+    -------
+    None
+
+    """
     layer = rs.CurrentLayer()
     clear_layer(layer)
 
@@ -240,17 +266,19 @@ def clear_layers(layers, include_children=True, include_hidden=True, purge=True)
 
     Parameters
     ----------
-    layers : list of str
+    layers : list[str]
         A list of layer names as fully qualified hierarchical paths.
-    include_children : bool, optional
-        Include the objects of any child layers.
-        Default is ``True``.
     include_hidden : bool, optional
-        Include all hidden objects.
-        Default is ``True``.
+        If True, include all hidden objects.
+    include_children : bool, optional
+        If True, include the objects of child layers.
     purge : bool, optional
-        Purge history after deleting.
-        Default is ``True``.
+        If True, purge history after deleting.
+
+    Returns
+    -------
+    None
+
     """
     rs.EnableRedraw(False)
     to_delete = []
@@ -272,20 +300,20 @@ def clear_layers(layers, include_children=True, include_hidden=True, purge=True)
 # delete
 # ==============================================================================
 
+
 def delete_layers(layers):
     """Delete layers and all contained objects.
 
     Parameters
     ----------
-    layers : :obj:`dict` or :obj:`list` of :obj:`str`
-        Can be given as either a list of strings or as a dictionary.
-
+    layers : dict or list[str]
         When given as a list the list elements should be name of layers given
         with ``"::"`` as a separator between hierarchies.
+        When provided as a dictionary, keys represent layer names, and values are dictionaries defining optional nested layers.
 
-        It can also be defined as a dictionary of layers with the keys
-        representing layer names, and the values also dictionaries defining
-        optional nested layers.
+    Returns
+    -------
+    None
 
     Examples
     --------
@@ -307,13 +335,13 @@ def delete_layers(layers):
                 continue
             fullname = name
             if parent:
-                fullname = parent + '::' + name
+                fullname = parent + "::" + name
             try:
                 attr = layers[name]
             except TypeError:
                 attr = {}
-            if 'layers' in attr:
-                recurse(attr['layers'], fullname)
+            if "layers" in attr:
+                recurse(attr["layers"], fullname)
             to_delete.append(fullname)
 
     rs.EnableRedraw(False)

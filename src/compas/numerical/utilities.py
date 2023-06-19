@@ -6,13 +6,13 @@ from numpy import set_printoptions
 
 
 __all__ = [
-    'float_formatter',
-    'set_array_print_precision',
-    'unset_array_print_precision'
+    "float_formatter",
+    "set_array_print_precision",
+    "unset_array_print_precision",
 ]
 
 
-FLOAT_PRECISION = '2f'
+FLOAT_PRECISION = "2f"
 
 
 def float_formatter(x):
@@ -39,10 +39,10 @@ def float_formatter(x):
     '+3.14'
 
     """
-    return '{0:+.{1}}'.format(x, FLOAT_PRECISION)
+    return "{0:+.{1}}".format(x, FLOAT_PRECISION)
 
 
-def set_array_print_precision(precision='2f'):
+def set_array_print_precision(precision="2f"):
     """Changes float precision of float_formatter.
 
     Parameters
@@ -67,7 +67,7 @@ def set_array_print_precision(precision='2f'):
     """
     global FLOAT_PRECISION
     FLOAT_PRECISION = precision
-    set_printoptions(formatter={'float_kind': float_formatter})
+    set_printoptions(formatter={"float_kind": float_formatter})
 
 
 def unset_array_print_precision():

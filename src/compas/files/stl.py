@@ -9,15 +9,25 @@ from compas import _iotools
 from compas.geometry import Translation
 from compas.utilities import geometric_key
 
-__all__ = [
-    'STL',
-    'STLReader',
-    'STLParser',
-    'STLWriter',
-]
-
 
 class STL(object):
+    """Class for working with STL files.
+
+    Parameters
+    ----------
+    filepath : path string | file-like object | URL string
+        A path, a file-like object or a URL pointing to a file.
+    precision : str, optional
+        A COMPAS precision specification.
+
+    Attributes
+    ----------
+    reader : :class:`STLReader`
+        A STL file reader.
+    parser : :class:`STLParser`
+        A STL file parser.
+
+    """
 
     def __init__(self, filepath, precision=None):
         self.filepath = filepath
@@ -26,15 +36,6 @@ class STL(object):
         self._reader = None
         self._parser = None
         self._writer = None
-
-    def read(self):
-        self._reader = STLReader(self.filepath)
-        self._parser = STLParser(self._reader, precision=self.precision)
-        self._is_parsed = True
-
-    def write(self, mesh, **kwargs):
-        self._writer = STLWriter(self.filepath, mesh, **kwargs)
-        self._writer.write()
 
     @property
     def reader(self):
@@ -48,13 +49,53 @@ class STL(object):
             self.read()
         return self._parser
 
+    def read(self):
+        """Read and parse the contents of the file.
+
+        Returns
+        -------
+        None
+
+        """
+        self._reader = STLReader(self.filepath)
+        self._parser = STLParser(self._reader, precision=self.precision)
+        self._is_parsed = True
+
+    def write(self, mesh, **kwargs):
+        """Write a mesh to the file.
+
+        Parameters
+        ----------
+        mesh : :class:`~compas.datastructures.Mesh`
+            The mesh.
+        binary : bool, optional
+            Flag indicating that the file should be written in binary format.
+        solid_name : str, optional
+            The name of the solid.
+            Defaults to the name of the mesh.
+        precision : str, optional
+            COMPAS precision specification for parsing geometric data.
+
+        Returns
+        -------
+        None
+
+        """
+        self._writer = STLWriter(self.filepath, mesh, **kwargs)
+        self._writer.write()
+
 
 class STLReader(object):
-    """Standard triangle library format.
+    """Class for reading raw geometric data from STL files.
+
+    Parameters
+    ----------
+    filepath : path string | file-like object | URL string
+        A path, a file-like object or a URL pointing to a file.
 
     References
     ----------
-    .. [1] http://paulbourke.net/dataformats/stl/
+    * http://paulbourke.net/dataformats/stl/
 
     """
 
@@ -66,25 +107,32 @@ class STLReader(object):
         self.read()
 
     def read(self):
+        """Read the data.
+
+        Returns
+        -------
+        None
+
+        """
         is_binary = False
-        with _iotools.open_file(self.filepath, 'rb') as file:
+        with _iotools.open_file(self.filepath, "rb") as file:
             line = file.readline().strip()
-            if b'solid' in line:
+            if b"solid" in line:
                 is_binary = False
             else:
                 is_binary = True
         try:
             if not is_binary:
-                self.read_ascii()
+                self._read_ascii()
             else:
-                self.read_binary()
+                self._read_binary()
         except Exception:
             # raise if it was already detected as binary, but failed anyway
             if is_binary:
                 raise
             # else, ascii parsing failed, try binary
             is_binary = True
-            self.read_binary()
+            self._read_binary()
 
     # ==========================================================================
     # ascii
@@ -103,13 +151,13 @@ class STLReader(object):
     #
     # ==========================================================================
 
-    def read_ascii(self):
-        with _iotools.open_file(self.filepath, 'r') as file:
+    def _read_ascii(self):
+        with _iotools.open_file(self.filepath, "r") as file:
             self.file = file
             self.file.seek(0)
-            self.facets = self.read_solids_ascii()
+            self.facets = self._read_solids_ascii()
 
-    def read_solids_ascii(self):
+    def _read_solids_ascii(self):
         solids = {}
         facets = []
 
@@ -121,38 +169,38 @@ class STLReader(object):
 
             parts = line.split()
 
-            if parts[0] == 'solid':
+            if parts[0] == "solid":
                 if len(parts) == 2:
                     name = parts[1]
                 else:
-                    name = 'solid'
+                    name = "solid"
                 solids[name] = []
 
-            elif parts[0] == 'endsolid':
+            elif parts[0] == "endsolid":
                 name = None
 
-            elif parts[0] == 'facet':
-                facet = {'normal': None, 'vertices': None}
-                if parts[1] == 'normal':
-                    facet['normal'] = [float(parts[i]) for i in range(2, 5)]
+            elif parts[0] == "facet":
+                facet = {"normal": None, "vertices": None}
+                if parts[1] == "normal":
+                    facet["normal"] = [float(parts[i]) for i in range(2, 5)]
 
-            elif parts[0] == 'outer' and parts[1] == 'loop':
+            elif parts[0] == "outer" and parts[1] == "loop":
                 vertices = []
 
-            elif parts[0] == 'vertex':
+            elif parts[0] == "vertex":
                 xyz = [float(parts[i]) for i in range(1, 4)]
                 vertices.append(xyz)
 
-            elif parts[0] == 'endloop':
-                facet['vertices'] = vertices
+            elif parts[0] == "endloop":
+                facet["vertices"] = vertices
 
-            elif parts[0] == 'endfacet':
+            elif parts[0] == "endfacet":
                 solids[name].append(facet)
                 facets.append(facet)
 
             # no known line start matches, maybe not ascii
             elif not parts[0].isalnum():
-                raise RuntimeError('File is not ASCII')
+                raise RuntimeError("File is not ASCII")
 
         return facets
 
@@ -176,31 +224,31 @@ class STLReader(object):
 
     def _read_uint16(self):
         bytes_ = self.file.read(2)
-        return struct.unpack('<H', bytes_)[0]
+        return struct.unpack("<H", bytes_)[0]
 
     def _read_uint32(self):
         bytes_ = self.file.read(4)
-        return struct.unpack('<I', bytes_)[0]
+        return struct.unpack("<I", bytes_)[0]
 
-    def read_binary(self):
-        with _iotools.open_file(self.filepath, 'rb') as file:
+    def _read_binary(self):
+        with _iotools.open_file(self.filepath, "rb") as file:
             self.file = file
             self.file.seek(0)
-            self.header = self.read_header_binary()
-            self.facets = self.read_facets_binary()
+            self.header = self._read_header_binary()
+            self.facets = self._read_facets_binary()
 
-    def read_header_binary(self):
+    def _read_header_binary(self):
         bytes_ = self.file.read(80)
-        return struct.unpack('80s', bytes_)[0]
+        return struct.unpack("80s", bytes_)[0]
 
-    def read_number_of_facets_binary(self):
+    def _read_number_of_facets_binary(self):
         return self._read_uint32()
 
-    def read_facet_binary(self):
+    def _read_facet_binary(self):
         # Read full facet at once
         # 4 bytes per float * 3 floats per vector/vertex * 4 items (1 vector + 3 vertices)
         bytes_ = self.file.read(48)
-        floats_ = struct.unpack('<12f', bytes_)
+        floats_ = struct.unpack("<12f", bytes_)
 
         normal = floats_[0:3]
         vertices = (floats_[3:6], floats_[6:9], floats_[9:12])
@@ -209,18 +257,37 @@ class STLReader(object):
         # Skip two-byte attributes, it's not used anywhere (by anyone - on this planet)
         self.file.seek(2, 1)
 
-        return {'normal': normal, 'vertices': vertices, 'keys': keys}
+        return {"normal": normal, "vertices": vertices, "keys": keys}
 
-    def read_facets_binary(self):
+    def _read_facets_binary(self):
         facets = []
-        n = self.read_number_of_facets_binary()
+        n = self._read_number_of_facets_binary()
         for i in range(n):
-            facets.append(self.read_facet_binary())
+            facets.append(self._read_facet_binary())
         return facets
 
 
 class STLParser(object):
-    """"""
+    """Class for parsing data from a STL file.
+
+    The parser converts the raw geometric data of the file
+    into corresponding COMPAS geometry objects and data structures.
+
+    Parameters
+    ----------
+    reader : :class:`STLReader`
+        A STL file reader.
+    precision : str, optional
+        COMPAS precision specification for parsing geometric data.
+
+    Attributes
+    ----------
+    vertices : list[list[float]]
+        The vertex coordinates.
+    faces : list[list[int]]
+        The faces as lists of vertex indices.
+
+    """
 
     def __init__(self, reader, precision=None):
         self.precision = precision
@@ -230,16 +297,23 @@ class STLParser(object):
         self.parse()
 
     def parse(self):
+        """Parse the the data found by the reader.
+
+        Returns
+        -------
+        None
+
+        """
         gkey_index = {}
         vertices = []
         faces = []
         for facet in self.reader.facets:
             face = []
-            facet_vertices = facet['vertices']
+            facet_vertices = facet["vertices"]
             for i in range(3):
                 xyz = facet_vertices[i]
-                if 'keys' in facet:
-                    gkey = facet['keys'][i]
+                if "keys" in facet:
+                    gkey = facet["keys"][i]
                 else:
                     gkey = geometric_key(xyz, self.precision)
                 if gkey not in gkey_index:
@@ -252,7 +326,23 @@ class STLParser(object):
 
 
 class STLWriter(object):
-    """"""
+    """Class for writing geometric data to a PLY file.
+
+    Parameters
+    ----------
+    filepath : path string | file-like object | URL string
+        A path, a file-like object or a URL pointing to a file.
+    mesh : :class:`~compas.datastructures.Mesh`
+        The mesh.
+    binary : bool, optional
+        Flag indicating that the file should be written in binary format.
+    solid_name : str, optional
+        The name of the solid.
+        Defaults to the name of the mesh.
+    precision : str, optional
+        COMPAS precision specification for parsing geometric data.
+
+    """
 
     def __init__(self, filepath, mesh, binary=False, solid_name=None, precision=None):
         self.filepath = filepath
@@ -263,7 +353,7 @@ class STLWriter(object):
         self.binary = binary
 
     @property
-    def vertex_xyz(self):
+    def _vertex_xyz(self):
         bbox = self.mesh.bounding_box()
         xmin, ymin, zmin = bbox[0]
         if not self.binary and (xmin < 0 or ymin < 0 or zmin < 0):
@@ -271,52 +361,61 @@ class STLWriter(object):
             mesh = self.mesh.transformed(T)
         else:
             mesh = self.mesh
-        return {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
+        return {vertex: mesh.vertex_attributes(vertex, "xyz") for vertex in mesh.vertices()}
 
     def write(self):
-        if not self.mesh.is_trimesh():
-            raise ValueError('Mesh must be triangular to be encoded in STL.')
-        if not self.binary:
-            with _iotools.open_file(self.filepath, 'w') as self.file:
-                self.write_header()
-                self.write_faces()
-                self.write_footer()
-        else:
-            with _iotools.open_file(self.filepath, 'wb') as self.file:
-                self.file.seek(0)
-                self.write_binary_header()
-                self.write_binary_num_faces()
-                self.write_binary_faces()
+        """Write the data to a file.
 
-    def write_header(self):
+        Returns
+        -------
+        None
+
+        """
+        if not self.mesh.is_trimesh():
+            raise ValueError("Mesh must be triangular to be encoded in STL.")
+        if not self.binary:
+            with _iotools.open_file(self.filepath, "w") as self.file:
+                self._write_header()
+                self._write_faces()
+                self._write_footer()
+        else:
+            with _iotools.open_file(self.filepath, "wb") as self.file:
+                self.file.seek(0)
+                self._write_binary_header()
+                self._write_binary_num_faces()
+                self._write_binary_faces()
+
+    def _write_header(self):
         self.file.write("solid {}\n".format(self.solid_name))
 
-    def write_footer(self):
+    def _write_footer(self):
         self.file.write("endsolid {}\n".format(self.solid_name))
 
-    def write_faces(self):
-        vertex_xyz = self.vertex_xyz
+    def _write_faces(self):
+        vertex_xyz = self._vertex_xyz
         for face in self.mesh.faces():
-            self.file.write("facet normal {0} {1} {2}\n".format(* self.mesh.face_normal(face)))
+            normal = list(self.mesh.face_normal(face))
+            self.file.write("facet normal {0} {1} {2}\n".format(*normal))
             self.file.write("    outer loop\n")
             for vertex in self.mesh.face_vertices(face):
-                self.file.write("        vertex {0} {1} {2}\n".format(* vertex_xyz[vertex]))
+                self.file.write("        vertex {0} {1} {2}\n".format(*vertex_xyz[vertex]))
             self.file.write("    endloop\n")
             self.file.write("endfacet\n")
 
-    def write_binary_header(self):
-        self.file.write(b'\0' * 80)
+    def _write_binary_header(self):
+        self.file.write(b"\0" * 80)
 
-    def write_binary_num_faces(self):
+    def _write_binary_num_faces(self):
         try:
-            self.file.write(struct.pack('<L', self.mesh.number_of_faces()))
+            self.file.write(struct.pack("<L", self.mesh.number_of_faces()))
         except struct.error:
-            raise ValueError('Mesh must have fewer than 4294967295 faces to be written to binary STL.')
+            raise ValueError("Mesh must have fewer than 4294967295 faces to be written to binary STL.")
 
-    def write_binary_faces(self):
-        vertex_xyz = self.vertex_xyz
+    def _write_binary_faces(self):
+        vertex_xyz = self._vertex_xyz
         for face in self.mesh.faces():
-            self.file.write(struct.pack('<3f', *self.mesh.face_normal(face)))
+            normal = list(self.mesh.face_normal(face))
+            self.file.write(struct.pack("<3f", *normal))
             for vertex in self.mesh.face_vertices(face):
-                self.file.write(struct.pack('<3f', *vertex_xyz[vertex]))
-            self.file.write(b'\0\0')
+                self.file.write(struct.pack("<3f", *vertex_xyz[vertex]))
+            self.file.write(b"\0\0")

@@ -11,11 +11,6 @@ from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
 
 
-__all__ = [
-    'scalarfield_contours_numpy',
-]
-
-
 # def trimesh_descent(trimesh):
 #     """"""
 #     vertices, faces = trimesh.to_vertices_and_faces()
@@ -94,12 +89,11 @@ def scalarfield_contours_numpy(xy, s, levels=50, density=100):
     s = asarray(s)
     x = xy[:, 0]
     y = xy[:, 1]
-    X, Y = meshgrid(linspace(amin(x), amax(x), 2 * density),
-                    linspace(amin(y), amax(y), 2 * density))
-    S = griddata((x, y), s, (X, Y), method='cubic')
+    X, Y = meshgrid(linspace(amin(x), amax(x), 2 * density), linspace(amin(y), amax(y), 2 * density))
+    S = griddata((x, y), s, (X, Y), method="cubic")
 
     fig = plt.figure()
-    ax = fig.add_subplot(111, aspect='equal')
+    ax = fig.add_subplot(111, aspect="equal")
 
     c = ax.contour(X, Y, S, levels)
 

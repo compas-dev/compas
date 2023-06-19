@@ -122,7 +122,7 @@ if not compas.IPY:
         solve_with_known,
         spsolve_with_known,
         chofactor,
-        lufactorized
+        lufactorized,
     )
     from .matrices import (
         adjacency_matrix,
@@ -134,73 +134,68 @@ if not compas.IPY:
         stiffness_matrix,
         equilibrium_matrix,
     )
-    from .operators import (
-        grad,
-        div,
-        curl
-    )
+    from .operators import grad, div, curl
     from .utilities import (
         float_formatter,
         set_array_print_precision,
-        unset_array_print_precision
+        unset_array_print_precision,
     )
 
-if not compas.IPY:
-    from .descent import descent_numpy
-    from .topop import topop_numpy
-    from .pca import pca_numpy
-    from .fd import fd_numpy
-    from .dr import dr_numpy
-    from .devo import devo_numpy
-    from .isolines import scalarfield_contours_numpy
+    from .descent.descent_numpy import descent_numpy
+    from .topop.topop_numpy import topop_numpy
+    from .pca.pca_numpy import pca_numpy
+    from .fd.fd_numpy import fd_numpy
+    from .dr.dr_numpy import dr_numpy
+    from .devo.devo_numpy import devo_numpy
+    from .isolines.isolines_numpy import scalarfield_contours_numpy
 
-from .dr import dr  # noqa: E402
-from .ga import ga, moga  # noqa: E402
+from .dr.dr import dr
+from .ga.ga import ga
+from .ga.moga import moga
 
 __all__ = [
-    'dr',
-    'ga',
-    'moga',
+    "dr",
+    "ga",
+    "moga",
 ]
 
 if not compas.IPY:
     __all__ += [
-        'nullspace',
-        'rank',
-        'dof',
-        'pivots',
-        'nonpivots',
-        'rref',
-        'rref_sympy',
-        'rref_matlab',
-        'uvw_lengths',
-        'normrow',
-        'normalizerow',
-        'rot90',
-        'solve_with_known',
-        'spsolve_with_known',
-        'chofactor',
-        'lufactorized',
-        'adjacency_matrix',
-        'degree_matrix',
-        'connectivity_matrix',
-        'laplacian_matrix',
-        'face_matrix',
-        'mass_matrix',
-        'stiffness_matrix',
-        'equilibrium_matrix',
-        'grad',
-        'div',
-        'curl',
-        'float_formatter',
-        'set_array_print_precision',
-        'unset_array_print_precision',
-
-        'descent_numpy',
-        'topop_numpy',
-        'pca_numpy',
-        'devo_numpy',
-        'fd_numpy',
-        'dr_numpy',
-        'scalarfield_contours_numpy'
+        "nullspace",
+        "rank",
+        "dof",
+        "pivots",
+        "nonpivots",
+        "rref",
+        "rref_sympy",
+        "rref_matlab",
+        "uvw_lengths",
+        "normrow",
+        "normalizerow",
+        "rot90",
+        "solve_with_known",
+        "spsolve_with_known",
+        "chofactor",
+        "lufactorized",
+        "adjacency_matrix",
+        "degree_matrix",
+        "connectivity_matrix",
+        "laplacian_matrix",
+        "face_matrix",
+        "mass_matrix",
+        "stiffness_matrix",
+        "equilibrium_matrix",
+        "grad",
+        "div",
+        "curl",
+        "float_formatter",
+        "set_array_print_precision",
+        "unset_array_print_precision",
+        "descent_numpy",
+        "topop_numpy",
+        "pca_numpy",
+        "devo_numpy",
+        "fd_numpy",
+        "dr_numpy",
+        "scalarfield_contours_numpy",
     ]

@@ -5,13 +5,6 @@ from __future__ import division
 from compas.topology import breadth_first_traverse
 
 
-__all__ = [
-    'mesh_face_adjacency',
-    'mesh_unify_cycles',
-    'mesh_flip_cycles',
-]
-
-
 def _mesh_face_adjacency(mesh, nmax=10, radius=10.0):
     fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}
@@ -94,12 +87,12 @@ def mesh_face_adjacency(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
 
     Returns
     -------
-    dict
+    dict[int, list[int]]
         A dictionary mapping face identifiers (keys) to lists of neighboring faces.
 
     Notes
@@ -161,12 +154,23 @@ def mesh_unify_cycles(mesh, root=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    root : str, optional [None]
+    root : str, optional
         The key of the root face.
 
+    Returns
+    -------
+    None
+        The mesh is modified in place.
+
+    Raises
+    ------
+    AssertionError
+        If no all faces are included in the unnification process.
+
     """
+
     def unify(node, nbr):
         # find the common edge
         for u, v in mesh.face_halfedges(nbr):
@@ -182,13 +186,13 @@ def mesh_unify_cycles(mesh, root=None):
                     return
 
     if root is None:
-        root = mesh.get_any_face()
+        root = mesh.face_sample(size=1)[0]
 
     adj = mesh_face_adjacency(mesh)
 
     visited = breadth_first_traverse(adj, root, unify)
 
-    assert len(list(visited)) == mesh.number_of_faces(), 'Not all faces were visited'
+    assert len(list(visited)) == mesh.number_of_faces(), "Not all faces were visited"
 
     mesh.halfedge = {key: {} for key in mesh.vertices()}
     for fkey in mesh.faces():
@@ -203,8 +207,13 @@ def mesh_flip_cycles(mesh):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
+
+    Returns
+    -------
+    None
+        The mesh is modified in place.
 
     Notes
     -----

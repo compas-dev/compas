@@ -16,22 +16,6 @@ from compas.geometry import midpoint_line_xy
 from compas.utilities import color_to_rgb
 
 
-__all__ = [
-    'create_axes_xy',
-    'create_axes_3d',
-    'draw_points_xy',
-    'draw_xpoints_xy',
-    'draw_points_3d',
-    'draw_lines_xy',
-    'draw_xlines_xy',
-    'draw_lines_3d',
-    'draw_xarrows_xy',
-    'draw_xlabels_xy',
-    'draw_xpolygons_xy',
-    'draw_xpolylines_xy',
-]
-
-
 ZORDER_POLYGONS = 1000
 ZORDER_LINES = 2000
 ZORDER_POINTS = 3000
@@ -43,20 +27,22 @@ ZORDER_LABELS = 4000
 # ==============================================================================
 
 
-def create_axes_xy(figsize=(8.0, 6.0),
-                   dpi=100,
-                   xlabel=None,
-                   ylabel=None,
-                   fontname='Times New Roman',
-                   fontsize=10,
-                   grid=False,
-                   xlim=None,
-                   ylim=None,
-                   ticklength=20,
-                   tickfontsize=10,
-                   xscale='linear',
-                   yscale='linear',
-                   bgcolor='#ffffff'):
+def create_axes_xy(
+    figsize=(8.0, 6.0),
+    dpi=100,
+    xlabel=None,
+    ylabel=None,
+    fontname="Times New Roman",
+    fontsize=10,
+    grid=False,
+    xlim=None,
+    ylim=None,
+    ticklength=20,
+    tickfontsize=10,
+    xscale="linear",
+    yscale="linear",
+    bgcolor="#ffffff",
+):
     """Initializes plot axes object for matplotlib plotting.
 
     Parameters
@@ -69,10 +55,10 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Default is ``100``.
     xlabel : str, optional
         Label for the x-axis.
-        Default is ``None``.
+        Default is None.
     ylabel : str, optional
         Label for the y-axis.
-        Default is ``None``.
+        Default is None.
     fontname : str, optional
         Fontname of the main labels and text.
         Default is ``'Times New Roman'``.
@@ -81,13 +67,13 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Default is ``10``.
     grid : bool, optional
         Display grid.
-        Default is ``False``.
+        Default is False.
     xlim : 2-tuple, optional
         Limits of the X-axis.
-        Default is ``None``.
+        Default is None.
     ylim : 2-tuple, optional
         Limits of the Y-axis.
-        Default is ``None``.
+        Default is None.
     ticklength : float, optional
         Length of the ticks.
         Default is ``20``.
@@ -98,7 +84,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
         Scale of the X axis.
     yscale : {'linear', 'log'}
         Scale of the Y axis.
-    bgcolor : str or list, optional
+    bgcolor : str | list, optional
         Background color as hex string or rgb tuple.
         Default is white.
 
@@ -112,7 +98,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
     # mpl.rcParams['figure.dpi'] = dpi
     # mpl.rcParams['savefig.dpi'] = dpi
     fig = plt.figure(facecolor=bgcolor, figsize=figsize, dpi=dpi)
-    axes = fig.add_subplot(111, aspect='equal')
+    axes = fig.add_subplot(111, aspect="equal")
     axes.grid(b=grid)
     axes.set_frame_on(False)
     if xlabel:
@@ -136,17 +122,19 @@ def create_axes_xy(figsize=(8.0, 6.0),
     return axes
 
 
-def create_axes_3d(size=(10, 7),
-                   xlabel='$x$',
-                   ylabel='$y$',
-                   zlabel='$z$',
-                   fontname='Times New Roman',
-                   fontsize=20,
-                   grid=True,
-                   limits=None,
-                   ticklength=20,
-                   tickfontsize=15,
-                   angle=(30, 45)):
+def create_axes_3d(
+    size=(10, 7),
+    xlabel="$x$",
+    ylabel="$y$",
+    zlabel="$z$",
+    fontname="Times New Roman",
+    fontsize=20,
+    grid=True,
+    limits=None,
+    ticklength=20,
+    tickfontsize=15,
+    angle=(30, 45),
+):
     """Initializes plot axes object for matplotlib plotting.
 
     Parameters
@@ -171,10 +159,10 @@ def create_axes_3d(size=(10, 7),
         Default is ``10``.
     grid : bool, optional
         Display grid.
-        Default is ``False``.
+        Default is False.
     limits : dict, optional
         Axis limits and tick spacing.
-        Default is ``None``.
+        Default is None.
     ticklength : float, optional
         Length of the ticks.
         Default is ``20``.
@@ -191,8 +179,8 @@ def create_axes_3d(size=(10, 7),
         Matplotlib axes.
 
     """
-    fig = plt.figure(facecolor='white', figsize=size)
-    axes = fig.add_subplot(111, projection='3d', aspect='equal')
+    fig = plt.figure(facecolor="white", figsize=size)
+    axes = fig.add_subplot(111, projection="3d", aspect="equal")
     # axes.w_xaxis.set_pane_color((1, 1, 1, 1))
     # axes.w_yaxis.set_pane_color((1, 1, 1, 1))
     # axes.w_zaxis.set_pane_color((1, 1, 1, 1))
@@ -215,12 +203,7 @@ def create_axes_3d(size=(10, 7),
 # ==============================================================================
 
 
-def draw_points_xy(points,
-                   axes,
-                   facecolor='#ffffff',
-                   edgecolor='#000000',
-                   linewidth=0.5,
-                   radius=1.0):
+def draw_points_xy(points, axes, facecolor="#ffffff", edgecolor="#000000", linewidth=0.5, radius=1.0):
     """Creates an XY point collection and adds it to the axis.
 
     Parameters
@@ -229,10 +212,10 @@ def draw_points_xy(points,
         XY(Z) coordinates of the points.
     axes : object
         Matplotlib axes.
-    facecolor : str or list, optional
+    facecolor : str | list, optional
         Color of the point face.
         Default is white.
-    edgecolor : str or list, optional
+    edgecolor : str | list, optional
         Color of the point edge.
         Default is black.
     linewidth : float or list, optional
@@ -272,7 +255,7 @@ def draw_points_xy(points,
         edgecolors=edgecolor,
         linewidhts=linewidth,
         alpha=1.0,
-        zorder=ZORDER_POINTS
+        zorder=ZORDER_POINTS,
     )
     axes.add_collection(coll)
     return coll
@@ -311,14 +294,14 @@ def draw_xpoints_xy(points, axes):
     edgecolors = []
     linewidths = []
     for point in points:
-        pos = point['pos']
-        radius = point['radius']
-        text = point.get('text')
-        fcolor = point.get('facecolor') or '#ffffff'
-        ecolor = point.get('edgecolor') or '#000000'
-        lwidth = point.get('edgewidth') or 1.0
-        textcolor = point.get('textcolor') or '#000000'
-        fontsize = point.get('fontsize') or 12
+        pos = point["pos"]
+        radius = point["radius"]
+        text = point.get("text")
+        fcolor = point.get("facecolor") or "#ffffff"
+        ecolor = point.get("edgecolor") or "#000000"
+        lwidth = point.get("edgewidth") or 1.0
+        textcolor = point.get("textcolor") or "#000000"
+        fontsize = point.get("fontsize") or 12
         circles.append(Circle(pos[0:2], radius=radius))
         facecolors.append(color_to_rgb(fcolor, normalize=True))
         edgecolors.append(color_to_rgb(ecolor, normalize=True))
@@ -330,9 +313,9 @@ def draw_xpoints_xy(points, axes):
                 text,
                 fontsize=fontsize,
                 zorder=ZORDER_LABELS,
-                ha='center',
-                va='center',
-                color=textcolor
+                ha="center",
+                va="center",
+                color=textcolor,
             )
     coll = PatchCollection(
         circles,
@@ -340,16 +323,13 @@ def draw_xpoints_xy(points, axes):
         facecolors=facecolors,
         edgecolors=edgecolors,
         alpha=1.0,
-        zorder=ZORDER_POINTS
+        zorder=ZORDER_POINTS,
     )
     axes.add_collection(coll)
     return coll
 
 
-def draw_points_3d(points,
-                   axes,
-                   facecolor='#ffffff',
-                   edgecolor='#000000'):
+def draw_points_3d(points, axes, facecolor="#ffffff", edgecolor="#000000"):
     """Creates a 3D point collection and adds it to the axis.
 
     Parameters
@@ -358,10 +338,10 @@ def draw_points_3d(points,
         XYZ coordinates of the points.
     axes : object
         Matplotlib axes.
-    facecolor : str or list, optional
+    facecolor : str | list, optional
         Color of the face of the points.
         Default is white.
-    edgecolor : str or list, optional
+    edgecolor : str | list, optional
         Color of the edge of the points.
         Default is black.
 
@@ -380,7 +360,7 @@ def draw_points_3d(points,
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2]
-    coll, _ = axes.plot(x, y, z, 'o', color=(1.0, 1.0, 1.0))
+    coll, _ = axes.plot(x, y, z, "o", color=(1.0, 1.0, 1.0))
     return coll
 
 
@@ -389,12 +369,7 @@ def draw_points_3d(points,
 # ==============================================================================
 
 
-def draw_lines_xy(lines,
-                  axes,
-                  linewidth=1.0,
-                  linestyle='-',
-                  color='#000000',
-                  alpha=1.0):
+def draw_lines_xy(lines, axes, linewidth=1.0, linestyle="-", color="#000000", alpha=1.0):
     """Creates an XY line collection and adds it to the axis.
 
     Parameters
@@ -406,10 +381,10 @@ def draw_lines_xy(lines,
     linewidth : float or list of float, optional
         Width of the lines.
         Default is ``1.0``.
-    linestyle : str or list of str, optional
+    linestyle : str | list of str, optional
         Matplotlib line style strings.
         Default is ``'-'``.
-    color : str or list of str, optional
+    color : str | list of str, optional
         Color of the lines.
         Default is black.
     alpha : float or list of float, optional
@@ -435,13 +410,13 @@ def draw_lines_xy(lines,
         colors=color,
         linestyle=linestyle,
         alpha=alpha,
-        zorder=ZORDER_LINES
+        zorder=ZORDER_LINES,
     )
     axes.add_collection(coll)
     return coll
 
 
-def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
+def draw_xlines_xy(lines, axes, alpha=1.0, linestyle="solid"):
     """Creates an XY line collection and adds it to the axis.
 
     Parameters
@@ -454,7 +429,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         * end (list): XY(Z) coordinatesof the end point.
         * width (float, optional): The width of the line. Default is ``1.0``.
         * color (rgb tuple or hex string, optional): The color of the line. Default is black.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
 
@@ -477,44 +452,42 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
     widths = []
     colors = []
     for line in lines:
-        sp = line['start']
-        ep = line['end']
-        width = line.get('width', 1.0)
-        color = line.get('color', '#000000')
-        text = line.get('text', None)
-        textcolor = line.get('textcolor') or '#000000'
-        fontsize = line.get('fontsize') or 6
+        sp = line["start"]
+        ep = line["end"]
+        width = line.get("width", 1.0)
+        color = line.get("color", "#000000")
+        text = line.get("text", None)
+        textcolor = line.get("textcolor") or "#000000"
+        fontsize = line.get("fontsize") or 6
         fromto.append((sp[0:2], ep[0:2]))
         widths.append(width)
         colors.append(color_to_rgb(color, normalize=True))
         if text:
             x, y, z = midpoint_line_xy((sp, ep))
-            t = axes.text(x,
-                          y,
-                          text,
-                          fontsize=fontsize,
-                          zorder=ZORDER_LABELS,
-                          ha='center',
-                          va='center',
-                          color=color_to_rgb(textcolor, normalize=True))
-            t.set_bbox({'color': '#ffffff', 'alpha': 1.0})
+            t = axes.text(
+                x,
+                y,
+                text,
+                fontsize=fontsize,
+                zorder=ZORDER_LABELS,
+                ha="center",
+                va="center",
+                color=color_to_rgb(textcolor, normalize=True),
+            )
+            t.set_bbox({"color": "#ffffff", "alpha": 1.0})
     coll = LineCollection(
         fromto,
         linewidths=widths,
         colors=colors,
         linestyle=linestyle,
         alpha=alpha,
-        zorder=ZORDER_LINES
+        zorder=ZORDER_LINES,
     )
     axes.add_collection(coll)
     return coll
 
 
-def draw_lines_3d(lines,
-                  axes,
-                  linewidth=1.0,
-                  linestyle='solid',
-                  color='#000000'):
+def draw_lines_3d(lines, axes, linewidth=1.0, linestyle="solid", color="#000000"):
     """Creates an 3D line collection and adds it to the axis.
 
     Parameters
@@ -529,7 +502,7 @@ def draw_lines_3d(lines,
     linestyle : str, optional
         Matplotlib line style strings.
         Default is ``'solid'``.
-    color : str or list of str, optional
+    color : str | list of str, optional
         Color of the lines.
         Default is black.
 
@@ -551,7 +524,7 @@ def draw_lines_3d(lines,
         linewidths=linewidth,
         colors=color,
         linestyle=linestyle,
-        zorder=ZORDER_LINES
+        zorder=ZORDER_LINES,
     )
     axes.add_collection(coll)
     return coll
@@ -569,12 +542,12 @@ def draw_xpolylines_xy(polylines, axes):
     colors = []
 
     for polyline in polylines:
-        points = polyline['points']
-        width = polyline.get('width', 1.0)
-        color = polyline.get('color', '#000000')
-        text = polyline.get('text', None)
-        textcolor = polyline.get('textcolor') or '#000000'
-        fontsize = polyline.get('fontsize') or 6
+        points = polyline["points"]
+        width = polyline.get("width", 1.0)
+        color = polyline.get("color", "#000000")
+        text = polyline.get("text", None)
+        textcolor = polyline.get("textcolor") or "#000000"
+        fontsize = polyline.get("fontsize") or 6
 
         path = [point[0:2] for point in points]
         paths.append(path)
@@ -592,24 +565,26 @@ def draw_xpolylines_xy(polylines, axes):
             else:
                 x, y = points[p // 2 + 1]
 
-            t = axes.text(x,
-                          y,
-                          text,
-                          fontsize=fontsize,
-                          zorder=ZORDER_LABELS,
-                          ha='center',
-                          va='center',
-                          color=color_to_rgb(textcolor, normalize=True))
+            t = axes.text(
+                x,
+                y,
+                text,
+                fontsize=fontsize,
+                zorder=ZORDER_LABELS,
+                ha="center",
+                va="center",
+                color=color_to_rgb(textcolor, normalize=True),
+            )
 
-            t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
+            t.set_bbox({"color": "#ffffff", "alpha": 1.0, "edgecolor": "#ffffff"})
 
     coll = PolyCollection(
         paths,
         closed=False,
         linewidths=widths,
         edgecolors=colors,
-        facecolors='none',
-        zorder=ZORDER_LINES
+        facecolors="none",
+        zorder=ZORDER_LINES,
     )
 
     axes.add_collection(coll)
@@ -633,7 +608,7 @@ def draw_xarrows_xy(lines, axes):
 
         * start (list): XY(Z) coordinates of the starting point.
         * end (list): XY(Z) coordinates of the end point.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
         * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
@@ -644,24 +619,24 @@ def draw_xarrows_xy(lines, axes):
 
     """
     arrowprops = {
-        'arrowstyle': '-|>,head_length=0.6,head_width=0.2',
-        'connectionstyle': 'arc3,rad=0.0',
-        'linewidth': 1.0,
-        'color': '#000000',
-        'shrinkB': 0.0,
-        'shrinkA': 0.0,
+        "arrowstyle": "-|>,head_length=0.6,head_width=0.2",
+        "connectionstyle": "arc3,rad=0.0",
+        "linewidth": 1.0,
+        "color": "#000000",
+        "shrinkB": 0.0,
+        "shrinkA": 0.0,
     }
     xys = []
     for line in lines:
-        sp = line['start'][:2]
-        ep = line['end'][:2]
-        text = line.get('text', None)
-        textcolor = line.get('textcolor') or '#000000'
-        fontsize = line.get('fontsize') or 6
-        arrowprops['color'] = color_to_rgb(line.get('color', '#000000'), normalize=True)
-        arrowprops['linewidth'] = line.get('width', 1.0)
+        sp = line["start"][:2]
+        ep = line["end"][:2]
+        text = line.get("text", None)
+        textcolor = line.get("textcolor") or "#000000"
+        fontsize = line.get("fontsize") or 6
+        arrowprops["color"] = color_to_rgb(line.get("color", "#000000"), normalize=True)
+        arrowprops["linewidth"] = line.get("width", 1.0)
         axes.annotate(
-            '',
+            "",
             xy=ep,
             xytext=sp,
             arrowprops=arrowprops,
@@ -671,15 +646,17 @@ def draw_xarrows_xy(lines, axes):
         xys.append(ep)
         if text:
             x, y, z = midpoint_line_xy((sp, ep))
-            t = axes.text(x,
-                          y,
-                          text,
-                          fontsize=fontsize,
-                          zorder=ZORDER_LABELS,
-                          ha='center',
-                          va='center',
-                          color=color_to_rgb(textcolor, normalize=True))
-            t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
+            t = axes.text(
+                x,
+                y,
+                text,
+                fontsize=fontsize,
+                zorder=ZORDER_LABELS,
+                ha="center",
+                va="center",
+                color=color_to_rgb(textcolor, normalize=True),
+            )
+            t.set_bbox({"color": "#ffffff", "alpha": 1.0, "edgecolor": "#ffffff"})
     axes.update_datalim(xys)
 
 
@@ -700,24 +677,26 @@ def draw_xlabels_xy(labels, axes):
 
     """
     for label in labels:
-        x, y = label['pos']
-        text = label['text']
-        fontsize = label['fontsize']
-        color = label.get('color') or '#ffffff'
-        textcolor = label.get('textcolor') or '#000000'
-        bbox = dict(color=color_to_rgb(color, normalize=True),
-                    edgecolor=color_to_rgb(color, normalize=True),
-                    alpha=1.0,
-                    pad=0.0)
+        x, y = label["pos"]
+        text = label["text"]
+        fontsize = label["fontsize"]
+        color = label.get("color") or "#ffffff"
+        textcolor = label.get("textcolor") or "#000000"
+        bbox = dict(
+            color=color_to_rgb(color, normalize=True),
+            edgecolor=color_to_rgb(color, normalize=True),
+            alpha=1.0,
+            pad=0.0,
+        )
         t = axes.text(
             x,
             y,
             text,
             fontsize=fontsize,
             zorder=ZORDER_LABELS,
-            ha='center',
-            va='center',
-            color=color_to_rgb(textcolor, normalize=True)
+            ha="center",
+            va="center",
+            color=color_to_rgb(textcolor, normalize=True),
         )
         t.set_bbox(bbox)
 
@@ -737,7 +716,7 @@ def draw_xpolygons_xy(polygons, axes):
         The following properties can be specified in the dict.
 
         * points (list): XY(Z) coordinates of the polygon vertices.
-        * text (str, optional): The text of the label. Default is ``None``.
+        * text (str, optional): The text of the label. Default is None.
         * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
         * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
         * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
@@ -759,13 +738,13 @@ def draw_xpolygons_xy(polygons, axes):
     patches = []
 
     for attr in polygons:
-        points = attr['points']
-        text = attr.get('text')
-        textcolor = color_to_rgb(attr.get('textcolor', '#000000'), normalize=True)
+        points = attr["points"]
+        text = attr.get("text")
+        textcolor = color_to_rgb(attr.get("textcolor", "#000000"), normalize=True)
 
-        facecolors.append(color_to_rgb(attr.get('facecolor', '#ffffff'), normalize=True))
-        edgecolors.append(color_to_rgb(attr.get('edgecolor', '#000000'), normalize=True))
-        linewidths.append(attr.get('edgewidth', 1.0))
+        facecolors.append(color_to_rgb(attr.get("facecolor", "#ffffff"), normalize=True))
+        edgecolors.append(color_to_rgb(attr.get("edgecolor", "#000000"), normalize=True))
+        linewidths.append(attr.get("edgewidth", 1.0))
 
         patches.append(Polygon([point[0:2] for point in points]))
 
@@ -775,11 +754,11 @@ def draw_xpolygons_xy(polygons, axes):
                 c[0],
                 c[1],
                 text,
-                fontsize=attr.get('fontsize', 10.0),
+                fontsize=attr.get("fontsize", 10.0),
                 zorder=ZORDER_LABELS,
-                ha='center',
-                va='center',
-                color=textcolor
+                ha="center",
+                va="center",
+                color=textcolor,
             )
 
     coll = PatchCollection(
@@ -787,7 +766,7 @@ def draw_xpolygons_xy(polygons, axes):
         facecolors=facecolors,
         edgecolors=edgecolors,
         lw=linewidths,
-        zorder=ZORDER_POLYGONS
+        zorder=ZORDER_POLYGONS,
     )
 
     axes.add_collection(coll)

@@ -9,28 +9,17 @@ from numpy import argmin
 from numpy import amax
 from numpy import amin
 from numpy import dot
-# from numpy import ptp
 from numpy import sum
 
 from scipy.spatial import ConvexHull
-# from scipy.spatial import QhullError
 
+from compas.numerical import pca_numpy
 from compas.geometry import local_axes
 from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import transform_points_numpy
-from compas.geometry import Frame
-from compas.geometry import Transformation
-from compas.numerical import pca_numpy
 
-from compas.geometry.bbox.bbox import bounding_box
-
-
-__all__ = [
-    'oriented_bounding_box_numpy',
-    'oriented_bounding_box_xy_numpy',
-    'oabb_numpy'
-]
+from .bbox import bounding_box
 
 
 # make alternative implementation using PCA
@@ -40,16 +29,18 @@ def oriented_bounding_box_numpy(points):
 
     Parameters
     ----------
-    points : array-like
+    points : array_like[point]
         XYZ coordinates of the points.
 
     Returns
     -------
-    array
+    list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
     Raises
     ------
+    AssertionError
+        If the input data is 2D.
     QhullError
         If the data is essentially 2D.
 
@@ -156,12 +147,12 @@ def oriented_bounding_box_xy_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array_like[point]
         XY(Z) coordinates of the points.
 
     Returns
     -------
-    list
+    list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
     Notes
@@ -206,7 +197,7 @@ def oriented_bounding_box_xy_numpy(points):
 
         # s direction
         s = p1 - p0
-        sl = sum(s ** 2) ** 0.5
+        sl = sum(s**2) ** 0.5
         su = s / sl
         vn = xy_hull - p0
         sc = (sum(vn * s, axis=1) / sl).reshape((-1, 1))
@@ -219,7 +210,7 @@ def oriented_bounding_box_xy_numpy(points):
 
         # t direction
         t = array([-s[1], s[0]])
-        tl = sum(t ** 2) ** 0.5
+        tl = sum(t**2) ** 0.5
         tu = t / tl
         vn = xy_hull - p0
         tc = (sum(vn * t, axis=1) / tl).reshape((-1, 1))
@@ -247,6 +238,22 @@ def oriented_bounding_box_xy_numpy(points):
 
 
 def oabb_numpy(points):
+    """Oriented bounding box of a set of points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    list[[float, float, float]]
+        XYZ coordinates of 8 points defining a box.
+
+    """
+    from compas.geometry import Frame
+    from compas.geometry import Transformation
+
     origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
     frame = Frame(origin, xaxis, yaxis)
     world = Frame.worldXY()

@@ -12,7 +12,7 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Plane
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
 
 
 class Cylinder(Shape):
@@ -20,25 +20,31 @@ class Cylinder(Shape):
 
     Parameters
     ----------
-    circle: :class:`compas.geometry.Circle`
+    circle: [plane, radius] | :class:`~compas.geometry.Circle`
         The circle of the cylinder.
     height: float
         The height of the cylinder.
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane containing the circle.
-    circle : :class:`compas.geometry.Circle`
-        The base circle of the cylinder.
+    plane : :class:`~compas.geometry.Plane`
+        The plane of the cylinder.
+    circle : :class:`~compas.geometry.Circle`
+        The circle of the cylinder.
+    center : :class:`~compas.geometry.Point`
+        The center of the cylinder.
     radius : float
-        The radius of the base circle.
+        The radius of the cylinder.
     height : float
         The height of the cylinder.
-    normal (read-only) : :class:`compas.geometry.Vector`
-        The normal of the base plane.
-    diameter : float
+    normal : :class:`~compas.geometry.Vector`, read-only
+        The normal of the cylinder.
+    diameter : float, read-only
         The diameter of the cylinder.
+    area : float, read-only
+        The surface area of the cylinder.
+    volume : float, read-only
+        The volume of the cylinder.
 
     Examples
     --------
@@ -50,22 +56,16 @@ class Cylinder(Shape):
 
     """
 
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'circle': {
-                'plane': Plane.DATASCHEMA.fget(None),
-                'radius': schema.And(float, lambda x: x > 0)
-            },
-            'height': schema.And(float, lambda x: x > 0)
-        })
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "circle": Circle.JSONSCHEMA,
+            "height": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "required": ["circle", "height"],
+    }
 
-    @property
-    def JSONSCHEMANAME(self):
-        return 'cylinder'
-
-    __slots__ = ['_circle', '_height']
+    __slots__ = ["_circle", "_height"]
 
     def __init__(self, circle, height, **kwargs):
         super(Cylinder, self).__init__(**kwargs)
@@ -74,26 +74,52 @@ class Cylinder(Shape):
         self.circle = circle
         self.height = height
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def data(self):
-        """Returns the data dictionary that represents the cylinder.
-
-        Returns
-        -------
-        dict
-            The cylinder data.
-
-        """
-        return {'circle': self.circle.data, 'height': self.height}
+        """dict : Returns the data dictionary that represents the cylinder."""
+        return {"circle": self.circle, "height": self.height}
 
     @data.setter
     def data(self, data):
-        self.circle = Circle.from_data(data['circle'])
-        self.height = data['height']
+        self.circle = data["circle"]
+        self.height = data["height"]
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a cylinder from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Cylinder`
+            The constructed cylinder.
+
+        Examples
+        --------
+        >>> from compas.geometry import Cylinder
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Plane
+        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
+        >>> cylinder = Cylinder.from_data(data)
+
+        """
+        cylinder = cls(data["circle"], data["height"])
+        return cylinder
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def plane(self):
-        """Plane: The plane of the cylinder."""
         return self.circle.plane
 
     @plane.setter
@@ -102,7 +128,6 @@ class Cylinder(Shape):
 
     @property
     def circle(self):
-        """float: The circle of the cylinder."""
         return self._circle
 
     @circle.setter
@@ -111,7 +136,6 @@ class Cylinder(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the cylinder."""
         return self.circle.radius
 
     @radius.setter
@@ -120,7 +144,6 @@ class Cylinder(Shape):
 
     @property
     def height(self):
-        """float: The height of the cylinder."""
         return self._height
 
     @height.setter
@@ -129,17 +152,14 @@ class Cylinder(Shape):
 
     @property
     def normal(self):
-        """Vector: The normal of the cylinder."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float: The diameter of the cylinder."""
         return self.circle.diameter
 
     @property
     def center(self):
-        """Point: The center of the cylinder."""
         return self.circle.center
 
     @center.setter
@@ -148,12 +168,10 @@ class Cylinder(Shape):
 
     @property
     def area(self):
-        """Float: The surface area of the cylinder."""
         return (self.circle.area * 2) + (self.circle.circumference * self.height)
 
     @property
     def volume(self):
-        """Float: The volume of the cylinder."""
         return self.circle.area * self.height
 
     # ==========================================================================
@@ -161,7 +179,7 @@ class Cylinder(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Cylinder({0!r}, {1!r})'.format(self.circle, self.height)
+        return "Cylinder({0!r}, {1!r})".format(self.circle, self.height)
 
     def __len__(self):
         return 2
@@ -189,53 +207,31 @@ class Cylinder(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a cylinder from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        Cylinder
-            The constructed cylinder.
-
-        Examples
-        --------
-        >>> from compas.geometry import Cylinder
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-        >>> cylinder = Cylinder.from_data(data)
-
-        """
-        cylinder = cls(Circle.from_data(data['circle']), data['height'])
-        return cylinder
-
     # ==========================================================================
     # methods
     # ==========================================================================
 
-    def to_vertices_and_faces(self, u=10):
+    def to_vertices_and_faces(self, u=16, triangulated=False):
         """Returns a list of vertices and faces.
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``10``.
+        triangulated: bool, optional
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
-            raise ValueError('The value for u should be u > 3.')
+            raise ValueError("The value for u should be u > 3.")
 
         vertices = []
         a = 2 * pi / u
@@ -265,6 +261,16 @@ class Cylinder(Shape):
             faces.append(top)
             faces.append(bottom[::-1])
 
+        if triangulated:
+            triangles = []
+            for face in faces:
+                if len(face) == 4:
+                    triangles.append(face[0:3])
+                    triangles.append([face[0], face[2], face[3]])
+                else:
+                    triangles.append(face)
+            faces = triangles
+
         return vertices, faces
 
     def transform(self, transformation):
@@ -272,8 +278,12 @@ class Cylinder(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the cylinder.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

@@ -5,23 +5,20 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = ['trimesh_slice']
-
-
-@pluggable(category='trimesh')
+@pluggable(category="trimesh")
 def trimesh_slice(mesh, planes):
     """Slice a mesh by a list of planes.
 
     Parameters
     ----------
-    mesh : tuple of vertices and faces
-        The mesh to slice.
-    planes : list of (point, normal) tuples or compas.geometry.Plane
+    mesh : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+        A mesh represented by a list of vertices and a list of faces.
+    planes : sequence[[point, vector] | :class:`~compas.geometry.Plane`]
         The slicing planes.
 
     Returns
     -------
-    list of arrays
+    list[list[float, float, float]]
         The points defining the slice polylines.
 
     """

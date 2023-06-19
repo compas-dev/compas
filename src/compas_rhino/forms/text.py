@@ -12,17 +12,37 @@ from System.Drawing import FontFamily
 from System.Environment import NewLine
 
 
-__all__ = ['TextForm']
+__all__ = ["TextForm"]
 
 
 class TextForm(BaseForm):
-    """A form for text."""
+    """A form for text.
 
-    def __init__(self, text, title='Message', width=800, height=600):
+    Parameters
+    ----------
+    text : str
+        The text to display.
+    title : str, optional
+        Title of the form.
+    width : int, optional
+        Width of the form.
+    height : int, optional
+        Height of the form.
+
+    """
+
+    def __init__(self, text, title="Message", width=800, height=600):
         self.text = text
         super(TextForm, self).__init__(title, width, height)
 
     def init(self):
+        """Initialize the form.
+
+        Returns
+        -------
+        None
+
+        """
         textbox = TextBox()
         textbox.ReadOnly = True
         textbox.Dock = DockStyle.Fill

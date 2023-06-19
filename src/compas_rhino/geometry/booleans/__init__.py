@@ -7,75 +7,74 @@ import Rhino
 from compas.plugins import plugin
 
 
-__all__ = [
-    'boolean_union_mesh_mesh',
-    'boolean_difference_mesh_mesh',
-    'boolean_intersection_mesh_mesh',
-]
-
-
-@plugin(category='booleans', requires=['Rhino'])
+@plugin(category="booleans", requires=["Rhino"])
 def boolean_union_mesh_mesh(A, B, remesh=False):
     """Compute the boolean union of two triangle meshes.
 
     Parameters
     ----------
-    A : tuple
+    A : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple
+    B : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        If True, remesh the result.
 
     Returns
     -------
-    tuple
-        The vertices and the faces of the boolean union.
+    sequence[[float, float, float]]
+        The vertices of the boolean union.
+    sequence[[int, int, int]]
+        The faces of the boolean union.
+
     """
     return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanUnion([a, b]))
 
 
-@plugin(category='booleans', requires=['Rhino'])
+@plugin(category="booleans", requires=["Rhino"])
 def boolean_difference_mesh_mesh(A, B, remesh=False):
     """Compute the boolean difference of two triangle meshes.
 
     Parameters
     ----------
-    A : tuple
+    A : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple
+    B : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        If True, remesh the result.
 
     Returns
     -------
-    tuple
-        The vertices and the faces of the boolean difference.
+    sequence[[float, float, float]]
+        The vertices of the boolean difference.
+    sequence[[int, int, int]]
+        The faces of the boolean difference.
+
     """
     return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanDifference([a], [b]))
 
 
-@plugin(category='booleans', requires=['Rhino'])
+@plugin(category="booleans", requires=["Rhino"])
 def boolean_intersection_mesh_mesh(A, B, remesh=False):
     """Compute the boolean intersection of two triangle meshes.
 
     Parameters
     ----------
-    A : tuple
+    A : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh A.
-    B : tuple
+    B : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The vertices and faces of mesh B.
     remesh : bool, optional
-        Remesh the result if ``True``.
-        Default is ``False``.
+        If True, remesh the result.
 
     Returns
     -------
-    tuple
-        The vertices and the faces of the boolean intersection.
+    sequence[[float, float, float]]
+        The vertices of the boolean intersection.
+    sequence[[int, int, int]]
+        The faces of the boolean intersection.
+
     """
     return _boolean_operation(A, B, lambda a, b: Rhino.Geometry.Mesh.CreateBooleanIntersection([a], [b]))
 

@@ -4,25 +4,20 @@ from __future__ import division
 
 from compas.topology import connected_components
 
-__all__ = [
-    'network_disconnected_nodes',
-    'network_disconnected_edges',
-    'network_explode'
-]
-
 
 def network_disconnected_nodes(network):
     """Get the disconnected node groups in a network.
 
     Parameters
     ----------
-    network : Network
+    network : :class:`~compas.datastructures.Network`
         A network.
 
     Returns
     -------
-    list
+    list[list[hashable]]
         The list of disconnected node groups.
+
     """
     return connected_components(network.adjacency)
 
@@ -32,13 +27,14 @@ def network_disconnected_edges(network):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`~compas.datastructures.Network`
         A network.
 
     Returns
     -------
-    parts : list
+    list[list[tuple[hashable, hashable]]]
         The list of disconnected edge groups.
+
     """
     components = network_disconnected_nodes(network)
     return [[(u, v) for u in component for v in network.neighbors(u) if u < v] for component in components]
@@ -49,13 +45,14 @@ def network_explode(network, cls=None):
 
     Parameters
     ----------
-    network : Network
+    network : :class:`~compas.datastructures.Network`
         A network.
 
     Returns
     -------
-    exploded_networks : list
-        The list of the networks from the exploded network parts.
+    list[:class:`~compas.datastructures.Network`]
+        The list of exploded network parts.
+
     """
     if cls is None:
         cls = type(network)

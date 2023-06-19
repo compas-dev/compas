@@ -6,8 +6,8 @@ from compas.geometry import transform_points
 
 
 __all__ = [
-    'volmesh_transform',
-    'volmesh_transformed',
+    "volmesh_transform",
+    "volmesh_transformed",
 ]
 
 
@@ -16,10 +16,14 @@ def volmesh_transform(volmesh, transformation):
 
     Parameters
     ----------
-    volmesh : compas.datastructures.VolMesh
+    volmesh : :class:`~compas.datastructures.VolMesh`
         The volmesh.
-    transformation : compas.geometry.Transformation
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
+
+    Returns
+    -------
+    None
 
     Notes
     -----
@@ -38,23 +42,23 @@ def volmesh_transform(volmesh, transformation):
     xyz = [volmesh.vertex_coordinates(vertex) for vertex in vertices]
     xyz[:] = transform_points(xyz, transformation)
     for index, vertex in enumerate(vertices):
-        volmesh.vertex_attributes(vertex, 'xyz', xyz[index])
+        volmesh.vertex_attributes(vertex, "xyz", xyz[index])
 
 
 def volmesh_transformed(volmesh, transformation):
-    """Transform a copy of ``volmesh``.
+    """Return a transformed copy of the volmesh.
 
     Parameters
     ----------
-    volmesh : compas.datastructures.VolMesh
+    volmesh : :class:`~compas.datastructures.VolMesh`
         The volmesh.
-    transformation : compas.geometry.Transformation
+    transformation : :class:`~compas.geometry.Transformation`
         The transformation.
 
     Returns
     -------
-    VolMesh
-        A transformed independent copy of ``volmesh``.
+    :class:`~compas.datastructures.VolMesh`
+        A transformed independent copy of `volmesh`.
 
     Notes
     -----

@@ -20,55 +20,55 @@ except AttributeError:
 
 
 __all__ = [
-    'find_object',
-    'get_objects',
-    'get_object_layers',
-    'get_object_types',
-    'get_object_names',
-    'get_object_name',
-    'get_object_attributes',
-    'set_object_attributes',
-    'get_object_attributes_from_name',
-    'delete_object',
-    'delete_objects',
-    'purge_objects',
-    'is_curve_line',
-    'is_curve_polyline',
-    'is_curve_polygon',
-    'get_points',
-    'get_curves',
-    'get_lines',
-    'get_polylines',
-    'get_polygons',
-    'get_point_coordinates',
-    'get_line_coordinates',
-    'get_polyline_coordinates',
-    'get_polygon_coordinates',
-    'get_meshes',
-    'get_mesh_face_vertices',
-    'get_mesh_vertex_coordinates',
-    'get_mesh_vertex_colors',
-    'set_mesh_vertex_colors',
-    'get_mesh_vertices_and_faces',
-    'get_mesh_vertex_index',
-    'get_mesh_face_index',
-    'get_mesh_edge_index',
-    'select_object',
-    'select_objects',
-    'select_point',
-    'select_points',
-    'select_curve',
-    'select_curves',
-    'select_line',
-    'select_lines',
-    'select_polyline',
-    'select_polylines',
-    'select_polygon',
-    'select_polygons',
-    'select_surface',
-    'select_surfaces',
-    'select_mesh',
-    'select_meshes',
+    "find_object",
+    "get_objects",
+    "get_object_layers",
+    "get_object_types",
+    "get_object_names",
+    "get_object_name",
+    "get_object_attributes",
+    "set_object_attributes",
+    "get_object_attributes_from_name",
+    "delete_object",
+    "delete_objects",
+    "purge_objects",
+    "is_curve_line",
+    "is_curve_polyline",
+    "is_curve_polygon",
+    "get_points",
+    "get_curves",
+    "get_lines",
+    "get_polylines",
+    "get_polygons",
+    "get_point_coordinates",
+    "get_line_coordinates",
+    "get_polyline_coordinates",
+    "get_polygon_coordinates",
+    "get_meshes",
+    "get_mesh_face_vertices",
+    "get_mesh_vertex_coordinates",
+    "get_mesh_vertex_colors",
+    "set_mesh_vertex_colors",
+    "get_mesh_vertices_and_faces",
+    "get_mesh_vertex_index",
+    "get_mesh_face_index",
+    "get_mesh_edge_index",
+    "select_object",
+    "select_objects",
+    "select_point",
+    "select_points",
+    "select_curve",
+    "select_curves",
+    "select_line",
+    "select_lines",
+    "select_polyline",
+    "select_polylines",
+    "select_polygon",
+    "select_polygons",
+    "select_surface",
+    "select_surfaces",
+    "select_mesh",
+    "select_meshes",
 ]
 
 
@@ -76,22 +76,25 @@ __all__ = [
 # Objects
 # ==============================================================================
 
+
 def get_objects(name=None, color=None, layer=None, type=None):
     """Get identifiers of Rhino objects, potentially filtered by name, color, layer, or type.
 
     Parameters
     ----------
     name : str, optional
+        Name of the objects.
     color : tuple or list, optional
         RGB color components in integer format (0-255).
     layer : str, optional
+        Layer containing the objects.
     type : Rhino.DocObjects.ObjectType, optional
         The object type.
 
     Returns
     -------
-    list
-        The GUIDs of the objects matching the filter parameters.
+    list[System.Guid]
+        The System.Guids of the objects matching the filter parameters.
 
     Examples
     --------
@@ -148,16 +151,20 @@ def delete_object(guid, purge=None, redraw=True):
 
     Parameters
     ----------
-    guid : GUID
+    guid : System.Guid
+        Object identifier.
     purge : None or bool, optional
         If None, the value of the global purge setting (:obj:`compas_rhino.PURGE_ON_DELETE`) will be used.
         If True, purge the object from history after deleting.
         If False, delete but don't purge.
-        Default is None.
     redraw : bool, optional
         If True, redrawing will be enabled and enacted.
         If False, redrawing will be disabled.
-        Default is True.
+
+    Returns
+    -------
+    None
+
     """
     if purge is None:
         purge = compas_rhino.PURGE_ON_DELETE
@@ -172,16 +179,20 @@ def delete_objects(guids, purge=None, redraw=True):
 
     Parameters
     ----------
-    guids : list of GUID
+    guids : list[System.Guid]
+        Object identifiers.
     purge : None or bool, optional
         If None, the value of the global purge setting (:obj:`compas_rhino.PURGE_ON_DELETE`) will be used.
         If True, purge the objects from history after deleting.
         If False, delete but don't purge.
-        Default is None.
     redraw : bool, optional
         If True, redrawing will be enabled and enacted.
         If False, redrawing will be disabled.
-        Default is True.
+
+    Returns
+    -------
+    None
+
     """
     if purge is None:
         purge = compas_rhino.PURGE_ON_DELETE
@@ -203,14 +214,19 @@ def purge_objects(guids, redraw=True):
 
     Parameters
     ----------
-    guids : list of GUID
+    guids : list[System.Guid]
+        Object identifiers.
     redraw : bool, optional
         If True, redrawing will be enabled and enacted.
         If False, redrawing will be disabled.
-        Default is True.
+
+    Returns
+    -------
+    None
+
     """
     if not purge_object:
-        raise RuntimeError('Cannot purge outside Rhino script context')
+        raise RuntimeError("Cannot purge outside Rhino script context")
     rs.EnableRedraw(False)
     for guid in guids:
         if rs.IsObject(guid):
@@ -228,24 +244,62 @@ def get_object_layers(guids):
 
     Parameters
     ----------
-    guids : list of GUID
+    guids : list[System.Guid]
+        Object identifiers.
 
     Returns
     -------
+    list[str]
 
     """
     return [rs.ObjectLayer(guid) for guid in guids]
 
 
 def get_object_types(guids):
+    """Get the type of multiple objects.
+
+    Parameters
+    ----------
+    guids : list[System.Guid]
+        Object identifiers.
+
+    Returns
+    -------
+    list[str]
+
+    """
     return [rs.ObjectType(guid) for guid in guids]
 
 
 def get_object_names(guids):
+    """Get the names of multiple objects.
+
+    Parameters
+    ----------
+    guids : list[System.Guid]
+        Object identifiers.
+
+    Returns
+    -------
+    list[str]
+
+    """
     return [rs.ObjectName(guid) for guid in guids]
 
 
 def get_object_name(guid):
+    """Get the name of one object.
+
+    Parameters
+    ----------
+    guid : System.Guid
+        Object identifier.
+
+    Returns
+    -------
+    str
+
+    """
     return rs.ObjectName(guid)
 
 
@@ -254,11 +308,13 @@ def get_object_attributes(guid):
 
     Parameters
     ----------
-    guid : GUID
+    guid : System.Guid
+        Object identifier.
 
     Returns
     -------
-    dict
+    dict[str, Any]
+
     """
     o = find_object(guid)
     u = o.Attributes.UserDictionary
@@ -274,10 +330,20 @@ def set_object_attributes(guid, attr):
 
     Parameters
     ----------
-    guid : GUID
-        Identifier of a Rhino object.
-    attr : dict
+    guid : System.Guid
+        Object identifier.
+    attr : dict[str, Any]
         A dictionary of attributes.
+
+    Returns
+    -------
+    None
+
+    Raises
+    ------
+    Exception
+        If the operation fails.
+
     """
     o = find_object(guid)
     u = o.Attributes.UserDictionary
@@ -285,7 +351,11 @@ def set_object_attributes(guid, attr):
         try:
             u.Set(name, value)
         except Exception:
-            print("The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(name, value))
+            print(
+                "The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(
+                    name, value
+                )
+            )
 
 
 def get_object_attributes_from_name(guids, prefix=None):
@@ -293,7 +363,8 @@ def get_object_attributes_from_name(guids, prefix=None):
 
     Parameters
     ----------
-    guids : list of GUID
+    guids : list[System.Guid]
+        Object identifiers.
     prefix : str, optional
         A prefix that should be removed before the name is JSON parsable.
         For example, in Rhino 6 and above, names can't start with curly braces ("{").
@@ -302,8 +373,9 @@ def get_object_attributes_from_name(guids, prefix=None):
 
     Results
     -------
-    list of dict
+    list[dict[str, Any]]
         The attribute dicts of the objects.
+
     """
     load = json.loads
     attrs = []
@@ -324,28 +396,30 @@ def select_object(message="Select an object."):
     Parameters
     ----------
     message : str, optional
-        Default is "Select an object.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected object.
+
     """
     return rs.GetObject(message)
 
 
-def select_objects(message='Select multiple objects.'):
+def select_objects(message="Select multiple objects."):
     """Select multiple objects in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select objects.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected objects.
+
     """
     guids = []
     temp = rs.GetObjects(message)
@@ -359,34 +433,36 @@ def select_objects(message='Select multiple objects.'):
 # ==============================================================================
 
 
-def select_point(message='Select one point.'):
+def select_point(message="Select one point."):
     """Select one point in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an point.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected point.
+
     """
     return rs.GetObject(message, preselect=True, select=True, filter=rs.filter.point)
 
 
-def select_points(message='Select multiple points.'):
+def select_points(message="Select multiple points."):
     """Select multiple points in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select points.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected points.
+
     """
     guids = []
     temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.point)
@@ -396,6 +472,19 @@ def select_points(message='Select multiple points.'):
 
 
 def get_points(layer=None):
+    """Get all points.
+
+    Parameters
+    ----------
+    layer : str, optional
+        Name of a layer containing the points.
+
+    Returns
+    -------
+    list[System.Guid]
+        The identifiers of the points.
+
+    """
     if layer:
         rs.EnableRedraw(False)
         # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
@@ -415,12 +504,13 @@ def get_point_coordinates(guids):
 
     Parameters
     ----------
-    guids : list of GUID
+    guids : list[System.Guid]
 
     Returns
     -------
-    list of point
+    list[[float, float, float]]
         The location coordinates of the points.
+
     """
     points = []
     for guid in guids:
@@ -436,6 +526,20 @@ def get_point_coordinates(guids):
 
 
 def is_curve_line(guid):
+    """Verify that a curve is a line.
+
+    Parameters
+    ----------
+    guid : System.Guid
+        The identifier of the curve.
+
+    Returns
+    -------
+    bool
+        True if the curve is a line.
+        False otherwise.
+
+    """
     return rs.IsCurve(guid) and rs.IsLine(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) == 2
 
 
@@ -447,34 +551,36 @@ def is_curve_polygon(guid):
     return rs.IsCurve(guid) and rs.IsCurveClosed(guid) and rs.CurveDegree(guid) == 1 and len(rs.CurvePoints(guid)) > 2
 
 
-def select_curve(message='Select one curve.'):
+def select_curve(message="Select one curve."):
     """Select one curve in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an line.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected curve.
+
     """
     return rs.GetObject(message, preselect=True, select=True, filter=rs.filter.curve)
 
 
-def select_curves(message='Select multiple curves.'):
+def select_curves(message="Select multiple curves."):
     """Select multiple curves in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an line.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected curves.
+
     """
     guids = []
     temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
@@ -483,18 +589,19 @@ def select_curves(message='Select multiple curves.'):
     return guids
 
 
-def select_line(message='Select line.'):
+def select_line(message="Select line."):
     """Select one line in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an line.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected line.
+
     """
     guid = rs.GetObject(message, preselect=True, select=True, filter=rs.filter.curve)
     if is_curve_line(guid):
@@ -502,18 +609,19 @@ def select_line(message='Select line.'):
     return None
 
 
-def select_lines(message='Select multiple lines.'):
+def select_lines(message="Select multiple lines."):
     """Select multiple lines in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select lines.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected lines.
+
     """
     guids = []
     temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
@@ -524,18 +632,21 @@ def select_lines(message='Select multiple lines.'):
     return guids
 
 
-def select_polyline(message='Select one polyline (curve with degree = 1, and multiple segments).'):
+def select_polyline(
+    message="Select one polyline (curve with degree = 1, and multiple segments).",
+):
     """Select one polyline in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an polyline.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected polyline.
+
     """
     guid = rs.GetObject(message, preselect=True, select=True, filter=rs.filter.curve)
     if is_curve_polyline(guid):
@@ -543,18 +654,21 @@ def select_polyline(message='Select one polyline (curve with degree = 1, and mul
     return None
 
 
-def select_polylines(message='Select multiple polylines (curves with degree = 1, and multiple segments).'):
+def select_polylines(
+    message="Select multiple polylines (curves with degree = 1, and multiple segments).",
+):
     """Select multiple polylines in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select polylines.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected polylines.
+
     """
     guids = []
     temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
@@ -565,18 +679,19 @@ def select_polylines(message='Select multiple polylines (curves with degree = 1,
     return guids
 
 
-def select_polygon(message='Select one polygon (closed curve with degree = 1)'):
+def select_polygon(message="Select one polygon (closed curve with degree = 1)"):
     """Select one polygon in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an polygon.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected polygon.
+
     """
     guid = rs.GetObject(message, preselect=True, select=True, filter=rs.filter.curve)
     if is_curve_polygon(guid):
@@ -584,18 +699,19 @@ def select_polygon(message='Select one polygon (closed curve with degree = 1)'):
     return None
 
 
-def select_polygons(message='Select multiple polygons (closed curves with degree = 1)'):
+def select_polygons(message="Select multiple polygons (closed curves with degree = 1)"):
     """Select multiple polygons in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select polygons.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected polygons.
+
     """
     guids = []
     temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
@@ -607,6 +723,19 @@ def select_polygons(message='Select multiple polygons (closed curves with degree
 
 
 def get_curves(layer=None):
+    """Get all curves.
+
+    Parameters
+    ----------
+    layer : str, optional
+        Name of a layer containing the curves.
+
+    Returns
+    -------
+    list[System.Guid]
+        The identifiers of the curves.
+
+    """
     if layer:
         rs.EnableRedraw(False)
         # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
@@ -622,6 +751,19 @@ def get_curves(layer=None):
 
 
 def get_lines(layer=None):
+    """Get all lines.
+
+    Parameters
+    ----------
+    layer : str, optional
+        Name of a layer containing the lines.
+
+    Returns
+    -------
+    list[System.Guid]
+        The identifiers of the lines.
+
+    """
     if layer:
         rs.EnableRedraw(False)
         # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
@@ -639,6 +781,19 @@ def get_lines(layer=None):
 
 
 def get_polylines(layer=None):
+    """Get all polylines.
+
+    Parameters
+    ----------
+    layer : str, optional
+        Name of a layer containing the polylines.
+
+    Returns
+    -------
+    list[System.Guid]
+        The identifiers of the polylines.
+
+    """
     if layer:
         rs.EnableRedraw(False)
         # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
@@ -656,6 +811,19 @@ def get_polylines(layer=None):
 
 
 def get_polygons(layer=None):
+    """Get all polygons.
+
+    Parameters
+    ----------
+    layer : str, optional
+        Name of a layer containing the polygons.
+
+    Returns
+    -------
+    list[System.Guid]
+        The identifiers of the polygons.
+
+    """
     if layer:
         rs.EnableRedraw(False)
         # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
@@ -672,11 +840,20 @@ def get_polygons(layer=None):
     return guids
 
 
-def get_curve_coordinates():
-    pass
-
-
 def get_line_coordinates(guids):
+    """Get the start and end point coordinates of line curves.
+
+    Parameters
+    ----------
+    guids : list[System.Guid]
+        Line curve identifiers.
+
+    Returns
+    -------
+    list[tuple[[float, float, float], [float, float, float]]]
+        A start and end point per line.
+
+    """
     if isinstance(guids, System.Guid):
         sp = map(float, rs.CurveStartPoint(guids))
         ep = map(float, rs.CurveEndPoint(guids))
@@ -689,11 +866,20 @@ def get_line_coordinates(guids):
     return lines
 
 
-def get_polycurve_coordinates():
-    pass
-
-
 def get_polyline_coordinates(guids):
+    """Get the point coordinates of polylines.
+
+    Parameters
+    ----------
+    guids : list[System.Guid]
+        Polyline curve identifiers.
+
+    Returns
+    -------
+    list[list[[float, float, float]]]
+        A list of point coordinates per polyline.
+
+    """
     if isinstance(guids, System.Guid):
         points = rs.PolylineVertices(guids)
         coords = []
@@ -711,6 +897,19 @@ def get_polyline_coordinates(guids):
 
 
 def get_polygon_coordinates(guids):
+    """Get the point coordinates of polygons.
+
+    Parameters
+    ----------
+    guids : list[System.Guid]
+        Polygon curve identifiers.
+
+    Returns
+    -------
+    list[list[[float, float, float]]]
+        A list of point coordinates per polygon.
+
+    """
     if isinstance(guids, System.Guid):
         points = rs.CurvePoints(guids)
         coords = []
@@ -733,41 +932,50 @@ def get_polygon_coordinates(guids):
 # ==============================================================================
 
 
-def select_surface(message='Select one surface.'):
+def select_surface(message="Select one surface."):
     """Select one surface in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an surface.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected surface.
+
     """
     return rs.GetObject(
-        message, preselect=True, select=True,
-        filter=rs.filter.surface | rs.filter.polysurface)
+        message,
+        preselect=True,
+        select=True,
+        filter=rs.filter.surface | rs.filter.polysurface,
+    )
 
 
-def select_surfaces(message='Select multiple surfaces.'):
+def select_surfaces(message="Select multiple surfaces."):
     """Select multiple surfaces in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select surfaces.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected surfaces.
+
     """
     guids = []
     temp = rs.GetObjects(
-        message, preselect=True, select=True, group=False,
-        filter=rs.filter.surface | rs.filter.polysurface)
+        message,
+        preselect=True,
+        select=True,
+        group=False,
+        filter=rs.filter.surface | rs.filter.polysurface,
+    )
     if temp:
         guids = temp
     return guids
@@ -778,37 +986,36 @@ def select_surfaces(message='Select multiple surfaces.'):
 # ==============================================================================
 
 
-def select_mesh(message='Select one mesh.'):
+def select_mesh(message="Select one mesh."):
     """Select one mesh in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select an mesh.".
+        Instruction for the user.
 
     Returns
     -------
-    GUID
+    System.Guid
         The identifer of the selected mesh.
+
     """
-    return rs.GetObject(
-        message, preselect=True, select=True,
-        filter=rs.filter.mesh
-    )
+    return rs.GetObject(message, preselect=True, select=True, filter=rs.filter.mesh)
 
 
-def select_meshes(message='Select multiple meshes.'):
+def select_meshes(message="Select multiple meshes."):
     """Select multiple meshes in the Rhino view.
 
     Parameters
     ----------
     message : str, optional
-        Default is "Select meshs.".
+        Instruction for the user.
 
     Returns
     -------
-    list of GUID
+    list[System.Guid]
         The identifers of the selected meshs.
+
     """
     guids = []
     temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.mesh)
@@ -878,8 +1085,9 @@ def get_mesh_vertex_index(guid):
     class CustomGetObject(Rhino.Input.Custom.GetObject):
         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
             return guid == rhino_object.Id
+
     go = CustomGetObject()
-    go.SetCommandPrompt('Select one vertex of the mesh.')
+    go.SetCommandPrompt("Select one vertex of the mesh.")
     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshVertex
     go.AcceptNothing(True)
     if go.Get() != Rhino.Input.GetResult.Object:
@@ -900,8 +1108,9 @@ def get_mesh_face_index(guid):
     class CustomGetObject(Rhino.Input.Custom.GetObject):
         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
             return guid == rhino_object.Id
+
     go = CustomGetObject()
-    go.SetCommandPrompt('Select one face of the mesh.')
+    go.SetCommandPrompt("Select one face of the mesh.")
     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshFace
     go.AcceptNothing(True)
     if go.Get() != Rhino.Input.GetResult.Object:
@@ -918,8 +1127,9 @@ def get_mesh_edge_index(guid):
     class CustomGetObject(Rhino.Input.Custom.GetObject):
         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
             return guid == rhino_object.Id
+
     go = CustomGetObject()
-    go.SetCommandPrompt('Select an edge of the mesh.')
+    go.SetCommandPrompt("Select an edge of the mesh.")
     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshEdge
     go.AcceptNothing(True)
     if go.Get() != Rhino.Input.GetResult.Object:
@@ -933,7 +1143,7 @@ def get_mesh_edge_index(guid):
 
 
 def get_mesh_vertex_indices(guid):
-    tvindices = rs.GetMeshVertices(guid, 'Select mesh vertices.')
+    tvindices = rs.GetMeshVertices(guid, "Select mesh vertices.")
     if not tvindices:
         return
     mobj = sc.doc.Objects.Find(guid)
@@ -946,7 +1156,7 @@ def get_mesh_vertex_indices(guid):
 
 
 def get_mesh_face_indices(guid):
-    return rs.GetMeshFaces(guid, 'Select mesh faces.')
+    return rs.GetMeshFaces(guid, "Select mesh faces.")
 
 
 def get_mesh_vertex_face_indices(guid):

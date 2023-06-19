@@ -5,13 +5,14 @@ rpc
 
 .. currentmodule:: compas.rpc
 
+.. rst-class:: lead
+
 COMPAS runs in many different environments, but in some environments the availablity of libraries is limited.
 For example, when running COMPAS in an IronPython-based environment like Rhino/Grasshopper,
-plenty of CPython libraries such as ``numpy`` and ``scipy`` are not available.
-
+plenty of CPython libraries such as `numpy` and `scipy` are not available.
 To workaround this limitation, COMPAS provides a mechanisms to access the
 functionality of a CPython environment seemlessly from any other Python environment
-through a ``Remote Procedure Call`` or RPC.
+through a "Remote Procedure Call" or RPC.
 
 
 Classes
@@ -24,6 +25,7 @@ Classes
     Dispatcher
     Proxy
     Server
+    XFunc
 
 
 Exceptions
@@ -39,19 +41,11 @@ Exceptions
 """
 from __future__ import absolute_import
 
-from .errors import (
-    RPCClientError,
-    RPCServerError
-)
+from .errors import RPCClientError, RPCServerError
 from .proxy import Proxy
 from .server import Server
 from .dispatcher import Dispatcher
+from .xfunc import XFunc
 
 
-__all__ = [
-    'RPCClientError',
-    'RPCServerError',
-    'Proxy',
-    'Server',
-    'Dispatcher'
-]
+__all__ = ["RPCClientError", "RPCServerError", "Proxy", "Server", "Dispatcher", "XFunc"]

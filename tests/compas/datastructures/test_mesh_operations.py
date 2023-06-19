@@ -12,12 +12,9 @@ def mesh_0():
         [1.0, 2.0, 0.0],
         [0.0, 1.0, 0.0],
         [2.0, 1.0, 0.0],
-        [0.0, 0.0, 0.0]
+        [0.0, 0.0, 0.0],
     ]
-    faces = [
-        [0, 1, 2],
-        [0, 3, 1]
-    ]
+    faces = [[0, 1, 2], [0, 3, 1]]
 
     return Mesh.from_vertices_and_faces(vertices, faces)
 
@@ -32,22 +29,19 @@ def mesh_quads():
         [2.0, 0.0, 0.0],
         [2.0, 1.0, 0.0],
     ]
-    faces = [
-        [0, 1, 2, 3],
-        [1, 4, 5, 2]
-    ]
+    faces = [[0, 1, 2, 3], [1, 4, 5, 2]]
 
     return Mesh.from_vertices_and_faces(vertices, faces)
 
 
 def test_insert_vertex_on_edge(mesh_0):
-    mesh_insert_vertex_on_edge(mesh_0, 0, 1)
+    mesh_insert_vertex_on_edge(mesh_0, (0, 1))
     assert len(mesh_0.face_vertices(0)) == 4
     assert len(mesh_0.face_vertices(1)) == 4
     assert mesh_0.face_vertex_descendant(0, 0) == 5
     assert mesh_0.face_vertex_descendant(1, 1) == 5
 
-    mesh_insert_vertex_on_edge(mesh_0, 0, 2, 4)
+    mesh_insert_vertex_on_edge(mesh_0, (0, 2), 4)
     assert len(mesh_0.face_vertices(0)) == 5
     assert mesh_0.face_vertex_descendant(0, 2) == 4
 

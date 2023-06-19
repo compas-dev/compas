@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
+
 # import io
 
 # import compas
@@ -23,9 +24,6 @@ except ImportError:
 #         raise
 
 
-__all__ = ['download_file_from_remote']
-
-
 def download_file_from_remote(source, target, overwrite=True):
     """Download a file from a remote source and save it to a local destination.
 
@@ -35,6 +33,8 @@ def download_file_from_remote(source, target, overwrite=True):
         The url of the source file.
     target : str
         The path of the local destination.
+    overwrite : bool, optional
+        If True, overwrite `target` if it already exists.
 
     Examples
     --------
@@ -56,10 +56,10 @@ def download_file_from_remote(source, target, overwrite=True):
         os.makedirs(parent)
 
     if not os.path.isdir(parent):
-        raise Exception('The target path is not a valid file path: {}'.format(target))
+        raise Exception("The target path is not a valid file path: {}".format(target))
 
     if not os.access(parent, os.W_OK):
-        raise Exception('The target path is not writable: {}'.format(target))
+        raise Exception("The target path is not writable: {}".format(target))
 
     if not os.path.exists(target):
         urlretrieve(source, target)

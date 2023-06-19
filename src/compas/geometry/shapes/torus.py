@@ -11,7 +11,7 @@ from compas.geometry import transform_points
 from compas.geometry import Frame
 from compas.geometry import Plane
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
 
 
 class Torus(Shape):
@@ -19,7 +19,7 @@ class Torus(Shape):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or tuple of point and normal
+    plane : [point, normal] | :class:`~compas.geometry.Plane`
         The plane of the torus.
     radius_axis: float
         The radius of the axis.
@@ -28,17 +28,17 @@ class Torus(Shape):
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane of the torus.
-    radius_axis: float
+    plane : :class:`~compas.geometry.Plane`
+        The torus' plane.
+    radius_axis : float
         The radius of the axis.
-    radius_pipe: float
+    radius_pipe : float
         The radius of the pipe.
-    center (read-only): :class:`compas.geometry.Point`
-        The center of the torus.
-    area (read-only): float
+    center : :class:`~compas.geometry.Point`, read-only
+        The centre of the torus.
+    area : float, read-only
         The surface area of the torus.
-    volume (read-only): float
+    volume : float, read-only
         The volume of the torus.
 
     Examples
@@ -47,22 +47,26 @@ class Torus(Shape):
     >>> from compas.geometry import Torus
     >>> torus = Torus(Plane.worldXY(), 5., 2.)
 
+    >>> from compas.geometry import Plane
+    >>> from compas.geometry import Torus
+    >>> torus = Torus(Plane.worldXY(), 5, 2)
+    >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
+    >>> sdict == torus.data
+    True
+
     """
 
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'plane': Plane.DATASCHEMA.fget(None),
-            'radius_axis': schema.And(float, lambda x: x > 0),
-            'radius_pipe': schema.And(float, lambda x: x > 0)
-        })
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "plane": Plane.JSONSCHEMA,
+            "radius_axis": {"type": "number", "exclusiveMinimum": 0},
+            "radius_pipe": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "required": ["plane", "radius_axis", "radius_pipe"],
+    }
 
-    @property
-    def JSONSCHEMANAME(self):
-        return 'torus'
-
-    __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
+    __slots__ = ["_plane", "_radius_axis", "_radius_pipe"]
 
     def __init__(self, plane, radius_axis, radius_pipe, **kwargs):
         super(Torus, self).__init__(**kwargs)
@@ -73,38 +77,55 @@ class Torus(Shape):
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def data(self):
-        """Returns the data dictionary that represents the torus.
-
-        Returns
-        -------
-        dict
-            The torus data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Torus
-        >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
-        >>> sdict == torus.data
-        True
-
-        """
-        return {'plane': self.plane.data,
-                'radius_axis': self.radius_axis,
-                'radius_pipe': self.radius_pipe}
+        """dict : Returns the data dictionary that represents the torus."""
+        return {
+            "plane": self.plane,
+            "radius_axis": self.radius_axis,
+            "radius_pipe": self.radius_pipe,
+        }
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.radius_axis = data['radius_axis']
-        self.radius_pipe = data['radius_pipe']
+        self.plane = data["plane"]
+        self.radius_axis = data["radius_axis"]
+        self.radius_pipe = data["radius_pipe"]
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a torus from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Torus`
+            The constructed torus.
+
+        Examples
+        --------
+        >>> from compas.geometry import Torus
+        >>> data = {'plane': Plane.worldXY().data, 'radius_axis': 4., 'radius_pipe': 1.}
+        >>> torus = Torus.from_data(data)
+
+        """
+        torus = cls(data["plane"], data["radius_axis"], data["radius_pipe"])
+        return torus
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def plane(self):
-        """Plane: The torus' plane."""
         return self._plane
 
     @plane.setter
@@ -113,7 +134,6 @@ class Torus(Shape):
 
     @property
     def radius_axis(self):
-        """float: The radius of the axis."""
         return self._radius_axis
 
     @radius_axis.setter
@@ -122,7 +142,6 @@ class Torus(Shape):
 
     @property
     def radius_pipe(self):
-        """float: The radius of the pipe."""
         return self._radius_pipe
 
     @radius_pipe.setter
@@ -135,12 +154,10 @@ class Torus(Shape):
 
     @property
     def area(self):
-        """Float: The surface area of the torus."""
         return (2 * pi * self.radius_pipe) * (2 * pi * self.radius_axis)
 
     @property
     def volume(self):
-        """Float: The volume of the torus."""
         return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
 
     # ==========================================================================
@@ -148,7 +165,7 @@ class Torus(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Torus({0!r}, {1!r}, {2!r})'.format(self.plane, self.radius_axis, self.radius_pipe)
+        return "Torus({0!r}, {1!r}, {2!r})".format(self.plane, self.radius_axis, self.radius_pipe)
 
     def __len__(self):
         return 3
@@ -180,59 +197,38 @@ class Torus(Shape):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a torus from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        Torus
-            The constructed torus.
-
-        Examples
-        --------
-        >>> from compas.geometry import Torus
-        >>> data = {'plane': Plane.worldXY().data, 'radius_axis': 4., 'radius_pipe': 1.}
-        >>> torus = Torus.from_data(data)
-
-        """
-        torus = cls(Plane.from_data(data['plane']), data['radius_axis'], data['radius_pipe'])
-        return torus
-
     # ==========================================================================
     # methods
     # ==========================================================================
 
-    def to_vertices_and_faces(self, u=10, v=10):
+    def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
         """Returns a list of vertices and faces
 
         Parameters
         ----------
         u : int, optional
             Number of faces in the "u" direction.
-            Default is ``10``.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is ``10``.
+        triangulated: bool, optional
+            If True, triangulate the faces.
 
         Returns
         -------
-        (vertices, faces)
-            A list of vertex locations and a list of faces,
+        list[list[float]]
+            A list of vertex locations.
+        list[list[int]]
+            And a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
         """
         if u < 3:
-            raise ValueError('The value for u should be u > 3.')
+            raise ValueError("The value for u should be u > 3.")
         if v < 3:
-            raise ValueError('The value for v should be v > 3.')
+            raise ValueError("The value for v should be v > 3.")
 
-        theta = pi*2 / u
-        phi = pi*2 / v
+        theta = pi * 2 / u
+        phi = pi * 2 / v
         vertices = []
         for i in range(u):
             for j in range(v):
@@ -256,6 +252,17 @@ class Torus(Shape):
                 c = ii * v + jj
                 d = i * v + jj
                 faces.append([a, b, c, d])
+
+        if triangulated:
+            triangles = []
+            for face in faces:
+                if len(face) == 4:
+                    triangles.append(face[0:3])
+                    triangles.append([face[0], face[2], face[3]])
+                else:
+                    triangles.append(face)
+            faces = triangles
+
         return vertices, faces
 
     def transform(self, transformation):
@@ -263,8 +270,12 @@ class Torus(Shape):
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation : :class:`~compas.geometry.Transformation`
             The transformation used to transform the Torus.
+
+        Returns
+        -------
+        None
 
         Examples
         --------

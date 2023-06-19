@@ -2,15 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 from compas.geometry import oriented_bounding_box_numpy
 from compas.geometry import oriented_bounding_box_xy_numpy
-
-
-__all__ = [
-    'mesh_oriented_bounding_box_numpy',
-    'mesh_oriented_bounding_box_xy_numpy',
-]
 
 
 def mesh_oriented_bounding_box_numpy(mesh):
@@ -18,12 +11,12 @@ def mesh_oriented_bounding_box_numpy(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    list
+    list[list[float]]
         The bounding box of the mesh as a list of corner vertex coordinates.
 
     Examples
@@ -35,7 +28,7 @@ def mesh_oriented_bounding_box_numpy(mesh):
     8
 
     """
-    xyz = mesh.vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes("xyz")
     return oriented_bounding_box_numpy(xyz)
 
 
@@ -44,12 +37,12 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    box_xy
+    list[list[float]]
         The bounding box.
 
     Examples
@@ -60,5 +53,5 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
     [[10.0, 0.0], [0.0, 0.0], [0.0, 10.0], [10.0, 10.0]]
 
     """
-    xyz = mesh.vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes("xyz")
     return oriented_bounding_box_xy_numpy(xyz)

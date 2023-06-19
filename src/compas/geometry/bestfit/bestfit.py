@@ -7,21 +7,20 @@ from compas.geometry import normalize_vector
 from compas.geometry import centroid_points
 
 
-__all__ = ['bestfit_plane']
-
-
 def bestfit_plane(points):
     """Fit a plane to a list of (more than three) points.
 
     Parameters
     ----------
-    points : list of list
+    points : sequence[point]
         A list of points represented by their XYZ coordinates.
 
     Returns
     -------
-    plane : tuple
-        Base point and normal vector (normalized).
+    [float, float, float]
+        Base point.
+    [float, float, float]
+        Normal vector (normalized).
 
     Notes
     -----
@@ -40,11 +39,12 @@ def bestfit_plane(points):
     Examples
     --------
     >>>
+
     """
     centroid = centroid_points(points)
 
-    xx, xy, xz = 0., 0., 0.
-    yy, yz, zz = 0., 0., 0.
+    xx, xy, xz = 0.0, 0.0, 0.0
+    yy, yz, zz = 0.0, 0.0, 0.0
 
     for point in points:
         rx, ry, rz = subtract_vectors(point, centroid)
@@ -64,14 +64,14 @@ def bestfit_plane(points):
     if det_max == det_x:
         a = (xz * yz - xy * zz) / det_x
         b = (xy * yz - xz * yy) / det_x
-        normal = (1., a, b)
+        normal = (1.0, a, b)
     elif det_max == det_y:
         a = (yz * xz - xy * zz) / det_y
         b = (xy * xz - yz * xx) / det_y
-        normal = (a, 1., b)
+        normal = (a, 1.0, b)
     else:
         a = (yz * xy - xz * yy) / det_z
         b = (xz * xy - yz * xx) / det_z
-        normal = (a, b, 1.)
+        normal = (a, b, 1.0)
 
     return centroid, normalize_vector(normal)

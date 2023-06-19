@@ -14,11 +14,11 @@ from System.Drawing import Size
 from System.Drawing import Point
 from System.Drawing import Color
 
-clr.AddReference("System.Windows.Forms.DataVisualization")
-from System.Windows.Forms.DataVisualization import Charting  # noqa: E402
-
-
-__all__ = ['ChartForm']
+try:
+    clr.AddReference("System.Windows.Forms.DataVisualization")
+    from System.Windows.Forms.DataVisualization import Charting  # noqa: E402
+except Exception:
+    pass
 
 
 class Series(object):
@@ -30,7 +30,7 @@ class ChartForm(BaseForm):
 
     Parameters
     ----------
-    series : list of dict
+    series : list[dict]
         A list of dictionaries with each dictionary defining the attributes of a series.
         The following attributes are supported:
 
@@ -41,22 +41,25 @@ class ChartForm(BaseForm):
         * linetype (optional): The visual style of the graph line.
           Should be one of ``{'solid', 'dotted', 'dashed'}``.
 
-    xlimits : 2-tuple
+    xlimits : tuple[float, float]
         Minimum and maximum values on the X-axis.
     xstep : int
         Size of the steps along the X-axis.
-    ylimits : 2-tuple, optional
+    ylimits : tuple[float, float], optional
         Minimum and maximum values on the Y-axis.
-        Default is ``None``, in which case the limits will be computed from the
+        Default is None, in which case the limits will be computed from the
         min/max values of the data in the series.
     ystep : int, optional
         Size of the steps along the Y-axis.
         Default is ``int((ymax - ymin) / 10.)```.
-
-    Other Parameters
-    ----------------
-    bgcolor : str, tuple, System.Drawing.Color
+    chartsize : tuple[int, int], optional
+        The size of the form in pixels.
+    padding : tuple[int, int, int, int], optional
+        Padding of the area inside the form.
+    bgcolor : tuple[int, int, int], optional
         The background color of the chart area.
+    title : str, optional
+        Title of the form.
 
     Examples
     --------
@@ -96,12 +99,19 @@ class ChartForm(BaseForm):
 
     """
 
-    def __init__(self, series,
-                 xlimits, xstep,
-                 ylimits=None, ystep=None,
-                 chartsize=(800, 600), padding=(20, 20, 20, 20),
-                 bgcolor=None,
-                 title='Chart', **kwargs):
+    def __init__(
+        self,
+        series,
+        xlimits,
+        xstep,
+        ylimits=None,
+        ystep=None,
+        chartsize=(800, 600),
+        padding=(20, 20, 20, 20),
+        bgcolor=None,
+        title="Chart",
+        **kwargs
+    ):
 
         self._bgcolor = None
 
@@ -120,13 +130,13 @@ class ChartForm(BaseForm):
         self.ystep = None
 
         for attr in series:
-            keys = sorted(attr['data'].keys(), key=int)
-            values = [attr['data'][key] for key in keys]
+            keys = sorted(attr["data"].keys(), key=int)
+            values = [attr["data"][key] for key in keys]
             y = map(float, values)
             self.ymin = min(min(y), self.ymin)
             self.ymax = max(max(y), self.ymax)
 
-        self.ystep = int((self.ymax - self.ymin) / 10.)
+        self.ystep = int((self.ymax - self.ymin) / 10.0)
 
         super(ChartForm, self).__init__(title)
 
@@ -143,11 +153,18 @@ class ChartForm(BaseForm):
         elif isinstance(colour, basestring):
             raise NotImplementedError
         elif isinstance(colour, tuple):
-            self._bgcolor = Color.FromArgb(* colour)
+            self._bgcolor = Color.FromArgb(*colour)
         else:
             raise NotImplementedError
 
     def init(self):
+        """Initialize the form.
+
+        Returns
+        -------
+        None
+
+        """
         w = self.chartwidth + self.padding[1] + self.padding[3]
         h = self.chartheight + self.padding[0] + self.padding[2]
         self.ClientSize = Size(w, h)
@@ -156,8 +173,8 @@ class ChartForm(BaseForm):
         chart = charting.Chart()
         chart.Location = Point(self.padding[3], self.padding[0])
         chart.Size = Size(self.chartwidth, self.chartheight)
-        chart.ChartAreas.Add('series')
-        area = chart.ChartAreas['series']
+        chart.ChartAreas.Add("series")
+        area = chart.ChartAreas["series"]
 
         x = area.AxisX
         x.Minimum = self.xmin
@@ -174,17 +191,17 @@ class ChartForm(BaseForm):
         y.MajorGrid.LineDashStyle = charting.ChartDashStyle.Dot
 
         for attr in self.series:
-            name = attr['name']
-            color = attr['color']
-            linewidth = attr['linewidth']
+            name = attr["name"]
+            color = attr["color"]
+            linewidth = attr["linewidth"]
             chart.Series.Add(name)
             series = chart.Series[name]
             series.ChartType = charting.SeriesChartType.Line
             series.Color = Color.FromArgb(*color)
             series.BorderWidth = linewidth
-            keys = sorted(attr['data'].keys(), key=int)
+            keys = sorted(attr["data"].keys(), key=int)
             for key in keys:
-                value = attr['data'][key]
+                value = attr["data"][key]
                 series.Points.AddXY(int(key), value)
 
         area.BackColor = self.bgcolor

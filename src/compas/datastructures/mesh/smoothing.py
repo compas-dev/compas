@@ -6,21 +6,14 @@ from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 
 
-__all__ = [
-    'mesh_smooth_centroid',
-    'mesh_smooth_centerofmass',
-    'mesh_smooth_area',
-]
-
-
 def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a mesh by moving every free vertex to the centroid of its neighbors.
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional
+    fixed : list[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -28,22 +21,22 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional
+    callback_args : list[Any], optional
         A list of arguments to be passed to the callback.
+
+    Returns
+    -------
+    None
 
     Raises
     ------
     Exception
         If a callback is provided, but it is not callable.
 
-    Examples
-    --------
-    >>>
-
     """
     if callback:
         if not callable(callback):
-            raise Exception('Callback is not callable.')
+            raise Exception("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -59,9 +52,9 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
             cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key)])
 
-            attr['x'] += damping * (cx - x)
-            attr['y'] += damping * (cy - y)
-            attr['z'] += damping * (cz - z)
+            attr["x"] += damping * (cx - x)
+            attr["y"] += damping * (cy - y)
+            attr["z"] += damping * (cz - z)
 
         if callback:
             callback(k, callback_args)
@@ -72,9 +65,9 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional
+    fixed : list[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -82,22 +75,22 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional
+    callback_args : list[Any], optional
         A list of arguments to be passed to the callback.
+
+    Returns
+    -------
+    None
 
     Raises
     ------
     Exception
         If a callback is provided, but it is not callable.
 
-    Examples
-    --------
-    >>>
-
     """
     if callback:
         if not callable(callback):
-            raise Exception('Callback is not callable.')
+            raise Exception("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -113,9 +106,9 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
             cx, cy, cz = centroid_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key, ordered=True)])
 
-            attr['x'] += damping * (cx - x)
-            attr['y'] += damping * (cy - y)
-            attr['z'] += damping * (cz - z)
+            attr["x"] += damping * (cx - x)
+            attr["y"] += damping * (cy - y)
+            attr["z"] += damping * (cz - z)
 
         if callback:
             callback(k, callback_args)
@@ -126,9 +119,9 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional
+    fixed : list[int], optional
         The fixed vertices of the mesh.
     kmax : int, optional
         The maximum number of iterations.
@@ -136,22 +129,22 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
         The damping factor.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional
+    callback_args : list[Any], optional
         A list of arguments to be passed to the callback.
+
+    Returns
+    -------
+    None
 
     Raises
     ------
     Exception
         If a callback is provided, but it is not callable.
 
-    Examples
-    --------
-    >>>
-
     """
     if callback:
         if not callable(callback):
-            raise Exception('Callback is not callable.')
+            raise Exception("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -186,9 +179,9 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
                 ay = ay / A
                 az = az / A
 
-            attr['x'] += damping * (ax - x)
-            attr['y'] += damping * (ay - y)
-            attr['z'] += damping * (az - z)
+            attr["x"] += damping * (ax - x)
+            attr["y"] += damping * (ay - y)
+            attr["z"] += damping * (az - z)
 
         if callback:
             callback(k, callback_args)

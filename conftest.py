@@ -3,6 +3,8 @@ import compas
 import math
 import numpy
 
+from compas.geometry import allclose
+
 
 def pytest_ignore_collect(path):
     if "rhino" in str(path):
@@ -17,7 +19,7 @@ def pytest_ignore_collect(path):
     if "matlab" in str(path):
         return True
 
-    if str(path).endswith('_cli.py'):
+    if str(path).endswith("_cli.py"):
         return True
 
 
@@ -34,3 +36,8 @@ def add_math(doctest_namespace):
 @pytest.fixture(autouse=True)
 def add_np(doctest_namespace):
     doctest_namespace["np"] = numpy
+
+
+@pytest.fixture(autouse=True)
+def add_allclose(doctest_namespace):
+    doctest_namespace["allclose"] = allclose

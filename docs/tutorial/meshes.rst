@@ -145,15 +145,15 @@ To transparently convert non-contiguous sequences of identifiers to contiguous l
 
 ::
 
-    >>> key_index = mesh.key_index()
+    >>> vertex_index = mesh.vertex_index()
     >>> vertices = list(mesh.vertices())
-    >>> edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-    >>> faces = [[key_index[key] for key in mesh.face_vertices(face)] for face in mesh.faces()]
+    >>> edges = [(vertex_index[u], vertex_index[v]) for u, v in mesh.edges()]
+    >>> faces = [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
 
 The key/index map simply maps vertex identifiers to the corresponding index in the contiguous sequence that is created
 when converting a sequence of identifiers to a list. The ordering of these identifiers can be completely random, but is always consistent. ::
 
-    >>> key_index = {key: index for index, key in enumerate(mesh.vertices())}
+    >>> vertex_index = {vertex: index for index, vertex in enumerate(mesh.vertices())}
 
 
 Topology

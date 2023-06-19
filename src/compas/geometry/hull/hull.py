@@ -8,23 +8,17 @@ from compas.geometry import dot_vectors
 from compas.geometry import cross_vectors_xy
 
 
-__all__ = [
-    'convex_hull',
-    'convex_hull_xy',
-]
-
-
 def convex_hull(points):
     """Construct convex hull for a set of points.
 
     Parameters
     ----------
-    points : list
+    points : sequence[point]
         A sequence of XYZ coordinates.
 
     Returns
     -------
-    list
+    list[[int, int, int]]
         The triangular faces of the convex hull as lists of vertex indices
         referring to the original point coordinates.
 
@@ -46,6 +40,7 @@ def convex_hull(points):
     >>>
 
     """
+
     def _normal_face(face):
         u = subtract_vectors(points[face[1]], points[face[0]])
         v = subtract_vectors(points[face[-1]], points[face[0]])
@@ -54,7 +49,7 @@ def convex_hull(points):
     def _seen(face, p):
         normal = _normal_face(face)
         vec = subtract_vectors(points[p], points[face[0]])
-        return (dot_vectors(normal, vec) >= 0)
+        return dot_vectors(normal, vec) >= 0
 
     def _bdry(faces):
         bdry_fw = set([(face[i - 1], face[i]) for face in faces for i in range(len(face))])
@@ -86,18 +81,19 @@ def convex_hull_xy(points, strict=False):
 
     Parameters
     ----------
-    points : list
+    points : sequence[point]
         XY(Z) coordinates of the points.
 
     Returns
     -------
-    list
+    list[[float, float, 0.0]]
         XY(Z) coordinates of vertices of the convex hull in counter-clockwise order,
         starting from the vertex with the lexicographically smallest coordinates.
 
     Notes
     -----
-    Implements Andrew's monotone chain algorithm [1]_. O(n log n) complexity.
+    Implements Andrew's monotone chain algorithm [1]_.
+    O(n log n) complexity.
 
     References
     ----------
@@ -109,6 +105,7 @@ def convex_hull_xy(points, strict=False):
     >>>
 
     """
+
     def cross(o, a, b):
         u = subtract_vectors(a, o)
         v = subtract_vectors(b, o)

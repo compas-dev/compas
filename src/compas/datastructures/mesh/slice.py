@@ -4,26 +4,23 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 
 
-__all__ = ['mesh_slice_plane']
-
-
 def mesh_slice_plane(mesh, plane):
     """Slice a mesh with a plane and construct the resulting submeshes.
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The original mesh.
-    plane : compas.geometry.Plane
+    plane : :class:`~compas.geometry.Plane`
         The cutting plane.
 
     Returns
     -------
-    None or tuple of :class:`compas.datastructures.Mesh`
+    tuple[:class:`~compas.datastructures.Mesh`, :class:`~compas.datastructures.Mesh`] | None
+        The "positive" and "negative" submeshes.
         If the mesh and plane do not intersect,
         or if the intersection is degenerate (point or line),
-        the function returns ``None``.
-        Otherwise, the "positive" and "negative" submeshes are returned.
+        the function returns None.
 
     Examples
     --------
@@ -36,6 +33,7 @@ def mesh_slice_plane(mesh, plane):
     >>> result = mesh_slice_plane(mesh, plane)
     >>> len(result) == 2
     True
+
     """
     intersection = IntersectionMeshPlane(mesh, plane)
     if not intersection.is_polygon:
@@ -44,7 +42,6 @@ def mesh_slice_plane(mesh, plane):
 
 
 class IntersectionMeshPlane(object):
-
     def __init__(self, mesh, plane):
         self.mesh = mesh
         self.plane = plane
@@ -76,6 +73,10 @@ class IntersectionMeshPlane(object):
         return len(self.intersections) >= 3
 
     @property
+    def is_mesh_closed(self):
+        return self.mesh.is_closed()
+
+    @property
     def positive(self):
         if self.is_none:
             return
@@ -90,14 +91,15 @@ class IntersectionMeshPlane(object):
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
-        mesh.add_face(mesh.vertices_on_boundary())
+        if self.is_mesh_closed:
+            mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
     def is_positive(self, key):
         o = self.plane.point
         n = self.plane.normal
         if key not in self.intersections:
-            a = self.mesh.vertex_attributes(key, 'xyz')
+            a = self.mesh.vertex_attributes(key, "xyz")
             oa = subtract_vectors(a, o)
             similarity = dot_vectors(n, oa)
             if similarity > 0.0:
@@ -119,7 +121,8 @@ class IntersectionMeshPlane(object):
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
-        mesh.add_face(mesh.vertices_on_boundary())
+        if self.is_mesh_closed:
+            mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
     def is_negative(self, key):
@@ -127,24 +130,32 @@ class IntersectionMeshPlane(object):
         n = self.plane.normal
         if key in self.intersections:
             return False
-        a = self.mesh.vertex_attributes(key, 'xyz')
+        a = self.mesh.vertex_attributes(key, "xyz")
         oa = subtract_vectors(a, o)
         similarity = dot_vectors(n, oa)
         return similarity < 0.0
 
     def intersect(self):
         intersections = []
+        vertex_intersections = []
         for u, v in list(self.mesh.edges()):
-            a = self.mesh.vertex_attributes(u, 'xyz')
-            b = self.mesh.vertex_attributes(v, 'xyz')
+            a = self.mesh.vertex_attributes(u, "xyz")
+            b = self.mesh.vertex_attributes(v, "xyz")
             x = intersection_segment_plane((a, b), self.plane)
             if not x:
                 continue
-            L_ax = length_vector(subtract_vectors(x, a))
-            L_ab = length_vector(subtract_vectors(b, a))
-            t = L_ax / L_ab
-            key = self.mesh.split_edge(u, v, t=t, allow_boundary=True)
-            intersections.append(key)
+            if any([i != j for i, j in zip(x, a)]) and any([i != j for i, j in zip(x, b)]):
+                L_ax = length_vector(subtract_vectors(x, a))
+                L_ab = length_vector(subtract_vectors(b, a))
+                t = L_ax / L_ab
+                key = self.mesh.split_edge((u, v), t=t, allow_boundary=True)
+                intersections.append(key)
+            else:
+                if u in vertex_intersections:
+                    intersections.append(u)
+                vertex_intersections.clear()
+                vertex_intersections.append(u)
+                vertex_intersections.append(v)
         self._intersections = intersections
 
     def split(self):
@@ -152,5 +163,8 @@ class IntersectionMeshPlane(object):
             split = [key for key in self.mesh.face_vertices(fkey) if key in self.intersections]
             if len(split) == 2:
                 u, v = split
-                self.mesh.split_face(fkey, u, v)
+                try:
+                    self.mesh.split_face(fkey, u, v)
+                except Exception:
+                    continue
         return self.positive, self.negative

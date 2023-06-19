@@ -14,11 +14,12 @@ import m2r2
 import sphinx_compas_theme
 from sphinx.ext.napoleon.docstring import NumpyDocstring
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "_ext"))
 
 # patches
 
 current_m2r2_setup = m2r2.setup
+
 
 def patched_m2r2_setup(app):
     try:
@@ -27,8 +28,11 @@ def patched_m2r2_setup(app):
         app.add_source_suffix(".md", "markdown")
         app.add_source_parser(m2r2.M2RParser)
     return dict(
-        version=m2r2.__version__, parallel_read_safe=True, parallel_write_safe=True,
+        version=m2r2.__version__,
+        parallel_read_safe=True,
+        parallel_write_safe=True,
     )
+
 
 m2r2.setup = patched_m2r2_setup
 
@@ -38,7 +42,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "1.7.1"
+release = "1.17.5"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -72,11 +76,19 @@ extensions = [
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "m2r2",
-    "nbsphinx",
-    "sphinx.ext.autodoc.typehints"
+    # "nbsphinx",
+    "sphinx.ext.autodoc.typehints",
+    "tabs",
 ]
 
 # autodoc options
+
+autodoc_type_aliases = {}
+
+# this does not work properly yet
+autodoc_typehints = "none"
+autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "documented"
 
 autodoc_mock_imports = [
     "System",
@@ -88,7 +100,7 @@ autodoc_mock_imports = [
     "rhinoscriptsyntax",
     "bpy",
     "bmesh",
-    "mathutils"
+    "mathutils",
 ]
 
 autodoc_default_options = {
@@ -102,7 +114,7 @@ autoclass_content = "class"
 
 
 def skip(app, what, name, obj, would_skip, options):
-    if name.startswith('_'):
+    if name.startswith("_"):
         return True
     return would_skip
 
@@ -124,7 +136,7 @@ autosummary_mock_imports = [
     "rhinoscriptsyntax",
     "bpy",
     "bmesh",
-    "mathutils"
+    "mathutils",
 ]
 
 # graph options
@@ -169,12 +181,20 @@ def parse_class_attributes_section(self, section):
 NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
 
 
+def parse_other_attributes_section(self, section):
+    return self._format_fields("Other Attributes", self._consume_fields())
+
+
+NumpyDocstring._parse_other_attributes_section = parse_other_attributes_section
+
+
 # we now patch the parse method to guarantee that the the above methods are
 # assigned to the _section dict
 def patched_parse(self):
     self._sections["keys"] = self._parse_keys_section
     self._sections["attributes"] = self._parse_attributes_section
     self._sections["class attributes"] = self._parse_class_attributes_section
+    self._sections["other attributes"] = self._parse_other_attributes_section
     self._unpatched_parse()
 
 
@@ -184,102 +204,29 @@ NumpyDocstring._parse = patched_parse
 
 # plot options
 
-# plot_include_source
+plot_include_source = False
+plot_html_show_source_link = False
+plot_html_show_formats = False
+plot_formats = ["png"]
 # plot_pre_code
 # plot_basedir
-# plot_formats
 # plot_rcparams
 # plot_apply_rcparams
 # plot_working_directory
 
-# {% has_class = false -%}
-# {% for option in options -%}
-# {% if option.startswith(":class:") %}
-# {% has_class = true %}
-# {% endif %}
-# {% endfor %}
-
-
 plot_template = """
-{{ source_code }}
-
 {{ only_html }}
-
-   {% if source_link or (html_show_formats and not multi_image) %}
-   (
-   {%- if source_link -%}
-   `Source code <{{ source_link }}>`__
-   {%- endif -%}
-   {%- if html_show_formats and not multi_image -%}
-     {%- for img in images -%}
-       {%- for fmt in img.formats -%}
-         {%- if source_link or not loop.first -%}, {% endif -%}
-         `{{ fmt }} <{{ dest_dir }}/{{ img.basename }}.{{ fmt }}>`__
-       {%- endfor -%}
-     {%- endfor -%}
-   {%- endif -%}
-   )
-   {% endif %}
 
    {% for img in images %}
    {% set has_class = false %}
 
    .. figure:: {{ build_dir }}/{{ img.basename }}.{{ default_fmt }}
-      {% for option in options -%}
-      {%- if option.startswith(":class:") -%}
-      {%- set has_class = true -%}
-      {%- if "img-fluid" not in option -%}
-      {%- set option = option + " img-fluid" -%}
-      {%- endif -%}
-      {%- if "figure-img" not in option -%}
-      {%- set option = option + " figure-img" -%}
-      {%- endif -%}
-      {%- endif -%}
-      {{ option }}
-      {% endfor %}
-      {%- if not has_class -%}
       :class: figure-img img-fluid
-      {%- endif %}
-
-      {% if html_show_formats and multi_image -%}
-        (
-        {%- for fmt in img.formats -%}
-        {%- if not loop.first -%}, {% endif -%}
-        `{{ fmt }} <{{ dest_dir }}/{{ img.basename }}.{{ fmt }}>`__
-        {%- endfor -%}
-        )
-      {%- endif -%}
 
       {{ caption }}
-   {% endfor %}
-
-{{ only_latex }}
-
-   {% for img in images %}
-   {% if "pdf" in img.formats -%}
-   .. figure:: {{ build_dir }}/{{ img.basename }}.pdf
-      {% for option in options -%}
-      {{ option }}
-      {% endfor %}
-
-      {{ caption }}
-   {% endif -%}
-   {% endfor %}
-
-{{ only_texinfo }}
-
-   {% for img in images %}
-   .. image:: {{ build_dir }}/{{ img.basename }}.png
-      {% for option in options -%}
-      {{ option }}
-      {% endfor %}
 
    {% endfor %}
-
 """
-
-plot_html_show_source_link = False
-plot_html_show_formats = False
 
 # intersphinx options
 
@@ -290,27 +237,28 @@ intersphinx_mapping = {
 
 # linkcode
 
+
 def linkcode_resolve(domain, info):
-    if domain != 'py':
+    if domain != "py":
         return None
-    if not info['module']:
+    if not info["module"]:
         return None
-    if not info['fullname']:
-        return None
-
-    package = info['module'].split('.')[0]
-    if not package.startswith('compas'):
+    if not info["fullname"]:
         return None
 
-    module = importlib.import_module(info['module'])
-    parts = info['fullname'].split('.')
+    package = info["module"].split(".")[0]
+    if not package.startswith("compas"):
+        return None
+
+    module = importlib.import_module(info["module"])
+    parts = info["fullname"].split(".")
 
     if len(parts) == 1:
-        obj = getattr(module, info['fullname'])
+        obj = getattr(module, info["fullname"])
         mod = inspect.getmodule(obj)
         if not mod:
             return None
-        filename = mod.__name__.replace('.', '/')
+        filename = mod.__name__.replace(".", "/")
         lineno = inspect.getsourcelines(obj)[1]
     elif len(parts) == 2:
         obj_name, attr_name = parts
@@ -320,7 +268,7 @@ def linkcode_resolve(domain, info):
             mod = inspect.getmodule(attr)
             if not mod:
                 return None
-            filename = mod.__name__.replace('.', '/')
+            filename = mod.__name__.replace(".", "/")
             lineno = inspect.getsourcelines(attr)[1]
         else:
             return None
@@ -329,9 +277,14 @@ def linkcode_resolve(domain, info):
 
     return f"https://github.com/compas-dev/compas/blob/main/src/{filename}.py#L{lineno}"
 
+
 # extlinks
 
-extlinks = {}
+
+extlinks = {
+    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
+    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s"),
+}
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -341,15 +294,15 @@ html_theme_options = {
     "navbar_active": "compas",
     "package_version": release,
     "package_docs": "https://compas.dev/compas/",
-    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
+    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt",
 }
 html_context = {}
-html_static_path = []
+html_static_path = sphinx_compas_theme.get_html_static_path()
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
 html_show_sourcelink = False
 html_permalinks = False
-html_add_permalinks = ""
-html_experimental_html5_writer = True
+html_permalinks_icon = ""
+html_experimental_html5_writer = False
 html_compact_lists = True

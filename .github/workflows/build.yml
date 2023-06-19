@@ -9,22 +9,16 @@ on:
       - main
 
 jobs:
-  build-packages:
+  build:
+    if: "!contains(github.event.pull_request.labels.*.name, 'docs-only')"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - uses: compas-dev/compas-actions.build@v3
         with:
-          python-version: ${{ matrix.python-version }}
-
-      - uses: compas-dev/compas-actions.build@v1.0.0
-        with:
-          test_lint: true
-          test_compas: true
+          python: ${{ matrix.python }}
+          invoke_lint: true

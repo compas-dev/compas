@@ -2,36 +2,38 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Plane
+from ._primitive import Primitive
+from .plane import Plane
 
 
 class Ellipse(Primitive):
-    """A ellipse is defined by a plane and a major.
+    """A ellipse is defined by a plane and a major and minor axis.
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or tuple of point and normal
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
         The plane of the ellipse.
     major : float
         The major of the ellipse.
+    minor : float
+        The minor of the ellipse.
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
+    plane : :class:`~compas.geometry.Plane`
         The plane of the ellipse.
     major : float
-        The major.
+        The major of the ellipse.
     minor : float
-        The minor.
-    center : :class:`compas.geometry.Point`
-        The base point of the plane and center of the ellipse.
-    normal : :class:`compas.geometry.Vector`
-        The normal vector of the plane.
-    circumference : float, read-only
-        The circumference of the ellipse.
+        The minor of the ellipse.
+    normal : :class:`~compas.geometry.Vector`, read-only
+        The normal of the ellipse.
+    center : :class:`~compas.geometry.Point`, read-only
+        The center of the ellipse.
     area : float, read-only
         The area of the ellipse.
+    circumference : float, read-only
+        The circumference of the ellipse.
 
     Examples
     --------
@@ -39,22 +41,20 @@ class Ellipse(Primitive):
     >>> from compas.geometry import Ellipse
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
     >>> ellipse = Ellipse(plane, 2, 1)
+
     """
 
-    @property
-    def DATASCHEMA(self):
-        import schema
-        return schema.Schema({
-            'plane': Plane.DATASCHEMA.fget(None),
-            'major': schema.And(float, lambda x: x > 0),
-            'minor': schema.And(float, lambda x: x > 0),
-        })
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "plane": Plane.JSONSCHEMA,
+            "major": {"type": "number", "exclusiveMinimum": 0},
+            "minor": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "required": ["plane", "major", "minor"],
+    }
 
-    @property
-    def JSONSCHEMANAME(self):
-        return 'ellipse'
-
-    __slots__ = ['_plane', '_major', '_minor']
+    __slots__ = ["_plane", "_major", "_minor"]
 
     def __init__(self, plane, major, minor, **kwargs):
         super(Ellipse, self).__init__(**kwargs)
@@ -65,22 +65,50 @@ class Ellipse(Primitive):
         self.major = major
         self.minor = minor
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def data(self):
         """dict : The data dictionary that represents the ellipse."""
-        return {'plane': self.plane.data,
-                'major': self.major,
-                'minor': self.minor}
+        return {"plane": self.plane, "major": self.major, "minor": self.minor}
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.major = data['major']
-        self.minor = data['minor']
+        self.plane = data["plane"]
+        self.major = data["major"]
+        self.minor = data["minor"]
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a ellipse from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Ellipse`
+            The constructed ellipse.
+
+        Examples
+        --------
+        >>> from compas.geometry import Ellipse
+        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'major': 2.0, 'minor': 1.0}
+        >>> ellipse = Ellipse.from_data(data)
+
+        """
+        return cls(data["plane"], data["minor"], data["minor"])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def plane(self):
-        """:class:`compas.geometry.Plane` : The plane of the ellipse."""
         return self._plane
 
     @plane.setter
@@ -89,7 +117,6 @@ class Ellipse(Primitive):
 
     @property
     def major(self):
-        """float : The major of the ellipse."""
         return self._major
 
     @major.setter
@@ -98,7 +125,6 @@ class Ellipse(Primitive):
 
     @property
     def minor(self):
-        """float : The minor of the ellipse."""
         return self._minor
 
     @minor.setter
@@ -107,12 +133,10 @@ class Ellipse(Primitive):
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` : The normal of the ellipse."""
         return self.plane.normal
 
     @property
     def center(self):
-        """:class:`compas.geometry.Point` : The center of the ellipse."""
         return self.plane.point
 
     @center.setter
@@ -121,12 +145,10 @@ class Ellipse(Primitive):
 
     @property
     def area(self):
-        """float  : The area of the ellipse."""
         raise NotImplementedError
 
     @property
     def circumference(self):
-        """float : The circumference of the ellipse."""
         raise NotImplementedError
 
     # ==========================================================================
@@ -134,7 +156,7 @@ class Ellipse(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Ellipse({0!r}, {1!r}, {2!r})'.format(self.plane, self.major, self.minor)
+        return "Ellipse({0!r}, {1!r}, {2!r})".format(self.plane, self.major, self.minor)
 
     def __len__(self):
         return 3
@@ -166,28 +188,6 @@ class Ellipse(Primitive):
     # constructors
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a ellipse from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Ellipse`
-            The constructed ellipse.
-
-        Examples
-        --------
-        >>> from compas.geometry import Ellipse
-        >>> data = {'plane': {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}, 'major': 2.0, 'minor': 1.0}
-        >>> ellipse = Ellipse.from_data(data)
-        """
-        return cls(Plane.from_data(data['plane']), data['minor'], data['minor'])
-
     # ==========================================================================
     # transformations
     # ==========================================================================
@@ -197,8 +197,12 @@ class Ellipse(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -210,5 +214,6 @@ class Ellipse(Primitive):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> ellipse.transform(T)
+
         """
         self.plane.transform(T)

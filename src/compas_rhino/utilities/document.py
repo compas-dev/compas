@@ -7,11 +7,11 @@ import rhinoscriptsyntax as rs
 
 
 __all__ = [
-    'get_document_basename',
-    'get_document_filename',
-    'get_document_extension',
-    'get_document_filepath',
-    'get_document_dirname'
+    "get_document_basename",
+    "get_document_filename",
+    "get_document_extension",
+    "get_document_filepath",
+    "get_document_dirname",
 ]
 
 
@@ -20,8 +20,9 @@ def get_document_basename():
 
     Returns
     -------
-    str or None
+    str | None
         The name of the document or None if the document is still "Untitled".
+
     """
     return rs.DocumentName()
 
@@ -31,8 +32,9 @@ def get_document_filename():
 
     Returns
     -------
-    str or None
+    str | None
         The name of the document or None if the document is still "Untitled".
+
     """
     basename = get_document_basename()
     if not basename:
@@ -45,8 +47,9 @@ def get_document_extension():
 
     Returns
     -------
-    str or None
+    str | None
         The extension of the document or None if the document is still "Untitled".
+
     """
     basename = get_document_basename()
     if not basename:
@@ -59,8 +62,9 @@ def get_document_filepath():
 
     Returns
     -------
-    str or None
+    str | None
         The path to the document or None if the document is still "Untitled".
+
     """
     return rs.DocumentPath()
 
@@ -70,8 +74,9 @@ def get_document_dirname():
 
     Returns
     -------
-    str or None
+    str | None
         The name of the directory or None if the document is still "Untitled".
+
     """
     filepath = get_document_filepath()
     if not filepath:

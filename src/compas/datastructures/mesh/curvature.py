@@ -7,12 +7,6 @@ from math import pi
 from compas.geometry import angle_points
 
 
-__all__ = [
-    'trimesh_mean_curvature',
-    'trimesh_gaussian_curvature'
-]
-
-
 def trimesh_mean_curvature(mesh):
     pass
 
@@ -22,12 +16,12 @@ def trimesh_gaussian_curvature(mesh):
 
     Parameters
     ----------
-    mesh : compas.oatastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The triangle mesh data structure.
 
     Returns
     -------
-    list of float
+    list[float]
         Per vertex curvature values.
 
     Warnings
@@ -49,7 +43,7 @@ def trimesh_gaussian_curvature(mesh):
 
     """
     pi2 = 2 * pi
-    key_xyz = {key: mesh.vertex_attributes(key, 'xyz') for key in mesh.vertices()}
+    key_xyz = {key: mesh.vertex_attributes(key, "xyz") for key in mesh.vertices()}
     curvature = []
     for key in mesh.vertices():
         angles = []

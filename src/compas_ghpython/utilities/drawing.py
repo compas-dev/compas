@@ -2,52 +2,40 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_rhino.utilities.drawing import _face_to_max_quad
-
-from System.Enum import ToObject
-from System.Array import CreateInstance
-from System.Drawing import Color
-
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
-
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Vector3d
-from Rhino.Geometry import Line
-from Rhino.Geometry import Polyline
 from Rhino.Geometry import Brep
-from Rhino.Geometry import Cylinder
 from Rhino.Geometry import Circle
-from Rhino.Geometry import Plane
-from Rhino.Geometry import PipeCapMode
 from Rhino.Geometry import Curve
-from Rhino.Geometry import Sphere
+from Rhino.Geometry import Cylinder
+from Rhino.Geometry import Line
 from Rhino.Geometry import Mesh
-from Rhino.Geometry import Vector3f
+from Rhino.Geometry import PipeCapMode
+from Rhino.Geometry import Plane
 from Rhino.Geometry import Point2f
+from Rhino.Geometry import Point3d
+from Rhino.Geometry import PolylineCurve
+from Rhino.Geometry import Sphere
+from Rhino.Geometry import Vector3d
+from Rhino.Geometry import Vector3f
+from System.Array import CreateInstance
+from System.Drawing import Color
+from System.Enum import ToObject
+
+from compas.geometry import centroid_points
+from compas.utilities import pairwise
+from compas_rhino.utilities.drawing import _face_to_max_quad
+
+try:
+    from Rhino.Geometry import MeshNgon
+except ImportError:
+    MeshNgon = False
 
 TOL = sc.doc.ModelAbsoluteTolerance
 
 
-__all__ = [
-    'draw_frame',
-    'draw_points',
-    'draw_lines',
-    'draw_geodesics',
-    'draw_polylines',
-    'draw_faces',
-    'draw_cylinders',
-    'draw_pipes',
-    'draw_spheres',
-    'draw_mesh',
-    'draw_network',
-    'draw_circles',
-]
-
-
 def draw_frame(frame):
-    """Draw a frame.
-    """
+    """Draw a frame."""
     pt = Point3d(*iter(frame.point))
     xaxis = Vector3d(*iter(frame.xaxis))
     yaxis = Vector3d(*iter(frame.yaxis))
@@ -64,7 +52,7 @@ def draw_points(points):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Point3d`
+    list[:rhino:`Rhino.Geometry.Point3d`]
 
     Notes
     -----
@@ -77,7 +65,7 @@ def draw_points(points):
     """
     rg_points = []
     for p in iter(points):
-        pos = p['pos']
+        pos = p["pos"]
         rg_points.append(Point3d(*pos))
     return rg_points
 
@@ -92,7 +80,7 @@ def draw_lines(lines):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Line`
+    list[:rhino:`Rhino.Geometry.Line`]
 
     Notes
     -----
@@ -106,8 +94,8 @@ def draw_lines(lines):
     """
     rg_lines = []
     for line in iter(lines):
-        sp = line['start']
-        ep = line['end']
+        sp = line["start"]
+        ep = line["end"]
         rg_lines.append(Line(Point3d(*sp), Point3d(*ep)))
     return rg_lines
 
@@ -122,7 +110,7 @@ def draw_geodesics(geodesics):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Curve`
+    list[:rhino:`Rhino.Geometry.Curve`]
 
     Notes
     -----
@@ -137,9 +125,9 @@ def draw_geodesics(geodesics):
     """
     rg_geodesics = []
     for g in iter(geodesics):
-        sp = g['start']
-        ep = g['end']
-        srf = g['srf']
+        sp = g["start"]
+        ep = g["end"]
+        srf = g["srf"]
         curve = srf.ShortPath(Point3d(*sp), Point3d(*ep), TOL)
         rg_geodesics.append(curve)
     return rg_geodesics
@@ -155,7 +143,7 @@ def draw_polylines(polylines):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Polyline`
+    list[:rhino:`Rhino.Geometry.PolylineCurve`]
 
     Notes
     -----
@@ -167,10 +155,11 @@ def draw_polylines(polylines):
 
     """
     rg_polylines = []
+    # We need to use PolylineCurve because of this:
+    # https://discourse.mcneel.com/t/polyline-output-wanted-but-got-a-list-of-points/77509
     for p in iter(polylines):
-        points = p['points']
-        poly = Polyline([Point3d(*xyz) for xyz in points])
-        poly.DeleteShortSegments(TOL)
+        points = p["points"]
+        poly = PolylineCurve([Point3d(*xyz) for xyz in points])
         rg_polylines.append(poly)
     return rg_polylines
 
@@ -185,7 +174,7 @@ def draw_faces(faces):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Mesh`
+    list[:rhino:`Rhino.Geometry.Mesh`]
 
     Notes
     -----
@@ -199,8 +188,8 @@ def draw_faces(faces):
     """
     meshes = []
     for face in iter(faces):
-        points = face['points'][:]
-        vertexcolors = face.get('vertexcolors')
+        points = face["points"][:]
+        vertexcolors = face.get("vertexcolors")
         v = len(points)
         if v < 3:
             continue
@@ -235,11 +224,11 @@ def draw_cylinders(cylinders, cap=False):
     Other Parameters
     ----------------
     cap : bool, optional
-        Default is ``False``.
+        Default is False.
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Cylinder`
+    list[:rhino:`Rhino.Geometry.Cylinder`]
 
     Notes
     -----
@@ -254,9 +243,9 @@ def draw_cylinders(cylinders, cap=False):
     """
     rg_cylinders = []
     for c in iter(cylinders):
-        start = c['start']
-        end = c['end']
-        radius = c['radius']
+        start = c["start"]
+        end = c["end"]
+        radius = c["radius"]
         if radius < TOL:
             continue
         base = Point3d(*start)
@@ -289,7 +278,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Brep`
+    list[:rhino:`Rhino.Geometry.Brep`]
 
     Notes
     -----
@@ -304,8 +293,8 @@ def draw_pipes(pipes, cap=2, fit=1.0):
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
     for p in pipes:
-        points = p['points']
-        radius = p['radius']
+        points = p["points"]
+        radius = p["radius"]
         params = [0.0, 1.0]
         cap = ToObject(PipeCapMode, cap)
         if type(radius) in (int, float):
@@ -313,8 +302,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
         radius = [float(r) for r in radius]
 
         rail = Curve.CreateControlPointCurve([Point3d(*xyz) for xyz in points])
-        breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol,
-                                ang_tol)
+        breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol, ang_tol)
         for brep in breps:
             yield brep
 
@@ -329,7 +317,7 @@ def draw_spheres(spheres):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Sphere`
+    list[:rhino:`Rhino.Geometry.Sphere`]
 
     Notes
     -----
@@ -343,8 +331,8 @@ def draw_spheres(spheres):
     """
     rg_sheres = []
     for s in iter(spheres):
-        pos = s['pos']
-        radius = s['radius']
+        pos = s["pos"]
+        radius = s["radius"]
         rg_sheres.append(Sphere(Point3d(*pos), radius))
     return rg_sheres
 
@@ -361,23 +349,35 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
 
     Other Parameters
     ----------------
-    color : tuple, list or :class:`System.Drawing.Color`, optional
+    color : tuple, list | :class:`System.Drawing.Color`, optional
     vertex_normals : bool, optional
     texture_coordinates
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Mesh`
+    list[:rhino:`Rhino.Geometry.Mesh`]
 
     """
     mesh = Mesh()
     for a, b, c in vertices:
         mesh.Vertices.Add(a, b, c)
     for face in faces:
-        if len(face) < 4:
-            mesh.Faces.AddFace(face[0], face[1], face[2])
+        f = len(face)
+        if f < 3:
+            continue
+        if f == 3:
+            mesh.Faces.AddFace(*face)
+        elif f == 4:
+            mesh.Faces.AddFace(*face)
         else:
-            mesh.Faces.AddFace(face[0], face[1], face[2], face[3])
+            if MeshNgon:
+                centroid = centroid_points([vertices[index] for index in face])
+                c = mesh.Vertices.Add(*centroid)
+                facets = []
+                for i, j in pairwise(face + face[:1]):
+                    facets.append(mesh.Faces.AddFace(i, j, c))
+                ngon = MeshNgon.Create(face, facets)
+                mesh.Ngons.AddNgon(ngon)
 
     if vertex_normals:
         count = len(vertex_normals)
@@ -394,7 +394,7 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
     if color:
-        count = len(vertices)
+        count = len(mesh.Vertices)
         colors = CreateInstance(Color, count)
         for i in range(count):
             colors[i] = rs.coercecolor(color)
@@ -408,24 +408,21 @@ def draw_network(network):
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    network : :class:`~compas.datastructures.Network`
 
     Returns
     -------
     tuple
-        A list of :class:`Rhino.Geometry.Point3d`.
-        A list of :class:`Rhino.Geometry.Line`.
+        A list[:rhino:`Rhino.Geometry.Point3d`].
+        A list[:rhino:`Rhino.Geometry.Line`].
 
     """
     points = []
     for key in network.nodes():
-        points.append({
-            'pos': network.node_coordinates(key)})
+        points.append({"pos": network.node_coordinates(key)})
     lines = []
     for u, v in network.edges():
-        lines.append({
-            'start': network.node_coordinates(u),
-            'end': network.node_coordinates(v)})
+        lines.append({"start": network.node_coordinates(u), "end": network.node_coordinates(v)})
     points_rg = draw_points(points)
     lines_rg = draw_lines(lines)
 
@@ -442,7 +439,7 @@ def draw_circles(circles):
 
     Returns
     -------
-    list of :class:`Rhino.Geometry.Circle`
+    list[:rhino:`Rhino.Geometry.Circle`]
 
     Notes
     -----
@@ -456,7 +453,23 @@ def draw_circles(circles):
     """
     rg_circles = []
     for c in iter(circles):
-        point, normal = c['plane']
-        radius = c['radius']
+        point, normal = c["plane"]
+        radius = c["radius"]
         rg_circles.append(Circle(Plane(Point3d(*point), Vector3d(*normal)), radius))
     return rg_circles
+
+
+def draw_brep(brep):
+    """Draw a RhinoBrep in Grasshopper.
+
+    Parameters
+    ----------
+    brep : :class:`~compas.geometry.RhinoBrep`
+        The Brep to draw.
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Brep`
+
+    """
+    return brep.native_brep

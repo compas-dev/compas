@@ -5,25 +5,18 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = [
-    'trimesh_harmonic',
-    'trimesh_lscm'
-]
-
-
-@pluggable(category='trimesh')
+@pluggable(category="trimesh")
 def trimesh_harmonic(M):
     """Compute the harmonic parametrisation of a triangle mesh within a fixed circular boundary.
 
     Parameters
     ----------
-    M : tuple
-        A mesh represented by a list of vertices and a list of faces
-        or by a COMPAS mesh object.
+    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+        A mesh represented by a list of vertices and a list of faces.
 
     Returns
     -------
-    array
+    list[[int, int]]
         The u, v parameters per vertex.
 
     Examples
@@ -34,19 +27,18 @@ def trimesh_harmonic(M):
     raise NotImplementedError
 
 
-@pluggable(category='trimesh')
+@pluggable(category="trimesh")
 def trimesh_lscm(M):
     """Compute the least squares conformal map of a triangle mesh.
 
     Parameters
     ----------
-    M : tuple
-        A mesh represented by a list of vertices and a list of faces
-        or by a COMPAS mesh object.
+    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+        A mesh represented by a list of vertices and a list of faces.
 
     Returns
     -------
-    array
+    list[[int, int]]
         The u, v parameters per vertex.
 
     Examples

@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
-from .curvature import *  # noqa : F401 F403
-from .slice import *  # noqa : F401 F403
+from .curvature import trimesh_gaussian_curvature  # noqa: F401
+from .curvature import trimesh_mean_curvature  # noqa: F401
+from .curvature import trimesh_principal_curvature  # noqa: F401
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+from .slice import trimesh_slice  # noqa: F401

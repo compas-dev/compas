@@ -10,9 +10,6 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__all__ = ['fd_numpy']
-
-
 def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
     """Implementation of the force density method to compute equilibrium of axial force networks.
 
@@ -61,7 +58,7 @@ def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
     xyz = asarray(vertices, dtype=float).reshape((-1, 3))
     q = asarray(q, dtype=float).reshape((-1, 1))
     p = asarray(loads, dtype=float).reshape((-1, 3))
-    C = connectivity_matrix(edges, 'csr')
+    C = connectivity_matrix(edges, "csr")
     Ci = C[:, free]
     Cf = C[:, fixed]
     Ct = C.transpose()

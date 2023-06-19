@@ -9,10 +9,12 @@ def test_from_basis_vectors():
     xaxis = [0.68, 0.68, 0.27]
     yaxis = [-0.67, 0.73, -0.15]
     R = Rotation.from_basis_vectors(xaxis, yaxis)
-    matrix = [[0.6807833515407016, -0.6687681611113407, -0.29880282253789103, 0.0],
-         [0.6807833515407016, 0.7282315114847181, -0.07882160714891209, 0.0],
-         [0.2703110366411609, -0.14975954908850603, 0.9510541192112079, 0.0],
-         [0.0, 0.0, 0.0, 1.0]]
+    matrix = [
+        [0.6807833515407016, -0.6687681611113407, -0.29880282253789103, 0.0],
+        [0.6807833515407016, 0.7282315114847181, -0.07882160714891209, 0.0],
+        [0.2703110366411609, -0.14975954908850603, 0.9510541192112079, 0.0],
+        [0.0, 0.0, 0.0, 1.0],
+    ]
     assert allclose(R.matrix, matrix)
 
 
@@ -41,7 +43,7 @@ def test_from_axis_angle_vector():
 
 def test_from_euler_angles():
     ea1 = 1.4, 0.5, 2.3
-    args = False, 'xyz'
+    args = False, "xyz"
     R1 = Rotation.from_euler_angles(ea1, *args)
     ea2 = R1.euler_angles(*args)
     assert allclose(ea1, ea2)
@@ -80,7 +82,7 @@ def test_axis_angle_vector():
 
 def test_euler_angles():
     ea1 = 1.4, 0.5, 2.3
-    args = False, 'xyz'
+    args = False, "xyz"
     R1 = Rotation.from_euler_angles(ea1, *args)
     ea2 = R1.euler_angles(*args)
     assert allclose(ea1, ea2)
@@ -88,7 +90,10 @@ def test_euler_angles():
 
 def test_basis_vectors():
     ea1 = 1.4, 0.5, 2.3
-    args = False, 'xyz'
+    args = False, "xyz"
     R = Rotation.from_euler_angles(ea1, *args)
-    basis_vectors = [[-0.5847122176808724, -0.18803656702967916, 0.789147560317086], [-0.6544178905170501, -0.4655532858863264, -0.5958165511058404]]
+    basis_vectors = [
+        [-0.5847122176808724, -0.18803656702967916, 0.789147560317086],
+        [-0.6544178905170501, -0.4655532858863264, -0.5958165511058404],
+    ]
     assert allclose(R.basis_vectors, basis_vectors)

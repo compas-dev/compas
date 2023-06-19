@@ -2,15 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
-
-
-__all__ = [
-    'mesh_bounding_box',
-    'mesh_bounding_box_xy',
-]
 
 
 def mesh_bounding_box(mesh):
@@ -18,12 +11,12 @@ def mesh_bounding_box(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    list of point
+    list[list[float]]
         The 8 corners of the bounding box of the mesh.
 
     Examples
@@ -34,7 +27,7 @@ def mesh_bounding_box(mesh):
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
     """
-    xyz = mesh.vertices_attributes('xyz', keys=list(mesh.vertices()))
+    xyz = mesh.vertices_attributes("xyz", keys=list(mesh.vertices()))
     return bounding_box(xyz)
 
 
@@ -43,12 +36,12 @@ def mesh_bounding_box_xy(mesh):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
 
     Returns
     -------
-    list of point
+    list[list[float]]
         The 4 corners of the bounding polygon in the XY plane.
 
     Examples
@@ -59,5 +52,5 @@ def mesh_bounding_box_xy(mesh):
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
     """
-    xyz = mesh.vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes("xyz")
     return bounding_box_xy(xyz)

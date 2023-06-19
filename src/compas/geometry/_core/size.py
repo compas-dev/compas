@@ -6,27 +6,18 @@ from math import fabs
 
 from compas.utilities import pairwise
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import length_vector
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import cross_vectors_xy
-from compas.geometry._core import dot_vectors
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import length_vector
+from ._algebra import cross_vectors
+from ._algebra import cross_vectors_xy
+from ._algebra import dot_vectors
 
-from compas.geometry._core import centroid_points
-from compas.geometry._core import centroid_points_xy
+from .centroids import centroid_points
+from .centroids import centroid_points_xy
 
-from compas.geometry._core import normal_triangle
-from compas.geometry._core import normal_triangle_xy
-
-
-__all__ = [
-    'area_polygon',
-    'area_polygon_xy',
-    'area_triangle',
-    'area_triangle_xy',
-    'volume_polyhedron',
-]
+from .normals import normal_triangle
+from .normals import normal_triangle_xy
 
 
 def area_polygon(polygon):
@@ -34,7 +25,7 @@ def area_polygon(polygon):
 
     Parameters
     ----------
-    polygon : sequence
+    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
         The XYZ coordinates of the vertices/corners of the polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed:
@@ -65,7 +56,7 @@ def area_polygon(polygon):
             area += 0.5 * length_vector(n)
         else:
             area -= 0.5 * length_vector(n)
-    return area
+    return abs(area)
 
 
 def area_polygon_xy(polygon):
@@ -73,7 +64,7 @@ def area_polygon_xy(polygon):
 
     Parameters
     ----------
-    polygon : sequence
+    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
         A sequence of XY(Z) coordinates of 2D or 3D points
         representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
@@ -101,7 +92,7 @@ def area_triangle(triangle):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
         XYZ coordinates of the corners of the triangle.
 
     Returns
@@ -118,7 +109,7 @@ def area_triangle_xy(triangle):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
         XY(Z) coordinates of the corners of the triangle.
 
     Returns
@@ -135,7 +126,7 @@ def volume_polyhedron(polyhedron):
 
     Parameters
     ----------
-    polyhedron : tuple
+    polyhedron : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[sequence[int]]]
         The vertices and faces of the polyhedron.
 
     Returns
@@ -193,4 +184,4 @@ def volume_polyhedron(polyhedron):
             ac = subtract_vectors(c, a)
             n = cross_vectors(ab, ac)
             V += dot_vectors(a, n)
-    return V / 6.
+    return V / 6.0

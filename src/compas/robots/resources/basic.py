@@ -4,20 +4,14 @@ from __future__ import print_function
 
 import os
 
-from compas.datastructures import Mesh
-
-__all__ = [
-    'AbstractMeshLoader',
-    'DefaultMeshLoader',
-    'LocalPackageMeshLoader'
-]
-
 try:
     from urllib.parse import urlparse
 except ImportError:
     from urlparse import urlparse
 
-SUPPORTED_FORMATS = ('obj', 'stl', 'ply')
+from compas.datastructures import Mesh
+
+SUPPORTED_FORMATS = ("obj", "stl", "ply")
 
 
 class AbstractMeshLoader(object):
@@ -41,6 +35,9 @@ class AbstractMeshLoader(object):
     def load_mesh(self, url):
         """Load the mesh from the given URL.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`load_meshes` instead.
+
         Parameters
         ----------
         url : str
@@ -48,8 +45,25 @@ class AbstractMeshLoader(object):
 
         Returns
         -------
-        :class:`Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
+        """
+        return NotImplementedError
+
+    def load_meshes(self, url):
+        """Load meshes from the given URL.
+
+        A single mesh file can contain multiple meshes depending on the format.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+            List of meshes.
         """
         return NotImplementedError
 
@@ -89,18 +103,21 @@ class DefaultMeshLoader(AbstractMeshLoader):
         #  - no scheme
         #  - a one-letter scheme in Windows
         #  - file scheme
-        is_local_file = len(scheme) in (0, 1) or scheme == 'file'
+        is_local_file = len(scheme) in (0, 1) or scheme == "file"
 
         if is_local_file:
             if os.path.isfile(url):
                 return True
 
         # Only OBJ loader supports remote files atm
-        is_obj = _get_file_format(url) == 'obj'
-        return scheme in ('http', 'https') and is_obj
+        is_obj = _get_file_format(url) == "obj"
+        return scheme in ("http", "https") and is_obj
 
     def load_mesh(self, url):
         """Loads a mesh from local storage.
+
+        .. deprecated:: 1.13.3
+            Use :meth:`load_meshes` instead.
 
         Parameters
         ----------
@@ -109,8 +126,25 @@ class DefaultMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        :class:`Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
+        """
+        return self.load_meshes(url)[0]
+
+    def load_meshes(self, url):
+        """Load meshes from the given URL.
+
+        A single mesh file can contain multiple meshes depending on the format.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+            List of meshes.
         """
         url = self._get_mesh_url(url)
         return _mesh_import(url, url)
@@ -130,10 +164,10 @@ class DefaultMeshLoader(AbstractMeshLoader):
             Extended mesh url location if basepath in kwargs.
             Else, it returns url.
         """
-        if url.startswith('file:///'):
+        if url.startswith("file:///"):
             url = url[8:]
 
-        basepath = self.attr.get('basepath')
+        basepath = self.attr.get("basepath")
         if basepath:
             return os.path.join(basepath, url)
         return url
@@ -143,7 +177,7 @@ def _get_file_format(url):
     # This could be much more elaborate
     # with an actual header check
     # and/or remote content-type check
-    file_extension = url.split('.')[-1].lower()
+    file_extension = url.split(".")[-1].lower()
     return file_extension
 
 
@@ -163,7 +197,7 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
         super(LocalPackageMeshLoader, self).__init__()
         self.path = path
         self.support_package = support_package
-        self.schema_prefix = 'package://' + self.support_package + '/'
+        self.schema_prefix = "package://" + self.support_package + "/"
 
     def build_path(self, *path_parts):
         """Returns the building path.
@@ -177,9 +211,7 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
         -------
         str
         """
-        return os.path.join(self.path,
-                            self.support_package,
-                            *path_parts)
+        return os.path.join(self.path, self.support_package, *path_parts)
 
     def load_urdf(self, file):
         """Load a URDF file from local storage.
@@ -191,8 +223,8 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
             inside a ``urdf`` folder.
         """
 
-        path = self.build_path('urdf', file)
-        return open(path, 'r')
+        path = self.build_path("urdf", file)
+        return open(path, "r")
 
     def can_load_mesh(self, url):
         """Determine whether this loader can load a given mesh URL.
@@ -218,6 +250,9 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
     def load_mesh(self, url):
         """Loads a mesh from local storage.
 
+        .. deprecated:: 1.13.3
+            Use :meth:`load_meshes` instead.
+
         Parameters
         ----------
         url : str
@@ -225,15 +260,32 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
 
         Returns
         -------
-        :class:`Mesh`
+        :class:`~compas.datastructures.Mesh`
             Instance of a mesh.
+        """
+        return self.load_meshes(url)[0]
+
+    def load_meshes(self, url):
+        """Load meshes from the given URL.
+
+        A single mesh file can contain multiple meshes depending on the format.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+            List of meshes.
         """
         local_file = self._get_local_path(url)
         return _mesh_import(url, local_file)
 
     def _get_local_path(self, url):
         _prefix, path = url.split(self.schema_prefix)
-        return self.build_path(*path.split('/'))
+        return self.build_path(*path.split("/"))
 
 
 def _mesh_import(name, file):
@@ -243,14 +295,13 @@ def _mesh_import(name, file):
     file_extension = _get_file_format(name)
 
     if file_extension not in SUPPORTED_FORMATS:
-        raise NotImplementedError(
-            'Mesh type not supported: {}'.format(file_extension))
+        raise NotImplementedError("Mesh type not supported: {}".format(file_extension))
 
-    if file_extension == 'obj':
-        return Mesh.from_obj(file)
-    elif file_extension == 'stl':
-        return Mesh.from_stl(file)
-    elif file_extension == 'ply':
-        return Mesh.from_ply(file)
+    if file_extension == "obj":
+        return [Mesh.from_obj(file)]
+    elif file_extension == "stl":
+        return [Mesh.from_stl(file)]
+    elif file_extension == "ply":
+        return [Mesh.from_ply(file)]
 
     raise Exception

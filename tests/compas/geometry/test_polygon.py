@@ -1,5 +1,3 @@
-import random
-import compas
 import pytest
 
 from compas.geometry import Point
@@ -7,21 +5,19 @@ from compas.geometry import Polygon
 from compas.utilities import pairwise
 
 
-if not compas.IPY:
-    def test_data():
-        p = Polygon([Point(random.random(), random.random(), random.random()) for i in range(10)])
-        assert p.data == p.validate_data()
-        o = Polygon.from_data(p.data)
-        assert p == o
-        assert not (p is o)
-        assert o.data == o.validate_data()
-
-
 def test_polygon():
     points = [[0, 0, x] for x in range(5)]
     polygon = Polygon(points)
     assert polygon.points == points
     assert polygon.lines == [(a, b) for a, b in pairwise(points + points[:1])]
+
+
+def test_ctor_does_not_modify_input_params():
+    pts = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 0]]
+
+    polygon = Polygon(pts)
+    assert len(pts) == 5
+    assert len(polygon.points) == 4, "The last point (matching the first) should have been removed"
 
 
 def test_equality():

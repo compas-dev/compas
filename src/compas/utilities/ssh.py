@@ -11,9 +11,6 @@ except ImportError:
 import os
 
 
-__all__ = ['SSH']
-
-
 class SSH(object):
     """Initialse an SSH object.
 
@@ -36,7 +33,7 @@ class SSH(object):
 
         Returns
         -------
-        obj
+        SSHClient
             ssh client object.
 
         """
@@ -44,17 +41,21 @@ class SSH(object):
         client.set_missing_host_key_policy(AutoAddPolicy())
         try:
             client.connect(self.server, username=self.username)
-            print('\n***** Connected to server: {0} with username: {1}'.format(self.server, self.username))
+            print("\n***** Connected to server: {0} with username: {1}".format(self.server, self.username))
         except Exception:
-            print('\n***** Connection failed')
+            print("\n***** Connection failed")
         return client
 
     def close(self):
         """Close the SSH object.
 
+        Returns
+        -------
+        None
+
         """
         self.client.close()
-        print('\n***** SSH connection closed')
+        print("\n***** SSH connection closed")
 
     def receive_file(self, remote_file, local_file):
         """Recieve a remote file from the server.
@@ -66,8 +67,12 @@ class SSH(object):
         local_file : str
             Path to save the local file to.
 
+        Returns
+        -------
+        None
+
         """
-        command = 'scp {0}@{1}:{2} {3}'.format(self.username, self.server, remote_file, local_file)
+        command = "scp {0}@{1}:{2} {3}".format(self.username, self.server, remote_file, local_file)
         self.local_command(command)
 
     def send_file(self, local_file):
@@ -78,8 +83,12 @@ class SSH(object):
         local_file : str
             Path of the local file to send.
 
+        Returns
+        -------
+        None
+
         """
-        command = 'scp {0} {1}@{2}:'.format(local_file, self.username, self.server)
+        command = "scp {0} {1}@{2}:".format(local_file, self.username, self.server)
         self.local_command(command=command)
 
     def send_folder(self, local_folder):
@@ -90,8 +99,12 @@ class SSH(object):
         local_folder : str
             Path of the local folder to send.
 
+        Returns
+        -------
+        None
+
         """
-        command = 'scp -r {0} {1}@{2}:'.format(local_folder, self.username, self.server)
+        command = "scp -r {0} {1}@{2}:".format(local_folder, self.username, self.server)
         self.local_command(command=command)
 
     def sync_folder(self, local_folder, remote_folder):
@@ -104,8 +117,12 @@ class SSH(object):
         remote_folder : str
             Path of the remote folder to sync to.
 
+        Returns
+        -------
+        None
+
         """
-        command = 'rsync -Pa {0} {1}@{2}:{3}'.format(local_folder, self.username, self.server, remote_folder)
+        command = "rsync -Pa {0} {1}@{2}:{3}".format(local_folder, self.username, self.server, remote_folder)
         self.local_command(command=command)
 
     @staticmethod
@@ -119,12 +136,16 @@ class SSH(object):
         folder : str
             The local folder to execute the command from.
 
+        Returns
+        -------
+        None
+
         """
-        print('\n***** Executing local command: {0}'.format(command))
+        print("\n***** Executing local command: {0}".format(command))
         if folder:
             os.chdir(folder)
         os.system(command)
-        print('***** Command executed')
+        print("***** Command executed")
 
     def server_command(self, command):
         """Send a BASH command to run on the server.
@@ -134,11 +155,15 @@ class SSH(object):
         command : str
             The command to run on the remote system.
 
+        Returns
+        -------
+        None
+
         """
-        print('\n***** Executing server command: {0}\n'.format(command))
+        print("\n***** Executing server command: {0}\n".format(command))
         stdin, stdout, stderr = self.client.exec_command(command)
         for line in stdout.readlines():
             print(line)
         for line in stderr.readlines():
             print(line)
-        print('***** Command executed')
+        print("***** Command executed")

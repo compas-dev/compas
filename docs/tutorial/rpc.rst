@@ -2,27 +2,10 @@
 Remote Procedure Calls
 ********************************************************************************
 
-* :mod:`compas.rpc`
-
 Remote Procedure Calls (``RPC``) is a mechanism to transparently execute code in
 a remote process or computer. This is especially useful in scenarios where COMPAS
 runs inside an IronPython host (eg. Rhino) and needs to execute code that only
 runs on CPython (eg. code that requires ``numpy``).
-
-COMPAS provides **two ways to achieve** this: ``rcp`` and ``XFunc``.
-
-Through ``Xfunc``, COMPAS provides a mechanism for calling Python functions through
-a separately launched sub-process.
-
-A drawback of the ``Xfunc`` mechanism is that every call launches a new Python
-(sub)process with all the overhead that that entails. For infrequent calls to
-long-running processes this is not an issue. However, for frequent calls to functions
-that are expected to run quickly, this is not ideal.
-
-The second mechanism is the ``rpc`` module. The principle of RPC is to start a server
-that handles all requests. The advantage is that once the server is started,
-no additional processes have to be launched and the server can handle the requests
-without any overhead. Therefore, the response time is much faster than with ``XFunc``.
 
 
 Basic Usage
@@ -62,6 +45,70 @@ The use of :mod:`compas.rpc` is not restricted to COMPAS packages only. ::
     >>> x = linalg.solve(A, b)
 
 Note that Numpy arrays are automatically converted to lists.
+
+
+Configuration Options
+=====================
+
+The :class:`compas.rpc.Proxy` object has several configuration options.
+We will discuss only a few of those here.
+For a complete overview, please refer to the API docs (:mod:`compas.rpc`).
+
+``python``
+----------
+
+The :class:`compas.rpc.Proxy` object will automatically try to reconnect to an
+active instance of the command server, or start a new one if no active server can be found.
+By default, a newly started server will run an instance of the default Python interpreter
+of the active environment, for example, when running RPC from the command line;
+or of the Python interpreter specified in `compas_bootstrapper`, for example, when running RPC from Rhino.
+
+In some cases, this might not be what you want, or might not result in the expected behaviour,
+for example when `compas_bootstrapper` does not exist.
+
+To use a specific Python iterpreter, you can specify the path to an executable through the ``python`` parameter.
+
+.. code-block:: python
+
+    >>> from compas.rpc import Proxy
+    >>> proxy = Proxy(python=r"C:\\Users\\<username>\\anaconda3\\envs\\research\\python.exe")
+
+
+``path``
+--------
+
+Sometimes you will want the server to run custom functions that are not (yet) part of a specific package.
+To allow the server to find such functions, you can specify an additional search path.
+
+For example, if you have a Python script on your desktop,
+defining a wrapper for the k-means clustering algorithm of ``scikit-learn``,
+you can tell the command server where to find it using the ``path`` parameter.
+
+.. code-block:: python
+
+    # C:\Users\<username>\Desktop\clustering.py
+
+    from sklearn.cluster import KMeans
+    from numpy import array
+
+
+    def cluster(points, n_clusters):
+        kmeans = KMeans(n_clusters=n_clusters, n_init=2000, max_iter=1000).fit(array(cloud, dtype=float))
+        clusters = {}
+        for label, point in zip(kmeans.labels_, cloud):
+            if label not in clusters:
+                clusters[label] = []
+            clusters[label].append(point)
+        return clusters
+
+
+.. code-block:: python
+
+    >>> from compas.geometry import Pointcloud
+    >>> from compas.rpc import Proxy
+    >>> cloud = Pointcloud.from_bounds(10, 5, 3, 100)
+    >>> proxy = Proxy(package='clustering', path=r'C:\\Users\\<username>\\Desktop')
+    >>> clusters = proxy.cluster(cloud, 10)
 
 
 Supported data types

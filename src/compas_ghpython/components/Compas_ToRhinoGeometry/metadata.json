@@ -1,0 +1,25 @@
+{
+    "name": "Draw",
+    "nickname": "Draw",
+    "category": "COMPAS",
+    "subcategory": "Display",
+    "description": "Draws COMPAS geometry",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "cg",
+                "description": "The COMPAS geometry or datastructure to be drawn."
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "rg",
+                "description": "The Rhino geometry object."
+            }
+        ]
+    }
+}

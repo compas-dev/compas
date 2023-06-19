@@ -5,11 +5,6 @@ from __future__ import division
 from compas.geometry import centroid_points
 
 
-__all__ = [
-    'network_smooth_centroid',
-]
-
-
 def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a network by moving every free node to the centroid of its neighbors.
 
@@ -28,19 +23,19 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback
     callback_args : list, optional
         A list of arguments to be passed to the callback.
 
+    Returns
+    -------
+    None
+
     Raises
     ------
     Exception
         If a callback is provided, but it is not callable.
 
-    Examples
-    --------
-    >>>
-
     """
     if callback:
         if not callable(callback):
-            raise Exception('Callback is not callable.')
+            raise Exception("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -56,9 +51,9 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback
 
             cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.neighbors(key)])
 
-            attr['x'] += damping * (cx - x)
-            attr['y'] += damping * (cy - y)
-            attr['z'] += damping * (cz - z)
+            attr["x"] += damping * (cx - x)
+            attr["y"] += damping * (cy - y)
+            attr["z"] += damping * (cz - z)
 
         if callback:
             callback(k, callback_args)

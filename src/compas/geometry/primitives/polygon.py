@@ -12,49 +12,45 @@ from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
 
-from compas.geometry.primitives import Line
-from compas.geometry.primitives import Point
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Vector
-
 from compas.utilities import pairwise
+
+from ._primitive import Primitive
+from .line import Line
+from .point import Point
+from .vector import Vector
 
 
 class Polygon(Primitive):
-    """An object representing an ordered collection of points in space connected
-    by straight line segments forming a closed boundary around the interior space.
-
-    A polygon has a closed boundary that separates its interior from the
-    exterior. The boundary does not intersect itself, and is described by an
-    ordered set of of points.
+    """A polygon is defined by a sequence of points forming a closed loop.
 
     Parameters
     ----------
-    points : list of point
+    points : list[[float, float, float] | :class:`~compas.geometry.Point`]
         An ordered list of points.
 
     Attributes
     ----------
-    data : dict
-        The data representation of the polygon.
-    points : list of :class:`compas.geometry.Point`
-        The polygon points.
-    lines : list of :class:`compas.geometry.Line`, read-only
-        The polygon segments.
-    centroid : :class:`compas.geometry.Point`, read-only
-        The centroid of the polygon surface.
-    normal : :class:`compas.geometry.Vector`, read-only
-        The normal vector of the polygon plane.
+    points : list of :class:`~compas.geometry.Point`
+        The points of the polygon.
+    lines : list of :class:`~compas.geometry.Line`, read-only
+        The lines of the polygon.
     length : float, read-only
-        The length of the polygon boundary.
+        The length of the boundary.
+    centroid : :class:`~compas.geometry.Point`, read-only
+        The centroid of the polygon.
+    normal : :class:`~compas.geometry.Vector`, read-only
+        The (average) normal of the polygon.
     area : float, read-only
-        The area of the polygon surface.
+        The area of the polygon.
 
     Notes
     -----
-    All ``Polygon`` objects are considered closed. Therefore the first and
-    last element in the list of points are not the same. The existence of the
-    closing edge is implied.
+    A polygon is defined by a sequence of points connected by line segments
+    forming a closed boundary that separates its interior from the exterior.
+
+    In the sequence of points, the first and last element are not the same.
+    The existence of the closing edge is implied.
+    The boundary should not intersect itself.
 
     Polygons are not necessarily planar by construction; they can be warped.
 
@@ -65,21 +61,16 @@ class Polygon(Primitive):
     Point(0.500, 0.500, 0.000)
     >>> polygon.area
     1.0
+
     """
 
-    @property
-    def DATASCHEMA(self):
-        from schema import Schema
-        from compas.data import is_float3
-        return Schema({
-            'points': lambda points: all(is_float3(point) for point in points)
-        })
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+        "required": ["points"],
+    }
 
-    @property
-    def JSONSCHEMANAME(self):
-        return 'polygon'
-
-    __slots__ = ['_points', '_lines']
+    __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
         super(Polygon, self).__init__(**kwargs)
@@ -87,24 +78,54 @@ class Polygon(Primitive):
         self._lines = []
         self.points = points
 
+    # ==========================================================================
+    # data
+    # ==========================================================================
+
     @property
     def data(self):
         """dict : The data dictionary that represents the polygon."""
-        return {'points': [point.data for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):
-        self.points = [Point.from_data(point) for point in data['points']]
+        self.points = data["points"]
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polygon from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polygon`
+            The constructed polygon.
+
+        Examples
+        --------
+        >>> polygon = Polygon.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]})
+        >>> polygon.points[0]
+        Point(0.000, 0.000, 0.000)
+
+        """
+        return cls(data["points"])
+
+    # ==========================================================================
+    # properties
+    # ==========================================================================
 
     @property
     def points(self):
-        """list of :class:`compas.geometry.Point` : The points of the polygon."""
         return self._points
 
     @points.setter
     def points(self, points):
         if points[-1] == points[0]:
-            del points[-1]
+            points = points[:-1]
         self._points = [Point(*xyz) for xyz in points]
         self._lines = None
 
@@ -112,25 +133,21 @@ class Polygon(Primitive):
 
     @property
     def lines(self):
-        """list of :class:`compas.geometry.Line` : The lines of the polygon."""
         if not self._lines:
             self._lines = [Line(a, b) for a, b in pairwise(self.points + self.points[:1])]
         return self._lines
 
     @property
     def length(self):
-        """float : The length of the boundary."""
         return sum(line.length for line in self.lines)
 
     @property
     def centroid(self):
-        """int : The centroid of the polygon."""
         point = centroid_polygon(self.points)
         return Point(*point)
 
     @property
     def normal(self):
-        """:class:`compas.geometry.Vector` : The (average) normal of the polygon."""
         o = self.centroid
         points = self.points
         a2 = 0
@@ -144,12 +161,11 @@ class Polygon(Primitive):
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)
         n = [sum(axis) / a2 for axis in zip(*normals)]
-        n = Vector(* n)
+        n = Vector(*n)
         return n
 
     @property
     def area(self):
-        """float: The area of the polygon."""
         return area_polygon(self.points)
 
     # ==========================================================================
@@ -157,7 +173,7 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polygon([{0}])'.format(', '.join(['{0!r}'.format(point) for point in self.points]))
+        return "Polygon([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)
@@ -173,35 +189,13 @@ class Polygon(Primitive):
         return iter(self.points)
 
     def __eq__(self, other):
-        if not hasattr(other, '__iter__') or not hasattr(other, '__len__') or len(self) != len(other):
+        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return allclose(self, other)
 
     # ==========================================================================
     # constructors
     # ==========================================================================
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a polygon from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polygon`
-            The constructed polygon.
-
-        Examples
-        --------
-        >>> polygon = Polygon.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]})
-        >>> polygon.points[0]
-        Point(0.000, 0.000, 0.000)
-        """
-        return cls([Point.from_data(point) for point in data['points']])
 
     @classmethod
     def from_sides_and_radius_xy(cls, n, radius):
@@ -217,7 +211,7 @@ class Polygon(Primitive):
 
         Returns
         -------
-        :class:`compas.geometry.Polygon`
+        :class:`~compas.geometry.Polygon`
             The constructed polygon.
 
         Notes
@@ -239,14 +233,17 @@ class Polygon(Primitive):
         >>> centertofirst = subtract_vectors(pentagon.points[0], pentagon.centroid)
         >>> dot_vectors(centertofirst, [0.0, 1.0, 0.0]) == 1
         True
+
         """
-        assert n >= 3, 'Supplied number of sides must be at least 3!'
+        assert n >= 3, "Supplied number of sides must be at least 3!"
         points = []
         side = math.pi * 2 / n
         for i in range(n):
-            point = [math.sin(side * (n - i)) * radius,
-                     math.cos(side * (n - i)) * radius,
-                     0.0]
+            point = [
+                math.sin(side * (n - i)) * radius,
+                math.cos(side * (n - i)) * radius,
+                0.0,
+            ]
             points.append(point)
         return cls(points)
 
@@ -268,6 +265,7 @@ class Polygon(Primitive):
         >>> polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.4, 0.4, 0.0], [0.0, 1.0, 0.0]])
         >>> polygon.is_convex()
         False
+
         """
         return is_polygon_convex(self.points)
 
@@ -285,6 +283,7 @@ class Polygon(Primitive):
         >>> polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.1]])
         >>> polygon.is_planar()
         False
+
         """
         return is_coplanar(self.points)
 
@@ -293,8 +292,12 @@ class Polygon(Primitive):
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` or list of list
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
             The transformation.
+
+        Returns
+        -------
+        None
 
         Examples
         --------
@@ -305,6 +308,7 @@ class Polygon(Primitive):
         >>> polygon.transform(R)
         >>> polygon.points[0]
         Point(-0.707, 0.707, 0.000)
+
         """
         for index, point in enumerate(transform_points(self.points, T)):
             self.points[index].x = point[0]

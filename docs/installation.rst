@@ -12,31 +12,30 @@ using popular package managers such as conda or pip.
      :class: figure-img img-fluid mx-auto
 
 
-Install with conda
-==================
+Install with conda (recommended)
+================================
 
-The recommended way to install COMPAS is with `conda <https://conda.io/docs/>`_.
-For example, create an environment named ``research`` and install COMPAS.
+Create an environment named ``research`` and install COMPAS from the package channel ``conda-forge``.
 
 .. code-block:: bash
 
-    conda config --add channels conda-forge
-    conda create -n research COMPAS
+    conda create -n research -c conda-forge compas
 
-Afterwards, simply activate the environment
-and run the following command to check if the installation process was successful.
+Activate the environment. 
 
 .. code-block:: bash
 
     conda activate research
+
+Verify that the installation was successful.
+
+.. code-block:: bash
+
     python -m compas
 
 .. code-block:: none
 
     Yay! COMPAS is installed correctly!
-
-    COMPAS: 0.19.1
-    Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clang 9.0.1 ]
 
 
 Installation options
@@ -46,13 +45,13 @@ Install COMPAS in an environment with a specific version of Python.
 
 .. code-block:: bash
 
-    conda create -n research python=3.7 COMPAS
+    conda create -n research python=3.8 compas
 
 Install COMPAS in an existing environment.
 
 .. code-block:: bash
 
-    conda install -n research COMPAS
+    conda install -n research compas
 
 
 Install with pip
@@ -63,7 +62,7 @@ Install COMPAS using ``pip`` from the Python Package Index.
 .. code-block:: bash
 
     pip install cython --install-option="--no-cython-compile"
-    pip install COMPAS
+    pip install compas
 
 Install an editable version from local source.
 
@@ -72,44 +71,48 @@ Install an editable version from local source.
     cd path/to/compas
     pip install -e .
 
-Note that installation with ``pip`` is also possible within a ``conda`` environment.
+By default, ``planarity`` is marked as an optional requirement for installation with ``pip`` on Windows.
+To include ``planarity``, add a conditional to the install command.
 
 .. code-block:: bash
 
-    conda activate my-project
-    pip install -e .
+    pip install compas[planarity]
+
+.. code-block:: bash
+
+    pip install -e .[planarity]
 
 
 Update with conda
 =================
 
-To update COMPAS to the latest version with ``conda``
+Update COMPAS to the latest version with ``conda``.
 
 .. code-block:: bash
 
-    conda update -n research COMPAS
+    conda update compas
 
-To switch to a specific version
+Install a specific version.
 
 .. code-block:: bash
 
-    conda install -n research COMPAS=0.19.1
+    conda install compas=1.13.3
 
 
 Update with pip
 ===============
 
-If you installed COMPAS with ``pip`` the update command is the following
+Update COMPAS to the latest version with ``pip``.
 
 .. code-block:: bash
 
-    pip install --upgrade COMPAS
+    pip install --upgrade compas
 
-Or to switch to a specific version
+Install a specific version.
 
 .. code-block:: bash
 
-    pip install COMPAS==0.19.1
+    pip install compas==1.13.3
 
 
 Known Issues
@@ -128,7 +131,7 @@ If this is the case, install ``cython`` using ``pip`` (or ``conda``), before ins
 .. code-block:: bash
 
     pip install cython --install-option="--no-cython-compile"
-    pip install COMPAS
+    pip install compas
 
 
 Microsoft Visual C++ Build Tools

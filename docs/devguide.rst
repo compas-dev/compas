@@ -74,7 +74,9 @@ The procedure for submitting a PR is the following.
 Style guide
 ===========
 
-The command ``invoke lint`` runs the entire codebase through ``flake8``.
+Please run ``invoke format`` to auto-format your code.
+
+The command ``invoke lint`` runs the entire codebase through both ``black`` and ``flake8``.
 As described in the `docs <https://flake8.pycqa.org/en/latest/manpage.html>`_,
 ``flake8`` includes lint checks provided by the PyFlakes project,
 PEP-0008 inspired style checks provided by the PyCodeStyle project,
@@ -86,7 +88,7 @@ https://flake8.pycqa.org/en/latest/user/error-codes.html
 The PEP-0008 style guide is available here:
 https://www.python.org/dev/peps/pep-0008/
 
-Note that the maximum line length is set to 180 rather 79 in the ``setup.cfg`` of the repo.
+Note that the maximum line length is set to 120 rather 79 in the ``setup.cfg`` of the repo.
 
 
 Naming conventions
@@ -390,10 +392,12 @@ Advanced options
 
 There are a few additional options that plugins can use:
 
-* ``requires``: List of required python modules. COMPAS will filter out plugins if their
+* ``requires``: List of requirements. COMPAS will filter out plugins if their
   requirements list is not satisfied at runtime. This allows to have multiple implementations
-  of the same operation and have them selected based on which packages are installed.
-  on the system. Eg. `requires=['scipy']`.
+  of the same operation and have them selected based on different criteria.
+  The requirement can either be a package name string (e.g. ``requires=['scipy']``) or
+  a ``callable`` with a boolean return value, in which any arbitrary check can be implemented
+  (e.g. ``requires=[lambda: is_rhino_active()]``).
 * ``tryfirst`` and ``trylast``: Plugins cannot control the exact priority they will have
   but they can indicate whether to try to prioritize them or demote them as fallback using
   these two boolean parameters.

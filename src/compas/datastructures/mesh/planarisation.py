@@ -4,17 +4,13 @@ from __future__ import division
 
 from compas.geometry import project_points_plane
 from compas.geometry import centroid_points
+from compas.geometry import midpoint_point_point
 from compas.geometry import distance_point_point
 from compas.geometry import distance_line_line
 from compas.geometry import bestfit_plane
 
 from compas.utilities import window
-
-
-__all__ = [
-    'mesh_flatness',
-    'mesh_planarize_faces',
-]
+from compas.utilities import pairwise
 
 
 def mesh_flatness(mesh, maxdev=1.0):
@@ -22,22 +18,21 @@ def mesh_flatness(mesh, maxdev=1.0):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
     maxdev : float, optional
         A maximum value for the allowed deviation from flatness.
-        Default is ``1.0``.
 
     Returns
     -------
-    dict
+    dict[int, float]
         For each face, a deviation from *flatness*.
 
     Notes
     -----
     The "flatness" of a face is expressed as the ratio of the distance between
     the diagonals to the average edge length. For the fabrication of glass panels,
-    for example, ``0.02`` could be a reasonable maximum value.
+    for example, 0.02 could be a reasonable maximum value.
 
     Warnings
     --------
@@ -67,17 +62,17 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    fixed : list, optional [None]
+    fixed : list[int], optional
         A list of fixed vertices.
-    kmax : int, optional [100]
+    kmax : int, optional
         The number of iterations.
-    d : float, optional [1.0]
+    d : float, optional
         A damping factor.
-    callback : callable, optional [None]
+    callback : callable, optional
         A user-defined callback that is called after every iteration.
-    callback_args : list, optional [None]
+    callback_args : list[Any], optional
         A list of arguments to be passed to the callback function.
 
     Returns
@@ -87,7 +82,7 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
     """
     if callback:
         if not callable(callback):
-            raise Exception('The callback is not callable.')
+            raise Exception("The callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -99,7 +94,10 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
         for fkey in mesh.faces():
             vertices = mesh.face_vertices(fkey)
             points = [mesh.vertex_coordinates(key) for key in vertices]
-            plane = bestfit_plane(points)
+            midpoints = []
+            for a, b in pairwise(points + points[:1]):
+                midpoints.append(midpoint_point_point(a, b))
+            plane = bestfit_plane(points + midpoints)
             projections = project_points_plane(points, plane)
 
             for index, key in enumerate(vertices):
@@ -110,9 +108,9 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
                 continue
 
             x, y, z = centroid_points(positions[key])
-            attr['x'] = x
-            attr['y'] = y
-            attr['z'] = z
+            attr["x"] = x
+            attr["y"] = y
+            attr["z"] = z
 
         if callback:
             callback(k, callback_args)

@@ -1,27 +1,18 @@
 import compas
-
-from compas.geometry import Point, Vector, Frame
-from compas.geometry import Box
-from compas.geometry import Transformation
-
-from compas.datastructures import Network
 from compas.datastructures import Mesh
+from compas.datastructures import Network
 from compas.datastructures import VolMesh
+from compas.geometry import Box
+from compas.geometry import Frame
+from compas.geometry import Point
+from compas.geometry import Transformation
+from compas.geometry import Vector
 
 
 def test_json_native():
-    before = [[], (), {}, '', 1, 1.0, True, None]
+    before = [[], (), {}, "", 1, 1.0, True, None]
     after = compas.json_loads(compas.json_dumps(before))
-    assert after == [[], [], {}, '', 1, 1.0, True, None]
-
-
-if not compas.IPY:
-    import numpy as np
-
-    def test_json_numpy():
-        before = [np.array([1, 2, 3]), np.array([1.0, 2.0, 3.0]), np.float64(1.0), np.int32(1)]
-        after = compas.json_loads(compas.json_dumps(before))
-        assert after == [[1, 2, 3], [1.0, 2.0, 3.0], 1.0, 1]
+    assert after == [[], [], {}, "", 1, 1.0, True, None]
 
 
 def test_json_primitive():
@@ -29,6 +20,7 @@ def test_json_primitive():
     after = compas.json_loads(compas.json_dumps(before))
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before, after))
+    assert before.guid == after.guid
 
 
 def test_json_shape():
@@ -36,6 +28,7 @@ def test_json_shape():
     after = compas.json_loads(compas.json_dumps(before))
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before.vertices, after.vertices))
+    assert before.guid == after.guid
 
 
 def test_json_xform():
@@ -43,6 +36,7 @@ def test_json_xform():
     after = compas.json_loads(compas.json_dumps(before))
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before, after))
+    assert before.guid == after.guid
 
 
 def test_json_network():
@@ -55,8 +49,9 @@ def test_json_network():
     assert before.attributes == after.attributes
     assert all(before.has_node(node) for node in after.nodes())
     assert all(after.has_node(node) for node in before.nodes())
-    assert all(before.has_edge(*edge) for edge in after.edges())
-    assert all(after.has_edge(*edge) for edge in before.edges())
+    assert all(before.has_edge(edge) for edge in after.edges())
+    assert all(after.has_edge(edge) for edge in before.edges())
+    assert before.guid == after.guid
 
 
 def test_json_mesh():
@@ -71,12 +66,32 @@ def test_json_mesh():
     assert all(before.has_edge(edge) for edge in after.edges())
     assert all(after.has_edge(edge) for edge in before.edges())
     assert all(before.face_vertices(a) == after.face_vertices(b) for a, b in zip(before.faces(), after.faces()))
+    assert before.guid == after.guid
 
 
 def test_json_volmesh():
     before = VolMesh.from_vertices_and_cells(
-        [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]],
-        [[[0, 1, 5, 4], [1, 2, 5, 6], [2, 3, 7, 6], [3, 0, 4, 7], [4, 5, 6, 7], [0, 3, 2, 1]]])
+        [
+            [0, 0, 0],
+            [1, 0, 0],
+            [1, 1, 0],
+            [0, 1, 0],
+            [0, 0, 1],
+            [1, 0, 1],
+            [1, 1, 1],
+            [0, 1, 1],
+        ],
+        [
+            [
+                [0, 1, 5, 4],
+                [1, 2, 5, 6],
+                [2, 3, 7, 6],
+                [3, 0, 4, 7],
+                [4, 5, 6, 7],
+                [0, 3, 2, 1],
+            ]
+        ],
+    )
     after = compas.json_loads(compas.json_dumps(before))
     assert before.dtype == after.dtype
     assert before.attributes == after.attributes
@@ -88,12 +103,13 @@ def test_json_volmesh():
     # assert all(after.has_cell(cell) for cell in before.cells())
     # assert all(before.has_edge(edge) for edge in after.edges())
     # assert all(after.has_edge(edge) for edge in before.edges())
+    assert before.guid == after.guid
 
 
 def test_json_pretty():
     result = compas.json_dumps(dict(a=12, b=6565), pretty=True)
     # strip some spacing to make the test pass on ironpython
-    result = '\n'.join([line.strip() for line in result.split('\n')])
+    result = "\n".join([line.strip() for line in result.split("\n")])
     assert result == """{\n"a": 12,\n"b": 6565\n}"""
 
 

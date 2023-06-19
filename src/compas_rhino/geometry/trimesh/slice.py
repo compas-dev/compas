@@ -9,25 +9,20 @@ from Rhino.Geometry.Intersect.Intersection import MeshPlane
 from compas.plugins import plugin
 
 
-__all__ = [
-    'trimesh_slice',
-]
-
-
-@plugin(category="trimesh", requires=['Rhino'])
+@plugin(category="trimesh", requires=["Rhino"])
 def trimesh_slice(mesh, planes):
     """Slice a mesh by a list of planes.
 
     Parameters
     ----------
-    mesh : tuple of vertices and faces
+    mesh : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
         The mesh to slice.
-    planes : list of (point, normal) tuples or compas.geometry.Plane
+    planes : sequence[[point, vector] | :class:`~compas.geometry.Plane`]
         The slicing planes.
 
     Returns
     -------
-    list of arrays
+    list[list[[float, float, float]]]
         The points defining the slice polylines.
 
     Examples

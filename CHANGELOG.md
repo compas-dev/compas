@@ -9,12 +9,809 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
+* Added representation for features in `compas.datastructures.Part`.
+* Added  `split` and `split_by_length` to `compas.geometry.Polyline`.
+* Added `compas.rpc.XFunc`.
+* Added `compas.data.Data.validate_jsonstring`.
+* Added `compas.data.Data.validate_jsondata`.
+* Added `compas.data.Data.JSONSCHEMA`.
+* Added `compas.data.json_validate`.
+* Added `compas.datastructures.Graph.JSONSCHEMA`.
+* Added `compas.datastructures.Graph.to_jsondata`.
+* Added `compas.datastructures.Graph.from_jsondata`.
+* Added `compas.datastructures.Halfedge.JSONSCHEMA`.
+* Added `compas.datastructures.Halfface.JSONSCHEMA`.
+* Added `compas.geometry.Arc.JSONSCHEMA`.
+* Added `compas.geometry.Bezier.JSONSCHEMA`.
+* Added `compas.geometry.Box.JSONSCHEMA`.
+* Added `compas.geometry.Capsule.JSONSCHEMA`.
+* Added `compas.geometry.Circle.JSONSCHEMA`.
+* Added `compas.geometry.Cone.JSONSCHEMA`.
+* Added `compas.geometry.Cylinder.JSONSCHEMA`.
+* Added `compas.geometry.Ellipse.JSONSCHEMA`.
+* Added `compas.geometry.Frame.JSONSCHEMA`.
+* Added `compas.geometry.Line.JSONSCHEMA`.
+* Added `compas.geometry.NurbsCurve.JSONSCHEMA`.
+* Added `compas.geometry.NurbsSurface.JSONSCHEMA`.
+* Added `compas.geometry.Plane.JSONSCHEMA`.
+* Added `compas.geometry.Point.JSONSCHEMA`.
+* Added `compas.geometry.Pointcloud.JSONSCHEMA`.
+* Added `compas.geometry.Polygon.JSONSCHEMA`.
+* Added `compas.geometry.Polyhedron.JSONSCHEMA`.
+* Added `compas.geometry.Polyline.JSONSCHEMA`.
+* Added `compas.geometry.Sphere.JSONSCHEMA`.
+* Added `compas.geometry.Torus.JSONSCHEMA`.
+* Added `compas.geometry.Quaternion.JSONSCHEMA`.
+* Added `compas.geometry.Vector.JSONSCHEMA`.
+* Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
+* Added `compas.datastructures.Halfedge.halfedge_strip_faces`.
+* Added `compas.datastructures.Mesh.vertex_point`.
+* Added `compas.datastructures.Mesh.vertices_points`.
+* Added `compas.datastructures.Mesh.set_vertex_point`.
+* Added `compas.datastructures.Mesh.edge_start`.
+* Added `compas.datastructures.Mesh.edge_end`.
+* Added `compas.datastructures.Mesh.edge_line`.
+* Added `compas.datastructures.Mesh.face_points`.
+* Added `compas.datastructures.Mesh.face_polygon`.
+* Added `compas.datastructures.Mesh.face_circle`.
+* Added `compas.datastructures.Mesh.face_frame`.
+* Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
+* Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
+* Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
+
+### Changed
+
+* Fixed bug that caused a new-line at the end of the `compas.HERE` constant in IronPython for Mac.
+* Fixed unbound method usage of `.cross()` on `Plane`, `Vector` and `Frame`.
+* Fixed Grasshopper `draw_polylines` method to return `PolylineCurve` instead of `Polyline` because the latter shows as only points.
+* Fixed `area_polygon` that was, in some cases, returning a negative area.
+* Fixed uninstall post-process.
+* Fixed support for `System.Decimal` data type on json serialization.
+* Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
+* Simplified `compas.datastructures.Part` for more generic usage.
+* Changed `GLTFMesh.from_mesh` to read texture coordinates, vertex normals and colors if available and add to `GLTFMesh`
+* Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
+* Changed edge parameter of `compas.datastructures.Halfedge.edge_faces` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_face` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.is_edge_on_boundary` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_after` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_before` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangent` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangents` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_coordinates` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_length` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_vector` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_point` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_midpoint` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_direction` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.is_collapse_legal` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_insert_vertex_on_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_swap_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed `compas.datastructures.Mesh.vertex_laplacian` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.neighborhood_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.vertex_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_vector` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_direction` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_point` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.edge_midpoint` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.face_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_center` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_plane` to return `compas.geometry.Plane`.
+* Changed JSON validation to Draft202012.
+* Changed `compas.data.Data.to_json` to include `compact=False` parameter.
+* Changed `compas.data.Data.to_jsonstring` to include `compact=False` parameter.
+* Changed `compas.data.json_dump` to include `compact=False` parameter.
+* Changed `compas.data.json_dumps` to include `compact=False` parameter.
+* Changed `compas.data.DataEncoder` and `compas.data.DataDecoder` to support `to_jsondata` and `from_jsondata`.
+
+### Removed
+
+* Removed all `__all__` beyond second level package.
+* Removed deprecated `compas.utilities.coercing`.
+* Removed deprecated `compas.utilities.encoders`.
+* Removed deprecated `compas.utilities.xfunc`.
+* Removed `compas.datastructures.Halfedge.get_any_vertex`.
+* Removed `compas.datastructures.Halfedge.get_any_vertices`.
+* Removed `compas.datastructures.Halfedge.get_any_face`.
+* Removed "schemas" folder and all contained `.json` files from `compas.data`.
+* Removed `compas.data.Data.DATASCHEMA`.
+* Removed `compas.data.Data.JSONSCHEMANAME`.
+* Removed `compas.data.Data.jsondefinititions`.
+* Removed `compas.data.Data.jsonvalidator`.
+* Removed `compas.data.Data.validate_data`.
+* Removed `compas.datastructures.Graph.DATASCHEMA` and `compas.datastructures.Graph.JSONSCHEMANAME`.
+* Removed `compas.datastructures.Halfedge.DATASCHEMA` and `compas.datastructures.Halfedge.JSONSCHEMANAME`.
+* Removed `compas.datastructures.Halfface.DATASCHEMA` and `compas.datastructures.Halfface.JSONSCHEMANAME`.
+* Removed `compas.geometry.Arc.DATASCHEMA` and `compas.geometry.Arc.JSONSCHEMANAME`.
+* Removed `compas.geometry.Bezier.DATASCHEMA` and `compas.geometry.Bezier.JSONSCHEMANAME`.
+* Removed `compas.geometry.Box.DATASCHEMA` and `compas.geometry.Box.JSONSCHEMANAME`.
+* Removed `compas.geometry.Capsule.DATASCHEMA` and `compas.geometry.Capsule.JSONSCHEMANAME`.
+* Removed `compas.geometry.Circle.DATASCHEMA` and `compas.geometry.Circle.JSONSCHEMANAME`.
+* Removed `compas.geometry.Cone.DATASCHEMA` and `compas.geometry.Cone.JSONSCHEMANAME`.
+* Removed `compas.geometry.Cylinder.DATASCHEMA` and `compas.geometry.Cylinder.JSONSCHEMANAME`.
+* Removed `compas.geometry.Ellipse.DATASCHEMA` and `compas.geometry.Ellipse.JSONSCHEMANAME`.
+* Removed `compas.geometry.Frame.DATASCHEMA` and `compas.geometry.Frame.JSONSCHEMANAME`.
+* Removed `compas.geometry.Line.DATASCHEMA` and `compas.geometry.Line.JSONSCHEMANAME`.
+* Removed `compas.geometry.NurbsCurve.DATASCHEMA` and `compas.geometry.NurbsCurve.JSONSCHEMANAME`.
+* Removed `compas.geometry.NurbsSurface.DATASCHEMA` and `compas.geometry.NurbsSurface.JSONSCHEMANAME`.
+* Removed `compas.geometry.Plane.DATASCHEMA` and `compas.geometry.Plane.JSONSCHEMANAME`.
+* Removed `compas.geometry.Point.DATASCHEMA` and `compas.geometry.Point.JSONSCHEMANAME`.
+* Removed `compas.geometry.Pointcloud.DATASCHEMA` and `compas.geometry.Pointcloud.JSONSCHEMANAME`.
+* Removed `compas.geometry.Polygon.DATASCHEMA` and `compas.geometry.Polygon.JSONSCHEMANAME`.
+* Removed `compas.geometry.Polyhedron.DATASCHEMA` and `compas.geometry.Polyhedron.JSONSCHEMANAME`.
+* Removed `compas.geometry.Polyline.DATASCHEMA` and `compas.geometry.Polyline.JSONSCHEMANAME`.
+* Removed `compas.geometry.Sphere.DATASCHEMA` and `compas.geometry.Sphere.JSONSCHEMANAME`.
+* Removed `compas.geometry.Torus.DATASCHEMA` and `compas.geometry.Torus.JSONSCHEMANAME`.
+* Removed `compas.geometry.Quaternion.DATASCHEMA` and `compas.geometry.Quaternion.JSONSCHEMANAME`.
+* Removed `compas.geometry.Vector.DATASCHEMA` and `compas.geometry.Vector.JSONSCHEMANAME`.
+* Removed `compas.datastructures.Graph.key_index`and `compas.datastructures.Graph.index_key`.
+* Removed `compas.datastructures.Graph.uv_index`and `compas.datastructures.Graph.index_uv`.
+* Removed `compas.datastructures.Halfedge.key_index` and `compas.datastructures.Halfedge.index_key`.
+
+## [1.17.5] 2023-02-16
+
+### Added
+
+* Added conversion function `frame_to_rhino_plane` to `compas_rhino.conversions`.
+* Added `RhinoSurface.from_frame` to `compas_rhino.geometry`.
+* Added representation for trims with `compas.geometry.BrepTrim`.
+* Added `Arc` to `compas.geometry`.
+* Added `Arc` conversion functions to `compas_rhino.conversions`.
+* Added `from_sphere` alternative constructor to `RhinoBrep`.
+* Added support for singular trims to `RhinoBrep`.
+
+### Changed
+
+* Patched [CVE-2007-4559](https://github.com/advisories/GHSA-gw9q-c7gh-j9vm) vulnerability.
+* Updated workflows to v2.
+* Fixed attribute error in `compas_rhino.conversions.ellipse_to_compas`.
+* Changed deepcopy of `RhinoBrep` to use the native `Rhino.Geometry` mechanism.
+* The normal of the cutting plane is no longer flipped in `compas_rhino.geometry.RhinoBrep`.
+* Planar holes caused by `RhinoBrep.trim` are now automatically capped.
+* Fixed `Polygon` constructor to not modify the input list of points.
+* Fixed serialization of sphere and cylinder Breps in `RhinoBrep`.
+* Fixed serialization of some trimmed shapes in `RhinoBrep`.
+* Freeze black version to 22.12.0.
+* Fixed `is_point_in_circle_xy` second argument to access the origin of the plane of the circle.
+* Changed `compas.datastructures.Graph.data` to contain unprocessed `node` and `edge` dicts.
+* Changed `compas.datastructures.Halfedge.data` to contain unprocessed `vertex`, `face`, `facedata`, and `edgedata` dicts.
+* Changed `compas.datastructures.Halfface.data` to contain unprocessed `vertex`, `cell`, `edge_data`, `face_data`, and `cell_data` dicts.
+* Changed `compas.geometry.Arc.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Bezier.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Box.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Capsule.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Circle.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Cone.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Cylinder.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Ellipse.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Frame.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Line.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.NurbsCurve.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.NurbsSurface.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Plane.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Pointcloud.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Polygon.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Polyhedron.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Polyline.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Sphere.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Torus.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Quaternion.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+
+### Removed
+
+
+## [1.17.4] 2022-12-06
+
+### Added
+
+* Added option for per-vertex color specification to `compas_rhino.utilities.drawing.draw_mesh`.
+
+### Changed
+
+* Fixed strange point values in RhinoNurbsCurve caused by conversion `ControlPoint` to COMPAS instead of `ControlPoint.Location`.
+* Fixed flipped order of NURBS point count values when creating RhinoNurbsSurface from parameters.
+* Changed serialization format and reconstruction procedure of `RhinoBrep`.
+
+### Removed
+
+* Removed Python 3.6 from build workflows as it reached end-of-life at the end of 2021.
+
+
+## [1.17.3] 2022-11-09
+
+### Added
+
+* Added `compas_rhino.INSTALLATION_ARGUMENTS`.
+
+### Changed
+
+* Fixed bug in Rhino installation due to redefinition of command line arguments in `compas_ghpython.components.get_version_from_args`.
+
+### Removed
+
+
+## [1.17.2] 2022-11-07
+
+### Added
+
+### Changed
+
+* Changed `compas._os._polyfill_symlinks` to use junction (/J) instead of symbolic link (/D).
+
+### Removed
+
+
+## [1.17.1] 2022-11-06
+
+### Added
+
+* Added `compas_rhino.geometry.RhinoCurve.offset`.
+* Added `compas.geometry.Surface.from_plane`.
+* Added `compas.geometry.surfaces.surface.new_surface_from_plane` pluggable.
+* Added `compas_rhino.geometry.surfaces.new_surface_from_plane` plugin.
+* Added `compas_rhino.geometry.RhinoSurface.intersections_with_curve`.
+
+### Changed
+
+* Fixed bug in `compas_rhino.geometry.RhinoCurve.frame_at`.
+* Changed implementation of `compas.datastructures.mesh_planarize_faces` to include edge midpoints.
+
+### Removed
+
+
+## [1.17.0] 2022-10-07
+
+### Added
+
+* Added gltf extensions: `KHR_materials_transmission`, `KHR_materials_specular`, `KHR_materials_ior`, `KHR_materials_clearcoat`, `KHR_Texture_Transform`, `KHR_materials_pbrSpecularGlossiness`
+* Added `GLTFContent.check_extensions_texture_recursively`
+* Added `GLTFContent.get_node_by_name`, `GLTFContent.get_material_index_by_name`
+* Added `GLTFContent.add_material`, `GLTFContent.add_texture`, `GLTFContent.add_image`
+* Added pluggable `Brep` support with `compas.geometry.brep`.
+* Added Rhino `Brep` plugin in `compas_rhino.geometry.brep`.
+* Added boolean operations to the `compas_rhino` `Brep` backend.
+* Added boolean operation operator overloads in `compas.geometry.Brep`
+* Added `format` task using `black` formatter.
+* Added a `test_intersection_circle_circle_xy` in the `test_intersections`
+* Added split operation to `compas_rhino.geometry.Brep`.
+* Added a `RhinoArtist` in `compas_rhino`.
+* Added a `RhinoArtist` in `compas_ghpython`.
+
+### Changed
+
+* Based all gltf data classes on `BaseGLTFDataClass`
+* Fixed `Color.__get___` AttributeError.
+* Fixed  `RhinoSurface.curvature_at` not returning a Vector, but a Rhino SurfaceCurvature class object 
+* Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
+* Changed identification of cylinder brep face to non-zero in `compas_rhino.conversions.cylinder.Cylinder`.
+* Changed linter to `black`.
+* Automatically trigger `invoke format` during `invoke release`.
+* Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
+* Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
+* Fixed the `test_tangent` to work with a properly defined circle
+* `RhinoBrep` serialization works now with surface types other than NURBS.
+* Fixed bug in finding halfedge before a given halfedge if that halfedge is on the boundary (`Mesh.halfedge_before`).
+* Renamed `Brep.from_brep` to `Brep.from_native`.
+
+### Removed
+
+
+## [1.16.0] 2022-06-20
+
+
+### Added
+
+* Added `Polyline.extend`, `Polyline.extended`, `Polyline.shorten`,  `Polyline.shortened`.
+* Added `Data.sha256` for computing a hash value of data objects, for example for comparisons during version control.
+* Added optional `path` parameter to `compas.rpc.Proxy` to allow for non-package calls.
+* Added Grasshopper component to call RPC functions.
+* Added alternative installation procedure for Blender on Windows.
+* Added `Mesh.to_lines` method and tests.
+* Added `Data.guid` to JSON serialization.
+* Added `Data.guid` to pickle state.
+* Added `Assembly.find_by_key` to locate parts by key.
+* Added `clear_edges` and `clear_nodes` to `NetworkArtist` for ghpython.
+* Added `ToString` method to `Data` to ensure that Rhino/Grasshopper correctly casts objects to string.
+
+### Changed
+
+* Set `jinja >= 3.0` to dev dependencies to fix docs build error.
+* Fixed removing of collections for `compas_plotters`.
+* Fixed bug in `compas_plotters.plotter.Plotter.add_from_list`.
+* Fixed bug in `compas.robots.Configuration`.
+* Rebuild part index after deserialization in `Assembly`.
+* Fixed bug in `compas.artists.colordict.ColorDict`.
+* Change `Mesh.mesh_dual` with option of including the boundary. 
+* Fixed type error in `compas_rhino.conversions.box_to_rhino`.
+* Moved from `autopep8` to `black`
+* Fixed bug in `compas.utilities.linspace` for number series with high precision start and stop values.
+* Fixed uncentered viewbox in `Plotter.zoom_extents()`
+* Changed `RobotModelArtists.atteched_tool_models` to dictionary to support multiple tools.
+* Locked `sphinx` to 4.5.
+* Changed `GLTFExporter` such that generated gltfs can be viewed with webxr
+* Fixed source directory path in `compas_ghpython.uninstall` plugin.
+* Fixed bug in`compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
+* Fixed conversion bug of transformed `Box` in `compas_rhino.conversions`
+
+### Removed
+
+* Removed unused `compas_rhino.objects` (moved to `compas_ui`).
+* Removed unused `compas_rhino.ui` (moved to `compas_ui`).
+
+
+## [1.15.1] 2022-03-28
+
+### Added
+
+* Added optional `triangulated` flag to `Mesh.to_vertices_and_faces`.
+* Added geometry information of active meshes to the serialization/deserialization of robot model's `MeshDescriptor`.
+* Added Grasshopper component to draw any COMPAS object.
+* Added new icons to Grasshopper components and default to icon style.
+
+### Changed
+
+* Fixed bug in `normal_polygon` in `compas.geometry`.
+* Fixed bug in Blender mesh conversion.
+* Changed Rhino plugin installer to check for and install required plugin packages.
+* Refactor robot model artists to use the same `Mesh.to_vertices_and_faces` everywhere.
+* Fix debug print on Blender artist.
+
+### Removed
+
+
+## [1.15.0] 2022-03-22
+
+### Added
+
+* Added descriptor support to `compas.colors.Color`.
+* Added descriptor protocol metaclass to `compas.artists.Artist`.
+* Added `compas.artists.colordict.ColorDict` descriptor.
+* Added `allclose` to doctest fixtures.
+* Added `compas.colors.Color.coerce` to construct a color out og hex, RGB1, and RGB255 inputs.
+* Added `compas.datastructures.Network.from_pointcloud`.
+* Added `compas.datastructures.VolMesh.from_meshgrid`.
+* Added `vertices_where`, `vertices_where_predicate`, `edges_where`, `edges_where_predicate` to `compas.datastructures.HalfFace`.
+* Added `faces_where`, `faces_where_predicate`, `cells_where`, `cells_where_predicate` to `compas.datastructures.HalfFace`.
+* Added `VolMeshArtist` to registered Blender artists.
+* Added `3.1` to supported versions for Blender installer.
+* Added `compas.artist.NoArtistContextError`.
+
+### Changed
+
+* Changed `compas.geometry.surfaces.nurbs.from_fill` to accept up to 4 curves as input.
+* Changed `compas_rhino.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_blender.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_ghpython.artists.MeshArtist.draw` to draw the mesh only.
+* Changed `compas_rhino.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_rhino.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_blender.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_vertexlabels` to use the colors of the vertex color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_edgelabels` to use the colors of the edge color dict.
+* Changed `compas_ghpython.artists.MeshArtist.draw_facelabels` to use the colors of the face color dict.
+* Fixed `compas_blender.uninstall`.
+* Changed `planarity` to optional requirement on all platforms.
+* Changed `numba` to optional requirement on all platforms.
+* Changed raw github content path for `compas.get`.
+* Changed `compas.datastructures.Graph.nodes_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Graph.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.vertices_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfedge.faces_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.vertices_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.edges_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.faces_where` to accept conditions as kwargs.
+* Changed `compas.datastructures.Halfface.cells_where` to accept conditions as kwargs.
+* Fixed `compas_blender.artists.VolMeshArtist.draw` and `compas_blender.artists.VolMeshArtist.draw_cells`.
+* Fixed `compas_ghpython.artists.VolMeshArtist.draw` and `compas_ghpython.artists.VolMeshArtist.draw_cells`.
+* Fixed `compas_rhino.artists.VolMeshArtist.draw` and `compas_rhino.artists.VolMeshArtist.draw_cells`.
+* Improved error messages when artist instance cannot be created.
+* Fixed exception when calculating geometry of `compas.datastructures.Part` without features.
+* Fixed bug in `compas_rhino.conversions.RhinoCurve.to_compas`.
+* Fixed bug in `compas_rhino.conversions.RhinoSurface.to_compas`.
+
+### Removed
+
+* Removed `compas.numerical.drx`.
+
+
+## [1.14.1] 2022-02-16
+
+### Added
+
+* Added doc test step in CI/CD.
+
+### Changed
+
+* Fixed symlink expansion for directories relative to the COMPAS installation folder, eg. `compas.DATA` when used from IronPython.
+* Fixed the result of `compas.__version__` on dev installs to properly include git hash.
+* Move `data` files inside the folder included in the source distribution (ie. non-dev installs).
+* Fixed IronPython detection on ipy 2.7.12 and higher.
+
+### Removed
+
+
+## [1.14.0] 2022-02-06
+
+### Added
+
+* Added `compas.colors.Color`.
+* Added `compas.colors.ColorMap`.
+* Added `compas_blender.conversions.BlenderGeometry`.
+* Added `compas_blender.conversions.BlenderCurve`.
+* Added `compas_blender.conversions.BlenderMesh`.
+* Added option to return strip faces from `compas.datastructure.Halfedge.edge_strip`.
+* Added `compas.geometry.Bezier.transform`.
+* Added `compas.geometry.Curve` as base class for curves.
+* Added `compas.geometry.Surface` as base class for surfaces.
+* Added `compas_rhino.geometry.RhinoCurve` as Rhino plugin for basic curves.
+* Added `compas_rhino.geometry.RhinoSurface` as Rhino plugin for basic surfaces.
+* Added pluggable `compas.geometry.curves.curve.new_curve`.
+* Added pluggable `compas.geometry.surfaces.surface.new_surface`.
+* Added `compas.artists.CurveArtist`.
+* Added `compas.artists.SurfaceArtist`.
+* Added `compas_rhino.artists.CurveArtist`.
+* Added `compas_rhino.artists.SurfaceArtist`.
+* Added `compas_ghpython.artists.CurveArtist`.
+* Added `compas_ghpython.artists.SurfaceArtist`.
+* Added `compas_blender.artists.CurveArtist`.
+* Added `compas_blender.artists.SurfaceArtist`.
+* Added `compas_rhino.utilities.draw_curves`.
+* Added `compas_rhino.utilities.draw_surfaces`.
+* Added `compas_blender.utilities.draw_curves`.
+* Added `compas_blender.utilities.draw_surfaces`.
+* Added `rgba` and `rgba255` properties to `compas.colors.Color`.
+* Added `from_name` method to `compas.colors.Color`.
+* Added Python 3.10 support.
+* Added `RobotModel.ur5` for the sake of example.
+
+### Changed
+
+* Fixed bug in `mesh_slice_plane()` , `Mesh.slice_plane()`.
+* Changed `compas_rhino.geometry.RhinoNurbsSurface.closest_point` to fix bug of rhino_curve to rhino_surface, plus return tuple instead.
+* Changed `compas_plotters.plotter.Plotter` to normal class instead of singleton.
+* Moved functionality of `compas.utilities.coercion` to `compas.data`.
+* Fixed bug in `compas.geometry.NurbsSurface.to_triangles()`.
+* Renamed docs site folders `latest` to `stable` and `dev` to `latest`.
+* Rebased `compas.geometry.NurbsCurve` on `compas.geometry.Curve`.
+* Rebased `compas.geometry.NurbsSurface` on `compas.geometry.Surface`.
+* Rebased `compas_rhino.geometry.RhinoNurbsCurve` on `compas.geometry.NurbsCurve` and `compas_rhino.geometry.RhinoCurve`.
+* Rebased `compas_rhino.geometry.RhinoNurbsSurface` on `compas.geometry.NurbsSurface` and `compas_rhino.geometry.RhinoSurface`.
+* Fixed error message for unsupported joint types.
+* Fixed support for non-standard URDF attributes on limit and mesh geometry.
+* Fixed data serialization for URDF materials without color.
+* Removed geometric primitives (`Origin`, `Box`, `Sphere`, `Cylinder` and `Capsule`) from `compas.robots` and replaced them with the core ones from `compas.geometry`. The old names are still available but deprecated.
+* Deprecated the `load_mesh` method of `compas.robots.AbstractMeshLoader` and its sub-classes in favor of `load_meshes`.
+* Fixed bug in `compas_rhino.conversions.RhinoGeometry.transform`.
+
+### Removed
+
+* Removed `compas.geometry.Collection`.
+* Removed `compas.geometry.CollectionNumpy`.
+* Removed `compas.geometry.PointCollection`.
+* Removed `compas.geometry.PointCollectionNumpy`.
+* Removed `compas.interop`.
+* Removed `numba`; `compas.numerical.drx` will be moved to a dedicated extension package.
+* Removed `ezdxf` (unused).
+* Removed `laspy` (unused).
+* Removed `compas_rhino.artists.MeshArtist.draw_mesh`.
+* Removed `compas_blender.artists.MeshArtist.draw_mesh`.
+
+## [1.13.3] 2021-12-17
+
+### Added
+
+* Added `compas_plotters.artists.NetworkArtist.draw_nodelabels`.
+* Added `compas_plotters.artists.NetworkArtist.draw_edgelabels`.
+* Added `compas_plotters.Plotter.fontsize`.
+* Added `INSTALLED_VERSION` variable to `compas_rhino.install` to interally inform rhino version context post-installation steps.
+* Added `compas_rhino.geometry.RhinoNurbsSurface`.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_parameters` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_points` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_fill` plugin.
+* Added `compas_rhino.geometry.surfaces.new_nurbssurface_from_step` plugin.
+* Added `compas_rhino.conversions.RhinoSurface.to_compas`.
+
+### Changed
+
+* Fixed bug in inheritance of `compas_plotters.artists.NetworkArtist`.
+* Changed `compas_plotters.artists.MeshArtist.draw_edges` to ignore edge direction for assignment of edge colors and widths.
+* Changed `compas_plotters.artists.MeshArtist.draw_vertexlabels` to use `compas_plotters.Plotter.fontsize`.
+* Changed `compas_plotters.artists.MeshArtist.draw_edgelabels` to use `compas_plotters.Plotter.fontsize`.
+* Changed `compas_plotters.artists.MeshArtist.draw_facelabels` to use `compas_plotters.Plotter.fontsize`.
+* Fixed bug in `compas_rhino.conversions.plane_to_compas_frame`.
+* Changed implementation of `compas.geometry.NurbsSurface.xyz`.
+* Fixed bug in `compas.geometry.NurbsSurface.to_mesh`.
+* Changed `compas_rhino.geometry.RhinoNurbsSurface.from_points` to use transposed points.
+* Fixed bug in `compas_rhino.conversions.RhinoSurface.to_compas_mesh`.
+
+### Removed
+
+
+## [1.13.2] 2021-12-11
+
+### Added
+
+* Added `compas_ghpython.fetch_ghio_lib` to simplify the loading of Grasshopper's IO library for extension developers.
+
+### Changed
+
+### Removed
+
+
+## [1.13.1] 2021-12-11
+
+### Added
+
+### Changed
+
+* Fixed bug in `Grasshopper` plugin path on Windows.
+* Fixed bug in `Grasshopper` `UserObjects` uninstall.
+
+### Removed
+
+
+## [1.13.0] 2021-12-10
+
+### Added
+
+* Added `compas_rhino.DEFAULT_VERSION`.
+* Added `clean` option to `compas_rhino.install` to remove existing symlinks if they cannot be imported from the current environment.
+* Added basic implementation of `compas.datastructures.Assembly`.
+* Added `compas.is_grasshopper`.
+* Added `compas.GH`.
+* Added `compas.artists.Artist.CONTEXT`.
+* Added `compas.artists.Artist.AVAILABLE_CONTEXTS`.
+* Added `compas.artists.artist.register_artists` pluggable.
+
+### Changed
+
+* Updated `pr-checks` workflow for checking Changelog entry.
+* Fixed return value of attributes of empty `compas_rhino.geometry.RhinoNurbsCurve`.
+* Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve`.
+* Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_interpolation`.
+* Fixed error in parameter list of `compas_rhino.geometry.curves.new_nurbscurve_from_step`.
+* Changed `compas_rhino.install` to remove broken symlinks.
+* Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
+* Changed `compas_rhino.uninstall` to remove broken symlinks.
+* Changed `compas_rhino.install_plugin` to remove broken symlinks.
+* Changed default Rhino version for installation to `7.0`.
+* Fixed bug in `compas_ghpython` related to importing `Grasshopper` prematurely.
+* Changed `compas.artists.Artist.ITEM_ARTIST` to context-based dict.
+* Changed `compas_rhino.__init__.py` functions.
+* Changed `compas_ghpython.__init__.py` functions.
+* Renamed `compas_ghpython.get_grasshopper_plugin_path` to `compas_ghpython.get_grasshopper_managedplugin_path`.
+
+### Removed
+
+* Removed `compas.artists.artist.new_artist` pluggable.
+
+
+## [1.12.2] 2021-11-30
+
+### Added
+
+### Changed
+
+* Moved import of `subprocess` to top of file `compas._os.py`.
+
+### Removed
+
+
+## [1.12.1] 2021-11-29
+
+### Added
+
+### Changed
+
+* Fixed bug in `compas_rhino.conversions.RhinoPoint.from_geometry`.
+* Changed `compas_rhino.install` to remove broken symlinks.
+* Changed `compas_rhino.install` to reinstall broken symlinks if they can be imported from the current environment.
+* Changed `compas_rhino.uninstall` to remove broken symlinks.
+* Changed `compas_rhino.install_plugin` to remove broken symlinks.
+
+### Removed
+
+
+## [1.12.0] 2021-11-17
+
+### Added
+
+* Added `CircleArtist`, `LineArtist`, `PointArtist`, `PolygonArtist`, `PolylineArtist`, and `VectorArtist` to `compas_blender`.
+* Added `draw_circles` and `draw_planes` to `compas_blender`.
+* Added `compas_rhino.geometry.curves` plugins for `compas.geometry.curves` pluggables.
+* Added `compas_rhino.geometry.RhinoNurbsCurve`.
+* Added `to_compas_quadmesh` to `compas_rhino.conversions.RhinoSurface`.
+
+### Changed
+
+* Replaced implementation of `RGBColour` and `Float` with deprecation warning in `compas.utilities.descriptors`.
+* Moved all Rhino geometry and objects wrappers to `compas_rhino.conversions`.
+* Fixed bug in `compas_rhino.conversions.RhinoSurface.from_geometry`.
+* Changed `compas_rhino.conversions.RhinoLine.from_geometry` to accept line curves.
+* Fixed bug in `compas_rhino.geometry.RhinoNurbsCurve.closest_point`.
+* Modify `to_compas_mesh` in `compas_rhino.conversions.RhinoSurface` to use brep loops.
+
+### Removed
+
+
+## [1.11.1] 2021-11-09
+
+### Added
+
+### Changed
+
+* Changed `compas_rhino.uninstall` to also remove broken symlinks if no specific packages are provided for un-installation.
+* Changed `compas_rhino.install` to also remove broken symlinks.
+
+### Removed
+
+
+## [1.11.0] 2021-11-08
+
+### Added
+
+* Added halfedge loops in `compas.datastructures.Halfedge.halfedge_loop`.
+* Added halfedge strips in `compas.datastructures.Halfedge.halfedge_strip`.
+* Added `compas.datastructures.mesh_split_strip` and `compas.datastructures.Mesh.split_strip`.
+* Added boundingbox to `compas_rhino.conduits.BaseConduit`
+
+### Changed
+
+* Fixed bug in combination of `compas_rhino.artists.MeshArtist.draw_mesh` and `compas_rhino.utilities.drawing.draw_mesh`.
+* Fixed bug in continuous loops in `compas.datastructures.Halfedge.edge_loop`.
+* Fixed bug in continuous strips in `compas.datastructures.Halfedge.edge_strip`.
+* Changed abstract method `compas.artists.MeshArtist.draw_mesh` to implemented method in `compas_plotters.artists.MeshArtist.draw_mesh`.
+
+### Removed
+
+
+## [1.10.0] 2021-11-04
+
+### Added
+
+* Added `compas.geometry.Curve` and `compas.geometry.NurbsCurve`.
+* Added `compas.geometry.Surface` and `compas.geometry.NurbsSurface`.
+* Added pluggables for `compas.geometry.NurbsCurve.__new__`, `compas.geometry.NurbsCurve.from_parameters`, `compas.geometry.NurbsCurve.from_points`, `compas.geometry.NurbsCurve.from_interpolation`, `compas.geometry.NurbsCurve.from_step`.
+* Added pluggables for `compas.geometry.NurbsSurface.__new__`, `compas.geometry.NurbsSurface.from_parameters`, `compas.geometry.NurbsSurface.from_points`, `compas.geometry.NurbsSurface.from_fill`, `compas.geometry.NurbsSurface.from_step`.
+* Added missing implementations for abstract clear methods of `compas_rhino.artists.volmeshartist`.
+
+* Added `compas_rhino.geometry.RhinoBox`, `compas_rhino.geometry.RhinoCircle`, `compas_rhino.geometry.RhinoCone`, `compas_rhino.geometry.RhinoCurve`, `compas_rhino.geometry.RhinoCylinder`, `compas_rhino.geometry.RhinoEllipse`, `compas_rhino.geometry.RhinoLine`, `compas_rhino.geometry.RhinoMesh`, `compas_rhino.geometry.RhinoPlane`, `compas_rhino.geometry.RhinoPoint`, `compas_rhino.geometry.RhinoPolyline`, `compas_rhino.geometry.RhinoSphere`, `compas_rhino.geometry.RhinoSurface`, `compas_rhino.geometry.RhinoVector` as wrappers for working with Rhino geometry through geometry conversions or coercion of doc objects.
+* Added `compas_rhino.conversions` from COMPAS geometry to Rhino geometry and vice versa, for primitives, shapes, curves, surfaces, meshes.
+* Added `compas_rhino.coercion` from Rhino doc objects to Rhino geometry compatible with COMPAS geometry.
+
+### Changed
+
+* Fixed bug in directions of `compas.datastructures.Mesh.from_meshgrid`.
+* Fixed bug in Rhino mesh face drawing.
+* Fixed bug related to legacy uninstall on Rhino for Mac.
+
+### Removed
+
+
+## [1.9.3] 2021-11-02
+
+### Added
+
+### Changed
+
+* Changed default path for Rhino 7 legacy install cleanup to Rhino7.app in `compas_rhino.__init__.py`.
+* Changed z-coordinate of `compas.datastructures.Mesh.from_meshgrid` to `0.0` instead of `0`.
+
+### Removed
+
+
+## [1.9.2] 2021-11-02
+
+### Added
+
+* Added `draw_mesh` method to `compas_ghpython.artists.MeshArtist` to match all other mesh artists.
+
+### Changed
+
+* Changed new artist registration to check if subclass.
+* Fixed `RobotModelArtist` for blender: missing abstract method impl and handle init order.
+
+### Removed
+
+
+## [1.9.1] 2021-10-22
+
+### Added
+
+* Added `Plane.offset`.
+* Added `is_mesh_closed` property to `compas.datastructures.mesh_slice_plane`.
+
+### Changed
+
+* Fixed backward compatibility problem with artists by adding back `Artist.build` and `Artist.build_as`.
+* Fixed backward compatibility problem with artists by adding `compas_rhino.artists.BaseArtist` alias for `compas_rhino.artists.RhinoArtist`.
+
+### Removed
+
+
+## [1.9.0] 2021-10-21
+
+### Added
+
+* Added `draw_vertexlabels`, `draw_edgelabels`, `draw_facelabels`, `draw_vertexnormals`, and `draw_facenormals` to `compas_blender.artists.MeshArtist`.
+* Added optional `triangulated` flag to `to_vertices_and_faces` of all shapes.
+* Added `compas.geometry.Geometry` base class.
+* Added `__add__`, `__sub__`, `__and__` to `compas.geometry.Shape` for boolean operations using binary operators.
+* Added `is_closed` to `compas.geometry.Polyhedron`.
+* Added `Plane.offset`.
+* Added `compas.artists.Artist`.
+* Added pluggable `compas.artists.new_artist`.
+* Added plugin `compas_rhino.artists.new_artist_rhino`.
+* Added plugin `compas_blender.artists.new_artist_blender`.
+* Added `compas.artist.DataArtistNotRegistered`.
+* Added `draw_node_labels` and `draw_edgelabels` to `compas_blender.artists.NetworkArtist`.
+* Added `compas_blender.artists.RobotModelArtist.clear`.
+* Added `compas_blender.geometry.booleans` as plugin for boolean pluggables.
+* Added version-based installation for Blender.
+* Added several shape artists to `compas_ghpython`: `BoxArtist`, `CapsuleArtist`, `ConeArtist`, `CylinderArtist`, `PolygonArtist`, `PolyhedronArtist`, `SphereArtist`, `TorusArtist` and `VectorArtist`.
+* Added support for CLR generic dictionaries to the `compas.data` decoders.
+* Added `Graph.node_sample`, `Graph.edge_sample`.
+* Added `Halfedge.vertex_sample`, `Halfedge.edge_sample`, `Halfedge.face_sample`.
+* Added `Halfface.vertex_sample`, `Halfface.edge_sample`, `Halfface.face_sample`, `Halfface.cell_sample`.
+* Added `Mesh.from_meshgrid`.
+
+### Changed
+
+* Fixed bug in `compas_blender.draw_texts`.
+* Changed `compas_rhino.artists.BaseArtist` to `compas_rhino.artists.RhinoArtist`.
+* Changed `compas_blender.artists.BaseArtist` to `compas_blender.artists.BlenderArtist`.
+* Changed default resolution for shape discretisation to 16 for both u and v where relevant.
+* Changed base class of `compas.geometry.Primitive` and `compas.geometry.Shape` to `compas.geometry.Geometry`.
+* `compas_blender.artists.RobotModelArtist.collection` can be assigned as a Blender collection or a name.
+* Generalized the parameter `color` of `compas_blender.draw_texts` and various label drawing methods.
+* Changed `compas.IPY` to `compas.RHINO` in `orientation_rhino`.
+* Changed `planarity` to `requires_extra` for pip installations.
+* Fixed bug in handling of ngonal meshes in `compas_ghpython` artists / drawing functions.
+
+### Removed
+
+
+## [1.8.1] 2021-09-08
+
+### Added
+
+### Changed
+
+### Removed
+
+
+## [1.8.0] 2021-09-08
+
+### Added
+
 * Added pluggable function `trimesh_slice` in `compas_rhino`.
 * Added equality comparison for pointclouds.
 * Added `compas.data.is_sequence_of_uint`.
 * Added general plotter for geometry objects and data structures based on the artist registration mechanism.
 * Added support for multimesh files to OBJ reader/writer.
+* Added support for attaching and detaching meshes in `compas.robots.RobotModelArtist` and drawing them.
 * Added `reshape` in `compas.utilities`.
+* Added `compas.geometry.NurbsCurve`.
+* Added `compas.geometry.NurbsSurface`.
+* Added `compas_rhino.conversions`.
+* Added `compas_rhino.geometry.RhinoBox`.
+* Added `compas_rhino.geometry.RhinoCone`.
+* Added `compas_rhino.geometry.RhinoCylinder`.
+* Added `compas_rhino.geometry.RhinoPolyline`.
+* Added `compas_rhino.geometry.RhinoSphere`.
+* Added basic implementation of `compas.datastructures.Assembly`.
+* Added `meshes` method to artists of `compas.robots.RobotModel`.
+* Added `FrameArtist` class to `compas_blender`.
 
 ### Changed
 
@@ -26,8 +823,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.drawing.draw_breps` to assume provided polygon is closed and automatically add missing corner to polycurve constructor.
 * Changed conversion of edges and faces to uniques keys for the data dicts to use the string representation of a sorted tuple of identifiers.
 * Added `dtype` to JSON decoding error message.
+* Moved `compas.datastructures.mesh.core.halfedge.HalfEdge` to `compas.datastructures.halfedge.halfedge.HalfEdge`
+* Moved `compas.datastructures.network.core.graph.Graph` to `compas.datastructures.graph.graph.Graph`.
 
 ### Removed
+
+* Removed `compas.datastructures.mesh.core.mesh.BaseMesh`.
+* Removed `compas.datastructures.BaseNetwork`.
 
 ## [1.7.1] 2021-06-14
 
@@ -80,6 +882,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `kwargs` to all child classes of `compas.data.Data`.
 * Added grasshopper component for drawing a frame.
 * Added `draw_origin` and `draw_axes`.
+* Added `compas.PY2`.
 
 ### Changed
 
@@ -297,7 +1100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
+* Added `compas.datastructures.mesh.trimesh_samplepoints_numpy`.
 
 ### Changed
 

@@ -6,44 +6,20 @@ from math import fabs
 
 from compas.utilities import window
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import normalize_vector
-from compas.geometry._core import centroid_points
-from compas.geometry._core import normal_polygon
-from compas.geometry._core import length_vector_sqrd
+from compas.geometry import subtract_vectors
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import normalize_vector
+from compas.geometry import centroid_points
+from compas.geometry import normal_polygon
+from compas.geometry import length_vector_sqrd
 
-from compas.geometry._core import distance_point_point
-from compas.geometry._core import distance_point_plane
-from compas.geometry._core import distance_point_line
-from compas.geometry._core import closest_point_on_segment
+from compas.geometry import distance_point_point
+from compas.geometry import distance_point_plane
+from compas.geometry import distance_point_line
+from compas.geometry import closest_point_on_segment
 
-from compas.geometry._core import area_triangle
-
-
-__all__ = [
-    'is_colinear',
-    'is_colinear_line_line',
-    'is_coplanar',
-    'is_polygon_convex',
-    'is_point_on_plane',
-    'is_point_infront_plane',
-    'is_point_behind_plane',
-    'is_point_in_halfspace',
-    'is_point_on_line',
-    'is_point_on_segment',
-    'is_point_on_polyline',
-    'is_point_in_triangle',
-    'is_point_in_circle',
-    'is_point_in_polyhedron',
-    'is_intersection_line_line',
-    'is_intersection_segment_segment',
-    'is_intersection_line_triangle',
-    'is_intersection_line_plane',
-    'is_intersection_segment_plane',
-    'is_intersection_plane_plane',
-]
+from compas.geometry import area_triangle
 
 
 def is_colinear(a, b, c, tol=1e-6):
@@ -51,21 +27,20 @@ def is_colinear(a, b, c, tol=1e-6):
 
     Parameters
     ----------
-    a : [x, y, z] or :class:`compas.geometry.Point`
+    a : [float, float, float] | :class:`~compas.geometry.Point`
         Point 1.
-    b : [x, y, z] or :class:`compas.geometry.Point`
+    b : [float, float, float] | :class:`~compas.geometry.Point`
         Point 2.
-    c : [x, y, z] or :class:`compas.geometry.Point`
+    c : [float, float, float] | :class:`~compas.geometry.Point`
         Point 3.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the points are colinear.
-        ``False`` otherwise.
+        True if the points are colinear.
+        False otherwise.
 
     """
     return area_triangle([a, b, c]) < tol
@@ -76,19 +51,18 @@ def is_colinear_line_line(line1, line2, tol=1e-6):
 
     Parameters
     ----------
-    line1 : [point, point] or :class:`compas.geometry.Line`
+    line1 : [point, point] | :class:`~compas.geometry.Line`
         Line 1.
-    line2 : [point, point] or :class:`compas.geometry.Line`
+    line2 : [point, point] | :class:`~compas.geometry.Line`
         Line 2.
     tol : float, optional
         A tolerance for colinearity verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the lines are colinear.
-        ``False`` otherwise.
+        True if the lines are colinear.
+        False otherwise.
 
     """
     a, b = line1
@@ -101,19 +75,18 @@ def is_parallel_line_line(line1, line2, tol=1e-6):
 
     Parameters
     ----------
-    line1 : [point, point] or :class:`compas.geometry.Line`
+    line1 : [point, point] | :class:`~compas.geometry.Line`
         Line 1.
-    line2 : [point, point] or :class:`compas.geometry.Line`
+    line2 : [point, point] | :class:`~compas.geometry.Line`
         Line 2.
     tol : float, optional
         A tolerance for colinearity verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the lines are colinear.
-        ``False`` otherwise.
+        True if the lines are colinear.
+        False otherwise.
 
     """
     a, b = line1
@@ -128,17 +101,16 @@ def is_coplanar(points, tol=0.01):
 
     Parameters
     ----------
-    points : list of points
+    points : sequence[point]
         A sequence of point locations.
     tol : float, optional
         A tolerance for planarity validation.
-        Default is ``0.01``.
 
     Returns
     -------
     bool
-        ``True`` if the points are coplanar.
-        ``False`` otherwise.
+        True if the points are coplanar.
+        False otherwise.
 
     Notes
     -----
@@ -156,7 +128,7 @@ def is_coplanar(points, tol=0.01):
     if len(points) < 4:
         return True
 
-    tol2 = tol ** 2
+    tol2 = tol**2
 
     if len(points) == 4:
         v01 = subtract_vectors(points[1], points[0])
@@ -181,25 +153,26 @@ def is_polygon_convex(polygon):
 
     Parameters
     ----------
-    polygon : list of points or :class:`compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
         A polygon.
+
+    Returns
+    -------
+    bool
+        True if the polygon is convex.
+        False otherwise.
 
     Notes
     -----
     Use this function for *spatial* polygons.
     If the polygon is in a horizontal plane, use :func:`is_polygon_convex_xy` instead.
 
-    Returns
-    -------
-    bool
-        ``True`` if the polygon is convex.
-        ``False`` otherwise.
-
     Examples
     --------
     >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.4, 0.4, 0.0], [0.0, 1.0, 0.0]]
     >>> is_polygon_convex(polygon)
     False
+
     """
     a = polygon[0]
     o = polygon[1]
@@ -223,19 +196,18 @@ def is_point_on_plane(point, plane, tol=1e-6):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the point is in on the plane.
-        ``False`` otherwise.
+        True if the point is in on the plane.
+        False otherwise.
 
     """
     return distance_point_plane(point, plane) <= tol
@@ -246,19 +218,18 @@ def is_point_infront_plane(point, plane, tol=1e-6):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
-    plane : [point, vector] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the point is in front of the plane.
-        ``False`` otherwise.
+        True if the point is in front of the plane.
+        False otherwise.
 
     """
     return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > tol
@@ -272,19 +243,18 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
-    plane : [point,  normal] or :class:`compas.geometry.Plane`
+    plane : [point,  normal] | :class:`~compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the point is in front of the plane.
-        ``False`` otherwise.
+        True if the point is in front of the plane.
+        False otherwise.
 
     """
     return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) < -tol
@@ -295,19 +265,18 @@ def is_point_on_line(point, line, tol=1e-6):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`~compas.geometry.Line`
         A line.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the point is in on the line.
-        ``False`` otherwise.
+        True if the point is in on the line.
+        False otherwise.
 
     """
     return distance_point_line(point, line) <= tol
@@ -318,19 +287,18 @@ def is_point_on_segment(point, segment, tol=1e-6):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
-    segment : [point, point] or :class:`compas.geometry.Line`
+    segment : [point, point] | :class:`~compas.geometry.Line`
         A line segment.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the point is on the line segment.
-        ``False`` otherwise.
+        True if the point is on the line segment.
+        False otherwise.
 
     """
     a, b = segment
@@ -355,19 +323,18 @@ def is_point_on_polyline(point, polyline, tol=1e-6):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
-    polyline : list of points or :class:`compas.geometry.Polyline`
+    polyline : sequence[point] | :class:`~compas.geometry.Polyline`
         A polyline.
     tol : float, optional
         The tolerance for membership verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the point is on the polyline.
-        ``False`` otherwise.
+        True if the point is on the polyline.
+        False otherwise.
 
     """
     for i in range(len(polyline) - 1):
@@ -386,7 +353,7 @@ def is_point_in_triangle(point, triangle):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
     triangle : [point, point, point]
         A triangle.
@@ -394,18 +361,19 @@ def is_point_in_triangle(point, triangle):
     Returns
     -------
     bool
-        ``True`` if the point is in inside the triangle.
-        ``False`` otherwise.
-
-    Notes
-    -----
-    Should the point be on the same plane as the triangle?
+        True if the point is in inside the triangle.
+        False otherwise.
 
     See Also
     --------
     compas.geometry.is_point_in_triangle_xy
 
+    Notes
+    -----
+    Should the point be on the same plane as the triangle?
+
     """
+
     def is_on_same_side(p1, p2, segment):
         a, b = segment
         v = subtract_vectors(b, a)
@@ -417,9 +385,7 @@ def is_point_in_triangle(point, triangle):
 
     a, b, c = triangle
 
-    if is_on_same_side(point, a, (b, c)) and \
-       is_on_same_side(point, b, (a, c)) and \
-       is_on_same_side(point, c, (a, b)):
+    if is_on_same_side(point, a, (b, c)) and is_on_same_side(point, b, (a, c)) and is_on_same_side(point, c, (a, b)):
         return True
 
     return False
@@ -430,16 +396,16 @@ def is_point_in_circle(point, circle):
 
     Parameters
     ----------
-    point : [x, y, z] or :class:`compas.geometry.Point`
+    point : [float, float, float] | :class:`~compas.geometry.Point`
         A point.
-    circle : [point, float, vector]
+    circle : [plane, float] | :class:`~compas.geometry.Circle`
         A circle.
 
     Returns
     -------
     bool
-        ``True`` if the point lies in the circle.
-        ``False`` otherwise.
+        True if the point lies in the circle.
+        False otherwise.
 
     """
     plane, radius = circle
@@ -453,18 +419,19 @@ def is_intersection_line_line(l1, l2, tol=1e-6):
 
     Parameters
     ----------
-    l1 : [point, point] or :class:`compas.geometry.Line`
+    l1 : [point, point] | :class:`~compas.geometry.Line`
         A line.
-    l2 : [point, point] or :class:`compas.geometry.Line`
+    l2 : [point, point] | :class:`~compas.geometry.Line`
         A line.
     tol : float, optional
-        A tolerance for intersection verification. Default is ``1e-6``.
+        A tolerance for intersection verification.
 
     Returns
     --------
     bool
-        ``True``if the lines intersect in one point.
-        ``False`` if the lines are skew, parallel or lie on top of each other.
+        True if the lines intersect in one point.
+        False if the lines are skew, parallel or lie on top of each other.
+
     """
     a, b = l1
     c, d = l2
@@ -487,18 +454,19 @@ def is_intersection_segment_segment(s1, s2, tol=1e-6):
 
     Parameters
     ----------
-    s1 : [point, point] or :class:`compas.geometry.Line`
+    s1 : [point, point] | :class:`~compas.geometry.Line`
         A line segment.
-    s2 : [point, point] or :class:`compas.geometry.Line`
+    s2 : [point, point] | :class:`~compas.geometry.Line`
         A line segment.
     tol : float, optional
-        A tolerance for intersection verification. Default is ``1e-6``.
+        A tolerance for intersection verification.
 
     Returns
     --------
     bool
-        ``True``if the segments intersect in one point.
-        ``False`` if the segments are skew, parallel or lie on top of each other.
+        True if the segments intersect in one point.
+        False if the segments are skew, parallel or lie on top of each other.
+
     """
     raise NotImplementedError
 
@@ -508,19 +476,18 @@ def is_intersection_line_triangle(line, triangle, tol=1e-6):
 
     Parameters
     ----------
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`~compas.geometry.Line`
         A line.
     triangle : [point, point, point]
         A triangle.
     tol : float, optional
         A tolerance for intersection verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the line (ray) intersects with the triangle.
-        ``False`` otherwise.
+        True if the line (ray) intersects with the triangle.
+        False otherwise.
 
     Notes
     -----
@@ -545,7 +512,7 @@ def is_intersection_line_triangle(line, triangle, tol=1e-6):
     det = dot_vectors(e1, p)
 
     # NOT CULLING
-    if det > - tol and det < tol:
+    if det > -tol and det < tol:
         return False
 
     inv_det = 1.0 / det
@@ -580,19 +547,19 @@ def is_intersection_line_plane(line, plane, tol=1e-6):
 
     Parameters
     ----------
-    line : [point, point] or :class:`compas.geometry.Line`
+    line : [point, point] | :class:`~compas.geometry.Line`
         A line.
-    plane : [point, normal] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for intersection verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the line intersects with the plane.
-        ``False`` otherwise.
+        True if the line intersects with the plane.
+        False otherwise.
+
     """
     pt1 = line[0]
     pt2 = line[1]
@@ -611,18 +578,19 @@ def is_intersection_segment_plane(segment, plane, tol=1e-6):
 
     Parameters
     ----------
-    segment : [point, point] or :class:`compas.geometry.Line`
+    segment : [point, point] | :class:`~compas.geometry.Line`
         A line segment.
-    plane : [point, normal] or :class:`compas.geometry.Plane`
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for intersection verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the segment intersects with the plane, ``False`` otherwise.
+        True if the segment intersects with the plane.
+        False otherwise.
+
     """
     pt1 = segment[0]
     pt2 = segment[1]
@@ -634,8 +602,8 @@ def is_intersection_segment_plane(segment, plane, tol=1e-6):
 
     if fabs(dot) > tol:
         v2 = subtract_vectors(pt1, p_cent)
-        fac = - dot_vectors(p_norm, v2) / dot
-        if fac > 0. and fac < 1.:
+        fac = -dot_vectors(p_norm, v2) / dot
+        if fac > 0.0 and fac < 1.0:
             return True
         return False
     else:
@@ -647,19 +615,18 @@ def is_intersection_plane_plane(plane1, plane2, tol=1e-6):
 
     Parameters
     ----------
-    plane1 : [point, vector] or :class:`compas.geometry.Plane`
+    plane1 : [point, vector] | :class:`~compas.geometry.Plane`
         A plane.
-    plane2 : [point, vector] or :class:`compas.geometry.Plane`
+    plane2 : [point, vector] | :class:`~compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for intersection verification.
-        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if plane1 intersects with plane2.
-        ``False`` otherwise.
+        True if plane1 intersects with plane2.
+        False otherwise.
 
     """
     # check for parallelity of planes
@@ -673,14 +640,18 @@ def is_point_in_box(point, box):
 
     Parameters
     ----------
-    point : (x, y, z) or :class:`compas.geometry.Point`
-    box : (vertices, faces) or :class:`compas.geometry.Box`.
+    point : [float, float, float] | :class:`~compas.geometry.Point`
+        The test point.
+    box : sequence[point] | :class:`~compas.geometry.Box`.
+        The box defined by 8 points with the first 4 points defining the bottom face,
+        and the last 4 points defining the top face.
 
     Returns
     -------
     bool
-        True, if the point lies in the polyhedron.
+        True, if the point lies inside the box.
         False, otherwise.
+
     """
     raise NotImplementedError
 
@@ -690,14 +661,18 @@ def is_point_in_polyhedron(point, polyhedron):
 
     Parameters
     ----------
-    point : (x, y, z) or :class:`compas.geometry.Point`
-    polyhedron : (vertices, faces) or :class:`compas.geometry.Polyhedron`.
+    point : [float, float, float] | :class:`~compas.geometry.Point`
+        The test point.
+    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`~compas.geometry.Polyhedron`.
+        The polyhedron defined by a sequence of points
+        and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
 
     Returns
     -------
     bool
         True, if the point lies in the polyhedron.
         False, otherwise.
+
     """
     vertices, faces = polyhedron
     polygons = [[vertices[index] for index in face] for face in faces]

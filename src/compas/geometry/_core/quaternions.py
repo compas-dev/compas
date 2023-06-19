@@ -49,17 +49,8 @@ References
 """
 import math
 
-from compas.geometry._core import allclose
+from ._algebra import allclose
 
-
-__all__ = [
-    'quaternion_norm',
-    'quaternion_unitize',
-    'quaternion_is_unit',
-    'quaternion_multiply',
-    'quaternion_canonize',
-    'quaternion_conjugate',
-]
 
 ATOL = 1e-6  # absolute tolerance
 
@@ -69,8 +60,8 @@ def quaternion_norm(q):
 
     Parameters
     ----------
-    q : list
-        Quaternion as a list of four real values ``[w, x, y, z]``.
+    q : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
     -------
@@ -79,7 +70,7 @@ def quaternion_norm(q):
 
     References
     ----------
-    .. _mathworld quaternion norm: http://mathworld.wolfram.com/QuaternionNorm.html
+    * Quaternion Norm: http://mathworld.wolfram.com/QuaternionNorm.html
 
     """
     return math.sqrt(sum([x * x for x in q]))
@@ -90,12 +81,12 @@ def quaternion_unitize(q):
 
     Parameters
     ----------
-    q : list
-        Quaternion as a list of four real values ``[w, x, y, z]``.
+    q : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
     -------
-    list
+    [float, float, float, float]
         Quaternion of length 1 as a list of four real values ``[nw, nx, ny, nz]``.
     """
     n = quaternion_norm(q)
@@ -110,15 +101,16 @@ def quaternion_is_unit(q, tol=ATOL):
 
     Parameters
     ----------
-    q : list
-        Quaternion as a list of four real values ``[w, x, y, z]``.
+    q : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        Quaternion or sequence of four floats ``[w, x, y, z]``.
     tol : float, optional
         Requested decimal precision.
 
     Returns
     -------
     bool
-        ``True`` if the quaternion is unit-length, and ``False`` if otherwise.
+        True if the quaternion is unit-length,
+        and False if otherwise.
     """
     n = quaternion_norm(q)
     return allclose([n], [1.0], tol)
@@ -129,14 +121,14 @@ def quaternion_multiply(r, q):
 
     Parameters
     ----------
-    r : list
-        Quaternion as a list of four real values ``[rw, rx, ry, rz]``.
-    q : list
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+    r : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        Quaternion or sequence of four floats ``[w, x, y, z]``.
+    q : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
     -------
-    list
+    [float, float, float, float]
         Quaternion :math:`p = rq` as a list of four real values ``[pw, px, py, pz]``.
 
     Notes
@@ -148,15 +140,15 @@ def quaternion_multiply(r, q):
 
     References
     ----------
-    .. _mathworld quaternion: http://mathworld.wolfram.com/Quaternion.html
+    * Quaternion: http://mathworld.wolfram.com/Quaternion.html
 
     """
     rw, rx, ry, rz = r
     qw, qx, qy, qz = q
-    pw = rw*qw - rx*qx - ry*qy - rz*qz
-    px = rw*qx + rx*qw + ry*qz - rz*qy
-    py = rw*qy - rx*qz + ry*qw + rz*qx
-    pz = rw*qz + rx*qy - ry*qx + rz*qw
+    pw = rw * qw - rx * qx - ry * qy - rz * qz
+    px = rw * qx + rx * qw + ry * qz - rz * qy
+    py = rw * qy - rx * qz + ry * qw + rz * qx
+    pz = rw * qz + rx * qy - ry * qx + rz * qw
     return [pw, px, py, pz]
 
 
@@ -165,17 +157,18 @@ def quaternion_canonize(q):
 
     Parameters
     ----------
-    q : list
-        Quaternion as a list of four real values ``[w, x, y, z]``.
+    q : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
     -------
-    list
+    [float, float, float, float]
         Quaternion in a canonic form as a list of four real values ``[cw, cx, cy, cz]``.
 
     Notes
     -----
     Canonic form means the scalar component is a non-negative number.
+
     """
     if q[0] < 0.0:
         return [-x for x in q]
@@ -187,16 +180,17 @@ def quaternion_conjugate(q):
 
     Parameters
     ----------
-    q : list
-        Quaternion as a list of four real values ``[w, x, y, z]``.
+    q : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        Quaternion or sequence of four floats ``[w, x, y, z]``.
 
     Returns
     -------
-    list
+    [float, float, float, float]
         Conjugate quaternion as a list of four real values ``[cw, cx, cy, cz]``.
 
     References
     ----------
-    .. _mathworld quaternion conjugate: http://mathworld.wolfram.com/QuaternionConjugate.html
+    *  Quaternion Conjugate: http://mathworld.wolfram.com/QuaternionConjugate.html
+
     """
     return [q[0], -q[1], -q[2], -q[3]]

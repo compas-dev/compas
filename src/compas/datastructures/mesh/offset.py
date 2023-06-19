@@ -5,13 +5,8 @@ from __future__ import print_function
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
-from compas.datastructures.mesh.orientation import mesh_flip_cycles
-from compas.datastructures.mesh.join import meshes_join
-
-__all__ = [
-    'mesh_offset',
-    'mesh_thicken'
-]
+from .orientation import mesh_flip_cycles
+from .join import meshes_join
 
 
 def mesh_offset(mesh, distance=1.0):
@@ -19,15 +14,14 @@ def mesh_offset(mesh, distance=1.0):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A Mesh to offset.
     distance : float, optional
         The offset distance.
-        Default is ``1.0``.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         The offset mesh.
 
     Notes
@@ -53,7 +47,7 @@ def mesh_offset(mesh, distance=1.0):
     for vertex in offset.vertices():
         normal = mesh.vertex_normal(vertex)
         xyz = mesh.vertex_coordinates(vertex)
-        offset.vertex_attributes(vertex, 'xyz', add_vectors(xyz, scale_vector(normal, distance)))
+        offset.vertex_attributes(vertex, "xyz", add_vectors(xyz, scale_vector(normal, distance)))
 
     return offset
 
@@ -63,25 +57,24 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh to thicken.
     thickness : float, optional
         The mesh thickness.
         This should be a positive value.
-        Default is ``1.0``.
     both : bool, optional
         If true, the mesh is thickened on both sides of the original.
         Otherwise, the mesh is thickened on the side of the positive normal.
 
     Returns
     -------
-    thickened_mesh : :class:`compas.datastructures.Mesh`
+    :class:`~compas.datastructures.Mesh`
         The thickened mesh.
 
     Raises
     ------
     ValueError
-        If ``thickness`` is not a positive number.
+        If `thickness` is not a positive number.
 
     Examples
     --------

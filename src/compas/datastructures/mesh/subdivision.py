@@ -12,76 +12,55 @@ from compas.geometry import offset_polygon
 from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
-from compas.datastructures.mesh.core import BaseMesh
 
+def subd_factory(cls):
+    class SubdMesh(cls):
+        _add_vertex = cls.add_vertex
+        _add_face = cls.add_face
+        _insert_vertex = cls.insert_vertex
 
-__all__ = [
-    'mesh_subdivide',
-    'mesh_subdivide_tri',
-    'mesh_subdivide_corner',
-    'mesh_subdivide_quad',
-    'mesh_subdivide_catmullclark',
-    'mesh_subdivide_doosabin',
-    'mesh_subdivide_frames',
-    'trimesh_subdivide_loop',
-]
+        def add_vertex(self, x, y, z):
+            key = self._max_vertex = self._max_vertex + 1
+            if key not in self.vertex:
+                self.vertex[key] = {}
+                self.halfedge[key] = {}
+            self.vertex[key] = dict(x=x, y=y, z=z)
+            return key
+
+        def add_face(self, vertices):
+            fkey = self._max_face = self._max_face + 1
+            self.face[fkey] = vertices
+            self.facedata[fkey] = {}
+            for i in range(-1, len(vertices) - 1):
+                u = vertices[i]
+                v = vertices[i + 1]
+                self.halfedge[u][v] = fkey
+                if u not in self.halfedge[v]:
+                    self.halfedge[v][u] = None
+            return fkey
+
+        def insert_vertex(self, fkey):
+            x, y, z = self.face_center(fkey)
+            w = self.add_vertex(x=x, y=y, z=z)
+            for u, v in self.face_halfedges(fkey):
+                self.add_face([u, v, w])
+            del self.face[fkey]
+            return w
+
+    return SubdMesh
 
 
 def mesh_fast_copy(other):
+    SubdMesh = subd_factory(type(other))
     subd = SubdMesh()
     subd.vertex = deepcopy(other.vertex)
     subd.face = deepcopy(other.face)
-    # subd.edgedata = deepcopy(other.edgedata)
     subd.facedata = deepcopy(other.facedata)
     subd.halfedge = deepcopy(other.halfedge)
     subd._max_vertex = other._max_vertex
     subd._max_face = other._max_face
     return subd
 
-
-class SubdMesh(BaseMesh):
-
-    from compas.datastructures.mesh.core import mesh_split_edge
-
-    _add_vertex = BaseMesh.add_vertex
-    _add_face = BaseMesh.add_face
-    _insert_vertex = BaseMesh.insert_vertex
-
-    split_edge = mesh_split_edge
-
-    def add_vertex(self, x, y, z):
-        key = self._max_vertex = self._max_vertex + 1
-
-        if key not in self.vertex:
-            self.vertex[key] = {}
-            self.halfedge[key] = {}
-
-        self.vertex[key] = dict(x=x, y=y, z=z)
-
-        return key
-
-    def add_face(self, vertices):
-        fkey = self._max_face = self._max_face + 1
-
-        self.face[fkey] = vertices
-        self.facedata[fkey] = {}
-
-        for i in range(-1, len(vertices) - 1):
-            u = vertices[i]
-            v = vertices[i + 1]
-            self.halfedge[u][v] = fkey
-            if u not in self.halfedge[v]:
-                self.halfedge[v][u] = None
-
-        return fkey
-
-    def insert_vertex(self, fkey):
-        x, y, z = self.face_center(fkey)
-        w = self.add_vertex(x=x, y=y, z=z)
-        for u, v in self.face_halfedges(fkey):
-            self.add_face([u, v, w])
-        del self.face[fkey]
-        return w
 
 # distinguish between subd of meshes with and without boundary
 # closed vs. open
@@ -93,22 +72,21 @@ class SubdMesh(BaseMesh):
 # any subd algorithm should return a new subd mesh, leaving the control mesh intact
 
 
-def mesh_subdivide(mesh, scheme='catmullclark', **options):
+def mesh_subdivide(mesh, scheme="catmullclark", **options):
     """Subdivide the input mesh.
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         A mesh object.
-    scheme : {'tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'}, optional
+    scheme : Literal['tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'], optional
         The scheme according to which the mesh should be subdivided.
-        Default is ``'catmullclark'``.
-    options : dict
+    **options : dict[str, Any], optional
         Optional additional keyword arguments.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         The subdivided mesh.
 
     Raises
@@ -117,22 +95,22 @@ def mesh_subdivide(mesh, scheme='catmullclark', **options):
         If the scheme is not supported.
 
     """
-    if scheme == 'tri':
+    if scheme == "tri":
         return mesh_subdivide_tri(mesh, **options)
-    if scheme == 'quad':
+    if scheme == "quad":
         return mesh_subdivide_quad(mesh, **options)
-    if scheme == 'corner':
+    if scheme == "corner":
         return mesh_subdivide_corner(mesh, **options)
-    if scheme == 'catmullclark':
+    if scheme == "catmullclark":
         return mesh_subdivide_catmullclark(mesh, **options)
-    if scheme == 'doosabin':
+    if scheme == "doosabin":
         return mesh_subdivide_doosabin(mesh, **options)
-    if scheme == 'frames':
+    if scheme == "frames":
         return mesh_subdivide_frames(mesh, **options)
-    if scheme == 'loop':
+    if scheme == "loop":
         return trimesh_subdivide_loop(mesh, **options)
 
-    raise ValueError('Scheme is not supported')
+    raise ValueError("Scheme is not supported")
 
 
 def mesh_subdivide_tri(mesh, k=1):
@@ -140,14 +118,14 @@ def mesh_subdivide_tri(mesh, k=1):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
+    k : int, optional
+        The number of levels of subdivision.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -180,14 +158,14 @@ def mesh_subdivide_quad(mesh, k=1):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
+    k : int, optional
+        The number of levels of subdivision.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -209,12 +187,12 @@ def mesh_subdivide_quad(mesh, k=1):
     cls = type(mesh)
     subd = mesh_fast_copy(mesh)
     for face in subd.faces():
-        subd.facedata[face]['path'] = [face]
+        subd.facedata[face]["path"] = [face]
     for _ in range(k):
         faces = {face: subd.face_vertices(face)[:] for face in subd.faces()}
         face_centroid = {face: subd.face_centroid(face) for face in subd.faces()}
-        for u, v in list(subd.edges()):
-            subd.split_edge(u, v, allow_boundary=True)
+        for edge in list(subd.edges()):
+            subd.split_edge(edge, allow_boundary=True)
         for face, vertices in faces.items():
             descendant = {i: j for i, j in subd.face_halfedges(face)}
             ancestor = {j: i for i, j in subd.face_halfedges(face)}
@@ -224,7 +202,7 @@ def mesh_subdivide_quad(mesh, k=1):
                 a = ancestor[vertex]
                 d = descendant[vertex]
                 newface = subd.add_face([a, vertex, d, c])
-                subd.facedata[newface]['path'] = subd.facedata[face]['path'] + [i]
+                subd.facedata[newface]["path"] = subd.facedata[face]["path"] + [i]
             del subd.face[face]
             del subd.facedata[face]
     subd2 = cls.from_data(subd.data)
@@ -236,28 +214,27 @@ def mesh_subdivide_corner(mesh, k=1):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
+    k : int, optional
+        The number of levels of subdivision.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Notes
     -----
-    This is essentially the same as Loop subdivision, but applied to general
-    meshes.
+    This is essentially the same as Loop subdivision, but applied to general meshes.
 
     """
     cls = type(mesh)
     for _ in range(k):
         subd = mesh_fast_copy(mesh)
         # split every edge
-        for u, v in list(subd.edges()):
-            subd.split_edge(u, v, allow_boundary=True)
+        for edge in list(subd.edges()):
+            subd.split_edge(edge, allow_boundary=True)
         # create 4 new faces for every old face
         for fkey in mesh.faces():
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
@@ -280,16 +257,16 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
-    fixed : list
-        Optional. A list of fixed vertices. Default is ``None``.
+    k : int, optional
+        The number of levels of subdivision.
+    fixed : list[int], optional
+        A list of fixed vertices.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Notes
@@ -297,6 +274,13 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     Note that *Catmull-Clark* subdivision is like *Quad* subdivision, but with
     smoothing after every level of further subdivision. Smoothing is done
     according to the scheme prescribed by the Catmull-Clark algorithm.
+
+    References
+    ----------
+    .. [1] Tony DeRose, Michael Kass and Tien Truong.
+           Subdivision Surfaces in Character Animation.
+           Pixar Animation Studios.
+           see https://graphics.pixar.com/library/Geri/paper.pdf
 
     Examples
     --------
@@ -315,11 +299,11 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     The algorithm supports "integer creasing" as described in
     Subdivision Surfaces in Character Animation [1]_.
-    Creases are supported through the optional edge attribute ``'crease'``,
+    Creases are supported through the optional edge attribute "crease",
     which can be set to an integer value that defines how sharp the crease is wrt
     the number of subdivision steps.
 
-    To add an infinitely sharp crease to an edge, set the ``'crease'`` attribute of the edge
+    To add an infinitely sharp crease to an edge, set the "crease" attribute of the edge
     to a number higher than the number of subdivision steps.
 
     >>> from compas.geometry import Box, dot_vectors
@@ -332,15 +316,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     >>> subd = cage.subdivide(k=4)
 
-    References
-    ----------
-    .. [1] Tony DeRose, Michael Kass and Tien Truong.
-           Subdivision Surfaces in Character Animation.
-           Pixar Animation Studios.
-           see https://graphics.pixar.com/library/Geri/paper.pdf
-
     """
     cls = type(mesh)
+
     if not fixed:
         fixed = []
     fixed = set(fixed)
@@ -361,21 +339,19 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         edgepoints = []
 
         for u, v in mesh.edges():
-
-            w = subd.split_edge(u, v, allow_boundary=True)
-            crease = mesh.edge_attribute((u, v), 'crease') or 0
+            w = subd.split_edge((u, v), allow_boundary=True)
+            crease = mesh.edge_attribute((u, v), "crease") or 0
 
             if crease:
                 edgepoints.append([w, True])
-                subd.edge_attribute((u, w), 'crease', crease - 1)
-                subd.edge_attribute((w, v), 'crease', crease - 1)
+                subd.edge_attribute((u, w), "crease", crease - 1)
+                subd.edge_attribute((w, v), "crease", crease - 1)
             else:
                 edgepoints.append([w, False])
 
         fkey_xyz = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
 
         for fkey in mesh.faces():
-
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
             ancestor = {j: i for i, j in subd.face_halfedges(fkey)}
 
@@ -403,9 +379,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         for w, crease in edgepoints:
             if not crease:
                 x, y, z = centroid_points([key_xyz[nbr] for nbr in subd.halfedge[w]])
-                subd.vertex[w]['x'] = x
-                subd.vertex[w]['y'] = y
-                subd.vertex[w]['z'] = z
+                subd.vertex[w]["x"] = x
+                subd.vertex[w]["y"] = y
+                subd.vertex[w]["z"] = z
 
         # move each vertex to the weighted average of itself, the neighboring
         # centroids and the neighboring mipoints
@@ -415,13 +391,15 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
                 continue
 
             nbrs = mesh.vertex_neighbors(key)
-            creases = mesh.edges_attribute('crease', keys=[(key, nbr) for nbr in nbrs])
+            creases = mesh.edges_attribute("crease", keys=[(key, nbr) for nbr in nbrs])
 
             C = sum(1 if crease else 0 for crease in creases)
 
             if C < 2:
                 fnbrs = [mesh.face_centroid(fkey) for fkey in mesh.vertex_faces(key) if fkey is not None]
-                enbrs = [key_xyz[nbr] for nbr in subd.halfedge[key]]  # this should be the location of the original neighbour
+                enbrs = [
+                    key_xyz[nbr] for nbr in subd.halfedge[key]
+                ]  # this should be the location of the original neighbour
                 n = len(enbrs)
                 v = n - 3.0
                 F = centroid_points(fnbrs)
@@ -430,9 +408,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
                 x = (F[0] + 2.0 * E[0] + v * V[0]) / n
                 y = (F[1] + 2.0 * E[1] + v * V[1]) / n
                 z = (F[2] + 2.0 * E[2] + v * V[2]) / n
-                subd.vertex[key]['x'] = x
-                subd.vertex[key]['y'] = y
-                subd.vertex[key]['z'] = z
+                subd.vertex[key]["x"] = x
+                subd.vertex[key]["y"] = y
+                subd.vertex[key]["z"] = z
 
             elif C == 2:
                 V = key_xyz[key]
@@ -446,9 +424,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
                 x = (6 * V[0] + E[0]) / 8
                 y = (6 * V[1] + E[1]) / 8
                 z = (6 * V[2] + E[2]) / 8
-                subd.vertex[key]['x'] = x
-                subd.vertex[key]['y'] = y
-                subd.vertex[key]['z'] = z
+                subd.vertex[key]["x"] = x
+                subd.vertex[key]["y"] = y
+                subd.vertex[key]["z"] = z
             else:
                 pass
 
@@ -463,16 +441,16 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
-    fixed : list
-        Optional. A list of fixed vertices. Default is ``None``.
+    k : int, optional
+        The number of levels of subdivision.
+    fixed : list[int], optional
+        A list of fixed vertices.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -495,6 +473,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
     fixed = set(fixed)
 
     cls = type(mesh)
+    SubdMesh = subd_factory(cls)
 
     for _ in range(k):
         old_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
@@ -517,9 +496,9 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
                     x, y, z = old_xyz[vertices[j]]
 
                     if i == j:
-                        alpha = (n + 5.) / (4. * n)
+                        alpha = (n + 5.0) / (4.0 * n)
                     else:
-                        alpha = (3. + 2. * cos(2. * pi * (i - j) / n)) / (4. * n)
+                        alpha = (3.0 + 2.0 * cos(2.0 * pi * (i - j) / n)) / (4.0 * n)
 
                     cx += alpha * x
                     cy += alpha * y
@@ -562,7 +541,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
                     fkey_old_new[uv_fkey][u],
                     fkey_old_new[vu_fkey][u],
                     fkey_old_new[vu_fkey][v],
-                    fkey_old_new[uv_fkey][v]
+                    fkey_old_new[uv_fkey][v],
                 ]
                 subd.add_face(face)
 
@@ -577,26 +556,23 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object to be subdivided.
-    offset : float or dict
+    offset : float | dict[int, float]
         The offset distance to create the frames.
         A single value will result in a constant offset everywhere.
-        A dictionary mapping facekey: offset will be processed accordingly.
-    add_windows : boolean
-        Optional. Flag to add window face. Default is ``False``.
+        A dictionary mapping faces to offset values will be processed accordingly.
+    add_windows : bool, optional
+        If True, add a window face in the frame opening.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
-
-    Examples
-    --------
-    >>>
 
     """
     cls = type(mesh)
+    SubdMesh = subd_factory(cls)
 
     subd = SubdMesh()
 
@@ -647,16 +623,16 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     Parameters
     ----------
-    mesh : Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         The mesh object that will be subdivided.
-    k : int
-        Optional. The number of levels of subdivision. Default is ``1``.
-    fixed : list
-        Optional. A list of fixed vertices. Default is ``None``.
+    k : int, optional
+        The number of levels of subdivision.
+    fixed : list[int], optional
+        A list of fixed vertices.
 
     Returns
     -------
-    Mesh
+    :class:`~compas.datastructures.Mesh`
         A new subdivided mesh.
 
     Examples
@@ -697,7 +673,9 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     for _ in range(k):
         key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
         fkey_vertices = {fkey: subd.face_vertices(fkey)[:] for fkey in subd.faces()}
-        uv_w = {(u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)}
+        uv_w = {
+            (u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)
+        }
         boundary = set(subd.vertices_on_boundary())
 
         for key in subd.vertices():
@@ -722,29 +700,28 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
                 n = len(nbrs)
 
                 if n == 3:
-                    a = 3. / 16.
+                    a = 3.0 / 16.0
                 else:
-                    a = 3. / (8 * n)
+                    a = 3.0 / (8 * n)
 
                 xyz = key_xyz[key]
 
                 nbrs = [key_xyz[nbr] for nbr in nbrs]
                 nbrs = [sum(axis) for axis in zip(*nbrs)]
 
-                x = (1. - n * a) * xyz[0] + a * nbrs[0]
-                y = (1. - n * a) * xyz[1] + a * nbrs[1]
-                z = (1. - n * a) * xyz[2] + a * nbrs[2]
+                x = (1.0 - n * a) * xyz[0] + a * nbrs[0]
+                y = (1.0 - n * a) * xyz[1] + a * nbrs[1]
+                z = (1.0 - n * a) * xyz[2] + a * nbrs[2]
 
-            subd.vertex[key]['x'] = x
-            subd.vertex[key]['y'] = y
-            subd.vertex[key]['z'] = z
+            subd.vertex[key]["x"] = x
+            subd.vertex[key]["y"] = y
+            subd.vertex[key]["z"] = z
 
         edgepoints = {}
 
         # odd vertices
         for u, v in list(subd.edges()):
-
-            w = subd.split_edge(u, v, allow_boundary=True)
+            w = subd.split_edge((u, v), allow_boundary=True)
 
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w
@@ -760,9 +737,9 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
             else:
                 xyz = [0.5 * (a[i] + b[i]) for i in range(3)]
 
-            subd.vertex[w]['x'] = xyz[0]
-            subd.vertex[w]['y'] = xyz[1]
-            subd.vertex[w]['z'] = xyz[2]
+            subd.vertex[w]["x"] = xyz[0]
+            subd.vertex[w]["y"] = xyz[1]
+            subd.vertex[w]["z"] = xyz[2]
 
         # new faces
         for fkey, vertices in fkey_vertices.items():

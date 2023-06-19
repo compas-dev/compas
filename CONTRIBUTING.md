@@ -36,16 +36,22 @@ In short, this is how that works.
    invoke test
    ```
 
-5. Start making your changes to the **master** branch (or branch off of it).
-6. Make sure all tests still pass:
+5. Start making your changes to the **main** branch (or branch off of it).
+6. Auto-format your code using:
+
+   ```bash
+   invoke format
+   ```
+
+7. Make sure all tests still pass:
 
    ```bash
    invoke test
    ```
 
-7. Add yourself to `AUTHORS.md`.
-8. Commit your changes and push your branch to GitHub.
-9. Create a [pull request](https://help.github.com/articles/about-pull-requests/) through the GitHub website.
+8. Add yourself to `AUTHORS.md`.
+9. Commit your changes and push your branch to GitHub.
+10. Create a [pull request](https://help.github.com/articles/about-pull-requests/) through the GitHub website.
 
 During development, use [pyinvoke](http://docs.pyinvoke.org/) tasks on the
 command line to ease recurring operations:

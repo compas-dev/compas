@@ -13,19 +13,21 @@ Ippoliti for providing code and documentation.
 from compas.utilities import flatten
 from compas.geometry import allclose
 from compas.geometry import multiply_matrices
-from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import matrix_from_scale_factors
-from compas.geometry.transformations import matrix_from_frame
-from compas.geometry.transformations import matrix_inverse
-from compas.geometry.transformations import Transformation
+
+from .matrices import decompose_matrix
+from .matrices import matrix_from_scale_factors
+from .matrices import matrix_from_frame
+from .matrices import matrix_inverse
+
+from .transformation import Transformation
 
 
 class Scale(Transformation):
-    """Creates a scale transformation.
+    """Class representing a scale transformation.
 
     Parameters
     ----------
-    matrix : 4x4 matrix-like, optional
+    matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a scaling.
 
     Raises
@@ -51,6 +53,7 @@ class Scale(Transformation):
     >>> S = Scale.from_factors([2.] * 3, frame)
     >>> [p.transformed(S) for p in points]
     [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
+
     """
 
     def __init__(self, matrix=None):
@@ -58,7 +61,7 @@ class Scale(Transformation):
             scale, _, _, _, _ = decompose_matrix(matrix)
             check = matrix_from_scale_factors(scale)
             if not allclose(flatten(matrix), flatten(check)):
-                raise ValueError('This is not a proper scale matrix.')
+                raise ValueError("This is not a proper scale matrix.")
         super(Scale, self).__init__(matrix=matrix)
 
     def __repr__(self):
@@ -70,15 +73,14 @@ class Scale(Transformation):
 
         Parameters
         ----------
-        factors : list of float
+        factors : [float, float, float]
             The scale factors along X, Y, Z.
-        frame : :class:`compas.geometry.Frame`, optional
+        frame : [point, vector, vector] | :class:`~compas.geometry.Frame`, optional
             The anchor frame for the scaling transformation.
-            Defaults to ``None``.
 
         Returns
         -------
-        Scale
+        :class:`~compas.geometry.Scale`
             A scale transformation.
 
         Examples
@@ -90,6 +92,7 @@ class Scale(Transformation):
         >>> S = Scale.from_factors([2.] * 3, frame)
         >>> [p.transformed(S) for p in points]
         [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
+
         """
         S = cls()
         if frame:

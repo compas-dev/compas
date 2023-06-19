@@ -8,6 +8,7 @@
 
     "ghpython": {
         "isAdvancedMode": true,
+        "iconDisplay": 2,
         "inputParameters": [
             {
                 "name": "data",

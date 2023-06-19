@@ -2,13 +2,13 @@
 
 ## Project Lead
 
-- Tom Van Mele <<van.mele@arch.ethz.ch>> [@brgcode](https://github.com/brgcode), [@tomvanmele](https://github.com/tomvanmele)
+- Tom Van Mele <<tom.v.mele@gmail.com>> [@brgcode](https://github.com/brgcode), [@tomvanmele](https://github.com/tomvanmele)
 
 ## Main Developers
 
 - Gonzalo Casas <<casas@arch.ethz.ch>> [@gonzalocasas](https://github.com/gonzalocasas)
 - Romana Rust <<rust@arch.ethz.ch>> [@romanarust](https://github.com/romanarust)
-- Mathias Bernhard <<bernhard@arch.ethz.ch>> [@worbit](https://github.com/worbit)
+- Mathias Bernhard <<mathias.bernhard@epfl.ch>> [@worbit](https://github.com/worbit)
 
 ## Contributors
 
@@ -31,3 +31,9 @@
 - Robin Godwyll <<rodwyll+github@gmail.com>> [@robin-gdwl](https://github.com/robin-gdwl)
 - Mattis Koh <<mattiskoh@gmail.com>> [@mattiskoh](https://github.com/mattiskoh)
 - Andrea Ghensi <<a.ghensi@swsglobal.com>> [@sanzoghenzo](https://github.com/sanzoghenzo)
+- Nizar Taha <<taha@arch.ethz.ch>> [@nizartaha](https://github.com/nizartaha)
+- Gene Ting-Chun Kao <<kao@arch.ethz.ch>> [@GeneKao](https://github.com/GeneKao)
+- Chen Kasirer <<kasirer@arch.ethz.ch>> [@chenkasirer](https://github.com/chenkasirer)
+- Nickolas Maslarinos <<maslarinosnickolas@gmail.com>> [@nmaslarinos](https://github.com/nmaslarinos)
+- Katerina Toumpektsi <<e.toumpeksti@gmail.com>> [@katarametin](https://github.com/katarametin)
+- Joelle Baehr-Bruyere <<joelle.baehr-bruyere@epfl.ch>> [@baehrjo](https://github.com/baehrjo)

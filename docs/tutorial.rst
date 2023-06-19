@@ -7,6 +7,7 @@ Tutorial
 
     tutorial/data
     tutorial/geometry
+    tutorial/brep
     tutorial/networks
     tutorial/meshes
     tutorial/volmeshes
@@ -15,3 +16,4 @@ Tutorial
     tutorial/rpc
     tutorial/geomaps
     tutorial/plotters
+    tutorial/colors

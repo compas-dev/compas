@@ -16,26 +16,21 @@ from compas.geometry import is_point_in_circle_xy
 from compas.geometry import circle_from_points_xy
 
 
-__all__ = [
-    'delaunay_from_points',
-]
-
-
 def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     """Computes the delaunay triangulation for a list of points.
 
     Parameters
     ----------
-    points : sequence of tuple
+    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
         XYZ coordinates of the original points.
-    boundary : sequence of tuples
-        list of ordered points describing the outer boundary (optional)
-    holes : list of sequences of tuples
-        list of polygons (ordered points describing internal holes (optional)
+    boundary : sequence[[float, float, float] | :class:`~compas.geometry.Point`] | :class:`~compas.geometry.Polygon`, optional
+        List of ordered points describing the outer boundary.
+    holes : sequence[sequence[[float, float, float] | :class:`~compas.geometry.Point`] | :class:`~compas.geometry.Polygon`], optional
+        List of polygons (ordered points describing internal holes.
 
     Returns
     -------
-    list
+    list[[int, int, int]]
         The faces of the triangulation.
         Each face is a triplet of indices referring to the list of point coordinates.
 
@@ -74,7 +69,14 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     mesh = Mesh()
 
     # to avoid numerical issues for perfectly structured point sets
-    points = [(point[0] + random.uniform(-tiny, tiny), point[1] + random.uniform(-tiny, tiny), 0.0) for point in points]
+    points = [
+        (
+            point[0] + random.uniform(-tiny, tiny),
+            point[1] + random.uniform(-tiny, tiny),
+            0.0,
+        )
+        for point in points
+    ]
 
     # create super triangle
     pt1, pt2, pt3 = super_triangle(points)
@@ -83,9 +85,9 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     n = len(points)
     super_keys = n, n + 1, n + 2
 
-    mesh.add_vertex(super_keys[0], {'x': pt1[0], 'y': pt1[1], 'z': pt1[2]})
-    mesh.add_vertex(super_keys[1], {'x': pt2[0], 'y': pt2[1], 'z': pt2[2]})
-    mesh.add_vertex(super_keys[2], {'x': pt3[0], 'y': pt3[1], 'z': pt3[2]})
+    mesh.add_vertex(super_keys[0], {"x": pt1[0], "y": pt1[1], "z": pt1[2]})
+    mesh.add_vertex(super_keys[1], {"x": pt2[0], "y": pt2[1], "z": pt2[2]})
+    mesh.add_vertex(super_keys[2], {"x": pt3[0], "y": pt3[1], "z": pt3[2]})
 
     mesh.add_face(super_keys)
 
@@ -117,7 +119,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
                 circle = circle_from_points_xy(a, b, c)
 
                 if is_point_in_circle_xy(point, circle):
-                    fkey, nbr = trimesh_swap_edge(mesh, u, v)
+                    fkey, nbr = trimesh_swap_edge(mesh, (u, v))
                     newtris.append(fkey)
                     newtris.append(nbr)
 

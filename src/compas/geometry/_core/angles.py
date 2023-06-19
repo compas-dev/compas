@@ -6,29 +6,13 @@ from math import pi
 from math import degrees
 from math import acos
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import dot_vectors_xy
-from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_xy
-from compas.geometry._core import cross_vectors
-
-
-__all__ = [
-    'angles_vectors',
-    'angles_vectors_xy',
-    'angles_vectors',
-    'angles_vectors_xy',
-    'angles_points',
-    'angles_points_xy',
-    'angle_vectors',
-    'angle_vectors_signed',
-    'angle_vectors_xy',
-    'angle_points',
-    'angle_points_xy',
-    'angle_planes',
-]
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import dot_vectors
+from ._algebra import dot_vectors_xy
+from ._algebra import length_vector
+from ._algebra import length_vector_xy
+from ._algebra import cross_vectors
 
 
 def angle_vectors(u, v, deg=False, tol=0.0):
@@ -36,17 +20,19 @@ def angle_vectors(u, v, deg=False, tol=0.0):
 
     Parameters
     ----------
-    u : sequence of float
+    u : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ components of the first vector.
-    v : sequence of float
+    v : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ components of the second vector.
-    deg : boolean
-        returns angle in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
+    tol : float, optional
+        Tolerance for the length of the vectors.
 
     Returns
     -------
     float
-        The smallest angle in radians (in degrees if deg == True).
+        The smallest angle in radians (in degrees if ``deg == True``).
         The angle is always positive.
 
     Examples
@@ -74,16 +60,16 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
 
     Parameters
     ----------
-    u : sequence of float
+    u : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ components of the first vector.
-    v : sequence of float
+    v : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ components of the second vector.
-    normal : sequence of float
+    normal : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ components of the plane's normal spanned by u and v.
-    deg : boolean
-        returns angle in degrees if True
-    threshold : The threshold (radians) used to consider if the angle is zero.
-        Defaults to 1e-3.
+    deg : bool, optional
+        If True, returns the angle in degrees.
+    threshold : float, optional
+        The threshold (radians) used to consider if the angle is zero.
 
     Returns
     -------
@@ -116,17 +102,19 @@ def angle_vectors_xy(u, v, deg=False, tol=1e-4):
 
     Parameters
     ----------
-    u : sequence of float
+    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
         The first 2D or 3D vector (Z will be ignored).
-    v : sequence of float)
+    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
         The second 2D or 3D vector (Z will be ignored).
-    deg : boolean
-        returns angle in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
+    tol : float, optional
+        Tolerance for the length of the vectors.
 
     Returns
     -------
     float
-        The smallest angle between the vectors in radians (in degrees if deg == True).
+        The smallest angle in radians (in degrees if ``deg == True``).
         The angle is always positive.
 
     Examples
@@ -149,19 +137,19 @@ def angle_points(a, b, c, deg=False):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    b : sequence of float
+    b : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    c : sequence of float
+    c : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    deg : boolean
-        returns angle in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
 
     Returns
     -------
     float
-        The smallest angle between the vectors in radians (in degrees if deg == True).
+        The smallest angle in radians (in degrees if ``deg == True``).
         The angle is always positive.
 
     Notes
@@ -186,19 +174,19 @@ def angle_points_xy(a, b, c, deg=False):
 
     Parameters
     ----------
-    a : sequence of float
+    a : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    b : sequence of float)
+    b : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    c : sequence of float)
+    c : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    deg : boolean
-        returns angle in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
 
     Returns
     -------
     float
-        The smallest angle between the vectors in radians (in degrees if deg == True).
+        The smallest angle in radians (in degrees if ``deg == True``).
         The angle is always positive.
 
     Notes
@@ -223,18 +211,19 @@ def angles_vectors(u, v, deg=False):
 
     Parameters
     ----------
-    u : sequence of float
+    u : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ components of the first vector.
-    v : sequence of float
+    v : [float, float, float] | :class:`~compas.geometry.Vector`
         XYZ components of the second vector.
-    deg : boolean
-        returns angles in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
 
     Returns
     -------
-    tuple
-        The smallest angle between the vectors in radians (in degrees if deg == True).
-        The smallest angle is returned first.
+    float
+        The smallest angle in radians, or in degrees if ``deg == True``.
+    float
+        The other angle.
 
     Examples
     --------
@@ -243,7 +232,7 @@ def angles_vectors(u, v, deg=False):
     """
     if deg:
         a = angle_vectors(u, v, deg)
-        return a, 360. - a
+        return a, 360.0 - a
     a = angle_vectors(u, v)
     return a, pi * 2 - a
 
@@ -253,18 +242,19 @@ def angles_vectors_xy(u, v, deg=False):
 
     Parameters
     ----------
-    u : sequence of float
+    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
         XY(Z) coordinates of the first vector.
-    v : sequence of float
+    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
         XY(Z) coordinates of the second vector.
-    deg : boolean
-        returns angles in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
 
     Returns
     -------
-    tuple
-        The smallest angle between the vectors in radians (in degrees if deg == True).
-        The smallest angle is returned first.
+    float
+        The smallest angle in radians, or in degrees if ``deg == True``.
+    float
+        The other angle.
 
     Notes
     -----
@@ -277,7 +267,7 @@ def angles_vectors_xy(u, v, deg=False):
     """
     if deg:
         a = angle_vectors_xy(u, v, deg)
-        return a, 360. - a
+        return a, 360.0 - a
     a = angle_vectors_xy(u, v)
     return a, pi * 2 - a
 
@@ -287,20 +277,21 @@ def angles_points(a, b, c, deg=False):
 
     Parameters
     ----------
-    a : sequence of float)
+    a : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    b : sequence of float)
+    b : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    c : sequence of float)
+    c : [float, float, float] | :class:`~compas.geometry.Point`
         XYZ coordinates.
-    deg : boolean
-        returns angles in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
 
     Returns
     -------
-    tuple
-        The smallest angle between the vectors in radians (in degrees if deg == True).
-        The smallest angle is returned first.
+    float
+        The smallest angle in radians, or in degrees if ``deg == True``.
+    float
+        The other angle.
 
     Notes
     -----
@@ -326,20 +317,21 @@ def angles_points_xy(a, b, c, deg=False):
 
     Parameters
     ----------
-    a : sequence of float)
+    a : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates.
-    b : sequence of float)
+    b : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates.
-    c : sequence of float)
+    c : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
         XY(Z) coordinates.
-    deg : boolean
-        returns angles in degrees if True
+    deg : bool, optional
+        If True, returns the angle in degrees.
 
     Returns
     -------
-    tuple
-        The smallest angle between the vectors in radians (in degrees if deg == True).
-        The smallest angle is returned first.
+    float
+        The smallest angle in radians, or in degrees if ``deg == True``.
+    float
+        The other angle.
 
     Notes
     -----
@@ -367,18 +359,19 @@ def angle_planes(a, b, deg=False):
 
     Parameters
     ----------
-    a : point and vector or :class:`compas.geometry.Plane`
+    a : [point, vector] | :class:`~compas.geometry.Plane`
         The first plane.
-    b : point and vector or :class:`compas.geometry.Plane`
+    b : [point, vector] | :class:`~compas.geometry.Plane`
         The second plane.
-    deg : boolean
-        Returns angle in degrees if True.
+    deg : bool, optional
+        If True, returns the angle in degrees.
 
     Returns
     -------
     float
-        The smallest angle in radians (in degrees if deg == True).
-        The angle is always positive.
+        The smallest angle in radians, or in degrees if ``deg == True``.
+    float
+        The other angle.
 
     Examples
     --------

@@ -148,79 +148,48 @@ Visualizing Robots
 Before jumping into how to build a robot model, let's first see how to visualize
 one. This can be done with Blender, Rhino or Grasshopper using one of COMPAS's
 artists.  The basic procedure is the same in
-any of the CAD software (aside from the import statement). Below you can find an example code for both Rhino and Blender. 
+any of the CAD software (aside from the import statement). Below you can find an example code for both Rhino and Blender.
 
 
-.. raw:: html
+.. tabs::
 
-    <div class="card">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#visualise_robot_rhino">Rhino</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#visualise_robot_blender">Blender</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content">
+    .. tab-item:: Rhino
+        :active:
 
-.. raw:: html
+        Be sure to first install COMPAS for Rhino.  While the following code is incomplete,
+        it can be used as a scaffolding for code to be run in a Python script editor within Rhino.
 
-    <div class="tab-pane active" id="visualise_robot_rhino">
+        .. code-block:: python
 
-Be sure to first install COMPAS for Rhino.  While the following code is incomplete,
-it can be used as a scaffolding for code to be run in a Python script editor within Rhino.
+            import compas
+            from compas.artists import Artist
+            from compas.robots import RobotModel
 
-.. code-block:: python
+            model = RobotModel('Robby')
 
-    import compas
-    from compas.robots import RobotModel
-    from compas_rhino.artists import RobotModelArtist
+            # Add some geometry to Robby here
 
-    model = RobotModel('Robby')
+            artist = Artist(model, layer='COMPAS::Example Robot')
+            artist.clear_layer()
+            artist.draw_visual()
 
-    # Add some geometry to Robby here
+    .. tab-item:: Blender
 
-    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
-    artist.clear_layer()
-    artist.draw_visual()
+        .. code-block:: python
 
-.. raw:: html
+            import compas
+            from compas.artists import Artist
+            from compas.robots import RobotModel
+            import compas_blender
 
-    </div>
-    <div class="tab-pane" id="visualise_robot_blender">
+            compas_blender.clear()  # Delete all objects in the Blender scene
 
-.. code-block:: python
+            model = RobotModel('Robby')
 
-    import compas
-    from compas.robots import RobotModel
-    import compas_blender
-    from compas_blender.artists import RobotModelArtist
+            # Add some geometry to Robby here
 
-    compas_blender.clear()  # Delete all objects in the Blender scene
-
-    model = RobotModel('Robby')
-
-    # Add some geometry to Robby here
-    
-    # Load the robot geometry into the blender scene
-    artist = RobotModelArtist(model, collection='COMPAS::Example Robot')
-
-Note that the blender ``RobotModelArtist`` is not as developed as the one for Rhino.
-
-.. raw:: html
-
-    </div>
-
-.. raw:: html
-
-    </div>
-    </div>
-    </div>
-
+            # Load the robot geometry into the blender scene
+            artist = Artist(model, collection='COMPAS::Example Robot')
 
 
 See below for a complete example of how to programmatically create a Robotmodel.
@@ -282,15 +251,15 @@ and is useful, outside of a CAD environment.
 
 .. code-block:: python
 
+    from compas.artists import Artist
     from compas.geometry import Box, Frame
     from compas.robots import RobotModel
-    from compas_rhino.artists import RobotModelArtist
 
     model = RobotModel(name='Boxy')
     box = Box(Frame.worldXY(), 1, 2, .5)
     model.add_link(name='box_link', visual_meshes=[box])
 
-    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
+    artist = Artist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
@@ -313,15 +282,15 @@ of the box.  The box is also shifted slightly forward in the y-direction:
 
 .. code-block:: python
 
+    from compas.artists import Artist
     from compas.geometry import Box, Frame
     from compas.robots import RobotModel
-    from compas_rhino.artists import RobotModelArtist
 
     model = RobotModel(name='Boxy')
     box = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
     model.add_link(name='box_link', visual_meshes=[box])
 
-    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
+    artist = Artist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
@@ -334,16 +303,16 @@ there is a stack of two boxes:
 
 .. code-block:: python
 
+    from compas.artists import Artist
     from compas.geometry import Box, Frame
     from compas.robots import RobotModel
-    from compas_rhino.artists import RobotModelArtist
 
     model = RobotModel(name='Boxy')
     box_1 = Box(Frame([0, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
     box_2 = Box(Frame([0, 0, 4], [1, 0, 0], [0, 1, 0]), .5, 1, 7)
     model.add_link(name='box_link', visual_meshes=[box_1, box_2])
 
-    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
+    artist = Artist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 
@@ -361,9 +330,9 @@ a cylindrical second link as well as a joint connecting the two.
 
 .. code-block:: python
 
+    from compas.artists import Artist
     from compas.geometry import Box, Circle, Cylinder, Frame, Plane, Vector
     from compas.robots import Joint, RobotModel
-    from compas_rhino.artists import RobotModelArtist
 
     model = RobotModel(name='Jointy')
     box_1 = Box(Frame([2, .5, .25], [1, 0, 0], [0, 1, 0]), 1, 2, .5)
@@ -384,7 +353,7 @@ a cylindrical second link as well as a joint connecting the two.
          axis=axis,
     )
 
-    artist = RobotModelArtist(model, layer='COMPAS::Example Robot')
+    artist = Artist(model, layer='COMPAS::Example Robot')
     artist.clear_layer()
     artist.draw_visual()
 

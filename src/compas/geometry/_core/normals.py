@@ -2,21 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import cross_vectors_xy
-from compas.geometry._core import length_vector
-from compas.geometry._core import normalize_vector
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import cross_vectors
+from ._algebra import cross_vectors_xy
+from ._algebra import length_vector
+from ._algebra import normalize_vector
 
-from compas.geometry._core import centroid_points
-
-
-__all__ = [
-    'normal_polygon',
-    'normal_triangle',
-    'normal_triangle_xy',
-]
+from .centroids import centroid_points
 
 
 def normal_polygon(polygon, unitized=True):
@@ -24,17 +17,19 @@ def normal_polygon(polygon, unitized=True):
 
     Parameters
     ----------
-    polygon : list of list
+    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
         A list of polygon point coordinates.
+    unitized : bool, optional
+        If True, unitize the normal vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector.
 
     Raises
     ------
-    ValueError
+    AssertionError
         If less than three points are provided.
 
     Notes
@@ -61,9 +56,9 @@ def normal_polygon(polygon, unitized=True):
         n = cross_vectors(oa, ob)
         oa = ob
 
-        nx += n[0]
-        ny += n[1]
-        nz += n[2]
+        nx += n[0] * 0.5
+        ny += n[1] * 0.5
+        nz += n[2] * 0.5
 
     if not unitized:
         return [nx, ny, nz]
@@ -76,17 +71,19 @@ def normal_triangle(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
         A list of triangle point coordinates.
+    unitized : bool, optional
+        If True, unitize the normal vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector.
 
     Raises
     ------
-    ValueError
+    AssertionError
         If the triangle does not have three vertices.
 
     """
@@ -106,18 +103,20 @@ def normal_triangle_xy(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : list of list
+    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
         A list of triangle point coordinates.
         Z-coordinates are ignored.
+    unitized : bool, optional
+        If True, unitize the normal vector.
 
     Returns
     -------
-    list
+    [float, float, float]
         The normal vector, which is a vector perpendicular to the XY plane.
 
     Raises
     ------
-    ValueError
+    AssertionError
         If the triangle does not have three vertices.
 
     """
