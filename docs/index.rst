@@ -10,6 +10,10 @@ This is the documentation of the main library of COMPAS,
 an open source framework for research and collaboration
 in Architecture, Engineering, Fabrication, and Construction.
 
+.. figure:: /_images/COMPAS.png
+     :figclass: figure
+     :class: figure-img img-fluid
+
 The core package of COMPAS (:mod:`compas`) defines all functionality for geometry processing,
 data structures, topology, numerical methods, robotics, the plugin mechanism, remote procedure calls ...
 and can be used independently of CAD systems in any environment that supports Python programming.
@@ -22,43 +26,62 @@ in Blender, Rhino, and Grasshopper.
 The package for 2D visualisation (:mod:`compas_plotters`)
 simplifies "plotting" of COMPAS geometry objects and data structures.
 
-.. figure:: /_images/COMPAS.png
-     :figclass: figure
-     :class: figure-img img-fluid
-
-User Guide
-==========
-
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
-
-   userguide/index
-
-Package Reference
+Table of Contents
 =================
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+.. grid:: 2
+   :gutter: 4
 
-   reference/index
+   .. grid-item-card::
 
-Extensions
-==========
+      User Guide
+      ^^^^^^^^^^
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+      If you want to use COMPAS for your research or in one of your projects,
+      this is the place to start.
 
-   extensions/index
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         userguide/index
 
 
-Developer Guide
-===============
+   .. grid-item-card::
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+      Package Reference
+      ^^^^^^^^^^^^^^^^^
 
-   devguide/index
+      The reference documentation of the core package and the CAD packages.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         reference/index
+
+   .. grid-item-card::
+
+      Extensions
+      ^^^^^^^^^^
+
+      The core extensions to COMPAS and the AEC toolboxes manages by the compas-dev team are listed here.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         extensions/index
+
+   .. grid-item-card::
+
+      Developer Guide
+      ^^^^^^^^^^^^^^^
+
+      If you want to contribute to COMPAS, this is the place to start.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         devguide/index
