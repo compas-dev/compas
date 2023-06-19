@@ -134,7 +134,6 @@ def offset_polygon(polygon, distance, tol=1e-6):
     >>> offsetted_polygon = offset_polygon(polygon, 0.5)
     >>> offsetted_polygon
     Polygon[[0.5, 0.5, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.0]]
-    >>>
 
     """
     normal = normal_polygon(polygon)

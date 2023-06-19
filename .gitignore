@@ -110,9 +110,7 @@ ENV/
 
 dist/docs
 
-docs/generated/
-docs/api/generated/
-docs/reference/generated
+generated
 
 *.3dmbak
 *.rhl

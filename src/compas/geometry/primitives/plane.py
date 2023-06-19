@@ -1,9 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import sqrt
 
+from compas.geometry import cross_vectors
 from ._primitive import Primitive
 from .vector import Vector
 from .point import Point
@@ -197,7 +198,7 @@ class Plane(Primitive):
         a = Point(*a)
         b = Point(*b)
         c = Point(*c)
-        normal = Vector.cross(b - a, c - a)
+        normal = Vector(*cross_vectors(b - a, c - a))
         return cls(a, normal)
 
     @classmethod
@@ -221,14 +222,14 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>> plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
+        >>> plane = Plane.from_point_and_two_vectors([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
         >>> plane.point
         Point(0.000, 0.000, 0.000)
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
 
         """
-        normal = Vector.cross(u, v)
+        normal = Vector(*cross_vectors(u, v))
         return cls(point, normal)
 
     def from_abcd(cls, abcd):
