@@ -245,7 +245,7 @@ def reshape(lst, shape):
 
     shape = (shape,) if isinstance(shape, int) else shape
     flattened_list = flatten(lst)
-    if len(flattened_list) != reduce(lambda x, y: x * y, shape):
+    if len(list(flattened_list)) != reduce(lambda x, y: x * y, shape):
         raise ValueError("ValueError: cannot reshape array of size %d into shape %s" % (len(lst), shape))
     return helper(flattened_list, shape)
 
