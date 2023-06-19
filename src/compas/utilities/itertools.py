@@ -188,21 +188,8 @@ def linspace(start, stop, num=50):
 
 
 def flatten(list_of_lists):
-    """Flattens a multi-dimensional list.
-
-    Notes
-    -----
-    It does only work if the nested sequences have the same lengths or shapes.
-
-    Examples
-    --------
-    >>> a = [[1, 2, 3], [4, 5, 6]]
-    >>> flatten(a)
-    [1, 2, 3, 4, 5, 6]
-    """
-    if not hasattr(list_of_lists[0], '__len__'):
-        return list_of_lists
-    return flatten(list(chain(*list_of_lists)))
+    """Flatten one level of nesting"""
+    return chain.from_iterable(list_of_lists)
 
 
 def reshape(lst, shape):
