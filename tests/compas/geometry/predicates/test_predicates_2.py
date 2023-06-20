@@ -29,7 +29,7 @@ def test_is_point_in_circle_xy_class_input():
 
 def test_is_polygon_in_polygon_xy():
     polygon_contour = Polygon([(0, 0, 0), (4, 2, 0), (10, 0, 0), (11, 10, 0), (8, 12, 0), (0, 10, 0)])
-    polygon_inside = Polygon([(5, 5, 0), (10, 5, 0), (10, 10 , 0), (5, 10, 0)])
+    polygon_inside = Polygon([(5, 5, 0), (10, 5, 0), (10, 10, 0), (5, 10, 0)])
     assert is_polygon_in_polygon_xy(polygon_contour, polygon_inside)
 
     polygon_outside = Polygon([(15, 5, 0), (20, 5, 0), (20, 10, 0), (15, 10, 0)])
