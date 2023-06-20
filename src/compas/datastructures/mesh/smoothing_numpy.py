@@ -3,9 +3,6 @@ from numpy import array
 from .matrices import trimesh_cotangent_laplacian_matrix
 
 
-__all__ = ["trimesh_smooth_laplacian_cotangent"]
-
-
 def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
     """Smooth a triangle mesh using a laplacian matrix with cotangent weights.
 

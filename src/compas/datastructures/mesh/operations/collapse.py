@@ -3,23 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = [
-    "mesh_collapse_edge",
-    "trimesh_collapse_edge",
-]
-
-
-def is_collapse_legal(mesh, u, v, allow_boundary=False):
+def is_collapse_legal(mesh, edge, allow_boundary=False):
     """Verify if the requested collapse is legal for a triangle mesh.
 
     Parameters
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         The mesh.
-    u : str
-        The vertex to collapse towards.
-    v : str
-        The vertex to collapse.
+    edge : tuple[int, int]
+        The identifier of the edge.
     allow_boundary : bool, optional
         If True, collapse is allowed even if `u` and/or `v` is on the boundary.
 
@@ -30,6 +22,8 @@ def is_collapse_legal(mesh, u, v, allow_boundary=False):
         False otherwise.
 
     """
+    u, v = edge
+
     u_on = mesh.is_vertex_on_boundary(u)
     v_on = mesh.is_vertex_on_boundary(v)
 
@@ -77,22 +71,20 @@ def is_collapse_legal(mesh, u, v, allow_boundary=False):
     return True
 
 
-def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
+def mesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
     """Collapse an edge to its first or second vertex, or to an intermediate point.
 
     Parameters
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of a mesh.
-    u : str
-        The first vertex of the (half-) edge.
-    v : str
-        The second vertex of the (half-) edge.
+    edge : tuple[int, int]
+        The identifier of the edge.
     t : float, optional
         Determines where to collapse to.
-        If ``t == 0.0`` collapse to `u`.
-        If ``t == 1.0`` collapse to `v`.
-        If ``0.0 < t < 1.0``, collapse to a point between `u` and `v`.
+        If ``t == 0.0`` collapse to start of the edge.
+        If ``t == 1.0`` collapse to end of the edge.
+        If ``0.0 < t < 1.0``, collapse to a point between start and end of the edge.
     allow_boundary : bool, optional
         If True, allow collapses involving boundary vertices.
     fixed : list[int], optional
@@ -105,16 +97,18 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
     Raises
     ------
     ValueError
-        If `u` and `v` are not neighbors.
+        If the edge is not part of the mesh.
 
     """
+    u, v = edge
+
     if t < 0.0:
         raise ValueError("Parameter t should be greater than or equal to 0.")
     if t > 1.0:
         raise ValueError("Parameter t should be smaller than or equal to 1.")
 
     # check collapse conditions
-    if not is_collapse_legal(mesh, u, v, allow_boundary=allow_boundary):
+    if not is_collapse_legal(mesh, edge, allow_boundary=allow_boundary):
         return False
 
     # compare to fixed
@@ -123,7 +117,7 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         return False
 
     # move U
-    x, y, z = mesh.edge_point(u, v, t)
+    x, y, z = mesh.edge_point(edge, t)
     mesh.vertex[u]["x"] = x
     mesh.vertex[u]["y"] = y
     mesh.vertex[u]["z"] = z
@@ -188,7 +182,6 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     # V neighbors and halfedges coming into V
     for nbr, fkey in list(mesh.halfedge[v].items()):
-
         if fkey is None:
             mesh.halfedge[u][nbr] = None
             del mesh.halfedge[v][nbr]
@@ -224,22 +217,20 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 # - u and v on boundary
 
 
-def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
+def trimesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
     """Collapse an edge to its first or second vertex, or to an intermediate point.
 
     Parameters
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         Instance of a mesh.
-    u : str
-        The first vertex of the (half-) edge.
-    v : str
-        The second vertex of the (half-) edge.
+    edge : tuple[int, int]
+        The identifier of the edge.
     t : float, optional
         Determines where to collapse to.
-        If ``t == 0.0`` collapse to `u`.
-        If ``t == 1.0`` collapse to `v`.
-        If ``0.0 < t < 1.0``, collapse to a point between `u` and `v`.
+        If ``t == 0.0`` collapse to the start of the edge.
+        If ``t == 1.0`` collapse to the end of the edge.
+        If ``0.0 < t < 1.0``, collapse to a point between start and end.
     allow_boundary : bool, optional
         If True, allow collapses involving vertices on the boundary.
     fixed : list, optional
@@ -252,31 +243,18 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
     Raises
     ------
     ValueError
-        If `u` and `v` are not neighbors.
-
-    Notes
-    -----
-    An edge can only be collapsed if the collapse is `legal`. A collapse is
-    legal if it meets the following requirements:
-
-    * any vertex `w` that is a neighbor of both `u` and `v` is a face of the mesh
-    * `u` and `v` are not on the boundary
-    * ...
-
-    See [1]_ for a detailed explanation of these requirements.
-
-    References
-    ----------
-    .. [1] ...
+        If the edge is not part of the mesh.
 
     """
+    u, v = edge
+
     if t < 0.0:
         raise ValueError("Parameter t should be greater than or equal to 0.")
     if t > 1.0:
         raise ValueError("Parameter t should be smaller than or equal to 1.")
 
     # check collapse conditions
-    if not is_collapse_legal(mesh, u, v, allow_boundary=allow_boundary):
+    if not is_collapse_legal(mesh, edge, allow_boundary=allow_boundary):
         return False
 
     if mesh.is_vertex_on_boundary(u):
@@ -288,7 +266,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         return False
 
     # move U
-    x, y, z = mesh.edge_point(u, v, t)
+    x, y, z = mesh.edge_point(edge, t)
 
     mesh.vertex[u]["x"] = x
     mesh.vertex[u]["y"] = y
@@ -336,7 +314,6 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     # neighborhood of V
     for nbr, fkey in list(mesh.halfedge[v].items()):
-
         if fkey is None:
             mesh.halfedge[u][nbr] = None
             del mesh.halfedge[v][nbr]

@@ -6,7 +6,7 @@ from compas.geometry import KDTree
 
 from compas.utilities import pairwise
 from compas.geometry import centroid_points
-from compas.topology import breadth_first_traverse
+from compas.topology.traversal import breadth_first_traverse
 
 
 def unify_cycles(vertices, faces, root=0):

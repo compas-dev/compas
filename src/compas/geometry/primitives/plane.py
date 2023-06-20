@@ -1,11 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import sqrt
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Vector
-from compas.geometry.primitives import Point
+
+from compas.geometry import cross_vectors
+from ._primitive import Primitive
+from .vector import Vector
+from .point import Point
 
 
 class Plane(Primitive):
@@ -39,6 +41,15 @@ class Plane(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "point": Point.JSONSCHEMA,
+            "normal": Vector.JSONSCHEMA,
+        },
+        "required": ["point", "normal"],
+    }
+
     __slots__ = ["_point", "_normal"]
 
     def __init__(self, point, normal, **kwargs):
@@ -53,31 +64,14 @@ class Plane(Primitive):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-
-        return Schema(
-            {
-                "point": Point.DATASCHEMA.fget(None),
-                "normal": Vector.DATASCHEMA.fget(None),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "plane"
-
-    @property
     def data(self):
         """dict : The data dictionary that represents the plane."""
-        return {"point": self.point.data, "normal": self.normal.data}
+        return {"point": self.point, "normal": self.normal}
 
     @data.setter
     def data(self, data):
-        self.point = Point.from_data(data["point"])
-        self.normal = Vector.from_data(data["normal"])
+        self.point = data["point"]
+        self.normal = data["normal"]
 
     @classmethod
     def from_data(cls, data):
@@ -102,7 +96,7 @@ class Plane(Primitive):
         Vector(0.000, 0.000, 1.000)
 
         """
-        return cls(Point.from_data(data["point"]), Vector.from_data(data["normal"]))
+        return cls(data["point"], data["normal"])
 
     # ==========================================================================
     # properties
@@ -204,7 +198,7 @@ class Plane(Primitive):
         a = Point(*a)
         b = Point(*b)
         c = Point(*c)
-        normal = Vector.cross(b - a, c - a)
+        normal = Vector(*cross_vectors(b - a, c - a))
         return cls(a, normal)
 
     @classmethod
@@ -228,14 +222,14 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>> plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
+        >>> plane = Plane.from_point_and_two_vectors([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
         >>> plane.point
         Point(0.000, 0.000, 0.000)
         >>> plane.normal
         Vector(0.000, 0.000, 1.000)
 
         """
-        normal = Vector.cross(u, v)
+        normal = Vector(*cross_vectors(u, v))
         return cls(point, normal)
 
     def from_abcd(cls, abcd):

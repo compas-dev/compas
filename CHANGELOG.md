@@ -10,16 +10,152 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
+* Added representation for features in `compas.datastructures.Part`.
+* Added  `split` and `split_by_length` to `compas.geometry.Polyline`.
+* Added `compas.rpc.XFunc`.
+* Added `compas.data.Data.validate_jsonstring`.
+* Added `compas.data.Data.validate_jsondata`.
+* Added `compas.data.Data.JSONSCHEMA`.
+* Added `compas.data.json_validate`.
+* Added `compas.datastructures.Graph.JSONSCHEMA`.
+* Added `compas.datastructures.Graph.to_jsondata`.
+* Added `compas.datastructures.Graph.from_jsondata`.
+* Added `compas.datastructures.Halfedge.JSONSCHEMA`.
+* Added `compas.datastructures.Halfface.JSONSCHEMA`.
+* Added `compas.geometry.Arc.JSONSCHEMA`.
+* Added `compas.geometry.Bezier.JSONSCHEMA`.
+* Added `compas.geometry.Box.JSONSCHEMA`.
+* Added `compas.geometry.Capsule.JSONSCHEMA`.
+* Added `compas.geometry.Circle.JSONSCHEMA`.
+* Added `compas.geometry.Cone.JSONSCHEMA`.
+* Added `compas.geometry.Cylinder.JSONSCHEMA`.
+* Added `compas.geometry.Ellipse.JSONSCHEMA`.
+* Added `compas.geometry.Frame.JSONSCHEMA`.
+* Added `compas.geometry.Line.JSONSCHEMA`.
+* Added `compas.geometry.NurbsCurve.JSONSCHEMA`.
+* Added `compas.geometry.NurbsSurface.JSONSCHEMA`.
+* Added `compas.geometry.Plane.JSONSCHEMA`.
+* Added `compas.geometry.Point.JSONSCHEMA`.
+* Added `compas.geometry.Pointcloud.JSONSCHEMA`.
+* Added `compas.geometry.Polygon.JSONSCHEMA`.
+* Added `compas.geometry.Polyhedron.JSONSCHEMA`.
+* Added `compas.geometry.Polyline.JSONSCHEMA`.
+* Added `compas.geometry.Sphere.JSONSCHEMA`.
+* Added `compas.geometry.Torus.JSONSCHEMA`.
+* Added `compas.geometry.Quaternion.JSONSCHEMA`.
+* Added `compas.geometry.Vector.JSONSCHEMA`.
+* Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
+* Added `compas.datastructures.Halfedge.halfedge_strip_faces`.
+* Added `compas.datastructures.Mesh.vertex_point`.
+* Added `compas.datastructures.Mesh.vertices_points`.
+* Added `compas.datastructures.Mesh.set_vertex_point`.
+* Added `compas.datastructures.Mesh.edge_start`.
+* Added `compas.datastructures.Mesh.edge_end`.
+* Added `compas.datastructures.Mesh.edge_line`.
+* Added `compas.datastructures.Mesh.face_points`.
+* Added `compas.datastructures.Mesh.face_polygon`.
+* Added `compas.datastructures.Mesh.face_circle`.
+* Added `compas.datastructures.Mesh.face_frame`.
+* Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
+* Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
+* Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
 
 ### Changed
 
+* Temporarily skip testing for python 3.7 due to a bug related to MacOS 13.
 * Fixed bug that caused a new-line at the end of the `compas.HERE` constant in IronPython for Mac.
+* Fixed unbound method usage of `.cross()` on `Plane`, `Vector` and `Frame`.
 * Fixed Grasshopper `draw_polylines` method to return `PolylineCurve` instead of `Polyline` because the latter shows as only points.
 * Fixed bug in the `is_polygon_in_polygon_xy` that was not correctly generating all the edges of the second polygon before checking for intersections.
+* Fixed `area_polygon` that was, in some cases, returning a negative area.
 * Fixed uninstall post-process.
+* Fixed support for `System.Decimal` data type on json serialization.
+* Fixed `offset_polygon` raising a TypeError when inputing a Polygon instead of a list of Points.
+* Simplified `compas.datastructures.Part` for more generic usage.
+* Changed `GLTFMesh.from_mesh` to read texture coordinates, vertex normals and colors if available and add to `GLTFMesh`
+* Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
+* Changed edge parameter of `compas.datastructures.Halfedge.edge_faces` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_face` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.is_edge_on_boundary` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_after` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Halfedge.halfedge_before` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangent` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_edge_cotangents` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_coordinates` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_length` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_vector` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_point` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_midpoint` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.Mesh.edge_direction` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.is_collapse_legal` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_collapse_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_insert_vertex_on_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.mesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_split_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed edge parameter of `compas.datastructures.trimesh_swap_edge` to 1 edge identifier (tuple of vertices) instead of two serparate vertex identifiers.
+* Changed `compas.datastructures.Mesh.vertex_laplacian` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.neighborhood_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.vertex_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_vector` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_direction` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.edge_point` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.edge_midpoint` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_normal` to return `compas.geometry.Vector`.
+* Changed `compas.datastructures.Mesh.face_centroid` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_center` to return `compas.geometry.Point`.
+* Changed `compas.datastructures.Mesh.face_plane` to return `compas.geometry.Plane`.
+* Changed JSON validation to Draft202012.
+* Changed `compas.data.Data.to_json` to include `compact=False` parameter.
+* Changed `compas.data.Data.to_jsonstring` to include `compact=False` parameter.
+* Changed `compas.data.json_dump` to include `compact=False` parameter.
+* Changed `compas.data.json_dumps` to include `compact=False` parameter.
+* Changed `compas.data.DataEncoder` and `compas.data.DataDecoder` to support `to_jsondata` and `from_jsondata`.
+* Moved all API level docstrings from the `__init__.py` to the correspoding `.rst` file in the docs.
 
 ### Removed
 
+* Removed all `__all__` beyond second level package.
+* Removed deprecated `compas.utilities.coercing`.
+* Removed deprecated `compas.utilities.encoders`.
+* Removed deprecated `compas.utilities.xfunc`.
+* Removed `compas.datastructures.Halfedge.get_any_vertex`.
+* Removed `compas.datastructures.Halfedge.get_any_vertices`.
+* Removed `compas.datastructures.Halfedge.get_any_face`.
+* Removed "schemas" folder and all contained `.json` files from `compas.data`.
+* Removed `compas.data.Data.DATASCHEMA`.
+* Removed `compas.data.Data.JSONSCHEMANAME`.
+* Removed `compas.data.Data.jsondefinititions`.
+* Removed `compas.data.Data.jsonvalidator`.
+* Removed `compas.data.Data.validate_data`.
+* Removed `compas.datastructures.Graph.DATASCHEMA` and `compas.datastructures.Graph.JSONSCHEMANAME`.
+* Removed `compas.datastructures.Halfedge.DATASCHEMA` and `compas.datastructures.Halfedge.JSONSCHEMANAME`.
+* Removed `compas.datastructures.Halfface.DATASCHEMA` and `compas.datastructures.Halfface.JSONSCHEMANAME`.
+* Removed `compas.geometry.Arc.DATASCHEMA` and `compas.geometry.Arc.JSONSCHEMANAME`.
+* Removed `compas.geometry.Bezier.DATASCHEMA` and `compas.geometry.Bezier.JSONSCHEMANAME`.
+* Removed `compas.geometry.Box.DATASCHEMA` and `compas.geometry.Box.JSONSCHEMANAME`.
+* Removed `compas.geometry.Capsule.DATASCHEMA` and `compas.geometry.Capsule.JSONSCHEMANAME`.
+* Removed `compas.geometry.Circle.DATASCHEMA` and `compas.geometry.Circle.JSONSCHEMANAME`.
+* Removed `compas.geometry.Cone.DATASCHEMA` and `compas.geometry.Cone.JSONSCHEMANAME`.
+* Removed `compas.geometry.Cylinder.DATASCHEMA` and `compas.geometry.Cylinder.JSONSCHEMANAME`.
+* Removed `compas.geometry.Ellipse.DATASCHEMA` and `compas.geometry.Ellipse.JSONSCHEMANAME`.
+* Removed `compas.geometry.Frame.DATASCHEMA` and `compas.geometry.Frame.JSONSCHEMANAME`.
+* Removed `compas.geometry.Line.DATASCHEMA` and `compas.geometry.Line.JSONSCHEMANAME`.
+* Removed `compas.geometry.NurbsCurve.DATASCHEMA` and `compas.geometry.NurbsCurve.JSONSCHEMANAME`.
+* Removed `compas.geometry.NurbsSurface.DATASCHEMA` and `compas.geometry.NurbsSurface.JSONSCHEMANAME`.
+* Removed `compas.geometry.Plane.DATASCHEMA` and `compas.geometry.Plane.JSONSCHEMANAME`.
+* Removed `compas.geometry.Point.DATASCHEMA` and `compas.geometry.Point.JSONSCHEMANAME`.
+* Removed `compas.geometry.Pointcloud.DATASCHEMA` and `compas.geometry.Pointcloud.JSONSCHEMANAME`.
+* Removed `compas.geometry.Polygon.DATASCHEMA` and `compas.geometry.Polygon.JSONSCHEMANAME`.
+* Removed `compas.geometry.Polyhedron.DATASCHEMA` and `compas.geometry.Polyhedron.JSONSCHEMANAME`.
+* Removed `compas.geometry.Polyline.DATASCHEMA` and `compas.geometry.Polyline.JSONSCHEMANAME`.
+* Removed `compas.geometry.Sphere.DATASCHEMA` and `compas.geometry.Sphere.JSONSCHEMANAME`.
+* Removed `compas.geometry.Torus.DATASCHEMA` and `compas.geometry.Torus.JSONSCHEMANAME`.
+* Removed `compas.geometry.Quaternion.DATASCHEMA` and `compas.geometry.Quaternion.JSONSCHEMANAME`.
+* Removed `compas.geometry.Vector.DATASCHEMA` and `compas.geometry.Vector.JSONSCHEMANAME`.
+* Removed `compas.datastructures.Graph.key_index`and `compas.datastructures.Graph.index_key`.
+* Removed `compas.datastructures.Graph.uv_index`and `compas.datastructures.Graph.index_uv`.
+* Removed `compas.datastructures.Halfedge.key_index` and `compas.datastructures.Halfedge.index_key`.
 
 ## [1.17.5] 2023-02-16
 
@@ -46,9 +182,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed serialization of some trimmed shapes in `RhinoBrep`.
 * Freeze black version to 22.12.0.
 * Fixed `is_point_in_circle_xy` second argument to access the origin of the plane of the circle.
- 
-### Removed
+* Changed `compas.datastructures.Graph.data` to contain unprocessed `node` and `edge` dicts.
+* Changed `compas.datastructures.Halfedge.data` to contain unprocessed `vertex`, `face`, `facedata`, and `edgedata` dicts.
+* Changed `compas.datastructures.Halfface.data` to contain unprocessed `vertex`, `cell`, `edge_data`, `face_data`, and `cell_data` dicts.
+* Changed `compas.geometry.Arc.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Bezier.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Box.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Capsule.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Circle.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Cone.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Cylinder.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Ellipse.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Frame.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Line.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.NurbsCurve.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.NurbsSurface.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Plane.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Pointcloud.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Polygon.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Polyhedron.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Polyline.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Sphere.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Torus.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
+* Changed `compas.geometry.Quaternion.data` to contain unprocessed COMPAS geometry objects, instead of their data dicts.
 
+### Removed
 
 ## [1.17.4] 2022-12-06
 
@@ -66,7 +224,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed Python 3.6 from build workflows as it reached end-of-life at the end of 2021.
 
-
 ## [1.17.3] 2022-11-09
 
 ### Added
@@ -79,7 +236,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.17.2] 2022-11-07
 
 ### Added
@@ -89,7 +245,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas._os._polyfill_symlinks` to use junction (/J) instead of symbolic link (/D).
 
 ### Removed
-
 
 ## [1.17.1] 2022-11-06
 
@@ -107,7 +262,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed implementation of `compas.datastructures.mesh_planarize_faces` to include edge midpoints.
 
 ### Removed
-
 
 ## [1.17.0] 2022-10-07
 
@@ -131,12 +285,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Based all gltf data classes on `BaseGLTFDataClass`
 * Fixed `Color.__get___` AttributeError.
-* Fixed  `RhinoSurface.curvature_at` not returning a Vector, but a Rhino SurfaceCurvature class object 
+* Fixed  `RhinoSurface.curvature_at` not returning a Vector, but a Rhino SurfaceCurvature class object
 * Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
 * Changed identification of cylinder brep face to non-zero in `compas_rhino.conversions.cylinder.Cylinder`.
 * Changed linter to `black`.
 * Automatically trigger `invoke format` during `invoke release`.
-* Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
+* Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre.
 * Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
 * Fixed the `test_tangent` to work with a properly defined circle
 * `RhinoBrep` serialization works now with surface types other than NURBS.
@@ -145,9 +299,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.16.0] 2022-06-20
-
 
 ### Added
 
@@ -171,7 +323,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.robots.Configuration`.
 * Rebuild part index after deserialization in `Assembly`.
 * Fixed bug in `compas.artists.colordict.ColorDict`.
-* Change `Mesh.mesh_dual` with option of including the boundary. 
+* Change `Mesh.mesh_dual` with option of including the boundary.
 * Fixed type error in `compas_rhino.conversions.box_to_rhino`.
 * Moved from `autopep8` to `black`
 * Fixed bug in `compas.utilities.linspace` for number series with high precision start and stop values.
@@ -180,14 +332,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Locked `sphinx` to 4.5.
 * Changed `GLTFExporter` such that generated gltfs can be viewed with webxr
 * Fixed source directory path in `compas_ghpython.uninstall` plugin.
-* Fixed bug in`compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
+* Fixed bug in `compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
 * Fixed conversion bug of transformed `Box` in `compas_rhino.conversions`
 
 ### Removed
 
 * Removed unused `compas_rhino.objects` (moved to `compas_ui`).
 * Removed unused `compas_rhino.ui` (moved to `compas_ui`).
-
 
 ## [1.15.1] 2022-03-28
 
@@ -207,7 +358,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix debug print on Blender artist.
 
 ### Removed
-
 
 ## [1.15.0] 2022-03-22
 
@@ -266,7 +416,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed `compas.numerical.drx`.
 
-
 ## [1.14.1] 2022-02-16
 
 ### Added
@@ -281,7 +430,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed IronPython detection on ipy 2.7.12 and higher.
 
 ### Removed
-
 
 ## [1.14.0] 2022-02-06
 
@@ -380,7 +528,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.13.2] 2021-12-11
 
 ### Added
@@ -390,7 +537,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Removed
-
 
 ## [1.13.1] 2021-12-11
 
@@ -402,7 +548,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `Grasshopper` `UserObjects` uninstall.
 
 ### Removed
-
 
 ## [1.13.0] 2021-12-10
 
@@ -439,7 +584,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed `compas.artists.artist.new_artist` pluggable.
 
-
 ## [1.12.2] 2021-11-30
 
 ### Added
@@ -449,7 +593,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved import of `subprocess` to top of file `compas._os.py`.
 
 ### Removed
-
 
 ## [1.12.1] 2021-11-29
 
@@ -464,7 +607,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.install_plugin` to remove broken symlinks.
 
 ### Removed
-
 
 ## [1.12.0] 2021-11-17
 
@@ -487,7 +629,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.11.1] 2021-11-09
 
 ### Added
@@ -498,7 +639,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.install` to also remove broken symlinks.
 
 ### Removed
-
 
 ## [1.11.0] 2021-11-08
 
@@ -518,7 +658,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.10.0] 2021-11-04
 
 ### Added
@@ -528,7 +667,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added pluggables for `compas.geometry.NurbsCurve.__new__`, `compas.geometry.NurbsCurve.from_parameters`, `compas.geometry.NurbsCurve.from_points`, `compas.geometry.NurbsCurve.from_interpolation`, `compas.geometry.NurbsCurve.from_step`.
 * Added pluggables for `compas.geometry.NurbsSurface.__new__`, `compas.geometry.NurbsSurface.from_parameters`, `compas.geometry.NurbsSurface.from_points`, `compas.geometry.NurbsSurface.from_fill`, `compas.geometry.NurbsSurface.from_step`.
 * Added missing implementations for abstract clear methods of `compas_rhino.artists.volmeshartist`.
-
 * Added `compas_rhino.geometry.RhinoBox`, `compas_rhino.geometry.RhinoCircle`, `compas_rhino.geometry.RhinoCone`, `compas_rhino.geometry.RhinoCurve`, `compas_rhino.geometry.RhinoCylinder`, `compas_rhino.geometry.RhinoEllipse`, `compas_rhino.geometry.RhinoLine`, `compas_rhino.geometry.RhinoMesh`, `compas_rhino.geometry.RhinoPlane`, `compas_rhino.geometry.RhinoPoint`, `compas_rhino.geometry.RhinoPolyline`, `compas_rhino.geometry.RhinoSphere`, `compas_rhino.geometry.RhinoSurface`, `compas_rhino.geometry.RhinoVector` as wrappers for working with Rhino geometry through geometry conversions or coercion of doc objects.
 * Added `compas_rhino.conversions` from COMPAS geometry to Rhino geometry and vice versa, for primitives, shapes, curves, surfaces, meshes.
 * Added `compas_rhino.coercion` from Rhino doc objects to Rhino geometry compatible with COMPAS geometry.
@@ -541,7 +679,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.9.3] 2021-11-02
 
 ### Added
@@ -552,7 +689,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed z-coordinate of `compas.datastructures.Mesh.from_meshgrid` to `0.0` instead of `0`.
 
 ### Removed
-
 
 ## [1.9.2] 2021-11-02
 
@@ -567,7 +703,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.9.1] 2021-10-22
 
 ### Added
@@ -581,7 +716,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed backward compatibility problem with artists by adding `compas_rhino.artists.BaseArtist` alias for `compas_rhino.artists.RhinoArtist`.
 
 ### Removed
-
 
 ## [1.9.0] 2021-10-21
 
@@ -624,7 +758,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.8.1] 2021-09-08
 
 ### Added
@@ -632,7 +765,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Removed
-
 
 ## [1.8.0] 2021-09-08
 
@@ -683,7 +815,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bundling of ghuser components.
 
 ### Removed
-
 
 ## [1.7.0] 2021-06-14
 
@@ -774,7 +905,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.6.1] 2021-05-12
 
 ### Added
@@ -782,7 +912,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Removed
-
 
 ## [1.6.0] 2021-05-12
 
@@ -806,7 +935,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.5.0] 2021-04-20
 
 ### Added
@@ -826,7 +954,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed calculation of triangle areas.
 
 ### Removed
-
 
 ## [1.4.0] 2021-04-09
 
@@ -849,7 +976,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.3.0] 2021-03-26
 
 ### Added
@@ -864,7 +990,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.2.1] 2021-03-19
 
 ### Added
@@ -874,7 +999,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Fixed API removals from 1.0.0 -> 1.2.0
-
 
 ## [1.2.0] 2021-03-18
 
@@ -911,7 +1035,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.1.0] 2021-02-12
 
 ### Added
@@ -938,7 +1061,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.0.0] 2021-01-18
 
 ### Added
@@ -954,16 +1076,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.19.3] 2020-12-17
 
 ### Added
 
 ### Changed
+
 * Fix bug in `compas.datastructures.Network.neighborhood`.
 
 ### Removed
-
 
 ## [0.19.2] 2020-12-17
 
@@ -975,7 +1096,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.19.1] 2020-12-10
 
 ### Added
@@ -985,7 +1105,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix bug in `compas.datastructures.AttributesView`.
 
 ### Removed
-
 
 ## [0.19.0] 2020-12-09
 
@@ -1008,7 +1127,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed all implementations of `draw_collection`.
 
-
 ## [0.18.1] 2020-12-01
 
 ### Added
@@ -1029,7 +1147,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.
 
 ### Removed
-
 
 ## [0.18.0] 2020-11-24
 
@@ -1064,7 +1181,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.17.2] 2020-11-04
 
 ### Added
@@ -1077,7 +1193,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `ABCMeta` from the list of base classes of several objects in compas.
 
 ### Removed
-
 
 ## [0.17.1] 2020-10-28
 
@@ -1138,7 +1253,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.16.8] 2020-10-14
 
 ### Added
@@ -1168,7 +1282,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.16.6] 2020-09-30
 
 ### Added
@@ -1182,7 +1295,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed version processing to `distutils.version.LooseVersion`.
 
 ### Removed
-
 
 ## [0.16.5] 2020-09-26
 
@@ -1200,7 +1312,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.16.4] 2020-09-24
 
 ### Added
@@ -1210,7 +1321,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.geometry.Box.vertices`.
 
 ### Removed
-
 
 ## [0.16.3] 2020-09-23
 
@@ -1375,7 +1485,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.15.4] 2020-03-05
 
 ### Added
@@ -1393,7 +1502,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add conda executable path to `compas_bootstrapper.py`.
 
 ### Removed
-
 
 ## [0.15.3] 2020-02-26
 

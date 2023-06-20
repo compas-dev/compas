@@ -3,20 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = [
-    "network_split_edge",
-]
-
-
-def network_split_edge(network, u, v, t=0.5):
+def network_split_edge(network, edge, t=0.5):
     """Split and edge by inserting a node along its length.
 
     Parameters
     ----------
-    u : str
-        The key of the first node of the edge.
-    v : str
-        The key of the second node of the edge.
+    edge : tuple[hashable, hashable]
+        The identifier of the edge to split.
     t : float, optional
         The position of the inserted node on the edge.
 
@@ -30,9 +23,10 @@ def network_split_edge(network, u, v, t=0.5):
     ValueError
         If `t` is not in the range 0-1.
     Exception
-        If `u` and `v` are not neighbors.
+        If the edge is not part of the network.
 
     """
+    u, v = edge
     if not network.has_edge(u, v):
         return
 
@@ -42,11 +36,11 @@ def network_split_edge(network, u, v, t=0.5):
         raise ValueError("t should be smaller than 1.0.")
 
     # the split node
-    x, y, z = network.edge_point(u, v, t)
+    x, y, z = network.edge_point(edge, t)
     w = network.add_node(x=x, y=y, z=z)
 
-    network.add_edge(u, w)
-    network.add_edge(w, v)
+    network.add_edge((u, w))
+    network.add_edge((w, v))
 
     if v in network.edge[u]:
         del network.edge[u][v]

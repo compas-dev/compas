@@ -11,7 +11,7 @@ class PrimitiveArtist(Artist):
 
     Parameters
     ----------
-    primitive: :class:`~compas.geometry.Primitive`
+    primitive : :class:`~compas.geometry.Primitive`
         The geometry of the primitive.
     color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
         The RGB components of the base color of the primitive.
@@ -22,11 +22,12 @@ class PrimitiveArtist(Artist):
         The geometric primitive associated with the artist.
     color : :class:`~compas.colors.Color`
         The color of the object.
-
-    Class Attributes
-    ----------------
     default_color : :class:`~compas.colors.Color`
         The default rgb color value of the primitive.
+
+    See Also
+    --------
+    :class:`compas.artists.ShapeArtist`
 
     """
 

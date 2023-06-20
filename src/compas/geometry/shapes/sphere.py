@@ -51,6 +51,15 @@ class Sphere(Shape):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "point": Point.JSONSCHEMA,
+            "radius": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "required": ["point", "radius"],
+    }
+
     __slots__ = ["_point", "_radius"]
 
     def __init__(self, point, radius, **kwargs):
@@ -73,18 +82,13 @@ class Sphere(Shape):
         return schema.Schema({"point": is_float3, "radius": schema.And(float, lambda x: x > 0)})
 
     @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "sphere"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the sphere."""
-        return {"point": self.point.data, "radius": self.radius}
+        return {"point": self.point, "radius": self.radius}
 
     @data.setter
     def data(self, data):
-        self.point = Point.from_data(data["point"])
+        self.point = data["point"]
         self.radius = data["radius"]
 
     @classmethod
@@ -108,7 +112,7 @@ class Sphere(Shape):
         >>> sphere = Sphere.from_data(data)
 
         """
-        sphere = cls(Point.from_data(data["point"]), data["radius"])
+        sphere = cls(data["point"], data["radius"])
         return sphere
 
     # ==========================================================================

@@ -13,24 +13,6 @@ from compas.geometry import distance_point_point
 from compas.geometry import subtract_vectors
 
 
-__all__ = [
-    "draw_circles",
-    "draw_cylinders",
-    "draw_cubes",
-    "draw_faces",
-    "draw_lines",
-    "draw_mesh",
-    "draw_pipes",
-    "draw_planes",
-    "draw_pointcloud",
-    "draw_points",
-    "draw_polylines",
-    "draw_spheres",
-    "draw_texts",
-    "RGBColor",
-]
-
-
 RGBColor = Union[Tuple[int, int, int], Tuple[float, float, float]]
 
 

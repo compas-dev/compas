@@ -24,9 +24,6 @@ from scipy.optimize import fmin_l_bfgs_b
 from time import time
 
 
-__all__ = ["devo_numpy"]
-
-
 def devo_numpy(
     fn,
     bounds,

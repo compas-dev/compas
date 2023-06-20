@@ -2,15 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
-
-
-__all__ = [
-    "mesh_bounding_box",
-    "mesh_bounding_box_xy",
-]
 
 
 def mesh_bounding_box(mesh):
@@ -25,6 +18,12 @@ def mesh_bounding_box(mesh):
     -------
     list[list[float]]
         The 8 corners of the bounding box of the mesh.
+
+    See Also
+    --------
+    :func:`compas.geometry.mesh_oriented_bounding_box_numpy`
+    :func:`compas.geometry.mesh_oriented_bounding_box_xy_numpy`
+    :func:`compas.geometry.mesh_bounding_box_xy`
 
     Examples
     --------
@@ -50,6 +49,12 @@ def mesh_bounding_box_xy(mesh):
     -------
     list[list[float]]
         The 4 corners of the bounding polygon in the XY plane.
+
+    See Also
+    --------
+    :func:`compas.geometry.mesh_bounding_box`
+    :func:`compas.geometry.mesh_oriented_bounding_box_numpy`
+    :func:`compas.geometry.mesh_oriented_bounding_box_xy_numpy`
 
     Examples
     --------

@@ -2,13 +2,13 @@
 
 ## Project Lead
 
-- Tom Van Mele <<van.mele@arch.ethz.ch>> [@brgcode](https://github.com/brgcode), [@tomvanmele](https://github.com/tomvanmele)
+- Tom Van Mele <<tom.v.mele@gmail.com>> [@brgcode](https://github.com/brgcode), [@tomvanmele](https://github.com/tomvanmele)
 
 ## Main Developers
 
 - Gonzalo Casas <<casas@arch.ethz.ch>> [@gonzalocasas](https://github.com/gonzalocasas)
 - Romana Rust <<rust@arch.ethz.ch>> [@romanarust](https://github.com/romanarust)
-- Mathias Bernhard <<bernhard@arch.ethz.ch>> [@worbit](https://github.com/worbit)
+- Mathias Bernhard <<mathias.bernhard@epfl.ch>> [@worbit](https://github.com/worbit)
 
 ## Contributors
 

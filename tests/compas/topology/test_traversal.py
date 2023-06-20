@@ -43,7 +43,7 @@ def test_astar_shortest_path_disconnected():
 
 def test_astar_shortest_path_mesh():
     mesh = Mesh.from_shape(Box(Frame.worldXY(), 1, 1, 1))
-    a, b = mesh.get_any_vertices(2)
+    a, b = mesh.vertex_sample(size=2)
     path = astar_shortest_path(mesh, a, b)
     assert path is not None
 

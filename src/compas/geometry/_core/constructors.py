@@ -4,20 +4,14 @@ from __future__ import division
 
 from math import sqrt
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import sum_vectors
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import scale_vector
-from compas.geometry._core import normalize_vector
-from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_sqrd
-
-
-__all__ = [
-    "circle_from_points",
-    "circle_from_points_xy",
-]
+from ._algebra import subtract_vectors
+from ._algebra import sum_vectors
+from ._algebra import cross_vectors
+from ._algebra import dot_vectors
+from ._algebra import scale_vector
+from ._algebra import normalize_vector
+from ._algebra import length_vector
+from ._algebra import length_vector_sqrd
 
 
 def circle_from_points(a, b, c):

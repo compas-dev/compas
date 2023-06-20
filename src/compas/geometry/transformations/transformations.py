@@ -23,45 +23,10 @@ from compas.geometry import angle_vectors
 from compas.geometry import closest_point_on_plane
 from compas.geometry import closest_point_on_line
 from compas.geometry import closest_point_on_line_xy
-from compas.geometry import intersection_line_plane
-from compas.geometry import intersection_line_triangle
 
-from compas.geometry.transformations import matrix_from_axis_and_angle
-from compas.geometry.transformations import matrix_from_scale_factors
-from compas.geometry.transformations import matrix_from_change_of_basis
-
-
-__all__ = [
-    "local_axes",
-    "orthonormalize_axes",
-    "transform_points",
-    "transform_vectors",
-    "transform_frames",
-    "local_to_world_coordinates",
-    "world_to_local_coordinates",
-    "translate_points",
-    "translate_points_xy",
-    "scale_points",
-    "scale_points_xy",
-    "rotate_points",
-    "rotate_points_xy",
-    "mirror_vector_vector",
-    "mirror_points_point",
-    "mirror_points_point_xy",
-    "mirror_points_line",
-    "mirror_points_line_xy",
-    "mirror_point_plane",
-    "mirror_points_plane",
-    "project_point_plane",
-    "project_points_plane",
-    "project_point_line",
-    "project_point_line_xy",
-    "project_points_line",
-    "project_points_line_xy",
-    "reflect_line_plane",
-    "reflect_line_triangle",
-    "orient_points",
-]
+from .matrices import matrix_from_axis_and_angle
+from .matrices import matrix_from_scale_factors
+from .matrices import matrix_from_change_of_basis
 
 
 # this function will not always work
@@ -1014,6 +979,8 @@ def reflect_line_plane(line, plane, tol=1e-6):
     ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
 
     """
+    from compas.geometry import intersection_line_plane
+
     x = intersection_line_plane(line, plane, tol=tol)
     if not x:
         return
@@ -1064,6 +1031,8 @@ def reflect_line_triangle(line, triangle, tol=1e-6):
     ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
 
     """
+    from compas.geometry import intersection_line_triangle
+
     x = intersection_line_triangle(line, triangle, tol=tol)
     if not x:
         return

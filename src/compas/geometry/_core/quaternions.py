@@ -49,17 +49,8 @@ References
 """
 import math
 
-from compas.geometry._core import allclose
+from ._algebra import allclose
 
-
-__all__ = [
-    "quaternion_norm",
-    "quaternion_unitize",
-    "quaternion_is_unit",
-    "quaternion_multiply",
-    "quaternion_canonize",
-    "quaternion_conjugate",
-]
 
 ATOL = 1e-6  # absolute tolerance
 

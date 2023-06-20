@@ -2,8 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from ..datastructure import Datastructure
-from ..graph import Graph
+from compas.datastructures import Datastructure
+from compas.datastructures import Graph
 from .exceptions import AssemblyError
 
 
@@ -22,9 +22,11 @@ class Assembly(Datastructure):
     graph : :class:`~compas.datastructures.Graph`
         The graph that is used under the hood to store the parts and their connections.
 
-    Examples
+    See Also
     --------
-    >>>
+    :class:`compas.datastructures.Network`
+    :class:`compas.datastructures.Mesh`
+    :class:`compas.datastructures.VolMesh`
 
     """
 

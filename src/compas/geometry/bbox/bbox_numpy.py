@@ -9,30 +9,17 @@ from numpy import argmin
 from numpy import amax
 from numpy import amin
 from numpy import dot
-
-# from numpy import ptp
 from numpy import sum
 
 from scipy.spatial import ConvexHull
 
-# from scipy.spatial import QhullError
-
+from compas.numerical import pca_numpy
 from compas.geometry import local_axes
 from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import transform_points_numpy
-from compas.geometry import Frame
-from compas.geometry import Transformation
-from compas.numerical import pca_numpy
 
-from compas.geometry.bbox.bbox import bounding_box
-
-
-__all__ = [
-    "oriented_bounding_box_numpy",
-    "oriented_bounding_box_xy_numpy",
-    "oabb_numpy",
-]
+from .bbox import bounding_box
 
 
 # make alternative implementation using PCA
@@ -264,6 +251,9 @@ def oabb_numpy(points):
         XYZ coordinates of 8 points defining a box.
 
     """
+    from compas.geometry import Frame
+    from compas.geometry import Transformation
+
     origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
     frame = Frame(origin, xaxis, yaxis)
     world = Frame.worldXY()

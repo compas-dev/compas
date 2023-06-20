@@ -4,7 +4,7 @@ from .data_classes import NormalTextureInfoData
 
 
 def create_if_data(cls, data, attr):
-    return cls.from_data(data.get(attr)) if attr in data and len(data[attr]) else None
+    return cls.from_data(data.get(attr)) if attr in data and data[attr] is not None else None
 
 
 class KHR_materials_transmission(BaseGLTFDataClass):

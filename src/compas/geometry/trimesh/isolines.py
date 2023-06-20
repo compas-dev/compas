@@ -5,9 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = ["trimesh_isolines"]
-
-
 @pluggable(category="trimesh")
 def trimesh_isolines(M, S, N=50):
     """Compute isolines on a triangle mesh using a scalarfield of data points

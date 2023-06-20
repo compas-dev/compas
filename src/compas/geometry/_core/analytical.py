@@ -6,14 +6,6 @@ from math import exp
 from math import cos
 from math import sin
 
-__all__ = [
-    "circle_evaluate",
-    "ellipse_evaluate",
-    "archimedean_spiral_evaluate",
-    "logarithmic_spiral_evaluate",
-    "helix_evaluate",
-]
-
 
 def circle_evaluate(t, r, z=0):
     """Evalutes a circle at a parameter.

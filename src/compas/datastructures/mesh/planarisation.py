@@ -13,12 +13,6 @@ from compas.utilities import window
 from compas.utilities import pairwise
 
 
-__all__ = [
-    "mesh_flatness",
-    "mesh_planarize_faces",
-]
-
-
 def mesh_flatness(mesh, maxdev=1.0):
     """Compute mesh flatness per face.
 

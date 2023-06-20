@@ -6,34 +6,16 @@ from math import fabs
 
 from compas.utilities import pairwise
 
-from compas.geometry._core import add_vectors
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import length_vector
-from compas.geometry._core import length_vector_xy
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import cross_vectors_xy
-from compas.geometry._core import scale_vector
-from compas.geometry._core import sum_vectors
-
-
-__all__ = [
-    "midpoint_point_point",
-    "midpoint_point_point_xy",
-    "midpoint_line",
-    "midpoint_line_xy",
-    "centroid_points",
-    "centroid_points_weighted",
-    "centroid_points_xy",
-    "centroid_polygon",
-    "centroid_polygon_xy",
-    "centroid_polygon_vertices",
-    "centroid_polygon_vertices_xy",
-    "centroid_polygon_edges",
-    "centroid_polygon_edges_xy",
-    "centroid_polyhedron",
-]
+from ._algebra import add_vectors
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import length_vector
+from ._algebra import length_vector_xy
+from ._algebra import dot_vectors
+from ._algebra import cross_vectors
+from ._algebra import cross_vectors_xy
+from ._algebra import scale_vector
+from ._algebra import sum_vectors
 
 
 def midpoint_point_point(a, b):
