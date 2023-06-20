@@ -593,18 +593,18 @@ make sure to include it in the docstring of <code class="docutils literal notran
 <section id="code-structure">
 <span id="id1"></span><h2>Code structure</h2>
 <p>Each of the core packages is divided into subpackages that group functionality into logical components.
-For example, <a class="reference external" href="https://compas.dev/compas/latest/api/compas.html#module-compas" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a> is divided into:</p>
+For example, <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code> is divided into:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.artists.html#module-compas.artists" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.artists</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.data.html#module-compas.data" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.data</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.datastructures.html#module-compas.datastructures" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.datastructures</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.files.html#module-compas.files" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.files</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.geometry.html#module-compas.geometry" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.numerical.html#module-compas.numerical" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.numerical</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.robots.html#module-compas.robots" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.robots</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.rpc.html#module-compas.rpc" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.topology.html#module-compas.topology" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.topology</span></code></a></p></li>
-<li><p><a class="reference external" href="https://compas.dev/compas/latest/api/compas.utilities.html#module-compas.utilities" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.utilities</span></code></a></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.artists</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.data</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.datastructures</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.files</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.numerical</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.robots</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.topology</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.utilities</span></code></p></li>
 </ul>
 <p>The API of each subpackage is documented in the docstring of its <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file using basic RestructuredText.
 From outside of these packages, functionality should be imported directly from the subpackage level,

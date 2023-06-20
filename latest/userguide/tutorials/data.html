@@ -575,7 +575,7 @@ and the base infrastructure for validation of the data of COMPAS objects in both
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This tutorial is loosely based on the COMPAS exchange meeting about <a class="reference external" href="https://compas.dev/compas/latest/api/compas.data.html#module-compas.data" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.data</span></code></a> that is available here
+<p>This tutorial is loosely based on the COMPAS exchange meeting about <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.data</span></code> that is available here
 <a class="reference external" href="https://github.com/compas-dev/compas-exchange">COMPAS exchange: data</a></p>
 </div>
 <section id="interface">
@@ -701,7 +701,7 @@ which will help with IntelliSense and code completion.</p>
 <h2>Validation</h2>
 <p>A somewhat experimental feature of the data package is data validation.
 The base data class defines two unimplemented attributes <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.data.Data.JSONSCHEMA</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.data.Data.DATASCHEMA</span></code>.
-The former is meant to define the name of the json schema in the <code class="docutils literal notranslate"><span class="pre">schema</span></code> folder of <a class="reference external" href="https://compas.dev/compas/latest/api/compas.data.html#module-compas.data" title="(in COMPAS v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.data</span></code></a>,
+The former is meant to define the name of the json schema in the <code class="docutils literal notranslate"><span class="pre">schema</span></code> folder of <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.data</span></code>,
 and the latter a Python schema using <code class="xref py py-mod docutils literal notranslate"><span class="pre">schema.Schema</span></code>.</p>
 <p>If a deriving class implements those attributes, data sources can be validated against the two schemas to verify compatibility
 of the available data with the object type.</p>
