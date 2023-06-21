@@ -20,6 +20,7 @@ class Block(Part):
         transformation = Transformation.from_frame(self.frame)
         return Box.from_width_height_depth(1, 1, 1).transformed(transformation)
 
+
 assembly = Assembly()
 
 f1 = Frame([0, 0, 1], [1, 0, 0], [0, 1, 0])

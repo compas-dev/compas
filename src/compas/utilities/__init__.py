@@ -35,6 +35,7 @@ from .decorators import (
 from .images import gif_from_images
 from .itertools import (
     flatten,
+    reshape,
     grouper,
     iterable_like,
     linspace,
@@ -83,6 +84,7 @@ __all__ = [
     "remap_values",
     "meshgrid",
     "linspace",
+    "reshape",
     "flatten",
     "pairwise",
     "window",
