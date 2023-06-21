@@ -26,10 +26,10 @@ in Architecture, Engineering, Fabrication, and Construction.
 .. The package for 2D visualisation (:mod:`compas_plotters`)
 .. simplifies "plotting" of COMPAS geometry objects and data structures.
 
-Sections
-========
+.. Sections
+.. ========
 
-The documentation is divided into the following sections.
+.. The documentation is divided into the following sections.
 
 .. grid:: 2
    :gutter: 4
