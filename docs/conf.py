@@ -305,9 +305,9 @@ html_theme_options = {
     "external_links": [
         # {"name": "Changelog", "url": "https://github.com/compas-dev/compas/releases"},
         {"name": "COMPAS Framework", "url": "https://compas.dev"},
-        {"name": "COMPAS Association", "url": "https://compas.dev/association"},
+        # {"name": "COMPAS Association", "url": "https://compas.dev/association"},
     ],
-    "header_links_before_dropdown": 4,
+    "header_links_before_dropdown": 5,
     "icon_links": [
         {
             "name": "GitHub",
