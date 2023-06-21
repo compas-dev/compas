@@ -62,9 +62,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Temporarily skip testing for python 3.7 due to a bug related to MacOS 13.
 * Fixed bug that caused a new-line at the end of the `compas.HERE` constant in IronPython for Mac.
 * Fixed unbound method usage of `.cross()` on `Plane`, `Vector` and `Frame`.
 * Fixed Grasshopper `draw_polylines` method to return `PolylineCurve` instead of `Polyline` because the latter shows as only points.
+* Fixed bug in the `is_polygon_in_polygon_xy` that was not correctly generating all the edges of the second polygon before checking for intersections.
 * Fixed `area_polygon` that was, in some cases, returning a negative area.
 * Fixed uninstall post-process.
 * Fixed support for `System.Decimal` data type on json serialization.
@@ -206,7 +208,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.17.4] 2022-12-06
 
 ### Added
@@ -223,7 +224,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed Python 3.6 from build workflows as it reached end-of-life at the end of 2021.
 
-
 ## [1.17.3] 2022-11-09
 
 ### Added
@@ -236,7 +236,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.17.2] 2022-11-07
 
 ### Added
@@ -246,7 +245,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas._os._polyfill_symlinks` to use junction (/J) instead of symbolic link (/D).
 
 ### Removed
-
 
 ## [1.17.1] 2022-11-06
 
@@ -264,7 +262,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed implementation of `compas.datastructures.mesh_planarize_faces` to include edge midpoints.
 
 ### Removed
-
 
 ## [1.17.0] 2022-10-07
 
@@ -288,12 +285,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Based all gltf data classes on `BaseGLTFDataClass`
 * Fixed `Color.__get___` AttributeError.
-* Fixed  `RhinoSurface.curvature_at` not returning a Vector, but a Rhino SurfaceCurvature class object 
+* Fixed  `RhinoSurface.curvature_at` not returning a Vector, but a Rhino SurfaceCurvature class object
 * Fixed `cylinder_to_rhino` conversion to match `compas.geometry.Cylinder` location.
 * Changed identification of cylinder brep face to non-zero in `compas_rhino.conversions.cylinder.Cylinder`.
 * Changed linter to `black`.
 * Automatically trigger `invoke format` during `invoke release`.
-* Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre. 
+* Fixed bug in `intersections.intersection_circle_circle_xy` where the Circle's Plane was accessed instead of the centre.
 * Fixed bug in `_core.tangent` where the Circle's Plane was accessed instead of the centre.
 * Fixed the `test_tangent` to work with a properly defined circle
 * `RhinoBrep` serialization works now with surface types other than NURBS.
@@ -302,9 +299,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.16.0] 2022-06-20
-
 
 ### Added
 
@@ -328,7 +323,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.robots.Configuration`.
 * Rebuild part index after deserialization in `Assembly`.
 * Fixed bug in `compas.artists.colordict.ColorDict`.
-* Change `Mesh.mesh_dual` with option of including the boundary. 
+* Change `Mesh.mesh_dual` with option of including the boundary.
 * Fixed type error in `compas_rhino.conversions.box_to_rhino`.
 * Moved from `autopep8` to `black`
 * Fixed bug in `compas.utilities.linspace` for number series with high precision start and stop values.
@@ -337,14 +332,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Locked `sphinx` to 4.5.
 * Changed `GLTFExporter` such that generated gltfs can be viewed with webxr
 * Fixed source directory path in `compas_ghpython.uninstall` plugin.
-* Fixed bug in`compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
+* Fixed bug in `compas_ghpython.components`that ignored input list of `.ghuser` objects to uninstall.
 * Fixed conversion bug of transformed `Box` in `compas_rhino.conversions`
 
 ### Removed
 
 * Removed unused `compas_rhino.objects` (moved to `compas_ui`).
 * Removed unused `compas_rhino.ui` (moved to `compas_ui`).
-
 
 ## [1.15.1] 2022-03-28
 
@@ -364,7 +358,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix debug print on Blender artist.
 
 ### Removed
-
 
 ## [1.15.0] 2022-03-22
 
@@ -423,7 +416,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed `compas.numerical.drx`.
 
-
 ## [1.14.1] 2022-02-16
 
 ### Added
@@ -438,7 +430,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed IronPython detection on ipy 2.7.12 and higher.
 
 ### Removed
-
 
 ## [1.14.0] 2022-02-06
 
@@ -537,7 +528,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.13.2] 2021-12-11
 
 ### Added
@@ -547,7 +537,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Removed
-
 
 ## [1.13.1] 2021-12-11
 
@@ -559,7 +548,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `Grasshopper` `UserObjects` uninstall.
 
 ### Removed
-
 
 ## [1.13.0] 2021-12-10
 
@@ -596,7 +584,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed `compas.artists.artist.new_artist` pluggable.
 
-
 ## [1.12.2] 2021-11-30
 
 ### Added
@@ -606,7 +593,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved import of `subprocess` to top of file `compas._os.py`.
 
 ### Removed
-
 
 ## [1.12.1] 2021-11-29
 
@@ -621,7 +607,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.install_plugin` to remove broken symlinks.
 
 ### Removed
-
 
 ## [1.12.0] 2021-11-17
 
@@ -644,7 +629,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.11.1] 2021-11-09
 
 ### Added
@@ -655,7 +639,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.install` to also remove broken symlinks.
 
 ### Removed
-
 
 ## [1.11.0] 2021-11-08
 
@@ -675,7 +658,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.10.0] 2021-11-04
 
 ### Added
@@ -685,7 +667,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added pluggables for `compas.geometry.NurbsCurve.__new__`, `compas.geometry.NurbsCurve.from_parameters`, `compas.geometry.NurbsCurve.from_points`, `compas.geometry.NurbsCurve.from_interpolation`, `compas.geometry.NurbsCurve.from_step`.
 * Added pluggables for `compas.geometry.NurbsSurface.__new__`, `compas.geometry.NurbsSurface.from_parameters`, `compas.geometry.NurbsSurface.from_points`, `compas.geometry.NurbsSurface.from_fill`, `compas.geometry.NurbsSurface.from_step`.
 * Added missing implementations for abstract clear methods of `compas_rhino.artists.volmeshartist`.
-
 * Added `compas_rhino.geometry.RhinoBox`, `compas_rhino.geometry.RhinoCircle`, `compas_rhino.geometry.RhinoCone`, `compas_rhino.geometry.RhinoCurve`, `compas_rhino.geometry.RhinoCylinder`, `compas_rhino.geometry.RhinoEllipse`, `compas_rhino.geometry.RhinoLine`, `compas_rhino.geometry.RhinoMesh`, `compas_rhino.geometry.RhinoPlane`, `compas_rhino.geometry.RhinoPoint`, `compas_rhino.geometry.RhinoPolyline`, `compas_rhino.geometry.RhinoSphere`, `compas_rhino.geometry.RhinoSurface`, `compas_rhino.geometry.RhinoVector` as wrappers for working with Rhino geometry through geometry conversions or coercion of doc objects.
 * Added `compas_rhino.conversions` from COMPAS geometry to Rhino geometry and vice versa, for primitives, shapes, curves, surfaces, meshes.
 * Added `compas_rhino.coercion` from Rhino doc objects to Rhino geometry compatible with COMPAS geometry.
@@ -698,7 +679,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.9.3] 2021-11-02
 
 ### Added
@@ -709,7 +689,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed z-coordinate of `compas.datastructures.Mesh.from_meshgrid` to `0.0` instead of `0`.
 
 ### Removed
-
 
 ## [1.9.2] 2021-11-02
 
@@ -724,7 +703,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.9.1] 2021-10-22
 
 ### Added
@@ -738,7 +716,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed backward compatibility problem with artists by adding `compas_rhino.artists.BaseArtist` alias for `compas_rhino.artists.RhinoArtist`.
 
 ### Removed
-
 
 ## [1.9.0] 2021-10-21
 
@@ -781,7 +758,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.8.1] 2021-09-08
 
 ### Added
@@ -789,7 +765,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Removed
-
 
 ## [1.8.0] 2021-09-08
 
@@ -840,7 +815,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bundling of ghuser components.
 
 ### Removed
-
 
 ## [1.7.0] 2021-06-14
 
@@ -931,7 +905,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.6.1] 2021-05-12
 
 ### Added
@@ -939,7 +912,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Removed
-
 
 ## [1.6.0] 2021-05-12
 
@@ -963,7 +935,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.5.0] 2021-04-20
 
 ### Added
@@ -983,7 +954,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed calculation of triangle areas.
 
 ### Removed
-
 
 ## [1.4.0] 2021-04-09
 
@@ -1006,7 +976,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.3.0] 2021-03-26
 
 ### Added
@@ -1021,7 +990,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.2.1] 2021-03-19
 
 ### Added
@@ -1031,7 +999,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Fixed API removals from 1.0.0 -> 1.2.0
-
 
 ## [1.2.0] 2021-03-18
 
@@ -1068,7 +1035,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.1.0] 2021-02-12
 
 ### Added
@@ -1095,7 +1061,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [1.0.0] 2021-01-18
 
 ### Added
@@ -1111,16 +1076,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.19.3] 2020-12-17
 
 ### Added
 
 ### Changed
+
 * Fix bug in `compas.datastructures.Network.neighborhood`.
 
 ### Removed
-
 
 ## [0.19.2] 2020-12-17
 
@@ -1132,7 +1096,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.19.1] 2020-12-10
 
 ### Added
@@ -1142,7 +1105,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix bug in `compas.datastructures.AttributesView`.
 
 ### Removed
-
 
 ## [0.19.0] 2020-12-09
 
@@ -1165,7 +1127,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed all implementations of `draw_collection`.
 
-
 ## [0.18.1] 2020-12-01
 
 ### Added
@@ -1186,7 +1147,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.
 
 ### Removed
-
 
 ## [0.18.0] 2020-11-24
 
@@ -1221,7 +1181,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.17.2] 2020-11-04
 
 ### Added
@@ -1234,7 +1193,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `ABCMeta` from the list of base classes of several objects in compas.
 
 ### Removed
-
 
 ## [0.17.1] 2020-10-28
 
@@ -1295,7 +1253,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.16.8] 2020-10-14
 
 ### Added
@@ -1325,7 +1282,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.16.6] 2020-09-30
 
 ### Added
@@ -1339,7 +1295,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed version processing to `distutils.version.LooseVersion`.
 
 ### Removed
-
 
 ## [0.16.5] 2020-09-26
 
@@ -1357,7 +1312,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.16.4] 2020-09-24
 
 ### Added
@@ -1367,7 +1321,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.geometry.Box.vertices`.
 
 ### Removed
-
 
 ## [0.16.3] 2020-09-23
 
@@ -1532,7 +1485,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.15.4] 2020-03-05
 
 ### Added
@@ -1550,7 +1502,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add conda executable path to `compas_bootstrapper.py`.
 
 ### Removed
-
 
 ## [0.15.3] 2020-02-26
 

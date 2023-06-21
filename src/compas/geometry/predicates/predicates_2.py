@@ -366,7 +366,7 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
         for i in range(len(polygon1)):
             line = [polygon1[-i], polygon1[-i - 1]]
             for j in range(len(polygon2)):
-                line_ = [polygon2[-j], polygon2[j - 1]]
+                line_ = [polygon2[-j], polygon2[-j - 1]]
                 if is_intersection_segment_segment_xy(line, line_):
                     return False
         for pt in polygon2:
