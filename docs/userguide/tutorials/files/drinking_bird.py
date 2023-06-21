@@ -36,16 +36,12 @@ head = Sphere([0, 0, 0], 1)
 beak = Cylinder(Circle(Plane([0, 1, -0.3], [0, 1, 0]), 0.3), 1.5)
 head_link = model.add_link("head", visual_meshes=[head, beak])
 neck_joint_origin = Frame([0, 0, 4], [1, 0, 0], [0, 1, 0])
-model.add_joint(
-    "neck_joint", Joint.FIXED, torso_link, head_link, origin=neck_joint_origin
-)
+model.add_joint("neck_joint", Joint.FIXED, torso_link, head_link, origin=neck_joint_origin)
 
 tail = Sphere([0, 0, 0], 1)
 tail_link = model.add_link("tail", visual_meshes=[tail])
 tail_joint_origin = Frame([0, 0, -4], [1, 0, 0], [0, 1, 0])
-model.add_joint(
-    "tail_joint", Joint.FIXED, torso_link, tail_link, origin=tail_joint_origin
-)
+model.add_joint("tail_joint", Joint.FIXED, torso_link, tail_link, origin=tail_joint_origin)
 
 hat = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), 0.8), 1.5)
 brim = Cylinder(Circle(Plane([0, 0, -1.5 / 2], [0, 0, 1]), 1.4), 0.1)
