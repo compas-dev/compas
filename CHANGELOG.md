@@ -156,6 +156,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.datastructures.Graph.key_index`and `compas.datastructures.Graph.index_key`.
 * Removed `compas.datastructures.Graph.uv_index`and `compas.datastructures.Graph.index_uv`.
 * Removed `compas.datastructures.Halfedge.key_index` and `compas.datastructures.Halfedge.index_key`.
+* Removed `compas.numerical.dr` and `compas.numerical.dr_numpy` to `compas_dr`.
 
 ## [1.17.5] 2023-02-16
 
