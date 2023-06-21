@@ -4,6 +4,10 @@ compas.robots
 
 .. currentmodule:: compas.robots
 
+.. warning::
+
+    Note that this package will be removed from :mod:`compas` and moved to a separate core extension, ``compas_robots``.
+
 .. rst-class:: lead
 
 This package provides classes for describing robots, their components, and their kinematic behaviour.
