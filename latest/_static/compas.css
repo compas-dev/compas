@@ -1,5 +1,6 @@
 html {
     --pst-font-size-base: 1rem;
+    --pst-sidebar-font-size: 0.8rem;
 }
 
 html[data-theme="light"] {
@@ -10,12 +11,17 @@ html[data-theme="light"] {
 
 body {
     line-height: 1.75;
+    font-weight: 300;
 }
 
 .bd-sidebar-primary div#rtd-footer-container {
     bottom: 0 !important;
     margin: 0 !important;
     display: none;
+}
+
+.bd-sidebar-primary {
+    width: 20%;
 }
 
 /* .bd-content {
