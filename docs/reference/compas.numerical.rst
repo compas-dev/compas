@@ -26,8 +26,6 @@ Solvers
 
     descent_numpy
     devo_numpy
-    dr
-    dr_numpy
     fd_numpy
     ga
     moga

@@ -42,16 +42,13 @@ if not compas.IPY:
     from .topop.topop_numpy import topop_numpy
     from .pca.pca_numpy import pca_numpy
     from .fd.fd_numpy import fd_numpy
-    from .dr.dr_numpy import dr_numpy
     from .devo.devo_numpy import devo_numpy
     from .isolines.isolines_numpy import scalarfield_contours_numpy
 
-from .dr.dr import dr
 from .ga.ga import ga
 from .ga.moga import moga
 
 __all__ = [
-    "dr",
     "ga",
     "moga",
 ]
@@ -93,6 +90,5 @@ if not compas.IPY:
         "pca_numpy",
         "devo_numpy",
         "fd_numpy",
-        "dr_numpy",
         "scalarfield_contours_numpy",
     ]
