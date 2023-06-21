@@ -27,6 +27,12 @@ def json_dump(data, fp, pretty=False, compact=False):
     -------
     None
 
+    See Also
+    --------
+    :class:`compas.data.json_dumps`
+    :class:`compas.data.json_load`
+    :class:`compas.data.json_loads`
+
     Examples
     --------
     >>> import compas
@@ -66,6 +72,12 @@ def json_dumps(data, pretty=False, compact=False):
     -------
     str
 
+    See Also
+    --------
+    :class:`compas.data.json_dump`
+    :class:`compas.data.json_load`
+    :class:`compas.data.json_loads`
+
     Examples
     --------
     >>> import compas
@@ -100,6 +112,12 @@ def json_load(fp):
     object
         The (COMPAS) data contained in the file.
 
+    See Also
+    --------
+    :class:`compas.data.json_dump`
+    :class:`compas.data.json_dumps`
+    :class:`compas.data.json_loads`
+
     Examples
     --------
     >>> import compas
@@ -127,6 +145,12 @@ def json_loads(s):
     -------
     obj
         The (COMPAS) data contained in the string.
+
+    See Also
+    --------
+    :class:`compas.data.json_dump`
+    :class:`compas.data.json_dumps`
+    :class:`compas.data.json_load`
 
     Examples
     --------

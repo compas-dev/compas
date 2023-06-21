@@ -269,7 +269,7 @@ class Visual(LinkItem, Data):
 
         Parameters
         ----------
-        primitive : :compas:`compas.geometry.Shape`
+        primitive : :class:`compas.geometry.Shape`
             A primitive shape.
         **kwargs : dict[str, Any], optional
             The keyword arguments (kwargs) collected in a dict.
@@ -370,7 +370,7 @@ class Collision(LinkItem, Data):
 
         Parameters
         ----------
-        primitive : :compas:`compas.geometry.Shape`
+        primitive : :class:`compas.geometry.Shape`
             A primitive shape.
         **kwargs : dict[str, Any], optional
             The keyword arguments (kwargs) collected in a dict.

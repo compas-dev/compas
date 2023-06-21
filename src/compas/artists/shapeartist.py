@@ -11,7 +11,7 @@ class ShapeArtist(Artist):
 
     Parameters
     ----------
-    shape: :class:`~compas.geometry.Shape`
+    shape : :class:`~compas.geometry.Shape`
         The geometry of the shape.
     color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
         The RGB color.
@@ -22,15 +22,16 @@ class ShapeArtist(Artist):
         The geometry of the shape.
     color : :class:`~compas.colors.Color`
         The color of the shape.
+    default_color : :class:`~compas.colors.Color`
+        The default color of the shape.
     u : int
         The resolution in the U direction of the discrete shape representation.
     v : int
         The resolution in the V direction of the discrete shape representation.
 
-    Class Attributes
-    ----------------
-    default_color : :class:`~compas.colors.Color`
-        The default color of the shape.
+    See Also
+    --------
+    :class:`compas.artists.PrimitiveArtist`
 
     """
 

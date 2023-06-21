@@ -22,9 +22,11 @@ class Assembly(Datastructure):
     graph : :class:`~compas.datastructures.Graph`
         The graph that is used under the hood to store the parts and their connections.
 
-    Examples
+    See Also
     --------
-    >>>
+    :class:`compas.datastructures.Network`
+    :class:`compas.datastructures.Mesh`
+    :class:`compas.datastructures.VolMesh`
 
     """
 

@@ -642,8 +642,8 @@ class RobotModel(Data):
         :class:`~compas.robots.Configuration`
             Instance of a configuration with randomized joint values.
 
-        Note
-        ----
+        Notes
+        -----
         No collision checking is involved, the configuration may be invalid.
 
         """

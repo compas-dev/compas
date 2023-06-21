@@ -8,8 +8,6 @@
 # import inspect
 # import compas
 
-# pytest.skip(allow_module_level=True)
-
 
 # def get_names_in_module(module_name):
 #     exceptions = ["absolute_import", "division", "print_function"]
@@ -58,7 +56,7 @@
 #     HOME = os.path.abspath(os.path.join(HERE, "../.."))
 #     TEMP = os.path.abspath(os.path.join(HOME, "temp/stubs"))
 #     DOCS = os.path.abspath(os.path.join(HOME, "docs"))
-#     API = os.path.abspath(os.path.join(DOCS, "api"))
+#     API = os.path.abspath(os.path.join(DOCS, "reference"))
 
 #     shutil.rmtree(TEMP, ignore_errors=True)
 

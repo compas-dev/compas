@@ -371,7 +371,7 @@ def get_object_attributes_from_name(guids, prefix=None):
         Therefore, to make the string representation of a dict a valid name it has to be prefixed with something.
         This prefix can be stripped automatically using this parameter.
 
-    Results
+    Returns
     -------
     list[dict[str, Any]]
         The attribute dicts of the objects.

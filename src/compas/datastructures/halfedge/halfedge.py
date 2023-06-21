@@ -44,6 +44,10 @@ class HalfEdge(Datastructure):
         It is recommended to add a default to this dictionary using :meth:`update_default_face_attributes`
         for every face attribute used in the data structure.
 
+    See Also
+    --------
+    :class:`compas.datastructures.Mesh`
+
     """
 
     JSONSCHEMA = {
@@ -622,7 +626,7 @@ class HalfEdge(Datastructure):
         :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
 
         Notes
-        ----
+        -----
         Mesh edges have no topological meaning. They are only used to store data.
         Edges are not automatically created when vertices and faces are added to
         the mesh. Instead, they are created when data is stored on them, or when
@@ -1216,7 +1220,7 @@ class HalfEdge(Datastructure):
         :meth:`update_default_edge_attributes`
 
         Notes
-        ----
+        -----
         Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
 
         """
@@ -1457,7 +1461,7 @@ class HalfEdge(Datastructure):
         :meth:`update_default_face_attributes`
 
         Notes
-        ----
+        -----
         Named arguments overwrite corresponding key-value pairs in the attribute dictionary.
 
         """

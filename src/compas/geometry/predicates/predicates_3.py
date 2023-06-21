@@ -427,7 +427,7 @@ def is_intersection_line_line(l1, l2, tol=1e-6):
         A tolerance for intersection verification.
 
     Returns
-    --------
+    -------
     bool
         True if the lines intersect in one point.
         False if the lines are skew, parallel or lie on top of each other.
@@ -462,7 +462,7 @@ def is_intersection_segment_segment(s1, s2, tol=1e-6):
         A tolerance for intersection verification.
 
     Returns
-    --------
+    -------
     bool
         True if the segments intersect in one point.
         False if the segments are skew, parallel or lie on top of each other.

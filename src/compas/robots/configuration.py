@@ -479,7 +479,7 @@ class Configuration(Data):
             The configuration to compare to.
 
         Returns
-        ------
+        -------
         float
             The maximum absolute difference.
 
@@ -554,9 +554,9 @@ class Configuration(Data):
         The other configuration takes precedence over this configuration in
         case a joint value is present in both.
 
-        Note
-        ----
-            Caution: ``joint_names`` may be rearranged.
+        Notes
+        -----
+        Caution: ``joint_names`` may be rearranged.
 
         Parameters
         ----------
@@ -584,9 +584,9 @@ class Configuration(Data):
         The other configuration takes precedence over this configuration in
         case a joint value is present in both.
 
-        Note
-        ----
-            Caution: ``joint_names`` may be rearranged.
+        Notes
+        -----
+        Caution: ``joint_names`` may be rearranged.
 
         Parameters
         ----------
