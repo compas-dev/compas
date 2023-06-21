@@ -342,7 +342,7 @@ html_theme_options = {
     "logo": {
         "image_light": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
         "image_dark": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
-        "text": "COMPAS core",
+        "text": "COMPAS docs",
     },
     "favicons": [
         {
