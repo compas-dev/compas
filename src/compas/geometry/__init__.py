@@ -116,11 +116,7 @@ from ._core.tangent import tangent_points_to_circle_xy
 
 from ._core.kdtree import KDTree
 
-# =============================================================================
-# Transformations
-# =============================================================================
-
-from .transformations.matrices import (
+from ._core.matrices import (
     axis_and_angle_from_matrix,
     axis_angle_from_quaternion,
     axis_angle_vector_from_matrix,
@@ -154,8 +150,8 @@ from .transformations.matrices import (
     translation_from_matrix,
 )
 
-from .transformations.transformations import local_axes, local_to_world_coordinates
-from .transformations.transformations import (
+from ._core.transformations import local_axes, local_to_world_coordinates
+from ._core.transformations import (
     # mirror_point_line,
     # mirror_point_line_xy,
     mirror_point_plane,
@@ -168,8 +164,8 @@ from .transformations.transformations import (
     mirror_points_point_xy,
     mirror_vector_vector,
 )
-from .transformations.transformations import orient_points, orthonormalize_axes
-from .transformations.transformations import (
+from ._core.transformations import orient_points, orthonormalize_axes
+from ._core.transformations import (
     project_point_line,
     project_point_line_xy,
     project_point_plane,
@@ -177,27 +173,110 @@ from .transformations.transformations import (
     project_points_line_xy,
     project_points_plane,
 )
-from .transformations.transformations import reflect_line_plane, reflect_line_triangle, rotate_points, rotate_points_xy
-from .transformations.transformations import scale_points, scale_points_xy
-from .transformations.transformations import (
+from ._core.transformations import reflect_line_plane, reflect_line_triangle, rotate_points, rotate_points_xy
+from ._core.transformations import scale_points, scale_points_xy
+from ._core.transformations import (
     transform_frames,
     transform_points,
     transform_vectors,
     translate_points_xy,
     translate_points,
 )
-from .transformations.transformations import world_to_local_coordinates
+from ._core.transformations import world_to_local_coordinates
 
 if not compas.IPY:
-    from .transformations.transformations_numpy import dehomogenize_and_unflatten_frames_numpy, dehomogenize_numpy
-    from .transformations.transformations_numpy import homogenize_and_flatten_frames_numpy, homogenize_numpy
-    from .transformations.transformations_numpy import local_to_world_coordinates_numpy
-    from .transformations.transformations_numpy import (
+    from ._core.transformations_numpy import dehomogenize_and_unflatten_frames_numpy, dehomogenize_numpy
+    from ._core.transformations_numpy import homogenize_and_flatten_frames_numpy, homogenize_numpy
+    from ._core.transformations_numpy import local_to_world_coordinates_numpy
+    from ._core.transformations_numpy import (
         # transform_frames_numpy,
         transform_points_numpy,
         transform_vectors_numpy,
     )
-    from .transformations.transformations_numpy import world_to_local_coordinates_numpy
+    from ._core.transformations_numpy import world_to_local_coordinates_numpy
+
+# =============================================================================
+# Transformations
+# =============================================================================
+
+# from .transformations.matrices import (
+#     axis_and_angle_from_matrix,
+#     axis_angle_from_quaternion,
+#     axis_angle_vector_from_matrix,
+#     basis_vectors_from_matrix,
+#     compose_matrix,
+#     decompose_matrix,
+#     euler_angles_from_matrix,
+#     euler_angles_from_quaternion,
+#     identity_matrix,
+#     matrix_determinant,
+#     matrix_from_axis_and_angle,
+#     matrix_from_axis_angle_vector,
+#     matrix_from_basis_vectors,
+#     matrix_from_change_of_basis,
+#     matrix_from_euler_angles,
+#     matrix_from_frame,
+#     matrix_from_frame_to_frame,
+#     matrix_from_orthogonal_projection,
+#     matrix_from_parallel_projection,
+#     matrix_from_perspective_entries,
+#     matrix_from_perspective_projection,
+#     matrix_from_quaternion,
+#     matrix_from_scale_factors,
+#     matrix_from_shear,
+#     matrix_from_shear_entries,
+#     matrix_from_translation,
+#     matrix_inverse,
+#     quaternion_from_axis_angle,
+#     quaternion_from_euler_angles,
+#     quaternion_from_matrix,
+#     translation_from_matrix,
+# )
+
+# from .transformations.transformations import local_axes, local_to_world_coordinates
+# from .transformations.transformations import (
+#     # mirror_point_line,
+#     # mirror_point_line_xy,
+#     mirror_point_plane,
+#     # mirror_point_point,
+#     # mirror_point_point_xy,
+#     mirror_points_line,
+#     mirror_points_line_xy,
+#     mirror_points_point,
+#     mirror_points_plane,
+#     mirror_points_point_xy,
+#     mirror_vector_vector,
+# )
+# from .transformations.transformations import orient_points, orthonormalize_axes
+# from .transformations.transformations import (
+#     project_point_line,
+#     project_point_line_xy,
+#     project_point_plane,
+#     project_points_line,
+#     project_points_line_xy,
+#     project_points_plane,
+# )
+# from .transformations.transformations import reflect_line_plane, reflect_line_triangle, rotate_points, rotate_points_xy
+# from .transformations.transformations import scale_points, scale_points_xy
+# from .transformations.transformations import (
+#     transform_frames,
+#     transform_points,
+#     transform_vectors,
+#     translate_points_xy,
+#     translate_points,
+# )
+# from .transformations.transformations import world_to_local_coordinates
+
+# if not compas.IPY:
+#     from .transformations.transformations_numpy import dehomogenize_and_unflatten_frames_numpy, dehomogenize_numpy
+#     from .transformations.transformations_numpy import homogenize_and_flatten_frames_numpy, homogenize_numpy
+#     from .transformations.transformations_numpy import local_to_world_coordinates_numpy
+#     from .transformations.transformations_numpy import (
+#         # transform_frames_numpy,
+#         transform_points_numpy,
+#         transform_vectors_numpy,
+#     )
+#     from .transformations.transformations_numpy import world_to_local_coordinates_numpy
 
 # =============================================================================
 # Predicates
