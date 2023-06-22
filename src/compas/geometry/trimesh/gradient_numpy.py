@@ -1,24 +1,17 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from numpy import arange
 from numpy import divide
 from numpy import hstack
 from numpy import tile
 
-from scipy import cross
-from scipy.sparse import coo_matrix
+from scipy import cross  # type: ignore
+from scipy.sparse import coo_matrix  # type: ignore
 
 from compas.numerical.linalg import normrow
 from compas.numerical.linalg import normalizerow
 from compas.numerical.linalg import rot90
 
 
-__all__ = ["grad", "div", "curl"]
-
-
-def grad(V, F, rtype="array"):
+def trimesh_gradient_numpy(M, rtype="array"):
     """Construct the gradient operator of a trianglular mesh.
 
     Parameters
@@ -41,6 +34,7 @@ def grad(V, F, rtype="array"):
     and the coordinate difference vectors associated with the edges
 
     """
+    V, F = M
     v = V.shape[0]
     f = F.shape[0]
     f0 = F[:, 0]  # Index of first vertex of each face
@@ -81,11 +75,3 @@ def grad(V, F, rtype="array"):
         return G
     else:
         return G
-
-
-def div():
-    raise NotImplementedError
-
-
-def curl():
-    raise NotImplementedError
