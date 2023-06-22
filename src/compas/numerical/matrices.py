@@ -1,28 +1,12 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from numpy import abs
 from numpy import array
 from numpy import asarray
 from numpy import tile
 
-from scipy.sparse import coo_matrix
-from scipy.sparse import csr_matrix
-from scipy.sparse import diags
-from scipy.sparse import vstack as svstack
-
-
-__all__ = [
-    "adjacency_matrix",
-    "degree_matrix",
-    "connectivity_matrix",
-    "laplacian_matrix",
-    "face_matrix",
-    "mass_matrix",
-    "stiffness_matrix",
-    "equilibrium_matrix",
-]
+from scipy.sparse import coo_matrix  # type: ignore
+from scipy.sparse import csr_matrix  # type: ignore
+from scipy.sparse import diags  # type: ignore
+from scipy.sparse import vstack as svstack  # type: ignore
 
 
 def _return_matrix(M, rtype):
@@ -174,6 +158,7 @@ def connectivity_matrix(edges, rtype="array"):
 # ==============================================================================
 # laplacian
 # ==============================================================================
+
 
 # change this to a procedural approach
 # constructing (fundamental) matrices should not involve matrix operations
