@@ -306,6 +306,8 @@ if not compas.IPY:
     from .hull.hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
     from .icp.icp_numpy import icp_numpy
     from .triangulation.delaunay_numpy import delaunay_from_points_numpy, voronoi_from_points_numpy
+    from .trimesh.gradient_numpy import trimesh_gradient_numpy
+    from .trimesh.descent_numpy import trimesh_descent_numpy
 
 # =============================================================================
 # Class APIs
@@ -705,4 +707,6 @@ if not compas.IPY:
         "local_to_world_coordinates_numpy",
         "delaunay_from_points_numpy",
         "voronoi_from_points_numpy",
+        "trimesh_descent_numpy",
+        "trimesh_gradient_numpy",
     ]

@@ -31,27 +31,12 @@ if not compas.IPY:
         stiffness_matrix,
         equilibrium_matrix,
     )
-    from .operators import grad, div, curl
-    from .utilities import (
-        float_formatter,
-        set_array_print_precision,
-        unset_array_print_precision,
-    )
 
-    from .descent.descent_numpy import descent_numpy
-    from .topop.topop_numpy import topop_numpy
     from .pca.pca_numpy import pca_numpy
-    from .fd.fd_numpy import fd_numpy
-    from .devo.devo_numpy import devo_numpy
     from .isolines.isolines_numpy import scalarfield_contours_numpy
 
-from .ga.ga import ga
-from .ga.moga import moga
 
-__all__ = [
-    "ga",
-    "moga",
-]
+__all__ = []
 
 if not compas.IPY:
     __all__ += [
@@ -79,16 +64,6 @@ if not compas.IPY:
         "mass_matrix",
         "stiffness_matrix",
         "equilibrium_matrix",
-        "grad",
-        "div",
-        "curl",
-        "float_formatter",
-        "set_array_print_precision",
-        "unset_array_print_precision",
-        "descent_numpy",
-        "topop_numpy",
         "pca_numpy",
-        "devo_numpy",
-        "fd_numpy",
         "scalarfield_contours_numpy",
     ]
