@@ -8,7 +8,6 @@ from math import sin
 from math import sqrt
 
 from compas.utilities import pairwise
-
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Circle
@@ -59,6 +58,15 @@ class Cone(Shape):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "circle": Circle.JSONSCHEMA,
+            "height": {"type": "number", "exclusiveMinimum": 0},
+        },
+        "required": ["circle", "height"],
+    }
+
     __slots__ = ["_circle", "_height"]
 
     def __init__(self, circle, height, **kwargs):
@@ -73,33 +81,13 @@ class Cone(Shape):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-
-        return schema.Schema(
-            {
-                "circle": {
-                    "plane": Plane.DATASCHEMA.fget(None),
-                    "radius": schema.And(float, lambda x: x > 0),
-                },
-                "height": schema.And(float, lambda x: x > 0),
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "cone"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the cone."""
-        return {"circle": self.circle.data, "height": self.height}
+        return {"circle": self.circle, "height": self.height}
 
     @data.setter
     def data(self, data):
-        self.circle = Circle.from_data(data["circle"])
+        self.circle = data["circle"]
         self.height = data["height"]
 
     @classmethod
@@ -125,7 +113,7 @@ class Cone(Shape):
         >>> cone = Cone.from_data(data)
 
         """
-        cone = cls(Circle.from_data(data["circle"]), data["height"])
+        cone = cls(data["circle"], data["height"])
         return cone
 
     # ==========================================================================

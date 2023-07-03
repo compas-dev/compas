@@ -110,6 +110,18 @@ class DataEncoder(json.JSONEncoder):
             The serialized object.
 
         """
+        if hasattr(o, "to_jsondata"):
+            value = o.to_jsondata()
+            if hasattr(o, "dtype"):
+                dtype = o.dtype
+            else:
+                dtype = "{}/{}".format(
+                    ".".join(o.__class__.__module__.split(".")[:-1]),
+                    o.__class__.__name__,
+                )
+
+            return {"dtype": dtype, "value": value, "guid": str(o.guid)}
+
         if hasattr(o, "to_data"):
             value = o.to_data()
             if hasattr(o, "dtype"):
@@ -237,7 +249,11 @@ class DataDecoder(json.JSONDecoder):
         if IDictionary and isinstance(o, IDictionary[str, object]):
             obj_value = {key: obj_value[key] for key in obj_value.Keys}
 
-        obj = cls.from_data(obj_value)
+        if hasattr(cls, "from_jsondata"):
+            obj = cls.from_jsondata(obj_value)
+        else:
+            obj = cls.from_data(obj_value)
+
         if "guid" in o:
             obj._guid = uuid.UUID(o["guid"])
 

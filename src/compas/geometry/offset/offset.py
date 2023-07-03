@@ -12,16 +12,10 @@ from compas.geometry import intersection_line_line
 from compas.geometry import normal_polygon
 from compas.geometry import is_colinear
 
+from compas.data import is_item_iterable
+
 from compas.utilities import iterable_like
 from compas.utilities import pairwise
-from compas.utilities import is_item_iterable
-
-
-__all__ = [
-    "offset_line",
-    "offset_polyline",
-    "offset_polygon",
-]
 
 
 def intersect_lines(l1, l2, tol):
@@ -135,7 +129,11 @@ def offset_polygon(polygon, distance, tol=1e-6):
 
     Examples
     --------
-    >>>
+    >>> from compas.geometry import Polygon
+    >>> polygon = Polygon([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
+    >>> offsetted_polygon = offset_polygon(polygon, 0.5)
+    >>> offsetted_polygon
+    Polygon[[0.5, 0.5, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.0]]
 
     """
     normal = normal_polygon(polygon)
@@ -144,7 +142,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
         distance = [distance]
     distances = iterable_like(polygon, distance, distance[-1])
 
-    polygon = polygon + polygon[:1]
+    polygon = polygon[:] + polygon[:1]
     segments = offset_segments(polygon, distances, normal)
 
     offset = []

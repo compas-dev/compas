@@ -7,13 +7,6 @@ import Rhino
 from compas.plugins import plugin
 
 
-__all__ = [
-    "boolean_union_mesh_mesh",
-    "boolean_difference_mesh_mesh",
-    "boolean_intersection_mesh_mesh",
-]
-
-
 @plugin(category="booleans", requires=["Rhino"])
 def boolean_union_mesh_mesh(A, B, remesh=False):
     """Compute the boolean union of two triangle meshes.

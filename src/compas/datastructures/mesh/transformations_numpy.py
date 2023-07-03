@@ -5,12 +5,6 @@ from __future__ import division
 from compas.geometry import transform_points_numpy
 
 
-__all__ = [
-    "mesh_transform_numpy",
-    "mesh_transformed_numpy",
-]
-
-
 def mesh_transform_numpy(mesh, transformation):
     """Transform a mesh.
 

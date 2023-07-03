@@ -8,24 +8,13 @@ from itertools import islice
 from itertools import chain
 from itertools import repeat
 from itertools import tee
+from functools import reduce
+from operator import mul
 
 try:
     from itertools import zip_longest
 except ImportError:
     from itertools import izip_longest as zip_longest
-
-
-__all__ = [
-    "normalize_values",
-    "remap_values",
-    "meshgrid",
-    "linspace",
-    "flatten",
-    "pairwise",
-    "window",
-    "iterable_like",
-    "grouper",
-]
 
 
 def normalize_values(values, new_min=0.0, new_max=1.0):
@@ -213,6 +202,53 @@ def flatten(list_of_lists):
 
     """
     return chain.from_iterable(list_of_lists)
+
+
+def reshape(lst, shape):
+    """Gives a new shape to an array without changing its data.
+
+    This function mimics the functionality of ``numpy.reshape`` [1]_, but in a simpler form.
+
+    Parameters
+    ----------
+    lst : list
+        A list of items.
+    shape : int or tuple of ints
+        The new shape of the list
+
+
+    Examples
+    --------
+    >>> a = [1, 2, 3, 4, 5, 6]
+    >>> reshape(a, (2, 3))
+    [[1, 2, 3], [4, 5, 6]]
+    >>> reshape(a, (3, 2))
+    [[1, 2], [3, 4], [5, 6]]
+    >>> a = [[1, 2], [3, 4], [5, 6]]
+    >>> reshape(a, (2, 3))
+    [[1, 2, 3], [4, 5, 6]]
+
+
+    References
+    ----------
+    .. [1] ``numpy.reshape`` Available at https://numpy.org/doc/stable/reference/generated/numpy.reshape.html
+
+    """
+
+    def helper(l, shape):  # noqa E741
+        if len(shape) == 1:
+            if len(l) % shape[0] != 0:
+                raise ValueError("ValueError: cannot reshape array of size %d into shape %s" % (len(lst), shape))
+            return l
+        else:
+            n = reduce(mul, shape[1:])
+            return [helper(l[i * n : (i + 1) * n], shape[1:]) for i in range(len(l) // n)]
+
+    shape = (shape,) if isinstance(shape, int) else shape
+    flattened_list = list(flatten(lst)) if isinstance(lst[0], list) else lst
+    if len(list(flattened_list)) != reduce(lambda x, y: x * y, shape):
+        raise ValueError("ValueError: cannot reshape array of size %d into shape %s" % (len(lst), shape))
+    return helper(flattened_list, shape)
 
 
 def pairwise(iterable):

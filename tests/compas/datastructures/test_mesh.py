@@ -468,14 +468,14 @@ def test_has_edge(cube):
 
 
 def test_edge_faces(cube):
-    u, v = next(cube.edges())
-    assert len(cube.edge_faces(u, v)) == 2
+    edge = next(cube.edges())
+    assert len(cube.edge_faces(edge)) == 2
 
 
 def test_is_edge_on_boundary():
     mesh = Mesh.from_obj(compas.get("faces.obj"))
-    assert mesh.is_edge_on_boundary(0, 1)
-    assert not mesh.is_edge_on_boundary(15, 16)
+    assert mesh.is_edge_on_boundary((0, 1))
+    assert not mesh.is_edge_on_boundary((15, 16))
 
 
 # --------------------------------------------------------------------------
@@ -600,7 +600,6 @@ def test_vertex_area():
 
 
 def test_vertex_laplacian():
-
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.vertex_laplacian(0) == [1.0, 1.0, 0.0]
     assert mesh.vertex_laplacian(1) == [0.0, 0.6666666666666666, 0.0]
@@ -773,7 +772,7 @@ def test_faces_on_boundaries_triangleboundarychain(triangleboundarychain):
 def test_face_attributes_includes_all_defaults(box):
     box.update_default_face_attributes({"attr1": "value1", "attr2": "value2"})
 
-    random_fkey = box.get_any_face()
+    random_fkey = box.face_sample(size=1)[0]
     assert sorted(box.face_attributes(random_fkey).keys()) == ["attr1", "attr2"]
 
     box.face_attribute(random_fkey, "attr3", "value3")

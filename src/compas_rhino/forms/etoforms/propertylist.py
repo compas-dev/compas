@@ -13,9 +13,6 @@ import Eto.Drawing  # noqa: E402
 import Eto.Forms  # noqa: E402
 
 
-__all__ = ["PropertyListForm"]
-
-
 class PropertyListForm(Eto.Forms.Dialog[bool]):
     def __init__(self, names, values, title="Properties", width=400, height=600):
         self.names = names

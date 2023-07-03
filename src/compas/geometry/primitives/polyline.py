@@ -4,13 +4,12 @@ from __future__ import division
 
 from compas.geometry import allclose
 from compas.geometry import transform_points
-
-from compas.geometry.predicates import is_point_on_line
-from compas.geometry.primitives import Line
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Point
-
+from compas.geometry import is_point_on_line
 from compas.utilities import pairwise
+
+from ._primitive import Primitive
+from .point import Point
+from .line import Line
 
 
 class Polyline(Primitive):
@@ -56,6 +55,12 @@ class Polyline(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+        "required": ["points"],
+    }
+
     __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
@@ -69,26 +74,13 @@ class Polyline(Primitive):
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-
-        return Schema({"points": lambda points: all(is_float3(point) for point in points)})
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "polyline"
-
-    @property
     def data(self):
         """dict : Returns the data dictionary that represents the polyline."""
-        return {"points": [point.data for point in self.points]}
+        return {"points": self.points}
 
     @data.setter
     def data(self, data):
-        self.points = [Point.from_data(point) for point in data["points"]]
+        self.points = data["points"]
 
     @classmethod
     def from_data(cls, data):
@@ -110,7 +102,7 @@ class Polyline(Primitive):
         Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
 
         """
-        return cls([Point.from_data(point) for point in data["points"]])
+        return cls(data["points"])
 
     # ==========================================================================
     # properties
@@ -352,6 +344,13 @@ class Polyline(Primitive):
         list
             list[:class:`~compas.geometry.Point`]
 
+        Examples
+        --------
+        >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
+        >>> divided_polylines = polyline.divide(3)
+        >>> divided_polyline
+        [Point(0.000, 0.000, 0.000), Point(1.578, 2.157, 0.000), Point(3.578, 3.789, 0.000), Point(5.000, 2.000, 0.000)]
+
         """
         segment_length = self.length / num_segments
         return self.divide_polyline_by_length(segment_length, False)
@@ -359,7 +358,7 @@ class Polyline(Primitive):
     divide = divide_polyline
 
     def divide_polyline_by_length(self, length, strict=True, tol=1e-06):
-        """Splits a polyline in segments of a given length.
+        """Divide a polyline in segments of a given length.
 
         Parameters
         ----------
@@ -378,6 +377,18 @@ class Polyline(Primitive):
         -----
         The points of the new polyline are constrained to the segments of the old polyline.
         However, since the old points are not part of the new set of points, the geometry of the polyline will change.
+
+        Examples
+        --------
+        >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
+        >>> divided_polylines = polyline.divide_by_length(3)
+        >>> divided_polyline
+        [Point(0.000, 0.000, 0.000), Point(1.709, 2.418, 0.000), Point(4.051, 3.898, 0.000)]
+
+        >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
+        >>> divided_polylines = polyline.divide_by_length(3, strict=False)
+        >>> divided_polyline
+        [Point(0.000, 0.000, 0.000), Point(1.709, 2.418, 0.000), Point(4.051, 3.898, 0.000), Point(5.000, 2.000, 0.000)]
 
         """
         num_pts = int(self.length / length)
@@ -412,11 +423,110 @@ class Polyline(Primitive):
 
     divide_by_length = divide_polyline_by_length
 
+    def split_polyline_by_length(self, length, strict=True):
+        """Split a polyline in segments of a given length.
+
+        Parameters
+        ----------
+        length : float
+            Length of the segments.
+        strict : bool, optional
+            If False, the remainder segment will be added even if it is smaller than the desired length
+        tol : float, optional
+            Floating point error tolerance.
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Polyline`]
+
+        Examples
+        --------
+        >>> from compas.geometry import Polyline
+        >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
+        >>> split_polylines = polyline.split_polyline_by_length(3)
+        >>> split_polylines
+        [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.709, 2.418, 0.000)]),\
+        Polyline([Point(1.709, 2.418, 0.000), Point(2.000, 3.000, 0.000), Point(4.000, 4.000, 0.000),\
+        Point(4.051, 3.898, 0.000)])]
+
+        >>> from compas.geometry import Polyline
+        >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
+        >>> split_polylines = polyline.split_polyline_by_length(3, strict=False)
+        >>> split_polylines
+        [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.709, 2.418, 0.000)]),\
+        Polyline([Point(1.709, 2.418, 0.000), Point(2.000, 3.000, 0.000), Point(4.000, 4.000, 0.000),\
+        Point(4.051, 3.898, 0.000)]), Polyline([Point(4.051, 3.898, 0.000), Point(5.000, 2.000, 0.000)])]
+
+        """
+        if length <= 0:
+            raise ValueError("Length should be bigger than 0.")
+        elif length > self.length:
+            raise ValueError("Polyline length {0} is smaller than input length {1}.".format(self.length, length))
+        divided_polylines = []
+        polyline_copy = self.copy()
+        segment = Polyline([self[0]])  # Start a new segment
+        i, current_length = 0, 0
+        polyline_points_num = len(polyline_copy)
+        while i < polyline_points_num - 1:
+            pt1, pt2 = polyline_copy.points[i : i + 2]
+            line_length = pt1.distance_to_point(pt2)
+            current_length += line_length
+            if current_length <= length:
+                segment.points.append(pt2)
+                i += 1
+            else:
+                amp = 1 - ((current_length - length) / line_length)
+                new_pt = pt1 + (pt2 - pt1).scaled(amp)
+                polyline_copy.points.insert(i + 1, new_pt)
+                segment.points.append(new_pt)
+                divided_polylines.append(segment)
+                segment = Polyline([new_pt])  # Start a new segment
+                current_length = 0
+                i += 1
+                polyline_points_num = len(polyline_copy)
+        if not strict and len(divided_polylines):
+            divided_polylines.append(segment)  # Add the last segment
+        return divided_polylines
+
+    split_by_length = split_polyline_by_length
+
+    def split_polyline(self, num_segments):
+        """Split a polyline in equal segments.
+
+        Parameters
+        ----------
+        num_segments : int
+
+        Returns
+        -------
+        list
+            list[:class:`~compas.geometry.Polyline`]
+
+        Examples
+        --------
+        >>> from compas.geometry import Polyline
+        >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
+        >>> split_polylines = polyline.split_polyline(3)
+        >>> split_polylines
+        [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.578, 2.157, 0.000)]),\
+        Polyline([Point(1.578, 2.157, 0.000), Point(2.000, 3.000, 0.000), Point(3.578, 3.789, 0.000)]),\
+        Polyline([Point(3.578, 3.789, 0.000), Point(4.000, 4.000, 0.000), Point(5.000, 2.000, 0.000)])]
+        """
+        if num_segments < 1:
+            raise ValueError("Number of segments must be greater than or equal to 1.")
+        elif num_segments == 1:
+            return [self]
+        total_length = self.length
+        segment_length = total_length / num_segments
+        return self.split_polyline_by_length(segment_length, False)
+
+    split = split_polyline
+
     def extend(self, length):
         """Extends a polyline by a given length, by modifying the first and/or last point tangentially.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to extend the polyline only at the end,
             or two length values to extend at both ends.
@@ -436,8 +546,8 @@ class Polyline(Primitive):
     def extended(self, length):
         """Returns a copy of this polyline extended by a given length.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to extend the polyline only at the end,
             or two length values to extend at both ends.
@@ -454,8 +564,8 @@ class Polyline(Primitive):
     def shorten(self, length):
         """Shortens a polyline by a given length.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to shorten the polyline only at the end,
             or two length values to shorten at both ends.
@@ -497,8 +607,8 @@ class Polyline(Primitive):
     def shortened(self, length):
         """Returns a copy of this polyline shortened by a given length.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         length: float or tuple[float, float]
             A single length value to shorten the polyline only at the end,
             or two length values to shorten at both ends.

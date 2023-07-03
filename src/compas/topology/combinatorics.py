@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from collections import deque
-from compas.topology import breadth_first_traverse
+from compas.topology.traversal import breadth_first_traverse
 
 
 def vertex_coloring(adjacency):

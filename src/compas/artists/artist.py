@@ -127,8 +127,8 @@ class Artist(object):
         Explicit context to pick the Artist from. One of :attr:`AVAILABLE_CONTEXTS`.
         If not specified, an attempt will be made to automatically detect the appropriate context.
 
-    Class Attributes
-    ----------------
+    Attributes
+    ----------
     KNOWN_CONTEXTS : list[str]
         1st and 2nd party context which are known to :class:`~compas.artists.Artist`.
     ITEM_ARTIST : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.artists.Artist`]]]

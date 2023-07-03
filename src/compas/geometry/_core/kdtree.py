@@ -4,10 +4,7 @@ from __future__ import division
 
 import collections
 
-from compas.geometry._core import distance_point_point_sqrd
-
-
-__all__ = ["KDTree"]
+from .distance import distance_point_point_sqrd
 
 
 Node = collections.namedtuple("Node", "point axis label left right")

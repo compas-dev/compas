@@ -30,10 +30,6 @@ class AbstractRobotModelArtist(object):
     def create_geometry(self, geometry, name=None, color=None):
         """Draw geometry in the respective CAD environment.
 
-        Note
-        ----
-        This is an abstract method that needs to be implemented by derived classes.
-
         Parameters
         ----------
         geometry : :class:`~compas.datastructures.Mesh`
@@ -45,6 +41,10 @@ class AbstractRobotModelArtist(object):
         -------
         object
             CAD-specific geometry
+
+        Notes
+        -----
+        This is an abstract method that needs to be implemented by derived classes.
 
         """
         raise NotImplementedError

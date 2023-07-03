@@ -8,8 +8,6 @@ from compas.geometry import scale_vector
 from .orientation import mesh_flip_cycles
 from .join import meshes_join
 
-__all__ = ["mesh_offset", "mesh_thicken"]
-
 
 def mesh_offset(mesh, distance=1.0):
     """Offset a mesh.

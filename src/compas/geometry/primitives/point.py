@@ -6,7 +6,6 @@ from compas import PRECISION
 
 from compas.geometry import centroid_points
 from compas.geometry import normal_polygon
-
 from compas.geometry import distance_point_point
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
@@ -19,11 +18,10 @@ from compas.geometry import is_polygon_convex_xy
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_convex_polygon_xy
 from compas.geometry import is_point_behind_plane
-
 from compas.geometry import transform_points
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Vector
+from ._primitive import Primitive
+from .vector import Vector
 
 
 class Point(Primitive):
@@ -105,6 +103,13 @@ class Point(Primitive):
 
     """
 
+    JSONSCHEMA = {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {"type": "number"},
+    }
+
     __slots__ = ["_x", "_y", "_z"]
 
     def __init__(self, x, y, z=0.0, **kwargs):
@@ -119,19 +124,6 @@ class Point(Primitive):
     # ==========================================================================
     # data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-
-        return Schema(is_float3)
-
-    @property
-    def JSONSCHEMANAME(self):
-        """str : Name of the schema of the data representation in JSON format."""
-        return "point"
 
     @property
     def data(self):

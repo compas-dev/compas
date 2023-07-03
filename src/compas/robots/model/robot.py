@@ -13,25 +13,25 @@ from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
-from compas.robots import Configuration
-from compas.robots.model.base import _attr_from_data
-from compas.robots.model.base import _attr_to_data
-from compas.robots.model.geometry import Color
-from compas.robots.model.geometry import Geometry
-from compas.robots.model.geometry import Material
-from compas.robots.model.geometry import MeshDescriptor
-from compas.robots.model.geometry import Texture
-from compas.robots.model.joint import Axis
-from compas.robots.model.joint import Joint
-from compas.robots.model.joint import Limit
-from compas.robots.model.link import Collision
-from compas.robots.model.link import Link
-from compas.robots.model.link import Visual
-from compas.robots.resources import DefaultMeshLoader
-from compas.robots.resources import LocalPackageMeshLoader
 from compas.topology import shortest_path
 
-__all__ = ["RobotModel"]
+from compas.robots import Configuration
+from compas.robots import DefaultMeshLoader
+from compas.robots import LocalPackageMeshLoader
+
+from .base import _attr_from_data
+from .base import _attr_to_data
+from .geometry import Color
+from .geometry import Geometry
+from .geometry import Material
+from .geometry import MeshDescriptor
+from .geometry import Texture
+from .joint import Axis
+from .joint import Joint
+from .joint import Limit
+from .link import Collision
+from .link import Link
+from .link import Visual
 
 
 class RobotModel(Data):
@@ -642,8 +642,8 @@ class RobotModel(Data):
         :class:`~compas.robots.Configuration`
             Instance of a configuration with randomized joint values.
 
-        Note
-        ----
+        Notes
+        -----
         No collision checking is involved, the configuration may be invalid.
 
         """

@@ -7,9 +7,6 @@ from math import pi
 from compas.geometry import angle_points
 
 
-__all__ = ["trimesh_mean_curvature", "trimesh_gaussian_curvature"]
-
-
 def trimesh_mean_curvature(mesh):
     pass
 

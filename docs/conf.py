@@ -5,58 +5,50 @@
 #
 # needs_sphinx = "1.0"
 
-import sys
-import os
 import inspect
 import importlib
-import m2r2
-
+import re
 import sphinx_compas_theme
-from sphinx.ext.napoleon.docstring import NumpyDocstring
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "_ext"))
-
-# patches
-
-current_m2r2_setup = m2r2.setup
-
-
-def patched_m2r2_setup(app):
-    try:
-        return current_m2r2_setup(app)
-    except (AttributeError):
-        app.add_source_suffix(".md", "markdown")
-        app.add_source_parser(m2r2.M2RParser)
-    return dict(
-        version=m2r2.__version__,
-        parallel_read_safe=True,
-        parallel_write_safe=True,
-    )
-
-
-m2r2.setup = patched_m2r2_setup
 
 # -- General configuration ------------------------------------------------
 
 project = "COMPAS"
-copyright = "Block Research Group - ETH Zurich"
+copyright = "COMPAS Association"
 author = "Tom Van Mele"
 
-release = "1.17.5"
-version = ".".join(release.split(".")[0:2])
+
+def get_latest_version():
+    with open("../CHANGELOG.md", "r") as file:
+        content = file.read()
+        pattern = re.compile(r"## (Unreleased|\[\d+\.\d+\.\d+\])")
+        versions = pattern.findall(content)
+        latest_version = versions[0] if versions else None
+        if latest_version and latest_version.startswith("[") and latest_version.endswith("]"):
+            latest_version = latest_version[1:-1]
+        return latest_version
+
+
+latest_version = get_latest_version()
+if latest_version == "Unreleased":
+    release = "Unreleased"
+    version = "latest"
+else:
+    release = latest_version
+    version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
 source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
-templates_path = sphinx_compas_theme.get_autosummary_templates_path()
+templates_path = sphinx_compas_theme.get_autosummary_templates_path() + ["_templates"]
 exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
-pygments_style = "sphinx"
-show_authors = True
+# pygments_style = "sphinx"
+# pygments_dark_style = "monokai"
+# show_authors = True
 add_module_names = True
-language = None
+language = "en"
 
 
 # -- Extension configuration ------------------------------------------------
@@ -67,27 +59,40 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.linkcode",
+    # "sphinx.ext.linkcode",
     "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
-    "sphinx.ext.inheritance_diagram",
+    # "sphinx.ext.inheritance_diagram",
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
-    "m2r2",
-    # "nbsphinx",
     "sphinx.ext.autodoc.typehints",
-    "tabs",
+    "sphinx_design",
+    "sphinx_inline_tabs",
+    "sphinx_togglebutton",
+    "sphinx_remove_toctrees",
+    "sphinx_copybutton",
+    # "sphinxcontrib.bibtex",
+    "numpydoc",
 ]
+
+# remove_from_toctrees = ["api/generated/*"]
+
+numpydoc_show_class_members = False
+numpydoc_class_members_toctree = False
+numpydoc_attributes_as_param_list = True
+
+# bibtex options
+
+# bibtex_bibfiles = ['refs.bib']
 
 # autodoc options
 
 autodoc_type_aliases = {}
 
 # this does not work properly yet
-autodoc_typehints = "none"
-autodoc_typehints_format = "short"
+# autodoc_typehints = "none"
+# autodoc_typehints_format = "short"
 autodoc_typehints_description_target = "documented"
 
 autodoc_mock_imports = [
@@ -141,66 +146,8 @@ autosummary_mock_imports = [
 
 # graph options
 
-inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
-inheritance_node_attrs = dict(fontsize=8)
-
-# napoleon options
-
-napoleon_google_docstring = False
-napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = False
-napoleon_include_special_with_doc = True
-napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
-napoleon_use_admonition_for_references = False
-napoleon_use_ivar = False
-napoleon_use_param = False
-napoleon_use_rtype = False
-
-
-# first, we define new methods for any new sections and add them to the class
-def parse_keys_section(self, section):
-    return self._format_fields("Keys", self._consume_fields())
-
-
-NumpyDocstring._parse_keys_section = parse_keys_section
-
-
-def parse_attributes_section(self, section):
-    return self._format_fields("Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_attributes_section = parse_attributes_section
-
-
-def parse_class_attributes_section(self, section):
-    return self._format_fields("Class Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
-
-
-def parse_other_attributes_section(self, section):
-    return self._format_fields("Other Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_other_attributes_section = parse_other_attributes_section
-
-
-# we now patch the parse method to guarantee that the the above methods are
-# assigned to the _section dict
-def patched_parse(self):
-    self._sections["keys"] = self._parse_keys_section
-    self._sections["attributes"] = self._parse_attributes_section
-    self._sections["class attributes"] = self._parse_class_attributes_section
-    self._sections["other attributes"] = self._parse_other_attributes_section
-    self._unpatched_parse()
-
-
-NumpyDocstring._unpatched_parse = NumpyDocstring._parse
-NumpyDocstring._parse = patched_parse
-
+# inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
+# inheritance_node_attrs = dict(fontsize=8)
 
 # plot options
 
@@ -208,25 +155,6 @@ plot_include_source = False
 plot_html_show_source_link = False
 plot_html_show_formats = False
 plot_formats = ["png"]
-# plot_pre_code
-# plot_basedir
-# plot_rcparams
-# plot_apply_rcparams
-# plot_working_directory
-
-plot_template = """
-{{ only_html }}
-
-   {% for img in images %}
-   {% set has_class = false %}
-
-   .. figure:: {{ build_dir }}/{{ img.basename }}.{{ default_fmt }}
-      :class: figure-img img-fluid
-
-      {{ caption }}
-
-   {% endfor %}
-"""
 
 # intersphinx options
 
@@ -286,23 +214,170 @@ extlinks = {
     "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s"),
 }
 
+# from pytorch
+
+from sphinx.writers import html, html5
+
+# def visit_reference(self, node: Element) -> None:
+#     atts = {'class': 'reference'}
+#     if node.get('internal') or 'refuri' not in node:
+#         atts['class'] += ' internal'
+#     else:
+#         atts['class'] += ' external'
+#     if 'refuri' in node:
+#         atts['href'] = node['refuri'] or '#'
+#         if self.settings.cloak_email_addresses and atts['href'].startswith('mailto:'):
+#             atts['href'] = self.cloak_mailto(atts['href'])
+#             self.in_mailto = True
+#     else:
+#         assert 'refid' in node, \
+#                 'References must have "refuri" or "refid" attribute.'
+#         atts['href'] = '#' + node['refid']
+#     if not isinstance(node.parent, nodes.TextElement):
+#         assert len(node) == 1 and isinstance(node[0], nodes.image)  # NoQA: PT018
+#         atts['class'] += ' image-reference'
+#     if 'reftitle' in node:
+#         atts['title'] = node['reftitle']
+#     if 'target' in node:
+#         atts['target'] = node['target']
+#     self.body.append(self.starttag(node, 'a', '', **atts))
+
+#     if node.get('secnumber'):
+#         self.body.append(('%s' + self.secnumber_suffix) %
+#                             '.'.join(map(str, node['secnumber'])))
+
+
+def replace(Klass):
+    old_call = Klass.visit_reference
+
+    def visit_reference(self, node):
+        if "refuri" in node:
+            refuri = node.get("refuri")
+            if "generated" in refuri:
+                href_anchor = refuri.split("#")
+                if len(href_anchor) > 1:
+                    href = href_anchor[0]
+                    anchor = href_anchor[1]
+                    page = href.split("/")[-1]
+                    parts = page.split(".")
+                    if parts[-1] == "html":
+                        pagename = ".".join(parts[:-1])
+                        if anchor == pagename:
+                            node["refuri"] = href
+        return old_call(self, node)
+
+    Klass.visit_reference = visit_reference
+
+
+replace(html.HTMLTranslator)
+replace(html5.HTML5Translator)
+
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = "compas"
-html_theme_path = sphinx_compas_theme.get_html_theme_path()
+html_theme = "pydata_sphinx_theme"
+html_logo = "_static/images/compas_icon_white.png"  # relative to parent of conf.py
+html_title = "COMPAS docs"
+html_favicon = "_static/images/compas.ico"
+
 html_theme_options = {
-    "navbar_active": "compas",
-    "package_version": release,
-    "package_docs": "https://compas.dev/compas/",
-    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt",
+    # theme structure and layout
+    "navbar_start": ["navbar-logo"],
+    "navbar_center": ["navbar-nav"],
+    "navbar_end": [
+        "version-switcher",
+        # "theme-switcher",
+        "navbar-icon-links",
+    ],
+    "navbar_persistent": ["search-button"],
+    "navbar_align": "content",
+    "article_header_start": ["breadcrumbs"],
+    "article_header_end": [],
+    "primary_sidebar_end": [
+        # "sidebar-ethical-ads"
+    ],
+    "secondary_sidebar_items": ["page-toc", "edit-this-page", "sourcelink"],
+    "article_footer_items": ["prev-next.html"],
+    "show_prev_next": True,
+    # "content_footer_items": [],
+    "footer_start": ["copyright", "sphinx-version"],
+    "footer_end": ["theme-version"],
+    # navigation and links
+    "external_links": [
+        # {"name": "Changelog", "url": "https://github.com/compas-dev/compas/releases"},
+        {"name": "COMPAS Framework", "url": "https://compas.dev"},
+        # {"name": "COMPAS Association", "url": "https://compas.dev/association"},
+    ],
+    "header_links_before_dropdown": 5,
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/compas-dev/compas",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Discourse",
+            "url": "http://forum.compas-framework.org/",
+            "icon": "fa-brands fa-discourse",
+            "type": "fontawesome",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/COMPAS/",
+            "icon": "fa-brands fa-python",
+            "type": "fontawesome",
+        },
+    ],
+    # "icon_links_label": "Quick Links",
+    "use_edit_page_button": True,
+    # user interface
+    "announcement": "This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.17.5 is available <a href='https://compas.dev/compas/1.17.5/'>here</a>.",
+    "switcher": {
+        "json_url": "https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json",
+        "version_match": version,
+    },
+    "check_switcher": False,
+    # content and features
+    # theming and style
+    "logo": {
+        "image_light": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
+        "image_dark": "_static/images/compas_icon_white.png",  # relative to parent of conf.py
+        "text": "COMPAS docs",
+    },
+    "favicons": [
+        {
+            "rel": "icon",
+            "href": "images/compas.ico",  # relative to the static path
+        }
+    ],
+    "navigation_depth": 3,
+    "show_nav_level": 1,
+    "show_toc_level": 2,
+    "pygment_light_style": "default",
+    "pygment_dark_style": "monokai",
 }
-html_context = {}
-html_static_path = sphinx_compas_theme.get_html_static_path()
+
+html_sidebars = {
+    "**": [
+        "sidebar-nav-bs",
+        # "sidebar-ethical-ads",
+    ],
+}
+
+html_context = {
+    "github_url": "https://github.com",
+    "github_user": "compas-dev",
+    "github_repo": "compas",
+    "github_version": "main",
+    "doc_path": "docs",
+}
+
+html_static_path = ["_static"]
+html_css_files = ["compas.css"]
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
-html_show_sourcelink = False
+html_show_sourcelink = True
 html_permalinks = False
 html_permalinks_icon = ""
-html_experimental_html5_writer = False
 html_compact_lists = True
