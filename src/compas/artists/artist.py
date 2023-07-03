@@ -27,14 +27,7 @@ def redraw():
 
 @pluggable(category="factories", selector="collect_all")
 def register_artists():
-    """Registers artists available in the current context.
-
-    Returns
-    -------
-    str
-        Name of the available context.
-
-    """
+    """Registers artists available in the current context."""
     raise NotImplementedError
 
 
@@ -139,7 +132,7 @@ class Artist(object):
 
     __ARTISTS_REGISTERED = False
 
-    KNOWN_CONTEXTS = ["Rhino", "Grasshopper", "Blender", "Plotter", "Viewer"]  # TODO: rename to KNOWN_CONTEXTS
+    KNOWN_CONTEXTS = ["Rhino", "Grasshopper", "Blender", "Plotter", "Viewer"]
     ITEM_ARTIST = defaultdict(dict)
 
     def __new__(cls, item, **kwargs):
