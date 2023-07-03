@@ -118,6 +118,6 @@ def test_oriented_bounding_box_numpy(coords, expected):
 
     from compas.geometry import oriented_bounding_box_numpy
 
-    results = oriented_bounding_box_numpy(coords).tolist()
+    results = oriented_bounding_box_numpy(coords).tolist()  # type: ignore
     for result, expected_values in zip(results, expected):
         assert allclose(result, expected_values, tol=1e-3)

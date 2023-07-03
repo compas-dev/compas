@@ -116,7 +116,8 @@ if not compas.IPY:
     @pytest.mark.parametrize(
         "circle",
         [
-            {"plane": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": 0.0},
         ],
     )
     def test_schema_circle_valid(circle):
@@ -128,6 +129,12 @@ if not compas.IPY:
             {"plane": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "radius": 0.0},
             {"plane": [[0, 0, 0], [0, 0, 1]], "radius": 1.0},
             {"PLANE": {"point": [0, 0, 0], "normal": [0, 0, 1]}, "RADIUS": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0]}, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "yaxis": [0, 1, 0]}, "radius": 1.0},
+            {"frame": {"xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": 1.0},
+            {"FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": -1.0},
         ],
     )
     def test_schema_circle_invalid(circle):
@@ -138,10 +145,25 @@ if not compas.IPY:
         "ellipse",
         [
             {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
                 "major": 1.0,
                 "minor": 0.5,
-            }
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "major": 1.0,
+                "minor": 0.0,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "major": 0.0,
+                "minor": 0.5,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "major": 0.0,
+                "minor": 0.0,
+            },
         ],
     )
     def test_schema_ellipse_valid(ellipse):
@@ -151,25 +173,39 @@ if not compas.IPY:
         "ellipse",
         [
             {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
+                "frame": {"point": [0, 0, 0], "yaxis": [0, 1, 0]},
                 "major": 1.0,
-                "minor": 0.0,
+                "minor": 1.0,
             },
             {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                "major": 0.0,
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0]},
+                "major": 1.0,
+                "minor": 1.0,
+            },
+            {
+                "frame": {"xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "major": 1.0,
+                "minor": 1.0,
+            },
+            {
+                "frame": [[0, 0, 0], [1, 0, 0], [0, 1, 0]],
+                "major": 1.0,
                 "minor": 0.5,
             },
             {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                "major": 0.0,
-                "minor": 0.0,
-            },
-            {"plane": [[0, 0, 0], [0, 0, 1]], "major": 1.0, "minor": 0.5},
-            {
-                "PLANE": {"point": [0, 0, 0], "normal": [0, 0, 1]},
+                "FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
                 "MAJOR": 1.0,
                 "MINOR": 0.5,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "major": 1.0,
+                "minor": -1.0,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "major": -1.0,
+                "minor": 1.0,
             },
         ],
     )
@@ -325,17 +361,27 @@ if not compas.IPY:
         with pytest.raises(jsonschema.exceptions.ValidationError):
             Box.validate_jsondata(box)
 
-    @pytest.mark.parametrize("capsule", [{"line": {"start": [0, 0, 0], "end": [1, 0, 0]}, "radius": 1.0}])
+    @pytest.mark.parametrize(
+        "capsule",
+        [
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 0.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 0.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 0.0, "radius": 0.0},
+        ],
+    )
     def test_schema_capsule_valid(capsule):
         Capsule.validate_jsondata(capsule)
 
     @pytest.mark.parametrize(
         "capsule",
         [
-            {"start": [0, 0, 0], "end": [1, 0, 0], "radius": 1.0},
-            {"line": [[0, 0, 0], [1, 0, 0]], "radius": 1.0},
-            {"line": {"start": [0, 0, 0], "end": [1, 0, 0]}, "radius": 0.0},
-            {"LINE": {"start": [0, 0, 0], "end": [1, 0, 0]}, "RADIUS": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": -1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": -1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": -1.0, "radius": -1.0},
+            {"FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "HEIGHT": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "RADIUS": 1.0},
         ],
     )
     def test_schema_capsule_invalid(capsule):
@@ -345,13 +391,10 @@ if not compas.IPY:
     @pytest.mark.parametrize(
         "cone",
         [
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 1.0,
-                },
-                "height": 1.0,
-            }
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 0.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 0.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 0.0, "radius": 0.0},
         ],
     )
     def test_schema_cone_valid(cone):
@@ -360,34 +403,12 @@ if not compas.IPY:
     @pytest.mark.parametrize(
         "cone",
         [
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 1.0,
-                },
-                "height": 0.0,
-            },
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 0.0,
-                },
-                "height": 1.0,
-            },
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 0.0,
-                },
-                "height": 0.0,
-            },
-            {
-                "CIRCLE": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 0.0,
-                },
-                "HEIGHT": 0.0,
-            },
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": -1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": -1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": -1.0, "radius": -1.0},
+            {"FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "HEIGHT": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "RADIUS": 1.0},
         ],
     )
     def test_schema_cone_invalid(cone):
@@ -397,13 +418,10 @@ if not compas.IPY:
     @pytest.mark.parametrize(
         "cylinder",
         [
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 1.0,
-                },
-                "height": 1.0,
-            }
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 0.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 0.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 0.0, "radius": 0.0},
         ],
     )
     def test_schema_cylinder_valid(cylinder):
@@ -412,34 +430,12 @@ if not compas.IPY:
     @pytest.mark.parametrize(
         "cylinder",
         [
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 1.0,
-                },
-                "height": 0.0,
-            },
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 0.0,
-                },
-                "height": 1.0,
-            },
-            {
-                "circle": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 0.0,
-                },
-                "height": 0.0,
-            },
-            {
-                "CIRCLE": {
-                    "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                    "radius": 0.0,
-                },
-                "HEIGHT": 0.0,
-            },
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": -1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": -1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": -1.0, "radius": -1.0},
+            {"FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "HEIGHT": 1.0, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "height": 1.0, "RADIUS": 1.0},
         ],
     )
     def test_schema_cylinder_invalid(cylinder):
@@ -478,17 +474,22 @@ if not compas.IPY:
         with pytest.raises(jsonschema.exceptions.ValidationError):
             Polyhedron.validate_jsondata(polyhedron)
 
-    @pytest.mark.parametrize("sphere", [{"point": [0, 0, 0], "radius": 1.0}])
+    @pytest.mark.parametrize(
+        "sphere",
+        [
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": 0.0},
+        ],
+    )
     def test_schema_sphere_valid(sphere):
         Sphere.validate_jsondata(sphere)
 
     @pytest.mark.parametrize(
         "sphere",
         [
-            {"point": [0, 0], "radius": 1},
-            {"point": [0, 0, 0, 0], "radius": 1},
-            {"point": [0, 0, 0], "radius": 0},
-            {"POINT": [0, 0, 0], "RADIUS": 1},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": -1.0},
+            {"FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "radius": 1.0},
+            {"frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]}, "RADIUS": 1.0},
         ],
     )
     def test_schema_sphere_invalid(sphere):
@@ -499,10 +500,25 @@ if not compas.IPY:
         "torus",
         [
             {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
                 "radius_axis": 1.0,
                 "radius_pipe": 1.0,
-            }
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": 0.0,
+                "radius_pipe": 1.0,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": 1.0,
+                "radius_pipe": 0.0,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": 0.0,
+                "radius_pipe": 0.0,
+            },
         ],
     )
     def test_schema_torus_valid(torus):
@@ -512,19 +528,39 @@ if not compas.IPY:
         "torus",
         [
             {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                "radius_axis": 1.0,
-                "radius_pipe": 0.0,
-            },
-            {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                "radius_axis": 0.0,
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": -1.0,
                 "radius_pipe": 1.0,
             },
             {
-                "plane": {"point": [0, 0, 0], "normal": [0, 0, 1]},
-                "radius_axis": 0.0,
-                "radius_pipe": 0.0,
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": 1.0,
+                "radius_pipe": -1.0,
+            },
+            {
+                "frame": {"point": [0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": 1.0,
+                "radius_pipe": 1.0,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": 1.0,
+                "radius_pipe": 1.0,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0]},
+                "radius_axis": 1.0,
+                "radius_pipe": 1.0,
+            },
+            {
+                "FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius_axis": 1.0,
+                "radius_pipe": 1.0,
+            },
+            {
+                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+                "radius": 1.0,
+                "radius_pipe": 1.0,
             },
         ],
     )

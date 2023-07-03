@@ -3,7 +3,6 @@ import pytest
 
 from compas.geometry import Arc
 from compas.geometry import Frame
-from compas.geometry import Plane
 from compas.geometry import Circle
 from compas.geometry import close
 
@@ -14,7 +13,7 @@ def frame():
 
 
 def test_create_arc(frame):
-    arc = Arc(frame, 0.2, 1.14)
+    arc = Arc(frame, radius=0.2, end_angle=1.14)
 
     assert close(arc.angle, 1.14)
     assert close(arc.start_angle, 0.0)
@@ -31,7 +30,7 @@ def test_create_arc_two_angles(frame):
 
 
 def test_create_from_circle(frame):
-    circle = Circle(Plane(frame.point, frame.zaxis), 34.222)
+    circle = Circle(frame, 34.222)
     arc = Arc.from_circle(circle, 0.1, 0.443)
 
     assert close(arc.radius, circle.radius)
@@ -42,14 +41,14 @@ def test_create_from_circle(frame):
 
 
 def test_create_from_circle_partial(frame):
-    circle = Circle(Plane(frame.point, frame.zaxis), 34.222)
+    circle = Circle(frame, 34.222)
     arc = Arc.from_circle(circle, 0.1, 0.443)
 
     assert not arc.is_circle
 
 
 def test_create_from_circle_full(frame):
-    circle = Circle(Plane(frame.point, frame.zaxis), 34.222)
+    circle = Circle(frame, 34.222)
     arc = Arc.from_circle(circle, 0.0, 2.0 * math.pi)
 
     assert close(arc.start_angle, 0.0)
