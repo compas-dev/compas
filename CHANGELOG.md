@@ -20,9 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed uninstall post-process.
 * Fixed support for `System.Decimal` data type on json serialization.
 * Simplified `compas.datastructures.Part` for more generic usage.
+* Renamed class attribute `AVAILABLE_CONTEXTS` to `KNOWN_CONTEXTS` in `compas.artists.Artist`.
 
 ### Removed
 
+* Removed class attribute `CONTEXT` from `compas.artists.Artist`.
 
 ## [1.17.5] 2023-02-16
 

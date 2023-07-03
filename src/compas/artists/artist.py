@@ -38,32 +38,61 @@ def register_artists():
     raise NotImplementedError
 
 
-def _gh_or_rhino():
-    # In Grasshopper, both are True. In Rhino only is_rhino() is True.
+def is_viewer_open():
+    """Returns True if an instance of the compas_view2 App is available.
+
+    Returns
+    -------
+    bool
+
+    """
+    # TODO: implement [without introducing compas_view2 as a dependency..?]
+    return False
+
+
+def is_plotter_open():
+    """Returns True if an instance of the Plotter is available.
+
+    Returns
+    -------
+    bool
+
+    """
+    # TODO: implement
+    return False
+
+
+def _choose_context():
+    """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
+    1. Viewer
+    2. Plotter
+    3. Rhino / GH
+    4. Other - randome choice from Artist.ITEM_ARTISTS.values()
+
+    Returns
+    -------
+    str
+        one-of: ["Viewer", "Plotter", "Grasshopper", "Rhino"] or another as detected by the register_artists plugin.
+
+    """
+    if is_viewer_open():
+        return "Viewer"
+    if is_plotter_open():
+        return "Plotter"
     if compas.is_grasshopper():
         return "Grasshopper"
     if compas.is_rhino():
         return "Rhino"
-    return None
-
-
-def _detect_context(contexts):
-    contexts = set([item for item in contexts if item is not None])
-    if contexts:
-        return contexts.pop()
-    return None
+    other_contexts = [v for v in Artist.ITEM_ARTIST.keys() if v not in Artist.KNOWN_CONTEXTS]
+    if other_contexts:
+        return other_contexts[0]
+    raise NoArtistContextError()
 
 
 def _get_artist_cls(data, **kwargs):
-    # In Grasshopper and Rhino, Artists for both will be available, determine where we really are
-    if Artist.CONTEXT in {"Rhino", "Grasshopper"}:
-        Artist.CONTEXT = _gh_or_rhino()
-
     # in any case user gets to override the choice
-    context_name = kwargs.get("context") or Artist.CONTEXT
-    if context_name is None:
-        raise NoArtistContextError()
-
+    context_name = kwargs.get("context") or _choose_context()
+    print("choosed artist context: {}".format(context_name))
     dtype = type(data)
     cls = None
 
@@ -98,10 +127,8 @@ class Artist(object):
 
     Class Attributes
     ----------------
-    AVAILABLE_CONTEXTS : list[str]
-        The available visualization contexts.
-    CONTEXT : str | None
-        The current visualization context is one of :attr:`AVAILABLE_CONTEXTS`.
+    KNOWN_CONTEXTS : list[str]
+        1st and 2nd party context which are known to :class:`~compas.artists.Artist`.
     ITEM_ARTIST : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.artists.Artist`]]]
         Dictionary mapping data types to the corresponding artists types per visualization context.
 
@@ -111,14 +138,12 @@ class Artist(object):
 
     __ARTISTS_REGISTERED = False
 
-    AVAILABLE_CONTEXTS = ["Rhino", "Grasshopper", "Blender", "Plotter"]
-    CONTEXT = None
+    KNOWN_CONTEXTS = ["Rhino", "Grasshopper", "Blender", "Plotter", "Viewer"]  # TODO: rename to KNOWN_CONTEXTS
     ITEM_ARTIST = defaultdict(dict)
 
     def __new__(cls, item, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
-            detected_contexts = cls.register_artists()
-            Artist.CONTEXT = _detect_context(detected_contexts)  # caller can still override this in kwargs
+            cls.register_artists()
             Artist.__ARTISTS_REGISTERED = True
 
         if item is None:
