@@ -14,6 +14,11 @@ body {
     font-weight: 300;
 }
 
+.bd-header {
+    box-shadow: none;
+    border-bottom: 1px solid var(--pst-color-shadow);
+}
+
 .bd-sidebar-primary div#rtd-footer-container {
     bottom: 0 !important;
     margin: 0 !important;
