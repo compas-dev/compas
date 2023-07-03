@@ -11,11 +11,10 @@ from compas.geometry import quaternion_canonize
 from compas.geometry import quaternion_norm
 from compas.geometry import quaternion_is_unit
 from compas.geometry import quaternion_from_matrix
+from compas.geometry import Geometry
 
-from ._primitive import Primitive
 
-
-class Quaternion(Primitive):
+class Quaternion(Geometry):
     r"""A quaternion is defined by 4 components, X, Y, Z, and W.
 
     Parameters

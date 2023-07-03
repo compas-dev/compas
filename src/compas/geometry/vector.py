@@ -12,11 +12,10 @@ from compas.geometry import angle_vectors
 from compas.geometry import angle_vectors_signed
 from compas.geometry import angles_vectors
 from compas.geometry import transform_vectors
+from compas.geometry import Geometry
 
-from ._primitive import Primitive
 
-
-class Vector(Primitive):
+class Vector(Geometry):
     """A vector is defined by XYZ components and a homogenisation factor.
 
     Parameters

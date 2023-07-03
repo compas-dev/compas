@@ -5,12 +5,12 @@ from __future__ import print_function
 from math import sqrt
 
 from compas.geometry import cross_vectors
-from ._primitive import Primitive
+from compas.geometry import Geometry
 from .vector import Vector
 from .point import Point
 
 
-class Plane(Primitive):
+class Plane(Geometry):
     """A plane is defined by a base point and a normal vector.
 
     Parameters
@@ -50,8 +50,6 @@ class Plane(Primitive):
         "required": ["point", "normal"],
     }
 
-    __slots__ = ["_point", "_normal"]
-
     def __init__(self, point, normal, **kwargs):
         super(Plane, self).__init__(**kwargs)
         self._point = None
@@ -60,12 +58,11 @@ class Plane(Primitive):
         self.normal = normal
 
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the plane."""
         return {"point": self.point, "normal": self.normal}
 
     @data.setter
@@ -99,11 +96,13 @@ class Plane(Primitive):
         return cls(data["point"], data["normal"])
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
     def point(self):
+        if not self._point:
+            raise ValueError("The plane has no point.")
         return self._point
 
     @point.setter
@@ -112,6 +111,8 @@ class Plane(Primitive):
 
     @property
     def normal(self):
+        if not self._normal:
+            raise ValueError("The plane has no normal.")
         return self._normal
 
     @normal.setter
@@ -132,7 +133,7 @@ class Plane(Primitive):
         return a, b, c, d
 
     # ==========================================================================
-    # customization
+    # Customization
     # ==========================================================================
 
     def __repr__(self):
@@ -164,7 +165,7 @@ class Plane(Primitive):
         return self.point == other[0] and self.normal == other[1]
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -232,6 +233,7 @@ class Plane(Primitive):
         normal = Vector(*cross_vectors(u, v))
         return cls(point, normal)
 
+    @classmethod
     def from_abcd(cls, abcd):
         """Construct a plane from the plane equation coefficients.
 
@@ -283,7 +285,7 @@ class Plane(Primitive):
         return cls(frame.point, frame.normal)
 
     # ==========================================================================
-    # methods
+    # Transformations
     # ==========================================================================
 
     def transform(self, T):
@@ -311,6 +313,59 @@ class Plane(Primitive):
         """
         self.point.transform(T)
         self.normal.transform(T)
+
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def distance_to_point(self, point):
+        """Compute the distance from a given point to the plane.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point.
+
+        Returns
+        -------
+        float
+            The distance from the point to the plane.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> plane.distance_to_point([1.0, 1.0, 1.0])
+        1.0
+
+        """
+        point = Point(*point)
+        vector = point - self.point
+        return self.normal.dot(vector)
+
+    def closest_point(self, point):
+        """Compute the closest point on the plane to a given point.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+            The closest point on the plane.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> plane.closest_point([1.0, 1.0, 1.0])
+        Point(1.000, 1.000, 0.000)
+
+        """
+        point = Point(*point)
+        vector = point - self.point
+        distance = self.normal.dot(vector)
+        return point + self.normal.scaled(-distance)
 
     def offset(self, distance):
         """Returns a new offset plane by a given distance.

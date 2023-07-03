@@ -20,11 +20,11 @@ from compas.geometry import is_point_in_convex_polygon_xy
 from compas.geometry import is_point_behind_plane
 from compas.geometry import transform_points
 
-from ._primitive import Primitive
+from compas.geometry import Geometry
 from .vector import Vector
 
 
-class Point(Primitive):
+class Point(Geometry):
     """A point is defined by XYZ coordinates.
 
     Parameters
@@ -110,8 +110,6 @@ class Point(Primitive):
         "items": {"type": "number"},
     }
 
-    __slots__ = ["_x", "_y", "_z"]
-
     def __init__(self, x, y, z=0.0, **kwargs):
         super(Point, self).__init__(**kwargs)
         self._x = 0.0
@@ -127,7 +125,6 @@ class Point(Primitive):
 
     @property
     def data(self):
-        """dict : The data representing the point."""
         return list(self)
 
     @data.setter

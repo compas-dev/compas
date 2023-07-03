@@ -6,11 +6,11 @@ from random import uniform
 from compas.geometry import transform_points
 from compas.geometry import centroid_points
 from compas.geometry import bounding_box
-from compas.geometry import Primitive
+from compas.geometry import Geometry
 from compas.geometry import Point
 
 
-class Pointcloud(Primitive):
+class Pointcloud(Geometry):
     """Class for working with pointclouds.
 
     Parameters

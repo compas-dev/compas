@@ -16,15 +16,15 @@ from compas.geometry import matrix_from_quaternion
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import subtract_vectors
 
+from compas.geometry import Geometry
 from compas.geometry import Transformation
 
-from ._primitive import Primitive
 from .vector import Vector
 from .point import Point
 from .quaternion import Quaternion
 
 
-class Frame(Primitive):
+class Frame(Geometry):
     """A frame is defined by a base point and two orthonormal base vectors.
 
     Parameters
@@ -92,7 +92,6 @@ class Frame(Primitive):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the frame."""
         return {
             "point": self.point,
             "xaxis": self.xaxis,
@@ -129,10 +128,11 @@ class Frame(Primitive):
         Vector(1.000, 0.000, 0.000)
         >>> frame.yaxis
         Vector(0.000, 1.000, 0.000)
+        >>> frame.zaxis
+        Vector(0.000, 0.000, 1.000)
 
         """
-        frame = cls(data["point"], data["xaxis"], data["yaxis"])
-        return frame
+        return cls(data["point"], data["xaxis"], data["yaxis"])
 
     # ==========================================================================
     # properties
@@ -140,6 +140,8 @@ class Frame(Primitive):
 
     @property
     def point(self):
+        if not self._point:
+            raise ValueError("The frame has no origin.")
         return self._point
 
     @point.setter
@@ -148,6 +150,8 @@ class Frame(Primitive):
 
     @property
     def xaxis(self):
+        if not self._xaxis:
+            raise ValueError("The frame has no x-axis.")
         return self._xaxis
 
     @xaxis.setter
@@ -158,6 +162,8 @@ class Frame(Primitive):
 
     @property
     def yaxis(self):
+        if not self._yaxis:
+            raise ValueError("The frame has no y-axis.")
         return self._yaxis
 
     @yaxis.setter
