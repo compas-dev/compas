@@ -94,7 +94,6 @@ def _choose_context():
 def _get_artist_cls(data, **kwargs):
     # in any case user gets to override the choice
     context_name = kwargs.get("context") or _choose_context()
-    print("choosed artist context: {}".format(context_name))
     dtype = type(data)
     cls = None
 

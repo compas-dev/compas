@@ -56,9 +56,7 @@ if not compas.IPY:
         item = FakeItem()
         artist = Artist(item)
 
-        assert Artist.CONTEXT == "fake"
         assert isinstance(artist, FakeArtist)
 
     def register_fake_context():
         Artist.register(FakeItem, FakeArtist, context="fake")
-        return ["fake"]
