@@ -5,13 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = [
-    "trimesh_gaussian_curvature",
-    "trimesh_mean_curvature",
-    "trimesh_principal_curvature",
-]
-
-
 @pluggable(category="trimesh")
 def trimesh_gaussian_curvature(M):
     """Compute the discrete gaussian curvature of a triangle mesh.

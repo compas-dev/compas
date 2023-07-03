@@ -8,8 +8,8 @@ import pstats
 import sys
 import traceback
 
-from compas.utilities import DataDecoder
-from compas.utilities import DataEncoder
+from compas.data import DataDecoder
+from compas.data import DataEncoder
 
 try:
     from cStringIO import StringIO

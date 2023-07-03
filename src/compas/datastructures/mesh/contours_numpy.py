@@ -15,12 +15,6 @@ import matplotlib.pyplot as plt
 from compas.numerical import scalarfield_contours_numpy
 
 
-__all__ = [
-    "mesh_isolines_numpy",
-    "mesh_contours_numpy",
-]
-
-
 def mesh_isolines_numpy(mesh, attr_name, N=50):
     """Compute the isolines of a specified attribute of the vertices of a mesh.
 

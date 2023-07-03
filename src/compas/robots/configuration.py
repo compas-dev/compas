@@ -7,11 +7,6 @@ from copy import deepcopy
 
 from compas.data import Data
 
-__all__ = [
-    "Configuration",
-    "FixedLengthList",
-]
-
 # These joint types known to configuration are a match
 # to the ones defined in `Joint` class, but we redefine here
 # to avoid a circular dependency
@@ -484,7 +479,7 @@ class Configuration(Data):
             The configuration to compare to.
 
         Returns
-        ------
+        -------
         float
             The maximum absolute difference.
 
@@ -559,9 +554,9 @@ class Configuration(Data):
         The other configuration takes precedence over this configuration in
         case a joint value is present in both.
 
-        Note
-        ----
-            Caution: ``joint_names`` may be rearranged.
+        Notes
+        -----
+        Caution: ``joint_names`` may be rearranged.
 
         Parameters
         ----------
@@ -589,9 +584,9 @@ class Configuration(Data):
         The other configuration takes precedence over this configuration in
         case a joint value is present in both.
 
-        Note
-        ----
-            Caution: ``joint_names`` may be rearranged.
+        Notes
+        -----
+        Caution: ``joint_names`` may be rearranged.
 
         Parameters
         ----------

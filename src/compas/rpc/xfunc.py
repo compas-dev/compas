@@ -1,0 +1,441 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import os
+import json
+import tempfile
+
+import compas
+import compas._os
+
+from compas.data import DataEncoder
+from compas.data import DataDecoder
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+try:
+    from subprocess import Popen
+    from subprocess import PIPE
+except ImportError:
+    try:
+        from System.Diagnostics import Process
+    except ImportError:
+        compas.raise_if_ironpython()
+
+
+WRAPPER = """
+import os
+import sys
+import importlib
+
+import json
+
+try:
+    import cPickle as pickle
+except Exception:
+    import pickle
+
+try:
+    from cStringIO import StringIO
+except Exception:
+    from io import StringIO
+
+import cProfile
+import pstats
+import traceback
+
+from compas.data import DataEncoder
+from compas.data import DataDecoder
+
+basedir    = sys.argv[1]
+funcname   = sys.argv[2]
+ipath      = sys.argv[3]
+opath      = sys.argv[4]
+serializer = sys.argv[5]
+
+if serializer == 'json':
+    with open(ipath, 'r') as fo:
+        idict = json.load(fo, cls=DataDecoder)
+else:
+    with open(ipath, 'rb') as fo:
+        idict = pickle.load(fo)
+
+try:
+    args   = idict['args']
+    kwargs = idict['kwargs']
+
+    profile = cProfile.Profile()
+    profile.enable()
+
+    sys.path.insert(0, basedir)
+    parts = funcname.split('.')
+
+    if len(parts) > 1:
+        mname = '.'.join(parts[:-1])
+        fname = parts[-1]
+        m = importlib.import_module(mname)
+        f = getattr(m, fname)
+    else:
+        raise Exception('Cannot import the function because no module name is specified.')
+
+    r = f(*args, **kwargs)
+
+    profile.disable()
+
+    stream = StringIO()
+    stats  = pstats.Stats(profile, stream=stream)
+    # stats.strip_dirs()
+    stats.sort_stats(1)
+    stats.print_stats(20)
+
+except Exception:
+    odict = {}
+    odict['error']      = traceback.format_exc()
+    odict['data']       = None
+    odict['profile']    = None
+
+else:
+    odict = {}
+    odict['error']      = None
+    odict['data']       = r
+    odict['profile']    = stream.getvalue()
+
+if serializer == 'json':
+    with open(opath, 'w+') as fo:
+        json.dump(odict, fo, cls=DataEncoder)
+else:
+    with open(opath, 'wb+') as fo:
+        # pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(odict, fo, protocol=2)
+
+"""
+
+
+class XFunc(object):
+    """Wrapper for functions that turns them into externally run processes.
+
+    Parameters
+    ----------
+    funcname : str
+        The full name of the function.
+    basedir : str, optional
+        A directory that should be added to the PYTHONPATH such that the function can be found.
+        Default is the curent directory.
+    tmpdir : str, optional
+        A directory that should be used for storing the IO files.
+        Default is the current directory.
+    delete_files : bool, optional
+        If True, the IO files will be deleted afterwards.
+    verbose : bool, optional
+        If True, information about the process will be displayed to the user.
+    callback : callable, optional
+        A function to be called eveytime the wrapped function prints output.
+        The first parameter passed to this function is the line printed by the
+        wrapped function. Additional parameters can be defined using `callback_args`.
+    callback_args : tuple, optional
+        Additional parameter for the callback function.
+    python : str, optional
+        The Python executable.
+        This can be a path to a specific executable (e.g. ``'/opt/local/bin/python'``)
+        or the name of an executable registered on the system `PATH` (e.g. ``'pythonw'``).
+    paths : list, optional
+        A list of paths to be added to the `PYTHONPATH` by the subprocess.
+    serializer : {'json', 'pickle'}, optional
+        The serialization mechnanism to be used to pass data between the caller and the subprocess.
+
+    Attributes
+    ----------
+    data : object
+        The object returned by the wrapped function.
+    profile : str
+        A profile of the call to the wrapped function.
+    error : str
+        A traceback of the exception raised during the wrapped function call.
+
+    Methods
+    -------
+    __call__(*args, **kwargs)
+        Call the wrapped function with the apropriate/related arguments and keyword arguments.
+
+    Notes
+    -----
+    To use the Python executable of a virtual environment, simply assign the path
+    to that executable to the `python` parameter. For example
+
+    .. code-block:: python
+
+        fd_numpy = XFunc('compas.numerical.fd_numpy', python='/Users/brg/environments/py2/python')
+
+    Examples
+    --------
+    :mod:`compas.numerical` provides an implementation of the Force Density Method that
+    is based on Numpy and Scipy. This implementation is not directly available in
+    Rhino because Numpy and Scipy are not available for IronPython.
+
+    With :class:`~compas.utilities.XFunc`, :func:`compas.numerical.fd_numpy` can be easily
+    wrapped in an external process and called as if it would be directly available.
+
+    .. code-block:: python
+
+        import compas
+        import compas_rhino
+
+        from compas_rhino.artists import MeshArtist
+        from compas.datastructures import Mesh
+        from compas.utilities import XFunc
+
+        # make the function available as a wrapped function with the same call signature and return value as the original.
+        fd_numpy = XFunc('compas.numerical.fd_numpy')
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        mesh.update_default_vertex_attributes({'is_fixed': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
+        mesh.update_default_edge_attributes({'q': 1.0})
+
+        for key, attr in mesh.vertices(True):
+            attr['is_fixed'] = mesh.vertex_degree(key) == 2
+
+        vertex_index = mesh.vertex_index()
+        vertices     = mesh.vertices_attributes('xyz')
+        edges        = [(vertex_index[u], vertex_index[v]) for u, v in mesh.edges()]
+        fixed        = [vertex_index[vertex] for vertex in mesh.vertices_where({'is_fixed': True})]
+        q            = mesh.edges_attribute('q')
+        loads        = mesh.vertices_attributes(('px', 'py', 'pz'))
+
+        xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
+
+        for vertex, attr in mesh.vertices(True):
+            attr['x'] = xyz[vertex][0]
+            attr['y'] = xyz[vertex][1]
+            attr['z'] = xyz[vertex][2]
+
+        artist = MeshArtist(mesh)
+        artist.draw_vertices()
+        artist.draw_edges()
+
+    """
+
+    def __init__(
+        self,
+        funcname,
+        basedir=".",
+        tmpdir=None,
+        delete_files=True,
+        verbose=True,
+        callback=None,
+        callback_args=None,
+        python=None,
+        paths=None,
+        serializer="json",
+        argtypes=None,
+        kwargtypes=None,
+        restypes=None,
+    ):
+        self._basedir = None
+        self._tmpdir = None
+        self._callback = None
+        self._python = None
+        self._serializer = None
+        self.funcname = funcname
+        self.basedir = basedir
+        self.tmpdir = tmpdir or tempfile.mkdtemp("compas_xfunc")
+        self.delete_files = delete_files
+        self.verbose = verbose
+        self.callback = callback
+        self.callback_args = callback_args
+        self.python = compas._os.select_python(python)
+        self.paths = paths or []
+        self.serializer = serializer
+        self.argtypes = argtypes
+        self.kwargtypes = kwargtypes
+        self.restypes = restypes
+        self.data = None
+        self.profile = None
+        self.error = None
+
+    @property
+    def basedir(self):
+        return self._basedir
+
+    @basedir.setter
+    def basedir(self, basedir):
+        if not os.path.isdir(basedir):
+            raise Exception("basedir is not a directory: %s" % basedir)
+        self._basedir = os.path.abspath(basedir)
+
+    @property
+    def tmpdir(self):
+        return self._tmpdir
+
+    @tmpdir.setter
+    def tmpdir(self, tmpdir):
+        if not os.path.isdir(tmpdir):
+            raise Exception("tmpdir is not a directory: %s" % tmpdir)
+        if not os.access(tmpdir, os.W_OK):
+            raise Exception(
+                "You do not have write access to 'tmpdir'. Please set the 'tmpdir' attribute to a different directory."
+            )
+        self._tmpdir = os.path.abspath(tmpdir)
+
+    @property
+    def callback(self):
+        return self._callback
+
+    @callback.setter
+    def callback(self, callback):
+        if callback:
+            if not callable(callback):
+                callback = None
+        self._callback = callback
+
+    @property
+    def python(self):
+        return self._python
+
+    @python.setter
+    def python(self, python):
+        self._python = python
+
+    @property
+    def serializer(self):
+        """{'json', 'pickle'}: Which serialization mechanism to use."""
+        return self._serializer
+
+    @serializer.setter
+    def serializer(self, serializer):
+        if serializer not in ("json", "pickle"):
+            raise Exception("*serializer* should be one of {'json', 'pickle'}.")
+        self._serializer = serializer
+
+    @property
+    def ipath(self):
+        return os.path.join(self.tmpdir, "%s.in" % self.funcname)
+
+    @property
+    def opath(self):
+        return os.path.join(self.tmpdir, "%s.out" % self.funcname)
+
+    def __call__(self, *args, **kwargs):
+        """Make a call to the wrapped function.
+
+        Parameters
+        ----------
+        **args : list
+            Positional arguments to be passed to the wrapped function.
+        **kwargs : dict, optional
+            Named arguments to be passed to the wrapped function.
+
+        Returns
+        -------
+        object or None
+            The data returned by the wrapped call.
+            The type of the return value depends on the implementation of the wrapped function.
+            If something went wrong the value is ``None``.
+            In this case, check the :attr:`XFunc.error` for more information.
+
+        """
+        # if self.argtypes:
+        #     args = [arg for arg in args]
+
+        # if self.kwargtypes:
+        #     kwargs = {name: value for name, value in kwargs.items()}
+
+        idict = {
+            "args": args,
+            "kwargs": kwargs,
+            # 'argtypes': self.argtypes,
+            # 'kwargtypes': self.kwargtypes,
+            # 'restypes': self.restypes
+        }
+
+        if self.serializer == "json":
+            with open(self.ipath, "w+") as fo:
+                json.dump(idict, fo, cls=DataEncoder)
+        else:
+            with open(self.ipath, "wb+") as fo:
+                pickle.dump(idict, fo, protocol=2)
+
+        with open(self.opath, "w+") as fh:
+            fh.write("")
+
+        env = compas._os.prepare_environment()
+        args = [
+            WRAPPER,
+            self.basedir,
+            self.funcname,
+            self.ipath,
+            self.opath,
+            self.serializer,
+        ]
+
+        try:
+            Popen
+
+        except NameError:
+            process = Process()
+            for name in env:
+                if process.StartInfo.EnvironmentVariables.ContainsKey(name):
+                    process.StartInfo.EnvironmentVariables[name] = env[name]
+                else:
+                    process.StartInfo.EnvironmentVariables.Add(name, env[name])
+            process.StartInfo.UseShellExecute = False
+            process.StartInfo.RedirectStandardOutput = True
+            process.StartInfo.RedirectStandardError = True
+            process.StartInfo.FileName = self.python
+            process.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4} {5}'.format(*args)
+            process.Start()
+            process.WaitForExit()
+
+            while True:
+                line = process.StandardOutput.ReadLine()
+                if not line:
+                    break
+                line = line.strip()
+                if self.callback:
+                    self.callback(line, self.callback_args)
+                if self.verbose:
+                    print(line)
+
+            # stderr = p.StandardError.ReadToEnd()
+
+        else:
+            process_args = [self.python, "-u", "-c"] + args
+
+            process = Popen(process_args, stderr=PIPE, stdout=PIPE, env=env)
+
+            while process.poll() is None:
+                line = process.stdout.readline().strip()
+                if self.callback:
+                    self.callback(line, self.callback_args)
+                if self.verbose:
+                    print(line)
+
+        if self.serializer == "json":
+            with open(self.opath, "r") as fo:
+                odict = json.load(fo, cls=DataDecoder)
+        else:
+            with open(self.opath, "rb") as fo:
+                odict = pickle.load(fo)
+
+        self.data = odict["data"]
+        self.profile = odict["profile"]
+        self.error = odict["error"]
+
+        if self.delete_files:
+            try:
+                os.remove(self.ipath)
+            except OSError:
+                pass
+            try:
+                os.remove(self.opath)
+            except OSError:
+                pass
+
+        if self.error:
+            raise Exception(self.error)
+
+        return self.data

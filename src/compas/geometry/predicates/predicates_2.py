@@ -2,26 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry._core import distance_point_point_xy
-from compas.geometry._core import distance_point_line_xy
-from compas.geometry._core import closest_point_on_segment_xy
-
-
-__all__ = [
-    "is_ccw_xy",
-    "is_colinear_xy",
-    "is_polygon_convex_xy",
-    "is_point_on_line_xy",
-    "is_point_on_segment_xy",
-    "is_point_on_polyline_xy",
-    "is_point_in_triangle_xy",
-    "is_point_in_polygon_xy",
-    "is_point_in_convex_polygon_xy",
-    "is_point_in_circle_xy",
-    "is_polygon_in_polygon_xy",
-    "is_intersection_line_line_xy",
-    "is_intersection_segment_segment_xy",
-]
+from compas.geometry import distance_point_point_xy
+from compas.geometry import distance_point_line_xy
+from compas.geometry import closest_point_on_segment_xy
 
 
 def is_ccw_xy(a, b, c, colinear=False):
@@ -383,7 +366,7 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
         for i in range(len(polygon1)):
             line = [polygon1[-i], polygon1[-i - 1]]
             for j in range(len(polygon2)):
-                line_ = [polygon2[-j], polygon2[j - 1]]
+                line_ = [polygon2[-j], polygon2[-j - 1]]
                 if is_intersection_segment_segment_xy(line, line_):
                     return False
         for pt in polygon2:
@@ -405,7 +388,7 @@ def is_intersection_line_line_xy(l1, l2, tol=1e-6):
         A tolerance for intersection verification.
 
     Returns
-    --------
+    -------
     bool
         True if the lines intersect in one point
         False if the lines are skew, parallel or lie on top of each other.

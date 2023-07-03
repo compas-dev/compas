@@ -6,9 +6,6 @@ from numpy import asarray
 from scipy.linalg import svd
 
 
-__all__ = ["pca_numpy"]
-
-
 def pca_numpy(data):
     """Compute the principle components of a set of data points.
 

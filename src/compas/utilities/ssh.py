@@ -11,9 +11,6 @@ except ImportError:
 import os
 
 
-__all__ = ["SSH"]
-
-
 class SSH(object):
     """Initialse an SSH object.
 

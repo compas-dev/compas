@@ -6,27 +6,18 @@ from math import fabs
 
 from compas.utilities import pairwise
 
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import length_vector
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import cross_vectors_xy
-from compas.geometry._core import dot_vectors
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
+from ._algebra import length_vector
+from ._algebra import cross_vectors
+from ._algebra import cross_vectors_xy
+from ._algebra import dot_vectors
 
-from compas.geometry._core import centroid_points
-from compas.geometry._core import centroid_points_xy
+from .centroids import centroid_points
+from .centroids import centroid_points_xy
 
-from compas.geometry._core import normal_triangle
-from compas.geometry._core import normal_triangle_xy
-
-
-__all__ = [
-    "area_polygon",
-    "area_polygon_xy",
-    "area_triangle",
-    "area_triangle_xy",
-    "volume_polyhedron",
-]
+from .normals import normal_triangle
+from .normals import normal_triangle_xy
 
 
 def area_polygon(polygon):

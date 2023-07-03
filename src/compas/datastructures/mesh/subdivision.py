@@ -13,21 +13,8 @@ from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
 
-__all__ = [
-    "mesh_subdivide",
-    "mesh_subdivide_tri",
-    "mesh_subdivide_corner",
-    "mesh_subdivide_quad",
-    "mesh_subdivide_catmullclark",
-    "mesh_subdivide_doosabin",
-    "mesh_subdivide_frames",
-    "trimesh_subdivide_loop",
-]
-
-
 def subd_factory(cls):
     class SubdMesh(cls):
-
         _add_vertex = cls.add_vertex
         _add_face = cls.add_face
         _insert_vertex = cls.insert_vertex
@@ -204,8 +191,8 @@ def mesh_subdivide_quad(mesh, k=1):
     for _ in range(k):
         faces = {face: subd.face_vertices(face)[:] for face in subd.faces()}
         face_centroid = {face: subd.face_centroid(face) for face in subd.faces()}
-        for u, v in list(subd.edges()):
-            subd.split_edge(u, v, allow_boundary=True)
+        for edge in list(subd.edges()):
+            subd.split_edge(edge, allow_boundary=True)
         for face, vertices in faces.items():
             descendant = {i: j for i, j in subd.face_halfedges(face)}
             ancestor = {j: i for i, j in subd.face_halfedges(face)}
@@ -246,8 +233,8 @@ def mesh_subdivide_corner(mesh, k=1):
     for _ in range(k):
         subd = mesh_fast_copy(mesh)
         # split every edge
-        for u, v in list(subd.edges()):
-            subd.split_edge(u, v, allow_boundary=True)
+        for edge in list(subd.edges()):
+            subd.split_edge(edge, allow_boundary=True)
         # create 4 new faces for every old face
         for fkey in mesh.faces():
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
@@ -352,8 +339,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         edgepoints = []
 
         for u, v in mesh.edges():
-
-            w = subd.split_edge(u, v, allow_boundary=True)
+            w = subd.split_edge((u, v), allow_boundary=True)
             crease = mesh.edge_attribute((u, v), "crease") or 0
 
             if crease:
@@ -366,7 +352,6 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         fkey_xyz = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
 
         for fkey in mesh.faces():
-
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
             ancestor = {j: i for i, j in subd.face_halfedges(fkey)}
 
@@ -736,8 +721,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
         # odd vertices
         for u, v in list(subd.edges()):
-
-            w = subd.split_edge(u, v, allow_boundary=True)
+            w = subd.split_edge((u, v), allow_boundary=True)
 
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w

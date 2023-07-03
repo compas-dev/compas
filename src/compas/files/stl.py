@@ -394,7 +394,8 @@ class STLWriter(object):
     def _write_faces(self):
         vertex_xyz = self._vertex_xyz
         for face in self.mesh.faces():
-            self.file.write("facet normal {0} {1} {2}\n".format(*self.mesh.face_normal(face)))
+            normal = list(self.mesh.face_normal(face))
+            self.file.write("facet normal {0} {1} {2}\n".format(*normal))
             self.file.write("    outer loop\n")
             for vertex in self.mesh.face_vertices(face):
                 self.file.write("        vertex {0} {1} {2}\n".format(*vertex_xyz[vertex]))
@@ -413,7 +414,8 @@ class STLWriter(object):
     def _write_binary_faces(self):
         vertex_xyz = self._vertex_xyz
         for face in self.mesh.faces():
-            self.file.write(struct.pack("<3f", *self.mesh.face_normal(face)))
+            normal = list(self.mesh.face_normal(face))
+            self.file.write(struct.pack("<3f", *normal))
             for vertex in self.mesh.face_vertices(face):
                 self.file.write(struct.pack("<3f", *vertex_xyz[vertex]))
             self.file.write(b"\0\0")

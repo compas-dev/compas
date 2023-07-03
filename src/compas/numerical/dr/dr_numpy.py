@@ -14,9 +14,6 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__all__ = ["dr_numpy"]
-
-
 K = [
     [0.0],
     [0.5, 0.5],

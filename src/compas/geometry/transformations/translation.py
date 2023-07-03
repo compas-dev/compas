@@ -12,9 +12,11 @@ Ippoliti for providing code and documentation.
 """
 from compas.utilities import flatten
 from compas.geometry import allclose
-from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import matrix_from_translation
-from compas.geometry.transformations import Transformation
+
+from .matrices import decompose_matrix
+from .matrices import matrix_from_translation
+
+from .transformation import Transformation
 
 
 class Translation(Transformation):

@@ -64,6 +64,24 @@ class NurbsSurface(Surface):
 
     """
 
+    JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "points": {"type": "array", "items": {"type": "array", "items": Point.JSONSCHEMA}},
+            "weights": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
+            "u_knots": {"type": "array", "items": {"type": "number"}},
+            "v_knots": {"type": "array", "items": {"type": "number"}},
+            "u_mults": {"type": "array", "items": {"type": "integer"}},
+            "v_mults": {"type": "array", "items": {"type": "integer"}},
+            "u_degree": {"type": "integer", "exclusiveMinimum": 0},
+            "v_degree": {"type": "integer", "exclusiveMinimum": 0},
+            "is_u_periodic": {"type": "boolean"},
+            "is_v_periodic": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+        "minProperties": 10,
+    }
+
     def __new__(cls, *args, **kwargs):
         return new_nurbssurface(cls, *args, **kwargs)
 
@@ -94,34 +112,6 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : The schema of the data representation."""
-        from schema import Schema
-        from compas.data import is_float3
-        from compas.data import is_sequence_of_int
-        from compas.data import is_sequence_of_float
-
-        return Schema(
-            {
-                "points": lambda points: all(is_float3(point) for point in points),
-                "weights": is_sequence_of_float,
-                "u_knots": is_sequence_of_float,
-                "v_knots": is_sequence_of_float,
-                "u_mults": is_sequence_of_int,
-                "v_mults": is_sequence_of_int,
-                "u_degree": int,
-                "v_degree": int,
-                "is_u_periodic": bool,
-                "is_v_periodic": bool,
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        """dict : The schema of the data representation in JSON format."""
-        raise NotImplementedError
-
-    @property
     def dtype(self):
         """str : The type of the object in the form of a '2-level' import and a class name."""
         return "compas.geometry/NurbsSurface"
@@ -130,7 +120,7 @@ class NurbsSurface(Surface):
     def data(self):
         """dict : Representation of the curve as a dict containing only native Python objects."""
         return {
-            "points": [[point.data for point in row] for row in self.points],
+            "points": self.points,
             "weights": self.weights,
             "u_knots": self.u_knots,
             "v_knots": self.v_knots,
@@ -161,7 +151,7 @@ class NurbsSurface(Surface):
             The constructed surface.
 
         """
-        points = [[Point.from_data(point) for point in row] for row in data["points"]]
+        points = data["points"]
         weights = data["weights"]
         u_knots = data["u_knots"]
         v_knots = data["v_knots"]

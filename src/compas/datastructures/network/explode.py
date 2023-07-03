@@ -4,12 +4,6 @@ from __future__ import division
 
 from compas.topology import connected_components
 
-__all__ = [
-    "network_disconnected_nodes",
-    "network_disconnected_edges",
-    "network_explode",
-]
-
 
 def network_disconnected_nodes(network):
     """Get the disconnected node groups in a network.

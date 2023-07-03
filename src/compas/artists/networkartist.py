@@ -43,9 +43,13 @@ class NetworkArtist(Artist):
     node_color : dict[hashable, :class:`~compas.colors.Color`]
         Mapping between nodes and RGB color values.
         Missing nodes get the default node color :attr:`default_nodecolor`.
+    default_nodecolor : :class:`~compas.colors.Color`
+        The default color for nodes that do not have a specified color.
     edge_color : dict[tuple[hashable, hashable], :class:`~compas.colors.Color`]
         Mapping between edges and colors.
         Missing edges get the default edge color :attr:`default_edgecolor`.
+    default_edgecolor : :class:`~compas.colors.Color`
+        The default color for edges that do not have a specified color.
     node_text : dict[hashable, str]
         Mapping between nodes and text labels.
     edge_text : dict[tuple[hashable, hashable], str]
@@ -53,20 +57,18 @@ class NetworkArtist(Artist):
     node_size : dict[hashable, float]
         Mapping between nodes and sizes.
         Missing nodes get assigned the default node size :attr:`default_nodesize`.
+    default_nodesize : float
+        The default size for nodes that do not have a specified size.
     edge_width : dict[tuple[hashable, hashable], float]
         Mapping between edges and line widths.
         Missing edges get assigned the default edge width :attr:`default_edgewidth`.
-
-    Class Attributes
-    ----------------
-    default_nodecolor : :class:`~compas.colors.Color`
-        The default color for nodes that do not have a specified color.
-    default_edgecolor : :class:`~compas.colors.Color`
-        The default color for edges that do not have a specified color.
-    default_nodesize : float
-        The default size for nodes that do not have a specified size.
     default_edgewidth : float
         The default width for edges that do not have a specified width.
+
+    See Also
+    --------
+    :class:`compas.artists.MeshArtist`
+    :class:`compas.artists.VolMeshArtist`
 
     """
 

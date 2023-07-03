@@ -5,11 +5,6 @@ from __future__ import division
 from compas.geometry import centroid_points
 
 
-__all__ = [
-    "network_smooth_centroid",
-]
-
-
 def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a network by moving every free node to the centroid of its neighbors.
 

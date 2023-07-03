@@ -6,13 +6,6 @@ from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 
 
-__all__ = [
-    "mesh_smooth_centroid",
-    "mesh_smooth_centerofmass",
-    "mesh_smooth_area",
-]
-
-
 def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
     """Smooth a mesh by moving every free vertex to the centroid of its neighbors.
 

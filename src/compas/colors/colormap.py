@@ -50,6 +50,10 @@ class ColorMap(object):
     >>> cmap = ColorMap.from_color(Color.red(), rangetype='light')
     >>> cmap.plot()    # doctest: +SKIP
 
+    See Also
+    --------
+    :class:`compas.colors.Color`
+
     """
 
     def __init__(self, colors):

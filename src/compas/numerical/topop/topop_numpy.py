@@ -29,9 +29,6 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.linalg import spsolve
 
 
-__all__ = ["topop_numpy"]
-
-
 def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None):
     """Topology optimisation in 2D.
 
@@ -104,7 +101,6 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
     fixed = []
 
     for support, B in supports.items():
-
         jb, ib = [int(i) for i in support.split("-")]
         Bx, By = B
         node = int(jb * ny + ib)
@@ -123,7 +119,6 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
     cols = []
 
     for load, P in loads.items():
-
         jp, ip = [int(i) for i in load.split("-")]
         Px, Py = P
         node = int(jp * ny + ip)
@@ -143,12 +138,10 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
     k = 0
 
     for i1 in range(nelx):
-
         max_i = int(max([i1 - (ceil(rmin) - 1), 0]))
         min_i = int(min([i1 + (ceil(rmin) - 1), nelx - 1]))
 
         for j1 in range(nely):
-
             max_j = int(max([j1 - (ceil(rmin) - 1), 0]))
             min_j = int(min([j1 + (ceil(rmin) - 1), nely - 1]))
 
@@ -176,7 +169,6 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
     nones = ones((ne)) * 0.001
 
     while change > 0.1:
-
         # FE
 
         xrav = ravel(xP, order="F").transpose()
@@ -203,7 +195,6 @@ def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, cal
         l2 = 10**9
 
         while (l2 - l1) / (l1 + l2) > 0.001:
-
             lmid = 0.5 * (l2 + l1)
             sdv = sqrt(-dc / dv / lmid)
             min1 = minimum(x + move, x * sdv)

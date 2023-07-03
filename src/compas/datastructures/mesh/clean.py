@@ -5,9 +5,6 @@ from __future__ import division
 from compas.utilities import geometric_key
 
 
-__all__ = ["mesh_delete_duplicate_vertices"]
-
-
 def mesh_delete_duplicate_vertices(mesh, precision=None):
     """Cull all duplicate vertices of a mesh and sanitize affected faces.
 

@@ -11,7 +11,7 @@ class SurfaceArtist(Artist):
 
     Parameters
     ----------
-    surface: :class:`~compas.geometry.Surface`
+    surface : :class:`~compas.geometry.Surface`
         The surface geometry.
     color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
         The RGB color.
@@ -22,11 +22,12 @@ class SurfaceArtist(Artist):
         The geometry of the surface.
     color : :class:`~compas.colors.Color`
         The color of the surface.
-
-    Class Attributes
-    ----------------
     default_color : :class:`~compas.colors.Color`
         The default color of the surface.
+
+    See Also
+    --------
+    :class:`compas.artists.CurveArtist`
 
     """
 

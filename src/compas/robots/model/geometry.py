@@ -5,27 +5,16 @@ from __future__ import print_function
 import compas
 import compas.colors
 import compas.geometry
+
 from compas.data import Data
 from compas.datastructures import Mesh
-from compas.files.urdf import URDFElement
+from compas.files import URDFElement
 from compas.geometry import Frame
-from compas.robots.model.base import ProxyObject
-from compas.robots.model.base import _attr_from_data
-from compas.robots.model.base import _attr_to_data
-from compas.robots.model.base import _parse_floats
 
-__all__ = [
-    "Geometry",
-    "MeshDescriptor",
-    "Color",
-    "Texture",
-    "Material",
-    "Origin",
-    "Cylinder",
-    "Box",
-    "Sphere",
-    "Capsule",
-]
+from .base import ProxyObject
+from .base import _attr_from_data
+from .base import _attr_to_data
+from .base import _parse_floats
 
 
 class BoxProxy(ProxyObject):
