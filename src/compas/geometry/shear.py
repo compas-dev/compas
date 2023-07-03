@@ -10,10 +10,9 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
-from .matrices import matrix_from_shear_entries
-from .matrices import matrix_from_shear
-
-from .transformation import Transformation
+from compas.geometry import matrix_from_shear_entries
+from compas.geometry import matrix_from_shear
+from compas.geometry import Transformation
 
 
 class Shear(Transformation):
