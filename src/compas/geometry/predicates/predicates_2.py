@@ -303,12 +303,14 @@ def is_point_in_polygon_xy(point, polygon):
     for i in range(-1, len(polygon) - 1):
         x1, y1 = polygon[i]
         x2, y2 = polygon[i + 1]
+        if y1 != y2:
+            xinters = (y - y1) * (x2 - x1) / (y2 - y1) + x1
+        else:
+            xinters = None
         if y > min(y1, y2):
             if y <= max(y1, y2):
                 if x <= max(x1, x2):
-                    if y1 != y2:
-                        xinters = (y - y1) * (x2 - x1) / (y2 - y1) + x1
-                    if x1 == x2 or x <= xinters:
+                    if x1 == x2 or (xinters is not None and x <= xinters):
                         inside = not inside
     return inside
 
