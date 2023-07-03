@@ -196,89 +196,6 @@ if not compas.IPY:
     from ._core.transformations_numpy import world_to_local_coordinates_numpy
 
 # =============================================================================
-# Transformations
-# =============================================================================
-
-# from .transformations.matrices import (
-#     axis_and_angle_from_matrix,
-#     axis_angle_from_quaternion,
-#     axis_angle_vector_from_matrix,
-#     basis_vectors_from_matrix,
-#     compose_matrix,
-#     decompose_matrix,
-#     euler_angles_from_matrix,
-#     euler_angles_from_quaternion,
-#     identity_matrix,
-#     matrix_determinant,
-#     matrix_from_axis_and_angle,
-#     matrix_from_axis_angle_vector,
-#     matrix_from_basis_vectors,
-#     matrix_from_change_of_basis,
-#     matrix_from_euler_angles,
-#     matrix_from_frame,
-#     matrix_from_frame_to_frame,
-#     matrix_from_orthogonal_projection,
-#     matrix_from_parallel_projection,
-#     matrix_from_perspective_entries,
-#     matrix_from_perspective_projection,
-#     matrix_from_quaternion,
-#     matrix_from_scale_factors,
-#     matrix_from_shear,
-#     matrix_from_shear_entries,
-#     matrix_from_translation,
-#     matrix_inverse,
-#     quaternion_from_axis_angle,
-#     quaternion_from_euler_angles,
-#     quaternion_from_matrix,
-#     translation_from_matrix,
-# )
-
-# from .transformations.transformations import local_axes, local_to_world_coordinates
-# from .transformations.transformations import (
-#     # mirror_point_line,
-#     # mirror_point_line_xy,
-#     mirror_point_plane,
-#     # mirror_point_point,
-#     # mirror_point_point_xy,
-#     mirror_points_line,
-#     mirror_points_line_xy,
-#     mirror_points_point,
-#     mirror_points_plane,
-#     mirror_points_point_xy,
-#     mirror_vector_vector,
-# )
-# from .transformations.transformations import orient_points, orthonormalize_axes
-# from .transformations.transformations import (
-#     project_point_line,
-#     project_point_line_xy,
-#     project_point_plane,
-#     project_points_line,
-#     project_points_line_xy,
-#     project_points_plane,
-# )
-# from .transformations.transformations import reflect_line_plane, reflect_line_triangle, rotate_points, rotate_points_xy
-# from .transformations.transformations import scale_points, scale_points_xy
-# from .transformations.transformations import (
-#     transform_frames,
-#     transform_points,
-#     transform_vectors,
-#     translate_points_xy,
-#     translate_points,
-# )
-# from .transformations.transformations import world_to_local_coordinates
-
-# if not compas.IPY:
-#     from .transformations.transformations_numpy import dehomogenize_and_unflatten_frames_numpy, dehomogenize_numpy
-#     from .transformations.transformations_numpy import homogenize_and_flatten_frames_numpy, homogenize_numpy
-#     from .transformations.transformations_numpy import local_to_world_coordinates_numpy
-#     from .transformations.transformations_numpy import (
-#         # transform_frames_numpy,
-#         transform_points_numpy,
-#         transform_vectors_numpy,
-#     )
-#     from .transformations.transformations_numpy import world_to_local_coordinates_numpy
-
-# =============================================================================
 # Predicates
 # =============================================================================
 
@@ -390,38 +307,40 @@ if not compas.IPY:
 # Class APIs
 # =============================================================================
 
+from .transformation import Transformation
+from .projection import Projection
+from .reflection import Reflection
+from .rotation import Rotation
+from .scale import Scale
+from .shear import Shear
+from .translation import Translation
+
 from .geometry import Geometry
-from .transformations.transformation import Transformation
+from .vector import Vector
+from .point import Point
+from .quaternion import Quaternion
+from .frame import Frame
+from .plane import Plane
 
-from .transformations.projection import Projection
-from .transformations.reflection import Reflection
-from .transformations.rotation import Rotation
-from .transformations.scale import Scale
-from .transformations.shear import Shear
-from .transformations.translation import Translation
-
-from .primitives._primitive import Primitive
-from .primitives.vector import Vector
-from .primitives.point import Point
-from .primitives.line import Line
-from .primitives.plane import Plane
-from .primitives.quaternion import Quaternion
-from .primitives.frame import Frame
-
-from .primitives.arc import Arc
-from .primitives.circle import Circle
-from .primitives.curve import Bezier
-from .primitives.ellipse import Ellipse
-from .primitives.polygon import Polygon
-from .primitives.polyline import Polyline
+# not sure what to do with line and polyline
+# the required changes are drastic
+from .pointcloud import Pointcloud
 
 from .curves.curve import Curve
+from .curves.line import Line
+from .curves.polyline import Polyline
+from .curves.circle import Circle
+from .curves.ellipse import Ellipse
+from .curves.parabola import Parabola
+from .curves.hyperbola import Hyperbola
+from .curves.arc import Arc
 from .curves.nurbs import NurbsCurve
 
 from .surfaces.surface import Surface
 from .surfaces.nurbs import NurbsSurface
 
-from .shapes._shape import Shape
+from .shapes.shape import Shape
+from .shapes.polygon import Polygon
 from .shapes.box import Box
 from .shapes.capsule import Capsule
 from .shapes.cone import Cone
@@ -429,8 +348,6 @@ from .shapes.cylinder import Cylinder
 from .shapes.polyhedron import Polyhedron
 from .shapes.sphere import Sphere
 from .shapes.torus import Torus
-
-from .pointclouds.pointcloud import Pointcloud
 
 from .brep import (
     BrepError,
@@ -714,11 +631,12 @@ __all__ = [
     "trimesh_remesh_along_isoline",
     "trimesh_slice",
     "Geometry",
-    "Primitive",
-    "Bezier",
+    # "Bezier",
     "Arc",
     "Circle",
     "Ellipse",
+    "Hyperbola",
+    "Parabola",
     "Frame",
     "Line",
     "Plane",

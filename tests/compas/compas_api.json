@@ -216,7 +216,6 @@
     ],
     "compas.geometry": [
       "Arc",
-      "Bezier",
       "Box",
       "Brep",
       "BrepEdge",
@@ -248,7 +247,6 @@
       "Polygon",
       "Polyhedron",
       "Polyline",
-      "Primitive",
       "Projection",
       "Quaternion",
       "Reflection",
