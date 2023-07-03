@@ -106,6 +106,8 @@ class Data(object):
 
     JSONSCHEMA = {}
 
+    # __slots__ = ["_guid", "_name"]
+
     def __init__(self, name=None):
         self._guid = None
         self._name = None
