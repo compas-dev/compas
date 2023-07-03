@@ -167,7 +167,6 @@ def register_artists():
     Artist.register(Vector, VectorArtist, context="Blender")
     Artist.register(VolMesh, VolMeshArtist, context="Blender")
     print("Blender Artists registered.")
-    return "Blender"
 
 
 __all__ = [
