@@ -1,19 +1,21 @@
-from .curve import RhinoCurve  # noqa : F401
+from .curve import RhinoCurve
 from .nurbs import RhinoNurbsCurve
 
-from compas.geometry import Curve
-from compas.geometry import NurbsCurve
 from compas.plugins import plugin
 
 
 @plugin(category="factories", requires=["Rhino"])
 def new_curve(cls, *args, **kwargs):
-    return super(Curve, cls).__new__(cls)
+    curve = object.__new__(RhinoCurve)
+    curve.__init__(*args, **kwargs)
+    return curve
 
 
 @plugin(category="factories", requires=["Rhino"])
 def new_nurbscurve(cls, *args, **kwargs):
-    return super(NurbsCurve, cls).__new__(cls)
+    curve = object.__new__(RhinoNurbsCurve)
+    curve.__init__(*args, **kwargs)
+    return curve
 
 
 @plugin(category="factories", requires=["Rhino"])

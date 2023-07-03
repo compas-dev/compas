@@ -4,14 +4,10 @@ from __future__ import division
 
 from itertools import groupby
 from compas.geometry import Point
-
 from compas.geometry import NurbsCurve
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
-
-# from compas_rhino.conversions import circle_to_rhino
-# from compas_rhino.conversions import ellipse_to_rhino
 from compas_rhino.conversions import line_to_rhino
 
 from .curve import RhinoCurve
@@ -73,9 +69,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     """
 
-    def __init__(self, name=None):
-        super(RhinoNurbsCurve, self).__init__(name=name)
-        self.rhino_curve = None
+    # def __init__(self, name=None):
+    #     super(RhinoNurbsCurve, self).__init__(name=name)
+    #     self.rhino_curve = None
 
     # ==============================================================================
     # Data

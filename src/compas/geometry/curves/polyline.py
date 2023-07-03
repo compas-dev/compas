@@ -2,18 +2,27 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.utilities import pairwise
+
 from compas.geometry import allclose
 from compas.geometry import transform_points
 from compas.geometry import is_point_on_line
-from compas.utilities import pairwise
+from compas.geometry import Point
+from compas.geometry import Line
+from compas.geometry import Frame
+from .curve import Curve
 
-from ._primitive import Primitive
-from .point import Point
-from .line import Line
 
+class Polyline(Curve):
+    """A polyline is a curve defined by a sequence of points connected by line segments.
 
-class Polyline(Primitive):
-    """A polyline is defined by a sequence of points connected by line segments.
+    A Polyline can be open or closed.
+    It can be self-intersecting.
+    It does not have an interior.
+
+    The parameter space is defined along the consecutive direction vectors of the line segments of the polyline.
+    The coordinate system of the parametrisation is the world coordinate system.
+    Transformations of polylines are defined as transformations of the points defining the polyline.
 
     Parameters
     ----------
@@ -23,19 +32,23 @@ class Polyline(Primitive):
 
     Attributes
     ----------
+    frame : :class:`~compas.geometry.Frame`, read-only
+        The frame of the spatial coordinates of the polyline.
+        This is the world XY frame.
     points : list[:class:`~compas.geometry.Point`]
         The points of the polyline.
     lines : list[:class:`~compas.geometry.Line`], read-only
         The lines of the polyline.
     length : float, read-only
         The length of the polyline.
-
-    Notes
-    -----
-    A polyline is a piecewise linear element.
-    It does not have an interior.
-    It can be open or closed.
-    It can be self-intersecting.
+    start : :class:`~compas.geometry.Point`, read-only
+        The start point of the polyline.
+    end : :class:`~compas.geometry.Point`, read-only
+        The end point of the polyline.
+    is_selfintersecting : bool, read-only
+        True if the polyline is self-intersecting.
+    is_closed : bool, read-only
+        True if the polyline is closed.
 
     Examples
     --------
@@ -57,11 +70,18 @@ class Polyline(Primitive):
 
     JSONSCHEMA = {
         "type": "object",
-        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+        "properties": {
+            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+        },
         "required": ["points"],
     }
 
-    __slots__ = ["_points", "_lines"]
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
 
     def __init__(self, points, **kwargs):
         super(Polyline, self).__init__(**kwargs)
@@ -75,38 +95,23 @@ class Polyline(Primitive):
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the polyline."""
         return {"points": self.points}
 
     @data.setter
     def data(self, data):
         self.points = data["points"]
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a polyline from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Polyline`
-            The constructed polyline.
-
-        Examples
-        --------
-        >>> Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
-        Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000)])
-
-        """
-        return cls(data["points"])
-
     # ==========================================================================
     # properties
     # ==========================================================================
+
+    @property
+    def frame(self):
+        return Frame.worldXY()
+
+    @frame.setter
+    def frame(self, frame):
+        pass
 
     @property
     def points(self):
@@ -117,17 +122,31 @@ class Polyline(Primitive):
         self._points = [Point(*xyz) for xyz in points]
         self._lines = None
 
-    # consider caching below based on point setter
-
     @property
     def lines(self):
-        if not self._lines:
+        if self._lines is None:
             self._lines = [Line(a, b) for a, b in pairwise(self.points)]
         return self._lines
 
     @property
     def length(self):
         return sum([line.length for line in self.lines])
+
+    @property
+    def start(self):
+        return self.points[0]
+
+    @property
+    def end(self):
+        return self.points[-1]
+
+    @property
+    def is_selfintersecting(self):
+        raise NotImplementedError
+
+    @property
+    def is_closed(self):
+        return self.points[0] == self.points[-1]
 
     # ==========================================================================
     # customization
@@ -155,14 +174,40 @@ class Polyline(Primitive):
         return allclose(self, other)
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     # ==========================================================================
-    # methods
+    # Transformations
     # ==========================================================================
 
-    def point(self, t, snap=False):
+    def transform(self, T):
+        """Transform this polyline.
+
+        Parameters
+        ----------
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+            The transformation.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> polyline.transform(R)
+
+        """
+        for index, point in enumerate(transform_points(self.points, T)):
+            self.points[index].x = point[0]
+            self.points[index].y = point[1]
+            self.points[index].z = point[2]
+
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def point_at(self, t, snap=False):
         """Point on the polyline at a specific normalized parameter.
 
         Parameters
@@ -207,67 +252,68 @@ class Polyline(Primitive):
                         return line.start
                     else:
                         return line.end
-                return line.point((t - x) * polyline_length / line_length)
+                return line.point_at((t - x) * polyline_length / line_length)
             x += dx
             i += 1
 
-    def is_selfintersecting(self):
-        """Determine if the polyline is self-intersecting.
-
-        Returns
-        -------
-        bool
-            True if the polyline is self-intersecting.
-            False otherwise.
-
-        Examples
-        --------
-        >>>
-
-        """
-        raise NotImplementedError
-
-    def is_closed(self):
-        """Determine if the polyline is closed.
-
-        Returns
-        -------
-        bool
-            True if the polyline is closed, False otherwise.
-
-        Examples
-        --------
-        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
-        >>> polyline.is_closed()
-        False
-        >>> polyline.points.append(polyline.points[0])
-        >>> polyline.is_closed()
-        True
-
-        """
-        return self.points[0] == self.points[-1]
-
-    def transform(self, T):
-        """Transform this polyline.
+    def tangent_at(self, t):
+        """Tangent vector at a specific normalized parameter.
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
-            The transformation.
+        t : float
+            The parameter value.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Vector`
+            The tangent vector at the specified parameter.
 
         Examples
         --------
-        >>> from math import radians
-        >>> from compas.geometry import Rotation
-        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
-        >>> polyline.transform(R)
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+        >>> polyline.tangent(0.75)
+        Vector(0.000, 1.000, 0.000)
 
         """
-        for index, point in enumerate(transform_points(self.points, T)):
-            self.points[index].x = point[0]
-            self.points[index].y = point[1]
-            self.points[index].z = point[2]
+        if t < 0 or t > 1:
+            return None
+
+        points = self.points
+        if t == 0:
+            return points[1] - points[0]
+        if t == 1:
+            return points[-1] - points[-2]
+
+        polyline_length = self.length
+
+        x = 0
+        i = 0
+        while x <= t:
+            line = Line(points[i], points[i + 1])
+            line_length = line.length
+            dx = line_length / polyline_length
+            if x + dx > t:
+                return line.direction
+            x += dx
+            i += 1
+
+    def tangent_at_point(self, point):
+        """Calculates the tangent vector of a point on a polyline
+
+        Parameters
+        ----------
+        point: [float, float, float] | :class:`~compas.geometry.Point`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Vector`
+
+        """
+        for line in self.lines:
+            if is_point_on_line(point, line):
+                return line.direction
+        raise Exception("{} not found!".format(point))
 
     def split_at_corners(self, angle_threshold):
         """Splits a polyline at corners larger than the given angle_threshold
@@ -313,26 +359,7 @@ class Polyline(Primitive):
 
         return split_polylines
 
-    def tangent_at_point_on_polyline(self, point):
-        """Calculates the tangent vector of a point on a polyline
-
-        Parameters
-        ----------
-        point: [float, float, float] | :class:`~compas.geometry.Point`
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-
-        """
-        for line in self.lines:
-            if is_point_on_line(point, line):
-                return line.direction
-        raise Exception("{} not found!".format(point))
-
-    tangent_at = tangent_at_point_on_polyline
-
-    def divide_polyline(self, num_segments):
+    def divide(self, num_segments):
         """Divide a polyline in equal segments.
 
         Parameters
@@ -353,11 +380,9 @@ class Polyline(Primitive):
 
         """
         segment_length = self.length / num_segments
-        return self.divide_polyline_by_length(segment_length, False)
+        return self.divide_by_length(segment_length, False)
 
-    divide = divide_polyline
-
-    def divide_polyline_by_length(self, length, strict=True, tol=1e-06):
+    def divide_by_length(self, length, strict=True, tol=1e-06):
         """Divide a polyline in segments of a given length.
 
         Parameters
@@ -398,7 +423,7 @@ class Polyline(Primitive):
 
         for i in range(num_pts):
             for i_ln, line in enumerate(new_polyline.lines):
-                total_length.append(total_length[-1] + line.length)
+                total_length.append(total_length[-1] + line.length)  # type: ignore
                 if total_length[-1] > length:
                     amp = (length - total_length[-2]) / line.length
                     new_pt = line.start + line.vector.scaled(amp)
@@ -421,9 +446,7 @@ class Polyline(Primitive):
 
         return division_pts
 
-    divide_by_length = divide_polyline_by_length
-
-    def split_polyline_by_length(self, length, strict=True):
+    def split_by_length(self, length, strict=True):
         """Split a polyline in segments of a given length.
 
         Parameters
@@ -488,9 +511,7 @@ class Polyline(Primitive):
             divided_polylines.append(segment)  # Add the last segment
         return divided_polylines
 
-    split_by_length = split_polyline_by_length
-
-    def split_polyline(self, num_segments):
+    def split(self, num_segments):
         """Split a polyline in equal segments.
 
         Parameters
@@ -518,9 +539,7 @@ class Polyline(Primitive):
             return [self]
         total_length = self.length
         segment_length = total_length / num_segments
-        return self.split_polyline_by_length(segment_length, False)
-
-    split = split_polyline
+        return self.split_by_length(segment_length, False)
 
     def extend(self, length):
         """Extends a polyline by a given length, by modifying the first and/or last point tangentially.

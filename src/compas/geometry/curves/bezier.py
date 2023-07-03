@@ -4,9 +4,10 @@ from __future__ import division
 
 from math import factorial
 
-from ._primitive import Primitive
-from .vector import Vector
-from .point import Point
+from compas.geometry import Vector
+from compas.geometry import Point
+
+from .curve import Curve
 
 
 def binomial_coefficient(n, k):
@@ -78,7 +79,7 @@ def bernstein(n, k, t):
     return binomial_coefficient(n, k) * t**k * (1 - t) ** (n - k)
 
 
-class Bezier(Primitive):
+class Bezier(Curve):
     """A Bezier curve is defined by control points and a degree.
 
     A Bezier curve of degree `n` is a linear combination of ``n + 1`` Bernstein
