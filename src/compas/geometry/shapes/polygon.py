@@ -4,6 +4,8 @@ from __future__ import division
 
 import math
 
+from compas.utilities import pairwise
+
 from compas.geometry import allclose
 from compas.geometry import area_polygon
 from compas.geometry import cross_vectors
@@ -11,16 +13,13 @@ from compas.geometry import centroid_polygon
 from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
-
-from compas.utilities import pairwise
-
-from ._primitive import Primitive
-from .line import Line
-from .point import Point
-from .vector import Vector
+from compas.geometry import Geometry
+from compas.geometry import Point
+from compas.geometry import Vector
+from compas.geometry import Line
 
 
-class Polygon(Primitive):
+class Polygon(Geometry):
     """A polygon is defined by a sequence of points forming a closed loop.
 
     Parameters
@@ -69,8 +68,6 @@ class Polygon(Primitive):
         "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
         "required": ["points"],
     }
-
-    __slots__ = ["_points", "_lines"]
 
     def __init__(self, points, **kwargs):
         super(Polygon, self).__init__(**kwargs)
@@ -155,8 +152,8 @@ class Polygon(Primitive):
         for i in range(-1, len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
-            u = [p1[_] - o[_] for _ in range(3)]
-            v = [p2[_] - o[_] for _ in range(3)]
+            u = [p1[_] - o[_] for _ in range(3)]  # type: ignore
+            v = [p2[_] - o[_] for _ in range(3)]  # type: ignore
             w = cross_vectors(u, v)
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)

@@ -4,11 +4,10 @@ from __future__ import division
 
 from math import sqrt
 
+from compas.utilities import pairwise
 from compas.geometry import transform_points
 from compas.geometry import centroid_polygon
-from compas.utilities import pairwise
-
-from ._shape import Shape
+from .shape import Shape
 
 
 def tetrahedron():
@@ -194,8 +193,6 @@ class Polyhedron(Shape):
         "required": ["vertices", "faces"],
     }
 
-    __slots__ = ["_vertices", "_faces"]
-
     def __init__(self, vertices, faces, **kwargs):
         super(Polyhedron, self).__init__(**kwargs)
         self._vertices = None
@@ -209,7 +206,6 @@ class Polyhedron(Shape):
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the polyhedron."""
         return {"vertices": self.vertices, "faces": self.faces}
 
     @data.setter
@@ -238,14 +234,28 @@ class Polyhedron(Shape):
         >>> q = Polyhedron.from_data(p.data)
 
         """
-        return cls(data["vertices"], data["faces"])
+        return cls(**data)
 
     # ==========================================================================
     # properties
     # ==========================================================================
 
+    # @property
+    # def frame(self):
+    #     return super(Polyhedron, self).frame
+
+    # @frame.setter
+    # def frame(self, frame):
+    #     raise NotImplementedError
+
+    # @property
+    # def transformation(self):
+    #     return Transformation()
+
     @property
     def vertices(self):
+        if not self._vertices:
+            self._vertices = []
         return self._vertices
 
     @vertices.setter
@@ -254,6 +264,8 @@ class Polyhedron(Shape):
 
     @property
     def faces(self):
+        if not self._faces:
+            self._faces = []
         return self._faces
 
     @faces.setter
@@ -375,7 +387,7 @@ class Polyhedron(Shape):
         """
         from itertools import combinations
         from numpy import asarray
-        from scipy.spatial import HalfspaceIntersection, ConvexHull
+        from scipy.spatial import HalfspaceIntersection, ConvexHull  # type: ignore
         from compas.datastructures import Mesh, mesh_merge_faces
         from compas.geometry import length_vector, dot_vectors, cross_vectors
 

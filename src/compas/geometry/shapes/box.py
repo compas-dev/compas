@@ -9,7 +9,7 @@ from compas.geometry import Frame
 from compas.geometry import Vector
 from compas.geometry import Line
 
-from ._shape import Shape
+from .shape import Shape
 
 
 class Box(Shape):
@@ -108,15 +108,11 @@ class Box(Shape):
         "minProperties": 4,
     }
 
-    __slots__ = ["_frame", "_xsize", "_ysize", "_zsize"]
-
-    def __init__(self, frame, xsize, ysize, zsize, **kwargs):
-        super(Box, self).__init__(**kwargs)
-        self._frame = None
+    def __init__(self, frame=None, xsize=1.0, ysize=1.0, zsize=1.0, **kwargs):
+        super(Box, self).__init__(frame=frame, **kwargs)
         self._xsize = None
         self._ysize = None
         self._zsize = None
-        self.frame = frame
         self.xsize = xsize
         self.ysize = ysize
         self.zsize = zsize
@@ -161,22 +157,16 @@ class Box(Shape):
         >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
         >>> box = Box.from_data(data)
         """
-        return cls(data["frame"], data["xsize"], data["ysize"], data["zsize"])
+        return cls(**data)
 
     # ==========================================================================
     # properties
     # ==========================================================================
 
     @property
-    def frame(self):
-        return self._frame
-
-    @frame.setter
-    def frame(self, frame):
-        self._frame = Frame(*frame)
-
-    @property
     def xsize(self):
+        if not self._xsize:
+            raise ValueError("The size of the box along the local X axis is not set.")
         return self._xsize
 
     @xsize.setter
@@ -185,6 +175,8 @@ class Box(Shape):
 
     @property
     def ysize(self):
+        if not self._ysize:
+            raise ValueError("The size of the box along the local Y axis is not set.")
         return self._ysize
 
     @ysize.setter
@@ -193,6 +185,8 @@ class Box(Shape):
 
     @property
     def zsize(self):
+        if not self._zsize:
+            raise ValueError("The size of the box along the local Z axis is not set.")
         return self._zsize
 
     @zsize.setter
@@ -201,27 +195,27 @@ class Box(Shape):
 
     @property
     def xmin(self):
-        return self.frame.point.x - 0.5 * self.xsize
+        return self.frame.point.x - 0.5 * self.xsize  # type: ignore
 
     @property
     def xmax(self):
-        return self.frame.point.x + 0.5 * self.xsize
+        return self.frame.point.x + 0.5 * self.xsize  # type: ignore
 
     @property
     def ymin(self):
-        return self.frame.point.y - 0.5 * self.ysize
+        return self.frame.point.y - 0.5 * self.ysize  # type: ignore
 
     @property
     def ymax(self):
-        return self.frame.point.y + 0.5 * self.ysize
+        return self.frame.point.y + 0.5 * self.ysize  # type: ignore
 
     @property
     def zmin(self):
-        return self.frame.point.z - 0.5 * self.zsize
+        return self.frame.point.z - 0.5 * self.zsize  # type: ignore
 
     @property
     def zmax(self):
-        return self.frame.point.z + 0.5 * self.zsize
+        return self.frame.point.z + 0.5 * self.zsize  # type: ignore
 
     @property
     def width(self):
@@ -535,10 +529,8 @@ class Box(Shape):
 
         Returns
         -------
-        list[list[float]]
-            A list of vertex locations
-        list[list[int]]
-            And a list of faces,
+        list[list[float]], list[list[int]]
+            A list of vertex locations, and a list of faces,
             with each face defined as a list of indices into the list of vertices.
 
         """
@@ -594,6 +586,9 @@ class Box(Shape):
         self.frame.transform(transformation)
         # Always local scaling, non-uniform scaling based on frame not yet considered.
         Sc, _, _, _, _ = transformation.decomposed()
-        self.xsize *= Sc[0, 0]
-        self.ysize *= Sc[1, 1]
-        self.zsize *= Sc[2, 2]
+        scalex = Sc[0, 0]
+        scaley = Sc[1, 1]
+        scalez = Sc[2, 2]
+        self.xsize *= scalex
+        self.ysize *= scaley
+        self.zsize *= scalez

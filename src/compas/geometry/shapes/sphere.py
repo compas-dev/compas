@@ -6,9 +6,12 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry import Point
-
-from ._shape import Shape
+from compas.geometry import transform_points
+from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Circle
+from .shape import Shape
 
 
 class Sphere(Shape):
@@ -16,19 +19,34 @@ class Sphere(Shape):
 
     Parameters
     ----------
-    point: [float, float, float] | :class:`~compas.geometry.Point`
-        The center of the sphere.
-    radius: float
+    frame: :class:`~compas.geometry.Frame`, optional
+        The local coordinates system, or "frame", of the sphere.
+        Default is ``None``, in which case the sphere is constructed in world coordinates.
+    radius: float, optional
         The radius of the sphere.
 
     Attributes
     ----------
-    point : :class:`~compas.geometry.Point`
-        The center of the sphere.
+    frame : :class:`~compas.geometry.Frame`
+        The coordinate system of the sphere.
+    transformation : :class:`~compas.geometry.Transformation`
+        The transformation of the sphere to global coordinates.
     radius : float
         The radius of the sphere.
-    center : :class:`~compas.geometry.Point`, read-only
-        The center of the sphere.
+    axis : :class:`~compas.geometry.Line`, read-only
+        The central axis of the sphere.
+    base : :class:`~compas.geometry.Point`, read-only
+        The base point of the sphere.
+        The base point is at the origin of the local coordinate system.
+    plane : :class:`~compas.geometry.Plane`, read-only
+        The plane of the sphere.
+        The base point of the plane is at the origin of the local coordinate system.
+        The normal of the plane is in the direction of the z-axis of the local coordinate system.
+    circle : :class:`~compas.geometry.Circle`, read-only
+        The base circle of the sphere.
+        The center of the circle is at the origin of the local coordinate system.
+    diameter : float, read-only
+        The diameter of the sphere.
     area : float, read-only
         The surface area of the sphere.
     volume : float, read-only
@@ -36,59 +54,63 @@ class Sphere(Shape):
 
     Examples
     --------
-    >>> from compas.geometry import Point
+    >>> from compas.geometry import Frame
     >>> from compas.geometry import Sphere
-    >>> sphere1 = Sphere(Point(1, 1, 1), 5)
-    >>> sphere2 = Sphere((2, 4, 1), 2)
-    >>> sphere3 = Sphere([2, 4, 1], 2)
-
-    >>> from compas.geometry import Point
-    >>> from compas.geometry import Sphere
-    >>> sphere = Sphere(Point(1, 1, 1), 5)
-    >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
-    >>> sdict == sphere.data
-    True
+    >>> sphere1 = Sphere(frame=Frame.worldXY(), radius=5)
+    >>> sphere1 = Sphere(radius=5)
 
     """
 
     JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "point": Point.JSONSCHEMA,
-            "radius": {"type": "number", "exclusiveMinimum": 0},
+            "frame": Frame.JSONSCHEMA,
+            "radius": {"type": "number", "minimum": 0},
         },
-        "required": ["point", "radius"],
+        "required": ["frame", "radius"],
     }
 
-    __slots__ = ["_point", "_radius"]
-
-    def __init__(self, point, radius, **kwargs):
-        super(Sphere, self).__init__(**kwargs)
-        self._point = None
-        self._radius = None
-        self.point = point
+    def __init__(self, frame=None, radius=None, **kwargs):
+        super(Sphere, self).__init__(frame=frame, **kwargs)
+        self._radius = 1.0
         self.radius = radius
+
+    def __repr__(self):
+        return "Sphere(frame={0!r}, radius={1!r})".format(self.frame, self.radius)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.frame
+        elif key == 1:
+            return self.radius
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.frame = value
+        elif key == 1:
+            self.radius = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.frame, self.radius])
 
     # ==========================================================================
     # data
     # ==========================================================================
 
     @property
-    def DATASCHEMA(self):
-        """:class:`schema.Schema` : Schema of the data representation."""
-        import schema
-        from compas.data import is_float3
-
-        return schema.Schema({"point": is_float3, "radius": schema.And(float, lambda x: x > 0)})
-
-    @property
     def data(self):
-        """dict : Returns the data dictionary that represents the sphere."""
-        return {"point": self.point, "radius": self.radius}
+        return {"frame": self.frame, "radius": self.radius}
 
     @data.setter
     def data(self, data):
-        self.point = data["point"]
+        self.frame = data["frame"]
         self.radius = data["radius"]
 
     @classmethod
@@ -107,12 +129,14 @@ class Sphere(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Sphere
-        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
+        >>> data = {"frame": Frame.worldXY(), "radius": 1.0}
+        >>> sphere = Sphere.from_data(data)
+
+        >>> data = {"frame": None, "radius": 1.0}
         >>> sphere = Sphere.from_data(data)
 
         """
-        sphere = cls(data["point"], data["radius"])
+        sphere = cls(**data)
         return sphere
 
     # ==========================================================================
@@ -120,24 +144,40 @@ class Sphere(Shape):
     # ==========================================================================
 
     @property
-    def point(self):
-        return self._point
-
-    @point.setter
-    def point(self, point):
-        self._point = Point(*point)
-
-    @property
     def radius(self):
+        if self._radius is None:
+            raise ValueError("The radius of the sphere is not set.")
         return self._radius
 
     @radius.setter
     def radius(self, radius):
+        if radius < 0:
+            raise ValueError("The radius of the sphere should be larger than or equal to zero.")
         self._radius = float(radius)
 
     @property
-    def center(self):
-        return self.point
+    def start(self):
+        return self.frame.point + self.frame.zaxis * -self.radius
+
+    @property
+    def end(self):
+        return self.frame.point + self.frame.zaxis * +self.radius
+
+    @property
+    def axis(self):
+        return Line(self.start, self.end)
+
+    @property
+    def point(self):
+        return self.frame.point.copy()
+
+    @property
+    def plane(self):
+        return Plane(self.frame.point, self.frame.normal)
+
+    @property
+    def circle(self):
+        return Circle(self.frame, self.radius)
 
     @property
     def area(self):
@@ -148,37 +188,29 @@ class Sphere(Shape):
         return 4.0 / 3.0 * pi * self.radius**3
 
     # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Sphere({0!r}, {1!r})".format(self.point, self.radius)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.point
-        elif key == 1:
-            return self.radius
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.point = value
-        elif key == 1:
-            self.radius = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.point, self.radius])
-
-    # ==========================================================================
     # constructors
     # ==========================================================================
+
+    @classmethod
+    def from_point_and_radius(cls, point, radius):
+        """Construct a sphere from a point and a radius.
+
+        Parameters
+        ----------
+        point : :class:`~compas.geometry.Point`
+            The center of the sphere.
+        radius : float
+            The radius of the sphere.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Sphere`
+            The constructed sphere.
+
+        """
+        frame = Frame.worldXY()
+        frame.point = point
+        return cls(frame=frame, radius=radius)
 
     # ==========================================================================
     # methods
@@ -186,6 +218,8 @@ class Sphere(Shape):
 
     def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
         """Returns a list of vertices and faces
+
+        The vertex positions are in world coordinates.
 
         Parameters
         ----------
@@ -258,6 +292,9 @@ class Sphere(Shape):
                     triangles.append(face)
             faces = triangles
 
+        # transform the vertices to world coordinates
+        vertices = transform_points(vertices, self.transformation)
+
         return vertices, faces
 
     def transform(self, transformation):
@@ -286,6 +323,6 @@ class Sphere(Shape):
         >>> sphere.transform(T)
 
         """
-        self.point.transform(transformation)
+        self.frame.transform(transformation)
         Sc, _, _, _, _ = transformation.decomposed()
         self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
