@@ -11,7 +11,6 @@ Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
 from compas.utilities import flatten
-
 from compas.geometry import normalize_vector
 from compas.geometry import cross_vectors
 from compas.geometry import length_vector
@@ -37,6 +36,8 @@ class Rotation(Transformation):
     ----------
     matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a rotation.
+    check : bool, optional
+        If ``True``, the provided matrix will be checked for validity.
 
     Attributes
     ----------
@@ -52,8 +53,7 @@ class Rotation(Transformation):
     Raises
     ------
     ValueError
-        If the default constructor is used,
-        and the provided transformation matrix is not a rotation.
+        If ``check`` is ``True`` and the provided transformation matrix is not a rotation.
 
     Examples
     --------
@@ -72,13 +72,15 @@ class Rotation(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=True):
-        if matrix:
+    def __init__(self, matrix=None, check=False):
+        if matrix and check:
             _, _, angles, _, _ = decompose_matrix(matrix)
-            if check:
-                if not allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
-                    raise ValueError("This is not a proper rotation matrix.")
+            if not allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
+                raise ValueError("This is not a proper rotation matrix.")
         super(Rotation, self).__init__(matrix=matrix)
+
+    def __repr__(self):
+        return "Rotation({0!r}, check=False)".format(self.matrix)
 
     @property
     def quaternion(self):
@@ -104,9 +106,6 @@ class Rotation(Transformation):
 
         xaxis, yaxis = basis_vectors_from_matrix(self.matrix)
         return Vector(*xaxis), Vector(*yaxis)
-
-    def __repr__(self):
-        return "Rotation({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):
@@ -145,9 +144,8 @@ class Rotation(Transformation):
         True
 
         """
-        R = cls()
-        R.matrix = matrix_from_axis_and_angle(axis, angle, point=point)
-        return R
+        matrix = matrix_from_axis_and_angle(axis, angle, point=point)
+        return cls(matrix)
 
     @classmethod
     def from_basis_vectors(cls, xaxis, yaxis):
@@ -181,9 +179,7 @@ class Rotation(Transformation):
             [xaxis[2], yaxis[2], zaxis[2], 0],
             [0, 0, 0, 1],
         ]
-        R = cls()
-        R.matrix = matrix
-        return R
+        return cls(matrix)
 
     @classmethod
     def from_frame(cls, frame):
@@ -213,13 +209,11 @@ class Rotation(Transformation):
         True
 
         """
-        R = cls()
         matrix = matrix_from_frame(frame)
         matrix[0][3] = 0.0
         matrix[1][3] = 0.0
         matrix[2][3] = 0.0
-        R.matrix = matrix
-        return R
+        return cls(matrix)
 
     @classmethod
     def from_quaternion(cls, quaternion):
@@ -244,9 +238,8 @@ class Rotation(Transformation):
         True
 
         """
-        R = cls()
-        R.matrix = matrix_from_quaternion(quaternion)
-        return R
+        matrix = matrix_from_quaternion(quaternion)
+        return cls(matrix)
 
     @classmethod
     def from_axis_angle_vector(cls, axis_angle_vector, point=[0, 0, 0]):
@@ -276,6 +269,7 @@ class Rotation(Transformation):
         angle = length_vector(axis_angle_vector)
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
 
+    # why is this repeated here?
     @classmethod
     def from_euler_angles(cls, euler_angles, static=True, axes="xyz", **kwargs):
         """Construct a rotation transformation from Euler angles.

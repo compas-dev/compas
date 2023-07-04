@@ -11,10 +11,14 @@ Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
 
+# from compas.utilities import flatten
+# from compas.geometry import allclose
 from compas.geometry import dot_vectors
 from compas.geometry import cross_vectors
 from compas.geometry import normalize_vector
 
+# from compas.geometry import decompose_matrix
+# from compas.geometry import matrix_from_perspective_entries
 from compas.geometry import identity_matrix
 from compas.geometry import Transformation
 
@@ -40,13 +44,16 @@ class Reflection(Transformation):
 
     """
 
-    def __init__(self, matrix=None):
-        if matrix:
+    def __init__(self, matrix=None, check=False):
+        if matrix and check:
+            # _, _, _, _, perspective = decompose_matrix(matrix)
+            # if not allclose(flatten(matrix), flatten(matrix_from_perspective_entries(perspective))):
+            #     raise ValueError("This is not a proper reflection matrix.")
             pass
         super(Reflection, self).__init__(matrix=matrix)
 
     def __repr__(self):
-        return "Reflection({0!r})".format(self.matrix)
+        return "Reflection({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_plane(cls, plane):
@@ -71,9 +78,7 @@ class Reflection(Transformation):
                 matrix[i][j] -= 2.0 * normal[i] * normal[j]
         for i in range(3):
             matrix[i][3] = 2 * dot_vectors(point, normal) * normal[i]
-        R = cls()
-        R.matrix = matrix
-        return R
+        return cls(matrix)
 
     @classmethod
     def from_frame(cls, frame):

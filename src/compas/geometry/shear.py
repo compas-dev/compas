@@ -10,8 +10,11 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
+from compas.utilities import flatten
+from compas.geometry import allclose
 from compas.geometry import matrix_from_shear_entries
 from compas.geometry import matrix_from_shear
+from compas.geometry import decompose_matrix
 from compas.geometry import Transformation
 
 
@@ -27,12 +30,13 @@ class Shear(Transformation):
     ----------
     matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a shear transformation.
+    check : bool, optional
+        If ``True``, the provided matrix will be checked for validity.
 
     Raises
     ------
     ValueError
-        If the default constructor is used,
-        and the provided transformation matrix is not a shear matrix.
+        If ``check`` is ``True`` and the provided transformation matrix is not a shear matrix.
 
     Examples
     --------
@@ -40,12 +44,11 @@ class Shear(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=True):
-        # if matrix:
-        #     _, shear, _, _, _ = decompose_matrix(matrix)
-        #     if check:
-        #         if not allclose(flatten(matrix), flatten(matrix_from_shear_entries(shear))):
-        #             raise ValueError('This is not a proper shear matrix.')
+    def __init__(self, matrix=None, check=False):
+        if matrix and check:
+            _, shear, _, _, _ = decompose_matrix(matrix)
+            if not allclose(flatten(matrix), flatten(matrix_from_shear_entries(shear))):
+                raise ValueError("This is not a proper shear matrix.")
         super(Shear, self).__init__(matrix=matrix)
 
     def __repr__(self):
@@ -86,7 +89,8 @@ class Shear(Transformation):
 
         """
         point, normal = plane
-        return cls(matrix_from_shear(angle, direction, point, normal))
+        matrix = matrix_from_shear(angle, direction, point, normal)
+        return cls(matrix)
 
     @classmethod
     def from_entries(cls, shear_entries):
@@ -107,4 +111,5 @@ class Shear(Transformation):
         >>> S = Shear.from_entries([1, 2, 3])
 
         """
-        return cls(matrix_from_shear_entries(shear_entries))
+        matrix = matrix_from_shear_entries(shear_entries)
+        return cls(matrix)

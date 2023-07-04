@@ -284,14 +284,18 @@ def decompose_matrix(M):
     angles = [0.0, 0.0, 0.0]
 
     # copy Mt[:3, :3] into row
-    row = [[0, 0, 0] for i in range(3)]
+    row = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+    ]
     for i in range(3):
         for j in range(3):
             row[i][j] = Mt[i][j]
 
     scale[0] = norm_vector(row[0])
     for i in range(3):
-        row[0][i] /= scale[0]
+        row[0][i] /= scale[0]  # type: ignore
 
     shear[0] = dot_vectors(row[0], row[1])
     for i in range(3):
@@ -299,12 +303,14 @@ def decompose_matrix(M):
 
     scale[1] = norm_vector(row[1])
     for i in range(3):
-        row[1][i] /= scale[1]
-    shear[0] /= scale[1]
+        row[1][i] /= scale[1]  # type: ignore
 
     shear[1] = dot_vectors(row[0], row[2])
     for i in range(3):
         row[2][i] -= row[0][i] * shear[1]
+
+    # why is the order different here?
+    # it certainly influences the result
 
     shear[2] = dot_vectors(row[1], row[2])
     for i in range(3):
@@ -312,8 +318,9 @@ def decompose_matrix(M):
 
     scale[2] = norm_vector(row[2])
     for i in range(3):
-        row[2][i] /= scale[2]
+        row[2][i] /= scale[2]  # type: ignore
 
+    shear[0] /= scale[1]
     shear[1] /= scale[2]
     shear[2] /= scale[2]
 
@@ -330,6 +337,7 @@ def decompose_matrix(M):
         gamma1 = atan2(row[0][1] / cos(beta1), row[0][0] / cos(beta1))
         # gamma2 = atan2(row[0][1] / cos(beta2), row[0][0] / cos(beta2))
         angles = [alpha1, beta1, gamma1]
+
     else:
         gamma = 0.0
         if row[0][2] == -1.0:
@@ -406,7 +414,7 @@ def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspe
         M = multiply_matrices(M, S)
     for i in range(4):
         for j in range(4):
-            M[i][j] /= M[3][3]
+            M[i][j] /= M[3][3]  # type: ignore
     return M
 
 

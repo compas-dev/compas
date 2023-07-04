@@ -12,8 +12,8 @@ Ippoliti for providing code and documentation.
 """
 from compas.utilities import flatten
 from compas.geometry import allclose
-from compas.geometry import decompose_matrix
 from compas.geometry import matrix_from_translation
+from compas.geometry import translation_from_matrix
 from compas.geometry import Transformation
 
 
@@ -24,6 +24,8 @@ class Translation(Transformation):
     ----------
     matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a translation.
+    check : bool, optional
+        If ``True``, the provided matrix will be checked for validity.
 
     Attributes
     ----------
@@ -33,8 +35,7 @@ class Translation(Transformation):
     Raises
     ------
     ValueError
-        If the default constructor is used,
-        and the provided transformation matrix is not a translation.
+        If ``check`` is ``True`` and the provided transformation matrix is not a translation.
 
     Examples
     --------
@@ -65,12 +66,11 @@ class Translation(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=True):
-        if matrix:
-            _, _, _, translation, _ = decompose_matrix(matrix)
-            if check:
-                if not allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
-                    raise ValueError("This is not a proper translation matrix.")
+    def __init__(self, matrix=None, check=False):
+        if matrix and check:
+            translation = translation_from_matrix(matrix)
+            if not allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
+                raise ValueError("This is not a proper translation matrix.")
         super(Translation, self).__init__(matrix=matrix)
 
     @property
@@ -100,4 +100,5 @@ class Translation(Transformation):
             The translation transformation.
 
         """
-        return cls(matrix_from_translation(vector))
+        matrix = matrix_from_translation(vector)
+        return cls(matrix)

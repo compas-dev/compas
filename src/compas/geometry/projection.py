@@ -27,12 +27,13 @@ class Projection(Transformation):
     ----------
     matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a projection transformation.
+    check : bool, optional
+        If ``True``, the provided matrix will be checked for validity.
 
     Raises
     ------
     ValueError
-        If the default constructor is used,
-        and the provided transformation matrix is not a shear matrix.
+        If ``check`` is ``True`` and the provided transformation matrix is not a projection matrix.
 
     Examples
     --------
@@ -40,16 +41,15 @@ class Projection(Transformation):
 
     """
 
-    def __init__(self, matrix=None):
-        if matrix:
+    def __init__(self, matrix=None, check=False):
+        if matrix and check:
             _, _, _, _, perspective = decompose_matrix(matrix)
-            check = matrix_from_perspective_entries(perspective)
-            if not allclose(flatten(matrix), flatten(check)):
+            if not allclose(flatten(matrix), flatten(matrix_from_perspective_entries(perspective))):
                 raise ValueError("This is not a proper projection matrix.")
         super(Projection, self).__init__(matrix=matrix)
 
     def __repr__(self):
-        return "Projection({0!r})".format(self.matrix)
+        return "Projection({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_plane(cls, plane):
@@ -74,9 +74,8 @@ class Projection(Transformation):
         >>> P = Projection.from_plane(plane)
 
         """
-        P = cls()
-        P.matrix = matrix_from_orthogonal_projection(plane)
-        return P
+        matrix = matrix_from_orthogonal_projection(plane)
+        return cls(matrix)
 
     @classmethod
     def from_plane_and_direction(cls, plane, direction):
@@ -104,9 +103,8 @@ class Projection(Transformation):
         >>> P = Projection.from_plane_and_direction(plane, direction)
 
         """
-        P = cls()
-        P.matrix = matrix_from_parallel_projection(plane, direction)
-        return P
+        matrix = matrix_from_parallel_projection(plane, direction)
+        return cls(matrix)
 
     @classmethod
     def from_plane_and_point(cls, plane, center_of_projection):
@@ -134,9 +132,8 @@ class Projection(Transformation):
         >>> P = Projection.from_plane_and_point(plane, center_of_projection)
 
         """
-        P = cls()
-        P.matrix = matrix_from_perspective_projection(plane, center_of_projection)
-        return P
+        matrix = matrix_from_perspective_projection(plane, center_of_projection)
+        return cls(matrix)
 
     @classmethod
     def from_entries(cls, perspective_entries):
@@ -154,6 +151,5 @@ class Projection(Transformation):
             A projection transformation.
 
         """
-        P = cls()
-        P.matrix = matrix_from_perspective_entries(perspective_entries)
-        return P
+        matrix = matrix_from_perspective_entries(perspective_entries)
+        return cls(matrix)

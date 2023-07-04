@@ -27,12 +27,13 @@ class Scale(Transformation):
     ----------
     matrix : list[list[float]], optional
         A 4x4 matrix (or similar) representing a scaling.
+    check : bool, optional
+        If ``True``, the provided matrix will be checked for validity.
 
     Raises
     ------
     ValueError
-        If the default constructor is used,
-        and the provided transformation matrix is not a scale matrix.
+        If ``check`` is ``True`` and the provided transformation matrix is not a scale matrix.
 
     Examples
     --------
@@ -54,16 +55,15 @@ class Scale(Transformation):
 
     """
 
-    def __init__(self, matrix=None):
-        if matrix:
+    def __init__(self, matrix=None, check=False):
+        if matrix and check:
             scale, _, _, _, _ = decompose_matrix(matrix)
-            check = matrix_from_scale_factors(scale)
-            if not allclose(flatten(matrix), flatten(check)):
+            if not allclose(flatten(matrix), flatten(matrix_from_scale_factors(scale))):
                 raise ValueError("This is not a proper scale matrix.")
         super(Scale, self).__init__(matrix=matrix)
 
     def __repr__(self):
-        return "Scale({0!r})".format(self.matrix)
+        return "Scale({0!r}, check=False)".format(self.matrix)
 
     @classmethod
     def from_factors(cls, factors, frame=None):
@@ -92,12 +92,9 @@ class Scale(Transformation):
         [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
 
         """
-        S = cls()
+        matrix = matrix_from_scale_factors(factors)
         if frame:
             Tw = matrix_from_frame(frame)
             Tl = matrix_inverse(Tw)
-            Sc = matrix_from_scale_factors(factors)
-            S.matrix = multiply_matrices(multiply_matrices(Tw, Sc), Tl)
-        else:
-            S.matrix = matrix_from_scale_factors(factors)
-        return S
+            matrix = multiply_matrices(multiply_matrices(Tw, matrix), Tl)
+        return cls(matrix)
