@@ -5,13 +5,17 @@ from __future__ import division
 from itertools import product
 
 from compas.geometry import Geometry
+from compas.geometry import Frame
+from compas.geometry import Transformation
 from compas.plugins import pluggable
 from compas.utilities import linspace
 
 
 @pluggable(category="factories")
 def new_surface(cls, *args, **kwargs):
-    raise NotImplementedError
+    surface = object.__new__(cls)
+    surface.__init__(*args, **kwargs)
+    return surface
 
 
 @pluggable(category="factories")
@@ -29,6 +33,11 @@ class Surface(Geometry):
 
     Attributes
     ----------
+    frame : :class:`~compas.geometry.Frame`
+        The local coordinate system of the surface.
+        Default is the world coordinate system.
+    transformation : :class:`~compas.geometry.Transformation`, read-only
+        The transformation from the surface's local coordinate system to the world coordinate system.
     u_domain : tuple[float, float], read-only
         The parameter domain of the surface in the U direction.
     v_domain : tuple[float, float], read-only
@@ -43,30 +52,94 @@ class Surface(Geometry):
     def __new__(cls, *args, **kwargs):
         return new_surface(cls, *args, **kwargs)
 
-    def __init__(self, name=None):
+    def __init__(self, frame=None, u_domain=None, v_domain=None, name=None):
         super(Surface, self).__init__(name=name)
+        self._frame = None
+        self._transformation = None
+        self._u_domain = None
+        self._v_domain = None
+        self.frame = frame
+        self.u_domain = u_domain or (0.0, 1.0)
+        self.v_domain = v_domain or (0.0, 1.0)
 
     def __eq__(self, other):
         raise NotImplementedError
 
     def __str__(self):
-        return "<Surface with parameter domain {}>".format(self.domain)
+        return "<Surface with parameter domain U: {} and V: {}>".format(self.u_domain, self.v_domain)
 
     # ==============================================================================
     # Data
     # ==============================================================================
+
+    @property
+    def data(self):
+        raise NotImplementedError
+
+    @data.setter
+    def data(self, data):
+        raise NotImplementedError
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a surface from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Surface`
+            The constructed surface.
+
+        """
+        return cls(**data)
 
     # ==============================================================================
     # Properties
     # ==============================================================================
 
     @property
+    def frame(self):
+        if not self._frame:
+            self._frame = Frame.worldXY()
+        return self._frame
+
+    @frame.setter
+    def frame(self, frame):
+        if not frame:
+            self._frame = None
+        else:
+            self._frame = Frame(frame[0], frame[1], frame[2])
+        self._transformation = None
+
+    @property
+    def transformation(self):
+        if not self._transformation:
+            self._transformation = Transformation.from_frame(self.frame)
+        return self._transformation
+
+    @property
     def u_domain(self):
-        raise NotImplementedError
+        if not self._u_domain:
+            self._u_domain = (0.0, 1.0)
+        return self._u_domain
+
+    @u_domain.setter
+    def u_domain(self, domain):
+        self._u_domain = domain
 
     @property
     def v_domain(self):
-        raise NotImplementedError
+        if not self._v_domain:
+            self._v_domain = (0.0, 1.0)
+        return self._v_domain
+
+    @v_domain.setter
+    def v_domain(self, domain):
+        self._v_domain = domain
 
     @property
     def is_u_periodic(self):
@@ -216,6 +289,10 @@ class Surface(Geometry):
             triangles.append([vertices[a], vertices[b], vertices[c]])
             triangles.append([vertices[a], vertices[c], vertices[d]])
         return triangles
+
+    # ==============================================================================
+    # Transformations
+    # ==============================================================================
 
     # ==============================================================================
     # Methods
