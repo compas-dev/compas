@@ -9,7 +9,6 @@ from math import sin
 from compas.geometry import transform_points
 from compas.geometry import Frame
 from compas.geometry import Line
-from compas.geometry import Plane
 from compas.geometry import Circle
 from .shape import Shape
 
@@ -70,10 +69,12 @@ class Sphere(Shape):
         "required": ["frame", "radius"],
     }
 
-    def __init__(self, frame=None, radius=None, **kwargs):
+    def __init__(self, frame=None, point=None, radius=None, **kwargs):
         super(Sphere, self).__init__(frame=frame, **kwargs)
         self._radius = 1.0
         self.radius = radius
+        if point:
+            self.frame.point = point
 
     def __repr__(self):
         return "Sphere(frame={0!r}, radius={1!r})".format(self.frame, self.radius)
@@ -101,7 +102,7 @@ class Sphere(Shape):
         return iter([self.frame, self.radius])
 
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
@@ -113,34 +114,8 @@ class Sphere(Shape):
         self.frame = data["frame"]
         self.radius = data["radius"]
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a sphere from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Sphere`
-            The constructed sphere.
-
-        Examples
-        --------
-        >>> data = {"frame": Frame.worldXY(), "radius": 1.0}
-        >>> sphere = Sphere.from_data(data)
-
-        >>> data = {"frame": None, "radius": 1.0}
-        >>> sphere = Sphere.from_data(data)
-
-        """
-        sphere = cls(**data)
-        return sphere
-
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -168,14 +143,6 @@ class Sphere(Shape):
         return Line(self.start, self.end)
 
     @property
-    def point(self):
-        return self.frame.point.copy()
-
-    @property
-    def plane(self):
-        return Plane(self.frame.point, self.frame.normal)
-
-    @property
     def circle(self):
         return Circle(self.frame, self.radius)
 
@@ -188,7 +155,7 @@ class Sphere(Shape):
         return 4.0 / 3.0 * pi * self.radius**3
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -213,7 +180,7 @@ class Sphere(Shape):
         return cls(frame=frame, radius=radius)
 
     # ==========================================================================
-    # methods
+    # Conversions
     # ==========================================================================
 
     def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
@@ -248,16 +215,18 @@ class Sphere(Shape):
         phi = pi * 2 / u
         hpi = pi * 0.5
 
+        x, y, z = self.frame.point
+
         vertices = []
         for i in range(1, v):
             for j in range(u):
-                tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + self.point.x
-                ty = self.radius * cos(i * theta - hpi) * sin(j * phi) + self.point.y
-                tz = self.radius * sin(i * theta - hpi) + self.point.z
+                tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + x
+                ty = self.radius * cos(i * theta - hpi) * sin(j * phi) + y
+                tz = self.radius * sin(i * theta - hpi) + z
                 vertices.append([tx, ty, tz])
 
-        vertices.append([self.point.x, self.point.y, self.point.z + self.radius])
-        vertices.append([self.point.x, self.point.y, self.point.z - self.radius])
+        vertices.append([x, y, z + self.radius])
+        vertices.append([x, y, z - self.radius])
 
         faces = []
 
@@ -297,32 +266,92 @@ class Sphere(Shape):
 
         return vertices, faces
 
-    def transform(self, transformation):
-        """Transform the sphere.
+    # =============================================================================
+    # Transformations
+    # =============================================================================
+
+    # def transform(self, transformation):
+    #     """Transform the sphere.
+
+    #     Parameters
+    #     ----------
+    #     transformation : :class:`~compas.geometry.Transformation`
+    #         The transformation used to transform the Sphere.
+    #         Note that non-similarity preserving transformations will not change
+    #         the sphere into an ellipsoid. In such case, the radius of the sphere
+    #         will be scaled by the largest scale factor of the threee axis.
+
+    #     Returns
+    #     -------
+    #     None
+
+    #     Examples
+    #     --------
+    #     >>> from compas.geometry import Frame
+    #     >>> from compas.geometry import Transformation
+    #     >>> from compas.geometry import Sphere
+    #     >>> sphere = Sphere(Point(1, 1, 1), 5)
+    #     >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    #     >>> T = Transformation.from_frame(frame)
+    #     >>> sphere.transform(T)
+
+    #     """
+    #     self.frame.transform(transformation)
+    #     Sc, _, _, _, _ = transformation.decomposed()
+    #     self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
+
+    def scale(self, factor):
+        """Scale the sphere.
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
-            The transformation used to transform the Sphere.
-            Note that non-similarity preserving transformations will not change
-            the sphere into an ellipsoid. In such case, the radius of the sphere
-            will be scaled by the largest scale factor of the threee axis.
+        factor : float
+            The scaling factor.
 
         Returns
         -------
         None
 
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> sphere.transform(T)
+        """
+        self.radius *= factor
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def contains_point(self, point, tol=1e-6):
+        """Verify if a point is inside the sphere.
+
+        Parameters
+        ----------
+        point : :class:`~compas.geometry.Point`
+            The point to test.
+        tol : float, optional
+            The tolerance for the test.
+
+        Returns
+        -------
+        bool
+            True if the point is inside the sphere.
+            False otherwise.
 
         """
-        self.frame.transform(transformation)
-        Sc, _, _, _, _ = transformation.decomposed()
-        self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
+        return self.frame.point.distance_to_point(point) <= self.radius + tol
+
+    def contains_points(self, points, tol=1e-6):
+        """Verify if a list of points are inside the sphere.
+
+        Parameters
+        ----------
+        points : list of :class:`~compas.geometry.Point`
+            The points to test.
+        tol : float, optional
+            The tolerance for the test.
+
+        Returns
+        -------
+        list
+            A list of booleans indicating for each point if it is inside the sphere.
+
+        """
+        return [self.contains_point(point, tol=tol) for point in points]
