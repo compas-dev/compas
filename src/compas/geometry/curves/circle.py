@@ -340,16 +340,13 @@ class Circle(Conic):
         """
         return self.frame.zaxis
 
-    def closest_point(self, point, maxdist=100000):
+    def closest_point(self, point):
         """Compute the closest point on the circle to a given point.
 
         Parameters
         ----------
         point : :class:`~compas.geometry.Point`
             A point.
-        maxdist : float, optional
-            The maximum allowed distance between the circle and the point.
-            Default is ``100000``.
 
         Returns
         -------
@@ -361,8 +358,37 @@ class Circle(Conic):
 
         projected = self.plane.closest_point(point)
         vector = Vector.from_start_end(self.center, projected)
-        # if vector.length > maxdist - self.radius:
-        #     return
         vector.unitize()
         vector *= self.radius
         return self.center + vector
+
+    def contains_point(self, point, tol=1e-6, dmax=1e-6):
+        """Verify that the circle contains a given point.
+
+        Parameters
+        ----------
+        point : :class:`~compas.geometry.Point`
+            The point.
+        tol : float, optional
+            The tolerance for the verification.
+        dmax : float, optional
+            The maximum allowed distance between the plane of the circle and the point.
+
+        Returns
+        -------
+        bool
+            True if the point is on the circle.
+            False otherwise.
+
+        Notes
+        -----
+        By default, the verification will fail if the point is not exactly in the plane of the circle.
+        To allow for a certain tolerance, use the ``dmax`` parameter.
+        Like with apparent intersections, using a ``dmax`` higher than zero, allows for "apparent containment" checks
+
+        """
+        point = self.frame.to_local_coordinates(point)
+        x, y, z = point.x, point.y, point.z  # type: ignore
+        if abs(z) > dmax:
+            return False
+        return x**2 + y**2 <= (self.radius + tol) ** 2
