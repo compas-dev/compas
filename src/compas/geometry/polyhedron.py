@@ -6,8 +6,7 @@ from math import sqrt
 
 from compas.utilities import pairwise
 from compas.geometry import transform_points
-from compas.geometry import centroid_polygon
-from .shape import Shape
+from .geometry import Geometry
 
 
 def tetrahedron():
@@ -146,8 +145,8 @@ def icosahedron():
     return vertices, faces
 
 
-class Polyhedron(Shape):
-    """A polyhedron is defined by its vertices and faces.
+class Polyhedron(Geometry):
+    """A polyhedron is a geometric object defined by its vertices and faces.
 
     Parameters
     ----------
@@ -200,6 +199,138 @@ class Polyhedron(Shape):
         self.vertices = vertices
         self.faces = faces
 
+    def __repr__(self):
+        return "<Polyhedron with {} vertices and {} faces>".format(len(self.vertices), len(self.faces))
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.vertices
+        elif key == 1:
+            return self.faces
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.vertices = value
+        elif key == 1:
+            self.faces = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.vertices, self.faces])
+
+    def __add__(self, other):
+        """Compute the boolean union using the "+" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Polyhedron`
+            The solid to add.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The resulting solid.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box(size=2).to_polyhedron()
+        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
+        >>> C = A + B  # doctest: +SKIP
+
+        """
+        from compas.geometry import boolean_union_mesh_mesh
+
+        A = self.vertices, self.faces
+        B = other.vertices, other.faces
+        V, F = boolean_union_mesh_mesh(A, B)  # type: ignore
+        return Polyhedron(V, F)
+
+    def __sub__(self, other):
+        """Compute the boolean difference using the "-" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Polyhedron`
+            The solid to subtract.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The resulting solid.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box(size=2).to_polyhedron()
+        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
+        >>> C = A - B  # doctest: +SKIP
+
+        """
+        from compas.geometry import boolean_difference_mesh_mesh
+
+        A = self.vertices, self.faces
+        B = other.vertices, other.faces
+        V, F = boolean_difference_mesh_mesh(A, B)  # type: ignore
+        return Polyhedron(V, F)
+
+    def __and__(self, other):
+        """Compute the boolean intersection using the "&" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Polyhedron`
+            The solid to intersect with.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The resulting solid.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box(size=2).to_polyhedron()
+        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
+        >>> C = A & B  # doctest: +SKIP
+
+        """
+        from compas.geometry import boolean_intersection_mesh_mesh
+
+        A = self.vertices, self.faces
+        B = other.vertices, other.faces
+        V, F = boolean_intersection_mesh_mesh(A, B)  # type: ignore
+        return Polyhedron(V, F)
+
+    def __or__(self, other):
+        """Compute the boolean union using the "|" operator of this shape and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Shape`
+            The solid to add.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The resulting solid.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box(size=2).to_polyhedron()
+        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
+        >>> C = A | B  # doctest: +SKIP
+
+        """
+        return self.__add__(other)
+
     # ==========================================================================
     # data
     # ==========================================================================
@@ -240,18 +371,6 @@ class Polyhedron(Shape):
     # properties
     # ==========================================================================
 
-    # @property
-    # def frame(self):
-    #     return super(Polyhedron, self).frame
-
-    # @frame.setter
-    # def frame(self, frame):
-    #     raise NotImplementedError
-
-    # @property
-    # def transformation(self):
-    #     return Transformation()
-
     @property
     def vertices(self):
         if not self._vertices:
@@ -283,36 +402,7 @@ class Polyhedron(Shape):
                     yield u, v
 
     # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "<Polyhedron with {} vertices and {} faces>".format(len(self.vertices), len(self.faces))
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.vertices
-        elif key == 1:
-            return self.faces
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.vertices = value
-        elif key == 1:
-            self.faces = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.vertices, self.faces])
-
-    # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -440,58 +530,26 @@ class Polyhedron(Shape):
         interior = centroid_points([plane.point for plane in planes])
         return cls.from_halfspaces([plane.abcd for plane in planes], interior)
 
-    # ==========================================================================
-    # methods
-    # ==========================================================================
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
-    def to_vertices_and_faces(self, triangulated=False):
-        """Returns a list of vertices and faces.
-
-        Parameters
-        ----------
-        triangulated: bool, optional
-            If True, triangulate the faces.
+    def to_mesh(self):
+        """Returns a mesh representation of the polyhedron.
 
         Returns
         -------
-        list[list[float]]
-            A list of vertex locations.
-        list[list[int]]
-            And a list of faces,
-            with each face defined as a list of indices into the list of vertices.
-
-        """
-        if triangulated:
-            vertices = self.vertices[:]
-            faces = []
-            for face in self.faces:
-                if len(face) > 3:
-                    centroid = centroid_polygon([vertices[index] for index in face])
-                    index = len(vertices)
-                    vertices.append(centroid)
-                    for a, b in pairwise(face):
-                        faces.append([a, b, index])
-                else:
-                    faces.append(face)
-        else:
-            vertices = self.vertices
-            faces = self.faces
-        return vertices, faces
-
-    def is_closed(self):
-        """Verify that the polyhedron forms a closed surface.
-
-        Returns
-        -------
-        bool
-            True if the polyhedron is closed.
-            False otherwise.
+        :class:`compas.datastructures.Mesh`
+            A mesh object.
 
         """
         from compas.datastructures import Mesh
 
-        mesh = Mesh.from_vertices_and_faces(self.vertices, self.faces)
-        return mesh.is_closed()
+        return Mesh.from_vertices_and_faces(self.vertices, self.faces)
+
+    # =============================================================================
+    # Transformations
+    # =============================================================================
 
     def transform(self, transformation):
         """Transform the polyhedron.
@@ -506,3 +564,107 @@ class Polyhedron(Shape):
 
         """
         self.vertices = transform_points(self.vertices, transformation)
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def is_closed(self):
+        """Verify that the polyhedron forms a closed surface.
+
+        Returns
+        -------
+        bool
+            True if the polyhedron is closed.
+            False otherwise.
+
+        """
+        mesh = self.to_mesh()
+        return mesh.is_closed()
+
+    def boolean_union(self, other):
+        """Compute the boolean union of this polyhedron and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Polyhedron`
+            The polyhedron to add.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The resulting polyhedron.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box(size=2).to_polyhedron()
+        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
+        >>> C = A.boolean_union(B)
+
+        """
+        from compas.geometry import boolean_union_mesh_mesh
+
+        A = self.vertices, self.faces
+        B = other.vertices, other.faces
+        V, F = boolean_union_mesh_mesh(A, B)  # type: ignore
+
+        return Polyhedron(V, F)
+
+    def boolean_difference(self, other):
+        """Compute the boolean difference of this polyhedron and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Polyhedron`
+            The polyhedron to subtract.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The resulting polyhedron.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box(size=2).to_polyhedron()
+        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
+        >>> C = A.boolean_difference(B)
+
+        """
+        from compas.geometry import boolean_difference_mesh_mesh
+
+        A = self.vertices, self.faces
+        B = other.vertices, other.faces
+        V, F = boolean_difference_mesh_mesh(A, B)  # type: ignore
+
+        return Polyhedron(V, F)
+
+    def boolean_intersection(self, other):
+        """Compute the boolean intersection of this polyhedron and another.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Polyhedron`
+            The polyhedron to intersect with.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+            The resulting polyhedron.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box, Sphere
+        >>> A = Box(size=2).to_polyhedron()
+        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
+        >>> C = A.boolean_intersection(B)
+
+        """
+        from compas.geometry import boolean_intersection_mesh_mesh
+
+        A = self.vertices, self.faces
+        B = other.vertices, other.faces
+        V, F = boolean_intersection_mesh_mesh(A, B)  # type: ignore
+
+        return Polyhedron(V, F)
