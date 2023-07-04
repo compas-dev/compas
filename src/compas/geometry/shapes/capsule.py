@@ -11,6 +11,7 @@ from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Line
 from compas.geometry import Circle
+from compas.geometry import Transformation
 
 from .shape import Shape
 
@@ -89,116 +90,6 @@ class Capsule(Shape):
         self.radius = radius
         self.height = height
 
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"frame": self.frame, "radius": self.radius, "height": self.height}
-
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.radius = data["radius"]
-        self.height = data["height"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a capsule from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Capsule`
-            The constructed capsule.
-
-        Examples
-        --------
-        >>> data = {"frame": Frame.worldXY(), "radius": 0.3, "height": 1.0}
-        >>> cone = Cone.from_data(data)
-        >>> data = {"frame": None, "radius": 0.3, "height": 1.0}
-        >>> cone = Capsule.from_data(data)
-
-        """
-        return cls(**data)
-
-    # ==========================================================================
-    # properties
-    # ==========================================================================
-
-    @property
-    def radius(self):
-        if self._radius is None:
-            raise ValueError("The radius of the capsule is not set.")
-        return self._radius
-
-    @radius.setter
-    def radius(self, radius):
-        if radius < 0:
-            raise ValueError("The radius of the capsule should be greater than or equal to zero.")
-        self._radius = float(radius)
-
-    @property
-    def height(self):
-        if self._height is None:
-            raise ValueError("The capsule has no height.")
-        return self._height
-
-    @height.setter
-    def height(self, height):
-        self._height = float(abs(height))
-
-    @property
-    def length(self):
-        return self.height
-
-    @property
-    def start(self):
-        return self.frame.point - self.frame.zaxis * self.height / 2
-
-    @property
-    def end(self):
-        return self.frame.point + self.frame.zaxis * self.height / 2
-
-    @property
-    def axis(self):
-        return Line(self.start, self.end)
-
-    @property
-    def base(self):
-        return self.frame.point.copy()
-
-    @property
-    def plane(self):
-        return Plane(self.frame.point, self.frame.normal)
-
-    @property
-    def circle(self):
-        return Circle(self.frame, self.radius)
-
-    @property
-    def volume(self):
-        # cylinder plus 2 half spheres
-        cylinder = self.radius**2 * pi * self.height
-        caps = 4.0 / 3.0 * pi * self.radius**3
-        return cylinder + caps
-
-    @property
-    def area(self):
-        # cylinder minus caps plus 2 half spheres
-        cylinder = self.radius * 2 * pi * self.height
-        caps = 4 * pi * self.radius**2
-        return cylinder + caps
-
-    # ==========================================================================
-    # customisation
-    # ==========================================================================
-
     def __repr__(self):
         return "Capsule(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
 
@@ -229,7 +120,83 @@ class Capsule(Shape):
         return iter([self.frame, self.radius, self.height])
 
     # ==========================================================================
-    # constructors
+    # Data
+    # ==========================================================================
+
+    @property
+    def data(self):
+        return {"frame": self.frame, "radius": self.radius, "height": self.height}
+
+    @data.setter
+    def data(self, data):
+        self.frame = data["frame"]
+        self.radius = data["radius"]
+        self.height = data["height"]
+
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
+
+    @property
+    def radius(self):
+        if self._radius is None:
+            raise ValueError("The radius of the capsule is not set.")
+        return self._radius
+
+    @radius.setter
+    def radius(self, radius):
+        if radius < 0:
+            raise ValueError("The radius of the capsule should be greater than or equal to zero.")
+        self._radius = float(radius)
+
+    @property
+    def height(self):
+        if self._height is None:
+            raise ValueError("The capsule has no height.")
+        return self._height
+
+    @height.setter
+    def height(self, height):
+        if height < 0:
+            raise ValueError("The height of the capsule should be greater than or equal to zero.")
+        self._height = float((height))
+
+    @property
+    def length(self):
+        return self.height
+
+    @property
+    def start(self):
+        return self.frame.point - self.frame.zaxis * self.height / 2
+
+    @property
+    def end(self):
+        return self.frame.point + self.frame.zaxis * self.height / 2
+
+    @property
+    def axis(self):
+        return Line(self.start, self.end)
+
+    @property
+    def circle(self):
+        return Circle(self.frame, self.radius)
+
+    @property
+    def volume(self):
+        # cylinder plus 2 half spheres
+        cylinder = self.radius**2 * pi * self.height
+        caps = 4.0 / 3.0 * pi * self.radius**3
+        return cylinder + caps
+
+    @property
+    def area(self):
+        # cylinder minus caps plus 2 half spheres
+        cylinder = self.radius * 2 * pi * self.height
+        caps = 4 * pi * self.radius**2
+        return cylinder + caps
+
+    # ==========================================================================
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -289,9 +256,9 @@ class Capsule(Shape):
         """
         return cls(frame=circle.frame, radius=circle.radius, height=height)
 
-    # ==========================================================================
-    # methods
-    # ==========================================================================
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
     def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
         """Returns a list of vertices and faces.
@@ -382,17 +349,118 @@ class Capsule(Shape):
 
         return vertices, faces
 
-    def transform(self, transformation):
-        """Transform this `Capsule` using a given transformation.
+    # =============================================================================
+    # Transformations
+    # =============================================================================
+
+    def scale(self, factor):
+        """Scale the capsule.
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
-            The transformation used to transform the capsule.
+        factor : float
+            The scaling factor.
 
         Returns
         -------
         None
 
         """
-        self.frame.transform(transformation)
+        self.radius *= factor
+        self.height *= factor
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def contains_point(self, point, tol=1e-6):
+        """Verify if a point is inside the capsule.
+
+        Parameters
+        ----------
+        point : :class:`~compas.geometry.Point`
+            The point.
+        tol : float, optional
+            The tolerance for the test.
+
+        Returns
+        -------
+        bool
+            True if the point is inside the capsule.
+            False otherwise.
+
+        """
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
+        x, y, z = transform_points([point], T)[0]
+        h = 0.5 * self.height + tol
+
+        if -h <= z <= +h:
+            if x**2 + y**2 > (self.radius + tol) ** 2:
+                return False
+
+        if z > +h:
+            x0, y0, z0 = self.end
+            dx = x - x0
+            dy = y - y0
+            dz = z - z0
+            if dx**2 + dy**2 + dz**2 > (self.radius + tol) ** 2:
+                return False
+
+        if z < -h:
+            x0, y0, z0 = self.start
+            dx = x - x0
+            dy = y - y0
+            dz = z - z0
+            if dx**2 + dy**2 + dz**2 > (self.radius + tol) ** 2:
+                return False
+
+        return True
+
+    def contains_points(self, points, tol=1e-6):
+        """Verify if a list of points is inside the capsule.
+
+        Parameters
+        ----------
+        points : list of :class:`~compas.geometry.Point`
+            The points.
+        tol : float, optional
+            The tolerance for the test.
+
+        Returns
+        -------
+        list of bool
+            For each point, True if the point is inside the capsule.
+            False otherwise.
+
+        """
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
+        points = transform_points(points, T)
+
+        h = 0.5 * self.height + tol
+        r2 = (self.radius + tol) ** 2
+        results = [False] * len(points)
+
+        for i, (x, y, z) in enumerate(points):
+            if -h <= z <= +h:
+                if x**2 + y**2 > r2:
+                    continue
+
+            if z > +h:
+                x0, y0, z0 = self.end
+                dx = x - x0
+                dy = y - y0
+                dz = z - z0
+                if dx**2 + dy**2 + dz**2 > r2:
+                    continue
+
+            if z < -h:
+                x0, y0, z0 = self.start
+                dx = x - x0
+                dy = y - y0
+                dz = z - z0
+                if dx**2 + dy**2 + dz**2 > r2:
+                    continue
+
+            results[i] = True
+
+        return results
