@@ -108,22 +108,54 @@ class Box(Shape):
         "minProperties": 4,
     }
 
-    def __init__(self, frame=None, xsize=1.0, ysize=1.0, zsize=1.0, **kwargs):
+    def __init__(self, frame=None, xsize=1.0, ysize=1.0, zsize=1.0, size=1.0, **kwargs):
         super(Box, self).__init__(frame=frame, **kwargs)
         self._xsize = None
         self._ysize = None
         self._zsize = None
-        self.xsize = xsize
-        self.ysize = ysize
-        self.zsize = zsize
+        self.xsize = xsize or size
+        self.ysize = ysize or size
+        self.zsize = zsize or size
+
+    def __repr__(self):
+        return "Box({0!r}, {1!r}, {2!r}, {3!r})".format(self.frame, self.xsize, self.ysize, self.zsize)
+
+    def __len__(self):
+        return 4
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.frame
+        elif key == 1:
+            return self.xsize
+        elif key == 2:
+            return self.ysize
+        elif key == 3:
+            return self.zsize
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.frame = value
+        elif key == 1:
+            self.xsize = value
+        elif key == 2:
+            self.ysize = value
+        elif key == 3:
+            self.zsize = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.frame, self.xsize, self.ysize, self.zsize])
 
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the box."""
         return {
             "frame": self.frame,
             "xsize": self.xsize,
@@ -138,29 +170,8 @@ class Box(Shape):
         self.ysize = data["ysize"]
         self.zsize = data["zsize"]
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a box from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Box`
-            The constructed box.
-
-        Examples
-        --------
-        >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
-        >>> box = Box.from_data(data)
-        """
-        return cls(**data)
-
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -171,6 +182,8 @@ class Box(Shape):
 
     @xsize.setter
     def xsize(self, xsize):
+        if xsize <= 0:
+            raise ValueError("The size of the box along the local X axis should be larger than zero.")
         self._xsize = float(xsize)
 
     @property
@@ -181,6 +194,8 @@ class Box(Shape):
 
     @ysize.setter
     def ysize(self, ysize):
+        if ysize <= 0:
+            raise ValueError("The size of the box along the local Y axis should be larger than zero.")
         self._ysize = float(ysize)
 
     @property
@@ -191,31 +206,33 @@ class Box(Shape):
 
     @zsize.setter
     def zsize(self, zsize):
+        if zsize <= 0:
+            raise ValueError("The size of the box along the local Z axis should be larger than zero.")
         self._zsize = float(zsize)
 
     @property
     def xmin(self):
-        return self.frame.point.x - 0.5 * self.xsize  # type: ignore
+        return self.frame.point.x - 0.5 * self.xsize
 
     @property
     def xmax(self):
-        return self.frame.point.x + 0.5 * self.xsize  # type: ignore
+        return self.frame.point.x + 0.5 * self.xsize
 
     @property
     def ymin(self):
-        return self.frame.point.y - 0.5 * self.ysize  # type: ignore
+        return self.frame.point.y - 0.5 * self.ysize
 
     @property
     def ymax(self):
-        return self.frame.point.y + 0.5 * self.ysize  # type: ignore
+        return self.frame.point.y + 0.5 * self.ysize
 
     @property
     def zmin(self):
-        return self.frame.point.z - 0.5 * self.zsize  # type: ignore
+        return self.frame.point.z - 0.5 * self.zsize
 
     @property
     def zmax(self):
-        return self.frame.point.z + 0.5 * self.zsize  # type: ignore
+        return self.frame.point.z + 0.5 * self.zsize
 
     @property
     def width(self):
@@ -256,17 +273,19 @@ class Box(Shape):
         xaxis = self.frame.xaxis
         yaxis = self.frame.yaxis
         zaxis = self.frame.zaxis
-        width, depth, height = self.xsize, self.ysize, self.zsize
 
-        a = point + (xaxis * (-0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
-        b = point + (xaxis * (-0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
-        c = point + (xaxis * (+0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
-        d = point + (xaxis * (+0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
+        dx = 0.5 * self.xsize
+        dy = 0.5 * self.ysize
+        dz = 0.5 * self.zsize
 
-        e = a + zaxis * height
-        f = d + zaxis * height
-        g = c + zaxis * height
-        h = b + zaxis * height
+        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
+        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
+        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
+        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
+        e = a + zaxis * self.zsize
+        f = d + zaxis * self.zsize
+        g = c + zaxis * self.zsize
+        h = b + zaxis * self.zsize
 
         return [a, b, c, d, e, f, g, h]
 
@@ -306,44 +325,7 @@ class Box(Shape):
         return edges
 
     # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Box({0!r}, {1!r}, {2!r}, {3!r})".format(self.frame, self.xsize, self.ysize, self.zsize)
-
-    def __len__(self):
-        return 4
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.xsize
-        elif key == 2:
-            return self.ysize
-        elif key == 3:
-            return self.zsize
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.xsize = value
-        elif key == 2:
-            self.ysize = value
-        elif key == 3:
-            self.zsize = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.xsize, self.ysize, self.zsize])
-
-    # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -431,7 +413,7 @@ class Box(Shape):
         ysize = yaxis.length
         zsize = zaxis.length
         frame = Frame(centroid_points(bbox), xaxis, yaxis)
-        return cls(frame, xsize, ysize, zsize)
+        return cls(frame=frame, xsize=xsize, ysize=ysize, zsize=zsize)
 
     @classmethod
     def from_corner_corner_height(cls, corner1, corner2, height):
@@ -472,7 +454,7 @@ class Box(Shape):
         point = [0.5 * (x1 + x2), 0.5 * (y1 + y2), z1 + 0.5 * height]
         frame = Frame(point, xaxis, yaxis)
 
-        return cls(frame, width, depth, height)
+        return cls(frame=frame, xsize=width, ysize=depth, zsize=height)
 
     @classmethod
     def from_diagonal(cls, diagonal):
@@ -494,8 +476,6 @@ class Box(Shape):
         >>> box = Box.from_diagonal(diagonal)
 
         """
-        # this should put the frame at the centroid of the box
-        # not at the bottom left corner
         d1, d2 = diagonal
 
         x1, y1, z1 = d1
@@ -516,7 +496,58 @@ class Box(Shape):
         return cls(frame, width, depth, height)
 
     # ==========================================================================
-    # methods
+    # Transformations
+    # ==========================================================================
+
+    # def transform(self, transformation):
+    #     """Transform the box.
+
+    #     Parameters
+    #     ----------
+    #     transformation : :class:`Transformation`
+    #         The transformation used to transform the Box.
+
+    #     Returns
+    #     -------
+    #     None
+
+    #     Examples
+    #     --------
+    #     >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+    #     >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    #     >>> T = Transformation.from_frame(frame)
+    #     >>> box.transform(T)
+
+    #     """
+    #     self.frame.transform(transformation)
+    #     # Always local scaling, non-uniform scaling based on frame not yet considered.
+    #     Sc, _, _, _, _ = transformation.decomposed()
+    #     scalex = Sc[0, 0]
+    #     scaley = Sc[1, 1]
+    #     scalez = Sc[2, 2]
+    #     self.xsize *= scalex
+    #     self.ysize *= scaley
+    #     self.zsize *= scalez
+
+    def scale(self, factor):
+        """Scale the box.
+
+        Parameters
+        ----------
+        factor : float
+            The scaling factor.
+
+        Returns
+        -------
+        None
+
+        """
+        self.xsize *= factor
+        self.ysize *= factor
+        self.zsize *= factor
+
+    # ==========================================================================
+    # Methods
     # ==========================================================================
 
     def to_vertices_and_faces(self, triangulated=False):
@@ -543,12 +574,15 @@ class Box(Shape):
             faces = self.faces
         return self.vertices, faces
 
-    def contains(self, point):
+    def contains_point(self, point, tol=1e-6):
         """Verify if the box contains a given point.
 
         Parameters
         ----------
         point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point to test.
+        tol : float, optional
+            The tolerance for the point containment check.
 
         Returns
         -------
@@ -556,39 +590,67 @@ class Box(Shape):
 
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
-        point = transform_points([point], T)[0]
-        if -0.5 * self.xsize < point[0] < +0.5 * self.xsize:
-            if -0.5 * self.ysize < point[1] < +0.5 * self.ysize:
-                if -0.5 * self.zsize < point[2] < +0.5 * self.zsize:
-                    return True
-        return False
+        x, y, z = transform_points([point], T)[0]
 
-    def transform(self, transformation):
-        """Transform the box.
+        dx = 0.5 * self.xsize + tol
+
+        if x < -dx or x > +dx:
+            return False
+
+        dy = 0.5 * self.ysize + tol
+
+        if y < -dy or y > +dy:
+            return False
+
+        dz = 0.5 * self.zsize + tol
+
+        if z < -dz or z > +dz:
+            return False
+
+        return True
+
+    def contains_points(self, points, tol=1e-6):
+        """Verify if the box contains the given points.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the Box.
+        points : list[[float, float, float]] | list[:class:`~compas.geometry.Point`]
+            A list of points.
+        tol : float, optional
+            The tolerance for the point containment check.
 
         Returns
         -------
-        None
+        list[bool]
 
         Examples
         --------
-        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> box.transform(T)
+        >>> from compas.geometry import Point, Box
+        >>> box = Box(Frame.worldXY(), 2.0, 2.0, 2.0)
+        >>> points = [Point(0.0, 0.0, 0.0), Point(1.0, 1.0, 1.0)]
+        >>> results = box.contains_points(points)
+        >>> all(results)
+        True
 
         """
-        self.frame.transform(transformation)
-        # Always local scaling, non-uniform scaling based on frame not yet considered.
-        Sc, _, _, _, _ = transformation.decomposed()
-        scalex = Sc[0, 0]
-        scaley = Sc[1, 1]
-        scalez = Sc[2, 2]
-        self.xsize *= scalex
-        self.ysize *= scaley
-        self.zsize *= scalez
+        dx = 0.5 * self.xsize + tol
+        dy = 0.5 * self.ysize + tol
+        dz = 0.5 * self.zsize + tol
+
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
+        points = transform_points(points, T)
+        results = [False] * len(points)
+
+        for index, (x, y, z) in enumerate(points):
+            if x < -dx or x > +dx:
+                continue
+
+            if y < -dy or y > +dy:
+                continue
+
+            if z < -dz or z > +dz:
+                continue
+
+            results[index] = True
+
+        return results
