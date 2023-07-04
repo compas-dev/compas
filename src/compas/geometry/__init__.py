@@ -247,6 +247,10 @@ from .booleans import (
     boolean_union_mesh_mesh,
     boolean_difference_mesh_mesh,
     boolean_intersection_mesh_mesh,
+    boolean_union_polygon_polygon,
+    boolean_difference_polygon_polygon,
+    boolean_symmetric_difference_polygon_polygon,
+    boolean_intersection_polygon_polygon,
 )
 from .hull.hull import convex_hull, convex_hull_xy
 from .interpolation.barycentric import barycentric_coordinates
@@ -279,6 +283,7 @@ from .offset.offset import offset_line, offset_polyline, offset_polygon
 from .quadmesh.planarization import quadmesh_planarize
 from .triangulation import conforming_delaunay_triangulation, constrained_delaunay_triangulation, delaunay_triangulation
 from .triangulation.delaunay import delaunay_from_points
+from .triangulation.earclip import earclip_polygon
 from .trimesh.curvature import trimesh_mean_curvature, trimesh_gaussian_curvature, trimesh_principal_curvature
 from .trimesh.geodistance import trimesh_geodistance
 from .trimesh.isolines import trimesh_isolines
@@ -340,14 +345,15 @@ from .surfaces.surface import Surface
 from .surfaces.nurbs import NurbsSurface
 
 from .shapes.shape import Shape
-from .shapes.polygon import Polygon
 from .shapes.box import Box
 from .shapes.capsule import Capsule
 from .shapes.cone import Cone
 from .shapes.cylinder import Cylinder
-from .shapes.polyhedron import Polyhedron
 from .shapes.sphere import Sphere
 from .shapes.torus import Torus
+
+from .polygon import Polygon
+from .polyhedron import Polyhedron
 
 from .brep import (
     BrepError,
@@ -488,6 +494,10 @@ __all__ = [
     "boolean_union_mesh_mesh",
     "boolean_difference_mesh_mesh",
     "boolean_intersection_mesh_mesh",
+    "boolean_union_polygon_polygon",
+    "boolean_difference_polygon_polygon",
+    "boolean_symmetric_difference_polygon_polygon",
+    "boolean_intersection_polygon_polygon",
     "convex_hull",
     "convex_hull_xy",
     "barycentric_coordinates",
@@ -618,6 +628,7 @@ __all__ = [
     "delaunay_from_points",
     "delaunay_from_points",
     "delaunay_triangulation",
+    "earclip_polygon",
     "trimesh_gaussian_curvature",
     "trimesh_mean_curvature",
     "trimesh_principal_curvature",
