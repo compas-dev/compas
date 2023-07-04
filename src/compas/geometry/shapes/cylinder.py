@@ -89,8 +89,37 @@ class Cylinder(Shape):
         self.radius = radius
         self.height = height
 
+    def __repr__(self):
+        return "Cylinder(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.frame
+        elif key == 1:
+            return self.radius
+        elif key == 2:
+            return self.height
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.frame = value
+        elif key == 1:
+            self.radius = value
+        elif key == 2:
+            self.height = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.frame, self.radius, self.height])
+
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
@@ -103,33 +132,8 @@ class Cylinder(Shape):
         self.radius = data["radius"]
         self.height = data["height"]
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a cylinder from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Cylinder`
-            The constructed cylinder.
-
-        Examples
-        --------
-        >>> data = {"frame": Frame.worldXY(), "radius": 0.3, "height": 1.0}
-        >>> cylinder = Cylinder.from_data(data)
-
-        >>> data = {"frame": None, "radius": 0.3, "height": 1.0}
-        >>> cylinder = Cylinder.from_data(data)
-
-        """
-        return cls(**data)
-
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -185,40 +189,7 @@ class Cylinder(Shape):
         return self.circle.area * self.height
 
     # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Cylinder(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.radius
-        elif key == 2:
-            return self.height
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.radius = value
-        elif key == 2:
-            self.height = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius, self.height])
-
-    # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -274,9 +245,9 @@ class Cylinder(Shape):
         """
         return cls(frame=circle.frame, height=height, radius=circle.radius)
 
-    # ==========================================================================
-    # methods
-    # ==========================================================================
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
     def to_vertices_and_faces(self, u=16, triangulated=False):
         """Returns a list of vertices and faces.
@@ -337,30 +308,53 @@ class Cylinder(Shape):
 
         return vertices, faces
 
-    def transform(self, transformation):
-        """Transform the cylinder.
+    # =============================================================================
+    # Transformations
+    # =============================================================================
+
+    def scale(self, factor):
+        """Scale the cylinder by multiplying the radius and height by a factor.
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
-            The transformation used to transform the cylinder.
+        factor : float
+            The scaling factor.
 
         Returns
         -------
         None
 
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Cylinder
-        >>> circle = Circle(Plane.worldXY(), 5)
-        >>> cylinder = Cylinder(circle, 7)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> cylinder.transform(T)
+        """
+        self.radius *= factor
+        self.height *= factor
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def contains_point(self, point, tol=1e-6):
+        """Verify if a point is inside the cylinder.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+            The point.
+        tol : float, optional
+            The tolerance for the verification.
+
+        Returns
+        -------
+        bool
+            True if the point is inside the cylinder.
+            False otherwise.
 
         """
-        self.frame.transform(transformation)
+        point = self.frame.to_local_coordinates(point)
+        x, y, z = point.x, point.y, point.z  # type: ignore
+
+        if z > self.height / 2 + tol:
+            return False
+        if z < -self.height / 2 - tol:
+            return False
+
+        return x**2 + y**2 <= (self.radius + tol) ** 2
