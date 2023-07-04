@@ -92,6 +92,35 @@ class Cone(Shape):
         self.radius = radius
         self.height = height
 
+    def __repr__(self):
+        return "Cone(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.frame
+        elif key == 1:
+            return self.radius
+        if key == 2:
+            return self.height
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.frame = value
+        elif key == 1:
+            self.radius = value
+        elif key == 2:
+            self.height = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.frame, self.radius, self.height])
+
     # ==========================================================================
     # data
     # ==========================================================================
@@ -105,31 +134,6 @@ class Cone(Shape):
         self.frame = data["frame"]
         self.radius = data["radius"]
         self.height = data["height"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a cone from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Cone`
-            The constructed cone.
-
-        Examples
-        --------
-        >>> data = {"frame": Frame.worldXY(), "radius": 0.3, "height": 1.0}
-        >>> cone = Cone.from_data(data)
-
-        >>> data = {"frame": None, "radius": 0.3, "height": 1.0}
-        >>> cone = Cone.from_data(data)
-
-        """
-        return cls(**data)
 
     # ==========================================================================
     # properties
@@ -164,14 +168,6 @@ class Cone(Shape):
         return Line(self.frame.point, self.frame.point + self.frame.normal * self.height)
 
     @property
-    def base(self):
-        return self.frame.point.copy()
-
-    @property
-    def plane(self):
-        return Plane(self.frame.point, self.frame.normal)
-
-    @property
     def circle(self):
         return Circle(self.frame, self.radius)
 
@@ -192,40 +188,7 @@ class Cone(Shape):
         return pi * r**2 * (h / 3)
 
     # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Cone(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.radius
-        if key == 2:
-            return self.height
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.radius = value
-        elif key == 2:
-            self.height = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius, self.height])
-
-    # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -287,7 +250,7 @@ class Cone(Shape):
         return cls(frame=frame, radius=circle.radius, height=height)
 
     # ==========================================================================
-    # methods
+    # Conversions
     # ==========================================================================
 
     def to_vertices_and_faces(self, u=16, triangulated=False):
@@ -342,30 +305,10 @@ class Cone(Shape):
 
         return vertices, faces
 
-    def transform(self, transformation):
-        """Transform the cone.
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
 
-        Parameters
-        ----------
-        transformation : :class:`~compas.geometry.Transformation`
-            The transformation used to transform the cone.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Cone
-        >>> from compas.geometry import Circle
-        >>> circle = Circle(Plane.worldXY(), 5)
-        >>> cone = Cone(circle, 7)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> cone.transform(T)
-
-        """
-        self.frame.transform(transformation)
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
