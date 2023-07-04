@@ -85,3 +85,103 @@ def boolean_intersection_mesh_mesh(A, B):
 
     """
     raise NotImplementedError
+
+
+@pluggable(category="booleans")
+def boolean_union_polygon_polygon(A, B):
+    """Compute the boolean union of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean union.
+
+    """
+    raise NotImplementedError
+
+
+@pluggable(category="booleans")
+def boolean_difference_polygon_polygon(A, B):
+    """Compute the boolean difference of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean difference.
+
+    """
+    raise NotImplementedError
+
+
+@pluggable(category="booleans")
+def boolean_symmetric_difference_polygon_polygon(A, B):
+    """Compute the boolean symmetric difference of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean symmetric difference.
+
+    """
+    raise NotImplementedError
+
+
+@pluggable(category="booleans")
+def boolean_intersection_polygon_polygon(A, B):
+    """Compute the boolean intersection of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean difference.
+
+    """
+    raise NotImplementedError
