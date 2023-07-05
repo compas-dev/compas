@@ -333,7 +333,7 @@ class Polyline(Curve):
         points = self.points
         seg_ids = list(range(len(self.lines)))
 
-        if self.is_closed():
+        if self.is_closed:
             seg_ids.append(0)
 
         for seg1, seg2 in pairwise(seg_ids):
@@ -341,7 +341,7 @@ class Polyline(Curve):
             if angle >= angle_threshold:
                 corner_ids.append(seg1 + 1)
 
-        if self.is_closed() and len(corner_ids) > 0:
+        if self.is_closed and len(corner_ids) > 0:
             if corner_ids[-1] != len(points):
                 corner_ids = [corner_ids[-1]] + corner_ids
         else:
@@ -354,7 +354,7 @@ class Polyline(Curve):
                 looped_pts = [points[i] for i in range(id1, len(points))] + points[1 : id2 + 1]
                 split_polylines.append(Polyline(looped_pts))
 
-        if self.is_closed() and not corner_ids:
+        if self.is_closed and not corner_ids:
             return [Polyline(self.points)]
 
         return split_polylines
@@ -439,7 +439,7 @@ class Polyline(Curve):
             if len(division_pts) == num_pts + 1:
                 break
 
-        if strict is False and not self.is_closed() and len(division_pts) < num_pts + 1:
+        if strict is False and not self.is_closed and len(division_pts) < num_pts + 1:
             division_pts.append(new_polyline.points[-1])
         elif strict is False and division_pts[-1].distance_to_point(self.points[-1]) > tol:
             division_pts.append(self.points[-1])

@@ -108,6 +108,14 @@ class Shape(Geometry):
         return self._transformation
 
     @property
+    def point(self):
+        return self.frame.point
+
+    @point.setter
+    def point(self, point):
+        self.frame.point = point
+
+    @property
     def normal(self):
         return self.frame.zaxis
 

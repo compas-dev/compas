@@ -230,9 +230,9 @@ class Arc(Curve):
     def angle(self):
         return self.end_angle - self.start_angle
 
-    @property
-    def domain(self):
-        return self.start_angle, self.end_angle
+    # @property
+    # def domain(self):
+    #     return self.start_angle, self.end_angle
 
     @property
     def center(self):

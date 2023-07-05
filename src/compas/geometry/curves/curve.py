@@ -75,7 +75,8 @@ class Curve(Geometry):
         self._transformation = None
         self._domain = None
         self._point = None
-        self.frame = frame
+        if frame:
+            self.frame = frame
         self.domain = domain
 
     def __eq__(self, other):

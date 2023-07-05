@@ -98,7 +98,7 @@ def test___setitem__():
     ],
 )
 def test_polyline_divide(coords, expected):
-    assert expected == Polyline(coords).divide_polyline(5)
+    assert expected == Polyline(coords).divide(5)
 
 
 @pytest.mark.parametrize(
@@ -132,7 +132,7 @@ def test_polyline_divide(coords, expected):
     ],
 )
 def test_polyline_divide_length(coords, expected):
-    assert expected == Polyline(coords).divide_polyline_by_length(100)
+    assert expected == Polyline(coords).divide_by_length(100)
 
 
 @pytest.mark.parametrize(
@@ -142,7 +142,7 @@ def test_polyline_divide_length(coords, expected):
     ],
 )
 def test_polyline_divide_length_strict1(coords, expected):
-    assert expected == Polyline(coords).divide_polyline_by_length(80)
+    assert expected == Polyline(coords).divide_by_length(80)
 
 
 @pytest.mark.parametrize(
@@ -155,7 +155,7 @@ def test_polyline_divide_length_strict1(coords, expected):
     ],
 )
 def test_polyline_divide_length_strict2(coords, expected):
-    assert expected == Polyline(coords).divide_polyline_by_length(80, False)
+    assert expected == Polyline(coords).divide_by_length(80, False)
 
 
 @pytest.mark.parametrize(
@@ -354,7 +354,7 @@ def test_polyline_split_by_length_strict2(coords, expected):
     ],
 )
 def test_polyline_tangent_at_point(coords, input, expected):
-    assert expected == Polyline(coords).tangent_at_point_on_polyline(input)
+    assert expected == Polyline(coords).tangent_at_point(input)
 
 
 @pytest.mark.parametrize(

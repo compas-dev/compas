@@ -69,7 +69,7 @@ class Sphere(Shape):
         "required": ["frame", "radius"],
     }
 
-    def __init__(self, frame=None, point=None, radius=None, **kwargs):
+    def __init__(self, frame=None, radius=None, point=None, **kwargs):
         super(Sphere, self).__init__(frame=frame, **kwargs)
         self._radius = 1.0
         self.radius = radius

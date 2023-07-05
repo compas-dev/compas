@@ -534,6 +534,17 @@ class Polyhedron(Geometry):
     # Conversions
     # =============================================================================
 
+    def to_vertices_and_faces(self):
+        """Returns a list of vertices and faces.
+
+        Returns
+        -------
+        tuple[list[float], list[int]
+            A list of vertices and a list of faces.
+
+        """
+        return self.vertices, self.faces
+
     def to_mesh(self):
         """Returns a mesh representation of the polyhedron.
 
