@@ -4,8 +4,6 @@ from __future__ import division
 
 from random import uniform
 
-from compas.files import PLY
-
 from compas.geometry import transform_points
 from compas.geometry import centroid_points
 from compas.geometry import bounding_box
@@ -151,6 +149,8 @@ class Pointcloud(Geometry):
         :class:`~compas.geometry.Pointcloud`
 
         """
+        from compas.files import PLY
+
         points = []
         # normals = []
         ply = PLY(filepath)
