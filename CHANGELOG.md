@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
 * Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
 * Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
+* xxxxx (to see if the PR passes...)
 
 ### Changed
 

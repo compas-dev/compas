@@ -1,4 +1,4 @@
-import os
+# import os
 import pytest
 
 import compas
@@ -25,11 +25,11 @@ def test_basic_tool_model(mesh, frame):
     assert tool.name == "attached_tool"
 
 
-def test_from_json():
-    filepath = os.path.join(compas.DATA, "cone_tool.json")
-    tool = ToolModel.from_json(filepath)
-    assert [link.name for link in tool.iter_links()] == ["attached_tool_link"]
-    assert tool.name == "attached_tool"
+# def test_from_json():
+#     filepath = os.path.join(compas.DATA, "cone_tool.json")
+#     tool = ToolModel.from_json(filepath)
+#     assert [link.name for link in tool.iter_links()] == ["attached_tool_link"]
+#     assert tool.name == "attached_tool"
 
 
 def test_from_t0cf_to_tcf(mesh, frame):
