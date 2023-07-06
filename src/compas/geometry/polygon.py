@@ -8,16 +8,21 @@ from compas.utilities import pairwise
 
 from compas.geometry import allclose
 from compas.geometry import area_polygon
-from compas.geometry import cross_vectors
+
+# from compas.geometry import cross_vectors
 from compas.geometry import centroid_polygon
 from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
 from compas.geometry import earclip_polygon
+from compas.geometry import bounding_box
+
+# from compas.geometry import bestfit_plane
 from compas.geometry import Geometry
 from compas.geometry import Transformation
 from compas.geometry import Point
-from compas.geometry import Vector
+
+# from compas.geometry import Vector
 from compas.geometry import Plane
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -64,6 +69,13 @@ class Polygon(Geometry):
         True if the polygon is convex.
     is_planar : bool, read-only
         True if the polygon is planar.
+
+    See Also
+    --------
+    :func:`compas.geometry.centroid_polygon`,
+    :func:`compas.geometry.area_polygon`,
+    :func:`compas.geometry.is_polygon_convex`,
+    :func:`earclip_polygon`
 
     Examples
     --------
@@ -166,25 +178,26 @@ class Polygon(Geometry):
 
     @property
     def normal(self):
-        o = self.centroid
-        points = self.points
-        a2 = 0
-        normals = []
-        for i in range(-1, len(points) - 1):
-            p1 = points[i]
-            p2 = points[i + 1]
-            u = [p1[_] - o[_] for _ in range(3)]  # type: ignore
-            v = [p2[_] - o[_] for _ in range(3)]  # type: ignore
-            w = cross_vectors(u, v)
-            a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
-            normals.append(w)
-        n = [sum(axis) / a2 for axis in zip(*normals)]
-        n = Vector(*n)
-        return n
+        # o = self.centroid
+        # points = self.points
+        # a2 = 0
+        # normals = []
+        # for i in range(-1, len(points) - 1):
+        #     p1 = points[i]
+        #     p2 = points[i + 1]
+        #     u = [p1[_] - o[_] for _ in range(3)]  # type: ignore
+        #     v = [p2[_] - o[_] for _ in range(3)]  # type: ignore
+        #     w = cross_vectors(u, v)
+        #     a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
+        #     normals.append(w)
+        # n = [sum(axis) / a2 for axis in zip(*normals)]
+        # n = Vector(*n)
+        # return n
+        return self.plane.normal
 
     @property
     def plane(self):
-        return Plane(self.centroid, self.normal)
+        return Plane.from_points(self.points)
 
     @property
     def frame(self):
@@ -202,9 +215,43 @@ class Polygon(Geometry):
     def is_planar(self):
         return is_coplanar(self.points)
 
+    @property
+    def bounding_box(self):
+        from compas.geometry import Box
+
+        return Box.from_bounding_box(bounding_box(self.points))
+
     # ==========================================================================
     # Constructors
     # ==========================================================================
+
+    @classmethod
+    def from_rectangle(cls, point, width, height):
+        """Construct a rectangle.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+            The lower left corner of the rectangle.
+        width : float
+            The width of the rectangle.
+        height : float
+            The height of the rectangle.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polygon`
+            A rectangle.
+
+        """
+        x, y, z = point
+        points = [
+            [x, y, z],
+            [x + width, y, z],
+            [x + width, y + height, z],
+            [x, y + height, z],
+        ]
+        return cls(points)
 
     @classmethod
     def from_sides_and_radius_xy(cls, n, radius):
@@ -309,7 +356,9 @@ class Polygon(Geometry):
             A boundary representation of the polygon.
 
         """
-        raise NotImplementedError
+        from compas.geometry import Brep
+
+        return Brep.from_polygons([self])
 
     # =============================================================================
     # Transformations
@@ -346,22 +395,6 @@ class Polygon(Geometry):
     # =============================================================================
     # Methods
     # =============================================================================
-
-    # def earclip(self):
-    #     """Triangulate the polygon using ear clipping.
-
-    #     Returns
-    #     -------
-    #     list[list[int]]
-    #         A list of face descriptions,
-    #         with each face defined as a list of indices into the list of vertices.
-
-    #     """
-    #     T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
-    #     points = transform_points(self.points, T)
-    #     faces = earclip_polygon(points)
-    #     self._faces = faces
-    #     return faces
 
     def boolean_union(self, other):
         """Compute the boolean union of this polygon and another polygon.
