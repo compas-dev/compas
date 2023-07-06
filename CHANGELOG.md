@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
+* Added new predicates in `predicates_2` for points and polygons (XY) : `polygon_to_polygon_relationship_xy`, `point_to_polygon_relationship_xy`, `is_intersection_polygon_polygon_xy`
 * Added representation for features in `compas.datastructures.Part`.
 * Added  `split` and `split_by_length` to `compas.geometry.Polyline`.
 * Added `compas.rpc.XFunc`.
@@ -59,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
 * Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
 * Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
+* Added new predicates in `predicates_2` for points and polygons (XY) : `polygon_to_polygon_relationship_xy`, `point_to_polygon_relationship_xy`, `is_intersection_polygon_polygon_xy`
 
 ### Changed
 
