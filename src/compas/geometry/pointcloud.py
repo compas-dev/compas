@@ -3,13 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 
 from random import uniform
+
+from compas.files import PLY
+
 from compas.geometry import transform_points
 from compas.geometry import centroid_points
 from compas.geometry import bounding_box
 from compas.geometry import closest_point_in_cloud
 from compas.geometry import Geometry
 from compas.geometry import Point
-from compas.files import PLY
 
 
 class Pointcloud(Geometry):
