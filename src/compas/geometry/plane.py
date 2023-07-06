@@ -5,6 +5,7 @@ from __future__ import print_function
 from math import sqrt
 
 from compas.geometry import cross_vectors
+from compas.geometry import bestfit_plane
 from compas.geometry import Geometry
 from .vector import Vector
 from .point import Point
@@ -284,6 +285,41 @@ class Plane(Geometry):
         """
         return cls(frame.point, frame.normal)
 
+    @classmethod
+    def from_points(cls, points):
+        """Construct a plane from a list of points.
+
+        If the list contains more than three points, a plane is constructed that minimizes the distance to all points.
+
+        Parameters
+        ----------
+        points : list of [float, float, float] | :class:`~compas.geometry.Point`
+            The points.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Plane`
+            The plane defined by the points.
+
+        See Also
+        --------
+        :func:`compas.geometry.bestfit_plane`
+
+        Examples
+        --------
+        >>> points = [[0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0]]
+        >>> plane = Plane.from_points(points)
+        >>> plane.point
+        Point(0.000, 0.000, 0.000)
+        >>> plane.normal
+        Vector(0.000, 0.000, 1.000)
+
+        """
+        if len(points) == 3:
+            return cls.from_three_points(*points)
+        point, normal = bestfit_plane(points)
+        return cls(point, normal)
+
     # ==========================================================================
     # Transformations
     # ==========================================================================
@@ -317,6 +353,58 @@ class Plane(Geometry):
     # ==========================================================================
     # Methods
     # ==========================================================================
+
+    def is_parallel(self, other, tol=1e-06):
+        """Verify if this plane is parallel to another plane.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Plane`
+            The other plane.
+        tol : float, optional
+            Tolerance for the dot product of the normals.
+
+        Returns
+        -------
+        bool
+            ``True`` if the planes are parallel.
+            ``False`` otherwise.
+
+        Examples
+        --------
+        >>> plane1 = Plane.worldXY()
+        >>> plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, 1.0])
+        >>> plane1.is_parallel(plane2)
+        True
+
+        """
+        return abs(self.normal.dot(other.normal)) == 1 - tol
+
+    def is_perpendicular(self, other, tol=1e-06):
+        """Verify if this plane is perpendicular to another plane.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Plane`
+            The other plane.
+        tol : float, optional
+            Tolerance for the dot product of the normals.
+
+        Returns
+        -------
+        bool
+            ``True`` if the planes are perpendicular.
+            ``False`` otherwise.
+
+        Examples
+        --------
+        >>> plane1 = Plane.worldXY()
+        >>> plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, 1.0])
+        >>> plane1.is_perpendicular(plane2)
+        False
+
+        """
+        return abs(self.normal.dot(other.normal)) < tol
 
     def distance_to_point(self, point):
         """Compute the distance from a given point to the plane.
@@ -383,3 +471,69 @@ class Plane(Geometry):
 
         """
         return Plane(self.point + self.normal.scaled(distance), self.normal)
+
+    def intersection_with_line(self, line, tol=1e-06):
+        """Compute the intersection of a plane and a line.
+
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Line`
+            The line.
+        tol : float, optional
+            Tolerance for the dot product of the line vector and the plane normal.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point` | None
+            The intersection point, or ``None`` if the line is parallel to the plane.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> line = Line(Point(0, 0, 1), Vector(1, 1, 1))
+        >>> plane.intersection_with_line(line)
+        Point(0.000, 0.000, 0.000)
+
+        """
+        # The line is parallel to the plane
+        if abs(self.normal.dot(line.vector)) < tol:
+            return None
+
+        t = (self.point - line.start).dot(self.normal) / line.vector.dot(self.normal)
+        return line.point_at(t)
+
+    def intersection_with_plane(self, plane):
+        """Compute the intersection of two planes.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane`
+            The other plane.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Line` | :class:`~compas.geometry.Plane` | None
+            The intersection line, or the intersection plane if the planes are
+            parallel, or ``None`` if the planes are coincident.
+
+        Examples
+        --------
+        >>> plane1 = Plane.worldXY()
+        >>> plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, 1.0])
+        >>> plane1.intersection(plane2)
+        Line(Point(0.000, 0.000, 0.000), Vector(0.000, 0.000, 1.000))
+
+        """
+        from compas.geometry import Line
+
+        if self.is_parallel(plane):
+            return None
+
+        # direction of the line
+        direction = self.normal.cross(plane.normal)
+
+        # point on the line
+        line = Line(self.point, self.point + self.normal.cross(direction))
+        point = plane.intersection_with_line(line)
+
+        return Line(point, point + direction)
