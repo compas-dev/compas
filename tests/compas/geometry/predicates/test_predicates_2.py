@@ -77,3 +77,38 @@ def test_is_intersection_polygon_polygon_xy():
     assert is_intersection_polygon_polygon_xy(polygon_inside, polygon_contour) is False
     assert is_intersection_polygon_polygon_xy(polygon_intersecting, polygon_contour) is True
     assert is_intersection_polygon_polygon_xy(polygon_outside, polygon_contour) is False
+
+
+def test_polygon_to_polygon_relationship_xy():
+    polygon_contour = Polygon([(0, 0, 0), (4, 2, 0), (10, 0, 0), (11, 10, 0), (8, 12, 0), (0, 10, 0)])
+    polygon_inside = Polygon([(5, 5, 0), (10, 5, 0), (10, 10 ,0), (5, 10, 0)])
+    polygon_intersecting = Polygon([(10, 10, 0), (10, 5, 0), (15, 5, 0), (15, 10, 0)])
+    polygon_outside = Polygon([(15, 5, 0), (20, 5, 0), (20, 10, 0), (15, 10, 0)])
+    polygon_containing = Polygon([(-5, -5, 0), (15, -5, 0), (15, 15, 0), (-5, 15, 0)])
+
+    assert polygon_to_polygon_relationship_xy(polygon_inside, polygon_contour) == 1
+    assert polygon_to_polygon_relationship_xy(polygon_intersecting, polygon_contour) == 0
+    assert polygon_to_polygon_relationship_xy(polygon_outside, polygon_contour) == -1
+    assert polygon_to_polygon_relationship_xy(polygon_containing, polygon_contour) == -2
+
+
+def test_point_to_polygon_relationship_xy():
+    polygon = Polygon([(0, 0, 0), (4, 0, 0), (4, 4, 0), (0, 4, 0)])
+    pt_inside = Point(1, 2, 0)
+    pt_boundary = Point(2, 0, 0)
+    pt_outside = Point(5, 5, 0)
+
+    assert point_to_polygon_relationship_xy(pt_inside, polygon) == 1
+    assert point_to_polygon_relationship_xy(pt_boundary, polygon) == 0
+    assert point_to_polygon_relationship_xy(pt_outside, polygon) == -1
+
+
+def test_is_intersection_polygon_polygon_xy():
+    polygon_contour = Polygon([(0, 0, 0), (4, 2, 0), (10, 0, 0), (11, 10, 0), (8, 12, 0), (0, 10, 0)])
+    polygon_inside = Polygon([(5, 5, 0), (10, 5, 0), (10, 10 ,0), (5, 10, 0)])
+    polygon_intersecting = Polygon([(10, 10, 0), (10, 5, 0), (15, 5, 0), (15, 10, 0)])
+    polygon_outside = Polygon([(15, 5, 0), (20, 5, 0), (20, 10, 0), (15, 10, 0)])
+
+    assert is_intersection_polygon_polygon_xy(polygon_inside, polygon_contour) is False
+    assert is_intersection_polygon_polygon_xy(polygon_intersecting, polygon_contour) is True
+    assert is_intersection_polygon_polygon_xy(polygon_outside, polygon_contour) is False
