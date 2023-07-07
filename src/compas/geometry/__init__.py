@@ -342,6 +342,7 @@ from .curves.arc import Arc
 from .curves.nurbs import NurbsCurve
 
 from .surfaces.surface import Surface
+from .surfaces.spherical import SphericalSurface
 from .surfaces.nurbs import NurbsSurface
 
 from .shapes.shape import Shape
@@ -676,6 +677,7 @@ __all__ = [
     "Curve",
     "NurbsCurve",
     "Surface",
+    "SphericalSurface",
     "NurbsSurface",
     "Brep",
     "BrepLoop",
