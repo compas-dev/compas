@@ -5,6 +5,7 @@ from __future__ import division
 from math import pi, cos, sin
 
 from compas.geometry import Frame
+from compas.geometry import Plane
 from .conic import Conic
 
 PI2 = 2 * pi
@@ -42,8 +43,6 @@ class Circle(Conic):
         The plane of the circle.
     normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the circle.
-    diameter : float, read-only
-        The diameter of the circle.
     area : float, read-only
         The area of the circle.
     circumference : float, read-only
@@ -154,10 +153,6 @@ class Circle(Conic):
         self._radius = float(radius)
 
     @property
-    def diameter(self):
-        return self.radius * 2
-
-    @property
     def area(self):
         return pi * (self.radius**2)
 
@@ -221,6 +216,32 @@ class Circle(Conic):
         return cls(frame=frame, radius=radius)
 
     @classmethod
+    def from_three_points(cls, a, b, c):
+        """Construct a circle from three points.
+
+        Parameters
+        ----------
+        a : :class:`~compas.geometry.Point`
+            The first point.
+        b : :class:`~compas.geometry.Point`
+            The second point.
+        c : :class:`~compas.geometry.Point`
+            The third point.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Circle`
+            The constructed circle.
+
+        """
+        from compas.geometry import Plane
+        from compas.geometry import circle_from_points
+
+        (point, normal), radius = circle_from_points(a, b, c)
+        plane = Plane(point, normal)
+        return cls.from_plane_and_radius(plane, radius)
+
+    @classmethod
     def from_points(cls, points):
         """Construct a circle from a list of at least three points.
 
@@ -248,13 +269,8 @@ class Circle(Conic):
         if len(points) < 3:
             raise ValueError("At least three points are required to define a circle.")
 
-        from compas.geometry import Plane
-        from compas.geometry import circle_from_points
-
         if len(points) == 3:
-            (point, normal), radius = circle_from_points(*points)
-            plane = Plane(point, normal)
-            return cls.from_plane_and_radius(plane, radius)
+            return cls.from_three_points(*points)
 
         # not sure if this makes sense
         # but it will only throw an error if the bestfit is actually needed
