@@ -82,7 +82,9 @@ class Pointcloud(Geometry):
 
     @property
     def bounding_box(self):
-        return bounding_box(self.points)
+        from compas.geometry import Box
+
+        return Box.from_bounding_box(bounding_box(self.points))
 
     # ==========================================================================
     # Customization
@@ -152,12 +154,9 @@ class Pointcloud(Geometry):
         from compas.files import PLY
 
         points = []
-        # normals = []
         ply = PLY(filepath)
         for vertex in ply.reader.vertices:  # type: ignore
             points.append([vertex["x"], vertex["y"], vertex["z"]])
-            # if "nx" in vertex and "ny" in vertex and "nz" in vertex:
-            #     normals.append([vertex["nx"], vertex["ny"], vertex["nz"]])
         cloud = cls(points)
         return cloud
 
