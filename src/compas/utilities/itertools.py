@@ -168,6 +168,11 @@ def linspace(start, stop, num=50):
     float
         The next value in the sequence.
 
+    Raises
+    ------
+    ValueError
+        If the number of elements is less than 2.
+
     References
     ----------
     This function mimicks the functionality of ``numpy.linspace`` [1]_, but in a simpler form.
@@ -181,6 +186,9 @@ def linspace(start, stop, num=50):
     [0.0, 0.5, 1.0]
 
     """
+    if num < 2:
+        raise ValueError("ValueError: number of elements must be at least 2, got {:d}".format(num))
+
     step = (stop - start) / (num - 1)
     for i in range(num - 1):
         yield start + i * step
