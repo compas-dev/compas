@@ -164,11 +164,6 @@ def bestfit_sphere_numpy(points):
     -----
     For more information see [1]_.
 
-    References
-    ----------
-    .. [1] Least Squares Sphere Fit.
-           Available at: https://jekel.me/2015/Least-Squares-Sphere-Fit/.
-
     Examples
     --------
     >>> from compas.geometry import bestfit_sphere_numpy
@@ -177,6 +172,11 @@ def bestfit_sphere_numpy(points):
                   (683.247, -327.154, 179.113), (231.606, -430.659, 115.458),\
                   (87.278, -419.178, -18.863), (24.731, -340.222, -127.158)]
     >>> center, radius = bestfit_sphere_numpy(points)
+
+    References
+    ----------
+    .. [1] Least Squares Sphere Fit.
+           Available at: https://jekel.me/2015/Least-Squares-Sphere-Fit/.
 
     """
 
