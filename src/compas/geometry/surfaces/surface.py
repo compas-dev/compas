@@ -7,6 +7,7 @@ from itertools import product
 from compas.geometry import Geometry
 from compas.geometry import Frame
 from compas.geometry import Transformation
+from compas.geometry import Point
 from compas.plugins import pluggable
 from compas.utilities import linspace
 
@@ -58,7 +59,9 @@ class Surface(Geometry):
         self._transformation = None
         self._u_domain = None
         self._v_domain = None
-        self.frame = frame
+        self._point = None
+        if frame:
+            self.frame = frame
         self.u_domain = u_domain or (0.0, 1.0)
         self.v_domain = v_domain or (0.0, 1.0)
 
@@ -122,6 +125,32 @@ class Surface(Geometry):
         return self._transformation
 
     @property
+    def point(self):
+        if not self._point:
+            return self.frame.point
+        return self._point
+
+    @point.setter
+    def point(self, point):
+        self._point = Point(*point)
+
+    @property
+    def xaxis(self):
+        return self.frame.xaxis
+
+    @property
+    def yaxis(self):
+        return self.frame.yaxis
+
+    @property
+    def zaxis(self):
+        return self.frame.zaxis
+
+    @property
+    def dimension(self):
+        return 3
+
+    @property
     def u_domain(self):
         if not self._u_domain:
             self._u_domain = (0.0, 1.0)
@@ -129,7 +158,11 @@ class Surface(Geometry):
 
     @u_domain.setter
     def u_domain(self, domain):
-        self._u_domain = domain
+        if not domain:
+            self._u_domain = None
+            return
+        a, b = domain
+        self._u_domain = a, b
 
     @property
     def v_domain(self):
@@ -139,7 +172,15 @@ class Surface(Geometry):
 
     @v_domain.setter
     def v_domain(self, domain):
-        self._v_domain = domain
+        if not domain:
+            self._v_domain = None
+            return
+        a, b = domain
+        self._v_domain = a, b
+
+    @property
+    def is_closed(self):
+        raise NotImplementedError
 
     @property
     def is_u_periodic(self):
@@ -294,6 +335,41 @@ class Surface(Geometry):
     # Transformations
     # ==============================================================================
 
+    def transform(self, T):
+        """Transform the local coordinate system of the surface.
+
+        Parameters
+        ----------
+        T : :class:`~compas.geometry.Transformation`
+            The transformation.
+
+        Returns
+        -------
+        None
+            The curve is modified in-place.
+
+        Notes
+        -----
+        The transformation matrix is applied to the local coordinate system of the surface.
+        Transformations are limited to (combinations of) translations and rotations.
+        All other components of the transformation matrix are ignored.
+
+        """
+        T[0, 0] = 1
+        T[1, 1] = 1
+        T[2, 2] = 1
+        T[3, 3] = 1
+
+        T[0, 3] = 0
+        T[1, 3] = 0
+        T[2, 3] = 0
+
+        T[3, 0] = 0
+        T[3, 1] = 0
+        T[3, 2] = 0
+
+        self.frame.transform(T)
+
     # ==============================================================================
     # Methods
     # ==============================================================================
@@ -368,7 +444,7 @@ class Surface(Geometry):
         """
         raise NotImplementedError
 
-    def xyz(self, nu=10, nv=10):
+    def pointgrid(self, nu=10, nv=10):
         """Compute point locations corresponding to evenly spaced parameters over the surface domain.
 
         Parameters
@@ -505,3 +581,34 @@ class Surface(Geometry):
 
         """
         raise NotImplementedError
+
+    def intersections_with_plane(self, plane):
+        """Compute the intersections with a plane.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane`
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Curve`]
+
+        """
+        raise NotImplementedError
+
+    # def patch(self, u, v, du=1, dv=1):
+    #     """Construct a NURBS surface patch from the surface at the given UV parameters.
+
+    #     Parameters
+    #     ----------
+    #     u : float
+    #     v : float
+    #     du : int, optional
+    #     dv : int, optional
+
+    #     Returns
+    #     -------
+    #     :class:`~compas.geometry.NurbsSurface`
+
+    #     """
+    #     raise NotImplementedError
