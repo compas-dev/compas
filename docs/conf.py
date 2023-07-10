@@ -290,7 +290,9 @@ html_theme_options = {
     ],
     "navbar_persistent": ["search-button"],
     "navbar_align": "content",
-    "article_header_start": ["breadcrumbs"],
+    "article_header_start": [
+        # "breadcrumbs"
+    ],
     "article_header_end": [],
     "primary_sidebar_end": [
         # "sidebar-ethical-ads"

@@ -1,9 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import asarray
-from scipy.linalg import svd
+from scipy.linalg import svd  # type: ignore
 
 
 def pca_numpy(data):
