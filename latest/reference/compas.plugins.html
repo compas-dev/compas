@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pluggable" href="generated/compas.plugins.pluggable.html" />
-    <link rel="prev" title="unset_array_print_precision" href="generated/compas.numerical.unset_array_print_precision.html" />
+    <link rel="prev" title="stiffness_matrix" href="generated/compas.numerical.stiffness_matrix.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -787,8 +787,10 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.delaunay_from_points_numpy.html">delaunay_from_points_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.delaunay_triangulation.html">delaunay_triangulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.voronoi_from_points_numpy.html">voronoi_from_points_numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_descent_numpy.html">trimesh_descent_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_gaussian_curvature.html">trimesh_gaussian_curvature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_geodistance.html">trimesh_geodistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_gradient_numpy.html">trimesh_gradient_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_harmonic.html">trimesh_harmonic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_isolines.html">trimesh_isolines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_lscm.html">trimesh_lscm</a></li>
@@ -962,15 +964,7 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="compas.numerical.html">compas.numerical</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.descent_numpy.html">descent_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.devo_numpy.html">devo_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.dr.html">dr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.dr_numpy.html">dr_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.fd_numpy.html">fd_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.ga.html">ga</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.moga.html">moga</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.pca_numpy.html">pca_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.topop_numpy.html">topop_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.scalarfield_contours_numpy.html">scalarfield_contours_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.nullspace.html">nullspace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.rank.html">rank</a></li>
@@ -996,12 +990,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.laplacian_matrix.html">laplacian_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.mass_matrix.html">mass_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.stiffness_matrix.html">stiffness_matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.curl.html">curl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.div.html">div</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.grad.html">grad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.float_formatter.html">float_formatter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.set_array_print_precision.html">set_array_print_precision</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.unset_array_print_precision.html">unset_array_print_precision</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">compas.plugins</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -1226,12 +1214,12 @@ customize and extend the functionality of the core framework.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="generated/compas.numerical.unset_array_print_precision.html"
+       href="generated/compas.numerical.stiffness_matrix.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">unset_array_print_precision</p>
+        <p class="prev-next-title">stiffness_matrix</p>
       </div>
     </a>
     <a class="right-next"

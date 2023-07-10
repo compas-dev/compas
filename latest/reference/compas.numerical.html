@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="descent_numpy" href="generated/compas.numerical.descent_numpy.html" />
+    <link rel="next" title="pca_numpy" href="generated/compas.numerical.pca_numpy.html" />
     <link rel="prev" title="logarithmic_spiral_evaluate" href="generated/compas.geometry.logarithmic_spiral_evaluate.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -787,8 +787,10 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.delaunay_from_points_numpy.html">delaunay_from_points_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.delaunay_triangulation.html">delaunay_triangulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.voronoi_from_points_numpy.html">voronoi_from_points_numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_descent_numpy.html">trimesh_descent_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_gaussian_curvature.html">trimesh_gaussian_curvature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_geodistance.html">trimesh_geodistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_gradient_numpy.html">trimesh_gradient_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_harmonic.html">trimesh_harmonic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_isolines.html">trimesh_isolines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.geometry.trimesh_lscm.html">trimesh_lscm</a></li>
@@ -962,15 +964,7 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">compas.numerical</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.descent_numpy.html">descent_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.devo_numpy.html">devo_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.dr.html">dr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.dr_numpy.html">dr_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.fd_numpy.html">fd_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.ga.html">ga</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.moga.html">moga</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.pca_numpy.html">pca_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.topop_numpy.html">topop_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.scalarfield_contours_numpy.html">scalarfield_contours_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.nullspace.html">nullspace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.rank.html">rank</a></li>
@@ -996,12 +990,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.laplacian_matrix.html">laplacian_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.mass_matrix.html">mass_matrix</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.stiffness_matrix.html">stiffness_matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.curl.html">curl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.div.html">div</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.grad.html">grad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.float_formatter.html">float_formatter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.set_array_print_precision.html">set_array_print_precision</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.numerical.unset_array_print_precision.html">unset_array_print_precision</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="compas.plugins.html">compas.plugins</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -1161,14 +1149,6 @@ document.write(`
                   
   <section id="compas-numerical">
 <h1>compas.numerical</h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Note that this package will be removed from <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code>.
-Some of the functionality will be moved to <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code>.
-Specific algorithms will be moved to their own packages.
-For example, <a class="reference internal" href="generated/compas.numerical.fd_numpy.html" title="compas.numerical.fd_numpy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.numerical.fd_numpy</span></code></a> will be moved to <code class="docutils literal notranslate"><span class="pre">compas_fd</span></code>,
-and <a class="reference internal" href="generated/compas.numerical.dr_numpy.html" title="compas.numerical.dr_numpy"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.numerical.dr_numpy</span></code></a> will be moved to <code class="docutils literal notranslate"><span class="pre">compas_dr</span></code>.</p>
-</div>
 <p class="lead">This package provides some basic linear algabra functions,
 and matrix-based implementations of various geometric and topological algorithms.</p>
 <section id="solvers">
@@ -1179,32 +1159,8 @@ and matrix-based implementations of various geometric and topological algorithms
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.descent_numpy.html" title="compas.numerical.descent_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">descent_numpy</span></code></a></p></td>
-<td><p>A gradient descent optimisation solver.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.numerical.devo_numpy.html" title="compas.numerical.devo_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">devo_numpy</span></code></a></p></td>
-<td><p>Call the Differential Evolution solver.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.dr.html" title="compas.numerical.dr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dr</span></code></a></p></td>
-<td><p>Implementation of dynamic relaxation with RK integration scheme in pure Python.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.numerical.dr_numpy.html" title="compas.numerical.dr_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dr_numpy</span></code></a></p></td>
-<td><p>Implementation of the dynamic relaxation method for form findong and analysis of articulated networks of axial-force members.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.fd_numpy.html" title="compas.numerical.fd_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fd_numpy</span></code></a></p></td>
-<td><p>Implementation of the force density method to compute equilibrium of axial force networks.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.numerical.ga.html" title="compas.numerical.ga"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ga</span></code></a></p></td>
-<td><p>Genetic Algorithm optimisation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.moga.html" title="compas.numerical.moga"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moga</span></code></a></p></td>
-<td><p>Multi-objective Genetic Algorithm optimisation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.numerical.pca_numpy.html" title="compas.numerical.pca_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pca_numpy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.pca_numpy.html" title="compas.numerical.pca_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pca_numpy</span></code></a></p></td>
 <td><p>Compute the principle components of a set of data points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.topop_numpy.html" title="compas.numerical.topop_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">topop_numpy</span></code></a></p></td>
-<td><p>Topology optimisation in 2D.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1317,46 +1273,6 @@ and matrix-based implementations of various geometric and topological algorithms
 </tbody>
 </table>
 </section>
-<section id="operators">
-<h2>Operators</h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.curl.html" title="compas.numerical.curl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curl</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.numerical.div.html" title="compas.numerical.div"><code class="xref py py-obj docutils literal notranslate"><span class="pre">div</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.grad.html" title="compas.numerical.grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grad</span></code></a></p></td>
-<td><p>Construct the gradient operator of a trianglular mesh.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="utilities">
-<h2>Utilities</h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.float_formatter.html" title="compas.numerical.float_formatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float_formatter</span></code></a></p></td>
-<td><p>Formats float to truncated string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.numerical.set_array_print_precision.html" title="compas.numerical.set_array_print_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_array_print_precision</span></code></a></p></td>
-<td><p>Changes float precision of float_formatter.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.numerical.unset_array_print_precision.html" title="compas.numerical.unset_array_print_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_array_print_precision</span></code></a></p></td>
-<td><p>Unchanges float precision of float_formatter back to default.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
 </section>
 
 
@@ -1380,11 +1296,11 @@ and matrix-based implementations of various geometric and topological algorithms
       </div>
     </a>
     <a class="right-next"
-       href="generated/compas.numerical.descent_numpy.html"
+       href="generated/compas.numerical.pca_numpy.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">descent_numpy</p>
+        <p class="prev-next-title">pca_numpy</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1410,8 +1326,6 @@ and matrix-based implementations of various geometric and topological algorithms
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isolines">Isolines</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linalg">Linalg</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrices">Matrices</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operators">Operators</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilities">Utilities</a></li>
 </ul>
   </nav></div>
 
