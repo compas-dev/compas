@@ -6,6 +6,7 @@ from math import sqrt
 
 from compas.utilities import pairwise
 from compas.geometry import transform_points
+from compas.geometry import Polygon
 from .geometry import Geometry
 
 
@@ -400,6 +401,22 @@ class Polyhedron(Geometry):
                     seen.add((u, v))
                     seen.add((v, u))
                     yield u, v
+
+    @property
+    def polygons(self):
+        return [Polygon([self.vertices[index] for index in face]) for face in self.faces]
+
+    @property
+    def planes(self):
+        return [polygon.plane for polygon in self.polygons]
+
+    @property
+    def is_convex(self):
+        for plane in self.planes:
+            for vertex in self.vertices:
+                if plane.normal.dot(plane.point - vertex) < 0:
+                    return False
+        return True
 
     # ==========================================================================
     # Constructors

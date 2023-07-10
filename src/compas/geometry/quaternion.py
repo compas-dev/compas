@@ -121,8 +121,6 @@ class Quaternion(Geometry):
         "required": ["w", "x", "y", "z"],
     }
 
-    __slots__ = ["_w", "_x", "_y", "_z"]
-
     def __init__(self, w, x, y, z, **kwargs):
         super(Quaternion, self).__init__(**kwargs)
         self._w = None
@@ -443,7 +441,7 @@ class Quaternion(Geometry):
 
         """
         qc = quaternion_canonize(self)
-        self.w, self.x, self.y, self.z = qc
+        self.w, self.x, self.y, self.z = qc  # type: ignore
 
     def canonized(self):
         """Returns a quaternion in canonic form.
@@ -465,7 +463,7 @@ class Quaternion(Geometry):
 
         """
         qc = quaternion_canonize(self)
-        return Quaternion(*qc)
+        return Quaternion(*qc)  # type: ignore
 
     def conjugate(self):
         """Conjugate the quaternion.

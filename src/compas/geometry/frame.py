@@ -87,7 +87,7 @@ class Frame(Geometry):
         self.yaxis = yaxis
 
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
@@ -135,7 +135,7 @@ class Frame(Geometry):
         return cls(data["point"], data["xaxis"], data["yaxis"])
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -193,7 +193,7 @@ class Frame(Geometry):
         return Vector(*axis_angle_vector_from_matrix(R))
 
     # ==========================================================================
-    # customization
+    # Customization
     # ==========================================================================
 
     def __repr__(self):
@@ -231,7 +231,7 @@ class Frame(Geometry):
         return allclose(self, other)
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -598,47 +598,62 @@ class Frame(Geometry):
         yaxis = cross_vectors(normal, xaxis)
         return cls(point, xaxis, yaxis)
 
+    # # ==========================================================================
+    # # Static
+    # # ==========================================================================
+
+    # @staticmethod
+    # def local_to_local_coordinates(frame1, frame2, object_in_frame1):
+    #     """Returns the object's coordinates in frame1 in the local coordinates of frame2.
+
+    #     Parameters
+    #     ----------
+    #     frame1 : [point, vector, vector] | :class:`~compas.geometry.Frame`
+    #         A frame representing one local coordinate system.
+    #     frame2 : [point, vector, vector] | :class:`~compas.geometry.Frame`
+    #         A frame representing another local coordinate system.
+    #     object_in_frame1 : [float, float, float] | :class:`~compas.geometry.Geometry`
+    #         An object in the coordinate frame1.
+    #         If you pass a list of float, it is assumed to represent a point.
+
+    #     Returns
+    #     -------
+    #     :class:`~compas.geometry.Geometry`
+    #         The object in the local coordinate system of frame2.
+
+    #     Examples
+    #     --------
+    #     >>> from compas.geometry import Point
+    #     >>> frame1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    #     >>> frame2 = Frame([2, 1, 3], [1., 0., 0.], [0., 1., 0.])
+    #     >>> p1 = Point(2, 2, 2) # point in frame1
+    #     >>> p2 = Frame.local_to_local_coordinates(frame1, frame2, p1) # point in frame2
+    #     >>> Frame.local_to_local_coordinates(frame2, frame1, p2)
+    #     Point(2.000, 2.000, 2.000)
+
+    #     """
+    #     T = Transformation.from_change_of_basis(frame1, frame2)
+    #     if isinstance(object_in_frame1, (list, tuple)):
+    #         return Point(*object_in_frame1).transformed(T)
+    #     return object_in_frame1.transformed(T)
+
     # ==========================================================================
-    # static
+    # Conversions
     # ==========================================================================
 
-    @staticmethod
-    def local_to_local_coordinates(frame1, frame2, object_in_frame1):
-        """Returns the object's coordinates in frame1 in the local coordinates of frame2.
-
-        Parameters
-        ----------
-        frame1 : [point, vector, vector] | :class:`~compas.geometry.Frame`
-            A frame representing one local coordinate system.
-        frame2 : [point, vector, vector] | :class:`~compas.geometry.Frame`
-            A frame representing another local coordinate system.
-        object_in_frame1 : [float, float, float] | :class:`~compas.geometry.Geometry`
-            An object in the coordinate frame1.
-            If you pass a list of float, it is assumed to represent a point.
+    def to_transformation(self):
+        """Convert the frame to a transformation.
 
         Returns
         -------
-        :class:`~compas.geometry.Geometry`
-            The object in the local coordinate system of frame2.
-
-        Examples
-        --------
-        >>> from compas.geometry import Point
-        >>> frame1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> frame2 = Frame([2, 1, 3], [1., 0., 0.], [0., 1., 0.])
-        >>> p1 = Point(2, 2, 2) # point in frame1
-        >>> p2 = Frame.local_to_local_coordinates(frame1, frame2, p1) # point in frame2
-        >>> Frame.local_to_local_coordinates(frame2, frame1, p2)
-        Point(2.000, 2.000, 2.000)
+        :class:`compas.geometry.Transformation`
+            The transformation.
 
         """
-        T = Transformation.from_change_of_basis(frame1, frame2)
-        if isinstance(object_in_frame1, (list, tuple)):
-            return Point(*object_in_frame1).transformed(T)
-        return object_in_frame1.transformed(T)
+        return Transformation.from_frame(self)
 
     # ==========================================================================
-    # methods
+    # Methods
     # ==========================================================================
 
     def euler_angles(self, static=True, axes="xyz"):

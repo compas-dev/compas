@@ -9,12 +9,10 @@ from compas.geometry import normal_polygon
 from compas.geometry import distance_point_point
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
-from compas.geometry import is_point_on_line
 from compas.geometry import is_point_on_segment
 from compas.geometry import is_point_on_polyline
 from compas.geometry import is_point_in_triangle
 from compas.geometry import is_point_in_circle
-from compas.geometry import is_polygon_convex_xy
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_convex_polygon_xy
 from compas.geometry import is_point_behind_plane
@@ -423,76 +421,6 @@ class Point(Geometry):
     # ==========================================================================
 
     # ==========================================================================
-    # static
-    # ==========================================================================
-
-    @staticmethod
-    def transform_collection(collection, X):
-        """Transform a collection of points.
-
-        Parameters
-        ----------
-        collection : list[[float, float, float] | :class:`~compas.geometry.Point`]
-            The collection of points.
-
-        Returns
-        -------
-        None
-            The points are modified in-place.
-
-        Examples
-        --------
-        >>> from compas.geometry import Translation
-        >>> T = Translation.from_vector([1.0, 2.0, 3.0])
-        >>> a = Point(0.0, 0.0, 0.0)
-        >>> points = [a]
-        >>> Point.transform_collection(points, T)
-        >>> b = points[0]
-        >>> b
-        Point(1.000, 2.000, 3.000)
-        >>> a is b
-        True
-
-        """
-        data = transform_points(collection, X)
-        for point, xyz in zip(collection, data):
-            point.x = xyz[0]
-            point.y = xyz[1]
-            point.z = xyz[2]
-
-    @staticmethod
-    def transformed_collection(collection, X):
-        """Create a collection of transformed points.
-
-        Parameters
-        ----------
-        collection : list[[float, float, float] | :class:`~compas.geometry.Point`]
-            The collection of points.
-
-        Returns
-        -------
-        list[:class:`~compas.geometry.Point`]
-            The transformed points.
-
-        Examples
-        --------
-        >>> from compas.geometry import Translation
-        >>> T = Translation.from_vector([1.0, 2.0, 3.0])
-        >>> a = Point(0.0, 0.0, 0.0)
-        >>> points = [a]
-        >>> points = Point.transformed_collection(points, T)
-        >>> b = points[0]
-        >>> b
-        Point(1.000, 2.000, 3.000)
-        >>> a is b
-        False
-
-        """
-        points = [point.copy() for point in collection]
-        Point.transform_collection(points, X)
-        return points
-
-    # ==========================================================================
     # methods
     # ==========================================================================
 
@@ -572,23 +500,30 @@ class Point(Geometry):
     # 2D predicates
     # ==========================================================================
 
-    def in_polygon(self, polygon, convex=None):
+    def in_polygon(self, polygon):
         """Determine if the point lies inside the given polygon.
+
+        For this test, the point and polygon are assumed to lie in the XY plane.
+        The Z coordinates of the point and of the points of the polygon are ignored.
+        If the point and/or polygon do not lie in the XY plane, the result of this test is meaningless.
+        It is up to the user to apply the necessary transformations beforehand.
+
+        The polygon can be convex or concave.
 
         Parameters
         ----------
         polygon : sequence[point] | :class:`~compas.geometry.Polygon`
             The polygon.
-        convex : Literal[None, True, False], optional
-            If None, determine if the polygon is convex.
-            If False, use the non-convex algorithm.
-            If True, use the convex algorithm.
 
         Returns
         -------
         bool
             True, if the point lies in the polygon.
             False, otherwise.
+
+        See Also
+        --------
+        :meth:`in_convex_polygon`
 
         Examples
         --------
@@ -599,23 +534,58 @@ class Point(Geometry):
         True
 
         """
-        if convex is None:
-            convex = is_polygon_convex_xy(polygon)
-        if convex:
-            return is_point_in_convex_polygon_xy(self, polygon)
         return is_point_in_polygon_xy(self, polygon)
+
+    def in_convex_polygon(self, polygon):
+        """Determine if the point lies inside the given convex polygon.
+
+        For this test, the point and polygon are assumed to lie in the XY plane.
+        The Z coordinates of the point and of the points of the polygon are ignored.
+        If the point and/or polygon do not lie in the XY plane, the result of this test is meaningless.
+        It is up to the user to apply the necessary transformations beforehand.
+
+        The polygon must be convex.
+        However, the method will not check that this is indeed the case.
+
+        Parameters
+        ----------
+        polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+            The polygon.
+
+        Returns
+        -------
+        bool
+            True, if the point lies in the polygon.
+            False, otherwise.
+
+        See Also
+        --------
+        :meth:`in_polygon`
+
+        Examples
+        --------
+        >>> from compas.geometry import Polygon
+        >>> poly = Polygon([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0), Point(0.0, 1.0, 0.0)])
+        >>> point = Point(0.5, 0.5, 0.0)
+        >>> point.in_convex_polygon(poly)
+        True
+
+        """
+        return is_point_in_convex_polygon_xy(self, polygon)
 
     # ==========================================================================
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line):
+    def on_line(self, line, tol=1e-6):
         """Determine if the point lies on the given line.
 
         Parameters
         ----------
         line : [point, point] | :class:`~compas.geometry.Line`
             The line.
+        tol : float, optional
+            A tolerance value for the distance between the point and the line.
 
         Returns
         -------
@@ -632,15 +602,17 @@ class Point(Geometry):
         True
 
         """
-        return is_point_on_line(self, line)
+        return self.distance_to_line(line) < tol
 
-    def on_segment(self, segment):
+    def on_segment(self, segment, tol=1e-6):
         """Determine if the point lies on the given segment.
 
         Parameters
         ----------
         segment : [point, point] | :class:`~compas.geometry.Line`
             The segment.
+        tol : float, optional
+            A tolerance value for the distance between the point and the segment.
 
         Returns
         -------
@@ -657,7 +629,7 @@ class Point(Geometry):
         False
 
         """
-        return is_point_on_segment(self, segment)
+        return is_point_on_segment(self, segment, tol=tol)
 
     def on_polyline(self, polyline):
         """Determine if the point lies on the given polyline.
@@ -684,13 +656,43 @@ class Point(Geometry):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_circle(self, circle):
+    def on_plane(self, plane, tol=1e-6):
+        """Determine if the point lies on the given plane.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane`
+            The plane.
+        tol : float, optional
+            A tolerance value for the distance between the point and the plane.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the plane.
+            False, otherwise.
+
+        Examples
+        --------
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import Vector
+        >>> plane = Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0))
+        >>> point = Point(0.5, 0.5, 0.0)
+        >>> point.on_plane(plane)
+        True
+
+        """
+        return self.distance_to_plane(plane) < tol
+
+    def on_circle(self, circle, tol=1e-6):
         """Determine if the point lies on the given circle.
 
         Parameters
         ----------
-        circle : [plane, radius] | :class:`~compas.geometry.Circle`
+        circle : :class:`~compas.geometry.Circle`
             The circle.
+        tol : float, optional
+            A tolerance value for the distance between the point and the circle.
 
         Returns
         -------
@@ -699,7 +701,28 @@ class Point(Geometry):
             False, otherwise.
 
         """
-        raise NotImplementedError
+        if not self.on_plane(circle.plane, tol):
+            return False
+        return self.distance_to_point(circle.center) < circle.radius + tol
+
+    def on_curve(self, curve, tol=1e-6):
+        """Determine if the point lies on the given curve.
+
+        Parameters
+        ----------
+        curve : :class:`~compas.geometry.Curve`
+            The curve.
+        tol : float, optional
+            A tolerance value for the distance between the point and the curve.
+
+        Returns
+        -------
+        bool
+            True, if the point lies on the curve.
+            False, otherwise.
+
+        """
+        return self.distance_to_point(curve.closest_point(self)) < tol
 
     def in_triangle(self, triangle):
         """Determine if the point lies inside the given triangle.
@@ -731,7 +754,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        circle : [plane, radius] | :class:`~compas.geometry.Circle`
+        circle : :class:`~compas.geometry.Circle`
             The circle.
 
         Returns
@@ -751,10 +774,14 @@ class Point(Geometry):
         True
 
         """
-        return is_point_in_circle(self, circle)
+        return is_point_in_circle(self, (circle.plane, circle.radius))
 
     def in_polyhedron(self, polyhedron):
         """Determine if the point lies inside the given polyhedron.
+
+        This method verifies that the point lies behind the planes of all the faces of the polyhedron.
+        Therefore, if the polyhedron is not convex, or if the faces are not planar, the result of this test is meaningless.
+        Convexity and planarity are not checked.
 
         Parameters
         ----------

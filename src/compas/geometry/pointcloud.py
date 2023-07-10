@@ -3,9 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 
 from random import uniform
+
 from compas.geometry import transform_points
 from compas.geometry import centroid_points
 from compas.geometry import bounding_box
+from compas.geometry import closest_point_in_cloud
 from compas.geometry import Geometry
 from compas.geometry import Point
 
@@ -39,12 +41,14 @@ class Pointcloud(Geometry):
         "required": ["points"],
     }
 
-    __slots__ = ["_points"]
-
     def __init__(self, points, **kwargs):
         super(Pointcloud, self).__init__(**kwargs)
         self._points = None
         self.points = points
+
+    # ==========================================================================
+    # Data
+    # ==========================================================================
 
     @property
     def data(self):
@@ -59,11 +63,13 @@ class Pointcloud(Geometry):
         return cls(data["points"])
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
     def points(self):
+        if self._points is None:
+            self._points = []
         return self._points
 
     @points.setter
@@ -79,7 +85,7 @@ class Pointcloud(Geometry):
         return bounding_box(self.points)
 
     # ==========================================================================
-    # customization
+    # Customization
     # ==========================================================================
 
     def __repr__(self):
@@ -126,7 +132,7 @@ class Pointcloud(Geometry):
         return all(a == b for a, b in zip(A, B))
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -143,7 +149,17 @@ class Pointcloud(Geometry):
         :class:`~compas.geometry.Pointcloud`
 
         """
-        pass
+        from compas.files import PLY
+
+        points = []
+        # normals = []
+        ply = PLY(filepath)
+        for vertex in ply.reader.vertices:  # type: ignore
+            points.append([vertex["x"], vertex["y"], vertex["z"]])
+            # if "nx" in vertex and "ny" in vertex and "nz" in vertex:
+            #     normals.append([vertex["nx"], vertex["ny"], vertex["nz"]])
+        cloud = cls(points)
+        return cloud
 
     @classmethod
     def from_pcd(cls, filepath):
@@ -256,7 +272,7 @@ class Pointcloud(Geometry):
         return cls(list(map(list, zip(x, y, z))))
 
     # ==========================================================================
-    # methods
+    # Transformations
     # ==========================================================================
 
     def transform(self, T):
@@ -276,3 +292,24 @@ class Pointcloud(Geometry):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
+
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def closest_point(self, point):
+        """Compute the closest point on the pointcloud to a given point.
+
+        Parameters
+        ----------
+        point : :class:`~compas.geometry.Point`
+            The point.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+            The closest point on the pointcloud.
+
+        """
+        distance, point, index = closest_point_in_cloud(point, self.points)
+        return point
