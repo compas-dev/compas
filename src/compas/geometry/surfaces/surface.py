@@ -261,34 +261,41 @@ class Surface(Geometry):
         """
         raise NotImplementedError
 
-    def to_tesselation(self):
-        """Convert the surface to a triangle mesh.
-
-        Returns
-        -------
-        :class:`~compas.datastructures.Mesh`
-
-        """
-        raise NotImplementedError
-
-    def to_mesh(self, nu=100, nv=None):
-        """Convert the surface to a quad mesh.
+    def to_vertices_and_faces(self, nu=16, nv=16, du=None, dv=None):
+        """Convert the surface to a list of vertices and faces.
 
         Parameters
         ----------
         nu : int, optional
-            Number of faces in the U direction.
+            The number of faces in the u direction.
+            Default is ``16``.
         nv : int, optional
-            Number of faces in the V direction.
+            The number of faces in the v direction.
+            Default is ``16``.
+        du : tuple, optional
+            The subset of the domain in the u direction.
+            Default is ``None``, in which case the entire domain is used.
+        dv : tuple, optional
+            The subset of the domain in the v direction.
+            Default is ``None``, in which case the entire domain is used.
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        vertices : list of :class:`compas.geometry.Point`
+            The vertices of the surface discretisation.
+        faces : list of list of int
+            The faces of the surface discretisation as lists of vertex indices.
 
         """
-        from compas.datastructures import Mesh
+        u_domain = self.u_domain
+        v_domain = self.v_domain
 
-        nv = nv or nu
+        du = du or u_domain
+        dv = dv or v_domain
+
+        self.u_domain = du
+        self.v_domain = dv
+
         vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
         faces = [
             [
@@ -300,36 +307,150 @@ class Surface(Geometry):
             for i, j in product(range(nu), range(nv))
         ]
 
-        return Mesh.from_vertices_and_faces(vertices, faces)
+        self.u_domain = u_domain
+        self.v_domain = v_domain
 
-    def to_triangles(self, nu=100, nv=None):
+        return vertices, faces
+
+    def to_triangles(self, nu=16, nv=16, du=None, dv=None):
         """Convert the surface to a list of triangles.
 
         Parameters
         ----------
         nu : int, optional
-            Number of quads in the U direction.
-            Every quad has two triangles.
+            The number of faces in the u direction.
+            Default is ``16``.
         nv : int, optional
-            Number of quads in the V direction.
-            Every quad has two triangles.
+            The number of faces in the v direction.
+            Default is ``16``.
+        du : tuple, optional
+            The subset of the domain in the u direction.
+            Default is ``None``, in which case the entire domain is used.
+        dv : tuple, optional
+            The subset of the domain in the v direction.
+            Default is ``None``, in which case the entire domain is used.
+
 
         Returns
         -------
         list[list[:class:`~compas.geometry.Point`]]
 
         """
-        nv = nv or nu
-        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
+        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
         triangles = []
-        for i, j in product(range(nu), range(nv)):
-            a = i * (nv + 1) + j
-            b = (i + 1) * (nv + 1) + j
-            c = (i + 1) * (nv + 1) + j + 1
-            d = i * (nv + 1) + j + 1
+        for a, b, c, d in faces:
             triangles.append([vertices[a], vertices[b], vertices[c]])
             triangles.append([vertices[a], vertices[c], vertices[d]])
         return triangles
+
+    def to_quads(self, nu=16, nv=16, du=None, dv=None):
+        """Convert the surface to a list of quads.
+
+        Parameters
+        ----------
+        nu : int, optional
+            The number of faces in the u direction.
+            Default is ``16``.
+        nv : int, optional
+            The number of faces in the v direction.
+            Default is ``16``.
+        du : tuple, optional
+            The subset of the domain in the u direction.
+            Default is ``None``, in which case the entire domain is used.
+        dv : tuple, optional
+            The subset of the domain in the v direction.
+            Default is ``None``, in which case the entire domain is used.
+
+
+        Returns
+        -------
+        list[list[:class:`~compas.geometry.Point`]]
+
+        """
+        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
+        quads = []
+        for a, b, c, d in faces:
+            quads.append([vertices[a], vertices[b], vertices[c], vertices[d]])
+        return quads
+
+    def to_polyhedron(self, nu=16, nv=16, du=None, dv=None):
+        """Convert the surface to a polyhedron.
+
+        Parameters
+        ----------
+        nu : int, optional
+            The number of faces in the u direction.
+            Default is ``16``.
+        nv : int, optional
+            The number of faces in the v direction.
+            Default is ``16``.
+        du : tuple, optional
+            The subset of the domain in the u direction.
+            Default is ``None``, in which case the entire domain is used.
+        dv : tuple, optional
+            The subset of the domain in the v direction.
+            Default is ``None``, in which case the entire domain is used.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Polyhedron`
+            A polyhedron object.
+
+        """
+        from compas.geometry import Polyhedron
+
+        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
+        return Polyhedron(vertices, faces)
+
+    def to_mesh(self, nu=16, nv=16, du=None, dv=None):
+        """Convert the surface to a mesh.
+
+        Parameters
+        ----------
+        nu : int, optional
+            The number of faces in the u direction.
+            Default is ``16``.
+        nv : int, optional
+            The number of faces in the v direction.
+            Default is ``16``.
+        du : tuple, optional
+            The subset of the domain in the u direction.
+            Default is ``None``, in which case the entire domain is used.
+        dv : tuple, optional
+            The subset of the domain in the v direction.
+            Default is ``None``, in which case the entire domain is used.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            A mesh object.
+
+        """
+        from compas.datastructures import Mesh
+
+        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
+        return Mesh.from_vertices_and_faces(vertices, faces)
+
+    def to_tesselation(self):
+        """Convert the surface to a triangle mesh.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Mesh`
+
+        """
+        raise NotImplementedError
+
+    def to_brep(self):
+        """Convert the surface to a BREP representation.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+            A BREP object.
+
+        """
+        raise NotImplementedError
 
     # ==============================================================================
     # Transformations
@@ -355,18 +476,18 @@ class Surface(Geometry):
         All other components of the transformation matrix are ignored.
 
         """
-        T[0, 0] = 1
-        T[1, 1] = 1
-        T[2, 2] = 1
-        T[3, 3] = 1
+        # T[0, 0] = 1
+        # T[1, 1] = 1
+        # T[2, 2] = 1
+        # T[3, 3] = 1
 
-        T[0, 3] = 0
-        T[1, 3] = 0
-        T[2, 3] = 0
+        # T[0, 3] = 0
+        # T[1, 3] = 0
+        # T[2, 3] = 0
 
-        T[3, 0] = 0
-        T[3, 1] = 0
-        T[3, 2] = 0
+        # T[3, 0] = 0
+        # T[3, 1] = 0
+        # T[3, 2] = 0
 
         self.frame.transform(T)
 
