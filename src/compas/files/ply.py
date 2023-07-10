@@ -20,6 +20,10 @@ class PLY(object):
 
     Attributes
     ----------
+    filepath : str
+        The path to the file.
+    precision : str
+        A COMPAS precision specification.
     reader : :class:`PLYReader`
         A PLY file reader.
     parser : :class:`PLYParser`

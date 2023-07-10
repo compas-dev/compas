@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from subprocess import Popen
 import sys
 
@@ -12,45 +8,23 @@ from numpy import asarray
 from numpy import atleast_2d
 from numpy import nan_to_num
 from numpy import nonzero
-from numpy import seterr
+
 from numpy import sum
 from numpy import absolute
 from numpy import cross
 from numpy.linalg import cond
 
-from scipy.linalg import cho_factor
-from scipy.linalg import cho_solve
-from scipy.linalg import lstsq
-from scipy.linalg import qr
-from scipy.linalg import svd
-from scipy.io import loadmat
-from scipy.io import savemat
-from scipy.sparse.linalg import factorized
-from scipy.sparse.linalg import spsolve
+from scipy.linalg import cho_factor  # type: ignore
+from scipy.linalg import cho_solve  # type: ignore
+from scipy.linalg import lstsq  # type: ignore
+from scipy.linalg import qr  # type: ignore
+from scipy.linalg import svd  # type: ignore
+from scipy.io import loadmat  # type: ignore
+from scipy.io import savemat  # type: ignore
+from scipy.sparse.linalg import factorized  # type: ignore
+from scipy.sparse.linalg import spsolve  # type: ignore
 
 import compas
-
-old_settings = seterr(all="ignore")
-
-
-__all__ = [
-    "nullspace",
-    "rank",
-    "dof",
-    "pivots",
-    "nonpivots",
-    "rref",
-    "rref_sympy",
-    "rref_matlab",
-    "uvw_lengths",
-    "normrow",
-    "normalizerow",
-    "rot90",
-    "solve_with_known",
-    "spsolve_with_known",
-    "chofactor",
-    "lufactorized",
-]
 
 
 # ==============================================================================

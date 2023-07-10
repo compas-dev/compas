@@ -82,6 +82,7 @@ class Frame(Geometry):
         self._point = None
         self._xaxis = None
         self._yaxis = None
+        self._zaxis = None
         self.point = point
         self.xaxis = xaxis
         self.yaxis = yaxis
@@ -159,6 +160,7 @@ class Frame(Geometry):
         xaxis = Vector(*vector)
         xaxis.unitize()
         self._xaxis = xaxis
+        self._zaxis = None
 
     @property
     def yaxis(self):
@@ -170,17 +172,20 @@ class Frame(Geometry):
     def yaxis(self, vector):
         yaxis = Vector(*vector)
         yaxis.unitize()
-        zaxis = Vector(*cross_vectors(self.xaxis, yaxis))
+        zaxis = self.xaxis.cross(yaxis)
         zaxis.unitize()
-        self._yaxis = Vector(*cross_vectors(zaxis, self.xaxis))
+        self._yaxis = zaxis.cross(self.xaxis)
+        self._zaxis = None
 
     @property
     def normal(self):
-        return Vector(*cross_vectors(self.xaxis, self.yaxis))
+        return self.zaxis
 
     @property
     def zaxis(self):
-        return self.normal
+        if not self._zaxis:
+            self._zaxis = self.xaxis.cross(self.yaxis)
+        return self._zaxis
 
     @property
     def quaternion(self):
@@ -767,7 +772,6 @@ class Frame(Geometry):
         True
 
         """
-        # replace this by function call
         X = T * Transformation.from_frame(self)
         point = X.translation_vector
         xaxis, yaxis = X.basis_vectors

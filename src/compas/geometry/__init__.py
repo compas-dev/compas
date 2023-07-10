@@ -307,6 +307,8 @@ if not compas.IPY:
     from .hull.hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
     from .icp.icp_numpy import icp_numpy
     from .triangulation.delaunay_numpy import delaunay_from_points_numpy, voronoi_from_points_numpy
+    from .trimesh.gradient_numpy import trimesh_gradient_numpy
+    from .trimesh.descent_numpy import trimesh_descent_numpy
 
 # =============================================================================
 # Class APIs
@@ -342,6 +344,11 @@ from .curves.arc import Arc
 from .curves.nurbs import NurbsCurve
 
 from .surfaces.surface import Surface
+from .surfaces.spherical import SphericalSurface
+from .surfaces.cylindrical import CylindricalSurface
+from .surfaces.toroidal import ToroidalSurface
+from .surfaces.conical import ConicalSurface
+from .surfaces.planar import PlanarSurface
 from .surfaces.nurbs import NurbsSurface
 
 from .shapes.shape import Shape
@@ -676,6 +683,11 @@ __all__ = [
     "Curve",
     "NurbsCurve",
     "Surface",
+    "SphericalSurface",
+    "CylindricalSurface",
+    "ToroidalSurface",
+    "ConicalSurface",
+    "PlanarSurface",
     "NurbsSurface",
     "Brep",
     "BrepLoop",
@@ -713,4 +725,6 @@ if not compas.IPY:
         "local_to_world_coordinates_numpy",
         "delaunay_from_points_numpy",
         "voronoi_from_points_numpy",
+        "trimesh_descent_numpy",
+        "trimesh_gradient_numpy",
     ]
