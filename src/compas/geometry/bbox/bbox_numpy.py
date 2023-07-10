@@ -144,6 +144,7 @@ def oriented_bounding_box_numpy(points):
         points2 = world_to_local_coordinates_numpy(frame, points)
         points2 = points2[:, :2]
         hull2 = ConvexHull(points2)
+
         bbox2, size1 = minimum_area_rectangle_from_hull_2(points2, hull2, True)
         bottom = [[x, y, 0.0] for x, y in bbox2]
         top = [[x, y, 0.0] for x, y in bbox2]
@@ -153,7 +154,7 @@ def oriented_bounding_box_numpy(points):
     else:
         bbox1, size1 = minimum_volume_box_from_hull_3(points, hull, True)
 
-    bbox2, size2 = obb_numpy(points, True)
+    bbox2, size2 = obb3_numpy(points, True)
     bbox = bbox1 if size1 < size2 else bbox2
 
     return bbox
@@ -200,10 +201,14 @@ def oriented_bounding_box_xy_numpy(points):
 
     assert 1 < dim, "The point coordinates should be at least 2D: %i" % dim
 
-    points = points[:, :2]
+    points2 = points[:, :2]
 
-    hull = ConvexHull(points)
-    bbox = minimum_area_rectangle_from_hull_2(points, hull)
+    hull = ConvexHull(points2)
+    bbox1, size1 = minimum_area_rectangle_from_hull_2(points2, hull, True)
+
+    bbox2, size2 = obb2_numpy(points, True)
+
+    bbox = bbox1 if size1 < size2 else bbox2
 
     return bbox
 
@@ -279,7 +284,7 @@ def minimum_area_rectangle_from_hull_2(points, hull, return_size=False):
 
     """
     n = len(points)
-    xy = points[hull.vertices].reshape((-1, 2))
+    xy = points[hull.vertices, :2]
 
     boxes = []
     m = sum(xy, axis=0) / n
@@ -335,8 +340,8 @@ def minimum_area_rectangle_from_hull_2(points, hull, return_size=False):
     return bbox
 
 
-def obb_numpy(points, return_size=False):
-    """Oriented bounding box of a set of points.
+def obb3_numpy(points, return_size=False):
+    """Oriented bounding box of a set of 3D points.
 
     Parameters
     ----------
@@ -362,9 +367,44 @@ def obb_numpy(points, return_size=False):
     bbox = bounding_box(points)
 
     if return_size:
-        volume = (bbox[1][0] - bbox[0][0]) * (bbox[3][1] - bbox[0][1]) * (bbox[4][2] - bbox[0][2])
+        size = (bbox[1][0] - bbox[0][0]) * (bbox[3][1] - bbox[0][1]) * (bbox[4][2] - bbox[0][2])
         bbox = transform_points_numpy(bbox, X.inverse())
-        return bbox, volume
+        return bbox, size
+
+    bbox = transform_points_numpy(bbox, X.inverse())
+    return bbox
+
+
+def obb2_numpy(points, return_size=False):
+    """Oriented bounding box of a set of 2D points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XY(Z) coordinates of the points.
+    return_size : bool, optional
+        If True, return the size of the box.
+
+    Returns
+    -------
+    list[[float, float, float]]
+        XYZ coordinates of 4 points defining a box.
+
+    """
+    from compas.geometry import Frame
+    from compas.geometry import Transformation
+
+    origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
+    frame = Frame(origin, xaxis, yaxis)
+    world = Frame.worldXY()
+    X = Transformation.from_frame_to_frame(frame, world)
+    points = transform_points_numpy(points, X)
+    bbox = bounding_box(points)[:4]
+
+    if return_size:
+        size = (bbox[1][0] - bbox[0][0]) * (bbox[3][1] - bbox[0][1])
+        bbox = transform_points_numpy(bbox, X.inverse())
+        return bbox, size
 
     bbox = transform_points_numpy(bbox, X.inverse())
     return bbox

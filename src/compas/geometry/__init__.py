@@ -296,7 +296,6 @@ if not compas.IPY:
     from .bbox.bbox_numpy import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
-        obb_numpy,
     )
     from .bestfit.bestfit_numpy import (
         bestfit_line_numpy,
@@ -708,7 +707,6 @@ if not compas.IPY:
     __all__ += [
         "oriented_bounding_box_numpy",
         "oriented_bounding_box_xy_numpy",
-        "obb_numpy",
         "bestfit_line_numpy",
         "bestfit_plane_numpy",
         "bestfit_frame_numpy",
