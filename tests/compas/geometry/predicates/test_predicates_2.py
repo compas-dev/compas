@@ -3,7 +3,7 @@ from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Polygon
 
-# from compas.geometry import Vector
+from compas.geometry import Vector
 from compas.geometry import is_point_in_circle_xy, is_polygon_in_polygon_xy
 
 
