@@ -1,5 +1,5 @@
 from compas.geometry import Circle
-from compas.geometry import Plane
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Vector
@@ -18,9 +18,9 @@ def test_is_point_in_circle_xy():
 
 def test_is_point_in_circle_xy_class_input():
     pt_inside = Point(1, 2, 0)
-    plane = Plane(Point(2, 2, 10), Vector(0, 0, 1))
+    frame = Frame(Point(2, 2, 10), Vector(1, 0, 0), Vector(0, 1, 0))
     radius = 4.7
-    circle = Circle(plane, radius)
+    circle = Circle(frame, radius)
     assert is_point_in_circle_xy(pt_inside, circle)
 
     pt_outside = Point(15, 15, 0)
