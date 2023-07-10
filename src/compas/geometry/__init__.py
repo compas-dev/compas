@@ -279,7 +279,7 @@ from .intersections.intersections import (
     intersection_sphere_line,
     intersection_sphere_sphere,
 )
-from .offset.offset import offset_line, offset_polyline, offset_polygon
+from .offset import offset_line, offset_polyline, offset_polygon
 from .quadmesh.planarization import quadmesh_planarize
 from .triangulation import conforming_delaunay_triangulation, constrained_delaunay_triangulation, delaunay_triangulation
 from .triangulation.delaunay import delaunay_from_points
