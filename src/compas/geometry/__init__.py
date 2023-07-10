@@ -343,6 +343,10 @@ from .curves.nurbs import NurbsCurve
 
 from .surfaces.surface import Surface
 from .surfaces.spherical import SphericalSurface
+from .surfaces.cylindrical import CylindricalSurface
+from .surfaces.toroidal import ToroidalSurface
+from .surfaces.conical import ConicalSurface
+from .surfaces.planar import PlanarSurface
 from .surfaces.nurbs import NurbsSurface
 
 from .shapes.shape import Shape
@@ -678,6 +682,10 @@ __all__ = [
     "NurbsCurve",
     "Surface",
     "SphericalSurface",
+    "CylindricalSurface",
+    "ToroidalSurface",
+    "ConicalSurface",
+    "PlanarSurface",
     "NurbsSurface",
     "Brep",
     "BrepLoop",
