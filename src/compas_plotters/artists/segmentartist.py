@@ -106,7 +106,7 @@ class SegmentArtist(PlotterArtist, PrimitiveArtist):
         self._mpl_line.set_xdata([self.line.start[0], self.line.end[0]])
         self._mpl_line.set_ydata([self.line.start[1], self.line.end[1]])
         self._mpl_line.set_color(self.color)
-        self._mpl_line.set_linewidth(self.width)
+        self._mpl_line.set_linewidth(self.linewidth)
         if self.draw_points:
             self._start_artist.redraw()
             self._end_artist.redraw()
