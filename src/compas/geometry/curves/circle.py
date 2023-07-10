@@ -153,6 +153,10 @@ class Circle(Conic):
         self._radius = float(radius)
 
     @property
+    def diameter(self):
+        return 2 * self.radius
+
+    @property
     def area(self):
         return pi * (self.radius**2)
 
