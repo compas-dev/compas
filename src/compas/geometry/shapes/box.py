@@ -99,56 +99,58 @@ class Box(Shape):
     JSONSCHEMA = {
         "type": "object",
         "properties": {
+            "xsize": {"type": "number", "minimum": 0},
+            "ysize": {"type": "number", "minimum": 0},
+            "zsize": {"type": "number", "minimum": 0},
             "frame": Frame.JSONSCHEMA,
-            "xsize": {"type": "number", "exclusiveMinimum": 0},
-            "ysize": {"type": "number", "exclusiveMinimum": 0},
-            "zsize": {"type": "number", "exclusiveMinimum": 0},
         },
         "additionalProperties": False,
         "minProperties": 4,
     }
 
-    def __init__(self, frame=None, xsize=1.0, ysize=1.0, zsize=1.0, size=1.0, **kwargs):
+    def __init__(self, xsize=1.0, ysize=None, zsize=None, frame=None, **kwargs):
         super(Box, self).__init__(frame=frame, **kwargs)
         self._xsize = None
         self._ysize = None
         self._zsize = None
-        self.xsize = xsize or size
-        self.ysize = ysize or size
-        self.zsize = zsize or size
+        self.xsize = xsize
+        self.ysize = xsize if ysize is None else ysize
+        self.zsize = xsize if zsize is None else zsize
 
     def __repr__(self):
-        return "Box({0!r}, {1!r}, {2!r}, {3!r})".format(self.frame, self.xsize, self.ysize, self.zsize)
+        return "Box(xsize={0!r}, ysize={1!r}, zsize={2!r}, frame={3!r})".format(
+            self.xsize, self.ysize, self.zsize, self.frame
+        )
 
     def __len__(self):
         return 4
 
     def __getitem__(self, key):
         if key == 0:
-            return self.frame
-        elif key == 1:
             return self.xsize
-        elif key == 2:
+        elif key == 1:
             return self.ysize
-        elif key == 3:
+        elif key == 2:
             return self.zsize
+        elif key == 3:
+            return self.frame
         else:
             raise KeyError
 
     def __setitem__(self, key, value):
         if key == 0:
-            self.frame = value
-        elif key == 1:
             self.xsize = value
-        elif key == 2:
+        elif key == 1:
             self.ysize = value
-        elif key == 3:
+        elif key == 2:
             self.zsize = value
+        elif key == 3:
+            self.frame = value
         else:
             raise KeyError
 
     def __iter__(self):
-        return iter([self.frame, self.xsize, self.ysize, self.zsize])
+        return iter([self.xsize, self.ysize, self.zsize, self.frame])
 
     # ==========================================================================
     # Data
@@ -176,38 +178,38 @@ class Box(Shape):
 
     @property
     def xsize(self):
-        if not self._xsize:
+        if self._xsize is None:
             raise ValueError("The size of the box along the local X axis is not set.")
         return self._xsize
 
     @xsize.setter
     def xsize(self, xsize):
-        if xsize <= 0:
-            raise ValueError("The size of the box along the local X axis should be larger than zero.")
+        if xsize < 0:
+            raise ValueError("The minimum value of the size of the box along the local X axis is zero.")
         self._xsize = float(xsize)
 
     @property
     def ysize(self):
-        if not self._ysize:
+        if self._ysize is None:
             raise ValueError("The size of the box along the local Y axis is not set.")
         return self._ysize
 
     @ysize.setter
     def ysize(self, ysize):
-        if ysize <= 0:
-            raise ValueError("The size of the box along the local Y axis should be larger than zero.")
+        if ysize < 0:
+            raise ValueError("The minimum value of the size of the box along the local Y axis is zero.")
         self._ysize = float(ysize)
 
     @property
     def zsize(self):
-        if not self._zsize:
+        if self._zsize is None:
             raise ValueError("The size of the box along the local Z axis is not set.")
         return self._zsize
 
     @zsize.setter
     def zsize(self, zsize):
-        if zsize <= 0:
-            raise ValueError("The size of the box along the local Z axis should be larger than zero.")
+        if zsize < 0:
+            raise ValueError("The minimum value of the size of the box along the local Z axis is zero.")
         self._zsize = float(zsize)
 
     @property
@@ -361,16 +363,7 @@ class Box(Shape):
         height = float(height)
         depth = float(depth)
 
-        if width == 0.0:
-            raise Exception("Width cannot be zero.")
-
-        if height == 0.0:
-            raise Exception("Height cannot be zero.")
-
-        if depth == 0.0:
-            raise Exception("Depth cannot be zero.")
-
-        return cls(Frame.worldXY(), width, depth, height)
+        return cls(width, depth, height)
 
     @classmethod
     def from_bounding_box(cls, bbox):
@@ -413,7 +406,7 @@ class Box(Shape):
         ysize = yaxis.length
         zsize = zaxis.length
         frame = Frame(centroid_points(bbox), xaxis, yaxis)
-        return cls(frame=frame, xsize=xsize, ysize=ysize, zsize=zsize)
+        return cls(xsize=xsize, ysize=ysize, zsize=zsize, frame=frame)
 
     @classmethod
     def from_corner_corner_height(cls, corner1, corner2, height):
@@ -454,7 +447,7 @@ class Box(Shape):
         point = [0.5 * (x1 + x2), 0.5 * (y1 + y2), z1 + 0.5 * height]
         frame = Frame(point, xaxis, yaxis)
 
-        return cls(frame=frame, xsize=width, ysize=depth, zsize=height)
+        return cls(xsize=width, ysize=depth, zsize=height, frame=frame)
 
     @classmethod
     def from_diagonal(cls, diagonal):
@@ -493,7 +486,23 @@ class Box(Shape):
         point = [0.5 * (x1 + x2), 0.5 * (y1 + y2), 0.5 * (z1 + z2)]
         frame = Frame(point, xaxis, yaxis)
 
-        return cls(frame, width, depth, height)
+        return cls(width, depth, height, frame)
+
+    # @classmethod
+    # def from_points(cls, points):
+    #     """Construct a box from a set of points.
+
+    #     Parameters
+    #     ----------
+    #     points : list[:class:`~compas.geometry.Point`]
+    #         A list of points.
+
+    #     Returns
+    #     -------
+    #     :class:`~compas.geometry.Box`
+    #         The resulting box.
+
+    #     """
 
     # ==========================================================================
     # Transformations

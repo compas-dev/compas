@@ -81,10 +81,17 @@ class Pointcloud(Geometry):
         return centroid_points(self.points)
 
     @property
-    def bounding_box(self):
+    def aabb(self):
         from compas.geometry import Box
 
         return Box.from_bounding_box(bounding_box(self.points))
+
+    @property
+    def obb(self):
+        from compas.geometry import Box
+        from compas.geometry import oriented_bounding_box_numpy
+
+        return Box.from_bounding_box(oriented_bounding_box_numpy(self.points))
 
     # ==========================================================================
     # Customization

@@ -13,6 +13,30 @@ from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
 
 
+def bestfit_line_numpy(points):
+    """Fit a line through two points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    [float, float, float]
+        XYZ coordinates of a point on the line.
+    [float, float, float]
+        The direction vector of the line.
+
+    Examples
+    --------
+    >>>
+
+    """
+    o, uvw, _ = pca_numpy(points)
+    return o, uvw[0]
+
+
 def bestfit_plane_numpy(points):
     """Fit a plane through more than three (non-coplanar) points.
 
@@ -199,3 +223,20 @@ def bestfit_sphere_numpy(points):
     t = (C[0] * C[0]) + (C[1] * C[1]) + (C[2] * C[2]) + C[3]
     radius = sqrt(t)
     return [float(C[0][0]), float(C[1][0]), float(C[2][0])], radius
+
+
+def bestfit_box_numpy(points):
+    """Compute the oriented minimum bounding box of set of points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    list[[float, float, float]]
+        XYZ coordinates of 8 points defining a box.
+
+    """
+    pass
