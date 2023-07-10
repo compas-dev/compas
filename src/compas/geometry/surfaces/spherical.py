@@ -52,37 +52,15 @@ class SphericalSurface(Surface):
         self.radius = radius
 
     def __repr__(self):
-        return "SphericalSurface({0!r}, frame={1!r})".format(self.radius, self.frame)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.radius
-        elif key == 1:
-            return self.frame
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.radius = value
-        elif key == 1:
-            self.frame = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius])
+        return "SphericalSurface(radius={0!r}, frame={1!r})".format(self.radius, self.frame)
 
     def __eq__(self, other):
         try:
-            other_frame = other[0]
-            other_radius = other[1]
+            other_frame = other.frame
+            other_radius = other.radius
         except Exception:
             return False
-        return self.frame == other_frame and self.radius == other_radius
+        return self.radius == other_radius and self.frame == other_frame
 
     @property
     def data(self):
@@ -91,7 +69,7 @@ class SphericalSurface(Surface):
     @data.setter
     def data(self, data):
         self.radius = data["radius"]
-        self.frame = Frame.from_data(data["frame"])
+        self.frame = data["frame"]
 
     @property
     def center(self):
@@ -195,133 +173,6 @@ class SphericalSurface(Surface):
     # =============================================================================
     # Conversions
     # =============================================================================
-
-    def to_vertices_and_faces(self, nu=16, nv=16, du=None, dv=None):
-        """Convert the sphere to a list of vertices and faces.
-
-        Parameters
-        ----------
-        nu : int, optional
-            The number of faces in the u direction.
-            Default is ``16``.
-        nv : int, optional
-            The number of faces in the v direction.
-            Default is ``16``.
-        du : tuple, optional
-            The subset of the domain in the u direction.
-            Default is ``None``, in which case the entire domain is used.
-        dv : tuple, optional
-            The subset of the domain in the v direction.
-            Default is ``None``, in which case the entire domain is used.
-
-        Returns
-        -------
-        vertices : list of :class:`compas.geometry.Point`
-            The vertices of the sphere.
-        faces : list of list of int
-            The faces of the sphere as lists of vertex indices.
-
-        """
-        u_domain = self.u_domain
-        v_domain = self.v_domain
-
-        du = du or u_domain
-        dv = dv or v_domain
-
-        self.u_domain = du
-        self.v_domain = dv
-
-        vertices = []
-        for u in self.u_space(n=nu + 1):
-            for v in self.v_space(n=nv + 1):
-                point = self.point_at(u, v)
-                vertices.append(point)
-
-        faces = []
-        for i in range(nu):
-            for j in range(nv):
-                faces.append(
-                    [
-                        i * (nv + 1) + j,
-                        (i + 1) * (nv + 1) + j,
-                        (i + 1) * (nv + 1) + j + 1,
-                        i * (nv + 1) + j + 1,
-                    ]
-                )
-
-        self.u_domain = u_domain
-        self.v_domain = v_domain
-
-        return vertices, faces
-
-    def to_polyhedron(self, nu=16, nv=16, du=None, dv=None):
-        """Convert the sphere to a polyhedron.
-
-        Parameters
-        ----------
-        nu : int, optional
-            The number of faces in the u direction.
-            Default is ``16``.
-        nv : int, optional
-            The number of faces in the v direction.
-            Default is ``16``.
-        du : tuple, optional
-            The subset of the domain in the u direction.
-            Default is ``None``, in which case the entire domain is used.
-        dv : tuple, optional
-            The subset of the domain in the v direction.
-            Default is ``None``, in which case the entire domain is used.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Polyhedron`
-            A polyhedron object.
-
-        """
-        from compas.geometry import Polyhedron
-
-        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
-        return Polyhedron(vertices, faces)
-
-    def to_mesh(self, nu=16, nv=16, du=None, dv=None):
-        """Convert the sphere to a mesh.
-
-        Parameters
-        ----------
-        nu : int, optional
-            The number of faces in the u direction.
-            Default is ``16``.
-        nv : int, optional
-            The number of faces in the v direction.
-            Default is ``16``.
-        du : tuple, optional
-            The subset of the domain in the u direction.
-            Default is ``None``, in which case the entire domain is used.
-        dv : tuple, optional
-            The subset of the domain in the v direction.
-            Default is ``None``, in which case the entire domain is used.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-            A mesh object.
-
-        """
-        from compas.datastructures import Mesh
-
-        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
-        return Mesh.from_vertices_and_faces(vertices, faces)
-
-    def to_brep(self):
-        """Convert the sphere to a BREP representation.
-
-        Returns
-        -------
-        :class:`compas.geometry.Brep`
-            A BREP object.
-
-        """
-        raise NotImplementedError
 
     # =============================================================================
     # Methods
