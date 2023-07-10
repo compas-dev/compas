@@ -62,10 +62,10 @@ def test_bounding_box(coords, expected):
         [
             [[0, 0], [1, 2], [-5, 6], [-3, 2], [0.5, -1]],
             [
-                [-6.129411764705883, 4.682352941176471],
-                [0.5, -1.0],
-                [2.1941176470588237, 0.976470588235294],
-                [-4.435294117647059, 6.658823529411765],
+                [-6.129411764705883, 4.682352941176471, 0.0],
+                [0.5, -1.0, 0.0],
+                [2.1941176470588237, 0.976470588235294, 0.0],
+                [-4.435294117647059, 6.658823529411765, 0.0],
             ],
         ],
         [
@@ -77,10 +77,10 @@ def test_bounding_box(coords, expected):
                 [6.73462, -53.57518],
             ],
             [
-                [6.754970846941253, -53.56071108254564],
-                [6.73462, -53.57518],
-                [6.738658767139154, -53.58086061378051],
-                [6.759009614080408, -53.56639169632614],
+                [6.754970846941253, -53.56071108254564, 0.0],
+                [6.73462, -53.57518, 0.0],
+                [6.738658767139154, -53.58086061378051, 0.0],
+                [6.759009614080408, -53.56639169632614, 0.0],
             ],
         ],
     ],
@@ -118,6 +118,6 @@ def test_oriented_bounding_box_numpy(coords, expected):
 
     from compas.geometry import oriented_bounding_box_numpy
 
-    results = oriented_bounding_box_numpy(coords).tolist()  # type: ignore
+    results = oriented_bounding_box_numpy(coords)
     for result, expected_values in zip(results, expected):
         assert allclose(result, expected_values, tol=1e-3)

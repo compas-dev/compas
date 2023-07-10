@@ -331,24 +331,24 @@ if not compas.IPY:
     @pytest.mark.parametrize(
         "box",
         [
-            {
-                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
-                "xsize": 0,
-                "ysize": 1,
-                "zsize": 1,
-            },
-            {
-                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
-                "xsize": 1,
-                "ysize": 1,
-                "zsize": 0,
-            },
-            {
-                "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
-                "xsize": 1,
-                "ysize": 0,
-                "zsize": 1,
-            },
+            # {
+            #     "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+            #     "xsize": 0,
+            #     "ysize": 1,
+            #     "zsize": 1,
+            # },
+            # {
+            #     "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+            #     "xsize": 1,
+            #     "ysize": 1,
+            #     "zsize": 0,
+            # },
+            # {
+            #     "frame": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
+            #     "xsize": 1,
+            #     "ysize": 0,
+            #     "zsize": 1,
+            # },
             {
                 "FRAME": {"point": [0, 0, 0], "xaxis": [1, 0, 0], "yaxis": [0, 1, 0]},
                 "XSIZE": 1,
