@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed uninstall post-process.
 * Fixed `area_polygon` that was, in some cases, returning a negative area
 * Fixed support for `System.Decimal` data type on json serialization.
+* Fixed `AttributeError` in Plotter's `PolylineArtist` and `SegementArtist`.
 
 ### Removed
 
