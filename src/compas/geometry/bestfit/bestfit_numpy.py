@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import asarray
 from numpy import sqrt
 from numpy import zeros
