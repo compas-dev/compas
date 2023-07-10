@@ -136,6 +136,8 @@ __all__ = [
 
 __all_plugins__ = [
     "compas.geometry.booleans.booleans_shapely",
+    "compas.geometry.offset.offset",
+    "compas.geometry.offset.offset_shapely",
 ]
 
 
