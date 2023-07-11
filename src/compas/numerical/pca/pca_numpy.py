@@ -23,6 +23,11 @@ def pca_numpy(data):
           If the data points are locations in 2D space, only two principle components will be returned.
         * The *spread* of the data along the principle directions.
 
+    Raises
+    ------
+    ValueError
+        If the number of observations is smaller than the number of measured variables.
+
     Notes
     -----
     PCA of a dataset finds the directions along which the variance of the data
@@ -35,9 +40,10 @@ def pca_numpy(data):
     X = asarray(data)
     n, dim = X.shape
 
-    assert (
-        n >= dim
-    ), "The number of observations (n) should be higher than the number of measured variables (dimensions)."
+    if not n >= dim:
+        raise ValueError(
+            "The number of observations (n) should be higher than the number of measured variables (dimensions)."
+        )
 
     # the average of the observations for each of the variables
     # for example, if the data are 2D point coordinates,
@@ -59,7 +65,7 @@ def pca_numpy(data):
     # of two independent variables
     C = Y.T.dot(Y) / (n - 1)
 
-    assert C.shape[0] == dim, "The shape of the covariance matrix is not correct."
+    # assert C.shape[0] == dim, "The shape of the covariance matrix is not correct."
 
     # SVD of covariance matrix
     u, s, vT = svd(C, full_matrices=False)
