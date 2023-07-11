@@ -10,7 +10,7 @@ from compas.geometry import local_to_world_coordinates_numpy
 
 
 def bestfit_line_numpy(points):
-    """Fit a line through two points.
+    """Fit a line through a set of points.
 
     Parameters
     ----------
@@ -23,6 +23,18 @@ def bestfit_line_numpy(points):
         XYZ coordinates of a point on the line.
     [float, float, float]
         The direction vector of the line.
+
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_plane_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
 
     Examples
     --------
@@ -47,6 +59,19 @@ def bestfit_plane_numpy(points):
         A point on the plane.
     [float, float, float]
         The normal vector.
+
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
+    :func:`compas.geometry.bestfit_plane`
 
     Examples
     --------
@@ -74,6 +99,18 @@ def bestfit_frame_numpy(points):
     [float, float, float]
         The local Y axis.
 
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_plane_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
+
     Examples
     --------
     >>>
@@ -99,6 +136,18 @@ def bestfit_circle_numpy(points):
         The normal vector of the local frame.
     float
         The radius of the circle.
+
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_plane_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_sphere_numpy`
 
     Notes
     -----
@@ -180,6 +229,11 @@ def bestfit_sphere_numpy(points):
     float
         Sphere radius.
 
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_plane_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`
+
     Notes
     -----
     For more information see [1]_.
@@ -219,20 +273,3 @@ def bestfit_sphere_numpy(points):
     t = (C[0] * C[0]) + (C[1] * C[1]) + (C[2] * C[2]) + C[3]
     radius = sqrt(t)
     return [float(C[0][0]), float(C[1][0]), float(C[2][0])], radius
-
-
-def bestfit_box_numpy(points):
-    """Compute the oriented minimum bounding box of set of points.
-
-    Parameters
-    ----------
-    points : array_like[point]
-        XYZ coordinates of the points.
-
-    Returns
-    -------
-    list[[float, float, float]]
-        XYZ coordinates of 8 points defining a box.
-
-    """
-    pass

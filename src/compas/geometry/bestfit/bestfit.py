@@ -22,6 +22,10 @@ def bestfit_plane(points):
     [float, float, float]
         Normal vector (normalized).
 
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_plane_numpy`
+
     Notes
     -----
     This method will minimize the squares of the residuals as perpendicular
