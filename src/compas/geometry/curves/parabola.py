@@ -153,7 +153,7 @@ class Parabola(Conic):
         y = self.a * x**2
         z = 0
         point = Point(x, y, z)
-        # point.transform(self.transformation)
+        point.transform(self.transformation)
         return point
 
     def tangent_at(self, t):
