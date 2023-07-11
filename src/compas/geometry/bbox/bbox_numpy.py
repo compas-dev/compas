@@ -35,24 +35,12 @@ def oriented_bounding_box_numpy(points, tol=1e-12):
     Raises
     ------
     AssertionError
-        If the input data is 2D.
-    QhullError
-        If the data is essentially 2D.
+        If the input data is not 3D.
 
-    Notes
-    -----
-    The *oriented (minimum) bounding box* (OBB) of a given set of points
-    is computed using the following procedure:
-
-    1. Compute the convex hull of the points.
-    2. For each of the faces on the hull:
-
-       1. Compute face frame.
-       2. Compute coordinates of other points in face frame.
-       3. Find "peak-to-peak" (PTP) values of point coordinates along local axes.
-       4. Compute volume of box formed with PTP values.
-
-    3. Select the box with the smallest volume.
+    See Also
+    --------
+    :func:`compas.geometry.bounding_box`
+    :func:`compas.geometry.oriented_bounding_box_xy_numpy`
 
     Examples
     --------
@@ -151,27 +139,15 @@ def oriented_bounding_box_xy_numpy(points):
     list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
-    Notes
-    -----
-    The *oriented (minimum) bounding box* (OBB) is computed using the following
-    procedure:
+    Raises
+    ------
+    AssertionError
+        If the input data is not at least 2D.
 
-    1. Compute the convex hull of the points.
-    2. For each of the edges on the hull:
-
-       1. Compute the s-axis as the unit vector in the direction of the edge
-       2. Compute the othorgonal t-axis.
-       3. Use the start point of the edge as origin.
-       4. Compute the spread of the points along the s-axis. (dot product of the point vecor in local coordinates and the s-axis)
-       5. Compute the spread along the t-axis.
-       6. Determine the side of s on which the points are.
-       7. Compute and store the corners of the bbox and its area.
-
-    3. Select the box with the smallest area.
-
-    Examples
+    See Also
     --------
-    >>>
+    :func:`compas.geometry.bounding_box_xy`
+    :func:`compas.geometry.oriented_bounding_box_numpy`
 
     """
     points = asarray(points)
