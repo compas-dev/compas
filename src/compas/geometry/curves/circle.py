@@ -19,10 +19,6 @@ class Circle(Conic):
     The parameter domain of a circle is ``[0, 2*pi]``.
     Moving along the circle in the parameter direction corresponds to moving counter-clockwise around the origin of the local coordinate system.
 
-    Transformations of the circle are performed by transforming the coordinate system.
-    They are limited to (combinations of) translations and rotations.
-    All other components of transformations are ignored.
-
     Parameters
     ----------
     frame : :class:`~compas.geometry.Frame`, optional
@@ -35,26 +31,26 @@ class Circle(Conic):
     ----------
     frame : :class:`~compas.geometry.Frame`
         The coordinate frame of the circle.
+    transformation : :class:`Transformation`, read-only
+        The transformation from the local coordinate system of the circle (:attr:`frame`) to the world coordinate system.
     radius : float
         The radius of the circle.
     center : :class:`~compas.geometry.Point`
         The center of the circle.
     plane : :class:`~compas.geometry.Plane`, read-only
         The plane of the circle.
-    normal : :class:`~compas.geometry.Vector`, read-only
-        The normal of the circle.
+    diameter : float, read-only
+        The diameter of the circle.
     area : float, read-only
         The area of the circle.
     circumference : float, read-only
         The circumference of the circle.
-    domain : tuple(float, float), read-only
-        The parameter domain of the circle.
-    start : :class:`~compas.geometry.Point`, read-only
-        The start point of the circle.
-    end : :class:`~compas.geometry.Point`, read-only
-        The end point of the circle.
-    transformation : :class:`Transformation`, read-only
-        The transformation from the local coordinate system of the circle (:attr:`frame`) to the world coordinate system.
+    eccentricity : float, read-only
+        The eccentricity of the circle is zero.
+    is_closed : bool, read-only
+        True.
+    is_periodic : bool, read-only
+        True.
 
     See Also
     --------
@@ -77,40 +73,18 @@ class Circle(Conic):
         "required": ["frame", "radius"],
     }
 
-    def __init__(self, frame=None, radius=1.0, **kwargs):
+    def __init__(self, radius, frame=None, **kwargs):
         super(Circle, self).__init__(frame=frame, **kwargs)
         self._radius = None
         self.radius = radius
 
     def __repr__(self):
-        return "Circle({0!r}, {1!r})".format(self.frame, self.radius)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.radius
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.radius = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius])
+        return "Circle(radius={0!r}, frame={1!r})".format(self.radius, self.frame)
 
     def __eq__(self, other):
         try:
-            other_frame = other[0]
-            other_radius = other[1]
+            other_frame = other.frame
+            other_radius = other.radius
         except Exception:
             return False
         return self.frame == other_frame and self.radius == other_radius
@@ -168,6 +142,14 @@ class Circle(Conic):
     def eccentricity(self):
         return 0
 
+    @property
+    def is_closed(self):
+        return True
+
+    @property
+    def is_periodic(self):
+        return True
+
     # ==========================================================================
     # Constructors
     # ==========================================================================
@@ -188,6 +170,10 @@ class Circle(Conic):
         :class:`~compas.geometry.Circle`
             The constructed circle.
 
+        See Also
+        --------
+        :meth:`from_plane_and_radius`, :meth:`from_three_points`, :meth:`from_points`
+
         """
         frame = Frame(point, [1, 0, 0], [0, 1, 0])
         return cls(frame=frame, radius=radius)
@@ -207,6 +193,10 @@ class Circle(Conic):
         -------
         :class:`~compas.geometry.Circle`
             The constructed circle.
+
+        See Also
+        --------
+        :meth:`from_point_and_radius`, :meth:`from_three_points`, :meth:`from_points`
 
         Examples
         --------
@@ -237,6 +227,10 @@ class Circle(Conic):
         :class:`~compas.geometry.Circle`
             The constructed circle.
 
+        See Also
+        --------
+        :meth:`from_point_and_radius`, :meth:`from_plane_and_radius`, :meth:`from_points`
+
         """
         from compas.geometry import Plane
         from compas.geometry import circle_from_points
@@ -263,6 +257,10 @@ class Circle(Conic):
         ------
         ValueError
             If the list of points contains less than three points.
+
+        See Also
+        --------
+        :meth:`from_point_and_radius`, :meth:`from_plane_and_radius`, :meth:`from_three_points`
 
         Notes
         -----
@@ -295,11 +293,21 @@ class Circle(Conic):
         ----------
         t : float
             The parameter of the point.
+            The parameter is expected to be normalized,
+            and will be mapped to the corresponding angle in the interval ``[0, 2 * pi]``.
 
         Returns
         -------
         :class:`~compas.geometry.Point`
             The point on the circle at the specified parameter.
+
+        See Also
+        --------
+        :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`
+
+        Notes
+        -----
+        The location of the point is expressed with respect to the world coordinate system.
 
         """
         t = t * PI2
@@ -313,12 +321,22 @@ class Circle(Conic):
         Parameters
         ----------
         t : float
-            The parameter of the normal.
+            The parameter of the normal vector.
+            The parameter is expected to be normalized,
+            and will be mapped to the corresponding angle in the interval ``[0, 2 * pi]``.
 
         Returns
         -------
         :class:`~compas.geometry.Vector`
             The normal on the circle at the specified parameter.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`tangent_at`, :meth:`binormal_at`
+
+        Notes
+        -----
+        The orientation of the vector is expressed with respect to the world coordinate system.
 
         """
         normal = self.point_at(t) - self.center
@@ -331,12 +349,22 @@ class Circle(Conic):
         Parameters
         ----------
         t : float
-            The parameter of the tangent.
+            The parameter of the tangent vector.
+            The parameter is expected to be normalized,
+            and will be mapped to the corresponding angle in the interval ``[0, 2 * pi]``.
 
         Returns
         -------
         :class:`~compas.geometry.Vector`
             The tangent on the circle at the specified parameter.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`binormal_at`
+
+        Notes
+        -----
+        The orientation of the vector is expressed with respect to the world coordinate system.
 
         """
         t = t * PI2
@@ -344,34 +372,24 @@ class Circle(Conic):
         y = +self.radius * cos(t)
         return self.frame.xaxis * x + self.frame.yaxis * y
 
-    def binormal_at(self, t):
-        """Construct a binormal on the circle at a specific parameter.
-
-        Parameters
-        ----------
-        t : float
-            The parameter of the binormal.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The binormal on the circle at the specified parameter.
-
-        """
-        return self.frame.zaxis
-
-    def closest_point(self, point):
+    def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the circle to a given point.
 
         Parameters
         ----------
         point : :class:`~compas.geometry.Point`
             A point.
+        return_parameter : bool, optional
+            Return the parameter of the closest point as well.
 
         Returns
         -------
         :class:`~compas.geometry.Point`
             The closest point on the circle.
+
+        Notes
+        -----
+        The location of the point is expressed with respect to the world coordinate system.
 
         """
         from compas.geometry import Vector
@@ -380,6 +398,10 @@ class Circle(Conic):
         vector = Vector.from_start_end(self.center, projected)
         vector.unitize()
         vector *= self.radius
+
+        if return_parameter:
+            raise NotImplementedError
+
         return self.center + vector
 
     def contains_point(self, point, tol=1e-6, dmax=1e-6):

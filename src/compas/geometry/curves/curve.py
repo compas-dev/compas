@@ -23,6 +23,11 @@ class Curve(Geometry):
 
     Parameters
     ----------
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system of the curve.
+        Default is the world coordinate system.
+    domain : tuple[float, float], optional
+        The domain of the parameter space of the curve.
     name : str, optional
         The name of the curve.
 
@@ -43,6 +48,7 @@ class Curve(Geometry):
         For curves embedded on a surface, this is 2.
     domain : tuple[float, float]
         The domain of the parameter space of the curve.
+        If no explicit domain is set, the default is ``[0, 1]``.
     is_closed : bool, read-only
         True if the curve is closed.
     is_periodic : bool, read-only
@@ -79,11 +85,14 @@ class Curve(Geometry):
             self.frame = frame
         self.domain = domain
 
-    def __eq__(self, other):
-        raise NotImplementedError
+    def __repr__(self):
+        return "Curve(frame{0!r}, domain={1!r})".format(self.frame, self.domain)
 
     def __str__(self):
-        return "<Curve with parameter domain {}>".format(self.domain)
+        return "<Curve with parameter domain {} in frame {}>".format(self.domain, self.frame)
+
+    def __eq__(self, other):
+        raise NotImplementedError
 
     # ==============================================================================
     # Data
@@ -262,14 +271,44 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def to_polyline(self, resolution=10):
+    def to_points(self, n=10, domain=None):
+        """Convert the curve to a list of points.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of points in the list.
+            Default is ``10``.
+        domain : tuple, optional
+            Subset of the domain to use for the discretisation.
+            Default is ``None``, in which case the entire curve domain is used.
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Point`]
+
+        """
+        _domain = self.domain
+        domain = domain or _domain
+        self.domain = domain
+
+        points = [self.point_at(t) for t in self.space(n)]
+
+        self.domain = _domain
+
+        return points
+
+    def to_polyline(self, n=10, domain=None):
         """Convert the curve to a polyline.
 
         Parameters
         ----------
-        resolution : int, optional
-            The number of segments in the polyline.
+        n : int, optional
+            The number of line segments in the polyline.
             Default is ``10``.
+        domain : tuple, optional
+            Subset of the domain to use for the discretisation.
+            Default is ``None``, in which case the entire curve domain is used.
 
         Returns
         -------
@@ -278,7 +317,7 @@ class Curve(Geometry):
         """
         from compas.geometry import Polyline
 
-        points = [self.point_at(t) for t in self.space(resolution)]
+        points = self.to_points(n=n + 1, domain=domain)
         return Polyline(points)
 
     # ==============================================================================
@@ -296,72 +335,21 @@ class Curve(Geometry):
         Returns
         -------
         None
-            The curve is modified in-place.
+            The (local coordinate system of the) curve is modified in-place.
 
         Notes
         -----
-        The transformation matrix is applied to the local coordinate system of the curve.
-        Transformations are limited to (combinations of) translations and rotations.
-        All other components of the transformation matrix are ignored.
+        Transformations of frames are limited to rotations and translations.
+        All other transformations have no effect.
+        See :meth:`~compas.geometry.Frame.transform` for more info.
 
         """
-        T[0, 0] = 1
-        T[1, 1] = 1
-        T[2, 2] = 1
-        T[3, 3] = 1
-
-        T[0, 3] = 0
-        T[1, 3] = 0
-        T[2, 3] = 0
-
-        T[3, 0] = 0
-        T[3, 1] = 0
-        T[3, 2] = 0
-
         self.frame.transform(T)
+        self._transformation = None
 
     # ==============================================================================
     # Methods
     # ==============================================================================
-
-    def normalize_parameter(self, t):
-        """Normalize a parameter to the domain of the curve.
-
-        Parameters
-        ----------
-        t : float
-            The parameter.
-
-        Returns
-        -------
-        float
-            The normalized parameter.
-
-        """
-        t = self.domain[0] + t * (self.domain[1] - self.domain[0])
-        return t
-
-    def reverse(self):
-        """Reverse the parametrisation of the curve.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
-    def reversed(self):
-        """Reverse a copy of the curve.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Curve`
-
-        """
-        copy = self.copy()
-        copy.reverse
-        return copy
 
     def point_at(self, t):
         """Compute a point of the curve at a parameter.
@@ -380,6 +368,10 @@ class Curve(Geometry):
         ------
         ValueError
             If the parameter is not in the curve domain.
+
+        See Also
+        --------
+        :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`
 
         """
         raise NotImplementedError
@@ -402,6 +394,10 @@ class Curve(Geometry):
         ValueError
             If the parameter is not in the curve domain.
 
+        See Also
+        --------
+        :meth:`point_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`
+
         """
         raise NotImplementedError
 
@@ -423,31 +419,12 @@ class Curve(Geometry):
         ValueError
             If the parameter is not in the curve domain.
 
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`
+
         """
         raise NotImplementedError
-
-    def binormal_at(self, t):
-        """Compute the binormal vector of the curve at a parameter.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The corresponding binormal vector.
-
-        Raises
-        ------
-        ValueError
-            If the parameter is not in the curve domain.
-
-        """
-        # if not (self.domain[0] <= t <= self.domain[1]):
-        #     raise ValueError("Parameter not in curve domain.")
-        return self.tangent_at(t).cross(self.normal_at(t))
 
     def frame_at(self, t):
         """Compute the local frame of the curve at a parameter.
@@ -468,6 +445,10 @@ class Curve(Geometry):
         ------
         ValueError
             If the parameter is not in the curve domain.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`curvature_at`
 
         """
         return Frame(self.point_at(t), self.tangent_at(t), self.normal_at(t))
@@ -495,12 +476,46 @@ class Curve(Geometry):
         ValueError
             If the parameter is not in the curve domain.
 
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`
+
         """
         raise NotImplementedError
 
     # ==============================================================================
     # Methods continued
     # ==============================================================================
+
+    def reverse(self):
+        """Reverse the parametrisation of the curve.
+
+        Returns
+        -------
+        None
+
+        See Also
+        --------
+        :meth:`reversed`
+
+        """
+        raise NotImplementedError
+
+    def reversed(self):
+        """Reverse a copy of the curve.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Curve`
+
+        See Also
+        --------
+        :meth:`reverse`
+
+        """
+        copy = self.copy()
+        copy.reverse
+        return copy
 
     def space(self, n=10):
         """Compute evenly spaced parameters over the curve domain.
@@ -513,6 +528,10 @@ class Curve(Geometry):
         Returns
         -------
         list[float]
+
+        See Also
+        --------
+        :meth:`locus`
 
         """
         start, end = self.domain
@@ -531,6 +550,10 @@ class Curve(Geometry):
         -------
         list[:class:`~compas.geometry.Point`]
             Points along the curve.
+
+        See Also
+        --------
+        :meth:`space`
 
         """
         return [self.point_at(t) for t in self.space(resolution)]
@@ -555,7 +578,7 @@ class Curve(Geometry):
         raise NotImplementedError
 
     def divide_by_count(self, count, return_points=False):
-        """Divide the curve into a specific number of equal length segments.
+        """Compute the curve parameters that divide the curve into a specific number of equal length segments.
 
         Parameters
         ----------
@@ -572,11 +595,16 @@ class Curve(Geometry):
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
+        See Also
+        --------
+        :meth:`divide_by_length`
+        :meth:`split`
+
         """
         raise NotImplementedError
 
     def divide_by_length(self, length, return_points=False):
-        """Divide the curve into segments of specified length.
+        """Compute the curve parameters that divide the curve into segments of specified length.
 
         Parameters
         ----------
@@ -593,11 +621,16 @@ class Curve(Geometry):
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
+        See Also
+        --------
+        :meth:`divide_by_count`
+        :meth:`split`
+
         """
         raise NotImplementedError
 
     def aabb(self):
-        """Compute the axis aligned bounding box of the curve.
+        """Compute the axis-aligned bounding box of the curve.
 
         Returns
         -------

@@ -23,9 +23,9 @@ class Line(Curve):
 
     Parameters
     ----------
-    p1 : [float, float, float] | :class:`~compas.geometry.Point`
+    start : [float, float, float] | :class:`~compas.geometry.Point`
         The first point.
-    p2 : [float, float, float] | :class:`~compas.geometry.Point`
+    start : [float, float, float] | :class:`~compas.geometry.Point`
         The second point.
 
     Attributes
@@ -42,9 +42,6 @@ class Line(Curve):
         A unit vector parallel to the line vector.
     midpoint : :class:`~compas.geometry.Point`, read-only
         The midpoint between start and end.
-    domain : tuple of float, read-only
-        The parameterisation domain of the line.
-        For a line, this is always ``[0, 1]``.
     frame : :class:`~compas.geometry.Frame`, read-only
         The frame of the line.
         This is alsways the world XY frame.
@@ -89,6 +86,37 @@ class Line(Curve):
         self._vector = None
         self.start = start
         self.end = end
+
+    def __repr__(self):
+        return "Line({0!r}, {1!r})".format(self.start, self.end)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.start
+        if key == 1:
+            return self.end
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.start = value
+            return
+        if key == 1:
+            self.end = value
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.start, self.end])
+
+    def __eq__(self, other):
+        try:
+            return self.start == other[0] and self.end == other[1]
+        except Exception:
+            return False
 
     # ==========================================================================
     # data
@@ -164,43 +192,6 @@ class Line(Curve):
         return self.point_at(0.5)
 
     # ==========================================================================
-    # Customization
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Line({0!r}, {1!r})".format(self.start, self.end)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.start
-        if key == 1:
-            return self.end
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.start = value
-            return
-        if key == 1:
-            self.end = value
-            return
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.start, self.end])
-
-    def __eq__(self, other):
-        try:
-            other_start = other[0]
-            other_end = other[1]
-        except Exception:
-            return False
-        return self.start == other_start and self.end == other_end
-
-    # ==========================================================================
     # Constructors
     # ==========================================================================
 
@@ -220,6 +211,10 @@ class Line(Curve):
         :class:`Line`
             The constructed line.
 
+        See Also
+        --------
+        :meth:`Line.from_point_direction_length`
+
         Examples
         --------
         >>> from compas.geometry import Point, Vector
@@ -231,7 +226,7 @@ class Line(Curve):
         return cls(point, point + vector)
 
     @classmethod
-    def from_point_direction_and_length(cls, point, direction, length):
+    def from_point_direction_length(cls, point, direction, length):
         """Construct a line from a point, a direction and a length.
 
         Parameters
@@ -248,10 +243,14 @@ class Line(Curve):
         :class:`Line`
             The constructed line.
 
+        See Also
+        --------
+        :meth:`Line.from_point_and_vector`
+
         Examples
         --------
         >>> from compas.geometry import Point, Vector
-        >>> line = Line.from_point_direction_and_length(Point(0, 0, 0), Vector(1, 1, 1), 1)
+        >>> line = Line.from_point_direction_length(Point(0, 0, 0), Vector(1, 1, 1), 1)
         >>> line
         Line(Point(0.000, 0.000, 0.000), Point(0.577, 0.577, 0.577))
 
@@ -307,6 +306,10 @@ class Line(Curve):
         :class:`~compas.geometry.Point`
             The point at the specified location.
 
+        See Also
+        --------
+        :meth:`tangent_at`
+
         Examples
         --------
         >>> line = Line([0, 0, 0], [1, 1, 1])
@@ -329,6 +332,10 @@ class Line(Curve):
         -------
         :class:`~compas.geometry.Vector`
             The tangent vector at the specified location.
+
+        See Also
+        --------
+        :meth:`point_at`
 
         Examples
         --------

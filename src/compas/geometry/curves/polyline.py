@@ -89,6 +89,27 @@ class Polyline(Curve):
         self._lines = []
         self.points = points
 
+    def __repr__(self):
+        return "Polyline([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
+
+    def __len__(self):
+        return len(self.points)
+
+    def __getitem__(self, key):
+        return self.points[key]
+
+    def __setitem__(self, key, value):
+        self.points[key] = Point(*value)
+        self._lines = None
+
+    def __iter__(self):
+        return iter(self.points)
+
+    def __eq__(self, other):
+        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
+            return False
+        return allclose(self, other)
+
     # ==========================================================================
     # data
     # ==========================================================================
@@ -147,31 +168,6 @@ class Polyline(Curve):
     @property
     def is_closed(self):
         return self.points[0] == self.points[-1]
-
-    # ==========================================================================
-    # customization
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Polyline([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
-
-    def __len__(self):
-        return len(self.points)
-
-    def __getitem__(self, key):
-        return self.points[key]
-
-    def __setitem__(self, key, value):
-        self.points[key] = Point(*value)
-        self._lines = None
-
-    def __iter__(self):
-        return iter(self.points)
-
-    def __eq__(self, other):
-        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
-            return False
-        return allclose(self, other)
 
     # ==========================================================================
     # Constructors

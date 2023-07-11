@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry import Transformation
 from .curve import Curve
 
 
@@ -15,24 +14,3 @@ class Conic(Curve):
         curve = object.__new__(cls)
         curve.__init__(*args, **kwargs)
         return curve
-
-    @property
-    def eccentricity(self):
-        raise NotImplementedError
-
-    def transform(self, T):
-        """
-        Transform the curve.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
-            The transformation.
-
-        Returns
-        -------
-        None
-
-        """
-        self.frame.transform(T)
-        self._transformation = Transformation.from_frame(self.frame)

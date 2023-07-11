@@ -35,25 +35,26 @@ class Hyperbola(Conic):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
-        The coordinate frame of the hyperbola.
     major : float
         The major of the hyperbola.
     minor : float
         The minor of the hyperbola.
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system of the hyperbola.
+        The default value is ``None``, in which case the hyperbola is constructed in the XY plane of the world coordinate system.
 
     Attributes
     ----------
     frame : :class:`compas.geometry.Frame`
         The coordinate frame of the hyperbola.
+    transformation : :class:`Transformation`, read-only
+        The transformation from the local coordinate system of the hyperbola (:attr:`frame`) to the world coordinate system.
     major : float
         The major radius of the hyperbola.
     minor : float
         The minor radius of the hyperbola.
     center : :class:`compas.geometry.Point`
         The center of the hyperbola.
-    normal : :class:`compas.geometry.Vector`, read-only
-        The normal of the hyperbola.
     plane : :class:`compas.geometry.Plane`, read-only
         The plane of the hyperbola.
     semifocal : float, read-only
@@ -75,26 +76,28 @@ class Hyperbola(Conic):
         The first asymptote of the hyperbola.
     asymptote2 : :class:`compas.geometry.Line`, read-only
         The second asymptote of the hyperbola.
-    domain : tuple[float, float], read-only
-        The parameter domain: 0, 2pi
     is_closed : bool, read-only
-        A hyperbola is not closed (False).
+        False.
     is_periodic : bool, read-only
-        A hyperbola is not periodic (False).
+        False.
+
+    See Also
+    --------
+    :class:`compas.geometry.Circle`, :class:`compas.geometry.Ellipse`, :class:`compas.geometry.Parabola`
 
     """
 
     JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.JSONSCHEMA,
             "major": {"type": "number", "minimum": 0},
             "minor": {"type": "number", "minimum": 0},
+            "frame": Frame.JSONSCHEMA,
         },
         "required": ["frame", "major", "minor"],
     }
 
-    def __init__(self, frame=None, major=1.0, minor=1.0, **kwargs):
+    def __init__(self, major, minor, frame=None, **kwargs):
         super(Hyperbola, self).__init__(frame=frame, **kwargs)
         self._major = None
         self._minor = None
@@ -102,33 +105,13 @@ class Hyperbola(Conic):
         self.minor = minor
 
     def __repr__(self):
-        return "Hyperbola({0!r}, {1!r}, {2!r})".format(self.frame, self.major, self.minor)
+        return "Hyperbola(major={0!r}, minor={1!r}, frame={2!r})".format(self.major, self.minor, self.frame)
 
-    def __len__(self):
-        return 3
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.major
-        elif key == 2:
-            return self.minor
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.major = value
-        elif key == 2:
-            self.minor = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.major, self.minor])
+    def __eq__(self, other):
+        try:
+            return self.major == other.major and self.minor == other.minor, self.frame == other.frame
+        except AttributeError:
+            return False
 
     # ==========================================================================
     # Data
@@ -158,7 +141,7 @@ class Hyperbola(Conic):
 
     @property
     def major(self):
-        if not self._major:
+        if self._major is None:
             raise ValueError("Length of major axis is not set.")
         return self._major
 
@@ -170,7 +153,7 @@ class Hyperbola(Conic):
 
     @property
     def minor(self):
-        if not self._minor:
+        if self._minor is None:
             raise ValueError("Length of minor axis is not set.")
         return self._minor
 
@@ -216,6 +199,14 @@ class Hyperbola(Conic):
     def asymptote2(self):
         pass
 
+    @property
+    def is_closed(self):
+        return False
+
+    @property
+    def is_periodic(self):
+        return False
+
     # ==========================================================================
     # Constructors
     # ==========================================================================
@@ -235,6 +226,14 @@ class Hyperbola(Conic):
         Returns
         -------
         :class:`compas_future.geometry.Point`
+
+        See Also
+        --------
+        :meth:`tangent_at`, :meth:`normal_at`
+
+        Notes
+        -----
+        The location of the point is expressed with respect to the world coordinate system.
 
         """
         t = t * PI2
@@ -256,6 +255,14 @@ class Hyperbola(Conic):
         -------
         :class:`compas_future.geometry.Vector`
 
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`
+
+        Notes
+        -----
+        The orientation of the vector is expressed with respect to the world coordinate system.
+
         """
         raise NotImplementedError
 
@@ -272,24 +279,13 @@ class Hyperbola(Conic):
         -------
         :class:`compas_future.geometry.Vector`
 
+        See Also
+        --------
+        :meth:`point_at`, :meth:`tangent_at`
+
+        Notes
+        -----
+        The orientation of the vector is expressed with respect to the world coordinate system.
+
         """
         raise NotImplementedError
-
-    def frame_at(self, t):
-        """
-        Frame at the parameter.
-
-        Parameters
-        ----------
-        t : float
-            The line parameter.
-
-        Returns
-        -------
-        :class:`compas_future.geometry.Frame`
-
-        """
-        point = self.point_at(t)
-        xaxis = self.tangent_at(t)
-        yaxis = self.zaxis.cross(xaxis)
-        return Frame(point, xaxis, yaxis)

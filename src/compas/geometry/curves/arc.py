@@ -41,6 +41,8 @@ class Arc(Curve):
     ----------
     frame : :class:`~compas.geometry.Frame`
         The coordinate frame of the arc.
+    transformation : :class:`Transformation`, read-only
+        The transformation from the local coordinate system of the arc (:attr:`frame`) to the world coordinate system.
     radius : float
         The radius of the circle.
     start_angle : float
@@ -53,8 +55,6 @@ class Arc(Curve):
         The center of the underlying circle.
     plane : :class:`~compas.geometry.Plane`, read-only
         The plane of the arc.
-    normal : :class:`~compas.geometry.Vector`, read-only
-        The normal of the arc plane.
     diameter : float, read-only
         The diameter of the underlying circle.
     length : float
@@ -63,26 +63,24 @@ class Arc(Curve):
         The sweep angle in radians between start angle and end angle.
     circumference : float, read-only
         The circumference of the underlying circle.
-    domain : tuple(float, float), read-only
-        The parameter domain of the arc.
-    start : :class:`~compas.geometry.Point`, read-only
-        The start point of the arc.
-    end : :class:`~compas.geometry.Point`, read-only
-        The end point of the arc.
     is_closed : bool, read-only
-        ``True`` if the arc is closed.
-    transformation : :class:`Transformation`, read-only
-        The transformation from the local coordinate system of the arc (:attr:`frame`) to the world coordinate system.
+        False.
+    is_periodic : bool, read-only
+        False.
+
+    See Also
+    --------
+    :class:`compas.geometry.Circle`
 
     """
 
     JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.JSONSCHEMA,
             "radius": {"type": "number", "minimum": 0},
             "start_angle": {"type": "number", "minimum": 0, "optional": True},
             "end_angle": {"type": "number", "minimum": 0},
+            "frame": Frame.JSONSCHEMA,
         },
         "required": ["frame", "radius", "start_angle", "end_angle"],
     }
@@ -94,61 +92,29 @@ class Arc(Curve):
         curve.__init__(*args, **kwargs)
         return curve
 
-    def __init__(self, frame=None, radius=None, start_angle=0.0, end_angle=math.pi, **kwargs):
+    def __init__(self, radius=None, start_angle=0.0, end_angle=math.pi, frame=None, **kwargs):
         super(Arc, self).__init__(frame=frame, **kwargs)
-
         self._radius = None
         self._start_angle = None
         self._end_angle = None
-
         self.radius = radius
         self.start_angle = start_angle
         self.end_angle = end_angle
 
     def __repr__(self):
-        return "Arc({0!r}, {1!r}, {2!r}, {3!r})".format(
-            self.frame,
+        return "Arc(radius={0!r}, start_angle={1!r}, end_angle={2!r}, frame={3!r})".format(
             self.radius,
             self.start_angle,
             self.end_angle,
+            self.frame,
         )
-
-    def __len__(self):
-        return 4
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.radius
-        elif key == 2:
-            return self.start_angle
-        elif key == 3:
-            return self.end_angle
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.radius = value
-        elif key == 2:
-            self.start_angle = value
-        elif key == 3:
-            self.end_angle = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius, self.start_angle, self.end_angle])
 
     def __eq__(self, other):
         try:
-            other_frame = other[0]
-            other_radius = other[1]
-            other_start = other[2]
-            other_end = other[3]
+            other_frame = other.frame
+            other_radius = other.radius
+            other_start = other.start_angle
+            other_end = other.end_angle
         except Exception:
             return False
         return (
@@ -185,12 +151,12 @@ class Arc(Curve):
     @property
     def radius(self):
         if self._radius is None:
-            raise ValueError("Radius not set.")
+            raise ValueError("Radius is not set.")
         return self._radius
 
     @radius.setter
     def radius(self, value):
-        if value <= 0.0:
+        if value < 0.0:
             raise ValueError("Radius must be greater than or equal to zero.")
         self._radius = value
 
@@ -220,7 +186,7 @@ class Arc(Curve):
 
     @property
     def circle(self):
-        return Circle(self.frame, self.radius)
+        return Circle(radius=self.radius, frame=self.frame)
 
     @property
     def length(self):
@@ -229,10 +195,6 @@ class Arc(Curve):
     @property
     def angle(self):
         return self.end_angle - self.start_angle
-
-    # @property
-    # def domain(self):
-    #     return self.start_angle, self.end_angle
 
     @property
     def center(self):
@@ -290,6 +252,14 @@ class Arc(Curve):
             start_angle=start_angle,
             end_angle=end_angle,
         )
+
+    # =============================================================================
+    # Conversions
+    # =============================================================================
+
+    # =============================================================================
+    # Transformations
+    # =============================================================================
 
     # =============================================================================
     # Methods

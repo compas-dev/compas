@@ -20,32 +20,28 @@ class Ellipse(Curve):
     The parameter domain of an ellipse is ``[0, 2*pi]``.
     Moving along the ellipse in the parameter direction corresponds to moving counter-clockwise around the origin of the local coordinate system.
 
-    Transformations of the ellipse are performed by transforming the coordinate system.
-    They are limited to (combinations of) translations and rotations.
-    All other components of transformations are ignored.
-
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`
-        The local coordinate system of the ellipse.
-        The default value is ``None``, in which case the ellipse is constructed in the XY plane of the world coordinate system.
     major : float
         The major of the ellipse.
     minor : float
         The minor of the ellipse.
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system of the ellipse.
+        The default value is ``None``, in which case the ellipse is constructed in the XY plane of the world coordinate system.
 
     Attributes
     ----------
     frame : :class:`~compas.geometry.Frame`
         The coordinate frame of the ellipse.
+    transformation : :class:`Transformation`, read-only
+        The transformation from the local coordinate system of the ellipse (:attr:`frame`) to the world coordinate system.
     major : float
         The major of the ellipse.
     minor : float
         The minor of the ellipse.
     center : :class:`~compas.geometry.Point`
         The center of the ellipse.
-    normal : :class:`~compas.geometry.Vector`, read-only
-        The normal of the ellipse.
     plane : :class:`~compas.geometry.Plane`, read-only
         The plane of the ellipse.
     area : float, read-only
@@ -72,20 +68,16 @@ class Ellipse(Curve):
         The second directix of the ellipse.
         The directix is perpendicular to the major axis
         and passes through a point at a distance ``major **2 / semifocal`` along the negative xaxis from the center of the ellipse.
-    domain : tuple(float, float), read-only
-        The parameter domain of the ellipse.
-    start : :class:`~compas.geometry.Point`, read-only
-        The start point of the ellipse.
-    end : :class:`~compas.geometry.Point`, read-only
-        The end point of the ellipse.
-    transformation : :class:`Transformation`, read-only
-        The transformation from the local coordinate system of the ellipse (:attr:`frame`) to the world coordinate system.
     is_closed : bool, read-only
-        ``True`` if the ellipse is closed.
+        True.
     is_periodic : bool, read-only
-        ``True`` if the ellipse is periodic.
+        True.
     is_circle : bool, read-only
-        ``True`` if the ellipse is a circle.
+        True if the ellipse is a circle.
+
+    See Also
+    --------
+    :class:`compas.geometry.Circle`, :class:`compas.geometry.Hyperbola`, :class:`compas.geometry.Parabola`
 
     Examples
     --------
@@ -98,14 +90,14 @@ class Ellipse(Curve):
     JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.JSONSCHEMA,
             "major": {"type": "number", "minimum": 0},
             "minor": {"type": "number", "minimum": 0},
+            "frame": Frame.JSONSCHEMA,
         },
         "required": ["frame", "major", "minor"],
     }
 
-    def __init__(self, frame=None, major=1.0, minor=1.0, **kwargs):
+    def __init__(self, major=1.0, minor=1.0, frame=None, **kwargs):
         super(Ellipse, self).__init__(frame=frame, **kwargs)
         self._major = None
         self._minor = None
@@ -113,33 +105,16 @@ class Ellipse(Curve):
         self.minor = minor
 
     def __repr__(self):
-        return "Ellipse({0!r}, {1!r}, {2!r})".format(self.frame, self.major, self.minor)
+        return "Ellipse(major={0!r}, minor={1!r}, frame={2!r})".format(self.major, self.minor, self.frame)
 
-    def __len__(self):
-        return 3
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.major
-        elif key == 2:
-            return self.minor
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.major = value
-        elif key == 2:
-            self.minor = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.major, self.minor])
+    def __eq__(self, other):
+        try:
+            other_frame = other.frame
+            other_major = other.major
+            other_minor = other.minor
+        except Exception:
+            return False
+        return self.major == other_major and self.minor == other_minor, self.frame == other_frame
 
     # ==========================================================================
     # Data
@@ -169,7 +144,7 @@ class Ellipse(Curve):
 
     @property
     def major(self):
-        if not self._major:
+        if self._major is None:
             raise ValueError("Length of major axis is not set.")
         return self._major
 
@@ -181,7 +156,7 @@ class Ellipse(Curve):
 
     @property
     def minor(self):
-        if not self._minor:
+        if self._minor is None:
             raise ValueError("Length of minor axis is not set.")
         return self._minor
 
@@ -243,6 +218,14 @@ class Ellipse(Curve):
     def is_circle(self):
         return self.major == self.minor
 
+    @property
+    def is_closed(self):
+        return True
+
+    @property
+    def is_periodic(self):
+        return True
+
     # ==========================================================================
     # Constructors
     # ==========================================================================
@@ -267,7 +250,7 @@ class Ellipse(Curve):
 
         """
         frame = Frame(point, [1, 0, 0], [0, 1, 0])
-        return cls(frame, major, minor)
+        return cls(frame=frame, major=major, minor=minor)
 
     # ==========================================================================
     # Methods
@@ -285,6 +268,14 @@ class Ellipse(Curve):
         -------
         :class:`compas.geometry.Point`
             The point at the parameter.
+
+        See Also
+        --------
+        :meth:`normal_at`, :meth:`tangent_at`
+
+        Notes
+        -----
+        The location of the point is expressed with respect to the world coordinate system.
 
         """
         t = t * PI2
@@ -305,6 +296,14 @@ class Ellipse(Curve):
         :class:`compas.geometry.Vector`
             The tangent vector at the parameter.
 
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`
+
+        Notes
+        -----
+        The orientation of the vector is expressed with respect to the world coordinate system.
+
         """
         yaxis = self.normal_at(t)
         zaxis = self.zaxis
@@ -322,6 +321,14 @@ class Ellipse(Curve):
         -------
         :class:`compas.geometry.Vector`
             The normal vector at the parameter.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`tangent_at`
+
+        Notes
+        -----
+        The orientation of the vector is expressed with respect to the world coordinate system.
 
         """
         point = self.point_at(t)
