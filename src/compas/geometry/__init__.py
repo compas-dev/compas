@@ -341,6 +341,7 @@ from .curves.ellipse import Ellipse
 from .curves.parabola import Parabola
 from .curves.hyperbola import Hyperbola
 from .curves.arc import Arc
+from .curves.bezier import Bezier
 from .curves.nurbs import NurbsCurve
 
 from .surfaces.surface import Surface
@@ -649,7 +650,7 @@ __all__ = [
     "trimesh_remesh_along_isoline",
     "trimesh_slice",
     "Geometry",
-    # "Bezier",
+    "Bezier",
     "Arc",
     "Circle",
     "Ellipse",
