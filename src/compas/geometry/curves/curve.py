@@ -100,9 +100,9 @@ class Curve(Geometry):
     def data(self):
         raise NotImplementedError
 
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
+    # @data.setter
+    # def data(self, data):
+    #     raise NotImplementedError
 
     @classmethod
     def from_data(cls, data):

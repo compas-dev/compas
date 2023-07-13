@@ -97,11 +97,6 @@ class Circle(Conic):
     def data(self):
         return {"frame": self.frame, "radius": self.radius}
 
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.radius = data["radius"]
-
     # ==========================================================================
     # Properties
     # ==========================================================================

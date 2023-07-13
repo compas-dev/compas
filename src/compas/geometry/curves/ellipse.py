@@ -124,12 +124,6 @@ class Ellipse(Curve):
     def data(self):
         return {"frame": self.frame, "major": self.major, "minor": self.minor}
 
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.major = data["major"]
-        self.minor = data["minor"]
-
     # ==========================================================================
     # Properties
     # ==========================================================================

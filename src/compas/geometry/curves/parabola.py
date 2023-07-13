@@ -72,11 +72,6 @@ class Parabola(Conic):
     def data(self):
         return {"frame": self.frame, "focal": self.focal}
 
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.focal = data["focal"]
-
     # ==========================================================================
     # properties
     # ==========================================================================

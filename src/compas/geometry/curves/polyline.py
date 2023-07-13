@@ -118,10 +118,6 @@ class Polyline(Curve):
     def data(self):
         return {"points": self.points}
 
-    @data.setter
-    def data(self, data):
-        self.points = data["points"]
-
     # ==========================================================================
     # properties
     # ==========================================================================

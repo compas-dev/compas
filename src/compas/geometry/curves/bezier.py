@@ -134,33 +134,6 @@ class Bezier(Curve):
     def data(self):
         return {"points": self.points}
 
-    @data.setter
-    def data(self, data):
-        self.points = data["points"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a curve from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Bezier`
-            The constructed bezier curve.
-
-        Examples
-        --------
-        >>> from compas.geometry import Bezier
-        >>> data = {'points': [[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]]}
-        >>> curve = Bezier.from_data(data)
-
-        """
-        return cls(data["points"])
-
     # ==========================================================================
     # Properties
     # ==========================================================================

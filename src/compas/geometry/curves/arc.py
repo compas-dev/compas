@@ -122,26 +122,6 @@ class Arc(Curve):
         }
     }
 
-    # JSONSCHEMA = {
-    #     "type": "object",
-    #     "properties": {
-    #         "dtype": {"type": "string", "const": "compas.geometry/Arc"},
-    #         "value": {
-    #             "type": "object",
-    #             "properties": {
-    #                 "radius": {"type": "number", "minimum": 0},
-    #                 "start_angle": {"type": "number", "minimum": 0, "optional": True},
-    #                 "end_angle": {"type": "number", "minimum": 0},
-    #                 "frame": Frame.JSONSCHEMA,
-    #             },
-    #             "required": ["frame", "radius", "start_angle", "end_angle"],
-    #         },
-    #         "guid": {"type": "string"},
-    #         "attributes": {"type": "object"},
-    #     },
-    #     "required": ["dtype", "value"],
-    # }
-
     # overwriting the __new__ method is necessary
     # to avoid triggering the plugin mechanism of the base curve class
     def __new__(cls, *args, **kwargs):
@@ -189,13 +169,6 @@ class Arc(Curve):
             "start_angle": self.start_angle,
             "end_angle": self.end_angle,
         }
-
-    # @data.setter
-    # def data(self, value):
-    #     self.frame = value["frame"]
-    #     self.radius = value["radius"]
-    #     self.start_angle = value["start_angle"]
-    #     self.end_angle = value["end_angle"]
 
     # =============================================================================
     # Properties
