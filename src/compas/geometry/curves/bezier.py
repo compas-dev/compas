@@ -6,6 +6,7 @@ from math import factorial
 
 from compas.geometry import Vector
 from compas.geometry import Point
+from compas.geometry import Frame
 
 from .curve import Curve
 
@@ -36,10 +37,10 @@ def binomial_coefficient(n, k):
     return int(factorial(n) / float(factorial(k) * factorial(n - k)))
 
 
-def bernstein(n, k, t):
-    """k:sup:`th` of `n` + 1 Bernstein basis polynomials of degree `n`. A
-    weighted linear combination of these basis polynomials is called a Bernstein
-    polynomial.
+def bernstein_value(n, k, t):
+    """The k:sup:`th` of ``n + 1`` Bernstein basis polynomials of degree ``n``.
+
+    A weighted linear combination of these basis polynomials is called a Bernstein polynomial.
 
     Parameters
     ----------
@@ -82,8 +83,8 @@ def bernstein(n, k, t):
 class Bezier(Curve):
     """A Bezier curve is defined by control points and a degree.
 
-    A Bezier curve of degree `n` is a linear combination of ``n + 1`` Bernstein
-    basis polynomials of degree `n`.
+    A Bezier curve of degree ``n`` is a linear combination of ``n + 1`` Bernstein
+    basis polynomials of degree ``n``.
 
     Parameters
     ----------
@@ -113,20 +114,24 @@ class Bezier(Curve):
         "required": ["points"],
     }
 
-    __slots__ = ["_points"]
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
 
-    def __init__(self, points):
-        super(Bezier, self).__init__()
+    def __init__(self, points, **kwargs):
+        super(Bezier, self).__init__(**kwargs)
         self._points = []
         self.points = points
 
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the curve."""
         return {"points": self.points}
 
     @data.setter
@@ -157,8 +162,18 @@ class Bezier(Curve):
         return cls(data["points"])
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
+
+    @property
+    def frame(self):
+        if not self._frame:
+            self._frame = Frame.worldXY()
+        return self._frame
+
+    @frame.setter
+    def frame(self, frame):
+        raise NotImplementedError
 
     @property
     def points(self):
@@ -174,11 +189,11 @@ class Bezier(Curve):
         return len(self.points) - 1
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     # ==========================================================================
-    # methods
+    # Transformations
     # ==========================================================================
 
     def transform(self, T):
@@ -197,37 +212,46 @@ class Bezier(Curve):
         for point in self.points:
             point.transform(T)
 
-    def point(self, t):
-        """Compute a point on the curve.
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def point_at(self, t):
+        """Compute the point on the curve at the given parameter.
 
         Parameters
         ----------
         t : float
-            The value of the curve parameter. Must be between 0 and 1.
+            The value of the curve parameter.
+            Must be between 0 and 1.
 
         Returns
         -------
         :class:`~compas.geometry.Point`
             the corresponding point on the curve.
 
+        See Also
+        --------
+        :meth:`compas.geometry.Bezier.tangent_at`
+
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> curve.point(0.0)
+        >>> curve.point_at(0.0)
         Point(0.000, 0.000, 0.000)
-        >>> curve.point(1.0)
+        >>> curve.point_at(1.0)
         Point(1.000, 0.000, 0.000)
 
         """
         n = self.degree
         point = Point(0, 0, 0)
         for i, p in enumerate(self.points):
-            b = bernstein(n, i, t)
+            b = bernstein_value(n, i, t)
             point += p * b
         return point
 
-    def tangent(self, t):
-        """Compute the tangent vector at a point on the curve.
+    def tangent_at(self, t):
+        """Compute the tangent vector to the curve at the point at the given parameter.
 
         Parameters
         ----------
@@ -242,48 +266,57 @@ class Bezier(Curve):
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> curve.tangent(0.5)
+        >>> curve.tangent_at(0.5)
         Vector(1.000, 0.000, 0.000)
 
         """
+        p = 1
         n = self.degree
-        v = Vector(0, 0, 0)
-        for i, p in enumerate(self.points):
-            a = bernstein(n - 1, i - 1, t)
-            b = bernstein(n - 1, i, t)
-            c = n * (a - b)
-            v += p * c
-        v.unitize()
-        return v
+        vector = Vector(0, 0, 0)
+        for i, point in enumerate(self.points):
+            # a = bernstein_value(n - 1, i - 1, t)
+            # b = bernstein_value(n - 1, i, t)
+            # c = n * (a - b)
+            c = 0
+            for k in range(max(0, i + p - n), min(i, p) + 1):
+                c += (-1) ** (k + p) * binomial_coefficient(p, k) * bernstein_value(n - p, i - k, t)
+            c = factorial(n) / factorial(n - p) * c
+            vector += point * c
+        vector.unitize()
+        return vector
 
-    def locus(self, resolution=100):
-        """Compute the locus of all points on the curve.
+    def normal_at(self, t):
+        """Compute the normal vector to the curve at the point at the given parameter.
 
         Parameters
         ----------
-        resolution : int
-            The number of intervals at which a point on the curve should be computed.
+        t : float
+            The value of the curve parameter. Must be between 0 and 1.
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
-            Points along the curve.
+        :class:`~compas.geometry.Vector`
+            The corresponding normal vector.
 
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> points = curve.locus(10)
-        >>> len(points) == 10
-        True
-        >>> points[0]
-        Point(0.000, 0.000, 0.000)
-        >>> points[-1]
-        Point(1.000, 0.000, 0.000)
+        >>> curve.normal_at(0.5)
+        Vector(0.000, 0.000, 1.000)
 
         """
-        locus = []
-        divisor = float(resolution - 1)
-        for i in range(resolution):
-            t = i / divisor
-            locus.append(self.point(t))
-        return locus
+        tangent = self.tangent_at(t)
+        p = 2
+        n = self.degree
+        vector = Vector(0, 0, 0)
+        f = factorial(n) / factorial(n - p)
+        for i, point in enumerate(self.points):
+            c = 0
+            for k in range(max(0, i + p - n), min(i, p) + 1):
+                c += (-1) ** (k + p) * binomial_coefficient(p, k) * bernstein_value(n - p, i - k, t)
+            vector += point * (f * c)
+        if vector.length < 1e-6:
+            return None
+        vector.unitize()
+        normal = tangent.cross(vector.cross(tangent))
+        return normal
