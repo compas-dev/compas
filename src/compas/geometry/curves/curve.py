@@ -48,7 +48,6 @@ class Curve(Geometry):
         For curves embedded on a surface, this is 2.
     domain : tuple[float, float]
         The domain of the parameter space of the curve.
-        If no explicit domain is set, the default is ``[0, 1]``.
     is_closed : bool, read-only
         True if the curve is closed.
     is_periodic : bool, read-only
@@ -75,7 +74,7 @@ class Curve(Geometry):
     def __new__(cls, *args, **kwargs):
         return new_curve(cls, *args, **kwargs)
 
-    def __init__(self, frame=None, domain=None, name=None):
+    def __init__(self, frame=None, name=None):
         super(Curve, self).__init__(name=name)
         self._frame = None
         self._transformation = None
@@ -83,7 +82,6 @@ class Curve(Geometry):
         self._point = None
         if frame:
             self.frame = frame
-        self.domain = domain
 
     def __repr__(self):
         return "Curve(frame{0!r}, domain={1!r})".format(self.frame, self.domain)
@@ -179,21 +177,11 @@ class Curve(Geometry):
 
     @property
     def domain(self):
-        if not self._domain:
-            self._domain = (0.0, 1.0)
-        return self._domain
-
-    @domain.setter
-    def domain(self, domain):
-        if not domain:
-            self._domain = None
-        else:
-            u, v = domain
-            self._domain = u, v
+        return 0.0, 1.0
 
     @property
     def is_closed(self):
-        return self.point_at(self.domain[0]) == self.point_at(self.domain[1])
+        raise NotImplementedError
 
     @property
     def is_periodic(self):
@@ -288,14 +276,9 @@ class Curve(Geometry):
         list[:class:`~compas.geometry.Point`]
 
         """
-        _domain = self.domain
-        domain = domain or _domain
-        self.domain = domain
-
-        points = [self.point_at(t) for t in self.space(n)]
-
-        self.domain = _domain
-
+        domain = domain or self.domain
+        start, end = domain
+        points = [self.point_at(t) for t in linspace(start, end, n)]
         return points
 
     def to_polyline(self, n=10, domain=None):
@@ -517,46 +500,46 @@ class Curve(Geometry):
         copy.reverse
         return copy
 
-    def space(self, n=10):
-        """Compute evenly spaced parameters over the curve domain.
+    # def space(self, n=10):
+    #     """Compute evenly spaced parameters over the curve domain.
 
-        Parameters
-        ----------
-        n : int, optional
-            The number of values in the parameter space.
+    #     Parameters
+    #     ----------
+    #     n : int, optional
+    #         The number of values in the parameter space.
 
-        Returns
-        -------
-        list[float]
+    #     Returns
+    #     -------
+    #     list[float]
 
-        See Also
-        --------
-        :meth:`locus`
+    #     See Also
+    #     --------
+    #     :meth:`locus`
 
-        """
-        start, end = self.domain
-        return linspace(start, end, n)
+    #     """
+    #     start, end = self.domain
+    #     return linspace(start, end, n)
 
-    def locus(self, resolution=100):
-        """Compute the locus of points on the curve.
+    # def locus(self, resolution=100):
+    #     """Compute the locus of points on the curve.
 
-        Parameters
-        ----------
-        resolution : int
-            The number of intervals at which a point on the
-            curve should be computed.
+    #     Parameters
+    #     ----------
+    #     resolution : int
+    #         The number of intervals at which a point on the
+    #         curve should be computed.
 
-        Returns
-        -------
-        list[:class:`~compas.geometry.Point`]
-            Points along the curve.
+    #     Returns
+    #     -------
+    #     list[:class:`~compas.geometry.Point`]
+    #         Points along the curve.
 
-        See Also
-        --------
-        :meth:`space`
+    #     See Also
+    #     --------
+    #     :meth:`space`
 
-        """
-        return [self.point_at(t) for t in self.space(resolution)]
+    #     """
+    #     return [self.point_at(t) for t in self.space(resolution)]
 
     def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the curve to a given point.
