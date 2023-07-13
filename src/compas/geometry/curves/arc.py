@@ -2,14 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import math
+from math import pi, cos, sin
 
 from compas.geometry import close
 from compas.geometry import Frame
 from compas.geometry import Circle
 from .curve import Curve
 
-PI2 = 2.0 * math.pi
+PI2 = 2.0 * pi
 
 
 class Arc(Curve):
@@ -17,25 +17,25 @@ class Arc(Curve):
 
     The centre of the underlying circle is at the origin of the coordinate system.
     The start and end angles are measured from the positive X axis towards the positive Y axis.
-    The parameter domain of the arc is defined by the start and end angles.
-    It is a subset of the domain of the circle.
+
+    The parametrisation of the arc is normalised with respect to the arc angle.
+    The value ``t=0.0`` corresponds to the start angle of the arc.
+    The value ``t=1.0`` corresponds to the end angle of the arc.
+    The value ``t=0.5`` corresponds to the angle halfway between start and end.
 
     Transformations of the arc are performed by transforming the local coordinate system.
-    They are limited to (combinations of) translations and rotations.
-    All other components of transformations are ignored.
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`
-        Coordinate frame at the center of the arc's circle.
     radius : float
         Radius of the arc's circle.
-    start_angle : float, optional
+    start_angle : float
         The angle in radians of the start of this Arc.
-        Defaults to 0.0.
-    end_angle : float, optional
+    end_angle : float
         The angle in radians of the end of this Arc.
-        Defaults to `pi` (180 degrees).
+    frame : :class:`~compas.geometry.Frame`, optional
+        Local coordinate system of the arc.
+        Defaults to the world XY plane.
 
     Attributes
     ----------
@@ -49,15 +49,13 @@ class Arc(Curve):
         The start angle of the arc.
     end_angle : float
         The end angle of the arc.
-    circle : :class:`~compas.geometry.Circle`
+    circle : :class:`~compas.geometry.Circle`, read-only
         The underlying circle.
-    center : :class:`~compas.geometry.Point`
-        The center of the underlying circle.
     plane : :class:`~compas.geometry.Plane`, read-only
         The plane of the arc.
     diameter : float, read-only
         The diameter of the underlying circle.
-    length : float
+    length : float, read-only
         The length of the arc.
     angle : float, read-only
         The sweep angle in radians between start angle and end angle.
@@ -72,18 +70,77 @@ class Arc(Curve):
     --------
     :class:`compas.geometry.Circle`
 
+    Examples
+    --------
+    Construct a semicircular arc in the XY plane, with radius 1.0, and compute its length.
+
+    >>> from math import pi
+    >>> from compas.geometry import Arc
+    >>> arc = Arc(radius=1.0, start_angle=0.0, end_angle=pi)
+    >>> arc.length == 1.0 * pi
+    True
+
+    Construct a quarter arc in the 3rd quadrant of a frame
+    aligned with the world ZX plane at a distance of 1.0 from the world origin along the world Y axis.
+
+    >>> from math import pi
+    >>> from compas.geometry import Frame
+    >>> from compas.geometry import Arc
+    >>> frame = Frame([0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [1.0, 0.0, 0.0])
+    >>> arc = Arc(radius=1.0, start_angle=pi, end_angle=pi * 1.5, frame=frame)
+    >>> arc.length == 1.0 * pi * 0.5
+    True
+
+    Visualize the arc using the viewer.
+
+    >>> from compas_view2.app import App   # doctest: +SKIP
+    >>> viewer = App()                     # doctest: +SKIP
+    >>> viewer.add(arc.to_polyline(n=20))  # doctest: +SKIP
+    >>> viewer.add(arc.frame)              # doctest: +SKIP
+    >>> viewer.run()                       # doctest: +SKIP
+
+    Visualize only part of the arc.
+
+    >>> from compas_view2.app import App                        # doctest: +SKIP
+    >>> viewer = App()                                          # doctest: +SKIP
+    >>> viewer.add(arc.to_polyline(n=20, domain=(0.25, 0.75)))  # doctest: +SKIP
+    >>> viewer.add(arc.frame)                                   # doctest: +SKIP
+    >>> viewer.run()                                            # doctest: +SKIP
+
     """
 
     JSONSCHEMA = {
-        "type": "object",
-        "properties": {
-            "radius": {"type": "number", "minimum": 0},
-            "start_angle": {"type": "number", "minimum": 0, "optional": True},
-            "end_angle": {"type": "number", "minimum": 0},
-            "frame": Frame.JSONSCHEMA,
-        },
-        "required": ["frame", "radius", "start_angle", "end_angle"],
+        "value": {
+            "type": "object",
+            "properties": {
+                "radius": {"type": "number", "minimum": 0},
+                "start_angle": {"type": "number", "minimum": 0, "optional": True},
+                "end_angle": {"type": "number", "minimum": 0},
+                "frame": Frame.JSONSCHEMA,
+            },
+            "required": ["frame", "radius", "start_angle", "end_angle"],
+        }
     }
+
+    # JSONSCHEMA = {
+    #     "type": "object",
+    #     "properties": {
+    #         "dtype": {"type": "string", "const": "compas.geometry/Arc"},
+    #         "value": {
+    #             "type": "object",
+    #             "properties": {
+    #                 "radius": {"type": "number", "minimum": 0},
+    #                 "start_angle": {"type": "number", "minimum": 0, "optional": True},
+    #                 "end_angle": {"type": "number", "minimum": 0},
+    #                 "frame": Frame.JSONSCHEMA,
+    #             },
+    #             "required": ["frame", "radius", "start_angle", "end_angle"],
+    #         },
+    #         "guid": {"type": "string"},
+    #         "attributes": {"type": "object"},
+    #     },
+    #     "required": ["dtype", "value"],
+    # }
 
     # overwriting the __new__ method is necessary
     # to avoid triggering the plugin mechanism of the base curve class
@@ -92,7 +149,7 @@ class Arc(Curve):
         curve.__init__(*args, **kwargs)
         return curve
 
-    def __init__(self, radius=None, start_angle=0.0, end_angle=math.pi, frame=None, **kwargs):
+    def __init__(self, radius, start_angle, end_angle, frame=None, **kwargs):
         super(Arc, self).__init__(frame=frame, **kwargs)
         self._radius = None
         self._start_angle = None
@@ -111,18 +168,14 @@ class Arc(Curve):
 
     def __eq__(self, other):
         try:
-            other_frame = other.frame
-            other_radius = other.radius
-            other_start = other.start_angle
-            other_end = other.end_angle
+            return (
+                self.radius == other.radius
+                and self.start_angle == other.start
+                and self.end_angle == other.end
+                and self.frame == other.frame
+            )
         except Exception:
             return False
-        return (
-            self.frame == other_frame
-            and self.radius == other_radius
-            and self.start_angle == other_start
-            and self.end_angle == other_end
-        )
 
     # =============================================================================
     # Data
@@ -131,18 +184,18 @@ class Arc(Curve):
     @property
     def data(self):
         return {
-            "frame": self._frame,
-            "radius": self._radius,
-            "start_angle": self._start_angle,
-            "end_angle": self._end_angle,
+            "frame": self.frame,
+            "radius": self.radius,
+            "start_angle": self.start_angle,
+            "end_angle": self.end_angle,
         }
 
-    @data.setter
-    def data(self, value):
-        self.frame = value["frame"]
-        self.radius = value["radius"]
-        self.start_angle = value["start_angle"]
-        self.end_angle = value["end_angle"]
+    # @data.setter
+    # def data(self, value):
+    #     self.frame = value["frame"]
+    #     self.radius = value["radius"]
+    #     self.start_angle = value["start_angle"]
+    #     self.end_angle = value["end_angle"]
 
     # =============================================================================
     # Properties
@@ -197,16 +250,12 @@ class Arc(Curve):
         return self.end_angle - self.start_angle
 
     @property
-    def center(self):
-        return self.frame.point
-
-    @property
     def diameter(self):
         return 2.0 * self.radius
 
     @property
     def circumference(self):
-        return self.diameter * math.pi
+        return self.diameter * pi
 
     @property
     def is_circle(self):
@@ -264,3 +313,112 @@ class Arc(Curve):
     # =============================================================================
     # Methods
     # =============================================================================
+
+    def point_at(self, t):
+        """Returns the point at the specified parameter.
+
+        Parameters
+        ----------
+        t : float
+            The parameter at which to evaluate the arc.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the domain of the curve ``[0, 1]``.
+
+        See Also
+        --------
+        :meth:`normal_at`, :meth:`tangent_at`
+
+        Notes
+        -----
+        The parametrisation of the arc is normalised with respect to the polar angle domain.
+        The value ``t=0.0`` corresponds to the start angle of the arc.
+        The value ``t=1.0`` corresponds to the end angle of the arc.
+        The value ``t=0.5`` corresponds to the angle halfway between start and end.
+
+        """
+        if t < 0.0 or t > 1.0:
+            raise ValueError("Parameter t should be between 0.0 and 1.0")
+
+        angle = self.start_angle + t * self.angle
+        x = self.radius * cos(angle)
+        y = self.radius * sin(angle)
+        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y
+
+    def normal_at(self, t):
+        """Construct a normal vector to the arc at a specific parameter.
+
+        Parameters
+        ----------
+        t : float
+            The parameter at which to evaluate the arc.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Vector`
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the domain of the curve ``[0, 1]``.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`tangent_at`
+
+        Notes
+        -----
+        The parametrisation of the arc is normalised with respect to the polar angle domain.
+        The value ``t=0.0`` corresponds to the start angle of the arc.
+        The value ``t=1.0`` corresponds to the end angle of the arc.
+        The value ``t=0.5`` corresponds to the angle halfway between start and end.
+
+        """
+        normal = self.point_at(t) - self.frame.point
+        normal.unitize()
+        return normal
+
+    def tangent_at(self, t):
+        """Construct a tangent on the circle at a specific parameter.
+
+        Parameters
+        ----------
+        t : float
+            The parameter at which to evaluate the arc.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Vector`
+            The tangent on the circle at the specified parameter.
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the domain of the curve ``[0, 1]``.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`binormal_at`
+
+        Notes
+        -----
+        The parametrisation of the arc is normalised with respect to the polar angle domain.
+        The value ``t=0.0`` corresponds to the start angle of the arc.
+        The value ``t=1.0`` corresponds to the end angle of the arc.
+        The value ``t=0.5`` corresponds to the angle halfway between start and end.
+
+        """
+        if t < 0.0 or t > 1.0:
+            raise ValueError("Parameter t should be between 0.0 and 1.0")
+
+        angle = self.start_angle + t * self.angle
+
+        x = -self.radius * sin(angle)
+        y = +self.radius * cos(angle)
+        return self.frame.xaxis * x + self.frame.yaxis * y
