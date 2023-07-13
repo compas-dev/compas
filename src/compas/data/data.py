@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import json
+# import json
 import hashlib
 from uuid import uuid4
 from uuid import UUID
@@ -128,6 +128,25 @@ class Data(object):
         if "guid" in state:
             self._guid = UUID(state["guid"])
 
+    def __json_dump__(self, minimal=True):
+        """Return the required information for serialization with the COMPAS JSON serializer."""
+        state = {
+            "dtype": self.dtype,
+            "data": self.data,
+        }
+        if minimal:
+            return state
+        state["guid"] = str(self.guid)
+        return state
+
+    @classmethod
+    def __json_load__(cls, data, guid=None):
+        """Construct an object of this type from the provided data to support COMPAS JSON serialization."""
+        obj = cls.from_data(data)
+        if guid:
+            obj._guid = UUID(guid)
+        return obj
+
     @property
     def dtype(self):
         return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
@@ -151,10 +170,6 @@ class Data(object):
         display proper string representations when the objects are printed or
         connected to a panel or other type of string output."""
         return str(self)
-
-    @property
-    def jsonstring(self):
-        return compas.json_dumps(self.data)
 
     @property
     def guid(self):
@@ -202,79 +217,6 @@ class Data(object):
         """
         return self.data
 
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct an object from serialized data contained in a JSON file.
-
-        Parameters
-        ----------
-        filepath : path string | file-like object | URL string
-            The path, file or URL to the file for serialization.
-
-        Returns
-        -------
-        :class:`~compas.data.Data`
-            An instance of this object type if the data contained in the JSON file has the correct schema.
-
-        """
-        data = compas.json_load(filepath)
-        return cls.from_data(data)
-
-    def to_json(self, filepath, pretty=False, compact=False):
-        """Serialize the data representation of an object to a JSON file.
-
-        Parameters
-        ----------
-        filepath : path string or file-like object
-            The path or file-like object to the file containing the data.
-        pretty : bool, optional
-            If True, serialize to a "pretty", human-readable representation.
-        compact : bool, optional
-            If True, serialize to a compact representation without any whitespace.
-
-        Returns
-        -------
-        None
-
-        """
-        compas.json_dump(self.data, filepath, pretty=pretty, compact=compact)
-
-    @classmethod
-    def from_jsonstring(cls, string):
-        """Construct an object from serialized data contained in a JSON string.
-
-        Parameters
-        ----------
-        string : str
-            The object as a JSON string.
-
-        Returns
-        -------
-        :class:`~compas.data.Data`
-            An instance of this object type if the data contained in the JSON file has the correct schema.
-
-        """
-        data = compas.json_loads(string)
-        return cls.from_data(data)
-
-    def to_jsonstring(self, pretty=False, compact=False):
-        """Serialize the data representation of an object to a JSON string.
-
-        Parameters
-        ----------
-        pretty : bool, optional
-            If True serialize a pretty representation of the data.
-        compact : bool, optional
-            If True serialize a compact representation of the data.
-
-        Returns
-        -------
-        str
-            The object's data dict in JSON string format.
-
-        """
-        return compas.json_dumps(self.data, pretty=pretty, compact=compact)
-
     def copy(self, cls=None):
         """Make an independent copy of the data object.
 
@@ -293,70 +235,6 @@ class Data(object):
         if not cls:
             cls = type(self)
         return cls.from_data(deepcopy(self.data))
-
-    @classmethod
-    def validate_json(cls, filepath):
-        """Validate the data contained in the JSON document against the object's JSON data schema.
-
-        Parameters
-        ----------
-        filepath : path string | file-like object | URL string
-            The path, file or URL to the file for validation.
-
-        Returns
-        -------
-        Any
-
-        """
-        from jsonschema import Draft202012Validator
-
-        validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
-        jsondata = json.load(filepath)
-        validator.validate(jsondata)
-        return jsondata
-
-    @classmethod
-    def validate_jsonstring(cls, jsonstring):
-        """Validate the data contained in the JSON string against the objects's JSON data schema.
-
-        Parameters
-        ----------
-        jsonstring : str
-            The JSON string for validation.
-
-        Returns
-        -------
-        Any
-
-        """
-        from jsonschema import Draft202012Validator
-
-        validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
-        jsondata = json.loads(jsonstring)
-        validator.validate(jsondata)
-        return jsondata
-
-    @classmethod
-    def validate_jsondata(cls, jsondata):
-        """Validate the JSON data against the objects's JSON data schema.
-
-        The JSON data is the result of parsing a JSON string or a JSON document.
-
-        Parameters
-        ----------
-        jsondata : Any
-            The JSON data for validation.
-
-        Returns
-        -------
-        Any
-
-        """
-        from jsonschema import Draft202012Validator
-
-        validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
-        validator.validate(jsondata)
-        return jsondata
 
     def sha256(self, as_string=False):
         """Compute a hash of the data for comparison during version control using the sha256 algorithm.
@@ -385,7 +263,71 @@ class Data(object):
 
         """
         h = hashlib.sha256()
-        h.update(self.jsonstring.encode())
+        h.update(compas.json_dumps(self).encode())
         if as_string:
             return h.hexdigest()
         return h.digest()
+
+    # @classmethod
+    # def validate_json(cls, filepath):
+    #     """Validate the data contained in the JSON document against the object's JSON data schema.
+
+    #     Parameters
+    #     ----------
+    #     filepath : path string | file-like object | URL string
+    #         The path, file or URL to the file for validation.
+
+    #     Returns
+    #     -------
+    #     Any
+
+    #     """
+    #     from jsonschema import Draft202012Validator
+
+    #     validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
+    #     jsondata = json.load(filepath)
+    #     validator.validate(jsondata)
+    #     return jsondata
+
+    # @classmethod
+    # def validate_jsonstring(cls, jsonstring):
+    #     """Validate the data contained in the JSON string against the objects's JSON data schema.
+
+    #     Parameters
+    #     ----------
+    #     jsonstring : str
+    #         The JSON string for validation.
+
+    #     Returns
+    #     -------
+    #     Any
+
+    #     """
+    #     from jsonschema import Draft202012Validator
+
+    #     validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
+    #     jsondata = json.loads(jsonstring)
+    #     validator.validate(jsondata)
+    #     return jsondata
+
+    # @classmethod
+    # def validate_jsondata(cls, jsondata):
+    #     """Validate the JSON data against the objects's JSON data schema.
+
+    #     The JSON data is the result of parsing a JSON string or a JSON document.
+
+    #     Parameters
+    #     ----------
+    #     jsondata : Any
+    #         The JSON data for validation.
+
+    #     Returns
+    #     -------
+    #     Any
+
+    #     """
+    #     from jsonschema import Draft202012Validator
+
+    #     validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
+    #     validator.validate(jsondata)
+    #     return jsondata

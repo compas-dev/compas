@@ -96,6 +96,8 @@ class DataEncoder(json.JSONEncoder):
 
     """
 
+    minimal = True
+
     def default(self, o):
         """Return an object in serialized form.
 
@@ -110,29 +112,33 @@ class DataEncoder(json.JSONEncoder):
             The serialized object.
 
         """
-        if hasattr(o, "to_jsondata"):
-            value = o.to_jsondata()
-            if hasattr(o, "dtype"):
-                dtype = o.dtype
-            else:
-                dtype = "{}/{}".format(
-                    ".".join(o.__class__.__module__.split(".")[:-1]),
-                    o.__class__.__name__,
-                )
+        # if hasattr(o, "to_jsondata"):
+        #     value = o.to_jsondata()
+        #     if hasattr(o, "dtype"):
+        #         dtype = o.dtype
+        #     else:
+        #         dtype = "{}/{}".format(
+        #             ".".join(o.__class__.__module__.split(".")[:-1]),
+        #             o.__class__.__name__,
+        #         )
 
-            return {"dtype": dtype, "value": value, "guid": str(o.guid)}
+        #     return {"dtype": dtype, "value": value, "guid": str(o.guid)}
 
-        if hasattr(o, "to_data"):
-            value = o.to_data()
-            if hasattr(o, "dtype"):
-                dtype = o.dtype
-            else:
-                dtype = "{}/{}".format(
-                    ".".join(o.__class__.__module__.split(".")[:-1]),
-                    o.__class__.__name__,
-                )
+        # if hasattr(o, "to_data"):
+        #     value = o.to_data()
 
-            return {"dtype": dtype, "value": value, "guid": str(o.guid)}
+        #     if hasattr(o, "dtype"):
+        #         dtype = o.dtype
+        #     else:
+        #         dtype = "{}/{}".format(
+        #             ".".join(o.__class__.__module__.split(".")[:-1]),
+        #             o.__class__.__name__,
+        #         )
+
+        #     return {"dtype": dtype, "value": value, "guid": str(o.guid)}
+
+        if hasattr(o, "__json_dump__"):
+            return o.__json_dump__(minimal=DataEncoder.minimal)
 
         if hasattr(o, "__next__"):
             return list(o)
@@ -154,10 +160,10 @@ class DataEncoder(json.JSONEncoder):
                     np.uint16,
                     np.uint32,
                     np.uint64,
-                ),
+                ),  # type: ignore
             ):
                 return int(o)
-            if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):
+            if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):  # type: ignore
                 return float(o)
             if isinstance(o, np.bool_):
                 return bool(o)
@@ -243,18 +249,18 @@ class DataDecoder(json.JSONDecoder):
         except AttributeError:
             raise DecoderError("The data type can't be found in the specified module: {}.".format(o["dtype"]))
 
-        obj_value = o["value"]
+        data = o["data"]
 
         # Kick-off from_data from a rebuilt Python dictionary instead of the C# data type
         if IDictionary and isinstance(o, IDictionary[str, object]):
-            obj_value = {key: obj_value[key] for key in obj_value.Keys}
+            data = {key: data[key] for key in data.Keys}
 
-        if hasattr(cls, "from_jsondata"):
-            obj = cls.from_jsondata(obj_value)
-        else:
-            obj = cls.from_data(obj_value)
+        # if hasattr(cls, "from_jsondata"):
+        #     obj = cls.from_jsondata(obj_value)
+        # else:
+        obj = cls.__json_load__(data, o.get("guid", None))
 
-        if "guid" in o:
-            obj._guid = uuid.UUID(o["guid"])
+        # if "guid" in o:
+        #     obj._guid = uuid.UUID(o["guid"])
 
         return obj

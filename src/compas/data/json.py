@@ -8,7 +8,7 @@ from compas.data import DataEncoder
 from compas.data import DataDecoder
 
 
-def json_dump(data, fp, pretty=False, compact=False):
+def json_dump(data, fp, pretty=False, compact=False, minimal=True):
     """Write a collection of COMPAS object data to a JSON file.
 
     Parameters
@@ -44,18 +44,22 @@ def json_dump(data, fp, pretty=False, compact=False):
     True
 
     """
+    DataEncoder.minimal = minimal
+
     with _iotools.open_file(fp, "w") as f:
         kwargs = {}
+
         if pretty:
             kwargs["sort_keys"] = True
             kwargs["indent"] = 4
         if compact:
             kwargs["indent"] = None
             kwargs["separators"] = (",", ":")
+
         return json.dump(data, f, cls=DataEncoder, **kwargs)
 
 
-def json_dumps(data, pretty=False, compact=False):
+def json_dumps(data, pretty=False, compact=False, minimal=True):
     """Write a collection of COMPAS objects to a JSON string.
 
     Parameters
@@ -89,6 +93,8 @@ def json_dumps(data, pretty=False, compact=False):
     True
 
     """
+    DataEncoder.minimal = minimal
+
     kwargs = {}
     if pretty:
         kwargs["sort_keys"] = True
