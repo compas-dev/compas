@@ -406,6 +406,32 @@ class Plane(Geometry):
         """
         return abs(self.normal.dot(other.normal)) < tol
 
+    def contains_point(self, point, tol=1e-06):
+        """Verify if a given point lies in the plane.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point.
+        tol : float, optional
+            Tolerance for the distance from the point to the plane.
+
+        Returns
+        -------
+        bool
+            ``True`` if the point lies in the plane.
+            ``False`` otherwise.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> plane.contains_point([1.0, 1.0, 0.0])
+        True
+
+        """
+        vector = self.point - point
+        return abs(self.normal.dot(vector)) < tol
+
     def distance_to_point(self, point):
         """Compute the distance from a given point to the plane.
 
@@ -426,9 +452,8 @@ class Plane(Geometry):
         1.0
 
         """
-        point = Point(*point)
-        vector = point - self.point
-        return self.normal.dot(vector)
+        vector = self.point - point
+        return abs(self.normal.dot(vector))
 
     def closest_point(self, point):
         """Compute the closest point on the plane to a given point.
@@ -450,27 +475,62 @@ class Plane(Geometry):
         Point(1.000, 1.000, 0.000)
 
         """
-        point = Point(*point)
-        vector = point - self.point
+        vector = self.point - point
         distance = self.normal.dot(vector)
-        return point + self.normal.scaled(-distance)
+        return point + self.normal.scaled(distance)
 
-    def offset(self, distance):
-        """Returns a new offset plane by a given distance.
-        Plane normal is used as positive direction.
+    def projected_point(self, point, direction=None):
+        """Returns the projection of a given point onto the plane.
 
         Parameters
         ----------
-        distance: float
-            The offset distance.
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point.
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
-            The offset plane.
+        :class:`~compas.geometry.Point` | None
+            The projected point, or None if a direction is given and it is parallel to the plane.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> plane.projected_point([1.0, 1.0, 1.0])
+        Point(1.000, 1.000, 0.000)
 
         """
-        return Plane(self.point + self.normal.scaled(distance), self.normal)
+        if not direction:
+            return self.closest_point(point)
+
+        from compas.geometry import Line
+
+        line = Line.from_point_and_vector(point, direction)
+        intersection = self.intersection_with_line(line)
+        return intersection
+
+    def mirrored_point(self, point):
+        """Returns the mirror image of a given point.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+            The mirrored point.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> plane.mirrored_point([1.0, 1.0, 1.0])
+        Point(1.000, 1.000, -1.000)
+
+        """
+        vector = self.point - point
+        distance = self.normal.dot(vector)
+        return point + self.normal.scaled(2 * distance)
 
     def intersection_with_line(self, line, tol=1e-06):
         """Compute the intersection of a plane and a line.
@@ -512,9 +572,8 @@ class Plane(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Line` | :class:`~compas.geometry.Plane` | None
-            The intersection line, or the intersection plane if the planes are
-            parallel, or ``None`` if the planes are coincident.
+        :class:`~compas.geometry.Line` | None
+            The intersection line, or None if the planes are parallel or coincident.
 
         Examples
         --------
@@ -537,3 +596,49 @@ class Plane(Geometry):
         point = plane.intersection_with_line(line)
 
         return Line(point, point + direction)
+
+    def intersections_with_curve(self, curve, tol=1e-06):
+        """Compute the intersection of a plane and a curve.
+
+        Parameters
+        ----------
+        curve : :class:`~compas.geometry.Curve`
+            The curve.
+        tol : float, optional
+            Tolerance for the dot product of the line vector and the plane normal.
+
+        Returns
+        -------
+        list of :class:`~compas.geometry.Point`
+            The intersection points.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> line = Line(Point(0, 0, 1), Vector(1, 1, 1))
+        >>> plane.intersection_with_curve(line)
+        [Point(0.000, 0.000, 0.000)]
+
+        """
+        pass
+
+    def intersections_with_surface(self, surface):
+        pass
+
+    def offset(self, distance):
+        """Returns a new offset plane by a given distance.
+
+        The plane normal is used as positive direction.
+
+        Parameters
+        ----------
+        distance: float
+            The offset distance.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Plane`
+            The offset plane.
+
+        """
+        return Plane(self.point + self.normal.scaled(distance), self.normal)
