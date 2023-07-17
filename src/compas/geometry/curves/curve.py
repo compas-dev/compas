@@ -5,7 +5,6 @@ from __future__ import division
 from compas.plugins import pluggable
 from compas.geometry import Geometry
 from compas.geometry import Transformation
-from compas.geometry import Point
 from compas.geometry import Plane
 from compas.geometry import Frame
 from compas.utilities import linspace
@@ -26,8 +25,6 @@ class Curve(Geometry):
     frame : :class:`~compas.geometry.Frame`, optional
         The local coordinate system of the curve.
         Default is the world coordinate system.
-    domain : tuple[float, float], optional
-        The domain of the parameter space of the curve.
     name : str, optional
         The name of the curve.
 
@@ -35,9 +32,6 @@ class Curve(Geometry):
     ----------
     frame : :class:`~compas.geometry.Frame`
         The frame of the curve.
-    point : :class:`~compas.geometry.Point`
-        The origin of the curve.
-        If not explicitly defined, this defaults to the origin of the frame (:attr:`frame`).
     transformation : :class:`~compas.geometry.Transformation`, read-only
         The transformation from the local coordinate system of the curve (:attr:`frame`) to the world coordinate system.
     plane : :class:`~compas.geometry.Plane`, read-only
@@ -46,8 +40,8 @@ class Curve(Geometry):
         The spatial dimension of the curve.
         In most cases this will be 3.
         For curves embedded on a surface, this is 2.
-    domain : tuple[float, float]
-        The domain of the parameter space of the curve.
+    domain : tuple[float, float], read-only
+        The domain of the parameter space of the curve is the interval ``[0.0, 1.0]``.
     is_closed : bool, read-only
         True if the curve is closed.
     is_periodic : bool, read-only
@@ -79,7 +73,6 @@ class Curve(Geometry):
         self._frame = None
         self._transformation = None
         self._domain = None
-        self._point = None
         if frame:
             self.frame = frame
 
@@ -144,28 +137,6 @@ class Curve(Geometry):
         if not self._transformation:
             self._transformation = Transformation.from_frame(self.frame)
         return self._transformation
-
-    @property
-    def point(self):
-        if not self._point:
-            return self.frame.point
-        return self._point
-
-    @point.setter
-    def point(self, point):
-        self._point = Point(*point)
-
-    @property
-    def xaxis(self):
-        return self.frame.xaxis
-
-    @property
-    def yaxis(self):
-        return self.frame.yaxis
-
-    @property
-    def zaxis(self):
-        return self.frame.zaxis
 
     @property
     def plane(self):
