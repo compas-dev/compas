@@ -59,6 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
 * Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
 * Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
+* Added `compas.geometry.trimesh_descent_numpy`.
+* Added `compas.geometry.trimesh_gradient_numpy`.
 * Added a deprecation warning when using `Artist` for `Plotter`.
 
 ### Changed
@@ -113,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.data.json_dumps` to include `compact=False` parameter.
 * Changed `compas.data.DataEncoder` and `compas.data.DataDecoder` to support `to_jsondata` and `from_jsondata`.
 * Moved all API level docstrings from the `__init__.py` to the correspoding `.rst` file in the docs.
+* Fixed `AttributeError` in Plotter's `PolylineArtist` and `SegementArtist`.
 
 ### Removed
 
@@ -157,6 +160,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.datastructures.Graph.key_index`and `compas.datastructures.Graph.index_key`.
 * Removed `compas.datastructures.Graph.uv_index`and `compas.datastructures.Graph.index_uv`.
 * Removed `compas.datastructures.Halfedge.key_index` and `compas.datastructures.Halfedge.index_key`.
+* Removed `compas.numerical.dr` and `compas.numerical.dr_numpy` (moved to separate `compas_dr`).
+* Removed `compas.numerical.fd_numpy` to (moved to separate `compas_fd`).
+* Removed `compas.numerical.topop_numpy` (moved to separate `compas_topopt`).
+* Removed `compas.numerical.mma` and `compas.numerical.lma`.
+* Removed `compas.numerical.descent`, `compas.numerical.devo`, and `compas.numerical.ga`.
+* Removed `compas.numerical.utilities`.
 * Removed class attribute `CONTEXT` from `compas.artists.Artist`.
 * Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
 

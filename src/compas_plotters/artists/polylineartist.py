@@ -107,4 +107,4 @@ class PolylineArtist(PlotterArtist, PrimitiveArtist):
         self._mpl_line.set_xdata(x)
         self._mpl_line.set_ydata(y)
         self._mpl_line.set_color(self.color)
-        self._mpl_line.set_linewidth(self.width)
+        self._mpl_line.set_linewidth(self.linewidth)

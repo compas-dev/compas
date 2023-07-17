@@ -4,14 +4,6 @@ compas.numerical
 
 .. currentmodule:: compas.numerical
 
-.. warning::
-
-    Note that this package will be removed from :mod:`compas`.
-    Some of the functionality will be moved to :mod:`compas.geometry`.
-    Specific algorithms will be moved to their own packages.
-    For example, :mod:`compas.numerical.fd_numpy` will be moved to ``compas_fd``,
-    and :mod:`compas.numerical.dr_numpy` will be moved to ``compas_dr``.
-
 .. rst-class:: lead
 
 This package provides some basic linear algabra functions,
@@ -24,15 +16,7 @@ Solvers
     :toctree: generated/
     :nosignatures:
 
-    descent_numpy
-    devo_numpy
-    dr
-    dr_numpy
-    fd_numpy
-    ga
-    moga
     pca_numpy
-    topop_numpy
 
 
 Isolines
@@ -85,27 +69,3 @@ Matrices
     laplacian_matrix
     mass_matrix
     stiffness_matrix
-
-
-Operators
-=========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    curl
-    div
-    grad
-
-
-Utilities
-=========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    float_formatter
-    set_array_print_precision
-    unset_array_print_precision

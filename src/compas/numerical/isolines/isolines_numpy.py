@@ -1,30 +1,10 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import asarray
 from numpy import meshgrid
 from numpy import linspace
 from numpy import amax
 from numpy import amin
-from scipy.interpolate import griddata
+from scipy.interpolate import griddata  # type: ignore
 import matplotlib.pyplot as plt
-
-
-# def trimesh_descent(trimesh):
-#     """"""
-#     vertices, faces = trimesh.to_vertices_and_faces()
-#     V = array(vertices)
-#     F = array(faces)
-#     G = grad(V, F)
-#     sfield = V[:, 2].reshape((-1, 1))
-#     vfield = - G.dot(sfield)
-#     return vfield.reshape((-1, 3), order='F').tolist()
-
-
-# ==============================================================================
-# contours
-# ==============================================================================
 
 
 def scalarfield_contours_numpy(xy, s, levels=50, density=100):
@@ -97,17 +77,17 @@ def scalarfield_contours_numpy(xy, s, levels=50, density=100):
 
     c = ax.contour(X, Y, S, levels)
 
-    contours = [0] * len(c.collections)
-    levels = c.levels
+    contours = [0] * len(c.collections)  # type: ignore
+    levels = c.levels  # type: ignore
 
-    for i, coll in enumerate(iter(c.collections)):
+    for i, coll in enumerate(iter(c.collections)):  # type: ignore
         paths = coll.get_paths()
-        contours[i] = [0] * len(paths)
+        contours[i] = [0] * len(paths)  # type: ignore
         for j, path in enumerate(iter(paths)):
             polygons = path.to_polygons()
-            contours[i][j] = [0] * len(polygons)
+            contours[i][j] = [0] * len(polygons)  # type: ignore
             for k, polygon in enumerate(iter(polygons)):
-                contours[i][j][k] = polygon
+                contours[i][j][k] = polygon  # type: ignore
 
     plt.close(fig)
 
