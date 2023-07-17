@@ -18,19 +18,19 @@ class Parabola(Conic):
 
     Parameters
     ----------
+    focal : float
+        The focal length of the parabola.
     frame : :class:`compas.geometry.Frame`
         The coordinate frame of the parabola.
-    major : float
-        The major of the parabola.
 
     Attributes
     ----------
     frame : :class:`compas.geometry.Frame`
-        The coordinate frame of the hyperbola.
+        The coordinate frame of the parabola.
+    transformation : :class:`Transformation`, read-only
+        The transformation from the local coordinate system of the parabola (:attr:`frame`) to the world coordinate system.
     focal : float
-        The distance between the two focus points.
-    center : :class:`compas.geometry.Point`, read-only
-        The center of the parabola.
+        The focal length of the parabola.
     plane : :class:`compas.geometry.Plane`, read-only
         The plane of the parabola.
     latus : :class:`compas.geometry.Point`, read-only
@@ -38,15 +38,43 @@ class Parabola(Conic):
     eccentricity : float, read-only
         The eccentricity of a parabola is between 0 and 1.
     focus : :class:`compas.geometry.Point`, read-only
-        The focus of the parabola.
+        The focus point of the parabola.
     directix : :class:`compas.geometry.Line`, read-only
-        The directix is the line perpendicular to the y axis of the parabola
-        at a distance ``d = + major / eccentricity`` from the center of the parabola.
-        The second directix intersects the positive x axis.
+        The directix is the line perpendicular to the y axis of the parabola frame
+        at a distance ``d = + major / eccentricity`` from the origin of the parabola frame.
     is_closed : bool, read-only
         False.
     is_periodic : bool, read-only
         False.
+
+    See Also
+    --------
+    :class:`compas.geometry.Ellipse`, :class:`compas.geometry.Hyperbola`, :class:`compas.geometry.Circle`
+
+    Examples
+    --------
+    Construct a parabola in the world XY plane.
+
+    >>> from compas.geometry import Frame, Parabola
+    >>> parabola = Parabola(focal=3, frame=Frame.worldXY())
+    >>> parabola = Parabola(focal=3)
+
+    Construct a parabola such that the Z axis of its frame aligns with a given line.
+
+    >>> from compas.geometry import Frame, Line, Parabola
+    >>> line = Line([0, 0, 0], [1, 1, 1])
+    >>> plane = Plane(line.end, line.direction)
+    >>> frame = Frame.from_plane(plane)
+    >>> parabola = Parabola(focal=3, frame=frame)
+
+    Visualize the parabola with the COMPAS viewer.
+
+    >>> from compas_view2.app import App  # doctest: +SKIP
+    >>> viewer = App()                    # doctest: +SKIP
+    >>> viewer.add(line)                  # doctest: +SKIP
+    >>> viewer.add(parabola)              # doctest: +SKIP
+    >>> viewer.add(parabola.frame)        # doctest: +SKIP
+    >>> viewer.run()                      # doctest: +SKIP
 
     """
 
@@ -104,16 +132,16 @@ class Parabola(Conic):
 
     @property
     def focus(self):
-        return self.point + self.yaxis * self.focal
+        return self.frame.point + self.frame.yaxis * self.focal
 
     @property
     def vertex(self):
-        return self.point
+        return self.frame.point
 
     @property
     def directix(self):
-        point = self.point + self.yaxis * -self.focal
-        return Line(point, point + self.xaxis)
+        point = self.frame.point + self.frame.yaxis * -self.focal
+        return Line(point, point + self.frame.xaxis)
 
     @property
     def is_closed(self):

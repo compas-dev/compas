@@ -34,7 +34,7 @@ class Polyline(Curve):
     ----------
     frame : :class:`~compas.geometry.Frame`, read-only
         The frame of the spatial coordinates of the polyline.
-        This is the world XY frame.
+        This is always the world XY frame.
     points : list[:class:`~compas.geometry.Point`]
         The points of the polyline.
     lines : list[:class:`~compas.geometry.Line`], read-only
@@ -128,7 +128,7 @@ class Polyline(Curve):
 
     @frame.setter
     def frame(self, frame):
-        pass
+        raise Exception("Setting the coordinate frame of a polyline is not supported.")
 
     @property
     def points(self):

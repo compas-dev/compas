@@ -40,8 +40,6 @@ class Ellipse(Curve):
         The major of the ellipse.
     minor : float
         The minor of the ellipse.
-    center : :class:`~compas.geometry.Point`
-        The center of the ellipse.
     plane : :class:`~compas.geometry.Plane`, read-only
         The plane of the ellipse.
     area : float, read-only
@@ -81,9 +79,28 @@ class Ellipse(Curve):
 
     Examples
     --------
+    Construct an ellipse in the world XY plane.
+
     >>> from compas.geometry import Frame, Ellipse
-    >>> ellipse = Ellipse(frame=Frame.worldXY(), major=2, minor=1)
-    >>> ellipse = Ellipse(major=2, minor=1)
+    >>> ellipse = Ellipse(major=3, minor=2, frame=Frame.worldXY())
+    >>> ellipse = Ellipse(major=3, minor=2)
+
+    Construct an ellipse such that its normal aligns with a given line.
+
+    >>> from compas.geometry import Line, Frame, Plane, Ellipse
+    >>> line = Line([0, 0, 0], [1, 1, 1])
+    >>> plane = Plane(line.end, line.direction)
+    >>> ellipse = Ellipse.from_plane_major_minor(plane, 3, 2)
+    >>> ellipse = Ellipse(major=3, minor=2, frame=Frame.from_plane(plane))
+
+    Visualise the line, ellipse, and frame of the ellipse with the COMPAS viewer.
+
+    >>> from compas_view2.app import App  # doctest: +SKIP
+    >>> viewer = App()                    # doctest: +SKIP
+    >>> viewer.add(line)                  # doctest: +SKIP
+    >>> viewer.add(ellipse)               # doctest: +SKIP
+    >>> viewer.add(ellipse.frame)         # doctest: +SKIP
+    >>> viewer.run()                      # doctest: +SKIP
 
     """
 
@@ -174,31 +191,31 @@ class Ellipse(Curve):
 
     @property
     def focus1(self):
-        return self.center + self.xaxis * +self.semifocal
+        return self.frame.point + self.frame.xaxis * +self.semifocal
 
     @property
     def focus2(self):
-        return self.center + self.xaxis * -self.semifocal
+        return self.frame.point + self.frame.xaxis * -self.semifocal
 
     @property
     def vertex1(self):
-        return self.center + self.xaxis * self.major
+        return self.frame.point + self.frame.xaxis * self.major
 
     @property
     def vertex2(self):
-        return self.center + self.xaxis * -self.major
+        return self.frame.point + self.frame.xaxis * -self.major
 
     @property
     def directix1(self):
         d1 = self.major**2 / self.semifocal
-        p1 = self.center + self.xaxis * +d1
-        return Line.from_point_and_vector(p1, self.yaxis)
+        p1 = self.frame.point + self.frame.xaxis * +d1
+        return Line.from_point_and_vector(p1, self.frame.yaxis)
 
     @property
     def directix2(self):
         d2 = self.major**2 / self.semifocal
-        p2 = self.center + self.xaxis * -d2
-        return Line.from_point_and_vector(p2, self.yaxis)
+        p2 = self.frame.point + self.frame.xaxis * -d2
+        return Line.from_point_and_vector(p2, self.frame.yaxis)
 
     @property
     def area(self):
@@ -225,7 +242,7 @@ class Ellipse(Curve):
     # ==========================================================================
 
     @classmethod
-    def from_point_and_major_and_minor(cls, point, major, minor):
+    def from_point_major_minor(cls, point, major, minor):
         """Construct a ellipse from a point and major and minor axis lengths.
 
         Parameters
@@ -244,7 +261,29 @@ class Ellipse(Curve):
 
         """
         frame = Frame(point, [1, 0, 0], [0, 1, 0])
-        return cls(frame=frame, major=major, minor=minor)
+        return cls(major=major, minor=minor, frame=frame)
+
+    @classmethod
+    def from_plane_major_minor(cls, plane, major, minor):
+        """Construct a ellipse from a point and major and minor axis lengths.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            The plane of the ellipse.
+        major : float
+            The major axis length.
+        minor : float
+            The minor axis length.
+
+        Returns
+        -------
+        :class:`Ellipse`
+            The constructed ellipse.
+
+        """
+        frame = Frame.from_plane(plane)
+        return cls(major=major, minor=minor, frame=frame)
 
     # ==========================================================================
     # Methods
@@ -275,7 +314,7 @@ class Ellipse(Curve):
         t = t * PI2
         x = self.major * cos(t)
         y = self.minor * sin(t)
-        return self.center + self.xaxis * x + self.yaxis * y
+        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y
 
     def tangent_at(self, t):
         """Compute the tangent at a specific parameter.
@@ -300,7 +339,7 @@ class Ellipse(Curve):
 
         """
         yaxis = self.normal_at(t)
-        zaxis = self.zaxis
+        zaxis = self.frame.zaxis
         return yaxis.cross(zaxis).unitized()
 
     def normal_at(self, t):

@@ -16,16 +16,18 @@ class Circle(Conic):
 
     The centre of the circle is at the origin of the coordinate system.
     The z-axis of the coordinate system defines the normal of the circle plane.
-    The parameter domain of a circle is ``[0, 2*pi]``.
+    The parameter domain is normalized with respect to the polar angle.
+    A parameter value of ``t = 0`` corresponds to the point on the circle at angle ``0``.
+    A parameter value of ``t = 1`` corresponds to the point on the circle at angle ``2 * pi``.
     Moving along the circle in the parameter direction corresponds to moving counter-clockwise around the origin of the local coordinate system.
 
     Parameters
     ----------
+    radius : float
+        The radius of the circle.
     frame : :class:`~compas.geometry.Frame`, optional
         The coordinate frame of the circle.
         The default value is ``None``, in which case the world coordinate system is used.
-    radius : float
-        The radius of the circle.
 
     Attributes
     ----------
@@ -33,12 +35,10 @@ class Circle(Conic):
         The coordinate frame of the circle.
     transformation : :class:`Transformation`, read-only
         The transformation from the local coordinate system of the circle (:attr:`frame`) to the world coordinate system.
-    radius : float
-        The radius of the circle.
     center : :class:`~compas.geometry.Point`
         The center of the circle.
-    plane : :class:`~compas.geometry.Plane`, read-only
-        The plane of the circle.
+    radius : float
+        The radius of the circle.
     diameter : float, read-only
         The diameter of the circle.
     area : float, read-only
@@ -58,9 +58,28 @@ class Circle(Conic):
 
     Examples
     --------
+    Construct a circle in the world XY plane.
+
     >>> from compas.geometry import Frame, Circle
-    >>> circle = Circle(frame=Frame.worldXY(), radius=5)
+    >>> circle = Circle(radius=5, frame=Frame.worldXY())
     >>> circle = Circle(radius=5)
+
+    Construct a circle such that the Z axis of its frame such that it aligns with a given line.
+
+    >>> from compas.geometry import Line, Frame, Plane, Circle
+    >>> line = Line([0, 0, 0], [1, 1, 1])
+    >>> plane = Plane(line.end, line.direction)
+    >>> circle = Circle.from_plane_and_radius(plane, 5)
+    >>> circle = Circle(radius=5, frame=Frame.from_plane(plane))
+
+    Visualise the line, circle, and frame of the circle with the COMPAS viewer.
+
+    >>> from compas_view2.app import App  # doctest: +SKIP
+    >>> viewer = App()                    # doctest: +SKIP
+    >>> viewer.add(line)                  # doctest: +SKIP
+    >>> viewer.add(circle)                # doctest: +SKIP
+    >>> viewer.add(circle.frame)          # doctest: +SKIP
+    >>> viewer.run()                      # doctest: +SKIP
 
     """
 

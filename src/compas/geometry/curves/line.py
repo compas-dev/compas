@@ -25,7 +25,7 @@ class Line(Curve):
     ----------
     start : [float, float, float] | :class:`~compas.geometry.Point`
         The first point.
-    start : [float, float, float] | :class:`~compas.geometry.Point`
+    end : [float, float, float] | :class:`~compas.geometry.Point`
         The second point.
 
     Attributes

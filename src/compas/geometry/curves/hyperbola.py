@@ -53,8 +53,6 @@ class Hyperbola(Conic):
         The major radius of the hyperbola.
     minor : float
         The minor radius of the hyperbola.
-    center : :class:`compas.geometry.Point`
-        The center of the hyperbola.
     plane : :class:`compas.geometry.Plane`, read-only
         The plane of the hyperbola.
     semifocal : float, read-only
@@ -84,6 +82,30 @@ class Hyperbola(Conic):
     See Also
     --------
     :class:`compas.geometry.Circle`, :class:`compas.geometry.Ellipse`, :class:`compas.geometry.Parabola`
+
+    Examples
+    --------
+    Construct a hyperbola in the world XY plane.
+
+    >>> from compas.geometry import Frame, Hyperbola
+    >>> hyperbola = Hyperbola(major=3, minor=2, frame=Frame.worldXY())
+    >>> hyperbola = Hyperbola(major=3, minor=2)
+
+    Construct a hyperbola such that the Z axis of its frame aligns with a given line.
+
+    >>> from compas.geometry import Line, Frame, Hyperbola
+    >>> line = Line([0, 0, 0], [1, 1, 1])
+    >>> plane = Plane(line.end, line.direction)
+    >>> hyperbola = Hyperbola(major=3, minor=2, frame=Frame.from_plane(plane))
+
+    Visualise the line, hyperbola, and frame of the hyperbola with the COMPAS viewer.
+
+    >>> from compas_view2.app import App  # doctest: +SKIP
+    >>> viewer = App()                    # doctest: +SKIP
+    >>> viewer.add(line)                  # doctest: +SKIP
+    >>> viewer.add(hyperbola)               # doctest: +SKIP
+    >>> viewer.add(hyperbola.frame)         # doctest: +SKIP
+    >>> viewer.run()                      # doctest: +SKIP
 
     """
 
@@ -171,19 +193,19 @@ class Hyperbola(Conic):
 
     @property
     def focus1(self):
-        return self.point + self.xaxis * self.semifocal
+        return self.frame.point + self.frame.xaxis * self.semifocal
 
     @property
     def focus2(self):
-        return self.point + self.xaxis * -self.semifocal
+        return self.frame.point + self.frame.xaxis * -self.semifocal
 
     @property
     def vertex1(self):
-        return self.point + self.xaxis * self.major
+        return self.frame.point + self.frame.xaxis * self.major
 
     @property
     def vertex2(self):
-        return self.point + self.xaxis * -self.major
+        return self.frame.point + self.frame.xaxis * -self.major
 
     @property
     def asymptote1(self):
@@ -234,7 +256,7 @@ class Hyperbola(Conic):
         sec_t = 1 / cos(t)
         x = self.major * sec_t
         y = self.minor * sin(t) * sec_t
-        return self.center + self.xaxis * x + self.yaxis * y
+        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y
 
     def tangent_at(self, t):
         """
