@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
+from warnings import warn
 from abc import abstractmethod
 from collections import defaultdict
 
@@ -55,17 +56,17 @@ def is_plotter_open():
     return False
 
 
-def _choose_context():
+def _detect_current_context():
     """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
     1. Viewer
     2. Plotter
-    3. Rhino / GH
-    4. Other - randome choice from Artist.ITEM_ARTISTS.values()
+    3. Rhino / GH - checked explicitly since Artists for both get registered when code is run from either.
+    4. Other
 
     Returns
     -------
     str
-        one-of: ["Viewer", "Plotter", "Grasshopper", "Rhino"] or another as detected by the register_artists plugin.
+        Name of an available context, used as key in :attr:`Artist.ITEM_ARTIST`
 
     """
     if is_viewer_open():
@@ -76,9 +77,7 @@ def _choose_context():
         return "Grasshopper"
     if compas.is_rhino():
         return "Rhino"
-    if compas.is_blender():
-        return "Blender"
-    other_contexts = [v for v in Artist.ITEM_ARTIST.keys() if v not in Artist.KNOWN_CONTEXTS]
+    other_contexts = [v for v in Artist.ITEM_ARTIST.keys() if v != "Plotter"]  # TODO: remove when Plotter is removed
     if other_contexts:
         return other_contexts[0]
     raise NoArtistContextError()
@@ -86,7 +85,12 @@ def _choose_context():
 
 def _get_artist_cls(data, **kwargs):
     # in any case user gets to override the choice
-    context_name = kwargs.get("context") or _choose_context()
+    context_name = kwargs.get("context") or _detect_current_context()
+
+    # TODO: remove when Plotter is removed
+    if context_name == "Plotter":
+        warn("The usage of Plotter with COMPAS Artist is deprecated!")
+
     dtype = type(data)
     cls = None
 
@@ -121,8 +125,6 @@ class Artist(object):
 
     Attributes
     ----------
-    KNOWN_CONTEXTS : list[str]
-        1st and 2nd party context which are known to :class:`~compas.artists.Artist`.
     ITEM_ARTIST : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.artists.Artist`]]]
         Dictionary mapping data types to the corresponding artists types per visualization context.
 
@@ -132,7 +134,6 @@ class Artist(object):
 
     __ARTISTS_REGISTERED = False
 
-    KNOWN_CONTEXTS = ["Rhino", "Grasshopper", "Blender", "Plotter", "Viewer"]
     ITEM_ARTIST = defaultdict(dict)
 
     def __new__(cls, item, **kwargs):
