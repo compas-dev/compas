@@ -66,7 +66,7 @@ class Plane(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the plane."""
-        return {"point": self.point, "normal": self.normal}
+        return {"point": self.point.data, "normal": self.normal.data}
 
     @data.setter
     def data(self, data):

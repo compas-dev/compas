@@ -72,7 +72,7 @@ class Line(Primitive):
     @property
     def data(self):
         """dict : The data dictionary that represents the line."""
-        return {"start": self.start, "end": self.end}
+        return {"start": self.start.data, "end": self.end.data}
 
     @data.setter
     def data(self, data):

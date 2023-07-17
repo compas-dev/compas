@@ -94,9 +94,9 @@ class Frame(Primitive):
     def data(self):
         """dict : The data dictionary that represents the frame."""
         return {
-            "point": self.point,
-            "xaxis": self.xaxis,
-            "yaxis": self.yaxis,
+            "point": self.point.data,
+            "xaxis": self.xaxis.data,
+            "yaxis": self.yaxis.data,
         }
 
     @data.setter
