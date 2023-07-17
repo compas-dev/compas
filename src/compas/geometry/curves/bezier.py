@@ -37,7 +37,7 @@ def binomial_coefficient(n, k):
     return int(factorial(n) / float(factorial(k) * factorial(n - k)))
 
 
-def bernstein_value(n, k, t):
+def bernstein_polynomial(n, k, t):
     """The k:sup:`th` of ``n + 1`` Bernstein basis polynomials of degree ``n``.
 
     A weighted linear combination of these basis polynomials is called a Bernstein polynomial.
@@ -55,6 +55,11 @@ def bernstein_value(n, k, t):
     -------
     float
         The value of the Bernstein basis polynomial at `t`.
+
+    See Also
+    --------
+    :func:`compas.geometry.bernstein_derivative`
+    :func:`compas.geometry.binomial_coefficient`
 
     Notes
     -----
@@ -80,6 +85,37 @@ def bernstein_value(n, k, t):
     return binomial_coefficient(n, k) * t**k * (1 - t) ** (n - k)
 
 
+def bernstein_derivative(n, k, t, p=1):
+    """The p:sup:`th` derivative of the k:sup:`th` of ``n + 1`` Bernstein basis polynomials of degree ``n``.
+
+    Parameters
+    ----------
+    n : int
+        The degree of the polynomial.
+    k : int
+        The number of the basis polynomial.
+    t : float
+        The variable.
+    p : int, optional
+        The order of the derivative.
+
+    Returns
+    -------
+    float
+        The value of the derivative of the Bernstein basis polynomial at `t`.
+
+    See Also
+    --------
+    :func:`compas.geometry.bernstein_polynomial`
+
+    """
+    c = 0
+    for i in range(max(0, k + p - n), min(k, p) + 1):
+        c += (-1) ** (i + p) * binomial_coefficient(p, i) * bernstein_polynomial(n - p, k - i, t)
+    c = factorial(n) / factorial(n - p) * c
+    return c
+
+
 class Bezier(Curve):
     """A Bezier curve is defined by control points and a degree.
 
@@ -97,12 +133,30 @@ class Bezier(Curve):
         The control points.
     degree : int, read-only
         The degree of the curve.
+    frame : :class:`~compas.geometry.Frame`, read-only
+        The frame of the curve.
+        This is always the world coordinate system.
+
+    See Also
+    --------
+    :class:`compas.geometry.NubrsCurve`
 
     Examples
     --------
-    >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
+    Construct a Bezier curve from control points.
+
+    >>> points = [[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]]
+    >>> curve = Bezier(points)
+
+    The degree of the curve is equal to the number of control points minus one.
+
     >>> curve.degree
     2
+
+    Note that the input control points are automatically converted to COMPAS points.
+
+    >>> curve.points
+    [Point(0.000, 0.000, 0.000), Point(0.500, 1.000, 0.000), Point(1.000, 0.000, 0.000)]
 
     """
 
@@ -146,7 +200,7 @@ class Bezier(Curve):
 
     @frame.setter
     def frame(self, frame):
-        raise NotImplementedError
+        raise Exception("Setting the coordinate frame of a Bezier curve is not supported.")
 
     @property
     def points(self):
@@ -205,7 +259,7 @@ class Bezier(Curve):
 
         See Also
         --------
-        :meth:`compas.geometry.Bezier.tangent_at`
+        :meth:`compas.geometry.Bezier.tangent_at`, :meth:`compas.geometry.Bezier.normal_at`
 
         Examples
         --------
@@ -219,7 +273,7 @@ class Bezier(Curve):
         n = self.degree
         point = Point(0, 0, 0)
         for i, p in enumerate(self.points):
-            b = bernstein_value(n, i, t)
+            b = bernstein_polynomial(n, i, t)
             point += p * b
         return point
 
@@ -236,6 +290,10 @@ class Bezier(Curve):
         :class:`~compas.geometry.Vector`
             The corresponding tangent vector.
 
+        See Also
+        --------
+        :meth:`compas.geometry.Bezier.point_at`, :meth:`compas.geometry.Bezier.normal_at`
+
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
@@ -243,18 +301,10 @@ class Bezier(Curve):
         Vector(1.000, 0.000, 0.000)
 
         """
-        p = 1
         n = self.degree
         vector = Vector(0, 0, 0)
         for i, point in enumerate(self.points):
-            # a = bernstein_value(n - 1, i - 1, t)
-            # b = bernstein_value(n - 1, i, t)
-            # c = n * (a - b)
-            c = 0
-            for k in range(max(0, i + p - n), min(i, p) + 1):
-                c += (-1) ** (k + p) * binomial_coefficient(p, k) * bernstein_value(n - p, i - k, t)
-            c = factorial(n) / factorial(n - p) * c
-            vector += point * c
+            vector += point * bernstein_derivative(n, i, t, 1)
         vector.unitize()
         return vector
 
@@ -271,6 +321,10 @@ class Bezier(Curve):
         :class:`~compas.geometry.Vector`
             The corresponding normal vector.
 
+        See Also
+        --------
+        :meth:`compas.geometry.Bezier.point_at`, :meth:`compas.geometry.Bezier.tangent_at`
+
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
@@ -279,15 +333,10 @@ class Bezier(Curve):
 
         """
         tangent = self.tangent_at(t)
-        p = 2
         n = self.degree
         vector = Vector(0, 0, 0)
-        f = factorial(n) / factorial(n - p)
         for i, point in enumerate(self.points):
-            c = 0
-            for k in range(max(0, i + p - n), min(i, p) + 1):
-                c += (-1) ** (k + p) * binomial_coefficient(p, k) * bernstein_value(n - p, i - k, t)
-            vector += point * (f * c)
+            vector += point * bernstein_derivative(n, i, t, 2)
         if vector.length < 1e-6:
             return None
         vector.unitize()
