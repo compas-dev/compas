@@ -6,6 +6,7 @@ from compas.artists.artist import NoArtistContextError
 
 
 if not compas.IPY:
+
     @pytest.fixture(autouse=True)
     def reset_artists():
         # before each test
@@ -73,7 +74,6 @@ if not compas.IPY:
 
         assert isinstance(artist, FakeArtist)
 
-
     def test_artist_auto_context_discovery_viewer(mocker):
         mocker.patch("compas.artists.artist.is_viewer_open", return_value=True)
         Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeArtist}
@@ -82,16 +82,6 @@ if not compas.IPY:
         artist = Artist(item)
 
         assert isinstance(artist, FakeArtist)
-
-    def test_artist_auto_context_discovery_viewer(mocker):
-        mocker.patch("compas.artists.artist.is_viewer_open", return_value=True)
-        Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeArtist}
-
-        item = FakeSubItem()
-        artist = Artist(item)
-
-        assert isinstance(artist, FakeArtist)
-
 
     def test_artist_auto_context_discovery_plotter(mocker):
         mocker.patch("compas.artists.artist.is_plotter_open", return_value=True)
@@ -102,7 +92,6 @@ if not compas.IPY:
 
         assert isinstance(artist, FakeArtist)
 
-
     def test_artist_auto_context_discovery_viewer_priority(mocker):
         mocker.patch("compas.artists.artist.is_viewer_open", return_value=True)
 
@@ -112,7 +101,6 @@ if not compas.IPY:
         class FakePlotterArtist(FakeArtist):
             pass
 
-
         Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeViewerArtist}
         Artist.ITEM_ARTIST["Plotter"] = {FakeItem: FakePlotterArtist}
 
@@ -120,7 +108,6 @@ if not compas.IPY:
         artist = Artist(item)
 
         assert isinstance(artist, FakeViewerArtist)
-
 
     def test_artist_auto_context_discovery_manual_override(mocker):
         mocker.patch("compas.artists.artist.is_viewer_open", return_value=True)
@@ -131,7 +118,6 @@ if not compas.IPY:
         class FakePlotterArtist(FakeArtist):
             pass
 
-
         Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeViewerArtist}
         Artist.ITEM_ARTIST["Plotter"] = {FakeItem: FakePlotterArtist}
 
@@ -139,7 +125,6 @@ if not compas.IPY:
         artist = Artist(item, context="Plotter")
 
         assert isinstance(artist, FakePlotterArtist)
-
 
     def test_artist_auto_context_discovery_no_context(mocker):
         mocker.patch("compas.artists.artist.is_viewer_open", return_value=False)
