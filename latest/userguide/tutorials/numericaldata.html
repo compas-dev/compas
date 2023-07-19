@@ -450,7 +450,7 @@ the ordering is not necessarily contiguous, nor continuous after certain mesh op
 <p>Therefore, when converting data structure data to numerical data,
 it is important that identifiers of the data in the data structure
 are properly matched to the positions of the same data in the corresponding lists or arrays.</p>
-<p>For example, the proper way to run a Force Density algorithm (<a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.numerical.fd_numpy.html" title="(in COMPAS vlatest)"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.numerical.fd_numpy()</span></code></a>)
+<p>For example, the proper way to run a Force Density algorithm (<code class="xref py py-func docutils literal notranslate"><span class="pre">compas.numerical.fd_numpy()</span></code>)
 on a mesh uses a <code class="docutils literal notranslate"><span class="pre">vertex_index</span></code> map to take care of this relationship between identifiers and indices.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>

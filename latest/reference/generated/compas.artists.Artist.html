@@ -1155,12 +1155,17 @@ document.write(`
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for all artists.</p>
 <dl class="field-list">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><dl>
-<dt><strong>AVAILABLE_CONTEXTS</strong><span class="classifier">list[str]</span></dt><dd><p>The available visualization contexts.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>item: Any</strong></dt><dd><p>The item which should be visualized using the created Artist.</p>
 </dd>
-<dt><strong>CONTEXT</strong><span class="classifier">str | None</span></dt><dd><p>The current visualization context is one of <code class="xref py py-attr docutils literal notranslate"><span class="pre">AVAILABLE_CONTEXTS</span></code>.</p>
+<dt><strong>context: str, optional</strong></dt><dd><p>Explicit context to pick the Artist from. One of <code class="xref py py-attr docutils literal notranslate"><span class="pre">AVAILABLE_CONTEXTS</span></code>.
+If not specified, an attempt will be made to automatically detect the appropriate context.</p>
 </dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl>
 <dt><strong>ITEM_ARTIST</strong><span class="classifier">dict[str, dict[Type[<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a>], Type[<a class="reference internal" href="#compas.artists.Artist" title="compas.artists.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">Artist</span></code></a>]]]</span></dt><dd><p>Dictionary mapping data types to the corresponding artists types per visualization context.</p>
 </dd>
 </dl>
@@ -1193,6 +1198,9 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.artists.Artist.register.html#compas.artists.Artist.register" title="compas.artists.Artist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
 <td><p>Register an artist type to a data type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.artists.Artist.register_artists.html#compas.artists.Artist.register_artists" title="compas.artists.Artist.register_artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_artists</span></code></a></p></td>
+<td><p>Register Artists using available plugins.</p></td>
 </tr>
 </tbody>
 </table>
