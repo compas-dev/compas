@@ -61,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
 * Added `compas.geometry.trimesh_descent_numpy`.
 * Added `compas.geometry.trimesh_gradient_numpy`.
+* Added a deprecation warning when using `Artist` for `Plotter`.
 
 ### Changed
 
@@ -165,6 +166,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.numerical.mma` and `compas.numerical.lma`.
 * Removed `compas.numerical.descent`, `compas.numerical.devo`, and `compas.numerical.ga`.
 * Removed `compas.numerical.utilities`.
+* Removed class attribute `CONTEXT` from `compas.artists.Artist`.
+* Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
 
 ## [1.17.5] 2023-02-16
 

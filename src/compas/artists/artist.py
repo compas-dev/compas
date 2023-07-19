@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
+from warnings import warn
 from abc import abstractmethod
 from collections import defaultdict
 
@@ -27,27 +28,68 @@ def redraw():
 
 @pluggable(category="factories", selector="collect_all")
 def register_artists():
+    """Registers artists available in the current context."""
     raise NotImplementedError
 
 
-def identify_context():
+def is_viewer_open():
+    """Returns True if an instance of the compas_view2 App is available.
+
+    Returns
+    -------
+    bool
+
+    """
+    # TODO: implement [without introducing compas_view2 as a dependency..?]
+    return False
+
+
+def is_plotter_open():
+    """Returns True if an instance of the Plotter is available.
+
+    Returns
+    -------
+    bool
+
+    """
+    # TODO: implement
+    return False
+
+
+def _detect_current_context():
+    """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
+    1. Viewer
+    2. Plotter
+    3. Rhino / GH - checked explicitly since Artists for both get registered when code is run from either.
+    4. Other
+
+    Returns
+    -------
+    str
+        Name of an available context, used as key in :attr:`Artist.ITEM_ARTIST`
+
+    """
+    if is_viewer_open():
+        return "Viewer"
+    if is_plotter_open():
+        return "Plotter"
     if compas.is_grasshopper():
         return "Grasshopper"
     if compas.is_rhino():
         return "Rhino"
-    if compas.is_blender():
-        return "Blender"
-    return None
+    other_contexts = [v for v in Artist.ITEM_ARTIST.keys() if v != "Plotter"]  # TODO: remove when Plotter is removed
+    if other_contexts:
+        return other_contexts[0]
+    raise NoArtistContextError()
 
 
 def _get_artist_cls(data, **kwargs):
-    if "context" in kwargs:
-        Artist.CONTEXT = kwargs["context"]
-    else:
-        Artist.CONTEXT = identify_context()
+    # in any case user gets to override the choice
+    context_name = kwargs.get("context") or _detect_current_context()
 
-    if Artist.CONTEXT is None:
-        raise NoArtistContextError()
+    # TODO: remove when Plotter is removed
+    if context_name == "Plotter":
+        warn("The usage of Plotter with COMPAS Artist is deprecated!")
 
     dtype = type(data)
     cls = None
@@ -55,7 +97,7 @@ def _get_artist_cls(data, **kwargs):
     if "artist_type" in kwargs:
         cls = kwargs["artist_type"]
     else:
-        context = Artist.ITEM_ARTIST[Artist.CONTEXT]
+        context = Artist.ITEM_ARTIST[context_name]
 
         for type_ in inspect.getmro(dtype):
             cls = context.get(type_, None)
@@ -64,7 +106,7 @@ def _get_artist_cls(data, **kwargs):
 
     if cls is None:
         raise DataArtistNotRegistered(
-            "No artist is registered for this data type: {} in this context: {}".format(dtype, Artist.CONTEXT)
+            "No artist is registered for this data type: {} in this context: {}".format(dtype, context_name)
         )
 
     return cls
@@ -73,12 +115,16 @@ def _get_artist_cls(data, **kwargs):
 class Artist(object):
     """Base class for all artists.
 
+    Parameters
+    ----------
+    item: Any
+        The item which should be visualized using the created Artist.
+    context: str, optional
+        Explicit context to pick the Artist from. One of :attr:`AVAILABLE_CONTEXTS`.
+        If not specified, an attempt will be made to automatically detect the appropriate context.
+
     Attributes
     ----------
-    AVAILABLE_CONTEXTS : list[str]
-        The available visualization contexts.
-    CONTEXT : str | None
-        The current visualization context is one of :attr:`AVAILABLE_CONTEXTS`.
     ITEM_ARTIST : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.artists.Artist`]]]
         Dictionary mapping data types to the corresponding artists types per visualization context.
 
@@ -88,13 +134,11 @@ class Artist(object):
 
     __ARTISTS_REGISTERED = False
 
-    AVAILABLE_CONTEXTS = ["Rhino", "Grasshopper", "Blender", "Plotter"]
-    CONTEXT = None
     ITEM_ARTIST = defaultdict(dict)
 
     def __new__(cls, item, **kwargs):
         if not Artist.__ARTISTS_REGISTERED:
-            register_artists()
+            cls.register_artists()
             Artist.__ARTISTS_REGISTERED = True
 
         if item is None:
@@ -168,6 +212,18 @@ class Artist(object):
 
         """
         return redraw()
+
+    @staticmethod
+    def register_artists():
+        """Register Artists using available plugins.
+
+        Returns
+        -------
+        List[str]
+            List containing names of discovered Artist plugins.
+
+        """
+        return register_artists()
 
     @staticmethod
     def register(item_type, artist_type, context=None):
