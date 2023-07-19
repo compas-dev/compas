@@ -318,8 +318,10 @@ Triangle meshes
     :toctree: generated/
     :nosignatures:
 
+    trimesh_descent_numpy
     trimesh_gaussian_curvature
     trimesh_geodistance
+    trimesh_gradient_numpy
     trimesh_harmonic
     trimesh_isolines
     trimesh_lscm
