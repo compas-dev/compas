@@ -252,14 +252,14 @@ class Curve(Geometry):
         points = [self.point_at(t) for t in linspace(start, end, n)]
         return points
 
-    def to_polyline(self, n=10, domain=None):
+    def to_polyline(self, n=16, domain=None):
         """Convert the curve to a polyline.
 
         Parameters
         ----------
         n : int, optional
             The number of line segments in the polyline.
-            Default is ``10``.
+            Default is ``16``.
         domain : tuple, optional
             Subset of the domain to use for the discretisation.
             Default is ``None``, in which case the entire curve domain is used.
@@ -273,6 +273,33 @@ class Curve(Geometry):
 
         points = self.to_points(n=n + 1, domain=domain)
         return Polyline(points)
+
+    def to_polygon(self, n=16):
+        """Convert the curve to a polygon.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of sides of the polygon.
+            Default is ``16``.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polygon`
+
+        Raises
+        ------
+        ValueError
+            If the curve is not closed.
+
+        """
+        if not self.is_closed:
+            raise ValueError("The curve is not closed.")
+
+        from compas.geometry import Polygon
+
+        points = self.to_points(n=n + 1)
+        return Polygon(points[:-1])
 
     # ==============================================================================
     # Transformations
