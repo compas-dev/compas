@@ -78,6 +78,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.boolean_difference_polygon_polygon` Shapely-based plugin.
 * Added `compas.geometry.boolean_symmetric_difference_polygon_polygon` Shapely-based plugin.
 * Added `compas.geometry.Pointcloud.from_ply`.
+* Added `compas.geometry.Curve.to_points`.
+* Added `compas.geometry.Curve.to_polyline`.
+* Added `compas.geometry.Curve.to_polygon`.
+* Added `compas.geometry.Surface.to_vertices_and_faces`.
+* Added `compas.geometry.Surface.to_triangles`.
+* Added `compas.geometry.Surface.to_quads`.
+* Added `compas.geometry.Surface.to_mesh`.
+* Added `compas.geometry.Curve.point_at`.
+* Added `compas.geometry.Curve.tangent_at`.
+* Added `compas.geometry.Curve.normal_at`.
+* Added `compas.geometry.Surface.point_at`.
+* Added `compas.geometry.Surface.normal_at`.
+* Added `compas.geometry.Surface.frame_at`.
 
 ### Changed
 
