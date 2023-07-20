@@ -60,7 +60,6 @@ in Architecture, Engineering, Fabrication, and Construction.
          :maxdepth: 2
          :titlesonly:
 
-         reference/index
 
    .. grid-item-card::
 
