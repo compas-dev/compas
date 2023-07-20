@@ -7,6 +7,8 @@ from math import sqrt
 from compas.utilities import pairwise
 from compas.geometry import transform_points
 from compas.geometry import Polygon
+from compas.geometry import Point
+from compas.geometry import Line
 from .geometry import Geometry
 
 
@@ -403,6 +405,14 @@ class Polyhedron(Geometry):
                     yield u, v
 
     @property
+    def points(self):
+        return [Point(x, y, z) for x, y, z in self.vertices]
+
+    @property
+    def lines(self):
+        return [Line(self.vertices[u], self.vertices[v]) for u, v in self.edges]
+
+    @property
     def polygons(self):
         return [Polygon([self.vertices[index] for index in face]) for face in self.faces]
 
@@ -417,6 +427,23 @@ class Polyhedron(Geometry):
                 if plane.normal.dot(plane.point - vertex) < 0:
                     return False
         return True
+
+    @property
+    def area(self):
+        """Compute the area of the polyhedron.
+
+        Returns
+        -------
+        float
+            The area of the polyhedron.
+
+        """
+        return sum(polygon.area for polygon in self.polygons)
+
+    @property
+    def volume(self):
+        """Compute the volume of the polyhedron."""
+        raise NotImplementedError
 
     # ==========================================================================
     # Constructors
@@ -546,6 +573,31 @@ class Polyhedron(Geometry):
         planes = [Plane(point, normal) for point, normal in planes]
         interior = centroid_points([plane.point for plane in planes])
         return cls.from_halfspaces([plane.abcd for plane in planes], interior)
+
+    @classmethod
+    def from_convex_hull(cls, points):
+        """Construct a polyhedron from the convex hull of a set of points.
+
+        Parameters
+        ----------
+        points : list[point]
+            The XYZ coordinates of the points.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyhedron`
+
+        Examples
+        --------
+        >>> from compas.geometry import Polyhedron
+        >>> points = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]
+        >>> p = Polyhedron.from_convex_hull(points)
+
+        """
+        from compas.geometry import convex_hull_numpy
+
+        vertices, faces = convex_hull_numpy(points)
+        return cls(vertices, faces)
 
     # =============================================================================
     # Conversions
