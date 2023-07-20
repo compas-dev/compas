@@ -84,6 +84,8 @@ class Line(Curve):
         super(Line, self).__init__(**kwargs)
         self._point = None
         self._vector = None
+        self._direction = None
+        self._end = None
         self.start = start
         self.end = end
 
@@ -135,6 +137,8 @@ class Line(Curve):
     @vector.setter
     def vector(self, vector):
         self._vector = Vector(*vector)
+        self._direction = None
+        self._end = None
 
     @property
     def length(self):
@@ -142,7 +146,9 @@ class Line(Curve):
 
     @property
     def direction(self):
-        return self.vector.unitized()
+        if not self._direction:
+            self._direction = self.vector.unitized()
+        return self._direction
 
     @property
     def start(self):
@@ -154,11 +160,15 @@ class Line(Curve):
 
     @property
     def end(self):
-        return self.start + self.vector
+        if not self._end:
+            self._end = self.start + self.vector
+        return self._end
 
     @end.setter
     def end(self, point):
         self._vector = Vector.from_start_end(self.start, point)
+        self._direction = None
+        self._end = None
 
     @property
     def midpoint(self):
