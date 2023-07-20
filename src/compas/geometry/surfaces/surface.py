@@ -53,7 +53,7 @@ class Surface(Geometry):
     def __new__(cls, *args, **kwargs):
         return new_surface(cls, *args, **kwargs)
 
-    def __init__(self, frame=None, u_domain=None, v_domain=None, name=None):
+    def __init__(self, frame=None, name=None):
         super(Surface, self).__init__(name=name)
         self._frame = None
         self._transformation = None
@@ -62,8 +62,6 @@ class Surface(Geometry):
         self._point = None
         if frame:
             self.frame = frame
-        self.u_domain = u_domain or (0.0, 1.0)
-        self.v_domain = v_domain or (0.0, 1.0)
 
     def __eq__(self, other):
         raise NotImplementedError
@@ -156,27 +154,11 @@ class Surface(Geometry):
             self._u_domain = (0.0, 1.0)
         return self._u_domain
 
-    @u_domain.setter
-    def u_domain(self, domain):
-        if not domain:
-            self._u_domain = None
-            return
-        a, b = domain
-        self._u_domain = a, b
-
     @property
     def v_domain(self):
         if not self._v_domain:
             self._v_domain = (0.0, 1.0)
         return self._v_domain
-
-    @v_domain.setter
-    def v_domain(self, domain):
-        if not domain:
-            self._v_domain = None
-            return
-        a, b = domain
-        self._v_domain = a, b
 
     @property
     def is_closed(self):
@@ -287,16 +269,13 @@ class Surface(Geometry):
             The faces of the surface discretisation as lists of vertex indices.
 
         """
-        u_domain = self.u_domain
-        v_domain = self.v_domain
+        u_domain = du or self.u_domain
+        v_domain = dv or self.v_domain
 
-        du = du or u_domain
-        dv = dv or v_domain
-
-        self.u_domain = du
-        self.v_domain = dv
-
-        vertices = [self.point_at(i, j) for i, j in product(self.u_space(nu + 1), self.v_space(nv + 1))]
+        vertices = [
+            self.point_at(i, j)
+            for i, j in product(linspace(u_domain[0], u_domain[1], nu + 1), linspace(v_domain[0], v_domain[1], nv + 1))
+        ]
         faces = [
             [
                 i * (nv + 1) + j,
@@ -306,9 +285,6 @@ class Surface(Geometry):
             ]
             for i, j in product(range(nu), range(nv))
         ]
-
-        self.u_domain = u_domain
-        self.v_domain = v_domain
 
         return vertices, faces
 
@@ -580,6 +556,21 @@ class Surface(Geometry):
 
     def point_at(self, u, v):
         """Compute a point on the surface.
+
+        Parameters
+        ----------
+        u : float
+        v : float
+
+        Returns
+        -------
+        :class:`~compas.geometry.Point`
+
+        """
+        raise NotImplementedError
+
+    def normal_at(self, u, v):
+        """Compute a normal at a point on the surface.
 
         Parameters
         ----------
