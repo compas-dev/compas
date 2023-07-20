@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.geometry import Frame
+from compas.geometry import Plane
 from .surface import Surface
 
 
@@ -93,7 +94,7 @@ class PlanarSurface(Surface):
 
     @classmethod
     def from_plane_and_size(cls, plane, xsize, ysize):
-        """Construct a sphere from a plane and x and y sizes.
+        """Construct a planar surface from a plane and x and y sizes.
 
         Parameters
         ----------
@@ -116,12 +117,23 @@ class PlanarSurface(Surface):
     # Conversions
     # =============================================================================
 
+    def to_plane(self):
+        """Convert the planar surface to a plane.
+
+        Returns
+        -------
+        :class:`compas.geometry.Plane`
+            The plane of the planar surface.
+
+        """
+        return Plane(self.frame.point, self.frame.zaxis)
+
     # =============================================================================
     # Methods
     # =============================================================================
 
     def point_at(self, u, v):
-        """Construct a point on the sphere.
+        """Construct a point on the planar surface.
 
         Parameters
         ----------
@@ -137,3 +149,43 @@ class PlanarSurface(Surface):
 
         """
         return self.frame.point + self.frame.xaxis * u + self.frame.yaxis * v
+
+    def normal_at(self, u=None, v=None):
+        """Construct the normal at a point on the planar surface.
+
+        Parameters
+        ----------
+        u : float, optional
+            The first parameter.
+            The parameter is optional, because the normal is the same everywhere.
+        v : float, optional
+            The second parameter.
+            The parameter is optional, because the normal is the same everywhere.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The normal vector.
+
+        """
+        return self.frame.zaxis
+
+    def frame_at(self, u=None, v=None):
+        """Construct a frame at a point on the planar surface.
+
+        Parameters
+        ----------
+        u : float, optional
+            The first parameter.
+            The parameter is optional, because the frame is the same everywhere.
+        v : float, optional
+            The second parameter.
+            The parameter is optional, because the frame is the same everywhere.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The frame.
+
+        """
+        return self.frame
