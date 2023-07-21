@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.trimesh_descent_numpy`.
 * Added `compas.geometry.trimesh_gradient_numpy`.
 * Added a deprecation warning when using `Artist` for `Plotter`.
+* Added `compas.datastructures.Tree` and `compas.datastructures.TreeNode` classes.
 
 ### Changed
 
