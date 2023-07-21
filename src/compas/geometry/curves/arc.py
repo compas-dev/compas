@@ -5,6 +5,8 @@ from __future__ import division
 from math import pi, cos, sin
 
 from compas.geometry import close
+from compas.geometry import Point
+from compas.geometry import Vector
 from compas.geometry import Frame
 from compas.geometry import Circle
 from .curve import Curve
@@ -215,6 +217,10 @@ class Arc(Curve):
         return Circle(radius=self.radius, frame=self.frame)
 
     @property
+    def center(self):
+        return self.frame.point
+
+    @property
     def length(self):
         return self.radius * self.angle
 
@@ -287,13 +293,15 @@ class Arc(Curve):
     # Methods
     # =============================================================================
 
-    def point_at(self, t):
+    def point_at(self, t, world=True):
         """Returns the point at the specified parameter.
 
         Parameters
         ----------
         t : float
             The parameter at which to evaluate the arc.
+        world : bool, optional
+            If ``True``, the point is returned in world coordinates.
 
         Returns
         -------
@@ -322,15 +330,21 @@ class Arc(Curve):
         angle = self.start_angle + t * self.angle
         x = self.radius * cos(angle)
         y = self.radius * sin(angle)
+
+        if not world:
+            return Point(x, y, 0.0)
+
         return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y
 
-    def normal_at(self, t):
+    def normal_at(self, t, world=True):
         """Construct a normal vector to the arc at a specific parameter.
 
         Parameters
         ----------
         t : float
             The parameter at which to evaluate the arc.
+        world : bool, optional
+            If ``True``, the normal is returned in world coordinates.
 
         Returns
         -------
@@ -353,17 +367,25 @@ class Arc(Curve):
         The value ``t=0.5`` corresponds to the angle halfway between start and end.
 
         """
-        normal = self.point_at(t) - self.frame.point
+        if not world:
+            point = self.point_at(t, world=False)
+            normal = Vector(-point.x, -point.y, 0.0)
+            normal.unitize()
+            return normal
+
+        normal = self.frame.point - self.point_at(t)
         normal.unitize()
         return normal
 
-    def tangent_at(self, t):
+    def tangent_at(self, t, world=True):
         """Construct a tangent on the circle at a specific parameter.
 
         Parameters
         ----------
         t : float
             The parameter at which to evaluate the arc.
+        world : bool, optional
+            If ``True``, the tangent is returned in world coordinates.
 
         Returns
         -------
@@ -394,4 +416,8 @@ class Arc(Curve):
 
         x = -self.radius * sin(angle)
         y = +self.radius * cos(angle)
+
+        if not world:
+            return Vector(x, y, 0.0)
+
         return self.frame.xaxis * x + self.frame.yaxis * y

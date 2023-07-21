@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import pi, cos, sin
 
+from compas.geometry import Point
+from compas.geometry import Vector
 from compas.geometry import Frame
 from compas.geometry import Plane
 from .conic import Conic
@@ -300,7 +302,7 @@ class Circle(Conic):
     # Methods
     # =============================================================================
 
-    def point_at(self, t):
+    def point_at(self, t, world=True):
         """Construct a point on the circle at a specific parameter.
 
         Parameters
@@ -309,6 +311,8 @@ class Circle(Conic):
             The parameter of the point.
             The parameter is expected to be normalized,
             and will be mapped to the corresponding angle in the interval ``[0, 2 * pi]``.
+        world : bool, optional
+            If ``True``, the point is returned in world coordinates.
 
         Returns
         -------
@@ -327,9 +331,12 @@ class Circle(Conic):
         t = t * PI2
         x = self.radius * cos(t)
         y = self.radius * sin(t)
-        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y
+        point = Point(x, y, 0)
+        if world:
+            point.transform(self.transformation)
+        return point
 
-    def normal_at(self, t):
+    def normal_at(self, t, world=True):
         """Construct a normal on the circle at a specific parameter.
 
         Parameters
@@ -338,6 +345,8 @@ class Circle(Conic):
             The parameter of the normal vector.
             The parameter is expected to be normalized,
             and will be mapped to the corresponding angle in the interval ``[0, 2 * pi]``.
+        world : bool, optional
+            If ``True``, the normal is returned in world coordinates.
 
         Returns
         -------
@@ -353,11 +362,14 @@ class Circle(Conic):
         The orientation of the vector is expressed with respect to the world coordinate system.
 
         """
-        normal = self.point_at(t) - self.center
-        normal.unitize()
-        return normal
+        if world:
+            normal = self.center - self.point_at(t, world=True)
+            normal.unitize()
+            return normal
+        point = self.point_at(t, world=False)
+        return Vector(-point.x, -point.y, 0)
 
-    def tangent_at(self, t):
+    def tangent_at(self, t, world=True):
         """Construct a tangent on the circle at a specific parameter.
 
         Parameters
@@ -366,6 +378,8 @@ class Circle(Conic):
             The parameter of the tangent vector.
             The parameter is expected to be normalized,
             and will be mapped to the corresponding angle in the interval ``[0, 2 * pi]``.
+        world : bool, optional
+            If ``True``, the tangent is returned in world coordinates.
 
         Returns
         -------
@@ -384,7 +398,11 @@ class Circle(Conic):
         t = t * PI2
         x = -self.radius * sin(t)
         y = +self.radius * cos(t)
-        return self.frame.xaxis * x + self.frame.yaxis * y
+        vector = Vector(x, y, 0)
+        vector.unitize()
+        if world:
+            vector.transform(self.transformation)
+        return vector
 
     def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the circle to a given point.

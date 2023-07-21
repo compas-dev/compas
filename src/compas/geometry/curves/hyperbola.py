@@ -5,6 +5,7 @@ from __future__ import division
 from math import cos, sin, sqrt
 from math import pi
 
+from compas.geometry import Point
 from compas.geometry import Frame
 from .conic import Conic
 
@@ -217,11 +218,11 @@ class Hyperbola(Conic):
 
     @property
     def is_closed(self):
-        return False
+        return True
 
     @property
     def is_periodic(self):
-        return False
+        return True
 
     # ==========================================================================
     # Constructors
@@ -231,13 +232,16 @@ class Hyperbola(Conic):
     # Methods
     # ==========================================================================
 
-    def point_at(self, t):
+    def point_at(self, t, world=True):
         """
         Point at the parameter.
 
         Parameters
         ----------
         t : float
+            The curve parameter.
+        world : bool, optional
+            If ``True``, the point is transformed to the world coordinate system.
 
         Returns
         -------
@@ -256,16 +260,21 @@ class Hyperbola(Conic):
         sec_t = 1 / cos(t)
         x = self.major * sec_t
         y = self.minor * sin(t) * sec_t
-        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y
+        point = Point(x, y, 0)
+        if world:
+            point.transform(self.transformation)
+        return point
 
-    def tangent_at(self, t):
+    def tangent_at(self, t, world=True):
         """
         Tangent vector at the parameter.
 
         Parameters
         ----------
         t : float
-            The line parameter.
+            The curve parameter.
+        world : bool, optional
+            If ``True``, the tangent vector is transformed to the world coordinate system.
 
         Returns
         -------
@@ -282,14 +291,16 @@ class Hyperbola(Conic):
         """
         raise NotImplementedError
 
-    def normal_at(self, t):
+    def normal_at(self, t, world=True):
         """
         Normal at a specific normalized parameter.
 
         Parameters
         ----------
         t : float
-            The line parameter.
+            The curve parameter.
+        world : bool, optional
+            If ``True``, the normal vector is transformed to the world coordinate system.
 
         Returns
         -------

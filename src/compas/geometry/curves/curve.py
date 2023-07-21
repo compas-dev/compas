@@ -414,8 +414,6 @@ class Curve(Geometry):
         ----------
         t : float
             The value of the curve parameter.
-        world : bool, optional
-            If True, return the frame in world coordinates.
 
         Returns
         -------

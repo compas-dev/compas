@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import sqrt, pi, cos, sin
 
+from compas.geometry import Point
+from compas.geometry import Vector
 from compas.geometry import Frame
 from .curve import Curve
 from .line import Line
@@ -289,13 +291,15 @@ class Ellipse(Curve):
     # Methods
     # ==========================================================================
 
-    def point_at(self, t):
+    def point_at(self, t, world=True):
         """Compute the point at a specific parameter.
 
         Parameters
         ----------
         t : float
             The parameter value.
+        world : bool, optional
+            If ``True``, the point is returned in world coordinates.
 
         Returns
         -------
@@ -314,15 +318,20 @@ class Ellipse(Curve):
         t = t * PI2
         x = self.major * cos(t)
         y = self.minor * sin(t)
-        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y
+        point = Point(x, y, 0)
+        if world:
+            point.transform(self.transformation)
+        return point
 
-    def tangent_at(self, t):
+    def tangent_at(self, t, world=True):
         """Compute the tangent at a specific parameter.
 
         Parameters
         ----------
         t : float
             The parameter value.
+        world : bool, optional
+            If ``True``, the tangent is returned in world coordinates.
 
         Returns
         -------
@@ -338,17 +347,23 @@ class Ellipse(Curve):
         The orientation of the vector is expressed with respect to the world coordinate system.
 
         """
-        yaxis = self.normal_at(t)
-        zaxis = self.frame.zaxis
-        return yaxis.cross(zaxis).unitized()
+        normal = self.normal_at(t, world=False)
+        zaxis = Vector(0, 0, 1)
+        tangent = normal.cross(zaxis)
+        tangent.unitize()
+        if world:
+            tangent.transform(self.transformation)
+        return tangent
 
-    def normal_at(self, t):
+    def normal_at(self, t, world=True):
         """Compute the normal at a specific parameter.
 
         Parameters
         ----------
         t : float
             The parameter value.
+        world : bool, optional
+            If ``True``, the normal is returned in world coordinates.
 
         Returns
         -------
@@ -364,8 +379,11 @@ class Ellipse(Curve):
         The orientation of the vector is expressed with respect to the world coordinate system.
 
         """
-        point = self.point_at(t)
-        f1 = self.focus1  # in WCS
-        f2 = self.focus2  # in WCS
+        point = self.point_at(t, world=False)
+        f1 = Point(+self.semifocal, 0, 0)
+        f2 = Point(-self.semifocal, 0, 0)
         normal = (f1 - point).unitized() + (f2 - point).unitized()
-        return normal.unitized()
+        normal.unitize()
+        if world:
+            normal.transform(self.transformation)
+        return normal

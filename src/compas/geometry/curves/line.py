@@ -98,6 +98,21 @@ class Line(Curve):
         except Exception:
             return False
 
+    def __getitem__(self, key):
+        if key == 0:
+            return self.start
+        if key == 1:
+            return self.end
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.start = value
+        elif key == 1:
+            self.end = value
+        else:
+            raise KeyError
+
     # ==========================================================================
     # data
     # ==========================================================================
@@ -302,33 +317,6 @@ class Line(Curve):
         """
         point = self.point + self.vector * t
         return point
-
-    def tangent_at(self, t):
-        """Construct a tangent vector at a specific location along the line.
-
-        Parameters
-        ----------
-        t : float
-            The location along the line.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The tangent vector at the specified location.
-
-        See Also
-        --------
-        :meth:`point_at`
-
-        Examples
-        --------
-        >>> line = Line([0, 0, 0], [1, 1, 1])
-        >>> line.tangent_at(0.5)
-        Vector(0.577, 0.577, 0.577)
-
-        """
-        vector = self.direction
-        return vector
 
     def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the line to a given point.
