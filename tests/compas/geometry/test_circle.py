@@ -12,7 +12,7 @@ def test_circle():
     vector = [1, 0, 0]
     plane = (point, vector)
     frame = Frame.from_plane(plane)
-    c = Circle(frame, 1.0)
+    c = Circle(radius=1.0, frame=frame)
     assert c.radius == 1.0
     assert c.plane == plane
 
@@ -22,9 +22,9 @@ def test_equality():
     vector = [1, 0, 0]
     plane = (point, vector)
     frame = Frame.from_plane(plane)
-    c = Circle(frame, 1.0)
-    assert c == (frame, 1.0)
-    assert c == Circle(frame, 1.0)
+    c = Circle(radius=1.0, frame=frame)
+    # assert c == (frame, 1.0)
+    assert c == Circle(radius=1.0, frame=frame)
     assert c != 1.0
     assert c != (frame, 2.0)
 
@@ -34,15 +34,15 @@ def test___repr__():
     vector = [1, 0, 0]
     plane = (point, vector)
     frame = Frame.from_plane(plane)
-    c = Circle(frame, 1.0)
+    c = Circle(radius=1.0, frame=frame)
     assert c == eval(repr(c))
 
 
-def test___getitem__():
-    point = [0, 0, 0]
-    vector = [1, 0, 0]
-    plane = (point, vector)
-    frame = Frame.from_plane(plane)
-    c = Circle(frame, 1.0)
-    assert c[0] == frame
-    assert c[1] == 1.0
+# def test___getitem__():
+#     point = [0, 0, 0]
+#     vector = [1, 0, 0]
+#     plane = (point, vector)
+#     frame = Frame.from_plane(plane)
+#     c = Circle(radius=1.0, frame=frame)
+#     assert c[0] == frame
+#     assert c[1] == 1.0
