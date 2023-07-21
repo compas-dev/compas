@@ -81,78 +81,6 @@ class Vector(Geometry):
         self.y = y
         self.z = z
 
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        """dict : The data dictionary that represents the vector."""
-        return list(self)
-
-    @data.setter
-    def data(self, data):
-        self.x = data[0]
-        self.y = data[1]
-        self.z = data[2]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a vector from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The vector constructed from the provided data.
-
-        Examples
-        --------
-        >>> Vector.from_data([0.0, 0.0, 1.0])
-        Vector(0.000, 0.000, 1.000)
-        """
-        return cls(*data)
-
-    # ==========================================================================
-    # properties
-    # ==========================================================================
-
-    @property
-    def x(self):
-        return self._x
-
-    @x.setter
-    def x(self, x):
-        self._x = float(x)
-
-    @property
-    def y(self):
-        return self._y
-
-    @y.setter
-    def y(self, y):
-        self._y = float(y)
-
-    @property
-    def z(self):
-        return self._z
-
-    @z.setter
-    def z(self, z):
-        self._z = float(z)
-
-    @property
-    def length(self):
-        return length_vector(self)
-
-    # ==========================================================================
-    # customization
-    # ==========================================================================
-
     def __repr__(self):
         return "Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(self.x, self.y, self.z, PRECISION[:1])
 
@@ -188,200 +116,126 @@ class Vector(Geometry):
         return iter([self.x, self.y, self.z])
 
     def __eq__(self, other):
-        """Is this vector equal to the other vector?
-
-        Two vectors are considered equal if their XYZ components are identical.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
-            The vector to compare.
-
-        Returns
-        -------
-        bool
-            True if the vectors are equal.
-            False otherwise.
-
-        """
         return self.x == other[0] and self.y == other[1] and self.z == other[2]
 
     def __add__(self, other):
-        """Return a vector that is the the sum of this vector and another vector.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
-            The vector to add.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The resulting vector.
-
-        """
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
 
     def __sub__(self, other):
-        """Return a vector that is the the difference between this vector and another vector.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
-            The vector to subtract.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The resulting new vector.
-
-        """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
     def __mul__(self, n):
-        """Return a vector that is the scaled version of this vector.
-
-        Parameters
-        ----------
-        n : float
-            The scaling factor.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The resulting new vector.
-
-        """
         return Vector(self.x * n, self.y * n, self.z * n)
 
     def __truediv__(self, n):
-        """Return a vector that is the scaled version of this vector.
-
-        Parameters
-        ----------
-        n : float
-            The scaling factor.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The resulting new vector.
-
-        """
         return Vector(self.x / n, self.y / n, self.z / n)
 
     def __pow__(self, n):
-        """Create a vector from the components of the current vector raised
-        to the given power.
-
-        Parameters
-        ----------
-        n : float
-            The power.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            A new point with raised coordinates.
-
-        """
         return Vector(self.x**n, self.y**n, self.z**n)
 
     def __neg__(self):
         return self.scaled(-1.0)
 
     def __iadd__(self, other):
-        """Add the components of the other vector to this vector.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
-            The vector to add.
-
-        Returns
-        -------
-        None
-
-        """
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
         return self
 
     def __isub__(self, other):
-        """Subtract the components of the other vector from this vector.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
-            The vector to subtract.
-
-        Returns
-        -------
-        None
-
-        """
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
         return self
 
     def __imul__(self, n):
-        """Multiply the components of this vector by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-
-        Returns
-        -------
-        None
-
-        """
         self.x *= n
         self.y *= n
         self.z *= n
         return self
 
     def __itruediv__(self, n):
-        """Divide the components of this vector by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-
-        Returns
-        -------
-        None
-
-        """
         self.x /= n
         self.y /= n
         self.z /= n
         return self
 
     def __ipow__(self, n):
-        """Raise the components of this vector to the given power.
-
-        Parameters
-        ----------
-        n : float
-            The power.
-
-        Returns
-        -------
-        None
-
-        """
         self.x **= n
         self.y **= n
         self.z **= n
         return self
 
     # ==========================================================================
-    # constructors
+    # Data
+    # ==========================================================================
+
+    @property
+    def data(self):
+        """dict : The data dictionary that represents the vector."""
+        return list(self)
+
+    @data.setter
+    def data(self, data):
+        self.x = data[0]
+        self.y = data[1]
+        self.z = data[2]
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a vector from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Vector`
+            The vector constructed from the provided data.
+
+        Examples
+        --------
+        >>> Vector.from_data([0.0, 0.0, 1.0])
+        Vector(0.000, 0.000, 1.000)
+        """
+        return cls(*data)
+
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
+
+    @property
+    def x(self):
+        return self._x
+
+    @x.setter
+    def x(self, x):
+        self._x = float(x)
+
+    @property
+    def y(self):
+        return self._y
+
+    @y.setter
+    def y(self, y):
+        self._y = float(y)
+
+    @property
+    def z(self):
+        return self._z
+
+    @z.setter
+    def z(self, z):
+        self._z = float(z)
+
+    @property
+    def length(self):
+        return length_vector(self)
+
+    # ==========================================================================
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -461,7 +315,7 @@ class Vector(Geometry):
         return cls(*v)
 
     # ==========================================================================
-    # static
+    # Static
     # ==========================================================================
 
     @staticmethod
@@ -671,7 +525,7 @@ class Vector(Geometry):
         return [angle_vectors(u, v) for u, v in zip(left, right)]
 
     # ==========================================================================
-    # helpers
+    # Helpers
     # ==========================================================================
 
     def copy(self):
@@ -696,7 +550,7 @@ class Vector(Geometry):
         return cls(self.x, self.y, self.z)
 
     # ==========================================================================
-    # methods
+    # Methods
     # ==========================================================================
 
     def unitize(self):

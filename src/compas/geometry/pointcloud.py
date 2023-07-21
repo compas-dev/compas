@@ -46,6 +46,32 @@ class Pointcloud(Geometry):
         self._points = None
         self.points = points
 
+    def __repr__(self):
+        return "Pointcloud({0!r})".format(self.points)
+
+    def __len__(self):
+        return len(self.points)
+
+    def __getitem__(self, key):
+        if key > len(self) - 1:
+            raise KeyError
+        return self.points[key]
+
+    def __setitem__(self, key, value):
+        if key > len(self) - 1:
+            raise KeyError
+        self.points[key] = value
+
+    def __iter__(self):
+        return iter(self.points)
+
+    def __eq__(self, other):
+        if len(self) != len(other):
+            return False
+        A = sorted(self, key=lambda point: (point[0], point[1], point[2]))
+        B = sorted(other, key=lambda point: (point[0], point[1], point[2]))
+        return all(a == b for a, b in zip(A, B))
+
     # ==========================================================================
     # Data
     # ==========================================================================
@@ -92,53 +118,6 @@ class Pointcloud(Geometry):
         from compas.geometry import oriented_bounding_box_numpy
 
         return Box.from_bounding_box(oriented_bounding_box_numpy(self.points))
-
-    # ==========================================================================
-    # Customization
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Pointcloud({0!r})".format(self.points)
-
-    def __len__(self):
-        return len(self.points)
-
-    def __getitem__(self, key):
-        if key > len(self) - 1:
-            raise KeyError
-        return self.points[key]
-
-    def __setitem__(self, key, value):
-        if key > len(self) - 1:
-            raise KeyError
-        self.points[key] = value
-
-    def __iter__(self):
-        return iter(self.points)
-
-    def __eq__(self, other):
-        """Is this pointcloud equal to the other pointcloud?
-
-        Two pointclouds are considered equal if they have the same number of points
-        and if the XYZ coordinates of the corresponding points are identical.
-
-        Parameters
-        ----------
-        other : :class:`~compas.geometry.Pointcloud` | list[[float, float, float] | :class:`~compas.geometry.Point`]
-            The pointcloud to compare.
-
-        Returns
-        -------
-        bool
-            True if the pointclouds are equal.
-            False otherwise.
-
-        """
-        if len(self) != len(other):
-            return False
-        A = sorted(self, key=lambda point: (point[0], point[1], point[2]))
-        B = sorted(other, key=lambda point: (point[0], point[1], point[2]))
-        return all(a == b for a, b in zip(A, B))
 
     # ==========================================================================
     # Constructors

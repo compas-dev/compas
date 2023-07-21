@@ -87,6 +87,40 @@ class Frame(Geometry):
         self.xaxis = xaxis
         self.yaxis = yaxis
 
+    def __repr__(self):
+        return "Frame({0!r}, {1!r}, {2!r})".format(self.point, self.xaxis, self.yaxis)
+
+    def __len__(self):
+        return 3
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        if key == 1:
+            return self.xaxis
+        if key == 2:
+            return self.yaxis
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+            return
+        if key == 1:
+            self.xaxis = value
+            return
+        if key == 2:
+            self.yaxis = value
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.xaxis, self.yaxis])
+
+    def __eq__(self, other, tol=1e-05):
+        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
+            return False
+        return allclose(self, other)
+
     # ==========================================================================
     # Data
     # ==========================================================================
@@ -196,44 +230,6 @@ class Frame(Geometry):
     def axis_angle_vector(self):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return Vector(*axis_angle_vector_from_matrix(R))
-
-    # ==========================================================================
-    # Customization
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Frame({0!r}, {1!r}, {2!r})".format(self.point, self.xaxis, self.yaxis)
-
-    def __len__(self):
-        return 3
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.point
-        if key == 1:
-            return self.xaxis
-        if key == 2:
-            return self.yaxis
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.point = value
-            return
-        if key == 1:
-            self.xaxis = value
-            return
-        if key == 2:
-            self.yaxis = value
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.point, self.xaxis, self.yaxis])
-
-    def __eq__(self, other, tol=1e-05):
-        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
-            return False
-        return allclose(self, other)
 
     # ==========================================================================
     # Constructors

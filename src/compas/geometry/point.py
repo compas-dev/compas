@@ -117,8 +117,93 @@ class Point(Geometry):
         self.y = y
         self.z = z
 
+    def __repr__(self):
+        return "Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(self.x, self.y, self.z, PRECISION[:1])
+
+    def __len__(self):
+        return 3
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            return [self[i] for i in range(*key.indices(len(self)))]
+        i = key % 3
+        if i == 0:
+            return self.x
+        if i == 1:
+            return self.y
+        if i == 2:
+            return self.z
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        i = key % 3
+        if i == 0:
+            self.x = value
+            return
+        if i == 1:
+            self.y = value
+            return
+        if i == 2:
+            self.z = value
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.x, self.y, self.z])
+
+    def __eq__(self, other):
+        return self.x == other[0] and self.y == other[1] and self.z == other[2]
+
+    def __add__(self, other):
+        return Point(self.x + other[0], self.y + other[1], self.z + other[2])
+
+    def __sub__(self, other):
+        x = self.x - other[0]
+        y = self.y - other[1]
+        z = self.z - other[2]
+        return Vector(x, y, z)
+
+    def __mul__(self, n):
+        return Point(n * self.x, n * self.y, n * self.z)
+
+    def __truediv__(self, n):
+        return Point(self.x / n, self.y / n, self.z / n)
+
+    def __pow__(self, n):
+        return Point(self.x**n, self.y**n, self.z**n)
+
+    def __iadd__(self, other):
+        self.x += other[0]
+        self.y += other[1]
+        self.z += other[2]
+        return self
+
+    def __isub__(self, other):
+        self.x -= other[0]
+        self.y -= other[1]
+        self.z -= other[2]
+        return self
+
+    def __imul__(self, n):
+        self.x *= n
+        self.y *= n
+        self.z *= n
+        return self
+
+    def __itruediv__(self, n):
+        self.x /= n
+        self.y /= n
+        self.z /= n
+        return self
+
+    def __ipow__(self, n):
+        self.x **= n
+        self.y **= n
+        self.z **= n
+        return self
+
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
@@ -155,7 +240,7 @@ class Point(Geometry):
         return cls(*data)
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -183,245 +268,7 @@ class Point(Geometry):
         self._z = float(z)
 
     # ==========================================================================
-    # customization
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(self.x, self.y, self.z, PRECISION[:1])
-
-    def __len__(self):
-        return 3
-
-    def __getitem__(self, key):
-        if isinstance(key, slice):
-            return [self[i] for i in range(*key.indices(len(self)))]
-        i = key % 3
-        if i == 0:
-            return self.x
-        if i == 1:
-            return self.y
-        if i == 2:
-            return self.z
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        i = key % 3
-        if i == 0:
-            self.x = value
-            return
-        if i == 1:
-            self.y = value
-            return
-        if i == 2:
-            self.z = value
-            return
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.x, self.y, self.z])
-
-    def __eq__(self, other):
-        """Is this point equal to the other point?
-
-        Two points are considered equal if their XYZ coordinates are identical.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Point`
-            The point to compare.
-
-        Returns
-        -------
-        bool
-            True if the points are equal.
-            False otherwise.
-
-        """
-        return self.x == other[0] and self.y == other[1] and self.z == other[2]
-
-    def __add__(self, other):
-        """Return a point that is the sum of this point and another point.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Point`
-            The point to add.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Point`
-            The resulting new point.
-
-        """
-        return Point(self.x + other[0], self.y + other[1], self.z + other[2])
-
-    def __sub__(self, other):
-        """Return a vector` that is the the difference between this point
-        and another point.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Point`
-            The point to subtract.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            A vector from other to self.
-
-        """
-        x = self.x - other[0]
-        y = self.y - other[1]
-        z = self.z - other[2]
-        return Vector(x, y, z)
-
-    def __mul__(self, n):
-        """Create a point from the coordinates of the current point multiplied
-        by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Point`
-            The resulting new point.
-
-        """
-        return Point(n * self.x, n * self.y, n * self.z)
-
-    def __truediv__(self, n):
-        """Create a point from the coordinates of the current point
-        divided by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Point`
-            The resulting new point.
-
-        """
-        return Point(self.x / n, self.y / n, self.z / n)
-
-    def __pow__(self, n):
-        """Create a point from the coordinates of the current point raised
-        to the given power.
-
-        Parameters
-        ----------
-        n : float
-            The power.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Point`
-            A new point with raised coordinates.
-
-        """
-        return Point(self.x**n, self.y**n, self.z**n)
-
-    def __iadd__(self, other):
-        """Add the coordinates of the other point to this point.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Point`
-            The point to add.
-
-        Returns
-        -------
-        None
-
-        """
-        self.x += other[0]
-        self.y += other[1]
-        self.z += other[2]
-        return self
-
-    def __isub__(self, other):
-        """Subtract the coordinates of the other point from this point.
-
-        Parameters
-        ----------
-        other : [float, float, float] | :class:`~compas.geometry.Point`
-            The point to subtract.
-
-        Returns
-        -------
-        None
-
-        """
-        self.x -= other[0]
-        self.y -= other[1]
-        self.z -= other[2]
-        return self
-
-    def __imul__(self, n):
-        """Multiply the coordinates of this point by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-
-        Returns
-        -------
-        None
-
-        """
-        self.x *= n
-        self.y *= n
-        self.z *= n
-        return self
-
-    def __itruediv__(self, n):
-        """Divide the coordinates of this point by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-
-        Returns
-        -------
-        None
-
-        """
-        self.x /= n
-        self.y /= n
-        self.z /= n
-        return self
-
-    def __ipow__(self, n):
-        """Raise the coordinates of this point to the given power.
-
-        Parameters
-        ----------
-        n : float
-            The power.
-
-        Returns
-        -------
-        None
-
-        """
-        self.x **= n
-        self.y **= n
-        self.z **= n
-        return self
-
-    # ==========================================================================
-    # constructors
-    # ==========================================================================
-
-    # ==========================================================================
-    # methods
+    # Methods
     # ==========================================================================
 
     def distance_to_point(self, point):

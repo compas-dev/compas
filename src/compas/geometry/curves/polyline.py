@@ -92,9 +92,6 @@ class Polyline(Curve):
     def __repr__(self):
         return "Polyline([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
 
-    def __len__(self):
-        return len(self.points)
-
     def __getitem__(self, key):
         return self.points[key]
 
@@ -104,6 +101,9 @@ class Polyline(Curve):
 
     def __iter__(self):
         return iter(self.points)
+
+    def __len__(self):
+        return len(self.points)
 
     def __eq__(self, other):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):

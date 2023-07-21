@@ -228,26 +228,6 @@ class Polyhedron(Geometry):
         return iter([self.vertices, self.faces])
 
     def __add__(self, other):
-        """Compute the boolean union using the "+" operator of this shape and another.
-
-        Parameters
-        ----------
-        other : :class:`~compas.geometry.Polyhedron`
-            The solid to add.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Polyhedron`
-            The resulting solid.
-
-        Examples
-        --------
-        >>> from compas.geometry import Box, Sphere
-        >>> A = Box(size=2).to_polyhedron()
-        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
-        >>> C = A + B  # doctest: +SKIP
-
-        """
         from compas.geometry import boolean_union_mesh_mesh
 
         A = self.vertices, self.faces
@@ -256,26 +236,6 @@ class Polyhedron(Geometry):
         return Polyhedron(V, F)
 
     def __sub__(self, other):
-        """Compute the boolean difference using the "-" operator of this shape and another.
-
-        Parameters
-        ----------
-        other : :class:`~compas.geometry.Polyhedron`
-            The solid to subtract.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Polyhedron`
-            The resulting solid.
-
-        Examples
-        --------
-        >>> from compas.geometry import Box, Sphere
-        >>> A = Box(size=2).to_polyhedron()
-        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
-        >>> C = A - B  # doctest: +SKIP
-
-        """
         from compas.geometry import boolean_difference_mesh_mesh
 
         A = self.vertices, self.faces
@@ -284,26 +244,6 @@ class Polyhedron(Geometry):
         return Polyhedron(V, F)
 
     def __and__(self, other):
-        """Compute the boolean intersection using the "&" operator of this shape and another.
-
-        Parameters
-        ----------
-        other : :class:`~compas.geometry.Polyhedron`
-            The solid to intersect with.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Polyhedron`
-            The resulting solid.
-
-        Examples
-        --------
-        >>> from compas.geometry import Box, Sphere
-        >>> A = Box(size=2).to_polyhedron()
-        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
-        >>> C = A & B  # doctest: +SKIP
-
-        """
         from compas.geometry import boolean_intersection_mesh_mesh
 
         A = self.vertices, self.faces
@@ -312,26 +252,6 @@ class Polyhedron(Geometry):
         return Polyhedron(V, F)
 
     def __or__(self, other):
-        """Compute the boolean union using the "|" operator of this shape and another.
-
-        Parameters
-        ----------
-        other : :class:`~compas.geometry.Shape`
-            The solid to add.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Polyhedron`
-            The resulting solid.
-
-        Examples
-        --------
-        >>> from compas.geometry import Box, Sphere
-        >>> A = Box(size=2).to_polyhedron()
-        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
-        >>> C = A | B  # doctest: +SKIP
-
-        """
         return self.__add__(other)
 
     # ==========================================================================

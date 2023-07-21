@@ -58,6 +58,34 @@ class Plane(Geometry):
         self.point = point
         self.normal = normal
 
+    def __repr__(self):
+        return "Plane({0!r}, {1!r})".format(self.point, self.normal)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        if key == 1:
+            return self.normal
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+            return
+        if key == 1:
+            self.normal = value
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.normal])
+
+    def __eq__(self, other):
+        return self.point == other[0] and self.normal == other[1]
+
     # ==========================================================================
     # Data
     # ==========================================================================
@@ -132,38 +160,6 @@ class Plane(Geometry):
         a, b, c = self.normal
         d = self.d
         return a, b, c, d
-
-    # ==========================================================================
-    # Customization
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Plane({0!r}, {1!r})".format(self.point, self.normal)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.point
-        if key == 1:
-            return self.normal
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.point = value
-            return
-        if key == 1:
-            self.normal = value
-            return
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.point, self.normal])
-
-    def __eq__(self, other):
-        return self.point == other[0] and self.normal == other[1]
 
     # ==========================================================================
     # Constructors

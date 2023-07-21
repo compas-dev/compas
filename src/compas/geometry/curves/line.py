@@ -92,12 +92,6 @@ class Line(Curve):
     def __repr__(self):
         return "Line({0!r}, {1!r})".format(self.start, self.end)
 
-    def __eq__(self, other):
-        try:
-            return self.start == other.start and self.end == other.end
-        except Exception:
-            return False
-
     def __getitem__(self, key):
         if key == 0:
             return self.start
@@ -112,6 +106,18 @@ class Line(Curve):
             self.end = value
         else:
             raise KeyError
+
+    def __iter__(self):
+        return iter([self.start, self.end])
+
+    def __len__(self):
+        return 2
+
+    def __eq__(self, other):
+        try:
+            return self.start == other[0] and self.end == other[1]
+        except Exception:
+            return False
 
     # ==========================================================================
     # data
