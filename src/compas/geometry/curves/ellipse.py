@@ -7,13 +7,13 @@ from math import sqrt, pi, cos, sin
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
-from .curve import Curve
+from .conic import Conic
 from .line import Line
 
 PI2 = 2 * pi
 
 
-class Ellipse(Curve):
+class Ellipse(Conic):
     """An ellipse is a curve defined by a coordinate system and a major and minor axis.
 
     The centre of the ellipse is at the origin of the coordinate system.
