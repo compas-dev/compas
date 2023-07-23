@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry import add_vectors
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
@@ -137,7 +138,7 @@ class Line(Curve):
 
     @frame.setter
     def frame(self, frame):
-        raise Exception("Setting the coordinate frame of a line is not supported.")
+        raise AttributeError("Setting the coordinate frame of a line is not supported.")
 
     @property
     def point(self):
@@ -227,7 +228,7 @@ class Line(Curve):
         Line(Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 1.000))
 
         """
-        return cls(point, point + vector)
+        return cls(point, add_vectors(point, vector))
 
     @classmethod
     def from_point_direction_length(cls, point, direction, length):
@@ -261,7 +262,7 @@ class Line(Curve):
         """
         direction = Vector(*direction)
         direction.unitize()
-        return cls(point, point + direction * length)
+        return cls(point, add_vectors(point, direction * length))
 
     # ==========================================================================
     # Transformations
