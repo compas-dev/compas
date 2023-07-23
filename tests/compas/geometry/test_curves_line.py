@@ -40,7 +40,7 @@ def test_create_line(p1, p2):
 
 
 @pytest.mark.parametrize(
-    "point, vector",
+    "point,vector",
     [
         ([0, 0, 0], [0, 0, 0]),
         ([0, 0, 0], [1, 0, 0]),
@@ -58,7 +58,7 @@ def test_create_line_from_point_and_vector(point, vector):
 
 
 @pytest.mark.parametrize(
-    "point, direction, length",
+    "point,direction,length",
     [
         # ([0, 0, 0], [0, 0, 0], 3.0),
         ([0, 0, 0], [1, 0, 0], 3.0),
