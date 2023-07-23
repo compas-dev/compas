@@ -25,3 +25,45 @@ def test_surface_geometry(surface):
         surface.point_at(0, 0, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
+
+    assert allclose(
+        surface.point_at(0.5, 0),
+        surface.point_at(0.5, 0, world=False).transformed(surface.transformation),
+        tol=1e-12,
+    )
+
+    assert allclose(
+        surface.point_at(1.0, 0),
+        surface.point_at(1.0, 0, world=False).transformed(surface.transformation),
+        tol=1e-12,
+    )
+
+    assert allclose(
+        surface.point_at(1.0, 0.5),
+        surface.point_at(1.0, 0.5, world=False).transformed(surface.transformation),
+        tol=1e-12,
+    )
+
+    assert allclose(
+        surface.point_at(1.0, 1.0),
+        surface.point_at(1.0, 1.0, world=False).transformed(surface.transformation),
+        tol=1e-12,
+    )
+
+    assert allclose(
+        surface.point_at(0.5, 1.0),
+        surface.point_at(0.5, 1.0, world=False).transformed(surface.transformation),
+        tol=1e-12,
+    )
+
+    assert allclose(
+        surface.point_at(0, 1.0),
+        surface.point_at(0, 1.0, world=False).transformed(surface.transformation),
+        tol=1e-12,
+    )
+
+    assert allclose(
+        surface.point_at(0, 0.5),
+        surface.point_at(0, 0.5, world=False).transformed(surface.transformation),
+        tol=1e-12,
+    )
