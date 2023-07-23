@@ -159,13 +159,16 @@ class Parabola(Conic):
     # Methods
     # ==========================================================================
 
-    def point_at(self, t):
+    def point_at(self, t, world=True):
         """
         Point at the parameter.
 
         Parameters
         ----------
         t : float
+            The curve parameter.
+        world : bool, optional
+            If ``True``, the point is returned in world coordinates.
 
         Returns
         -------
@@ -176,17 +179,20 @@ class Parabola(Conic):
         y = self.a * x**2
         z = 0
         point = Point(x, y, z)
-        point.transform(self.transformation)
+        if world:
+            point.transform(self.transformation)
         return point
 
-    def tangent_at(self, t):
+    def tangent_at(self, t, world=True):
         """
         Tangent vector at the parameter.
 
         Parameters
         ----------
         t : float
-            The line parameter.
+            The curve parameter.
+        world : bool, optional
+            If ``True``, the tangent vector is returned in world coordinates.
 
         Returns
         -------
@@ -199,17 +205,20 @@ class Parabola(Conic):
         y = 2 * self.a * x0 * x - y0
         tangent = Vector(x - x0, y - y0, 0)
         tangent.unitize()
-        tangent.transform(self.transformation)
+        if world:
+            tangent.transform(self.transformation)
         return tangent
 
-    def normal_at(self, t):
+    def normal_at(self, t, world=True):
         """
         Normal at a specific normalized parameter.
 
         Parameters
         ----------
         t : float
-            The line parameter.
+            The curve parameter.
+        world : bool, optional
+            If ``True``, the normal vector is returned in world coordinates.
 
         Returns
         -------
@@ -222,5 +231,6 @@ class Parabola(Conic):
         y = 2 * self.a * x0 * x - y0
         normal = Vector(y0 - y, x - x0, 0)
         normal.unitize()
-        normal.transform(self.transformation)
+        if world:
+            normal.transform(self.transformation)
         return normal
