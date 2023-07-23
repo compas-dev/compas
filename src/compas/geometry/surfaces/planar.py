@@ -37,6 +37,13 @@ class PlanarSurface(Surface):
         "required": ["xsize", "ysize", "frame"],
     }
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base surface class
+    def __new__(cls, *args, **kwargs):
+        surface = object.__new__(cls)
+        surface.__init__(*args, **kwargs)
+        return surface
+
     def __init__(self, xsize=1.0, ysize=1.0, frame=None):
         super(PlanarSurface, self).__init__(frame=frame)
         self._xsize = None
