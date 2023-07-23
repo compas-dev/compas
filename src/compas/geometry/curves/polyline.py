@@ -128,7 +128,7 @@ class Polyline(Curve):
 
     @frame.setter
     def frame(self, frame):
-        raise Exception("Setting the coordinate frame of a polyline is not supported.")
+        raise AttributeError("Setting the coordinate frame of a polyline is not supported.")
 
     @property
     def points(self):
