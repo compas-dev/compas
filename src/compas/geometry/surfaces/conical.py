@@ -3,9 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import pi, cos, sin
-from compas.geometry import Frame
 
-# from compas.geometry import Circle
+from compas.geometry import Point
+from compas.geometry import Frame
 from .surface import Surface
 
 PI2 = 2 * pi
@@ -123,7 +123,7 @@ class ConicalSurface(Surface):
     # Methods
     # =============================================================================
 
-    def point_at(self, u, v):
+    def point_at(self, u, v, world=True):
         """Compute a point on the surface at the given parameters.
 
         Parameters
@@ -132,6 +132,8 @@ class ConicalSurface(Surface):
             The first parameter.
         v : float
             The second parameter.
+        world : bool, optional
+            If ``True``, return the point in world coordinates.
 
         Returns
         -------
@@ -144,7 +146,10 @@ class ConicalSurface(Surface):
         x = radius * cos(u)
         y = radius * sin(u)
         z = v * self.height
-        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y + self.frame.zaxis * z
+        point = Point(x, y, z)
+        if world:
+            point.transform(self.transformation)
+        return point
 
     # def normal_at(self, u):
     #     """Compute the normal at a point on the surface at the given parameters.

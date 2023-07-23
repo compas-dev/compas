@@ -4,6 +4,7 @@ from __future__ import division
 
 from math import cos, sin, pi
 
+from compas.geometry import Point
 from compas.geometry import Frame
 from .surface import Surface
 
@@ -132,7 +133,7 @@ class ToroidalSurface(Surface):
     # Methods
     # =============================================================================
 
-    def point_at(self, u, v):
+    def point_at(self, u, v, world=True):
         """Construct a point on the sphere.
 
         Parameters
@@ -157,9 +158,12 @@ class ToroidalSurface(Surface):
         x = (self.radius_axis + self.radius_pipe * cos(v)) * cos(u)
         y = (self.radius_axis + self.radius_pipe * cos(v)) * sin(u)
         z = self.radius_pipe * sin(v)
-        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y + self.frame.zaxis * z
+        point = Point(x, y, z)
+        if world:
+            point.transform(self.transformation)
+        return point
 
-    def normal_at(self, u, v):
+    def normal_at(self, u, v, world=True):
         """Construct a normal vector at a point on the sphere.
 
         Parameters
@@ -168,6 +172,8 @@ class ToroidalSurface(Surface):
             The first parameter.
         v : float
             The second parameter.
+        world : bool, optional
+            If ``True``, the normal vector is transformed to world coordinates.
 
         Returns
         -------

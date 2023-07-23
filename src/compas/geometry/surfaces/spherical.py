@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import cos, sin, pi
 
+from compas.geometry import Point
+from compas.geometry import Vector
 from compas.geometry import Frame
 from compas.geometry import Circle
 from .surface import Surface
@@ -178,7 +180,7 @@ class SphericalSurface(Surface):
     # Methods
     # =============================================================================
 
-    def point_at(self, u, v):
+    def point_at(self, u, v, world=True):
         """Construct a point on the sphere.
 
         Parameters
@@ -191,6 +193,8 @@ class SphericalSurface(Surface):
             The second parameter.
             The parameter value should be between zero and one,
             and will be mapped to the corresponding angle between zero and 2 * pi.
+        world : bool, optional
+            If ``True``, return the point in world coordinates.
 
         Returns
         -------
@@ -203,9 +207,12 @@ class SphericalSurface(Surface):
         x = self.radius * cos(u) * sin(v)
         y = self.radius * sin(u) * sin(v)
         z = self.radius * cos(v)
-        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y + self.frame.zaxis * z
+        point = Point(x, y, z)
+        if world:
+            point.transform(self.transformation)
+        return point
 
-    def normal_at(self, u, v):
+    def normal_at(self, u, v, world=True):
         """Construct a normal vector at a point on the sphere.
 
         Parameters
@@ -214,6 +221,8 @@ class SphericalSurface(Surface):
             The first parameter.
         v : float
             The second parameter.
+        world : bool, optional
+            If ``True``, return the normal in world coordinates.
 
         Returns
         -------
@@ -226,4 +235,7 @@ class SphericalSurface(Surface):
         x = cos(u) * sin(v)
         y = sin(u) * sin(v)
         z = cos(v)
-        return self.frame.xaxis * x + self.frame.yaxis * y + self.frame.zaxis * z
+        normal = Vector(x, y, z)
+        if world:
+            normal.transform(self.transformation)
+        return normal

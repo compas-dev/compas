@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import pi, cos, sin
+
+from compas.geometry import Point
+from compas.geometry import Vector
 from compas.geometry import Frame
 from compas.geometry import Circle
 from .surface import Surface
@@ -154,7 +157,7 @@ class CylindricalSurface(Surface):
     # Methods
     # =============================================================================
 
-    def point_at(self, u, v):
+    def point_at(self, u, v, world=True):
         """Compute a point on the surface at the given parameters.
 
         Parameters
@@ -163,6 +166,8 @@ class CylindricalSurface(Surface):
             The first parameter.
         v : float
             The second parameter.
+        world : bool, optional
+            If ``True``, the point is transformed to world coordinates.
 
         Returns
         -------
@@ -174,15 +179,20 @@ class CylindricalSurface(Surface):
         x = self.radius * cos(u)
         y = self.radius * sin(u)
         z = v
-        return self.frame.point + self.frame.xaxis * x + self.frame.yaxis * y + self.frame.zaxis * z
+        point = Point(x, y, z)
+        if world:
+            point.transform(self.transformation)
+        return point
 
-    def normal_at(self, u):
+    def normal_at(self, u, world=True):
         """Compute the normal at a point on the surface at the given parameters.
 
         Parameters
         ----------
         u : float
             The first parameter.
+        world : bool, optional
+            If ``True``, the normal is transformed to world coordinates.
 
         Returns
         -------
@@ -194,9 +204,13 @@ class CylindricalSurface(Surface):
         x = self.radius * cos(u)
         y = self.radius * sin(u)
         z = 0
-        return self.frame.xaxis * x + self.frame.yaxis * y + self.frame.zaxis * z
+        vector = Vector(x, y, z)
+        vector.unitize()
+        if world:
+            vector.transform(self.transformation)
+        return vector
 
-    def frame_at(self, u, v):
+    def frame_at(self, u, v, world=True):
         """Compute the frame at a point on the surface at the given parameters.
 
         Parameters
@@ -205,6 +219,8 @@ class CylindricalSurface(Surface):
             The first parameter.
         v : float
             The second parameter.
+        world : bool, optional
+            If ``True``, the frame is transformed to world coordinates.
 
         Returns
         -------
@@ -213,8 +229,11 @@ class CylindricalSurface(Surface):
 
         """
         u = u * PI2
-        point = self.point_at(u, v)
-        zaxis = self.normal_at(u)
+        point = self.point_at(u, v, world=False)
+        zaxis = self.normal_at(u, world=False)
         yaxis = self.frame.zaxis
         xaxis = yaxis.cross(zaxis)
-        return Frame(point, xaxis, yaxis)
+        frame = Frame(point, xaxis, yaxis)
+        if world:
+            frame.transform(self.transformation)
+        return frame

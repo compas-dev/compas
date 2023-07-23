@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import Point
+from compas.geometry import Vector
 from compas.geometry import Frame
 from compas.geometry import Plane
 from .surface import Surface
@@ -132,7 +134,7 @@ class PlanarSurface(Surface):
     # Methods
     # =============================================================================
 
-    def point_at(self, u, v):
+    def point_at(self, u, v, world=True):
         """Construct a point on the planar surface.
 
         Parameters
@@ -141,6 +143,8 @@ class PlanarSurface(Surface):
             The first parameter.
         v : float
             The second parameter.
+        world : bool, optional
+            If ``True``, return the point in world coordinates.
 
         Returns
         -------
@@ -148,9 +152,13 @@ class PlanarSurface(Surface):
             A point on the sphere.
 
         """
-        return self.frame.point + self.frame.xaxis * u + self.frame.yaxis * v
+        point = Point(u, v, 0)
+        if world:
+            point.transform(self.transformation)
+        return point
+        # return self.frame.point + self.frame.xaxis * u + self.frame.yaxis * v
 
-    def normal_at(self, u=None, v=None):
+    def normal_at(self, u=None, v=None, world=True):
         """Construct the normal at a point on the planar surface.
 
         Parameters
@@ -168,7 +176,9 @@ class PlanarSurface(Surface):
             The normal vector.
 
         """
-        return self.frame.zaxis
+        if world:
+            return self.frame.zaxis
+        return Vector(0, 0, 1)
 
     def frame_at(self, u=None, v=None):
         """Construct a frame at a point on the planar surface.
