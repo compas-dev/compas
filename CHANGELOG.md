@@ -116,6 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.data.DataEncoder` and `compas.data.DataDecoder` to support `to_jsondata` and `from_jsondata`.
 * Moved all API level docstrings from the `__init__.py` to the correspoding `.rst` file in the docs.
 * Fixed `AttributeError` in Plotter's `PolylineArtist` and `SegementArtist`.
+* Fixed wrong key type when de-serializing `Graph` with integer keys leading to node not found.
 
 ### Removed
 
