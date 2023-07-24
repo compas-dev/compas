@@ -97,6 +97,22 @@ BREPs
     BrepVertex
 
 
+Transformations
+===============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Translation
+    Rotation
+    Scale
+    Projection
+    Reflection
+    Shear
+    Mirror
+
+
 Algorithms
 ==========
 
