@@ -58,14 +58,14 @@ class Assembly(Datastructure):
     def data(self):
         data = {
             "attributes": self.attributes,
-            "graph": self.graph.data,
+            "graph": self.graph,
         }
         return data
 
     @data.setter
     def data(self, data):
         self.attributes.update(data["attributes"] or {})
-        self.graph.data = data["graph"]
+        self.graph = data["graph"]
         self._parts = {part.guid: part.key for part in self.parts()}
 
     # ==========================================================================
