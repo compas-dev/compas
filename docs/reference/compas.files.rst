@@ -10,118 +10,118 @@ This package provides classes for working with selected file formats that are ca
 of storing information about 2D and 3D geometry, robots, pointclouds, ...
 
 
-.. DXF
-.. ===
+DXF
+===
 
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-..     DXF
-..     DXFReader
-..     DXFParser
-
-
-.. GLTF
-.. ====
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-
-..     GLTF
-..     GLTFReader
-..     GLTFParser
-..     GLTFContent
-..     GLTFMesh
-..     GLTFExporter
+    DXF
+    DXFReader
+    DXFParser
 
 
-.. LAS
-.. ===
+GLTF
+====
 
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-..     LAS
-..     LASReader
-..     LASParser
-
-
-.. OBJ
-.. ===
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-
-..     OBJ
-..     OBJReader
-..     OBJParser
-..     OBJWriter
+    GLTF
+    GLTFReader
+    GLTFParser
+    GLTFContent
+    GLTFMesh
+    GLTFExporter
 
 
-.. OFF
-.. ===
+LAS
+===
 
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-..     OFF
-..     OFFReader
-..     OFFWriter
-
-
-.. PLY
-.. ===
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-
-..     PLY
-..     PLYReader
-..     PLYParser
-..     PLYWriter
+    LAS
+    LASReader
+    LASParser
 
 
-.. STL
-.. ===
+OBJ
+===
 
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-..     STL
-..     STLReader
-..     STLParser
-..     STLWriter
-
-
-.. URDF
-.. ====
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-
-..     URDF
-..     URDFParser
-..     URDFElement
-..     URDFGenericElement
+    OBJ
+    OBJReader
+    OBJParser
+    OBJWriter
 
 
-.. XML
-.. ===
+OFF
+===
 
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
-..     XML
-..     XMLReader
-..     XMLWriter
-..     XMLElement
-..     prettify_string
+    OFF
+    OFFReader
+    OFFWriter
+
+
+PLY
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    PLY
+    PLYReader
+    PLYParser
+    PLYWriter
+
+
+STL
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    STL
+    STLReader
+    STLParser
+    STLWriter
+
+
+URDF
+====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    URDF
+    URDFParser
+    URDFElement
+    URDFGenericElement
+
+
+XML
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    XML
+    XMLReader
+    XMLWriter
+    XMLElement
+    prettify_string
