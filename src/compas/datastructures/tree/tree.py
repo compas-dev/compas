@@ -1,7 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-from __future__ import annotations
 
 from compas.datastructures import Datastructure
 
@@ -41,14 +40,14 @@ class TreeNode(object):
 
     """
 
-    def __init__(self, name: str = None, attributes: dict = None):
+    def __init__(self, name=None, attributes=None):
         self.name = name
         self.attributes = attributes or {}
         self._parent = None
         self._children = set()
         self._tree = None
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return "<TreeNode {}>".format(self.name)
 
     @property
@@ -75,7 +74,7 @@ class TreeNode(object):
     def tree(self):
         return self._tree
 
-    def add(self, node: TreeNode):
+    def add(self, node):
         """Add a child node to this node."""
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
@@ -85,7 +84,7 @@ class TreeNode(object):
         if self.tree:
             self.tree.nodes.add(node)
 
-    def remove(self, node: TreeNode):
+    def remove(self, node):
         """Remove a child node from this node."""
         self._children.remove(node)
         node._parent = None
@@ -94,7 +93,7 @@ class TreeNode(object):
             self.tree.nodes.remove(node)
 
     @property
-    def acestors(self):
+    def ancestors(self):
         this = self
         while this:
             yield this
@@ -107,11 +106,20 @@ class TreeNode(object):
             for descendant in child.descendants:
                 yield descendant
 
-    def traverse(self):
+    def traverse(self, strategy="preorder"):
         """Traverse the tree from this node."""
-        yield self
-        for descendant in self.descendants:
-            yield descendant
+        if strategy == "preorder":
+            yield self
+            for child in self.children:
+                for node in child.traverse(strategy):
+                    yield node
+        elif strategy == "postorder":
+            for child in self.children:
+                for node in child.traverse(strategy):
+                    yield node
+            yield self
+        else:
+            raise ValueError("Unknown traversal strategy: {}".format(strategy))
 
 
 class Tree(Datastructure):
@@ -223,7 +231,7 @@ class Tree(Datastructure):
     def nodes(self):
         return self._nodes
 
-    def remove_root(self):
+    def _remove_root(self):
         """Remove the root node from the tree."""
         self._root._tree = None
         self.nodes.remove(self._root)
@@ -232,7 +240,7 @@ class Tree(Datastructure):
     def remove(self, node: TreeNode):
         """Remove a node from the tree."""
         if node == self.root:
-            self.remove_root()
+            self._remove_root()
         else:
             node.parent.remove(node)
 
@@ -243,10 +251,7 @@ class Tree(Datastructure):
                 yield node
 
     def __repr__(self):
-        nodes = len(self.nodes)
-        branches = sum(1 for node in self.nodes if node.is_branch)
-        leaves = sum(1 for node in self.nodes if node.is_leaf)
-        return "<Tree with {} nodes, {} branches, and {} leaves>".format(nodes, branches, leaves)
+        return "<Tree with {} nodes>".format(len(self.nodes))
 
     def print(self):
         """Print the spatial hierarchy of the tree."""
