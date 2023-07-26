@@ -169,7 +169,7 @@ class Tree(Datastructure):
 
     JSONSCHEMA = {}
 
-    def __init__(self, name: str = None, attributes: dict = None):
+    def __init__(self, name=None, attributes=None):
         super(Tree, self).__init__()
         self.name = name
         self.attributes = attributes or {}
@@ -208,7 +208,7 @@ class Tree(Datastructure):
     def root(self):
         return self._root
 
-    def add_root(self, node: TreeNode):
+    def add_root(self, node):
         """Add a root node to the tree."""
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
@@ -218,7 +218,7 @@ class Tree(Datastructure):
         node._tree = self
         self._nodes.add(node)
 
-    def add(self, node: TreeNode, parent: TreeNode):
+    def add(self, node, parent):
         """Add a node to the tree."""
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
@@ -237,7 +237,7 @@ class Tree(Datastructure):
         self.nodes.remove(self._root)
         self._root = None
 
-    def remove(self, node: TreeNode):
+    def remove(self, node):
         """Remove a node from the tree."""
         if node == self.root:
             self._remove_root()
