@@ -195,11 +195,7 @@ if not compas.IPY:
     )
     from ._core.transformations_numpy import world_to_local_coordinates_numpy
 
-# =============================================================================
-# Predicates
-# =============================================================================
-
-from .predicates.predicates_2 import (
+from ._core.predicates_2 import (
     is_ccw_xy,
     is_colinear_xy,
     is_polygon_convex_xy,
@@ -214,7 +210,7 @@ from .predicates.predicates_2 import (
     is_intersection_line_line_xy,
     is_intersection_segment_segment_xy,
 )
-from .predicates.predicates_3 import (
+from ._core.predicates_3 import (
     is_colinear,
     is_colinear_line_line,
     is_coplanar,
@@ -238,7 +234,7 @@ from .predicates.predicates_3 import (
 )
 
 # =============================================================================
-# Other
+# Algorithms
 # =============================================================================
 
 from .bbox.bbox import bounding_box, bounding_box_xy
