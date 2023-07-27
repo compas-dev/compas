@@ -62,6 +62,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.trimesh_descent_numpy`.
 * Added `compas.geometry.trimesh_gradient_numpy`.
 * Added a deprecation warning when using `Artist` for `Plotter`.
+* Added `mesh_to_rhino` to `compas_rhino.conversions`.
+* Added `vertices_and_faces_to_rhino` to `compas_rhino.conversions`.
+* Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
 
 ### Changed
 
