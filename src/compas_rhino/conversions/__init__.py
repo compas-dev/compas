@@ -173,6 +173,13 @@ from ._curves import (
     curve_to_compas_line,
     curve_to_compas_polyline,
 )
+
+from ._meshes import (
+    mesh_to_rhino,
+    polyhedron_to_rhino,
+    vertices_and_faces_to_rhino,
+)
+
 from ._transformations import xform_to_rhino
 
 from ._geometry import RhinoGeometry
@@ -233,6 +240,9 @@ __all__ = [
     "curve_to_compas_ellipse",
     "curve_to_compas_line",
     "curve_to_compas_polyline",
+    "mesh_to_rhino",
+    "polyhedron_to_rhino",
+    "vertices_and_faces_to_rhino",
     "xform_to_rhino",
     "RhinoGeometry",
     "RhinoBox",
