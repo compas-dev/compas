@@ -7,8 +7,8 @@ Tutorials
 
     tutorials/data
     tutorials/geometry/index
-    tutorials/brep
-    tutorials/meshes
+    tutorials/datastructures/index
     tutorials/robots
     tutorials/rpc
     tutorials/colors
+    turorials/artists/index

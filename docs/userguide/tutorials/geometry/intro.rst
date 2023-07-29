@@ -629,8 +629,6 @@ Pointclouds
 ===========
 
 
-
-
 Triangle Meshes
 ===============
 
