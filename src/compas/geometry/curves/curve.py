@@ -77,7 +77,7 @@ class Curve(Geometry):
             self.frame = frame
 
     def __repr__(self):
-        return "Curve(frame{0!r}, domain={1!r})".format(self.frame, self.domain)
+        return "Curve(frame={0!r}, domain={1!r})".format(self.frame, self.domain)
 
     def __str__(self):
         return "<Curve with parameter domain {} in frame {}>".format(self.domain, self.frame)
