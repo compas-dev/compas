@@ -58,31 +58,6 @@ class Shape(Geometry):
     # Data
     # =============================================================================
 
-    @property
-    def data(self):
-        raise NotImplementedError
-
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a shape from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Shape`
-            The constructed shape.
-
-        """
-        return cls(**data)
-
     # =============================================================================
     # Properties
     # =============================================================================
