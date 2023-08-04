@@ -42,7 +42,7 @@ def edge_key():
 
 @pytest.fixture
 def sphere():
-    sphere = Sphere([0, 0, 0], 1.0)
+    sphere = Sphere(radius=1.0)
     mesh = Mesh.from_shape(sphere, u=16, v=16)
     return mesh
 

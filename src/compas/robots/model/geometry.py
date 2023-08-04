@@ -55,9 +55,8 @@ class CylinderProxy(ProxyObject):
     def from_urdf(cls, attributes, elements=None, text=None):
         radius = float(attributes["radius"])
         length = float(attributes["length"])
-        plane = compas.geometry.Plane([0, 0, 0], [0, 0, 1])
-        circle = compas.geometry.Circle(plane, radius)
-        return cls(compas.geometry.Cylinder(circle, length))
+        frame = compas.geometry.Frame.worldXY()
+        return cls(compas.geometry.Cylinder(frame, radius=radius, height=length))
 
     @property
     def meshes(self):
@@ -81,7 +80,7 @@ class SphereProxy(ProxyObject):
     @classmethod
     def from_urdf(cls, attributes, elements=None, text=None):
         radius = float(attributes["radius"])
-        return cls(compas.geometry.Sphere((0, 0, 0), radius))
+        return cls(compas.geometry.Sphere(compas.geometry.Frame.worldXY(), radius))
 
     @property
     def meshes(self):
@@ -102,8 +101,8 @@ class CapsuleProxy(ProxyObject):
     def from_urdf(cls, attributes, elements=None, text=None):
         radius = float(attributes["radius"])
         length = float(attributes["length"])
-        line = ((0, 0, length / -2), (0, 0, length / 2))
-        return cls(compas.geometry.Capsule(line, radius))
+        frame = compas.geometry.Frame.worldXY()
+        return cls(compas.geometry.Capsule(frame, radius=radius, height=length))
 
     @property
     def meshes(self):
@@ -162,7 +161,7 @@ class MeshDescriptor(Data):
             "filename": self.filename,
             "scale": self.scale,
             "attr": _attr_to_data(self.attr),
-            "meshes": [m.data for m in self.meshes],
+            "meshes": self.meshes,
         }
 
     @data.setter
@@ -170,7 +169,7 @@ class MeshDescriptor(Data):
         self.filename = data["filename"]
         self.scale = data["scale"]
         self.attr = _attr_from_data(data["attr"]) if "attr" in data else {}
-        self.meshes = [Mesh.from_data(md) for md in data["meshes"]] if "meshes" in data else []
+        self.meshes = data["meshes"]
 
     @classmethod
     def from_data(cls, data):
@@ -349,24 +348,24 @@ TYPE_CLASS_ENUM = {
     "mesh": MeshDescriptor,
 }
 
-TYPE_CLASS_ENUM_BY_DATA = {
-    ("frame", "xsize", "ysize", "zsize"): compas.geometry.Box,
-    ("circle", "height"): compas.geometry.Cylinder,
-    ("point", "radius"): compas.geometry.Sphere,
-    ("line", "radius"): compas.geometry.Capsule,
-    ("attr", "filename", "scale"): MeshDescriptor,
-    ("attr", "filename", "meshes", "scale"): MeshDescriptor,
-}
+# TYPE_CLASS_ENUM_BY_DATA = {
+#     ("frame", "xsize", "ysize", "zsize"): compas.geometry.Box,
+#     ("circle", "height"): compas.geometry.Cylinder,
+#     ("point", "radius"): compas.geometry.Sphere,
+#     ("line", "radius"): compas.geometry.Capsule,
+#     ("attr", "filename", "scale"): MeshDescriptor,
+#     ("attr", "filename", "meshes", "scale"): MeshDescriptor,
+# }
 
 
-def _get_type_from_shape_data(data):
-    # This is here only to support models serialized with older versions of COMPAS
-    if "type" in data:
-        return TYPE_CLASS_ENUM[data["type"]]
+# def _get_type_from_shape_data(data):
+#     # This is here only to support models serialized with older versions of COMPAS
+#     if "type" in data:
+#         return TYPE_CLASS_ENUM[data["type"]]
 
-    # The current scenario is that we need to figure out the object type based on the DATASCHEMA
-    keys = tuple(sorted(data.keys()))
-    return TYPE_CLASS_ENUM_BY_DATA[keys]
+#     # The current scenario is that we need to figure out the object type based on the DATASCHEMA
+#     keys = tuple(sorted(data.keys()))
+#     return TYPE_CLASS_ENUM_BY_DATA[keys]
 
 
 class Geometry(Data):
@@ -429,7 +428,7 @@ class Geometry(Data):
             self._shape = value
 
         if "meshes" not in dir(self._shape):
-            raise TypeError("Shape implementation does not define a meshes accessor")
+            raise TypeError("Shape implementation does not define a meshes accessor: {}".format(type(self._shape)))
 
     def get_urdf_element(self):
         attributes = self.attr.copy()
@@ -439,20 +438,20 @@ class Geometry(Data):
     @property
     def data(self):
         return {
-            "shape": self.shape.data,
+            "shape": self.shape,  # type: ignore
             "attr": _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
-        class_ = _get_type_from_shape_data(data["shape"])
-        self.shape = class_.from_data(data["shape"])
+        # class_ = _get_type_from_shape_data(data["shape"])
+        self.shape = data["shape"]
         self.attr = _attr_from_data(data["attr"])
 
     @classmethod
     def from_data(cls, data):
-        class_ = _get_type_from_shape_data(data["shape"])
-        geo = cls(box=class_.from_data(data["shape"]))
+        # class_ = _get_type_from_shape_data(data["shape"])
+        geo = cls(box=data["shape"])
         geo.data = data
         return geo
 

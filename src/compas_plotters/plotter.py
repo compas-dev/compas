@@ -25,6 +25,8 @@ import tempfile
 from PIL import Image
 
 import compas
+import compas.geometry
+import compas.datastructures
 from compas.geometry import allclose
 from .artists import PlotterArtist
 
@@ -273,7 +275,7 @@ class Plotter:
     def add(
         self,
         item: Union[
-            compas.geometry.Primitive,
+            compas.geometry.Geometry,
             compas.datastructures.Network,
             compas.datastructures.Mesh,
         ],
@@ -315,7 +317,7 @@ class Plotter:
     def find(
         self,
         item: Union[
-            compas.geometry.Primitive,
+            compas.geometry.Geometry,
             compas.datastructures.Network,
             compas.datastructures.Mesh,
         ],

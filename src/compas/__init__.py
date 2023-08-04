@@ -134,6 +134,10 @@ __all__ = [
     "json_loads",
 ]
 
+__all_plugins__ = [
+    "compas.geometry.booleans.booleans_shapely",
+]
+
 
 def set_precision(precision):
     """Set the precision used by geometric maps.

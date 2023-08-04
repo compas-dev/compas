@@ -62,6 +62,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.trimesh_descent_numpy`.
 * Added `compas.geometry.trimesh_gradient_numpy`.
 * Added a deprecation warning when using `Artist` for `Plotter`.
+* Added `compas.geometry.Hyperbola`.
+* Added `compas.geometry.Parabola`.
+* Added `compas.geometry.PlanarSurface`.
+* Added `compas.geometry.CylindricalSurface`.
+* Added `compas.geometry.SphericalSurface`.
+* Added `compas.geometry.ConicalSurface`.
+* Added `compas.geometry.ToroidalSurface`.
+* Added `compas.geometry.boolean_union_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_intersection_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_difference_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_symmetric_difference_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_union_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.boolean_intersection_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.boolean_difference_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.boolean_symmetric_difference_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.Pointcloud.from_ply`.
+* Added `compas.geometry.Curve.to_points`.
+* Added `compas.geometry.Curve.to_polyline`.
+* Added `compas.geometry.Curve.to_polygon`.
+* Added `compas.geometry.Surface.to_vertices_and_faces`.
+* Added `compas.geometry.Surface.to_triangles`.
+* Added `compas.geometry.Surface.to_quads`.
+* Added `compas.geometry.Surface.to_mesh`.
+* Added `compas.geometry.Curve.point_at`.
+* Added `compas.geometry.Curve.tangent_at`.
+* Added `compas.geometry.Curve.normal_at`.
+* Added `compas.geometry.Surface.point_at`.
+* Added `compas.geometry.Surface.normal_at`.
+* Added `compas.geometry.Surface.frame_at`.
 
 ### Changed
 
@@ -117,6 +146,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved all API level docstrings from the `__init__.py` to the correspoding `.rst` file in the docs.
 * Fixed `AttributeError` in Plotter's `PolylineArtist` and `SegementArtist`.
 * Fixed wrong key type when de-serializing `Graph` with integer keys leading to node not found.
+* Changed base class for `compas.geometry.Transformation` to `compas.data.Data`.
+* Moved all core transformation functions to `compas.geometry._core`.
+* Changed base class of `compas.geometry.Arc` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Bezier` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Circle` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Ellipse` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Line` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Polyline` to `compas.geometry.Curve.`
+* Changed `compas.geometry.oriented_bounding_box_numpy` to minimize volume.
 
 ### Removed
 
@@ -169,6 +207,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.numerical.utilities`.
 * Removed class attribute `CONTEXT` from `compas.artists.Artist`.
 * Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
+* Removed `compas.geometry.Primitive`.
 
 ## [1.17.5] 2023-02-16
 

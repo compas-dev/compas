@@ -113,7 +113,6 @@ class NurbsSurface(Surface):
 
     @property
     def dtype(self):
-        """str : The type of the object in the form of a '2-level' import and a class name."""
         return "compas.geometry/NurbsSurface"
 
     @property
