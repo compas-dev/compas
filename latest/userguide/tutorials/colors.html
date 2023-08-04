@@ -434,9 +434,22 @@ document.write(`
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="brep.html">Boundary Representation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="meshes.html">Meshes</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="geometry/index.html">Geometry</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="geometry/intro.html">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geometry/frames_and_transformations.html">Working with Frames and Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geometry/curves.html">Working with Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geometry/surfaces.html">Working with Surfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="geometry/breps.html">Boundary Representation</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="datastructures/index.html">Data Structures</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="datastructures/intro.html">Intoduction to Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datastructures/networks.html">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datastructures/meshes.html">Meshes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datastructures/volmeshes.html">Vol(umetric) Meshes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datastructures/assemblies.html">Assemblies</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="robots.html">Robots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rpc.html">Remote Procedure Calls</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Colors and Color Maps</a></li>
@@ -514,12 +527,6 @@ for the primary, secondary, and tertiary colors of the RGB color wheel or color 
 <span class="go">Color(1.0, 0.0, 0.5, 1.0)</span>
 </pre></div>
 </div>
-<figure class="align-default" id="id1">
-<img alt="../../_images/colors-1.png" class="plot-directive" src="../../_images/colors-1.png" />
-<figcaption>
-<p><span class="caption-text">Colors of the RGB color circle.</span></p>
-</figcaption>
-</figure>
 </section>
 <section id="lighter-and-darker-colors">
 <h2>Lighter and Darker Colors</h2>
@@ -542,23 +549,11 @@ or to generate new colors (<a class="reference internal" href="../../reference/g
 <span class="go">Color(0.5, 0.0, 0.0, 1.0)</span>
 </pre></div>
 </div>
-<figure class="align-default" id="id3">
-<img alt="../../_images/colors-2.png" class="plot-directive" src="../../_images/colors-2.png" />
-<figcaption>
-<p><span class="caption-text">Lighter and darker colors of the color wheel.</span></p>
-</figcaption>
-</figure>
 </section>
 <section id="saturation">
 <h2>Saturation</h2>
 <p>Similar to generating lighter and darker colors, the color class provides methods for saturating or desaturating colors
 (<a class="reference internal" href="../../reference/generated/compas.colors.Color.saturate.html" title="compas.colors.Color.saturate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturate()</span></code></a> and <a class="reference internal" href="../../reference/generated/compas.colors.Color.desaturate.html" title="compas.colors.Color.desaturate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturate()</span></code></a>, and <a class="reference internal" href="../../reference/generated/compas.colors.Color.saturated.html" title="compas.colors.Color.saturated"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturated()</span></code></a> and <a class="reference internal" href="../../reference/generated/compas.colors.Color.desaturated.html" title="compas.colors.Color.desaturated"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturated()</span></code></a>).</p>
-<figure class="align-default" id="id5">
-<img alt="../../_images/colors-3.png" class="plot-directive" src="../../_images/colors-3.png" />
-<figcaption>
-<p><span class="caption-text">Lighter and darker colors of the color wheel.</span></p>
-</figcaption>
-</figure>
 </section>
 <section id="color-maps">
 <h2>Color Maps</h2>
@@ -577,9 +572,6 @@ and some of the <cite>matplotlib</cite> color palettes are also available.</p>
 </ul>
 <p>To quickly plot a color palette for visual inspection use plot method of the color map class <a class="reference internal" href="../../reference/generated/compas.colors.ColorMap.plot.html" title="compas.colors.ColorMap.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.plot()</span></code></a>.
 For example, the “viridis” map from <cite>matplotlib</cite>.</p>
-<figure class="align-default">
-<img alt="../../_images/colors-4.png" class="plot-directive" src="../../_images/colors-4.png" />
-</figure>
 <section id="examples">
 <h3>Examples</h3>
 <p>Using the following template we can compare various color maps.</p>
@@ -610,9 +602,6 @@ For example, the “viridis” map from <cite>matplotlib</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_rgb</span><span class="p">()</span>
 </pre></div>
 </div>
-<figure class="align-default">
-<img alt="../../_images/colors-5.png" class="plot-directive" src="../../_images/colors-5.png" />
-</figure>
 </section>
 <section id="from-one-color">
 <h4>From One Color</h4>
@@ -621,9 +610,6 @@ For example, the “viridis” map from <cite>matplotlib</cite>.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">&#39;dark&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-default">
-<img alt="../../_images/colors-6.png" class="plot-directive" src="../../_images/colors-6.png" />
-</figure>
 </section>
 <section id="from-two-colors">
 <h4>From Two Colors</h4>
@@ -631,18 +617,12 @@ For example, the “viridis” map from <cite>matplotlib</cite>.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_two_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s1">&#39;#0092D2&#39;</span><span class="p">),</span> <span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">(),</span> <span class="n">diverging</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-default">
-<img alt="../../_images/colors-7.png" class="plot-directive" src="../../_images/colors-7.png" />
-</figure>
 </section>
 <section id="from-three-colors">
 <h4>From Three Colors</h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_three_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">Color</span><span class="o">.</span><span class="n">green</span><span class="p">(),</span> <span class="n">Color</span><span class="o">.</span><span class="n">blue</span><span class="p">())</span>
 </pre></div>
 </div>
-<figure class="align-default">
-<img alt="../../_images/colors-8.png" class="plot-directive" src="../../_images/colors-8.png" />
-</figure>
 </section>
 </section>
 </section>
