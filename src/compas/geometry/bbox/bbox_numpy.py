@@ -163,17 +163,7 @@ def oriented_bounding_box_xy_numpy(points):
     elif dim == 3:
         points[:, 2] = 0
 
-    # mean, vectors, values = pca_numpy(points)
-    # frame = mean, vectors[0], vectors[1]
-    # points = world_to_local_coordinates_numpy(frame, points)
-
     rect1 = minimum_area_rectangle_xy(points)
-    # area1 = (rect1[1][0] - rect1[0][0]) * (rect1[3][1] - rect1[0][1])
-    # rect2 = bounding_box(points)[:4]
-    # area2 = (rect2[1][0] - rect2[0][0]) * (rect2[3][1] - rect2[0][1])
-    # rect = rect1 if area1 < area2 else rect2
-    # rect = [[x, y, 0.0] for x, y in rect1]
-    # bbox = local_to_world_coordinates_numpy(frame, rect)
 
     bbox = [[x, y, 0.0] for x, y in rect1]
     return bbox
