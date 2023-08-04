@@ -4,50 +4,86 @@ from __future__ import division
 
 from compas.plugins import pluggable
 from compas.geometry import Geometry
+from compas.geometry import Transformation
+from compas.geometry import Plane
+from compas.geometry import Frame
 from compas.utilities import linspace
 
 
 @pluggable(category="factories")
 def new_curve(cls, *args, **kwargs):
-    raise NotImplementedError
+    curve = object.__new__(cls)
+    curve.__init__(*args, **kwargs)
+    return curve
 
 
 class Curve(Geometry):
-    """Class representing a general curve object.
+    """Class representing a general parametric curve.
 
     Parameters
     ----------
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system of the curve.
+        Default is the world coordinate system.
     name : str, optional
         The name of the curve.
 
     Attributes
     ----------
+    frame : :class:`~compas.geometry.Frame`
+        The frame of the curve.
+    transformation : :class:`~compas.geometry.Transformation`, read-only
+        The transformation from the local coordinate system of the curve (:attr:`frame`) to the world coordinate system.
+    plane : :class:`~compas.geometry.Plane`, read-only
+        The plane of the curve.
     dimension : int, read-only
         The spatial dimension of the curve.
+        In most cases this will be 3.
+        For curves embedded on a surface, this is 2.
     domain : tuple[float, float], read-only
-        The domain of the parameter space of the curve.
-    start : :class:`~compas.geometry.Point`, read-only
-        The start point of the curve.
-    end : :class:`~compas.geometry.Point`, read-only
-        The end point of the curve.
+        The domain of the parameter space of the curve is the interval ``[0.0, 1.0]``.
     is_closed : bool, read-only
         True if the curve is closed.
     is_periodic : bool, read-only
         True if the curve is periodic.
+
+    See Also
+    --------
+    :class:`compas.geometry.Arc`, :class:`compas.geometry.Circle`,
+    :class:`compas.geometry.Ellipse`, :class:`compas.geometry.Line`,
+    :class:`compas.geometry.NurbsCurve`, :class:`compas.geometry.Polyline`
+
+    Notes
+    -----
+    The curve is a "pluggable". This means that it does not provide an actual implementation
+    of a parametric curve, but rather serves as an interface for different backends.
+    If a backend is available, it will be used to construct the curve and provide its functionality.
+    This backend is referred to as the "plugin" implementation of the curve.
+
+    To activate the plugin mechanism, the backend should provide an implementation of the :func:`new_curve` function,
+    and of any other function that can be implemented through the functionality available in the backend.
 
     """
 
     def __new__(cls, *args, **kwargs):
         return new_curve(cls, *args, **kwargs)
 
-    def __init__(self, name=None):
+    def __init__(self, frame=None, name=None):
         super(Curve, self).__init__(name=name)
+        self._frame = None
+        self._transformation = None
+        self._domain = None
+        if frame:
+            self.frame = frame
+
+    def __repr__(self):
+        return "Curve(frame={0!r}, domain={1!r})".format(self.frame, self.domain)
+
+    def __str__(self):
+        return "<Curve with parameter domain {} in frame {}>".format(self.domain, self.frame)
 
     def __eq__(self, other):
         raise NotImplementedError
-
-    def __str__(self):
-        return "<Curve with parameter domain {}>".format(self.domain)
 
     # ==============================================================================
     # Data
@@ -55,12 +91,11 @@ class Curve(Geometry):
 
     @property
     def data(self):
-        """dict : Representation of the curve as a dict containing only native Python data."""
         raise NotImplementedError
 
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
+    # @data.setter
+    # def data(self, data):
+    #     raise NotImplementedError
 
     @classmethod
     def from_data(cls, data):
@@ -77,27 +112,43 @@ class Curve(Geometry):
             The constructed curve.
 
         """
-        raise NotImplementedError
+        return cls(**data)
 
     # ==============================================================================
     # Properties
     # ==============================================================================
 
     @property
+    def frame(self):
+        if not self._frame:
+            self._frame = Frame.worldXY()
+        return self._frame
+
+    @frame.setter
+    def frame(self, frame):
+        if not frame:
+            self._frame = None
+        else:
+            self._frame = Frame(frame[0], frame[1], frame[2])
+        self._transformation = None
+
+    @property
+    def transformation(self):
+        if not self._transformation:
+            self._transformation = Transformation.from_frame(self.frame)
+        return self._transformation
+
+    @property
+    def plane(self):
+        return Plane(self.frame.point, self.frame.zaxis)
+
+    @property
     def dimension(self):
-        raise NotImplementedError
+        return 3
 
     @property
     def domain(self):
-        raise NotImplementedError
-
-    @property
-    def start(self):
-        raise NotImplementedError
-
-    @property
-    def end(self):
-        raise NotImplementedError
+        return 0.0, 1.0
 
     @property
     def is_closed(self):
@@ -154,6 +205,8 @@ class Curve(Geometry):
         ----------
         filepath : str
             The path of the output file.
+        schema : str, optional
+            The STEP schema to use. Default is ``"AP203"``.
 
         Returns
         -------
@@ -177,31 +230,107 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
+    def to_points(self, n=10, domain=None):
+        """Convert the curve to a list of points.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of points in the list.
+            Default is ``10``.
+        domain : tuple, optional
+            Subset of the domain to use for the discretisation.
+            Default is ``None``, in which case the entire curve domain is used.
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Point`]
+
+        """
+        domain = domain or self.domain
+        start, end = domain
+        points = [self.point_at(t) for t in linspace(start, end, n)]
+        return points
+
+    def to_polyline(self, n=16, domain=None):
+        """Convert the curve to a polyline.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of line segments in the polyline.
+            Default is ``16``.
+        domain : tuple, optional
+            Subset of the domain to use for the discretisation.
+            Default is ``None``, in which case the entire curve domain is used.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polyline`
+
+        """
+        from compas.geometry import Polyline
+
+        points = self.to_points(n=n + 1, domain=domain)
+        return Polyline(points)
+
+    def to_polygon(self, n=16):
+        """Convert the curve to a polygon.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of sides of the polygon.
+            Default is ``16``.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Polygon`
+
+        Raises
+        ------
+        ValueError
+            If the curve is not closed.
+
+        """
+        if not self.is_closed:
+            raise ValueError("The curve is not closed.")
+
+        from compas.geometry import Polygon
+
+        points = self.to_points(n=n + 1)
+        return Polygon(points[:-1])
+
     # ==============================================================================
-    # Methods
+    # Transformations
     # ==============================================================================
 
-    def reverse(self):
-        """Reverse the parametrisation of the curve.
+    def transform(self, T):
+        """Transform the local coordinate system of the curve.
+
+        Parameters
+        ----------
+        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+            The transformation.
 
         Returns
         -------
         None
+            The (local coordinate system of the) curve is modified in-place.
+
+        Notes
+        -----
+        Transformations of frames are limited to rotations and translations.
+        All other transformations have no effect.
+        See :meth:`~compas.geometry.Frame.transform` for more info.
 
         """
-        raise NotImplementedError
+        self.frame.transform(T)
+        self._transformation = None
 
-    def reversed(self):
-        """Reverse a copy of the curve.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Curve`
-
-        """
-        copy = self.copy()
-        copy.reverse
-        return copy
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
 
     def point_at(self, t):
         """Compute a point of the curve at a parameter.
@@ -220,6 +349,35 @@ class Curve(Geometry):
         ------
         ValueError
             If the parameter is not in the curve domain.
+
+        See Also
+        --------
+        :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`
+
+        """
+        raise NotImplementedError
+
+    def normal_at(self, t):
+        """Compute the normal of the curve at a parameter.
+
+        Parameters
+        ----------
+        t : float
+            The value of the curve parameter.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Vector`
+            The corresponding normal vector.
+
+        Raises
+        ------
+        ValueError
+            If the parameter is not in the curve domain.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`
 
         """
         raise NotImplementedError
@@ -242,26 +400,9 @@ class Curve(Geometry):
         ValueError
             If the parameter is not in the curve domain.
 
-        """
-        raise NotImplementedError
-
-    def curvature_at(self, t):
-        """Compute the curvature of the curve at a parameter.
-
-        Parameters
-        ----------
-        t : float
-            The value of the curve parameter.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The corresponding curvature vector.
-
-        Raises
-        ------
-        ValueError
-            If the parameter is not in the curve domain.
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`
 
         """
         raise NotImplementedError
@@ -284,11 +425,20 @@ class Curve(Geometry):
         ValueError
             If the parameter is not in the curve domain.
 
-        """
-        raise NotImplementedError
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`curvature_at`
 
-    def torsion_at(self, t):
-        """Compute the torsion of the curve at a parameter.
+        """
+        return Frame(self.point_at(t), self.tangent_at(t), self.normal_at(t))
+
+    def curvature_at(self, t):
+        """Compute the curvature vector of the curve at a parameter.
+
+        This is a vector pointing from the point on the curve at the specified parameter,
+        to the center of the oscillating circle of the curve at that location.
+
+        Note that this vector is parallel to the normal vector of the curve at that location.
 
         Parameters
         ----------
@@ -297,13 +447,17 @@ class Curve(Geometry):
 
         Returns
         -------
-        float
-            The torsion value.
+        :class:`~compas.geometry.Vector`
+            The corresponding curvature vector.
 
         Raises
         ------
         ValueError
             If the parameter is not in the curve domain.
+
+        See Also
+        --------
+        :meth:`point_at`, :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`
 
         """
         raise NotImplementedError
@@ -312,38 +466,76 @@ class Curve(Geometry):
     # Methods continued
     # ==============================================================================
 
-    def space(self, n=10):
-        """Compute evenly spaced parameters over the curve domain.
-
-        Parameters
-        ----------
-        n : int, optional
-            The number of values in the parameter space.
+    def reverse(self):
+        """Reverse the parametrisation of the curve.
 
         Returns
         -------
-        list[float]
+        None
+
+        See Also
+        --------
+        :meth:`reversed`
 
         """
-        start, end = self.domain
-        return linspace(start, end, n)
+        raise NotImplementedError
 
-    def locus(self, resolution=100):
-        """Compute the locus of points on the curve.
-
-        Parameters
-        ----------
-        resolution : int
-            The number of intervals at which a point on the
-            curve should be computed.
+    def reversed(self):
+        """Reverse a copy of the curve.
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
-            Points along the curve.
+        :class:`~compas.geometry.Curve`
+
+        See Also
+        --------
+        :meth:`reverse`
 
         """
-        return [self.point_at(t) for t in self.space(resolution)]
+        copy = self.copy()
+        copy.reverse
+        return copy
+
+    # def space(self, n=10):
+    #     """Compute evenly spaced parameters over the curve domain.
+
+    #     Parameters
+    #     ----------
+    #     n : int, optional
+    #         The number of values in the parameter space.
+
+    #     Returns
+    #     -------
+    #     list[float]
+
+    #     See Also
+    #     --------
+    #     :meth:`locus`
+
+    #     """
+    #     start, end = self.domain
+    #     return linspace(start, end, n)
+
+    # def locus(self, resolution=100):
+    #     """Compute the locus of points on the curve.
+
+    #     Parameters
+    #     ----------
+    #     resolution : int
+    #         The number of intervals at which a point on the
+    #         curve should be computed.
+
+    #     Returns
+    #     -------
+    #     list[:class:`~compas.geometry.Point`]
+    #         Points along the curve.
+
+    #     See Also
+    #     --------
+    #     :meth:`space`
+
+    #     """
+    #     return [self.point_at(t) for t in self.space(resolution)]
 
     def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the curve to a given point.
@@ -358,14 +550,14 @@ class Curve(Geometry):
         Returns
         -------
         :class:`~compas.geometry.Point` | tuple[:class:`~compas.geometry.Point`, float]
-            If `return_parameter` is False, only the closest point is returned.
+            If `return_parameter` is False (default), only the closest point is returned.
             If `return_parameter` is True, the closest point and the corresponding parameter are returned.
 
         """
         raise NotImplementedError
 
     def divide_by_count(self, count, return_points=False):
-        """Divide the curve into a specific number of equal length segments.
+        """Compute the curve parameters that divide the curve into a specific number of equal length segments.
 
         Parameters
         ----------
@@ -382,11 +574,16 @@ class Curve(Geometry):
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
+        See Also
+        --------
+        :meth:`divide_by_length`
+        :meth:`split`
+
         """
         raise NotImplementedError
 
     def divide_by_length(self, length, return_points=False):
-        """Divide the curve into segments of specified length.
+        """Compute the curve parameters that divide the curve into segments of specified length.
 
         Parameters
         ----------
@@ -403,11 +600,16 @@ class Curve(Geometry):
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
+        See Also
+        --------
+        :meth:`divide_by_count`
+        :meth:`split`
+
         """
         raise NotImplementedError
 
     def aabb(self):
-        """Compute the axis aligned bounding box of the curve.
+        """Compute the axis-aligned bounding box of the curve.
 
         Returns
         -------

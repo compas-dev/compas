@@ -201,6 +201,8 @@ class Mesh(HalfEdge):
         vertices = obj.vertices
         faces = obj.faces
         edges = obj.lines
+        if not vertices:
+            return cls()
         if faces:
             return cls.from_vertices_and_faces(vertices, faces)
         if edges:
@@ -249,8 +251,8 @@ class Mesh(HalfEdge):
 
         """
         ply = PLY(filepath)
-        vertices = ply.parser.vertices
-        faces = ply.parser.faces
+        vertices = ply.parser.vertices  # type: ignore
+        faces = ply.parser.faces  # type: ignore
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -288,8 +290,8 @@ class Mesh(HalfEdge):
 
         """
         stl = STL(filepath, precision)
-        vertices = stl.parser.vertices
-        faces = stl.parser.faces
+        vertices = stl.parser.vertices  # type: ignore
+        faces = stl.parser.faces  # type: ignore
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -337,8 +339,8 @@ class Mesh(HalfEdge):
 
         """
         off = OFF(filepath)
-        vertices = off.reader.vertices
-        faces = off.reader.faces
+        vertices = off.reader.vertices  # type: ignore
+        faces = off.reader.faces  # type: ignore
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 

@@ -6,41 +6,58 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Circle
-from compas.geometry import Frame
 from compas.geometry import Plane
+from compas.geometry import Frame
+from compas.geometry import Line
 
-from ._shape import Shape
+from .shape import Shape
 
 
 class Cylinder(Shape):
-    """A cylinder is defined by a circle and a height.
+    """A cylinder is defined by a frame, radius, and height.
+
+    The cylinder is oriented along the z-axis of the frame.
+    The base point of the cylinder (i.e. the centre of the base circle) is at the origin of the frame.
+    Half of the cylinder is above the local XY plane of the frame, the other half below.
 
     Parameters
     ----------
-    circle: [plane, radius] | :class:`~compas.geometry.Circle`
-        The circle of the cylinder.
-    height: float
-        The height of the cylinder.
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system, or "frame", of the cylinder.
+        Default is ``None``, in which case the world coordinate system is used.
+    radius : float, optional
+        The radius of the cylinder.
+    height : float, optional
+        The height of the cylinder along the z-axis of the frame.
+        Half of the cylinder is above the XY plane of the frame, the other half below.
 
     Attributes
     ----------
-    plane : :class:`~compas.geometry.Plane`
-        The plane of the cylinder.
-    circle : :class:`~compas.geometry.Circle`
-        The circle of the cylinder.
-    center : :class:`~compas.geometry.Point`
-        The center of the cylinder.
+    frame : :class:`~compas.geometry.Frame`
+        The local coordinate system of the cylinder.
+        The cylinder is oriented along the local z-axis.
+    transformation : :class:`~compas.geometry.Transformation`
+        The transformation of the cylinder to global coordinates.
     radius : float
-        The radius of the cylinder.
+        The radius of the base circle of the cylinder.
     height : float
         The height of the cylinder.
-    normal : :class:`~compas.geometry.Vector`, read-only
-        The normal of the cylinder.
+    axis : :class:`~compas.geometry.Line`, read-only
+        The central axis of the cylinder.
+    base : :class:`~compas.geometry.Point`, read-only
+        The base point of the cylinder.
+        The base point is at the origin of the local coordinate system.
+    plane : :class:`~compas.geometry.Plane`, read-only
+        The plane of the cylinder.
+        The base point of the plane is at the origin of the local coordinate system.
+        The normal of the plane is in the direction of the z-axis of the local coordinate system.
+    circle : :class:`~compas.geometry.Circle`, read-only
+        The base circle of the cylinder.
+        The center of the circle is at the origin of the local coordinate system.
     diameter : float, read-only
-        The diameter of the cylinder.
+        The diameter of the base circle of the cylinder.
     area : float, read-only
         The surface area of the cylinder.
     volume : float, read-only
@@ -48,123 +65,120 @@ class Cylinder(Shape):
 
     Examples
     --------
-    >>> from compas.geometry import Plane
-    >>> from compas.geometry import Cylinder
-    >>> plane = Plane([0, 0, 0], [0, 0, 1])
-    >>> circle = Circle(plane, 5)
-    >>> cylinder = Cylinder(circle, 7)
+    >>> frame = Frame.worldXY()
+    >>> cylinder = Cylinder(frame=frame, radius=0.3, heigth=1.0)
+    >>> cylinder = Cylinder(radius=0.3, heigth=1.0)
+    >>> cylinder = Cylinder()
 
     """
 
     JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "circle": Circle.JSONSCHEMA,
-            "height": {"type": "number", "exclusiveMinimum": 0},
+            "frame": Frame.JSONSCHEMA,
+            "radius": {"type": "number", "minimum": 0},
+            "height": {"type": "number", "minimum": 0},
         },
-        "required": ["circle", "height"],
+        "required": ["frame", "radius", "height"],
     }
 
-    __slots__ = ["_circle", "_height"]
-
-    def __init__(self, circle, height, **kwargs):
-        super(Cylinder, self).__init__(**kwargs)
-        self._circle = None
+    def __init__(self, frame=None, radius=0.3, height=1.0, **kwargs):
+        super(Cylinder, self).__init__(frame=frame, **kwargs)
+        self._radius = None
         self._height = None
-        self.circle = circle
+        self.radius = radius
         self.height = height
 
+    def __repr__(self):
+        return "Cylinder(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.frame
+        elif key == 1:
+            return self.radius
+        elif key == 2:
+            return self.height
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.frame = value
+        elif key == 1:
+            self.radius = value
+        elif key == 2:
+            self.height = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.frame, self.radius, self.height])
+
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the cylinder."""
-        return {"circle": self.circle, "height": self.height}
+        return {"frame": self.frame, "radius": self.radius, "height": self.height}
 
     @data.setter
     def data(self, data):
-        self.circle = data["circle"]
+        self.frame = data["frame"]
+        self.radius = data["radius"]
         self.height = data["height"]
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a cylinder from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Cylinder`
-            The constructed cylinder.
-
-        Examples
-        --------
-        >>> from compas.geometry import Cylinder
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-        >>> cylinder = Cylinder.from_data(data)
-
-        """
-        cylinder = cls(data["circle"], data["height"])
-        return cylinder
-
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
-
-    @property
-    def plane(self):
-        return self.circle.plane
-
-    @plane.setter
-    def plane(self, plane):
-        self.circle.plane = Plane(*plane)
-
-    @property
-    def circle(self):
-        return self._circle
-
-    @circle.setter
-    def circle(self, circle):
-        self._circle = Circle(*circle)
 
     @property
     def radius(self):
-        return self.circle.radius
+        if self._radius is None:
+            raise ValueError("The cylinder radius has not been set.")
+        return self._radius
 
     @radius.setter
     def radius(self, radius):
-        self.circle.radius = float(radius)
+        if radius < 0:
+            raise ValueError("The cylinder radius should be larger than or equal to zero.")
+        self._radius = float(radius)
 
     @property
     def height(self):
+        if self._height is None:
+            raise ValueError("The cylinder height has not been set.")
         return self._height
 
     @height.setter
     def height(self, height):
+        if height < 0:
+            raise ValueError("The cylinder height should be larger than or equal to zero.")
         self._height = float(height)
 
     @property
-    def normal(self):
-        return self.plane.normal
+    def axis(self):
+        return Line(self.frame.point, self.frame.point + self.frame.normal * self.height)
+
+    @property
+    def base(self):
+        return self.frame.point.copy()
+
+    @property
+    def plane(self):
+        return Plane(self.frame.point, self.frame.normal)
+
+    @property
+    def circle(self):
+        return Circle(self.frame, self.radius)
 
     @property
     def diameter(self):
-        return self.circle.diameter
-
-    @property
-    def center(self):
-        return self.circle.center
-
-    @center.setter
-    def center(self, point):
-        self.circle.center = point
+        return 2 * self.radius
 
     @property
     def area(self):
@@ -175,41 +189,65 @@ class Cylinder(Shape):
         return self.circle.area * self.height
 
     # ==========================================================================
-    # customisation
+    # Constructors
     # ==========================================================================
 
-    def __repr__(self):
-        return "Cylinder({0!r}, {1!r})".format(self.circle, self.height)
+    @classmethod
+    def from_line_and_radius(cls, line, radius):
+        """Construct a cylinder from a line and a radius.
 
-    def __len__(self):
-        return 2
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Line`
+            The line.
+        radius : float
+            The radius.
 
-    def __getitem__(self, key):
-        if key == 0:
-            return self.circle
-        elif key == 1:
-            return self.height
-        else:
-            raise KeyError
+        Returns
+        -------
+        :class:`~compas.geometry.Cylinder`
+            The cylinder.
 
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.circle = value
-        elif key == 1:
-            self.height = value
-        else:
-            raise KeyError
+        Examples
+        --------
+        >>> from compas.geometry import Line
+        >>> from compas.geometry import Cylinder
+        >>> line = Line([0, 0, 0], [0, 0, 1])
+        >>> cylinder = Cylinder.from_line_and_radius(line, radius=0.3)
 
-    def __iter__(self):
-        return iter([self.circle, self.height])
+        """
+        frame = Frame.from_plane(Plane(line.midpoint, line.direction))
+        return cls(frame=frame, height=line.length, radius=radius)
 
-    # ==========================================================================
-    # constructors
-    # ==========================================================================
+    @classmethod
+    def from_circle_and_height(cls, circle, height):
+        """Construct a cylinder from a circle and a height.
 
-    # ==========================================================================
-    # methods
-    # ==========================================================================
+        Parameters
+        ----------
+        circle : :class:`~compas.geometry.Circle`
+            The circle.
+        height : float
+            The height.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Cylinder`
+            The cylinder.
+
+        Examples
+        --------
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Cylinder
+        >>> circle = Circle(radius=0.3)
+        >>> cylinder = Cylinder.from_circle_and_height(circle, height=1.0)
+
+        """
+        return cls(frame=circle.frame, height=height, radius=circle.radius)
+
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
     def to_vertices_and_faces(self, u=16, triangulated=False):
         """Returns a list of vertices and faces.
@@ -245,11 +283,6 @@ class Cylinder(Shape):
         vertices.append([0, 0, z])
         vertices.append([0, 0, -z])
 
-        # transform vertices to cylinder's plane
-        frame = Frame.from_plane(self.circle.plane)
-        M = matrix_from_frame(frame)
-        vertices = transform_points(vertices, M)
-
         faces = []
         # side faces
         for i in range(0, u * 2, 2):
@@ -271,32 +304,57 @@ class Cylinder(Shape):
                     triangles.append(face)
             faces = triangles
 
+        vertices = transform_points(vertices, self.transformation)
+
         return vertices, faces
 
-    def transform(self, transformation):
-        """Transform the cylinder.
+    # =============================================================================
+    # Transformations
+    # =============================================================================
+
+    def scale(self, factor):
+        """Scale the cylinder by multiplying the radius and height by a factor.
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
-            The transformation used to transform the cylinder.
+        factor : float
+            The scaling factor.
 
         Returns
         -------
         None
 
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Cylinder
-        >>> circle = Circle(Plane.worldXY(), 5)
-        >>> cylinder = Cylinder(circle, 7)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> cylinder.transform(T)
+        """
+        self.radius *= factor
+        self.height *= factor
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def contains_point(self, point, tol=1e-6):
+        """Verify if a point is inside the cylinder.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+            The point.
+        tol : float, optional
+            The tolerance for the verification.
+
+        Returns
+        -------
+        bool
+            True if the point is inside the cylinder.
+            False otherwise.
 
         """
-        self.circle.transform(transformation)
+        point = self.frame.to_local_coordinates(point)
+        x, y, z = point.x, point.y, point.z  # type: ignore
+
+        if z > self.height / 2 + tol:
+            return False
+        if z < -self.height / 2 - tol:
+            return False
+
+        return x**2 + y**2 <= (self.radius + tol) ** 2

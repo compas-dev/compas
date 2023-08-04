@@ -216,7 +216,6 @@
     ],
     "compas.geometry": [
       "Arc",
-      "Bezier",
       "Box",
       "Brep",
       "BrepEdge",
@@ -248,7 +247,6 @@
       "Polygon",
       "Polyhedron",
       "Polyline",
-      "Primitive",
       "Projection",
       "Quaternion",
       "Reflection",
@@ -470,7 +468,6 @@
       "normalize_vector_xy",
       "normalize_vectors",
       "normalize_vectors_xy",
-      "oabb_numpy",
       "offset_line",
       "offset_polygon",
       "offset_polyline",

@@ -8,41 +8,59 @@ from math import sin
 from math import sqrt
 
 from compas.utilities import pairwise
-from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Circle
-from compas.geometry import Frame
 from compas.geometry import Plane
+from compas.geometry import Line
+from compas.geometry import Frame
 
-from ._shape import Shape
+from .shape import Shape
 
 
 class Cone(Shape):
-    """A cone is defined by a circle and a height.
+    """A cone is defined by a frame, radius, and height.
+
+    The cone is oriented along the z-axis of the frame.
+    The base point of the cone (i.e. the centre of the base circle) is at the origin of the frame.
+    The entire cone is in the positive z-direction.
 
     Parameters
     ----------
-    circle : [plane, radius] | :class:`~compas.geometry.Circle`
-        The base circle of the cone.
-    height : float
-        The height of the cone.
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system of the cone.
+        Default is ``None``, in which case the world coordinate system is used.
+    radius : float, optional
+        The radius of the base of the cone.
+    height : float, optional
+        The height of the cone along the z-axis of the frame.
+        The base of the cone is at the origin of the frame.
+        The entire cone is above the XY plane of the frame.
 
     Attributes
     ----------
-    plane : :class:`~compas.geometry.Plane`
-        The plane of the cone.
-    circle : :class:`~compas.geometry.Circle`
-        The circle of the cone.
-    center : :class:`~compas.geometry.Point`
-        The center of the cone.
+    frame : :class:`~compas.geometry.Frame`
+        The local coordinate system of the cone.
+        The cone is oriented along the local z-axis.
+    transformation : :class:`~compas.geometry.Transformation`
+        The transformation of the cone to global coordinates.
     radius : float
-        The radius of the cone.
+        The radius of the base circle of the cone.
     height : float
         The height of the cone.
-    normal : :class:`~compas.geometry.Vector`, read-only
-        The normal of the cone.
+    axis : :class:`~compas.geometry.Line`, read-only
+        The central axis of the cone.
+    base : :class:`~compas.geometry.Point`, read-only
+        The base point of the cone.
+        The base point is at the origin of the local coordinate system.
+    plane : :class:`~compas.geometry.Plane`, read-only
+        The plane of the cone.
+        The base point of the plane is at the origin of the local coordinate system.
+        The normal of the plane is in the direction of the z-axis of the local coordinate system.
+    circle : :class:`~compas.geometry.Circle`, read-only
+        The base circle of the cone.
+        The center of the circle is at the origin of the local coordinate system.
     diameter : float, read-only
-        The diameter of the cone.
+        The diameter of the base circle of the cone.
     area : float, read-only
         The surface area of the cone.
     volume : float, read-only
@@ -50,31 +68,58 @@ class Cone(Shape):
 
     Examples
     --------
-    >>> from compas.geometry import Plane
-    >>> from compas.geometry import Cone
-    >>> plane = Plane([0, 0, 0], [0, 0, 1])
-    >>> circle = Circle(plane, 5)
-    >>> cone = Cone(circle, 7)
+    >>> frame = Frame.worldXY()
+    >>> cone = Cone(frame=frame, radius=0.3, height=1.0)
+    >>> cone = Cone(radius=0.3, height=1.0)
+    >>> cone = Cone()
 
     """
 
     JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "circle": Circle.JSONSCHEMA,
-            "height": {"type": "number", "exclusiveMinimum": 0},
+            "frame": Frame.JSONSCHEMA,
+            "radius": {"type": "number", "minimum": 0},
+            "height": {"type": "number", "minimum": 0},
         },
-        "required": ["circle", "height"],
+        "required": ["frame", "radius", "height"],
     }
 
-    __slots__ = ["_circle", "_height"]
-
-    def __init__(self, circle, height, **kwargs):
-        super(Cone, self).__init__(**kwargs)
-        self._circle = None
+    def __init__(self, frame=None, radius=0.3, height=1.0, **kwargs):
+        super(Cone, self).__init__(frame=frame, **kwargs)
+        self._radius = None
         self._height = None
-        self.circle = circle
+        self.radius = radius
         self.height = height
+
+    def __repr__(self):
+        return "Cone(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.frame
+        elif key == 1:
+            return self.radius
+        if key == 2:
+            return self.height
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.frame = value
+        elif key == 1:
+            self.radius = value
+        elif key == 2:
+            self.height = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.frame, self.radius, self.height])
 
     # ==========================================================================
     # data
@@ -82,136 +127,130 @@ class Cone(Shape):
 
     @property
     def data(self):
-        """dict : Returns the data dictionary that represents the cone."""
-        return {"circle": self.circle, "height": self.height}
+        return {"frame": self.frame, "radius": self.radius, "height": self.height}
 
     @data.setter
     def data(self, data):
-        self.circle = data["circle"]
+        self.frame = data["frame"]
+        self.radius = data["radius"]
         self.height = data["height"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a cone from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Cone`
-            The constructed cone.
-
-        Examples
-        --------
-        >>> from compas.geometry import Cone
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-        >>> cone = Cone.from_data(data)
-
-        """
-        cone = cls(data["circle"], data["height"])
-        return cone
 
     # ==========================================================================
     # properties
     # ==========================================================================
 
     @property
-    def plane(self):
-        return self.circle.plane
-
-    @plane.setter
-    def plane(self, plane):
-        self.circle.plane = Plane(*plane)
-
-    @property
-    def circle(self):
-        return self._circle
-
-    @circle.setter
-    def circle(self, circle):
-        self._circle = Circle(*circle)
-
-    @property
     def radius(self):
-        return self.circle.radius
+        if self._radius is None:
+            raise ValueError("The cone radius has not been set.")
+        return self._radius
 
     @radius.setter
     def radius(self, radius):
-        self.circle.radius = float(radius)
+        if radius < 0:
+            raise ValueError("The cone radius should be larger than or equal to zero.")
+        self._radius = float(radius)
 
     @property
     def height(self):
+        if self._height is None:
+            raise ValueError("The cone height has not been set.")
         return self._height
 
     @height.setter
     def height(self, height):
+        if height < 0:
+            raise ValueError("The cone height should be larger than or equal to zero.")
         self._height = float(height)
 
     @property
-    def normal(self):
-        return self.plane.normal
+    def axis(self):
+        return Line(self.frame.point, self.frame.point + self.frame.normal * self.height)
+
+    @property
+    def circle(self):
+        return Circle(self.frame, self.radius)
 
     @property
     def diameter(self):
-        return self.circle.diameter
-
-    @property
-    def center(self):
-        return self.circle.center
-
-    @center.setter
-    def center(self, point):
-        self.circle.center = point
+        return 2 * self.radius
 
     @property
     def area(self):
-        r = self.circle.radius
-        return pi * r * (r + sqrt(self.height**2 + r**2))
+        r = self.radius
+        h = self.height
+        return pi * r * (r + sqrt(h**2 + r**2))
 
     @property
     def volume(self):
-        return pi * self.circle.radius**2 * (self.height / 3)
+        r = self.radius
+        h = self.height
+        return pi * r**2 * (h / 3)
 
     # ==========================================================================
-    # customisation
+    # Constructors
     # ==========================================================================
 
-    def __repr__(self):
-        return "Cone({0!r}, {1!r})".format(self.circle, self.height)
+    @classmethod
+    def from_line_and_radius(cls, line, radius):
+        """Construct a cone from a line and a radius.
 
-    def __len__(self):
-        return 2
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Line`
+            The axis of the cone.
+        radius : float
+            The radius of the base circle of the cone.
 
-    def __getitem__(self, key):
-        if key == 0:
-            return self.circle
-        elif key == 1:
-            return self.height
-        else:
-            raise KeyError
+        Returns
+        -------
+        :class:`~compas.geometry.Cone`
+            The cone.
 
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.circle = value
-        elif key == 1:
-            self.height = value
-        else:
-            raise KeyError
+        See Also
+        --------
+        :meth:`Cone.from_circle_and_height`
 
-    def __iter__(self):
-        return iter([self.circle, self.height])
+        Examples
+        --------
+        >>> line = Line(Point(0, 0, 0), Point(0, 0, 1))
+        >>> cone = Cone.from_line_and_radius(line, 0.3)
+
+        """
+        frame = Frame.from_plane(Plane(line.midpoint, line.direction))
+        return cls(frame=frame, radius=radius, height=line.length)
+
+    @classmethod
+    def from_circle_and_height(cls, circle, height):
+        """Construct a cone from a circle and a height.
+
+        Parameters
+        ----------
+        circle : :class:`~compas.geometry.Circle`
+            The base circle of the cone.
+        height : float
+            The height of the cone.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Cone`
+            The cone.
+
+        See Also
+        --------
+        :meth:`Cone.from_line_and_radius`
+
+        Examples
+        --------
+        >>> circle = Circle(Frame.worldXY(), 0.3)
+        >>> cone = Cone.from_circle_and_height(circle, 1.0)
+
+        """
+        frame = circle.frame
+        return cls(frame=frame, radius=circle.radius, height=height)
 
     # ==========================================================================
-    # constructors
-    # ==========================================================================
-
-    # ==========================================================================
-    # methods
+    # Conversions
     # ==========================================================================
 
     def to_vertices_and_faces(self, u=16, triangulated=False):
@@ -226,10 +265,8 @@ class Cone(Shape):
 
         Returns
         -------
-        list[list[float]]
-            A list of vertex locations.
-        list[list[int]]
-            And a list of faces,
+        list[list[float]], list[list[int]]
+            A list of vertex locations, and a list of faces,
             with each face defined as a list of indices into the list of vertices.
 
         """
@@ -242,12 +279,8 @@ class Cone(Shape):
         for i in range(u):
             x = radius * cos(i * a)
             y = radius * sin(i * a)
-            vertices.append([x, y, 0])
-        vertices.append([0, 0, self.height])
-
-        frame = Frame.from_plane(self.circle.plane)
-        M = matrix_from_frame(frame)
-        vertices = transform_points(vertices, M)
+            vertices.append([x, y, 0])  # type: ignore
+        vertices.append([0, 0, self.height])  # type: ignore
 
         faces = []
         first = 0
@@ -268,32 +301,14 @@ class Cone(Shape):
                     triangles.append(face)
             faces = triangles
 
+        vertices = transform_points(vertices, self.transformation)
+
         return vertices, faces
 
-    def transform(self, transformation):
-        """Transform the cone.
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
 
-        Parameters
-        ----------
-        transformation : :class:`~compas.geometry.Transformation`
-            The transformation used to transform the cone.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Cone
-        >>> from compas.geometry import Circle
-        >>> circle = Circle(Plane.worldXY(), 5)
-        >>> cone = Cone(circle, 7)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> cone.transform(T)
-
-        """
-        self.circle.transform(transformation)
+    # ==========================================================================
+    # Methods
+    # ==========================================================================

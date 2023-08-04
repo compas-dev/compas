@@ -13,7 +13,9 @@ from .curve import Curve
 
 @pluggable(category="factories")
 def new_nurbscurve(cls, *args, **kwargs):
-    raise NotImplementedError
+    curve = object.__new__(NurbsCurve)
+    curve.__init__(*args, **kwargs)
+    return curve
 
 
 @pluggable(category="factories")
