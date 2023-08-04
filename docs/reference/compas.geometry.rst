@@ -106,7 +106,6 @@ Transformations
     :toctree: generated/
     :nosignatures:
 
-    Mirror
     Projection
     Reflection
     Rotation
@@ -215,12 +214,12 @@ Core Functions
     add_vectors
     add_vectors_xy
     allclose
+    angle_planes
     angle_points
     angle_points_xy
     angle_vectors
     angle_vectors_signed
     angle_vectors_xy
-    angles_planes
     angles_points
     angles_points_xy
     angles_vectors
@@ -239,17 +238,16 @@ Core Functions
     centroid_polyhedron
     close
     closest_point_in_cloud
-    closest_point_in_cloud_numpy
     closest_point_in_cloud_xy
     closest_point_on_line
     closest_point_on_line_xy
     closest_point_on_plane
-    closest_point_on_polygon
     closest_point_on_polygon_xy
     closest_point_on_polyline
     closest_point_on_polyline_xy
     closest_point_on_segment
     closest_point_on_segment_xy
+    closest_points_in_cloud_numpy
     compose_matrix
     cross_vectors
     cross_vectors_xy
@@ -285,6 +283,7 @@ Core Functions
     is_intersection_segment_plane
     is_intersection_segment_segment
     is_intersection_segment_segment_xy
+    is_matrix_square
     is_parallel_line_line
     is_point_behind_plane
     is_point_in_box
@@ -306,7 +305,6 @@ Core Functions
     is_polygon_convex
     is_polygon_convex_xy
     is_polygon_in_polygon_xy
-    is_matrix_square
     length_vector
     length_vector_sqrd
     length_vector_sqrd_xy

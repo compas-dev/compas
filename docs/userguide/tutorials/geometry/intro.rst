@@ -623,7 +623,6 @@ A polyhedron can be constructed explicitly, by providing a list of vertices and 
 * :meth:`Polyhedron.from_planes`
 * :meth:`Polyhedron.from_convex_hull`
 
-.. more coming soon
 
 Pointclouds
 ===========
@@ -631,6 +630,9 @@ Pointclouds
 
 Triangle Meshes
 ===============
+
+Here is a basic overview of methods for Delaunay triangulation, remeshing, and other geometic operations on triangle meshes.
+For information about mesh data structures, please refer to the section about 
 
 
 Quad Meshes
