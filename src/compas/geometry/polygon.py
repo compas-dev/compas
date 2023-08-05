@@ -492,3 +492,29 @@ class Polygon(Geometry):
 
         coords = boolean_intersection_polygon_polygon(self, other)
         return Polygon([[x, y, 0] for x, y in coords])  # type: ignore
+
+    def offset(self, distance, **kwargs):
+        """Offset a polygon by a distance.
+
+        Parameters
+        ----------
+        polygon : :class:`~compas.geometry.Polygon`
+            A polygon defined by a sequence of vertices.
+        distance : float
+            The offset distance as float.
+
+        Returns
+        -------
+        list[point]
+            The vertices of the offseted polygon.
+
+        Notes
+        -----
+        Depending of the backend used, additional parameters can be added as keyword arguments. (point somewhere in api, or list
+        accepted arguments)
+
+        """
+        from compas.geometry import offset_polygon
+
+        vertices = offset_polygon(self, distance, **kwargs)
+        return Polygon(vertices)

@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.plugins import plugin
 from compas.geometry import scale_vector
 from compas.geometry import normalize_vector
 from compas.geometry import add_vectors
@@ -51,7 +52,8 @@ def offset_segments(point_list, distances, normal):
     return segments
 
 
-def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
+@plugin(category="offset", trylast=True)
+def offset_line(line, distance, normal=[0.0, 0.0, 1.0], **kwargs):
     """Offset a line by a distance.
 
     Parameters
@@ -97,7 +99,8 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
     return c, d
 
 
-def offset_polygon(polygon, distance, tol=1e-6):
+@plugin(category="offset", trylast=True)
+def offset_polygon(polygon, distance, tol=1e-6, **kwargs):
     """Offset a polygon (closed) by a distance.
 
     Parameters
@@ -153,7 +156,8 @@ def offset_polygon(polygon, distance, tol=1e-6):
     return offset
 
 
-def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
+@plugin(category="offset", trylast=True)
+def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6, **kwargs):
     """Offset a polyline by a distance.
 
     Parameters

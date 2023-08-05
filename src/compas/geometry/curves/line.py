@@ -353,3 +353,33 @@ class Line(Curve):
         if return_parameter:
             return c, t
         return c
+
+    def offset(self, distance, **kwargs):
+        """Offset a line by a distance.
+
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Line`
+            A line defined by two points.
+        distance : float
+            The offset distance as float.
+
+        Returns
+        -------
+        list[point]
+            The two points of the offseted line.
+
+        Notes
+        -----
+        The offset direction is chosen such that if the line were along the positve
+        X axis and the normal of the offset plane is along the positive Z axis, the
+        offset line is in the direction of the postive Y axis.
+
+        Depending of the backend used, additional parameters can be added as keyword arguments. (point somewhere in api, or list
+        accepted arguments)
+
+        """
+        from compas.geometry import offset_line
+
+        points = offset_line(self, distance, **kwargs)
+        return Line(*points)

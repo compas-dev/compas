@@ -632,3 +632,33 @@ class Polyline(Curve):
         crv = self.copy()
         crv.shorten(length)
         return crv
+
+    def offset(self, distance, **kwargs):
+        """Offset a polyline by a distance.
+
+        Parameters
+        ----------
+        polyline : :class:`~compas.geometry.Polyline`
+            A polyline defined by a sequence of points.
+        distance : float
+            The offset distance as float.
+
+        Returns
+        -------
+        list[point]
+            The points of the offseted polyline.
+
+        Notes
+        -----
+        The offset direction is chosen such that if the line were along the positve
+        X axis and the normal of the offset plane is along the positive Z axis, the
+        offset line is in the direction of the postive Y axis.
+
+        Depending of the backend used, additional parameters can be added as keyword arguments. (point somewhere in api, or list
+        accepted arguments)
+
+        """
+        from compas.geometry import offset_polyline
+
+        points = offset_polyline(self, distance, **kwargs)
+        return Polyline(points)

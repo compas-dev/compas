@@ -59,6 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
 * Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
 * Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
+* xxxxx (to see if the PR passes...)
+* Added support for offset operations using a shapely plugin implementation (for polyline and polygon)
 * Added `compas.geometry.trimesh_descent_numpy`.
 * Added `compas.geometry.trimesh_gradient_numpy`.
 * Added a deprecation warning when using `Artist` for `Plotter`.
