@@ -104,6 +104,17 @@ class Color(Data):
 
     """
 
+    DATASCHEMA = {
+        "type": "object",
+        "properties": {
+            "red": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "green": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "blue": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "alpha": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        },
+        "required": ["red", "green", "blue", "alpha"],
+    }
+
     def __init__(self, red, green, blue, alpha=1.0, **kwargs):
         super(Color, self).__init__(**kwargs)
         self._r = 1.0
@@ -122,17 +133,6 @@ class Color(Data):
     @property
     def data(self):
         return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
-
-    @data.setter
-    def data(self, data):
-        self.r = data["red"]
-        self.g = data["green"]
-        self.b = data["blue"]
-        self.a = data["alpha"]
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(data["red"], data["green"], data["blue"], data["alpha"])
 
     # --------------------------------------------------------------------------
     # properties

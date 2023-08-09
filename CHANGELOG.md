@@ -91,6 +91,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Surface.point_at`.
 * Added `compas.geometry.Surface.normal_at`.
 * Added `compas.geometry.Surface.frame_at`.
+* Added `compas.color.Color.DATASCHEMA`.
+* Added `compas.color.Color.data`.
 
 ### Changed
 
@@ -208,6 +210,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed class attribute `CONTEXT` from `compas.artists.Artist`.
 * Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
 * Removed `compas.geometry.Primitive`.
+* Removed `compas.color.Color.data` property setter, and `compas.color.Color.from_data`.
 
 ## [1.17.5] 2023-02-16
 
