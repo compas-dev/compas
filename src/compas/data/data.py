@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# import json
 import hashlib
 from uuid import uuid4
 from uuid import UUID
@@ -104,7 +103,7 @@ class Data(object):
 
     """
 
-    JSONSCHEMA = {}
+    DATASCHEMA = {}
 
     def __init__(self, name=None):
         self._guid = None
@@ -112,23 +111,7 @@ class Data(object):
         if name:
             self.name = name
 
-    def __getstate__(self):
-        """Return the object data for state serialization with older pickle protocols."""
-        return {
-            "__dict__": self.__dict__,
-            "dtype": self.dtype,
-            "data": self.data,
-            "guid": str(self.guid),
-        }
-
-    def __setstate__(self, state):
-        """Assign a deserialized state to the object data to support older pickle protocols."""
-        self.__dict__.update(state["__dict__"])
-        self.data = state["data"]
-        if "guid" in state:
-            self._guid = UUID(state["guid"])
-
-    def __json_dump__(self, minimal=True):
+    def __jsondump__(self, minimal=True):
         """Return the required information for serialization with the COMPAS JSON serializer."""
         state = {
             "dtype": self.dtype,
@@ -140,7 +123,7 @@ class Data(object):
         return state
 
     @classmethod
-    def __json_load__(cls, data, guid=None):
+    def __jsonload__(cls, data, guid=None):
         """Construct an object of this type from the provided data to support COMPAS JSON serialization."""
         obj = cls.from_data(data)
         if guid:
@@ -153,10 +136,6 @@ class Data(object):
 
     @property
     def data(self):
-        raise NotImplementedError
-
-    @data.setter
-    def data(self, data):
         raise NotImplementedError
 
     def ToString(self):
@@ -202,9 +181,7 @@ class Data(object):
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
-        obj = cls()
-        obj.data = data
-        return obj
+        return cls(**data)
 
     def to_data(self):
         """Convert an object to its native data representation.
@@ -268,66 +245,24 @@ class Data(object):
             return h.hexdigest()
         return h.digest()
 
-    # @classmethod
-    # def validate_json(cls, filepath):
-    #     """Validate the data contained in the JSON document against the object's JSON data schema.
+    @classmethod
+    def validate_data(cls, data):
+        """Validate the data against the object's data schema.
 
-    #     Parameters
-    #     ----------
-    #     filepath : path string | file-like object | URL string
-    #         The path, file or URL to the file for validation.
+        The data is the raw data that can be used to construct an object of this type with the classmethod ``from_data``.
 
-    #     Returns
-    #     -------
-    #     Any
+        Parameters
+        ----------
+        data : Any
+            The data for validation.
 
-    #     """
-    #     from jsonschema import Draft202012Validator
+        Returns
+        -------
+        Any
 
-    #     validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
-    #     jsondata = json.load(filepath)
-    #     validator.validate(jsondata)
-    #     return jsondata
+        """
+        from jsonschema import Draft202012Validator
 
-    # @classmethod
-    # def validate_jsonstring(cls, jsonstring):
-    #     """Validate the data contained in the JSON string against the objects's JSON data schema.
-
-    #     Parameters
-    #     ----------
-    #     jsonstring : str
-    #         The JSON string for validation.
-
-    #     Returns
-    #     -------
-    #     Any
-
-    #     """
-    #     from jsonschema import Draft202012Validator
-
-    #     validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
-    #     jsondata = json.loads(jsonstring)
-    #     validator.validate(jsondata)
-    #     return jsondata
-
-    # @classmethod
-    # def validate_jsondata(cls, jsondata):
-    #     """Validate the JSON data against the objects's JSON data schema.
-
-    #     The JSON data is the result of parsing a JSON string or a JSON document.
-
-    #     Parameters
-    #     ----------
-    #     jsondata : Any
-    #         The JSON data for validation.
-
-    #     Returns
-    #     -------
-    #     Any
-
-    #     """
-    #     from jsonschema import Draft202012Validator
-
-    #     validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
-    #     validator.validate(jsondata)
-    #     return jsondata
+        validator = Draft202012Validator(cls.DATASCHEMA)  # type: ignore
+        validator.validate(data)
+        return data

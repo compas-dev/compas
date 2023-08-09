@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added attribute `compas.geometry.Vector.DATASCHEMA`.
 * Added implementation of property `compas.color.Color.data`.
 * Added `compas.data.Data.validate_data`.
+* Added `compas.data.Data.__jsondump__`.
+* Added `compas.data.Data.__jsonload__`.
 * Added `compas.datastructures.Graph.to_jsondata`.
 * Added `compas.datastructures.Graph.from_jsondata`.
 * Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
@@ -168,7 +170,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed "schemas" folder and all contained `.json` files from `compas.data`.
 * Removed `compas.data.Data.jsondefinititions`.
 * Removed `compas.data.Data.jsonvalidator`.
-* Removed `compas.data.Data.validate_data`.
+* Removed `compas.data.Data.validate_json`.
+* Removed `compas.data.Data.validate_jsondata`.
+* Removed `compas.data.Data.validate_jsonstring`.
+* Removed `compas.data.Data.__getstate__`.
+* Removed `compas.data.Data.__setstate__`.
+* Removed setter of property `compas.data.Data.data`.
 * Removed properties `compas.data.Data.DATASCHEMA` and `compas.data.Data.JSONSCHEMANAME`.
 * Removed properties `compas.datastructures.Graph.DATASCHEMA` and `compas.datastructures.Graph.JSONSCHEMANAME`.
 * Removed properties `compas.datastructures.Halfedge.DATASCHEMA` and `compas.datastructures.Halfedge.JSONSCHEMANAME`.
@@ -207,7 +214,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed class attribute `CONTEXT` from `compas.artists.Artist`.
 * Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
 * Removed `compas.geometry.Primitive`.
-* Removed setter of property `compas.color.Color.data`
 * Removed classmethod `compas.color.Color.from_data`.
 * Removed setter of property `compas.geometry.Vector.data`.
 
