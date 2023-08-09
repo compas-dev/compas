@@ -149,7 +149,7 @@ def argmax(values):
     1
 
     """
-    return max(range(len(values)), key=lambda i: values[i])
+    return max(range(len(values)), key=lambda i: values[i])  # type: ignore
 
 
 def argmin(values):

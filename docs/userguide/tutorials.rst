@@ -6,15 +6,9 @@ Tutorials
     :titlesonly:
 
     tutorials/data
-    tutorials/geometry
-    tutorials/brep
-    tutorials/meshes
+    tutorials/geometry/index
+    tutorials/datastructures/index
     tutorials/robots
     tutorials/rpc
     tutorials/colors
-
-.. tutorial/geomaps
-.. tutorial/networks
-.. tutorial/numericaldata
-.. tutorial/plotters
-.. tutorial/volmeshes
+    turorials/artists/index

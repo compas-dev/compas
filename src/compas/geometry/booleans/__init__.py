@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.plugins import pluggable
+from compas.plugins import PluginNotInstalledError
 
 
 @pluggable(category="booleans")
@@ -20,6 +21,18 @@ def boolean_union_mesh_mesh(A, B):
     -------
     tuple[list[point], list[[int, int, int]]]
         The vertices and the faces of the boolean union.
+
+    See Also
+    --------
+    :func:`compas.geometry.boolean_difference_mesh_mesh`
+    :func:`compas.geometry.boolean_intersection_mesh_mesh`
+
+    Notes
+    -----
+    This function is a "pluggable".
+    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
+    To use the plugin implementation, you have to install it in the same environment as COMPAS.
+    One such plugin is available in ``compas_cgal``.
 
     Examples
     --------
@@ -44,7 +57,9 @@ def boolean_union_mesh_mesh(A, B):
     >>> union = Mesh.from_vertices_and_faces(V, F)              # doctest: +SKIP
 
     """
-    raise NotImplementedError
+    raise PluginNotInstalledError(
+        "No plugin was found for the boolean_union_mesh_mesh pluggable. A plugin is available in compas_cgal..."
+    )
 
 
 @pluggable(category="booleans")
@@ -63,8 +78,22 @@ def boolean_difference_mesh_mesh(A, B):
     tuple[list[point], list[[int, int, int]]]
         The vertices and the faces of the boolean difference.
 
+    See Also
+    --------
+    :func:`compas.geometry.boolean_union_mesh_mesh`
+    :func:`compas.geometry.boolean_intersection_mesh_mesh`
+
+    Notes
+    -----
+    This function is a "pluggable".
+    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
+    To use the plugin implementation, you have to install it in the same environment as COMPAS.
+    One such plugin is available in ``compas_cgal``.
+
     """
-    raise NotImplementedError
+    raise PluginNotInstalledError(
+        "No plugin was found for the boolean_difference_mesh_mesh pluggable. A plugin is available in compas_cgal..."
+    )
 
 
 @pluggable(category="booleans")
@@ -83,5 +112,179 @@ def boolean_intersection_mesh_mesh(A, B):
     tuple[list[point], list[[int, int, int]]]
         The vertices and the faces of the boolean intersection.
 
+    See Also
+    --------
+    :func:`compas.geometry.boolean_union_mesh_mesh`
+    :func:`compas.geometry.boolean_difference_mesh_mesh`
+
+    Notes
+    -----
+    This function is a "pluggable".
+    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
+    To use the plugin implementation, you have to install it in the same environment as COMPAS.
+    One such plugin is available in ``compas_cgal``.
+
     """
-    raise NotImplementedError
+    raise PluginNotInstalledError(
+        "No plugin was found for the boolean_intersection_mesh_mesh pluggable. A plugin is available in compas_cgal..."
+    )
+
+
+@pluggable(category="booleans")
+def boolean_union_polygon_polygon(A, B):
+    """Compute the boolean union of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean union.
+
+    See Also
+    --------
+    :func:`compas.geometry.boolean_difference_polygon_polygon`
+    :func:`compas.geometry.boolean_intersection_polygon_polygon`
+    :func:`compas.geometry.boolean_symmetric_difference_polygon_polygon`
+
+    Notes
+    -----
+    This function is a "pluggable".
+    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
+    To use the plugin implementation, you have to install it in the same environment as COMPAS.
+    One such plugin is available through ``shapely``.
+
+    """
+    raise PluginNotInstalledError(
+        "No plugin was found for the boolean_union_polygon_polygon pluggable. Installing Shapely should solve the problem."
+    )
+
+
+@pluggable(category="booleans")
+def boolean_difference_polygon_polygon(A, B):
+    """Compute the boolean difference of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean difference.
+
+    See Also
+    --------
+    :func:`compas.geometry.boolean_union_polygon_polygon`
+    :func:`compas.geometry.boolean_intersection_polygon_polygon`
+    :func:`compas.geometry.boolean_symmetric_difference_polygon_polygon`
+
+    Notes
+    -----
+    This function is a "pluggable".
+    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
+    To use the plugin implementation, you have to install it in the same environment as COMPAS.
+    One such plugin is available through ``shapely``.
+
+    """
+    raise PluginNotInstalledError(
+        "No plugin was found for the boolean_difference_polygon_polygon pluggable. Installing Shapely should solve the problem."
+    )
+
+
+@pluggable(category="booleans")
+def boolean_symmetric_difference_polygon_polygon(A, B):
+    """Compute the boolean symmetric difference of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean symmetric difference.
+
+    See Also
+    --------
+    :func:`compas.geometry.boolean_union_polygon_polygon`
+    :func:`compas.geometry.boolean_intersection_polygon_polygon`
+    :func:`compas.geometry.boolean_difference_polygon_polygon`
+
+    Notes
+    -----
+    This function is a "pluggable".
+    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
+    To use the plugin implementation, you have to install it in the same environment as COMPAS.
+    One such plugin is available through ``shapely``.
+
+    """
+    raise PluginNotInstalledError(
+        "No plugin was found for the boolean_symmetric_difference_polygon_polygon pluggable. Installing Shapely should solve the problem."
+    )
+
+
+@pluggable(category="booleans")
+def boolean_intersection_polygon_polygon(A, B):
+    """Compute the boolean intersection of two polygons.
+
+    For this operation, the polygons are assumed to lie in the XY plane.
+    Therefore, the Z components of the points defining the polygons are simply ignored.
+    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
+    Otherwise the results are meaningless.
+
+    Parameters
+    ----------
+    A : sequence[point]
+        The vertices of polygon A.
+    B : sequence[point]
+        The vertices of polygon B.
+
+    Returns
+    -------
+    list[point]
+        The vertices of the boolean difference.
+
+    See Also
+    --------
+    :func:`compas.geometry.boolean_union_polygon_polygon`
+    :func:`compas.geometry.boolean_difference_polygon_polygon`
+    :func:`compas.geometry.boolean_symmetric_difference_polygon_polygon`
+
+    Notes
+    -----
+    This function is a "pluggable".
+    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
+    To use the plugin implementation, you have to install it in the same environment as COMPAS.
+    One such plugin is available through ``shapely``.
+
+    """
+    raise PluginNotInstalledError(
+        "No plugin was found for the boolean_intersection_polygon_polygon pluggable. Installing Shapely should solve the problem."
+    )

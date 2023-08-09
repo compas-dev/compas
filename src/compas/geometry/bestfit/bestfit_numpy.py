@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import asarray
 from numpy import sqrt
 from numpy import zeros
@@ -11,6 +7,42 @@ from scipy.optimize import leastsq
 from compas.numerical import pca_numpy
 from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
+
+
+def bestfit_line_numpy(points):
+    """Fit a line through a set of points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    [float, float, float]
+        XYZ coordinates of a point on the line.
+    [float, float, float]
+        The direction vector of the line.
+
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_plane_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
+
+    Examples
+    --------
+    >>>
+
+    """
+    o, uvw, _ = pca_numpy(points)
+    return o, uvw[0]
 
 
 def bestfit_plane_numpy(points):
@@ -27,6 +59,19 @@ def bestfit_plane_numpy(points):
         A point on the plane.
     [float, float, float]
         The normal vector.
+
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
+    :func:`compas.geometry.bestfit_plane`
 
     Examples
     --------
@@ -54,6 +99,18 @@ def bestfit_frame_numpy(points):
     [float, float, float]
         The local Y axis.
 
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_plane_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
+
     Examples
     --------
     >>>
@@ -79,6 +136,18 @@ def bestfit_circle_numpy(points):
         The normal vector of the local frame.
     float
         The radius of the circle.
+
+    Raises
+    ------
+    ValueError
+        If the number of points is smaller than the dimensionality of the points.
+        At least two points are needed for two-dimensional data.
+        At least three points are needed for three-dimensional data.
+
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_plane_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_sphere_numpy`
 
     Notes
     -----
@@ -160,14 +229,14 @@ def bestfit_sphere_numpy(points):
     float
         Sphere radius.
 
+    See Also
+    --------
+    :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_plane_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
+    :func:`compas.geometry.bestfit_circle_numpy`
+
     Notes
     -----
     For more information see [1]_.
-
-    References
-    ----------
-    .. [1] Least Squares Sphere Fit.
-           Available at: https://jekel.me/2015/Least-Squares-Sphere-Fit/.
 
     Examples
     --------
@@ -177,6 +246,11 @@ def bestfit_sphere_numpy(points):
                   (683.247, -327.154, 179.113), (231.606, -430.659, 115.458),\
                   (87.278, -419.178, -18.863), (24.731, -340.222, -127.158)]
     >>> center, radius = bestfit_sphere_numpy(points)
+
+    References
+    ----------
+    .. [1] Least Squares Sphere Fit.
+           Available at: https://jekel.me/2015/Least-Squares-Sphere-Fit/.
 
     """
 

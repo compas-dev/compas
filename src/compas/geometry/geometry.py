@@ -8,6 +8,9 @@ from compas.data import Data
 class Geometry(Data):
     """Base class for all geometric objects."""
 
+    def __init__(self, *args, **kwargs):
+        super(Geometry, self).__init__(*args, **kwargs)
+
     def __ne__(self, other):
         # this is not obvious to ironpython
         return not self.__eq__(other)

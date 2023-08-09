@@ -84,12 +84,12 @@ from ._core.distance import (
     closest_point_on_line,
     closest_point_on_line_xy,
     closest_point_on_plane,
-    # closest_point_on_polygon_xy,
+    closest_point_on_polygon_xy,
     closest_point_on_polyline,
     closest_point_on_polyline_xy,
     closest_point_on_segment,
     closest_point_on_segment_xy,
-    # closest_points_in_cloud_numpy,
+    closest_points_in_cloud_numpy,
     distance_line_line,
     distance_point_line,
     distance_point_line_sqrd,
@@ -101,6 +101,8 @@ from ._core.distance import (
     distance_point_point_sqrd,
     distance_point_point_sqrd_xy,
     distance_point_point_xy,
+    sort_points,
+    sort_points_xy,
 )
 from ._core.normals import normal_polygon, normal_triangle, normal_triangle_xy
 from ._core.quaternions import (
@@ -116,11 +118,7 @@ from ._core.tangent import tangent_points_to_circle_xy
 
 from ._core.kdtree import KDTree
 
-# =============================================================================
-# Transformations
-# =============================================================================
-
-from .transformations.matrices import (
+from ._core.matrices import (
     axis_and_angle_from_matrix,
     axis_angle_from_quaternion,
     axis_angle_vector_from_matrix,
@@ -130,6 +128,7 @@ from .transformations.matrices import (
     euler_angles_from_matrix,
     euler_angles_from_quaternion,
     identity_matrix,
+    is_matrix_square,
     matrix_determinant,
     matrix_from_axis_and_angle,
     matrix_from_axis_angle_vector,
@@ -148,14 +147,15 @@ from .transformations.matrices import (
     matrix_from_shear_entries,
     matrix_from_translation,
     matrix_inverse,
+    matrix_minor,
     quaternion_from_axis_angle,
     quaternion_from_euler_angles,
     quaternion_from_matrix,
     translation_from_matrix,
 )
 
-from .transformations.transformations import local_axes, local_to_world_coordinates
-from .transformations.transformations import (
+from ._core.transformations import local_axes, local_to_world_coordinates
+from ._core.transformations import (
     # mirror_point_line,
     # mirror_point_line_xy,
     mirror_point_plane,
@@ -168,8 +168,8 @@ from .transformations.transformations import (
     mirror_points_point_xy,
     mirror_vector_vector,
 )
-from .transformations.transformations import orient_points, orthonormalize_axes
-from .transformations.transformations import (
+from ._core.transformations import orient_points, orthonormalize_axes
+from ._core.transformations import (
     project_point_line,
     project_point_line_xy,
     project_point_plane,
@@ -177,33 +177,29 @@ from .transformations.transformations import (
     project_points_line_xy,
     project_points_plane,
 )
-from .transformations.transformations import reflect_line_plane, reflect_line_triangle, rotate_points, rotate_points_xy
-from .transformations.transformations import scale_points, scale_points_xy
-from .transformations.transformations import (
+from ._core.transformations import reflect_line_plane, reflect_line_triangle, rotate_points, rotate_points_xy
+from ._core.transformations import scale_points, scale_points_xy
+from ._core.transformations import (
     transform_frames,
     transform_points,
     transform_vectors,
     translate_points_xy,
     translate_points,
 )
-from .transformations.transformations import world_to_local_coordinates
+from ._core.transformations import world_to_local_coordinates
 
 if not compas.IPY:
-    from .transformations.transformations_numpy import dehomogenize_and_unflatten_frames_numpy, dehomogenize_numpy
-    from .transformations.transformations_numpy import homogenize_and_flatten_frames_numpy, homogenize_numpy
-    from .transformations.transformations_numpy import local_to_world_coordinates_numpy
-    from .transformations.transformations_numpy import (
+    from ._core.transformations_numpy import dehomogenize_and_unflatten_frames_numpy, dehomogenize_numpy
+    from ._core.transformations_numpy import homogenize_and_flatten_frames_numpy, homogenize_numpy
+    from ._core.transformations_numpy import local_to_world_coordinates_numpy
+    from ._core.transformations_numpy import (
         # transform_frames_numpy,
         transform_points_numpy,
         transform_vectors_numpy,
     )
-    from .transformations.transformations_numpy import world_to_local_coordinates_numpy
+    from ._core.transformations_numpy import world_to_local_coordinates_numpy
 
-# =============================================================================
-# Predicates
-# =============================================================================
-
-from .predicates.predicates_2 import (
+from ._core.predicates_2 import (
     is_ccw_xy,
     is_colinear_xy,
     is_polygon_convex_xy,
@@ -218,11 +214,13 @@ from .predicates.predicates_2 import (
     is_intersection_line_line_xy,
     is_intersection_segment_segment_xy,
 )
-from .predicates.predicates_3 import (
+from ._core.predicates_3 import (
     is_colinear,
     is_colinear_line_line,
     is_coplanar,
+    is_parallel_line_line,
     is_polygon_convex,
+    is_point_in_box,
     is_point_on_plane,
     is_point_infront_plane,
     is_point_behind_plane,
@@ -242,7 +240,7 @@ from .predicates.predicates_3 import (
 )
 
 # =============================================================================
-# Other
+# Algorithms
 # =============================================================================
 
 from .bbox.bbox import bounding_box, bounding_box_xy
@@ -251,6 +249,10 @@ from .booleans import (
     boolean_union_mesh_mesh,
     boolean_difference_mesh_mesh,
     boolean_intersection_mesh_mesh,
+    boolean_union_polygon_polygon,
+    boolean_difference_polygon_polygon,
+    boolean_symmetric_difference_polygon_polygon,
+    boolean_intersection_polygon_polygon,
 )
 from .hull.hull import convex_hull, convex_hull_xy
 from .interpolation.barycentric import barycentric_coordinates
@@ -270,6 +272,7 @@ from .intersections.intersections import (
     intersection_plane_circle,
     intersection_plane_plane_plane,
     intersection_plane_plane,
+    intersection_polyline_box_xy,
     intersection_polyline_plane,
     intersection_segment_plane,
     intersection_segment_polyline_xy,
@@ -283,6 +286,7 @@ from .offset.offset import offset_line, offset_polyline, offset_polygon
 from .quadmesh.planarization import quadmesh_planarize
 from .triangulation import conforming_delaunay_triangulation, constrained_delaunay_triangulation, delaunay_triangulation
 from .triangulation.delaunay import delaunay_from_points
+from .triangulation.earclip import earclip_polygon
 from .trimesh.curvature import trimesh_mean_curvature, trimesh_gaussian_curvature, trimesh_principal_curvature
 from .trimesh.geodistance import trimesh_geodistance
 from .trimesh.isolines import trimesh_isolines
@@ -295,9 +299,9 @@ if not compas.IPY:
     from .bbox.bbox_numpy import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
-        oabb_numpy,
     )
     from .bestfit.bestfit_numpy import (
+        bestfit_line_numpy,
         bestfit_plane_numpy,
         bestfit_frame_numpy,
         bestfit_circle_numpy,
@@ -313,47 +317,54 @@ if not compas.IPY:
 # Class APIs
 # =============================================================================
 
+from .transformation import Transformation
+from .projection import Projection
+from .reflection import Reflection
+from .rotation import Rotation
+from .scale import Scale
+from .shear import Shear
+from .translation import Translation
+
 from .geometry import Geometry
-from .transformations.transformation import Transformation
+from .vector import Vector
+from .point import Point
+from .quaternion import Quaternion
+from .frame import Frame
+from .plane import Plane
 
-from .transformations.projection import Projection
-from .transformations.reflection import Reflection
-from .transformations.rotation import Rotation
-from .transformations.scale import Scale
-from .transformations.shear import Shear
-from .transformations.translation import Translation
-
-from .primitives._primitive import Primitive
-from .primitives.vector import Vector
-from .primitives.point import Point
-from .primitives.line import Line
-from .primitives.plane import Plane
-from .primitives.quaternion import Quaternion
-from .primitives.frame import Frame
-
-from .primitives.arc import Arc
-from .primitives.circle import Circle
-from .primitives.curve import Bezier
-from .primitives.ellipse import Ellipse
-from .primitives.polygon import Polygon
-from .primitives.polyline import Polyline
+# not sure what to do with line and polyline
+# the required changes are drastic
+from .pointcloud import Pointcloud
 
 from .curves.curve import Curve
+from .curves.line import Line
+from .curves.polyline import Polyline
+from .curves.circle import Circle
+from .curves.ellipse import Ellipse
+from .curves.parabola import Parabola
+from .curves.hyperbola import Hyperbola
+from .curves.arc import Arc
+from .curves.bezier import Bezier
 from .curves.nurbs import NurbsCurve
 
 from .surfaces.surface import Surface
+from .surfaces.spherical import SphericalSurface
+from .surfaces.cylindrical import CylindricalSurface
+from .surfaces.toroidal import ToroidalSurface
+from .surfaces.conical import ConicalSurface
+from .surfaces.planar import PlanarSurface
 from .surfaces.nurbs import NurbsSurface
 
-from .shapes._shape import Shape
+from .shapes.shape import Shape
 from .shapes.box import Box
 from .shapes.capsule import Capsule
 from .shapes.cone import Cone
 from .shapes.cylinder import Cylinder
-from .shapes.polyhedron import Polyhedron
 from .shapes.sphere import Sphere
 from .shapes.torus import Torus
 
-from .pointclouds.pointcloud import Pointcloud
+from .polygon import Polygon
+from .polyhedron import Polyhedron
 
 from .brep import (
     BrepError,
@@ -470,9 +481,13 @@ __all__ = [
     "closest_point_on_segment",
     "closest_point_on_segment_xy",
     "closest_point_on_polyline",
+    "closest_point_on_polygon_xy",
     "closest_point_on_polyline_xy",
     "closest_point_on_plane",
+    "closest_points_in_cloud_numpy",
     "closest_line_to_point",
+    "sort_points",
+    "sort_points_xy",
     "normal_polygon",
     "normal_triangle",
     "normal_triangle_xy",
@@ -494,6 +509,10 @@ __all__ = [
     "boolean_union_mesh_mesh",
     "boolean_difference_mesh_mesh",
     "boolean_intersection_mesh_mesh",
+    "boolean_union_polygon_polygon",
+    "boolean_difference_polygon_polygon",
+    "boolean_symmetric_difference_polygon_polygon",
+    "boolean_intersection_polygon_polygon",
     "convex_hull",
     "convex_hull_xy",
     "barycentric_coordinates",
@@ -513,6 +532,7 @@ __all__ = [
     "intersection_plane_circle",
     "intersection_plane_plane_plane",
     "intersection_plane_plane",
+    "intersection_polyline_box_xy",
     "intersection_polyline_plane",
     "intersection_ray_mesh",
     "intersection_segment_plane",
@@ -541,8 +561,10 @@ __all__ = [
     "is_colinear",
     "is_colinear_line_line",
     "is_coplanar",
+    "is_parallel_line_line",
     "is_polygon_convex",
     "is_point_on_plane",
+    "is_point_in_box",
     "is_point_infront_plane",
     "is_point_behind_plane",
     "is_point_in_halfspace",
@@ -559,6 +581,7 @@ __all__ = [
     "is_intersection_segment_plane",
     "is_intersection_plane_plane",
     "quadmesh_planarize",
+    "is_matrix_square",
     "matrix_determinant",
     "matrix_inverse",
     "decompose_matrix",
@@ -580,6 +603,7 @@ __all__ = [
     "matrix_from_shear",
     "matrix_from_scale_factors",
     "matrix_from_quaternion",
+    "matrix_minor",
     "euler_angles_from_matrix",
     "euler_angles_from_quaternion",
     "axis_and_angle_from_matrix",
@@ -624,6 +648,7 @@ __all__ = [
     "delaunay_from_points",
     "delaunay_from_points",
     "delaunay_triangulation",
+    "earclip_polygon",
     "trimesh_gaussian_curvature",
     "trimesh_mean_curvature",
     "trimesh_principal_curvature",
@@ -637,11 +662,12 @@ __all__ = [
     "trimesh_remesh_along_isoline",
     "trimesh_slice",
     "Geometry",
-    "Primitive",
     "Bezier",
     "Arc",
     "Circle",
     "Ellipse",
+    "Hyperbola",
+    "Parabola",
     "Frame",
     "Line",
     "Plane",
@@ -670,6 +696,11 @@ __all__ = [
     "Curve",
     "NurbsCurve",
     "Surface",
+    "SphericalSurface",
+    "CylindricalSurface",
+    "ToroidalSurface",
+    "ConicalSurface",
+    "PlanarSurface",
     "NurbsSurface",
     "Brep",
     "BrepLoop",
@@ -689,7 +720,7 @@ if not compas.IPY:
     __all__ += [
         "oriented_bounding_box_numpy",
         "oriented_bounding_box_xy_numpy",
-        "oabb_numpy",
+        "bestfit_line_numpy",
         "bestfit_plane_numpy",
         "bestfit_frame_numpy",
         "bestfit_circle_numpy",

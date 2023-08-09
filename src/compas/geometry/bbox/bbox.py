@@ -18,9 +18,10 @@ def bounding_box(points):
     list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
-    Examples
+    See Also
     --------
-    >>>
+    :func:`compas.geometry.oriented_bounding_box_numpy`
+    :func:`compas.geometry.bounding_box_xy`
 
     """
     x, y, z = zip(*points)
@@ -55,13 +56,14 @@ def bounding_box_xy(points):
     list[[float, float, 0.0]]
         XYZ coordinates of four points defining a rectangle in the XY plane.
 
+    See Also
+    --------
+    :func:`compas.geometry.oriented_bounding_box_xy_numpy`
+    :func:`compas.geometry.bounding_box`
+
     Notes
     -----
     This function simply ignores the Z components of the points, if it is provided.
-
-    Examples
-    --------
-    >>>
 
     """
     x, y = islice(zip(*points), 2)

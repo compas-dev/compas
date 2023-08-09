@@ -6,184 +6,265 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Line
+from compas.geometry import Circle
+from compas.geometry import Transformation
 
-from ._shape import Shape
+from .shape import Shape
 
 
 class Capsule(Shape):
-    """A capsule is defined by a line segment and a radius.
+    """A capsule is defined by a frame, radius, and height.
+
+    The capsule is oriented along the z-axis of the frame.
+    The base point (i.e. the centre of the base circle) is at the origin of the frame.
+    Half of the capsule is above the local XY plane of the frame, the other half below.
 
     Parameters
     ----------
-    line : [point, point] | :class:`~compas.geometry.Line`
-        The axis line of the capsule.
-    radius : float
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system, or "frame", of the capsule.
+        Default is ``None``, in which case the world coordinate system is used.
+    radius : float, optional
         The radius of the capsule.
+    height : float, optional
+        The height of the capsule along the z-axis of the frame.
+        Half of the capsule is above the XY plane of the frame, the other half below.
 
     Attributes
     ----------
-    line : :class:`~compas.geometry.Line`
-        The centre line of the capsule.
+    frame : :class:`~compas.geometry.Frame`
+        The local coordinate system of the capsule.
+        The capsule is oriented along the local z-axis.
+    transformation : :class:`~compas.geometry.Transformation`
+        The transformation of the capsule to global coordinates.
     radius : float
-        The radius of the capsule.
-    start : :class:`~compas.geometry.Point`, read-only
-        The start point of the centre line.
-    end : :class:`~compas.geometry.Point`, read-only
-        The end point of the centre line.
-    length : float, read-only
-        The length of the centre line of the capsule.
+        The radius of the base circle of the capsule.
+    height : float
+        The height of the capsule.
+    axis : :class:`~compas.geometry.Line`, read-only
+        The central axis of the capsule.
+    base : :class:`~compas.geometry.Point`, read-only
+        The base point of the capsule.
+        The base point is at the origin of the local coordinate system.
+    plane : :class:`~compas.geometry.Plane`, read-only
+        The plane of the capsule.
+        The base point of the plane is at the origin of the local coordinate system.
+        The normal of the plane is in the direction of the z-axis of the local coordinate system.
+    circle : :class:`~compas.geometry.Circle`, read-only
+        The base circle of the capsule.
+        The center of the circle is at the origin of the local coordinate system.
+    diameter : float, read-only
+        The diameter of the base circle of the capsule.
+    area : float, read-only
+        The surface area of the capsule.
     volume : float, read-only
         The volume of the capsule.
-    area : float, read-only
-        The area of the capsule surface.
 
     Examples
     --------
-    >>> line = Line((1, 2, 3), (5, 3, 1))
-    >>> capsule = Capsule(line, 2.3)
+    >>> frame = Frame.worldXY()
+    >>> capsule = Capsule(frame=frame, radius=0.3, heigth=1.0)
+    >>> capsule = Capsule(radius=0.3, heigth=1.0)
+    >>> capsule = Capsule()
 
     """
 
     JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "line": Line.JSONSCHEMA,
-            "radius": {"type": "number", "exclusiveMinimum": 0},
+            "frame": Frame.JSONSCHEMA,
+            "radius": {"type": "number", "minimum": 0},
+            "height": {"type": "number", "minimum": 0},
         },
-        "required": ["line", "radius"],
+        "required": ["frame", "radius", "height"],
     }
 
-    __slots__ = ["_line", "_radius"]
-
-    def __init__(self, line, radius, **kwargs):
-        super(Capsule, self).__init__(**kwargs)
-        self._line = None
+    def __init__(self, frame=None, radius=0.3, height=1.0, **kwargs):
+        super(Capsule, self).__init__(frame=frame, **kwargs)
         self._radius = None
-        self.line = line
+        self._height = None
         self.radius = radius
-
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        """dict : Returns the data dictionary that represents the capsule."""
-        return {"line": self.line, "radius": self.radius}
-
-    @data.setter
-    def data(self, data):
-        self.line = data["line"]
-        self.radius = data["radius"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a capsule from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Capsule`
-            The constructed capsule.
-
-        """
-        capsule = Capsule(data["line"], data["radius"])
-        return capsule
-
-    # ==========================================================================
-    # properties
-    # ==========================================================================
-
-    @property
-    def line(self):
-        return self._line
-
-    @line.setter
-    def line(self, line):
-        self._line = Line(*line)
-
-    @property
-    def start(self):
-        return self.line.start
-
-    @property
-    def end(self):
-        return self.line.end
-
-    @property
-    def radius(self):
-        return self._radius
-
-    @radius.setter
-    def radius(self, radius):
-        self._radius = float(abs(radius))
-
-    @property
-    def length(self):
-        return self.line.length
-
-    @property
-    def volume(self):
-        # cylinder plus 2 half spheres
-        cylinder = self.radius**2 * pi * self.length
-        caps = 4.0 / 3.0 * pi * self.radius**3
-        return cylinder + caps
-
-    @property
-    def area(self):
-        # cylinder minus caps plus 2 half spheres
-        cylinder = self.radius * 2 * pi * self.length
-        caps = 4 * pi * self.radius**2
-        return cylinder + caps
-
-    # ==========================================================================
-    # customisation
-    # ==========================================================================
+        self.height = height
 
     def __repr__(self):
-        return "Capsule({0!r}, {1!r})".format(self.line, self.radius)
+        return "Capsule(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
 
     def __len__(self):
         return 2
 
     def __getitem__(self, key):
         if key == 0:
-            return self.line
+            return self.frame
         elif key == 1:
             return self.radius
+        elif key == 2:
+            return self.height
         else:
             raise KeyError
 
     def __setitem__(self, key, value):
         if key == 0:
-            self.line = value
+            self.frame = value
         elif key == 1:
             self.radius = value
+        elif key == 2:
+            self.height = value
         else:
             raise KeyError
 
     def __iter__(self):
-        return iter([self.line, self.radius])
+        return iter([self.frame, self.radius, self.height])
 
     # ==========================================================================
-    # constructors
+    # Data
     # ==========================================================================
 
+    @property
+    def data(self):
+        return {"frame": self.frame, "radius": self.radius, "height": self.height}
+
+    @data.setter
+    def data(self, data):
+        self.frame = data["frame"]
+        self.radius = data["radius"]
+        self.height = data["height"]
+
     # ==========================================================================
-    # methods
+    # Properties
     # ==========================================================================
+
+    @property
+    def radius(self):
+        if self._radius is None:
+            raise ValueError("The radius of the capsule is not set.")
+        return self._radius
+
+    @radius.setter
+    def radius(self, radius):
+        if radius < 0:
+            raise ValueError("The radius of the capsule should be greater than or equal to zero.")
+        self._radius = float(radius)
+
+    @property
+    def height(self):
+        if self._height is None:
+            raise ValueError("The capsule has no height.")
+        return self._height
+
+    @height.setter
+    def height(self, height):
+        if height < 0:
+            raise ValueError("The height of the capsule should be greater than or equal to zero.")
+        self._height = float((height))
+
+    @property
+    def length(self):
+        return self.height
+
+    @property
+    def start(self):
+        return self.frame.point - self.frame.zaxis * self.height / 2
+
+    @property
+    def end(self):
+        return self.frame.point + self.frame.zaxis * self.height / 2
+
+    @property
+    def axis(self):
+        return Line(self.start, self.end)
+
+    @property
+    def circle(self):
+        return Circle(self.frame, self.radius)
+
+    @property
+    def volume(self):
+        # cylinder plus 2 half spheres
+        cylinder = self.radius**2 * pi * self.height
+        caps = 4.0 / 3.0 * pi * self.radius**3
+        return cylinder + caps
+
+    @property
+    def area(self):
+        # cylinder minus caps plus 2 half spheres
+        cylinder = self.radius * 2 * pi * self.height
+        caps = 4 * pi * self.radius**2
+        return cylinder + caps
+
+    # ==========================================================================
+    # Constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_line_and_radius(cls, line, radius):
+        """Construct a capsule from a line and a radius.
+
+        Parameters
+        ----------
+        line : :class:`~compas.geometry.Line`
+            The line.
+        radius : float
+            The radius.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Capsule`
+            The constructed capsule.
+
+        See Also
+        --------
+        :meth:`Capsule.from_circle_and_height`
+
+        Examples
+        --------
+        >>> line = Line(Point(0, 0, 0), Point(0, 0, 1))
+        >>> capsule = Capsule.from_line_and_radius(line, 0.3)
+
+        """
+        frame = Frame.from_plane(Plane(line.midpoint, line.direction))
+        return cls(frame=frame, radius=radius, height=line.length)
+
+    @classmethod
+    def from_circle_and_height(cls, circle, height):
+        """Construct a capsule from a circle and a height.
+
+        Parameters
+        ----------
+        circle : :class:`~compas.geometry.Circle`
+            The circle.
+        height : float
+            The height.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Capsule`
+            The constructed capsule.
+
+        See Also
+        --------
+        :meth:`Capsule.from_line_and_radius`
+
+        Examples
+        --------
+        >>> circle = Circle(Frame.worldXY(), 0.3)
+        >>> capsule = Capsule.from_circle_and_height(circle, 1.0)
+
+        """
+        return cls(frame=circle.frame, radius=circle.radius, height=height)
+
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
     def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
         """Returns a list of vertices and faces.
+
+        Note that the vertex coordinates are defined with respect to the global coordinate system,
+        and not to the local coordinate system of the capsule.
 
         Parameters
         ----------
@@ -196,10 +277,8 @@ class Capsule(Shape):
 
         Returns
         -------
-        list[list[float]]
-            A list of vertex locations.
-        list[list[int]]
-            And a list of faces,
+        list[list[float]], list[list[int]]
+            A list of vertex locations, and a list of faces,
             with each face defined as a list of indices into the list of vertices.
 
         """
@@ -213,7 +292,7 @@ class Capsule(Shape):
         theta = pi / v
         phi = pi * 2 / u
         hpi = pi * 0.5
-        halfheight = self.line.length / 2
+        halfheight = self.height / 2
         sidemult = -1
         capswitch = 0
 
@@ -232,12 +311,6 @@ class Capsule(Shape):
 
         vertices.append([0, 0, halfheight + self.radius])
         vertices.append([0, 0, -halfheight - self.radius])
-
-        # move points to correct location in space
-        plane = Plane(self.line.midpoint, self.line.direction)
-        frame = Frame.from_plane(plane)
-        M = matrix_from_frame(frame)
-        vertices = transform_points(vertices, M)
 
         faces = []
 
@@ -272,19 +345,122 @@ class Capsule(Shape):
                     triangles.append(face)
             faces = triangles
 
+        vertices = transform_points(vertices, self.transformation)
+
         return vertices, faces
 
-    def transform(self, transformation):
-        """Transform this `Capsule` using a given transformation.
+    # =============================================================================
+    # Transformations
+    # =============================================================================
+
+    def scale(self, factor):
+        """Scale the capsule.
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
-            The transformation used to transform the capsule.
+        factor : float
+            The scaling factor.
 
         Returns
         -------
         None
 
         """
-        self.line.transform(transformation)
+        self.radius *= factor
+        self.height *= factor
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def contains_point(self, point, tol=1e-6):
+        """Verify if a point is inside the capsule.
+
+        Parameters
+        ----------
+        point : :class:`~compas.geometry.Point`
+            The point.
+        tol : float, optional
+            The tolerance for the test.
+
+        Returns
+        -------
+        bool
+            True if the point is inside the capsule.
+            False otherwise.
+
+        """
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
+        x, y, z = transform_points([point], T)[0]
+        h = 0.5 * self.height + tol
+
+        if -h <= z <= +h:
+            if x**2 + y**2 > (self.radius + tol) ** 2:
+                return False
+
+        if z > +h:
+            x0, y0, z0 = self.end
+            dx = x - x0
+            dy = y - y0
+            dz = z - z0
+            if dx**2 + dy**2 + dz**2 > (self.radius + tol) ** 2:
+                return False
+
+        if z < -h:
+            x0, y0, z0 = self.start
+            dx = x - x0
+            dy = y - y0
+            dz = z - z0
+            if dx**2 + dy**2 + dz**2 > (self.radius + tol) ** 2:
+                return False
+
+        return True
+
+    def contains_points(self, points, tol=1e-6):
+        """Verify if a list of points is inside the capsule.
+
+        Parameters
+        ----------
+        points : list of :class:`~compas.geometry.Point`
+            The points.
+        tol : float, optional
+            The tolerance for the test.
+
+        Returns
+        -------
+        list of bool
+            For each point, True if the point is inside the capsule.
+            False otherwise.
+
+        """
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
+        points = transform_points(points, T)
+
+        h = 0.5 * self.height + tol
+        r2 = (self.radius + tol) ** 2
+        results = [False] * len(points)
+
+        for i, (x, y, z) in enumerate(points):
+            if -h <= z <= +h:
+                if x**2 + y**2 > r2:
+                    continue
+
+            if z > +h:
+                x0, y0, z0 = self.end
+                dx = x - x0
+                dy = y - y0
+                dz = z - z0
+                if dx**2 + dy**2 + dz**2 > r2:
+                    continue
+
+            if z < -h:
+                x0, y0, z0 = self.start
+                dx = x - x0
+                dy = y - y0
+                dz = z - z0
+                if dx**2 + dy**2 + dz**2 > r2:
+                    continue
+
+            results[i] = True
+
+        return results
