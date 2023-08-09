@@ -65,7 +65,7 @@ class Vector(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "array",
         "minItems": 3,
         "maxItems": 3,
@@ -82,7 +82,13 @@ class Vector(Geometry):
         self.z = z
 
     def __repr__(self):
-        return "Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(self.x, self.y, self.z, PRECISION[:1])
+        return "{0}(x={1:.{4}f}, y={2:.{4}f}, z={3:.{4}f})".format(
+            type(self).__name__,
+            self.x,
+            self.y,
+            self.z,
+            PRECISION[:1],
+        )
 
     def __len__(self):
         return 3
@@ -172,34 +178,10 @@ class Vector(Geometry):
 
     @property
     def data(self):
-        """dict : The data dictionary that represents the vector."""
         return list(self)
-
-    @data.setter
-    def data(self, data):
-        self.x = data[0]
-        self.y = data[1]
-        self.z = data[2]
 
     @classmethod
     def from_data(cls, data):
-        """Construct a vector from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Vector`
-            The vector constructed from the provided data.
-
-        Examples
-        --------
-        >>> Vector.from_data([0.0, 0.0, 1.0])
-        Vector(0.000, 0.000, 1.000)
-        """
         return cls(*data)
 
     # ==========================================================================

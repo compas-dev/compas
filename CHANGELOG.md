@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Sphere.JSONSCHEMA`.
 * Added `compas.geometry.Torus.JSONSCHEMA`.
 * Added `compas.geometry.Quaternion.JSONSCHEMA`.
-* Added `compas.geometry.Vector.JSONSCHEMA`.
+* Added class attribute `compas.geometry.Vector.DATASCHEMA`.
 * Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
 * Added `compas.datastructures.Halfedge.halfedge_strip_faces`.
 * Added `compas.datastructures.Mesh.vertex_point`.
@@ -197,7 +197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.geometry.Sphere.DATASCHEMA` and `compas.geometry.Sphere.JSONSCHEMANAME`.
 * Removed `compas.geometry.Torus.DATASCHEMA` and `compas.geometry.Torus.JSONSCHEMANAME`.
 * Removed `compas.geometry.Quaternion.DATASCHEMA` and `compas.geometry.Quaternion.JSONSCHEMANAME`.
-* Removed `compas.geometry.Vector.DATASCHEMA` and `compas.geometry.Vector.JSONSCHEMANAME`.
+* Removed property `compas.geometry.Vector.DATASCHEMA` and property `compas.geometry.Vector.JSONSCHEMANAME`.
 * Removed `compas.datastructures.Graph.key_index`and `compas.datastructures.Graph.index_key`.
 * Removed `compas.datastructures.Graph.uv_index`and `compas.datastructures.Graph.index_uv`.
 * Removed `compas.datastructures.Halfedge.key_index` and `compas.datastructures.Halfedge.index_key`.
@@ -211,6 +211,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
 * Removed `compas.geometry.Primitive`.
 * Removed `compas.color.Color.data` property setter, and `compas.color.Color.from_data`.
+* Removed `compas.geometry.Vector.data` property setter.
 
 ## [1.17.5] 2023-02-16
 
