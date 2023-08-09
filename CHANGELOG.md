@@ -216,6 +216,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.geometry.Primitive`.
 * Removed classmethod `compas.color.Color.from_data`.
 * Removed setter of property `compas.geometry.Vector.data`.
+* Removed `validate_data` from `compas.data.validators`.
 
 ## [1.17.5] 2023-02-16
 

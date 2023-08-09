@@ -7,12 +7,6 @@ try:
 except NameError:
     basestring = str
 
-import os
-import json
-
-from compas.data.encoders import DataEncoder
-from compas.data.encoders import DataDecoder
-
 
 def is_sequence_of_str(items):
     """Verify that the sequence contains only items of type str.
@@ -247,49 +241,3 @@ def is_sequence_of_iterable(items):
 
     """
     return all(is_item_iterable(item) for item in items)
-
-
-def validate_data(data, cls):
-    """Validate data against the data and json schemas of an object class.
-
-    Parameters
-    ----------
-    data : dict
-        The data representation of an object.
-    cls : Type[:class:`~compas.data.Data`]
-        The data object class.
-
-    Returns
-    -------
-    dict
-        The validated data dict.
-
-    Raises
-    ------
-    jsonschema.exceptions.ValidationError
-
-    """
-    from jsonschema import RefResolver, Draft7Validator
-    from jsonschema.exceptions import ValidationError
-
-    here = os.path.dirname(__file__)
-
-    schema_name = "{}.json".format(cls.__name__.lower())
-    schema_path = os.path.join(here, "schemas", schema_name)
-    with open(schema_path, "r") as fp:
-        schema = json.load(fp)
-
-    definitions_path = os.path.join(here, "schemas", "compas.json")
-    with open(definitions_path, "r") as fp:
-        definitions = json.load(fp)
-
-    resolver = RefResolver.from_schema(definitions)
-    validator = Draft7Validator(schema, resolver=resolver)
-
-    try:
-        validator.validate(data)
-    except ValidationError as e:
-        print("Validation against the JSON schema of this object failed.")
-        raise e
-
-    return json.loads(json.dumps(data, cls=DataEncoder), cls=DataDecoder)
