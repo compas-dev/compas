@@ -4,7 +4,7 @@ from compas.utilities import pairwise
 from Rhino.Geometry import Mesh as RhinoMesh
 
 try:
-    # TODO: Why?
+    # MeshNgon is not available in older versions of Rhino
     from Rhino.Geometry import MeshNgon
 except ImportError:
     MeshNgon = False
@@ -65,7 +65,7 @@ def vertices_and_faces_to_rhino(vertices, faces, disjoint=True, face_callback=No
                 continue  # ignore degenerate faces
             if f > 4:
                 if MeshNgon is None:
-                    raise NotImplementedError("Ngons mesh is not supported in the current context!")
+                    raise NotImplementedError("MeshNgons are not supported in this version of Rhino.")
                 points = [vertices[vertex] for vertex in face]
                 centroid = centroid_polygon(points)
                 indices = []
@@ -98,7 +98,7 @@ def vertices_and_faces_to_rhino(vertices, faces, disjoint=True, face_callback=No
                 continue  # ignore degenerate faces
             if f > 4:
                 if MeshNgon is None:
-                    raise NotImplementedError("N-Gons are not supported in the current context!")
+                    raise NotImplementedError("MeshNgons are not supported in this version of Rhino.")
 
                 centroid = centroid_polygon([vertices[index] for index in face])
                 c = mesh.Vertices.Add(*centroid)
