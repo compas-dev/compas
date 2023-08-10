@@ -587,15 +587,15 @@ class Graph(Datastructure):
         """
         u, v = edge
 
+        if u in self.edge and v in self.edge[u]:
+            del self.edge[u][v]
+
         if u == v:  # invalid edge
-            del self.edge[u][v]
             del self.adjacency[u][v]
-        elif v in self.edge and u in self.edge[v]:  # edge (v, u) exists
-            del self.edge[u][v]
-        else:
-            del self.edge[u][v]
+        elif v not in self.edge or u not in self.edge[v]:
             del self.adjacency[u][v]
             del self.adjacency[v][u]
+        # else: an edge in an opposite direction exists, we don't want to delete the adjacency
 
     # --------------------------------------------------------------------------
     # info
