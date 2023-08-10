@@ -68,9 +68,9 @@ class GeometricFeature(Feature):
     def data(self):
         return {"geometry": self._geometry}
 
-    @data.setter
-    def data(self, value):
-        self._geometry = value["geometry"]
+    # @data.setter
+    # def data(self, value):
+    #     self._geometry = value["geometry"]
 
 
 class ParametricFeature(Feature):
@@ -151,6 +151,16 @@ class Part(Datastructure):
 
     """
 
+    DATASCHEMA = {
+        "type": "object",
+        "properties": {
+            "attributes": {"type": "object"},
+            "key": {"type": ["integer", "string"]},
+            "frame": Frame.DATASCHEMA,
+        },
+        "required": [],
+    }
+
     def __init__(self, name=None, frame=None, **kwargs):
         super(Part, self).__init__()
         self.attributes = {"name": name or "Part"}
@@ -160,35 +170,18 @@ class Part(Datastructure):
         self.features = []
 
     @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "attributes": dict,
-                "key": int,
-                "frame": Frame,
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "part"
-
-    @property
     def data(self):
-        data = {
+        return {
             "attributes": self.attributes,
             "key": self.key,
             "frame": self.frame,
         }
-        return data
 
-    @data.setter
-    def data(self, data):
-        self.attributes.update(data["attributes"] or {})
-        self.key = data["key"]
-        self.frame = data["frame"]
+    # @data.setter
+    # def data(self, data):
+    #     self.attributes.update(data["attributes"] or {})
+    #     self.key = data["key"]
+    #     self.frame = data["frame"]
 
     def get_geometry(self, with_features=False):
         """
