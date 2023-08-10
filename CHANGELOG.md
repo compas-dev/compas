@@ -44,6 +44,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.data.Data.validate_data`.
 * Added `compas.data.Data.__jsondump__`.
 * Added `compas.data.Data.__jsonload__`.
+* Added `compas.data.schema.dataclass_dataschema`.
+* Added `compas.data.schema.dataclass_typeschema`.
+* Added `compas.data.schema.dataclass_jsonschema`.
+* Added `compas.data.schema.compas_jsonschema`.
+* Added `compas.data.schema.compas_datamodel`.
 * Added `compas.datastructures.Graph.to_jsondata`.
 * Added `compas.datastructures.Graph.from_jsondata`.
 * Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
@@ -157,6 +162,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed base class of `compas.geometry.Line` to `compas.geometry.Curve.`
 * Changed base class of `compas.geometry.Polyline` to `compas.geometry.Curve.`
 * Changed `compas.geometry.oriented_bounding_box_numpy` to minimize volume.
+* Fixed data interface `compas.datastructures.Assembly` and `compas.datastructures.Part`.
 
 ### Removed
 
