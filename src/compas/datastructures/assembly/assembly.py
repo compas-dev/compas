@@ -58,14 +58,16 @@ class Assembly(Datastructure):
     def data(self):
         return {
             "attributes": self.attributes,
-            "graph": self.graph,
+            "graph": self.graph.data,
         }
 
-    # @data.setter
-    # def data(self, data):
-    #     self.attributes.update(data["attributes"] or {})
-    #     self.graph = data["graph"]
-    #     self._parts = {part.guid: part.key for part in self.parts()}
+    @classmethod
+    def from_data(cls, data):
+        assembly = cls()
+        assembly.attributes.update(data["attributes"] or {})
+        assembly.graph = Graph.from_data(data["graph"])
+        assembly._parts = {part.guid: part.key for part in assembly.parts()}
+        return assembly
 
     # ==========================================================================
     # Properties

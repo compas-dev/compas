@@ -68,14 +68,15 @@ class GeometricFeature(Feature):
     def data(self):
         return {"geometry": self._geometry}
 
-    # @data.setter
-    # def data(self, value):
-    #     self._geometry = value["geometry"]
+    @classmethod
+    def from_data(cls, data):
+        feature = cls()
+        feature._geometry = data["geometry"]  # this will work but is not consistent with validation
+        return feature
 
 
 class ParametricFeature(Feature):
-    """Base class for Features that may be applied to the parametric definition
-    of a :class:`~compas.datastructures.Part`.
+    """Base class for Features that may be applied to the parametric definition of a :class:`~compas.datastructures.Part`.
 
     Examples
     --------
@@ -158,7 +159,7 @@ class Part(Datastructure):
             "key": {"type": ["integer", "string"]},
             "frame": Frame.DATASCHEMA,
         },
-        "required": [],
+        "required": ["key", "frame"],
     }
 
     def __init__(self, name=None, frame=None, **kwargs):
@@ -169,6 +170,7 @@ class Part(Datastructure):
         self.frame = frame or Frame.worldXY()
         self.features = []
 
+    # features are not included here?!
     @property
     def data(self):
         return {
@@ -177,11 +179,13 @@ class Part(Datastructure):
             "frame": self.frame,
         }
 
-    # @data.setter
-    # def data(self, data):
-    #     self.attributes.update(data["attributes"] or {})
-    #     self.key = data["key"]
-    #     self.frame = data["frame"]
+    @classmethod
+    def from_data(cls, data):
+        part = cls()
+        part.attributes.update(data["attributes"] or {})
+        part.key = data["key"]
+        part.frame = Frame.from_data(data["frame"])
+        return part
 
     def get_geometry(self, with_features=False):
         """
@@ -217,5 +221,6 @@ class Part(Datastructure):
         Returns
         -------
         None
+
         """
         raise NotImplementedError
