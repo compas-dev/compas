@@ -28,3 +28,8 @@ def from_cylinder(*args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def from_sphere(*args, **kwargs):
     return RhinoBrep.from_sphere(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_mesh(*args, **kwargs):
+    return RhinoBrep.from_mesh(*args, **kwargs)
