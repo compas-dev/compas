@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
 * Added representation for features in `compas.datastructures.Part`.
-* Added  `split` and `split_by_length` to `compas.geometry.Polyline`.
+* Added `split` and `split_by_length` to `compas.geometry.Polyline`.
 * Added `compas.rpc.XFunc`.
 * Added attribute `compas.color.Color.DATASCHEMA`.
 * Added attribute `compas.data.Data.DATASCHEMA`.
@@ -181,7 +181,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.data.Data.validate_jsonstring`.
 * Removed `compas.data.Data.__getstate__`.
 * Removed `compas.data.Data.__setstate__`.
-* Removed setter of property `compas.data.Data.data`.
+* Removed setter of property `compas.data.Data.data` and similar setters in all data classes.
 * Removed properties `compas.data.Data.DATASCHEMA` and `compas.data.Data.JSONSCHEMANAME`.
 * Removed properties `compas.datastructures.Graph.DATASCHEMA` and `compas.datastructures.Graph.JSONSCHEMANAME`.
 * Removed properties `compas.datastructures.Halfedge.DATASCHEMA` and `compas.datastructures.Halfedge.JSONSCHEMANAME`.
