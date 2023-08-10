@@ -4,9 +4,8 @@ from __future__ import division
 
 import json
 import platform
-import uuid
 
-from compas.data.exceptions import DecoderError
+from .exceptions import DecoderError
 
 IDictionary = None
 numpy_support = False
@@ -112,33 +111,9 @@ class DataEncoder(json.JSONEncoder):
             The serialized object.
 
         """
-        # if hasattr(o, "to_jsondata"):
-        #     value = o.to_jsondata()
-        #     if hasattr(o, "dtype"):
-        #         dtype = o.dtype
-        #     else:
-        #         dtype = "{}/{}".format(
-        #             ".".join(o.__class__.__module__.split(".")[:-1]),
-        #             o.__class__.__name__,
-        #         )
 
-        #     return {"dtype": dtype, "value": value, "guid": str(o.guid)}
-
-        # if hasattr(o, "to_data"):
-        #     value = o.to_data()
-
-        #     if hasattr(o, "dtype"):
-        #         dtype = o.dtype
-        #     else:
-        #         dtype = "{}/{}".format(
-        #             ".".join(o.__class__.__module__.split(".")[:-1]),
-        #             o.__class__.__name__,
-        #         )
-
-        #     return {"dtype": dtype, "value": value, "guid": str(o.guid)}
-
-        if hasattr(o, "__json_dump__"):
-            return o.__json_dump__(minimal=DataEncoder.minimal)
+        if hasattr(o, "__jsondump__"):
+            return o.__jsondump__(minimal=DataEncoder.minimal)
 
         if hasattr(o, "__next__"):
             return list(o)
@@ -239,7 +214,8 @@ class DataDecoder(json.JSONDecoder):
         except ValueError:
             raise DecoderError(
                 "The data type of the object should be in the following format: '{}/{}'".format(
-                    o.__class__.__module__, o.__class__.__name__
+                    o.__class__.__module__,
+                    o.__class__.__name__,
                 )
             )
 
@@ -255,12 +231,6 @@ class DataDecoder(json.JSONDecoder):
         if IDictionary and isinstance(o, IDictionary[str, object]):
             data = {key: data[key] for key in data.Keys}
 
-        # if hasattr(cls, "from_jsondata"):
-        #     obj = cls.from_jsondata(obj_value)
-        # else:
-        obj = cls.__json_load__(data, o.get("guid", None))
-
-        # if "guid" in o:
-        #     obj._guid = uuid.UUID(o["guid"])
+        obj = cls.__jsonload__(data, o.get("guid", None))
 
         return obj
