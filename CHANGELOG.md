@@ -91,6 +91,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Surface.point_at`.
 * Added `compas.geometry.Surface.normal_at`.
 * Added `compas.geometry.Surface.frame_at`.
+* Added `mesh_to_rhino` to `compas_rhino.conversions`.
+* Added `vertices_and_faces_to_rhino` to `compas_rhino.conversions`.
+* Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
+* Added `from_mesh` plugin to `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 
