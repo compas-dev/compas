@@ -227,7 +227,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
 * Removed `compas.geometry.Primitive`.
 * Removed classmethod `compas.color.Color.from_data`.
-* Removed setter of property `compas.geometry.Vector.data`.
 * Removed `validate_data` from `compas.data.validators`.
 * Removed `json_validate` from `compas.data.json`.
 
