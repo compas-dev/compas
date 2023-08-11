@@ -33,10 +33,10 @@ class Pointcloud(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "items": Point.JSONSCHEMA, "minItems": 1},
+            "points": {"type": "array", "items": Point.DATASCHEMA, "minItems": 1},
         },
         "required": ["points"],
     }
@@ -47,7 +47,7 @@ class Pointcloud(Geometry):
         self.points = points
 
     def __repr__(self):
-        return "Pointcloud({0!r})".format(self.points)
+        return "{0}(points={1!r})".format(type(self).__name__, self.points)
 
     def __len__(self):
         return len(self.points)
@@ -78,15 +78,7 @@ class Pointcloud(Geometry):
 
     @property
     def data(self):
-        return {"points": self.points}
-
-    @data.setter
-    def data(self, data):
-        self._points = data["points"]
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(data["points"])
+        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties

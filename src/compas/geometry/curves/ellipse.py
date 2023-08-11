@@ -106,12 +106,12 @@ class Ellipse(Conic):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "major": {"type": "number", "minimum": 0},
             "minor": {"type": "number", "minimum": 0},
-            "frame": Frame.JSONSCHEMA,
+            "frame": Frame.DATASCHEMA,
         },
         "required": ["frame", "major", "minor"],
     }
@@ -124,7 +124,12 @@ class Ellipse(Conic):
         self.minor = minor
 
     def __repr__(self):
-        return "Ellipse(major={0!r}, minor={1!r}, frame={2!r})".format(self.major, self.minor, self.frame)
+        return "{0}(major={1!r}, minor={2}, frame={3!r})".format(
+            type(self).__name__,
+            self.major,
+            self.minor,
+            self.frame,
+        )
 
     def __eq__(self, other):
         try:
@@ -141,7 +146,19 @@ class Ellipse(Conic):
 
     @property
     def data(self):
-        return {"frame": self.frame, "major": self.major, "minor": self.minor}
+        return {
+            "major": self.major,
+            "minor": self.minor,
+            "frame": self.frame.data,
+        }
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            major=data["major"],
+            minor=data["minor"],
+            frame=Frame.from_data(data["frame"]),
+        )
 
     # ==========================================================================
     # Properties

@@ -65,11 +65,11 @@ class Line(Curve):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "start": Point.JSONSCHEMA,
-            "end": Point.JSONSCHEMA,
+            "start": Point.DATASCHEMA,
+            "end": Point.DATASCHEMA,
         },
         "required": ["start", "end"],
     }
@@ -91,7 +91,11 @@ class Line(Curve):
         self.end = end
 
     def __repr__(self):
-        return "Line({0!r}, {1!r})".format(self.start, self.end)
+        return "{0}({1!r}, {2!r})".format(
+            type(self).__name__,
+            self.start,
+            self.end,
+        )
 
     def __getitem__(self, key):
         if key == 0:
@@ -126,7 +130,7 @@ class Line(Curve):
 
     @property
     def data(self):
-        return {"start": self.start, "end": self.end}
+        return {"start": self.start.data, "end": self.end.data}
 
     # ==========================================================================
     # properties

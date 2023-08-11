@@ -204,25 +204,19 @@ class Brep(Geometry):
     # ==============================================================================
 
     @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "faces": list,
-            }
-        )
-
-    @property
     def data(self):
         faces = []
         for face in self.faces:
             faces.append(face.data)
         return {"faces": faces}
 
-    @data.setter
-    def data(self):
-        raise NotImplementedError
+    @classmethod
+    def from_data(cls, data):
+        # faces = []
+        # for face in data["faces"]:
+        #     faces.append(BrepFace.from_data(face))
+        # return cls.from_brepfaces(faces)
+        pass
 
     # ==============================================================================
     # Properties

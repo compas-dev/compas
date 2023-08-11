@@ -91,10 +91,6 @@ class Shape(Geometry):
         self.frame.point = point
 
     @property
-    def normal(self):
-        return self.frame.zaxis
-
-    @property
     def plane(self):
         return Plane(self.frame.point, self.frame.zaxis)
 

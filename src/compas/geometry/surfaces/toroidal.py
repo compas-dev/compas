@@ -30,12 +30,12 @@ class ToroidalSurface(Surface):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "radius_axis": {"type": "number", "minimum": 0},
             "radius_pipe": {"type": "number", "minimum": 0},
-            "frame": Frame.JSONSCHEMA,
+            "frame": Frame.DATASCHEMA,
         },
         "required": ["radius", "frame"],
     }
@@ -55,8 +55,11 @@ class ToroidalSurface(Surface):
         self.radius_pipe = radius_pipe
 
     def __repr__(self):
-        return "ToroidalSurface(radius_axis={0!r}, radius_pipe={1!r}, frame={2!r})".format(
-            self.radius_axis, self.radius_pipe, self.frame
+        return "{0}(radius_axis={1}, radius_pipe={2}, frame={3!r})".format(
+            type(self).__name__,
+            self.radius_axis,
+            self.radius_pipe,
+            self.frame,
         )
 
     def __eq__(self, other):
@@ -72,15 +75,29 @@ class ToroidalSurface(Surface):
             and self.frame == other_frame
         )
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def data(self):
-        return {"radius_axis": self.radius_axis, "radius_pipe": self.radius_pipe, "frame": self.frame}
+        return {
+            "radius_axis": self.radius_axis,
+            "radius_pipe": self.radius_pipe,
+            "frame": self.frame.data,
+        }
 
-    @data.setter
-    def data(self, data):
-        self.radius_axis = data["radius_axis"]
-        self.radius_pipe = data["radius_pipe"]
-        self.frame = data["frame"]
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            radius_axis=data["radius_axis"],
+            radius_pipe=data["radius_pipe"],
+            frame=Frame.from_data(data["frame"]),
+        )
+
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def center(self):

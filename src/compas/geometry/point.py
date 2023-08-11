@@ -18,7 +18,7 @@ from compas.geometry import is_point_in_convex_polygon_xy
 from compas.geometry import is_point_behind_plane
 from compas.geometry import transform_points
 
-from compas.geometry import Geometry
+from .geometry import Geometry
 from .vector import Vector
 
 
@@ -101,7 +101,7 @@ class Point(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "array",
         "minItems": 3,
         "maxItems": 3,
@@ -118,7 +118,13 @@ class Point(Geometry):
         self.z = z
 
     def __repr__(self):
-        return "Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})".format(self.x, self.y, self.z, PRECISION[:1])
+        return "{0}(x={1:.{4}f}, y={2:.{4}f}, z={3:.{4}f})".format(
+            type(self).__name__,
+            self.x,
+            self.y,
+            self.z,
+            PRECISION[:1],
+        )
 
     def __len__(self):
         return 3
@@ -210,33 +216,8 @@ class Point(Geometry):
     def data(self):
         return list(self)
 
-    @data.setter
-    def data(self, data):
-        self.x = data[0]
-        self.y = data[1]
-        self.z = data[2]
-
     @classmethod
     def from_data(cls, data):
-        """Construct a point from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Point`
-            The constructed point.
-
-        Examples
-        --------
-        >>> point = Point.from_data([0.0, 0.0, 0.0])
-        >>> point
-        Point(0.000, 0.000, 0.000)
-
-        """
         return cls(*data)
 
     # ==========================================================================
@@ -648,7 +629,7 @@ class Point(Geometry):
         return all(is_point_behind_plane(self, plane) for plane in planes)
 
     # ==========================================================================
-    # transformations
+    # Transformations
     # ==========================================================================
 
     def transform(self, T):

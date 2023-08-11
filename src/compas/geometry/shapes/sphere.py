@@ -60,16 +60,16 @@ class Sphere(Shape):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.JSONSCHEMA,
             "radius": {"type": "number", "minimum": 0},
+            "frame": Frame.DATASCHEMA,
         },
-        "required": ["frame", "radius"],
+        "required": ["radius", "frame"],
     }
 
-    def __init__(self, frame=None, radius=None, point=None, **kwargs):
+    def __init__(self, radius, point=None, frame=None, **kwargs):
         super(Sphere, self).__init__(frame=frame, **kwargs)
         self._radius = 1.0
         self.radius = radius
@@ -77,29 +77,11 @@ class Sphere(Shape):
             self.frame.point = point
 
     def __repr__(self):
-        return "Sphere(frame={0!r}, radius={1!r})".format(self.frame, self.radius)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.radius
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.radius = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius])
+        return "{0}(radius={1}, frame={2!r})".format(
+            type(self).__name__,
+            self.radius,
+            self.frame,
+        )
 
     # ==========================================================================
     # Data
@@ -107,12 +89,17 @@ class Sphere(Shape):
 
     @property
     def data(self):
-        return {"frame": self.frame, "radius": self.radius}
+        return {
+            "radius": self.radius,
+            "frame": self.frame.data,
+        }
 
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.radius = data["radius"]
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            radius=data["radius"],
+            frame=Frame.from_data(data["frame"]),
+        )
 
     # ==========================================================================
     # Properties

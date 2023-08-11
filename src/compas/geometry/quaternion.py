@@ -110,7 +110,7 @@ class Quaternion(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "w": {"type": "number"},
@@ -138,35 +138,10 @@ class Quaternion(Geometry):
 
     @property
     def data(self):
-        """dict : Representation of the quaternion as a dict containing only native Python objects."""
         return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
-
-    @data.setter
-    def data(self, data):
-        self.w = data["w"]
-        self.x = data["x"]
-        self.y = data["y"]
-        self.z = data["z"]
 
     @classmethod
     def from_data(cls, data):
-        """Construct a quaternion from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Quaternion`
-            The constructed quaternion.
-
-        Examples
-        --------
-        >>>
-
-        """
         return cls(data["w"], data["x"], data["y"], data["z"])
 
     # ==========================================================================

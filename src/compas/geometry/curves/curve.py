@@ -77,42 +77,11 @@ class Curve(Geometry):
             self.frame = frame
 
     def __repr__(self):
-        return "Curve(frame={0!r}, domain={1!r})".format(self.frame, self.domain)
-
-    def __str__(self):
-        return "<Curve with parameter domain {} in frame {}>".format(self.domain, self.frame)
-
-    def __eq__(self, other):
-        raise NotImplementedError
-
-    # ==============================================================================
-    # Data
-    # ==============================================================================
-
-    @property
-    def data(self):
-        raise NotImplementedError
-
-    # @data.setter
-    # def data(self, data):
-    #     raise NotImplementedError
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a curve from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Curve`
-            The constructed curve.
-
-        """
-        return cls(**data)
+        return "{0}(frame={1!r}, domain={2})".format(
+            type(self).__name__,
+            self.frame,
+            self.domain,
+        )
 
     # ==============================================================================
     # Properties

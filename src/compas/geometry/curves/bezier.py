@@ -160,10 +160,10 @@ class Bezier(Curve):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+            "points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA},
         },
         "required": ["points"],
     }
@@ -180,13 +180,16 @@ class Bezier(Curve):
         self._points = []
         self.points = points
 
+    def __repr__(self):
+        return "{0}(points={1!r})".format(type(self).__name__, self.points)
+
     # ==========================================================================
     # Data
     # ==========================================================================
 
     @property
     def data(self):
-        return {"points": self.points}
+        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties

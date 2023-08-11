@@ -77,7 +77,7 @@ class Transformation(Data):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "matrix": {
@@ -101,17 +101,63 @@ class Transformation(Data):
             matrix = identity_matrix(4)
         self.matrix = matrix
 
+    def __mul__(self, other):
+        return self.concatenated(other)
+
+    def __imul__(self, other):
+        return self.concatenated(other)
+
+    def __getitem__(self, key):
+        i, j = key
+        return self.matrix[i][j]
+
+    def __setitem__(self, key, value):
+        i, j = key
+        self.matrix[i][j] = value
+
+    def __iter__(self):
+        return iter(self.matrix)
+
+    def __eq__(self, other, tol=1e-05):
+        try:
+            A = self.matrix
+            B = other.matrix
+            for i in range(4):
+                for j in range(4):
+                    if math.fabs(A[i][j] - B[i][j]) > tol:
+                        return False
+            return True
+        except BaseException:
+            return False
+
+    def __ne__(self, other):
+        # this is not obvious to ironpython
+        return not self.__eq__(other)
+
+    def __repr__(self):
+        return "{0}({1!r}, check=False)".format(self.__class__.__name__, self.matrix)
+
+    def __str__(self):
+        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
+        s += " [%s]]\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
+        return s
+
+    def __len__(self):
+        return len(self.matrix)
+
     # ==========================================================================
-    # descriptors
+    # Data
     # ==========================================================================
 
     @property
     def data(self):
         return {"matrix": self.matrix}
 
-    @data.setter
-    def data(self, data):
-        self.matrix = data["matrix"]
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
 
     @property
     def scale(self):
@@ -161,57 +207,7 @@ class Transformation(Data):
         return matrix_determinant(self.matrix)
 
     # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __mul__(self, other):
-        return self.concatenated(other)
-
-    def __imul__(self, other):
-        return self.concatenated(other)
-
-    def __getitem__(self, key):
-        i, j = key
-        return self.matrix[i][j]
-
-    def __setitem__(self, key, value):
-        i, j = key
-        self.matrix[i][j] = value
-
-    def __iter__(self):
-        return iter(self.matrix)
-
-    def __eq__(self, other, tol=1e-05):
-        try:
-            A = self.matrix
-            B = other.matrix
-            for i in range(4):
-                for j in range(4):
-                    if math.fabs(A[i][j] - B[i][j]) > tol:
-                        return False
-            return True
-        except BaseException:
-            return False
-
-    def __ne__(self, other):
-        # this is not obvious to ironpython
-        return not self.__eq__(other)
-
-    def __repr__(self):
-        return "Transformation({0!r})".format(self.matrix)
-
-    def __str__(self):
-        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
-        s += " [%s]]\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
-        return s
-
-    def __len__(self):
-        return len(self.matrix)
-
-    # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -392,7 +388,7 @@ class Transformation(Data):
         return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
 
     # ==========================================================================
-    # methods
+    # Methods
     # ==========================================================================
 
     def copy(self):

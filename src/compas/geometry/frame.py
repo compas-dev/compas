@@ -67,12 +67,12 @@ class Frame(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "point": Point.JSONSCHEMA,
-            "xaxis": Vector.JSONSCHEMA,
-            "yaxis": Vector.JSONSCHEMA,
+            "point": Point.DATASCHEMA,
+            "xaxis": Vector.DATASCHEMA,
+            "yaxis": Vector.DATASCHEMA,
         },
         "required": ["point", "xaxis", "yaxis"],
     }
@@ -88,7 +88,12 @@ class Frame(Geometry):
         self.yaxis = yaxis
 
     def __repr__(self):
-        return "Frame({0!r}, {1!r}, {2!r})".format(self.point, self.xaxis, self.yaxis)
+        return "{0}(point={1!r}, xaxis={2!r}, yaxis={3!r})".format(
+            type(self).__name__,
+            self.point,
+            self.xaxis,
+            self.yaxis,
+        )
 
     def __len__(self):
         return 3
@@ -132,42 +137,6 @@ class Frame(Geometry):
             "xaxis": self.xaxis.data,
             "yaxis": self.yaxis.data,
         }
-
-    @data.setter
-    def data(self, data):
-        self.point = data["point"]
-        self.xaxis = data["xaxis"]
-        self.yaxis = data["yaxis"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a frame from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Frame`
-            The constructed frame.
-
-        Examples
-        --------
-        >>> data = {'point': [0.0, 0.0, 0.0], 'xaxis': [1.0, 0.0, 0.0], 'yaxis': [0.0, 1.0, 0.0]}
-        >>> frame = Frame.from_data(data)
-        >>> frame.point
-        Point(0.000, 0.000, 0.000)
-        >>> frame.xaxis
-        Vector(1.000, 0.000, 0.000)
-        >>> frame.yaxis
-        Vector(0.000, 1.000, 0.000)
-        >>> frame.zaxis
-        Vector(0.000, 0.000, 1.000)
-
-        """
-        return cls(data["point"], data["xaxis"], data["yaxis"])
 
     # ==========================================================================
     # Properties

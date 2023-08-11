@@ -87,9 +87,9 @@ class Polygon(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
-        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
+        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA}},
         "required": ["points"],
     }
 
@@ -102,7 +102,7 @@ class Polygon(Geometry):
         self.points = points
 
     def __repr__(self):
-        return "Polygon([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
+        return "{0}(points={1!r})".format(type(self).__name__, self.points)
 
     def __len__(self):
         return len(self.points)
@@ -128,11 +128,7 @@ class Polygon(Geometry):
 
     @property
     def data(self):
-        return {"points": self.points}
-
-    @data.setter
-    def data(self, data):
-        self.points = data["points"]
+        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties
@@ -178,21 +174,6 @@ class Polygon(Geometry):
 
     @property
     def normal(self):
-        # o = self.centroid
-        # points = self.points
-        # a2 = 0
-        # normals = []
-        # for i in range(-1, len(points) - 1):
-        #     p1 = points[i]
-        #     p2 = points[i + 1]
-        #     u = [p1[_] - o[_] for _ in range(3)]  # type: ignore
-        #     v = [p2[_] - o[_] for _ in range(3)]  # type: ignore
-        #     w = cross_vectors(u, v)
-        #     a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
-        #     normals.append(w)
-        # n = [sum(axis) / a2 for axis in zip(*normals)]
-        # n = Vector(*n)
-        # return n
         return self.plane.normal
 
     @property

@@ -29,12 +29,12 @@ class ConicalSurface(Surface):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "radius": {"type": "number", "minimum": 0},
             "height": {"type": "number", "minimum": 0},
-            "frame": Frame.JSONSCHEMA,
+            "frame": Frame.DATASCHEMA,
         },
         "required": ["radius", "height", "frame"],
     }
@@ -54,7 +54,12 @@ class ConicalSurface(Surface):
         self.height = height
 
     def __repr__(self):
-        return "ConicalSurface(radius={0!r}, height={1!r}, frame={2!r})".format(self.radius, self.height, self.frame)
+        return "{0}(radius={1}, height={2}, frame={3!r})".format(
+            type(self).__name__,
+            self.radius,
+            self.height,
+            self.frame,
+        )
 
     def __eq__(self, other):
         try:
@@ -65,15 +70,29 @@ class ConicalSurface(Surface):
             return False
         return self.radius == other_radius and self.height == other_height and self.frame == other_frame
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def data(self):
-        return {"radius": self.radius, "height": self.height, "frame": self.frame}
+        return {
+            "radius": self.radius,
+            "height": self.height,
+            "frame": self.frame.data,
+        }
 
-    @data.setter
-    def data(self, data):
-        self.radius = data["radius"]
-        self.height = data["height"]
-        self.frame = data["frame"]
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            radius=data["radius"],
+            height=data["height"],
+            frame=Frame.from_data(data["frame"]),
+        )
+
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def center(self):

@@ -79,9 +79,6 @@ class Rotation(Transformation):
                 raise ValueError("This is not a proper rotation matrix.")
         super(Rotation, self).__init__(matrix=matrix)
 
-    def __repr__(self):
-        return "Rotation({0!r}, check=False)".format(self.matrix)
-
     @property
     def quaternion(self):
         from compas.geometry import Quaternion

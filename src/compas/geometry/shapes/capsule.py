@@ -73,17 +73,17 @@ class Capsule(Shape):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.JSONSCHEMA,
             "radius": {"type": "number", "minimum": 0},
             "height": {"type": "number", "minimum": 0},
+            "frame": Frame.DATASCHEMA,
         },
-        "required": ["frame", "radius", "height"],
+        "required": ["radius", "height", "frame"],
     }
 
-    def __init__(self, frame=None, radius=0.3, height=1.0, **kwargs):
+    def __init__(self, radius, height, frame=None, **kwargs):
         super(Capsule, self).__init__(frame=frame, **kwargs)
         self._radius = None
         self._height = None
@@ -91,33 +91,12 @@ class Capsule(Shape):
         self.height = height
 
     def __repr__(self):
-        return "Capsule(frame={0!r}, radius={1!r}, height={2!r})".format(self.frame, self.radius, self.height)
-
-    def __len__(self):
-        return 2
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.radius
-        elif key == 2:
-            return self.height
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.radius = value
-        elif key == 2:
-            self.height = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius, self.height])
+        return "{0}(radius={1}, height={2}, frame={3!r})".format(
+            type(self).__name__,
+            self.radius,
+            self.height,
+            self.frame,
+        )
 
     # ==========================================================================
     # Data
@@ -125,13 +104,19 @@ class Capsule(Shape):
 
     @property
     def data(self):
-        return {"frame": self.frame, "radius": self.radius, "height": self.height}
+        return {
+            "radius": self.radius,
+            "height": self.height,
+            "frame": self.frame.data,
+        }
 
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.radius = data["radius"]
-        self.height = data["height"]
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            radius=data["radius"],
+            height=data["height"],
+            frame=Frame.from_data(data["frame"]),
+        )
 
     # ==========================================================================
     # Properties

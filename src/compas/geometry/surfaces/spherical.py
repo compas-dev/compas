@@ -32,11 +32,11 @@ class SphericalSurface(Surface):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "radius": {"type": "number", "minimum": 0},
-            "frame": Frame.JSONSCHEMA,
+            "frame": Frame.DATASCHEMA,
         },
         "required": ["radius", "frame"],
     }
@@ -54,7 +54,11 @@ class SphericalSurface(Surface):
         self.radius = radius
 
     def __repr__(self):
-        return "SphericalSurface(radius={0!r}, frame={1!r})".format(self.radius, self.frame)
+        return "{0}(radius={1}, frame={2!r})".format(
+            type(self).__name__,
+            self.radius,
+            self.frame,
+        )
 
     def __eq__(self, other):
         try:
@@ -64,14 +68,27 @@ class SphericalSurface(Surface):
             return False
         return self.radius == other_radius and self.frame == other_frame
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def data(self):
-        return {"radius": self.radius, "frame": self.frame}
+        return {
+            "radius": self.radius,
+            "frame": self.frame.data,
+        }
 
-    @data.setter
-    def data(self, data):
-        self.radius = data["radius"]
-        self.frame = data["frame"]
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            radius=data["radius"],
+            frame=Frame.from_data(data["frame"]),
+        )
+
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def center(self):

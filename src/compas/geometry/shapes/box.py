@@ -96,13 +96,13 @@ class Box(Shape):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "xsize": {"type": "number", "minimum": 0},
             "ysize": {"type": "number", "minimum": 0},
             "zsize": {"type": "number", "minimum": 0},
-            "frame": Frame.JSONSCHEMA,
+            "frame": Frame.DATASCHEMA,
         },
         "additionalProperties": False,
         "minProperties": 4,
@@ -118,8 +118,12 @@ class Box(Shape):
         self.zsize = xsize if zsize is None else zsize
 
     def __repr__(self):
-        return "Box(xsize={0!r}, ysize={1!r}, zsize={2!r}, frame={3!r})".format(
-            self.xsize, self.ysize, self.zsize, self.frame
+        return "{0}(xsize={1}, ysize={2}, zsize={3}, frame={4!r})".format(
+            type(self).__name__,
+            self.xsize,
+            self.ysize,
+            self.zsize,
+            self.frame,
         )
 
     def __len__(self):
@@ -159,18 +163,20 @@ class Box(Shape):
     @property
     def data(self):
         return {
-            "frame": self.frame,
             "xsize": self.xsize,
             "ysize": self.ysize,
             "zsize": self.zsize,
+            "frame": self.frame.data,
         }
 
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.xsize = data["xsize"]
-        self.ysize = data["ysize"]
-        self.zsize = data["zsize"]
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            xsize=data["xsize"],
+            ysize=data["ysize"],
+            zsize=data["zsize"],
+            frame=Frame.from_data(data["frame"]),
+        )
 
     # ==========================================================================
     # Properties

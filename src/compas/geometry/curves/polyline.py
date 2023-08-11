@@ -68,10 +68,10 @@ class Polyline(Curve):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+            "points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA},
         },
         "required": ["points"],
     }
@@ -90,7 +90,10 @@ class Polyline(Curve):
         self.points = points
 
     def __repr__(self):
-        return "Polyline([{0}])".format(", ".join(["{0!r}".format(point) for point in self.points]))
+        return "{0}({1!r})".format(
+            type(self).__name__,
+            self.points,
+        )
 
     def __getitem__(self, key):
         return self.points[key]
@@ -116,7 +119,7 @@ class Polyline(Curve):
 
     @property
     def data(self):
-        return {"points": self.points}
+        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # properties

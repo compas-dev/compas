@@ -63,17 +63,17 @@ class Torus(Shape):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.JSONSCHEMA,
             "radius_axis": {"type": "number", "minimum": 0},
             "radius_pipe": {"type": "number", "minimum": 0},
+            "frame": Frame.DATASCHEMA,
         },
-        "required": ["frame", "radius_axis", "radius_pipe"],
+        "required": ["radius_axis", "radius_pipe", "frame"],
     }
 
-    def __init__(self, frame=None, radius_axis=1.0, radius_pipe=0.3, **kwargs):
+    def __init__(self, radius_axis, radius_pipe, frame=None, **kwargs):
         super(Torus, self).__init__(frame=frame, **kwargs)
         self._radius_axis = None
         self._radius_pipe = None
@@ -87,38 +87,18 @@ class Torus(Shape):
     @property
     def data(self):
         return {
-            "frame": self.frame,
             "radius_axis": self.radius_axis,
             "radius_pipe": self.radius_pipe,
+            "frame": self.frame.data,
         }
-
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.radius_axis = data["radius_axis"]
-        self.radius_pipe = data["radius_pipe"]
 
     @classmethod
     def from_data(cls, data):
-        """Construct a torus from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Torus`
-            The constructed torus.
-
-        Examples
-        --------
-        >>> data = {"frame": Frame.worldXY(), "radius_axis": 1.0, "radius_pipe": 0.3}
-        >>> torus = Torus.from_data(data)
-
-        """
-        return cls(**data)
+        return cls(
+            radius_axis=data["radius_axis"],
+            radius_pipe=data["radius_pipe"],
+            frame=Frame.from_data(data["frame"]),
+        )
 
     # ==========================================================================
     # properties

@@ -42,11 +42,11 @@ class Plane(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "point": Point.JSONSCHEMA,
-            "normal": Vector.JSONSCHEMA,
+            "point": Point.DATASCHEMA,
+            "normal": Vector.DATASCHEMA,
         },
         "required": ["point", "normal"],
     }
@@ -59,7 +59,11 @@ class Plane(Geometry):
         self.normal = normal
 
     def __repr__(self):
-        return "Plane({0!r}, {1!r})".format(self.point, self.normal)
+        return "{0}(point={1!r}, normal={2!r})".format(
+            type(self).__name__,
+            self.point,
+            self.normal,
+        )
 
     def __len__(self):
         return 2
@@ -92,37 +96,10 @@ class Plane(Geometry):
 
     @property
     def data(self):
-        return {"point": self.point, "normal": self.normal}
-
-    @data.setter
-    def data(self, data):
-        self.point = data["point"]
-        self.normal = data["normal"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a plane from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Plane`
-            The constructed plane.
-
-        Examples
-        --------
-        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
-        >>> plane.point
-        Point(0.000, 0.000, 0.000)
-        >>> plane.normal
-        Vector(0.000, 0.000, 1.000)
-
-        """
-        return cls(data["point"], data["normal"])
+        return {
+            "point": self.point.data,
+            "normal": self.normal.data,
+        }
 
     # ==========================================================================
     # Properties
