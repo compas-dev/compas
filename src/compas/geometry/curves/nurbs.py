@@ -5,6 +5,7 @@ from __future__ import division
 from math import sqrt
 
 from compas.plugins import pluggable
+from compas.plugins import PluginNotInstalledError
 from compas.geometry import Point
 from compas.geometry import Frame
 
@@ -20,22 +21,22 @@ def new_nurbscurve(cls, *args, **kwargs):
 
 @pluggable(category="factories")
 def new_nurbscurve_from_parameters(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def new_nurbscurve_from_points(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def new_nurbscurve_from_step(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 class NurbsCurve(Curve):
@@ -67,10 +68,10 @@ class NurbsCurve(Curve):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
+            "points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA},
             "weights": {"type": "array", "items": {"type": "number"}},
             "knots": {"type": "array", "items": {"type": "number"}},
             "multiplicities": {"type": "array", "items": {"type": "integer"}},
@@ -87,25 +88,16 @@ class NurbsCurve(Curve):
     def __init__(self, name=None):
         super(NurbsCurve, self).__init__(name=name)
 
-    def __eq__(self, other):
-        raise NotImplementedError
-
-    def __str__(self):
-        lines = [
-            "NurbsCurve",
-            "----------",
-            "Points: {}".format(self.points),
-            "Weights: {}".format(self.weights),
-            "Knots: {}".format(self.knots),
-            "Mults: {}".format(self.multiplicities),
-            "Degree: {}".format(self.degree),
-            "Order: {}".format(self.order),
-            "Domain: {}".format(self.domain),
-            "Closed: {}".format(self.is_closed),
-            "Periodic: {}".format(self.is_periodic),
-            "Rational: {}".format(self.is_rational),
-        ]
-        return "\n".join(lines)
+    def __repr__(self):
+        return "{0}(points={1!r}, weigths={2}, knots={3}, multiplicities={4}, degree={5}, is_periodic={6})".format(
+            type(self).__name__,
+            self.points,
+            self.weights,
+            self.knots,
+            self.multiplicities,
+            self.degree,
+            self.is_periodic,
+        )
 
     # ==============================================================================
     # Data
@@ -113,24 +105,18 @@ class NurbsCurve(Curve):
 
     @property
     def dtype(self):
-        """str : The type of the object in the form of a '2-level' import and a class name."""
         return "compas.geometry/NurbsCurve"
 
     @property
     def data(self):
-        """dict : Representation of the curve as a dict containing only native Python data."""
         return {
-            "points": self.points,
+            "points": [point.data for point in self.points],
             "weights": self.weights,
             "knots": self.knots,
             "multiplicities": self.multiplicities,
             "degree": self.degree,
             "is_periodic": self.is_periodic,
         }
-
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
 
     @classmethod
     def from_data(cls, data):
@@ -147,13 +133,14 @@ class NurbsCurve(Curve):
             The constructed curve.
 
         """
-        points = data["points"]
-        weights = data["weights"]
-        knots = data["knots"]
-        multiplicities = data["multiplicities"]
-        degree = data["degree"]
-        is_periodic = data["is_periodic"]
-        return cls.from_parameters(points, weights, knots, multiplicities, degree, is_periodic)
+        return cls.from_parameters(
+            data["points"],
+            data["weights"],
+            data["knots"],
+            data["multiplicities"],
+            data["degree"],
+            data["is_periodic"],
+        )
 
     # ==============================================================================
     # Properties
