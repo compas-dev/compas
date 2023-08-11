@@ -166,6 +166,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed base class of `compas.geometry.Polyline` to `compas.geometry.Curve.`
 * Changed `compas.geometry.oriented_bounding_box_numpy` to minimize volume.
 * Fixed data interface `compas.datastructures.Assembly` and `compas.datastructures.Part`.
+* Changed data property of `compas.datastructures.Graph` to contain only JSON compatible data.
+* Changed data property of `compas.datastructures.Halfedge` to contain only JSON compatible data.
+* Changed data property of `compas.datastructures.Halfface` to contain only JSON compatible data.
 
 ### Removed
 
