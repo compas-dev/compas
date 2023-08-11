@@ -1422,7 +1422,7 @@ class Mesh(HalfEdge):
         """
         vertices = self.face_vertices(fkey)
         f = len(vertices)
-        points = self.vertices_attributes("xyz", keys=vertices)
+        points = self.vertices_attributes("xyz", keys=vertices) or []
         lengths = [distance_point_point(a, b) for a, b in pairwise(points + points[:1])]
         length = sum(lengths) / f
         d = distance_line_line((points[0], points[2]), (points[1], points[3]))
@@ -1477,8 +1477,8 @@ class Mesh(HalfEdge):
             angle = angle_points(o, a, b, deg=True)
             angles.append(angle)
         return max(
-            (max(angles) - ideal_angle) / (180 - ideal_angle),
-            (ideal_angle - min(angles)) / ideal_angle,
+            (max(angles) - ideal_angle) / (180 - ideal_angle),  # type: ignore
+            (ideal_angle - min(angles)) / ideal_angle,  # type: ignore
         )
 
     def face_curvature(self, fkey):
