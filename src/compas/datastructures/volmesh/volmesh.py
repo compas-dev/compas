@@ -195,9 +195,9 @@ class VolMesh(HalfFace):
 
         """
         obj = OBJ(filepath, precision)
-        vertices = obj.parser.vertices
-        faces = obj.parser.faces
-        groups = obj.parser.groups
+        vertices = obj.parser.vertices or []  # type: ignore
+        faces = obj.parser.faces or []  # type: ignore
+        groups = obj.parser.groups or []  # type: ignore
         cells = []
         for name in groups:
             group = groups[name]
@@ -288,7 +288,7 @@ class VolMesh(HalfFace):
         vertex_index = self.vertex_index()
         vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
         cells = []
-        for cell in self.cell:
+        for cell in self.cells():
             faces = [
                 [vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in self.cell_faces(cell)
             ]
