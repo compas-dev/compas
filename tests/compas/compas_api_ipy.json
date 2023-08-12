@@ -44,8 +44,7 @@
       "json_dump",
       "json_dumps",
       "json_load",
-      "json_loads",
-      "validate_data"
+      "json_loads"
     ],
     "compas.datastructures": [
       "Assembly",

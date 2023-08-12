@@ -111,8 +111,19 @@ class Data(object):
         if name:
             self.name = name
 
-    def __jsondump__(self, minimal=True):
-        """Return the required information for serialization with the COMPAS JSON serializer."""
+    def __jsondump__(self, minimal=False):
+        """Return the required information for serialization with the COMPAS JSON serializer.
+
+        Parameters
+        ----------
+        minimal : bool, optional
+            If True, exclude the GUID from the dump dict.
+
+        Returns
+        -------
+        dict
+
+        """
         state = {
             "dtype": self.dtype,
             "data": self.data,
@@ -124,11 +135,34 @@ class Data(object):
 
     @classmethod
     def __jsonload__(cls, data, guid=None):
-        """Construct an object of this type from the provided data to support COMPAS JSON serialization."""
+        """Construct an object of this type from the provided data to support COMPAS JSON serialization.
+
+        Parameters
+        ----------
+        data : dict
+            The raw Python data representing the object.
+        guid : str, optional
+            The GUID of the object.
+
+        Returns
+        -------
+        object
+
+        """
         obj = cls.from_data(data)
-        if guid:
+        if guid is not None:
             obj._guid = UUID(guid)
         return obj
+
+    def __getstate__(self):
+        state = self.__jsondump__()
+        state["__dict__"] = self.__dict__
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state["__dict__"])
+        if "guid" in state:
+            self._guid = UUID(state["guid"])
 
     @property
     def dtype(self):

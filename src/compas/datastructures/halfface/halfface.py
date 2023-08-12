@@ -160,11 +160,18 @@ class HalfFace(Datastructure):
     @property
     def data(self):
         _cell = {}
-        for c in self.cells():
+        # this sometimes changes the cycle order of faces
+        # for c in self.cells():
+        #     faces = []
+        #     for face in self.cell_faces(c):
+        #         vertices = self.halfface_vertices(face)
+        #         faces.append(vertices)
+        #     _cell[c] = faces
+        for c in self._cell:
             faces = []
-            for face in self.cell_faces(c):
-                vertices = self.halfface_vertices(face)
-                faces.append(vertices)
+            for u in sorted(self._cell[c]):
+                for v in sorted(self._cell[c][u]):
+                    faces.append(self._halfface[self._cell[c][u][v]])
             _cell[c] = faces
 
         return {

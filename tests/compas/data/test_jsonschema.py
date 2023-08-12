@@ -35,7 +35,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_point_valid(point):
-        Point.validate_jsondata(point)
+        Point.validate_data(point)
 
     @pytest.mark.parametrize(
         "point",
@@ -47,7 +47,7 @@ if not compas.IPY:
     )
     def test_schema_point_invalid(point):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Point.validate_jsondata(point)
+            Point.validate_data(point)
 
     @pytest.mark.parametrize(
         "vector",
@@ -58,7 +58,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_vector_valid(vector):
-        Vector.validate_jsondata(vector)
+        Vector.validate_data(vector)
 
     @pytest.mark.parametrize(
         "vector",
@@ -70,7 +70,7 @@ if not compas.IPY:
     )
     def test_schema_vector_invalid(vector):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Vector.validate_jsondata(vector)
+            Vector.validate_data(vector)
 
     @pytest.mark.parametrize(
         "line",
@@ -80,7 +80,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_line_valid(line):
-        Line.validate_jsondata(line)
+        Line.validate_data(line)
 
     @pytest.mark.parametrize(
         "line",
@@ -91,7 +91,7 @@ if not compas.IPY:
     )
     def test_schema_line_invalid(line):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Line.validate_jsondata(line)
+            Line.validate_data(line)
 
     @pytest.mark.parametrize(
         "plane",
@@ -100,7 +100,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_plane_valid(plane):
-        Plane.validate_jsondata(plane)
+        Plane.validate_data(plane)
 
     @pytest.mark.parametrize(
         "plane",
@@ -111,7 +111,7 @@ if not compas.IPY:
     )
     def test_schema_plane_invalid(plane):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Plane.validate_jsondata(plane)
+            Plane.validate_data(plane)
 
     @pytest.mark.parametrize(
         "circle",
@@ -121,7 +121,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_circle_valid(circle):
-        Circle.validate_jsondata(circle)
+        Circle.validate_data(circle)
 
     @pytest.mark.parametrize(
         "circle",
@@ -139,7 +139,7 @@ if not compas.IPY:
     )
     def test_schema_circle_invalid(circle):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Circle.validate_jsondata(circle)
+            Circle.validate_data(circle)
 
     @pytest.mark.parametrize(
         "ellipse",
@@ -167,7 +167,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_ellipse_valid(ellipse):
-        Ellipse.validate_jsondata(ellipse)
+        Ellipse.validate_data(ellipse)
 
     @pytest.mark.parametrize(
         "ellipse",
@@ -211,7 +211,7 @@ if not compas.IPY:
     )
     def test_schema_ellipse_invalid(ellipse):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Ellipse.validate_jsondata(ellipse)
+            Ellipse.validate_data(ellipse)
 
     @pytest.mark.parametrize(
         "frame",
@@ -233,7 +233,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_frame_valid(frame):
-        Frame.validate_jsondata(frame)
+        Frame.validate_data(frame)
 
     @pytest.mark.parametrize(
         "frame",
@@ -244,7 +244,7 @@ if not compas.IPY:
     )
     def test_schema_frame_invalid(frame):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Frame.validate_jsondata(frame)
+            Frame.validate_data(frame)
 
     @pytest.mark.parametrize(
         "quaternion",
@@ -255,7 +255,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_quaternion_valid(quaternion):
-        Quaternion.validate_jsondata(quaternion)
+        Quaternion.validate_data(quaternion)
 
     @pytest.mark.parametrize(
         "quaternion",
@@ -268,7 +268,7 @@ if not compas.IPY:
     )
     def test_schema_quaternion_invalid(quaternion):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Quaternion.validate_jsondata(quaternion)
+            Quaternion.validate_data(quaternion)
 
     @pytest.mark.parametrize(
         "polygon",
@@ -278,7 +278,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_polygon_valid(polygon):
-        Polygon.validate_jsondata(polygon)
+        Polygon.validate_data(polygon)
 
     @pytest.mark.parametrize(
         "polygon",
@@ -290,7 +290,7 @@ if not compas.IPY:
     )
     def test_schema_polygon_invalid(polygon):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Polygon.validate_jsondata(polygon)
+            Polygon.validate_data(polygon)
 
     @pytest.mark.parametrize(
         "polyline",
@@ -300,7 +300,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_polyline_valid(polyline):
-        Polyline.validate_jsondata(polyline)
+        Polyline.validate_data(polyline)
 
     @pytest.mark.parametrize(
         "polyline",
@@ -312,7 +312,7 @@ if not compas.IPY:
     )
     def test_schema_polyline_invalid(polyline):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Polyline.validate_jsondata(polyline)
+            Polyline.validate_data(polyline)
 
     @pytest.mark.parametrize(
         "box",
@@ -326,7 +326,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_box_valid(box):
-        Box.validate_jsondata(box)
+        Box.validate_data(box)
 
     @pytest.mark.parametrize(
         "box",
@@ -359,7 +359,7 @@ if not compas.IPY:
     )
     def test_schema_box_invalid(box):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Box.validate_jsondata(box)
+            Box.validate_data(box)
 
     @pytest.mark.parametrize(
         "capsule",
@@ -371,7 +371,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_capsule_valid(capsule):
-        Capsule.validate_jsondata(capsule)
+        Capsule.validate_data(capsule)
 
     @pytest.mark.parametrize(
         "capsule",
@@ -386,7 +386,7 @@ if not compas.IPY:
     )
     def test_schema_capsule_invalid(capsule):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Capsule.validate_jsondata(capsule)
+            Capsule.validate_data(capsule)
 
     @pytest.mark.parametrize(
         "cone",
@@ -398,7 +398,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_cone_valid(cone):
-        Cone.validate_jsondata(cone)
+        Cone.validate_data(cone)
 
     @pytest.mark.parametrize(
         "cone",
@@ -413,7 +413,7 @@ if not compas.IPY:
     )
     def test_schema_cone_invalid(cone):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Cone.validate_jsondata(cone)
+            Cone.validate_data(cone)
 
     @pytest.mark.parametrize(
         "cylinder",
@@ -425,7 +425,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_cylinder_valid(cylinder):
-        Cylinder.validate_jsondata(cylinder)
+        Cylinder.validate_data(cylinder)
 
     @pytest.mark.parametrize(
         "cylinder",
@@ -440,7 +440,7 @@ if not compas.IPY:
     )
     def test_schema_cylinder_invalid(cylinder):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Cylinder.validate_jsondata(cylinder)
+            Cylinder.validate_data(cylinder)
 
     @pytest.mark.parametrize(
         "polyhedron",
@@ -452,7 +452,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_polyhedron_valid(polyhedron):
-        Polyhedron.validate_jsondata(polyhedron)
+        Polyhedron.validate_data(polyhedron)
 
     @pytest.mark.parametrize(
         "polyhedron",
@@ -472,7 +472,7 @@ if not compas.IPY:
     )
     def test_schema_polyhedron_invalid(polyhedron):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Polyhedron.validate_jsondata(polyhedron)
+            Polyhedron.validate_data(polyhedron)
 
     @pytest.mark.parametrize(
         "sphere",
@@ -482,7 +482,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_sphere_valid(sphere):
-        Sphere.validate_jsondata(sphere)
+        Sphere.validate_data(sphere)
 
     @pytest.mark.parametrize(
         "sphere",
@@ -494,7 +494,7 @@ if not compas.IPY:
     )
     def test_schema_sphere_invalid(sphere):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Sphere.validate_jsondata(sphere)
+            Sphere.validate_data(sphere)
 
     @pytest.mark.parametrize(
         "torus",
@@ -522,7 +522,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_torus_valid(torus):
-        Torus.validate_jsondata(torus)
+        Torus.validate_data(torus)
 
     @pytest.mark.parametrize(
         "torus",
@@ -566,7 +566,7 @@ if not compas.IPY:
     )
     def test_schema_torus_invalid(torus):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Torus.validate_jsondata(torus)
+            Torus.validate_data(torus)
 
     @pytest.mark.parametrize(
         "pointcloud",
@@ -577,7 +577,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_pointcloud_valid(pointcloud):
-        Pointcloud.validate_jsondata(pointcloud)
+        Pointcloud.validate_data(pointcloud)
 
     @pytest.mark.parametrize(
         "pointcloud",
@@ -590,7 +590,7 @@ if not compas.IPY:
     )
     def test_schema_pointcloud_invalid(pointcloud):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Pointcloud.validate_jsondata(pointcloud)
+            Pointcloud.validate_data(pointcloud)
 
     @pytest.mark.parametrize(
         "graph",
@@ -625,7 +625,7 @@ if not compas.IPY:
         ],
     )
     def test_schema_graph_valid(graph):
-        Graph.validate_jsondata(graph)
+        Graph.validate_data(graph)
 
     @pytest.mark.parametrize(
         "graph",
@@ -699,7 +699,7 @@ if not compas.IPY:
     )
     def test_schema_graph_invalid(graph):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Graph.validate_jsondata(graph)
+            Graph.validate_data(graph)
 
     @pytest.mark.parametrize(
         "halfedge",
@@ -784,14 +784,14 @@ if not compas.IPY:
                 "vertex": {"0": {}, "1": {}, "2": {}},
                 "face": {"0": [0, 1, 2]},
                 "facedata": {"0": {}},
-                "edgedata": {"(0,1)": {}},
+                "edgedata": {"(0, 1)": {}},
                 "max_vertex": -1,
                 "max_face": -1,
             },
         ],
     )
     def test_schema_halfedge_valid(halfedge):
-        HalfEdge.validate_jsondata(halfedge)
+        HalfEdge.validate_data(halfedge)
 
     @pytest.mark.parametrize(
         "halfedge",
@@ -848,7 +848,7 @@ if not compas.IPY:
     )
     def test_schema_halfedge_invalid(halfedge):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            HalfEdge.validate_jsondata(halfedge)
+            HalfEdge.validate_data(halfedge)
 
     @pytest.mark.parametrize(
         "halfedge",
@@ -881,4 +881,4 @@ if not compas.IPY:
     )
     def test_schema_halfedge_failing(halfedge):
         with pytest.raises(TypeError):
-            HalfEdge.validate_jsondata(halfedge)
+            HalfEdge.validate_data(halfedge)

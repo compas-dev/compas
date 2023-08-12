@@ -176,7 +176,7 @@ class Part(Datastructure):
         return {
             "attributes": self.attributes,
             "key": self.key,
-            "frame": self.frame,
+            "frame": self.frame.data,
         }
 
     @classmethod

@@ -95,7 +95,7 @@ class DataEncoder(json.JSONEncoder):
 
     """
 
-    minimal = True
+    minimal = False
 
     def default(self, o):
         """Return an object in serialized form.
@@ -226,11 +226,12 @@ class DataDecoder(json.JSONDecoder):
             raise DecoderError("The data type can't be found in the specified module: {}.".format(o["dtype"]))
 
         data = o["data"]
+        guid = o.get("guid")
 
         # Kick-off from_data from a rebuilt Python dictionary instead of the C# data type
         if IDictionary and isinstance(o, IDictionary[str, object]):
             data = {key: data[key] for key in data.Keys}
 
-        obj = cls.__jsonload__(data, o.get("guid", None))
+        obj = cls.__jsonload__(data, guid)
 
         return obj

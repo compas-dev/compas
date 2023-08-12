@@ -2,11 +2,11 @@ from compas.geometry import Point
 
 
 def test_point():
-    p = Point(1, 0, "0")
+    p = Point(1, 0, "0")  # type: ignore
     assert p.x == 1.0 and p.y == 0.0 and p.z == 0.0
     assert p[0] == 1.0 and p[1] == 0.0 and p[2] == 0.0
     assert p == [1.0, 0.0, 0.0]
-    assert repr(p) == "Point(1.000, 0.000, 0.000)"
+    assert repr(p) == "Point(x=1.000, y=0.000, z=0.000)"
 
 
 def test_point_operators():

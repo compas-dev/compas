@@ -66,7 +66,7 @@ class Assembly(Datastructure):
         assembly = cls()
         assembly.attributes.update(data["attributes"] or {})
         assembly.graph = Graph.from_data(data["graph"])
-        assembly._parts = {part.guid: part.key for part in assembly.parts()}
+        assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
         return assembly
 
     # ==========================================================================

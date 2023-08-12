@@ -8,7 +8,7 @@ from compas.data import DataEncoder
 from compas.data import DataDecoder
 
 
-def json_dump(data, fp, pretty=False, compact=False, minimal=True):
+def json_dump(data, fp, pretty=False, compact=False, minimal=False):
     """Write a collection of COMPAS object data to a JSON file.
 
     Parameters
@@ -59,7 +59,7 @@ def json_dump(data, fp, pretty=False, compact=False, minimal=True):
         return json.dump(data, f, cls=DataEncoder, **kwargs)
 
 
-def json_dumps(data, pretty=False, compact=False, minimal=True):
+def json_dumps(data, pretty=False, compact=False, minimal=False):
     """Write a collection of COMPAS objects to a JSON string.
 
     Parameters
