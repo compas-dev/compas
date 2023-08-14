@@ -181,7 +181,9 @@ class Data(object):
         printing self.GetType().FullName or similar. Overriding the `ToString`
         method of .NET object class fixes that and makes Rhino/Grasshopper
         display proper string representations when the objects are printed or
-        connected to a panel or other type of string output."""
+        connected to a panel or other type of string output.
+
+        """
         return str(self)
 
     @property
