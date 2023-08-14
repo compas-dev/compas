@@ -1,16 +1,50 @@
+import pytest
+from random import random
 from compas.geometry import Point
 
 
-def test_point():
-    p = Point(1, 0, "0")  # type: ignore
-    assert p.x == 1.0 and p.y == 0.0 and p.z == 0.0
-    assert p[0] == 1.0 and p[1] == 0.0 and p[2] == 0.0
-    assert p == [1.0, 0.0, 0.0]
-    assert repr(p) == "Point(x=1.000, y=0.000, z=0.000)"
+@pytest.mark.parametrize(
+    "x,y,z",
+    [
+        (1, 2, 3),
+        (1.0, 2.0, 3.0),
+        ("1.0", "2", 3.0),
+        (random(), random(), random()),
+    ],
+)
+def test_point(x, y, z):
+    p = Point(x, y, z)
+    x, y, z = float(x), float(y), float(z)
+    assert p.x == x and p.y == y and p.z == z
+    assert p[0] == x and p[1] == y and p[2] == z
+    assert eval(repr(p)) == p
+
+
+@pytest.mark.parametrize(
+    "x,y",
+    [
+        (1, 2),
+        (1.0, 2.0),
+        ("1.0", "2"),
+        (random(), random()),
+    ],
+)
+def test_point2(x, y):
+    p = Point(x, y)
+    x, y, z = float(x), float(y), 0.0
+    assert p.x == x and p.y == y and p.z == z
+    assert p[0] == x and p[1] == y and p[2] == z
+    assert eval(repr(p)) == p
 
 
 def test_point_operators():
-    pass
+    a = Point(random(), random(), random())
+    b = Point(random(), random(), random())
+    assert a + b == [a.x + b.x, a.y + b.y, a.z + b.z]
+    assert a - b == [a.x - b.x, a.y - b.y, a.z - b.z]
+    assert a * 2 == [a.x * 2, a.y * 2, a.z * 2]
+    assert a / 2 == [a.x / 2, a.y / 2, a.z / 2]
+    assert a**3 == [a.x**3, a.y**3, a.z**3]
 
 
 def test_point_equality():
@@ -25,6 +59,16 @@ def test_point_equality():
 
 def test_point_inplace_operators():
     pass
+
+
+def test_point_data():
+    point = Point(random(), random(), random())
+    other = Point.from_data(point.data)
+    assert point == other
+    assert point.data == other.data
+    assert point.guid != other.guid
+    assert Point.validate_data(point.data)
+    assert Point.validate_data(other.data)
 
 
 def test_point_distance_to_point():
