@@ -27,10 +27,9 @@ def test_plane(point, vector):
     assert isinstance(plane.normal, Vector)
     assert close(plane.normal.length, 1.0, tol=1e-12)
 
-    if not compas.IPY:
-        other = eval(repr(plane))
-        assert allclose(other.point, plane.point, tol=1e-12)
-        assert allclose(other.normal, plane.normal, tol=1e-12)
+    other = eval(repr(plane))
+    assert allclose(other.point, plane.point, tol=1e-12)
+    assert allclose(other.normal, plane.normal, tol=1e-12)
 
 
 def test_plane_data():
@@ -39,13 +38,28 @@ def test_plane_data():
     plane = Plane(point, vector)
     other = Plane.from_data(json.loads(json.dumps(plane.data)))
 
-    assert plane == other
+    assert allclose(other.point, plane.point, tol=1e-12)
+    assert allclose(other.normal, plane.normal, tol=1e-12)
     assert plane.data == other.data
     assert plane.guid != other.guid
 
     if not compas.IPY:
         assert Plane.validate_data(plane.data)
         assert Plane.validate_data(other.data)
+
+
+def test_plane_predefined():
+    plane = Plane.worldXY()
+    assert plane.point == Point(0, 0, 0)
+    assert plane.normal == Vector(0, 0, 1)
+
+    plane = Plane.worldYZ()
+    assert plane.point == Point(0, 0, 0)
+    assert plane.normal == Vector(1, 0, 0)
+
+    plane = Plane.worldZX()
+    assert plane.point == Point(0, 0, 0)
+    assert plane.normal == Vector(0, 1, 0)
 
 
 def test_plane_from_point_and_two_vectors():
