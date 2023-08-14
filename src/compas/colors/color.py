@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 try:
-    basestring
+    basestring  # type: ignore
 except NameError:
     basestring = str
 
