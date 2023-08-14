@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.data.schema.dataclass_typeschema`.
 * Added `compas.data.schema.dataclass_jsonschema`.
 * Added `compas.data.schema.compas_jsonschema`.
-* Added `compas.data.schema.compas_datamodel`.
+* Added `compas.data.schema.compas_dataclasses`.
 * Added `compas.datastructures.Graph.to_jsondata`.
 * Added `compas.datastructures.Graph.from_jsondata`.
 * Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
@@ -169,6 +169,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed data property of `compas.datastructures.Graph` to contain only JSON compatible data.
 * Changed data property of `compas.datastructures.Halfedge` to contain only JSON compatible data.
 * Changed data property of `compas.datastructures.Halfface` to contain only JSON compatible data.
+* Changed `__repr__` of `compas.geometry.Point` and `compas.geometry.Vector` to not use limited precision (`compas.PRECISION`) to ensure proper object reconstruction through `eval(repr(point))`.
 
 ### Removed
 

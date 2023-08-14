@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas import PRECISION
-
 from compas.geometry import centroid_points
 from compas.geometry import normal_polygon
 from compas.geometry import distance_point_point
@@ -118,12 +116,11 @@ class Point(Geometry):
         self.z = z
 
     def __repr__(self):
-        return "{0}(x={1:.{4}f}, y={2:.{4}f}, z={3:.{4}f})".format(
+        return "{0}({1}, {2}, z={3})".format(
             type(self).__name__,
             self.x,
             self.y,
             self.z,
-            PRECISION[:1],
         )
 
     def __len__(self):
