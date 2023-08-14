@@ -240,6 +240,30 @@ class Plane(Geometry):
         return cls([0, 0, 0], [0, 0, 1])
 
     @classmethod
+    def worldYZ(cls):
+        """Construct the world YZ plane.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Plane`
+            The world YZ plane.
+
+        """
+        return cls([0, 0, 0], [1, 0, 0])
+
+    @classmethod
+    def worldZX(cls):
+        """Construct the world ZX plane.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Plane`
+            The world ZX plane.
+
+        """
+        return cls([0, 0, 0], [0, 1, 0])
+
+    @classmethod
     def from_frame(cls, frame):
         """Construct a plane from a frame.
 

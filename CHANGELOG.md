@@ -101,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `vertices_and_faces_to_rhino` to `compas_rhino.conversions`.
 * Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
 * Added `from_mesh` plugin to `compas_rhino.geometry.RhinoBrep`.
+* Added `compas.geometry.Plane.worldYZ` and `compas.geometry.Plane.worldZX`.
 
 ### Changed
 
