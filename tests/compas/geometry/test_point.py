@@ -1,5 +1,6 @@
 from __future__ import division
 import pytest
+import json
 import compas
 from random import random
 from compas.geometry import Point
@@ -69,7 +70,8 @@ def test_point_inplace_operators():
 
 def test_point_data():
     point = Point(random(), random(), random())
-    other = Point.from_data(point.data)
+    other = Point.from_data(json.loads(json.dumps(point.data)))
+
     assert point == other
     assert point.data == other.data
     assert point.guid != other.guid
