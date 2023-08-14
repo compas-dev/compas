@@ -118,3 +118,22 @@ def test_graph_networkx_conversion():
     assert g2.edge_attribute((0, 1), "attr_value") == 10
     assert g2.attributes["name"] == "DiGraph", "Graph attributes must be preserved"
     assert g2.attributes["val"] == (0, 0, 0), "Graph attributes must be preserved"
+
+
+def test_invalid_edge_delete():
+    graph = Graph()
+    node = graph.add_node()
+    edge = graph.add_edge(node, node)
+    graph.delete_edge(edge)
+    assert graph.has_edge(edge) is False
+
+
+def test_opposite_direction_edge_delete():
+    graph = Graph()
+    node_a = graph.add_node()
+    node_b = graph.add_node()
+    edge_a = graph.add_edge(node_a, node_b)
+    edge_b = graph.add_edge(node_b, node_a)
+    graph.delete_edge(edge_a)
+    assert graph.has_edge(edge_a) is False
+    assert graph.has_edge(edge_b) is True

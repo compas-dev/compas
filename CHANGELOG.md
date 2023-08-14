@@ -171,6 +171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed data property of `compas.datastructures.Halfedge` to contain only JSON compatible data.
 * Changed data property of `compas.datastructures.Halfface` to contain only JSON compatible data.
 * Changed `__repr__` of `compas.geometry.Point` and `compas.geometry.Vector` to not use limited precision (`compas.PRECISION`) to ensure proper object reconstruction through `eval(repr(point))`.
+* Changed `compas.datastructures.Graph.delete_edge` to delete invalid (u, u) edges and not delete edges in opposite directions (v, u)
 
 ### Removed
 
