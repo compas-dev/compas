@@ -1,6 +1,7 @@
 import pytest
-
+import json
 import compas
+
 from compas.datastructures import Graph
 
 
@@ -19,38 +20,81 @@ def graph():
 
 
 # ==============================================================================
-# Tests - Schema & jsonschema
+# Basics
+# ==============================================================================
+
+# ==============================================================================
+# Data
 # ==============================================================================
 
 
-# def test_edgedata_directionality(graph):
-#     graph.update_default_edge_attributes({'index': 0})
-#     for index, (u, v) in enumerate(graph.edges()):
-#         graph.edge_attribute((u, v), 'index', index)
-#     assert all(graph.edge_attribute((u, v), 'index') != graph.edge_attribute((v, u), 'index') for u, v in graph.edges())
+def test_graph_data(graph):
+    other = Graph.from_data(json.loads(json.dumps(graph.data)))
 
+    assert graph.data == other.data
+    assert graph.default_node_attributes == other.default_node_attributes
+    assert graph.default_edge_attributes == other.default_edge_attributes
+    assert graph.number_of_nodes() == other.number_of_nodes()
+    assert graph.number_of_edges() == other.number_of_edges()
 
-def test_edgedata_io(graph):
-    graph.update_default_edge_attributes({"index": 0})
-    for index, edge in enumerate(graph.edges()):
-        graph.edge_attribute(edge, "index", index)
-    other = Graph.from_data(graph.data)
-    assert all(other.edge_attribute(edge, "index") == index for index, edge in enumerate(other.edges()))
+    if not compas.IPY:
+        assert Graph.validate_data(graph.data)
+        assert Graph.validate_data(other.data)
 
 
 # ==============================================================================
-# Tests - Samples
+# Constructors
+# ==============================================================================
+
+# ==============================================================================
+# Properties
+# ==============================================================================
+
+# ==============================================================================
+# Accessors
+# ==============================================================================
+
+# ==============================================================================
+# Builders
+# ==============================================================================
+
+# ==============================================================================
+# Modifiers
 # ==============================================================================
 
 
-def test_node_sample(graph):
+def test_graph_invalid_edge_delete():
+    graph = Graph()
+    node = graph.add_node()
+    edge = graph.add_edge(node, node)
+    graph.delete_edge(edge)
+    assert graph.has_edge(edge) is False
+
+
+def test_graph_opposite_direction_edge_delete():
+    graph = Graph()
+    node_a = graph.add_node()
+    node_b = graph.add_node()
+    edge_a = graph.add_edge(node_a, node_b)
+    edge_b = graph.add_edge(node_b, node_a)
+    graph.delete_edge(edge_a)
+    assert graph.has_edge(edge_a) is False
+    assert graph.has_edge(edge_b) is True
+
+
+# ==============================================================================
+# Samples
+# ==============================================================================
+
+
+def test_graph_node_sample(graph):
     for node in graph.node_sample():
         assert graph.has_node(node)
     for node in graph.node_sample(size=graph.number_of_nodes()):
         assert graph.has_node(node)
 
 
-def test_edge_sample(graph):
+def test_graph_edge_sample(graph):
     for edge in graph.edge_sample():
         assert graph.has_edge(edge)
     for edge in graph.edge_sample(size=graph.number_of_edges()):
@@ -58,11 +102,11 @@ def test_edge_sample(graph):
 
 
 # ==============================================================================
-# Tests - Attributes
+# Attributes
 # ==============================================================================
 
 
-def test_default_node_attributes():
+def test_graph_default_node_attributes():
     graph = Graph(name="test", default_node_attributes={"a": 1, "b": 2})
     for node in graph.nodes():
         assert graph.node_attribute(node, name="a") == 1
@@ -71,7 +115,7 @@ def test_default_node_attributes():
         assert graph.node_attribute(node, name="a") == 3
 
 
-def test_default_edge_attributes():
+def test_graph_default_edge_attributes():
     graph = Graph(name="test", default_edge_attributes={"a": 1, "b": 2})
     for edge in graph.edges():
         assert graph.edge_attribute(edge, name="a") == 1
@@ -81,11 +125,11 @@ def test_default_edge_attributes():
 
 
 # ==============================================================================
-# Tests - Conversion
+# Conversion
 # ==============================================================================
 
 
-def test_graph_networkx_conversion():
+def test_graph_to_networkx():
     if compas.IPY:
         return
 
@@ -101,8 +145,8 @@ def test_graph_networkx_conversion():
 
     nxg = g.to_networkx()
 
-    assert nxg.graph["name"] == "DiGraph", "Graph attributes must be preserved"
-    assert nxg.graph["val"] == (0, 0, 0), "Graph attributes must be preserved"
+    assert nxg.graph["name"] == "DiGraph", "Graph attributes must be preserved"  # type: ignore
+    assert nxg.graph["val"] == (0, 0, 0), "Graph attributes must be preserved"  # type: ignore
     assert set(nxg.nodes()) == set(g.nodes()), "Node sets must match"
     assert nxg.nodes[1]["weight"] == 1.2, "Node attributes must be preserved"
     assert nxg.nodes[1]["height"] == "test", "Node attributes must be preserved"
@@ -118,22 +162,3 @@ def test_graph_networkx_conversion():
     assert g2.edge_attribute((0, 1), "attr_value") == 10
     assert g2.attributes["name"] == "DiGraph", "Graph attributes must be preserved"
     assert g2.attributes["val"] == (0, 0, 0), "Graph attributes must be preserved"
-
-
-def test_invalid_edge_delete():
-    graph = Graph()
-    node = graph.add_node()
-    edge = graph.add_edge(node, node)
-    graph.delete_edge(edge)
-    assert graph.has_edge(edge) is False
-
-
-def test_opposite_direction_edge_delete():
-    graph = Graph()
-    node_a = graph.add_node()
-    node_b = graph.add_node()
-    edge_a = graph.add_edge(node_a, node_b)
-    edge_b = graph.add_edge(node_b, node_a)
-    graph.delete_edge(edge_a)
-    assert graph.has_edge(edge_a) is False
-    assert graph.has_edge(edge_b) is True
