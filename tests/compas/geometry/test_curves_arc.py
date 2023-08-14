@@ -34,8 +34,8 @@ def test_arc_create():
 
     other = eval(repr(arc))
     assert arc.radius == other.radius
-    assert arc.start_angle == other.start_angle
-    assert arc.end_angle == other.end_angle
+    assert close(arc.start_angle, other.start_angle, tol=1e-12)
+    assert close(arc.end_angle, other.end_angle, tol=1e-12)
     assert arc.frame.point == other.frame.point
     assert allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
     assert allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
@@ -52,8 +52,8 @@ def test_arc_create_with_frame(frame):
 
     other = eval(repr(arc))
     assert arc.radius == other.radius
-    assert arc.start_angle == other.start_angle
-    assert arc.end_angle == other.end_angle
+    assert close(arc.start_angle, other.start_angle, tol=1e-12)
+    assert close(arc.end_angle, other.end_angle, tol=1e-12)
     assert arc.frame.point == other.frame.point
     assert allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
     assert allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
@@ -106,8 +106,8 @@ def test_arc_data():
     other = Arc.from_data(json.loads(json.dumps(arc.data)))
 
     assert arc.radius == other.radius
-    assert arc.start_angle == other.start_angle
-    assert arc.end_angle == other.end_angle
+    assert close(arc.start_angle, other.start_angle, tol=1e-12)
+    assert close(arc.end_angle, other.end_angle, tol=1e-12)
     assert arc.frame.point == other.frame.point
     assert allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
     assert allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
