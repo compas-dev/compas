@@ -100,7 +100,7 @@ def compas_jsonschema(dirname=None):
 
     """
     schemas = []
-    dataclasses = compas_datamodel()
+    dataclasses = compas_dataclasses()
     for cls in dataclasses:
         filepath = None
         if dirname:
@@ -110,7 +110,7 @@ def compas_jsonschema(dirname=None):
     return schemas
 
 
-def compas_datamodel():
+def compas_dataclasses():
     """Find all classes in the COMPAS data model.
 
     Returns
