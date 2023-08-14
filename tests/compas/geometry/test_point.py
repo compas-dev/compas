@@ -1,4 +1,6 @@
+from __future__ import division
 import pytest
+import compas
 from random import random
 from compas.geometry import Point
 
@@ -17,7 +19,9 @@ def test_point(x, y, z):
     x, y, z = float(x), float(y), float(z)
     assert p.x == x and p.y == y and p.z == z
     assert p[0] == x and p[1] == y and p[2] == z
-    assert eval(repr(p)) == p
+
+    if not compas.IPY:
+        assert eval(repr(p)) == p
 
 
 @pytest.mark.parametrize(
@@ -34,7 +38,9 @@ def test_point2(x, y):
     x, y, z = float(x), float(y), 0.0
     assert p.x == x and p.y == y and p.z == z
     assert p[0] == x and p[1] == y and p[2] == z
-    assert eval(repr(p)) == p
+
+    if not compas.IPY:
+        assert eval(repr(p)) == p
 
 
 def test_point_operators():
@@ -67,8 +73,10 @@ def test_point_data():
     assert point == other
     assert point.data == other.data
     assert point.guid != other.guid
-    assert Point.validate_data(point.data)
-    assert Point.validate_data(other.data)
+
+    if not compas.IPY:
+        assert Point.validate_data(point.data)
+        assert Point.validate_data(other.data)
 
 
 def test_point_distance_to_point():
