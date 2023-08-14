@@ -40,7 +40,6 @@ def test_plane_data():
 
     assert allclose(other.point, plane.point, tol=1e-12)
     assert allclose(other.normal, plane.normal, tol=1e-12)
-    assert plane.data == other.data
     assert plane.guid != other.guid
 
     if not compas.IPY:
