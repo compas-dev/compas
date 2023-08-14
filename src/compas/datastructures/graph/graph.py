@@ -58,13 +58,6 @@ class Graph(Datastructure):
                     "additionalProperties": {"type": "object"},
                 },
             },
-            "adjacency": {
-                "type": "object",
-                "additionalProperties": {
-                    "type": "object",
-                    "additionalProperties": {"type": "null"},
-                },
-            },
             "max_node": {"type": "integer", "minimum": -1},
         },
         "required": [
@@ -73,7 +66,6 @@ class Graph(Datastructure):
             "dea",
             "node",
             "edge",
-            "adjacency",
             "max_node",
         ],
     }
