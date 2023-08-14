@@ -1,11 +1,14 @@
 import pytest
+import json
+import compas
+
 from compas.geometry import close
 from compas.geometry import allclose
 from compas.geometry import Frame
 from compas.geometry import Hyperbola
 
 
-def test_create_hyperbola():
+def test_hyperbola_create():
     hyperbola = Hyperbola(major=1.0, minor=0.5)
 
     assert close(hyperbola.major, 1.0, tol=1e-12)
@@ -26,7 +29,7 @@ def test_create_hyperbola():
     assert allclose(hyperbola.point_at(1.0), hyperbola.point_at(1.0, world=False), tol=1e-12)
 
 
-def test_create_hyperbola_frame():
+def test_hyperbola_create_with_frame():
     hyperbola = Hyperbola(major=1.0, minor=0.5, frame=Frame.worldZX())
 
     assert close(hyperbola.major, 1.0, tol=1e-12)
@@ -65,6 +68,26 @@ def test_create_hyperbola_frame():
         hyperbola.point_at(1.00, world=False).transformed(hyperbola.transformation),
         tol=1e-12,
     )
+
+
+# =============================================================================
+# Data
+# =============================================================================
+
+
+def test_hyperbola_data():
+    hyperbola = Hyperbola(major=1.0, minor=0.5)
+    other = Hyperbola.from_data(json.loads(json.dumps(hyperbola.data)))
+
+    assert hyperbola.major == other.major
+    assert hyperbola.minor == other.minor
+    assert hyperbola.frame.point == other.frame.point
+    assert allclose(hyperbola.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(hyperbola.frame.yaxis, other.frame.yaxis, tol=1e-12)
+
+    if not compas.IPY:
+        assert Hyperbola.validate_data(hyperbola.data)
+        assert Hyperbola.validate_data(other.data)
 
 
 # =============================================================================

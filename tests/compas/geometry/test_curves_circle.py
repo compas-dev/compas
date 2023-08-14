@@ -1,3 +1,6 @@
+import json
+import compas
+
 from compas.geometry import close
 from compas.geometry import allclose
 from compas.geometry import Circle
@@ -5,7 +8,7 @@ from compas.geometry import Frame
 from compas.geometry import Plane
 
 
-def test_create_circle():
+def test_circle_create():
     circle = Circle(radius=1.0)
 
     assert close(circle.radius, 1.0, tol=1e-12)
@@ -25,7 +28,7 @@ def test_create_circle():
     assert allclose(circle.point_at(1.0), [1.0, 0.0, 0.0], tol=1e-12)
 
 
-def test_create_circle_frame():
+def test_circle_create_with_frame():
     circle = Circle(radius=1.0, frame=Frame.worldZX())
 
     assert close(circle.radius, 1.0, tol=1e-12)
@@ -78,11 +81,30 @@ def test_create_circle_frame():
 
 
 # =============================================================================
+# Data
+# =============================================================================
+
+
+def test_circle_data():
+    circle = Circle(radius=1.0)
+    other = Circle.from_data(json.loads(json.dumps(circle.data)))
+
+    assert circle.radius == other.radius
+    assert circle.frame.point == other.frame.point
+    assert allclose(circle.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(circle.frame.yaxis, other.frame.yaxis, tol=1e-12)
+
+    if not compas.IPY:
+        assert Circle.validate_data(circle.data)
+        assert Circle.validate_data(other.data)
+
+
+# =============================================================================
 # Constructors
 # =============================================================================
 
 
-def test_create_circle_from_point_and_radius():
+def test_circle_create_from_point_and_radius():
     circle = Circle.from_point_and_radius([1.0, 2.0, 3.0], 1.0)
 
     assert close(circle.radius, 1.0, tol=1e-12)
@@ -99,7 +121,7 @@ def test_create_circle_from_point_and_radius():
     assert allclose(circle.frame.zaxis, Frame.worldXY().zaxis, tol=1e-12)
 
 
-def test_create_circle_from_plane_and_radius():
+def test_circle_create_from_plane_and_radius():
     plane = Plane([1.0, 2.0, 3.0], [0.0, 0.0, 1.0])
     frame = Frame.from_plane(plane)
     circle = Circle.from_plane_and_radius(plane, 1.0)
@@ -118,11 +140,11 @@ def test_create_circle_from_plane_and_radius():
     assert allclose(circle.frame.zaxis, frame.zaxis, tol=1e-12)
 
 
-def test_create_circle_from_three_points():
+def test_circle_create_from_three_points():
     pass
 
 
-def test_create_circle_from_points():
+def test_circle_create_from_points():
     pass
 
 

@@ -1,7 +1,7 @@
 import compas
 
 try:
-    import System
+    import System  # type: ignore
 
     def test_decimal():
         before = System.Decimal(100.0)

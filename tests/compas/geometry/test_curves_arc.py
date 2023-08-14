@@ -1,7 +1,11 @@
 import math
+import json
 import pytest
+import compas
 
 from compas.geometry import Arc
+from compas.geometry import Point  # noqa: F401
+from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import Circle
 from compas.geometry import close, allclose
@@ -12,7 +16,7 @@ def frame():
     return Frame([1.23, 0.44, -4.02], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
 
 
-def test_create_arc():
+def test_arc_create():
     arc = Arc(radius=1.0, start_angle=0.0, end_angle=math.pi)
 
     assert close(arc.radius, 1.0)
@@ -28,8 +32,16 @@ def test_create_arc():
     assert allclose(arc.point_at(0.5, world=True), arc.point_at(0.5, world=False), tol=1e-12)
     assert allclose(arc.point_at(1.0, world=True), arc.point_at(1.0, world=False), tol=1e-12)
 
+    other = eval(repr(arc))
+    assert arc.radius == other.radius
+    assert arc.start_angle == other.start_angle
+    assert arc.end_angle == other.end_angle
+    assert arc.frame.point == other.frame.point
+    assert allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
-def test_create_arc_frame(frame):
+
+def test_arc_create_with_frame(frame):
     arc = Arc(radius=0.2, start_angle=0.0, end_angle=1.14, frame=frame)
 
     assert close(arc.radius, 0.2)
@@ -37,6 +49,14 @@ def test_create_arc_frame(frame):
     assert close(arc.start_angle, 0.0)
     assert close(arc.end_angle, 1.14)
     assert not arc.is_circle
+
+    other = eval(repr(arc))
+    assert arc.radius == other.radius
+    assert arc.start_angle == other.start_angle
+    assert arc.end_angle == other.end_angle
+    assert arc.frame.point == other.frame.point
+    assert allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
     assert not allclose(
         arc.point_at(0.0, world=True),
@@ -71,9 +91,30 @@ def test_create_arc_frame(frame):
     )
 
 
-def test_create_arc_invalid():
+def test_arc_create_invalid():
     with pytest.raises(ValueError):
         Arc(radius=1.0, start_angle=0.2314, end_angle=7.14)
+
+
+# =============================================================================
+# Data
+# =============================================================================
+
+
+def test_arc_data():
+    arc = Arc(radius=1.0, start_angle=0.0, end_angle=math.pi)
+    other = Arc.from_data(json.loads(json.dumps(arc.data)))
+
+    assert arc.radius == other.radius
+    assert arc.start_angle == other.start_angle
+    assert arc.end_angle == other.end_angle
+    assert arc.frame.point == other.frame.point
+    assert allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
+
+    if not compas.IPY:
+        assert Arc.validate_data(arc.data)
+        assert Arc.validate_data(other.data)
 
 
 # =============================================================================
@@ -81,7 +122,7 @@ def test_create_arc_invalid():
 # =============================================================================
 
 
-def test_create_from_circle(frame):
+def test_arc_create_from_circle(frame):
     circle = Circle(radius=34.222, frame=frame)
     arc = Arc.from_circle(circle, 0.1, 0.443)
 
@@ -97,7 +138,7 @@ def test_create_from_circle(frame):
     assert allclose(arc.frame, circle.frame)
 
 
-def test_create_from_full_circle(frame):
+def test_arc_create_from_full_circle(frame):
     circle = Circle(radius=34.222, frame=frame)
     arc = Arc.from_circle(circle, 0.0, 2.0 * math.pi)
 
