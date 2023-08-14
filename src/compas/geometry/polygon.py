@@ -5,24 +5,17 @@ from __future__ import division
 import math
 
 from compas.utilities import pairwise
-
 from compas.geometry import allclose
 from compas.geometry import area_polygon
-
-# from compas.geometry import cross_vectors
 from compas.geometry import centroid_polygon
 from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
 from compas.geometry import earclip_polygon
 from compas.geometry import bounding_box
-
-# from compas.geometry import bestfit_plane
 from compas.geometry import Geometry
 from compas.geometry import Transformation
 from compas.geometry import Point
-
-# from compas.geometry import Vector
 from compas.geometry import Plane
 from compas.geometry import Frame
 from compas.geometry import Line
