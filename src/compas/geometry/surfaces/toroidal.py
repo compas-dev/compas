@@ -37,7 +37,7 @@ class ToroidalSurface(Surface):
             "radius_pipe": {"type": "number", "minimum": 0},
             "frame": Frame.DATASCHEMA,
         },
-        "required": ["radius", "frame"],
+        "required": ["radius_axis", "radius_pipe", "frame"],
     }
 
     # overwriting the __new__ method is necessary
