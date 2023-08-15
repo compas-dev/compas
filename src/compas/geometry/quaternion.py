@@ -132,20 +132,57 @@ class Quaternion(Geometry):
         self.y = y
         self.z = z
 
+    def __repr__(self):
+        return "{0}({1}, {2}, {3}, {4})".format(type(self).__name__, self.w, self.x, self.y, self.z)
+
+    def __eq__(self, other, tol=1e-05):
+        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
+            return False
+        for v1, v2 in zip(self, other):
+            if math.fabs(v1 - v2) > tol:
+                return False
+        return True
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.w
+        if key == 1:
+            return self.x
+        if key == 2:
+            return self.y
+        if key == 3:
+            return self.z
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.w = value
+            return
+        if key == 1:
+            self.x = value
+            return
+        if key == 2:
+            self.y = value
+        if key == 3:
+            self.z = value
+        raise KeyError
+
+    def __iter__(self):
+        return iter(self.wxyz)
+
+    def __len__(self):
+        return 4
+
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
     def data(self):
         return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
 
-    @classmethod
-    def from_data(cls, data):
-        return cls(data["w"], data["x"], data["y"], data["z"])
-
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -197,51 +234,8 @@ class Quaternion(Geometry):
         return quaternion_is_unit(self)
 
     # ==========================================================================
-    # customization
+    # Operators
     # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.w
-        if key == 1:
-            return self.x
-        if key == 2:
-            return self.y
-        if key == 3:
-            return self.z
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.w = value
-            return
-        if key == 1:
-            self.x = value
-            return
-        if key == 2:
-            self.y = value
-        if key == 3:
-            self.z = value
-        raise KeyError
-
-    def __eq__(self, other, tol=1e-05):
-        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
-            return False
-        for v1, v2 in zip(self, other):
-            if math.fabs(v1 - v2) > tol:
-                return False
-        return True
-
-    def __iter__(self):
-        return iter(self.wxyz)
-
-    def __len__(self):
-        return 4
-
-    def __repr__(self):
-        return "Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})".format(
-            self.w, self.x, self.y, self.z, prec=3
-        )
 
     def __mul__(self, other):
         """Multiply operator for two quaternions.
@@ -276,7 +270,7 @@ class Quaternion(Geometry):
         return Quaternion(*p)
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -354,7 +348,7 @@ class Quaternion(Geometry):
         return cls.from_matrix(R.matrix)
 
     # ==========================================================================
-    # methods
+    # Methods
     # ==========================================================================
 
     def unitize(self):
