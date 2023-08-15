@@ -94,26 +94,26 @@ class PlanarSurface(Surface):
 
     @property
     def xsize(self):
-        if not self._xsize:
+        if self._xsize is None:
             raise ValueError("The size of the surface in the local X-direction is not set.")
         return self._xsize
 
     @xsize.setter
     def xsize(self, xsize):
-        if xsize <= 0:
-            raise ValueError("The size of the surface in the local X-direction should be larger than zero.")
+        if xsize < 0:
+            raise ValueError("The size of the surface in the local X-direction should be at least zero.")
         self._xsize = float(xsize)
 
     @property
     def ysize(self):
-        if not self._ysize:
+        if self._ysize is None:
             raise ValueError("The size of the surface in the local Y-direction is not set.")
         return self._ysize
 
     @ysize.setter
     def ysize(self, ysize):
-        if ysize <= 0:
-            raise ValueError("The size of the surface in the local Y-direction should be larger than zero.")
+        if ysize < 0:
+            raise ValueError("The size of the surface in the local Y-direction should be at least zero.")
         self._ysize = float(ysize)
 
     # =============================================================================
