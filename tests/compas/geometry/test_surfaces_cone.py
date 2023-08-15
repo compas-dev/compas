@@ -10,11 +10,6 @@ from compas.geometry import ConicalSurface
 from compas.geometry import close
 
 
-# =============================================================================
-# Constructors
-# =============================================================================
-
-
 @pytest.mark.parametrize(
     "radius,height",
     [
@@ -59,6 +54,10 @@ def test_cone_data():
         assert ConicalSurface.validate_data(cone.data)
         assert ConicalSurface.validate_data(other.data)
 
+
+# =============================================================================
+# Constructors
+# =============================================================================
 
 # =============================================================================
 # Properties and Geometry

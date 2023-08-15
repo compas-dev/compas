@@ -10,11 +10,6 @@ from compas.geometry import CylindricalSurface
 from compas.geometry import close
 
 
-# =============================================================================
-# Constructors
-# =============================================================================
-
-
 @pytest.mark.parametrize("radius", [0, 1, random()])
 def test_cylinder(radius):
     cylinder = CylindricalSurface(radius)
@@ -46,6 +41,10 @@ def test_cylinder_data():
         assert CylindricalSurface.validate_data(cylinder.data)
         assert CylindricalSurface.validate_data(other.data)
 
+
+# =============================================================================
+# Constructors
+# =============================================================================
 
 # =============================================================================
 # Properties and Geometry

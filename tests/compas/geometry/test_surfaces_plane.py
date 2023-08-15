@@ -10,11 +10,6 @@ from compas.geometry import PlanarSurface
 from compas.geometry import close
 
 
-# =============================================================================
-# Constructors
-# =============================================================================
-
-
 @pytest.mark.parametrize(
     "xsize,ysize",
     [
@@ -59,6 +54,10 @@ def test_plane_data():
         assert PlanarSurface.validate_data(plane.data)
         assert PlanarSurface.validate_data(other.data)
 
+
+# =============================================================================
+# Constructors
+# =============================================================================
 
 # =============================================================================
 # Properties and Geometry
