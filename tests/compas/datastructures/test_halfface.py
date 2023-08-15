@@ -1,8 +1,70 @@
+import pytest
+import json
+import compas
+
 from compas.datastructures import HalfFace
+from compas.datastructures import VolMesh
 
 
 # ==============================================================================
 # Fixtures
+# ==============================================================================
+
+
+@pytest.fixture
+def halfface():
+    return VolMesh.from_meshgrid(1, 1, 1, 2, 2, 2)
+
+
+# ==============================================================================
+# Basics
+# ==============================================================================
+
+# ==============================================================================
+# Data
+# ==============================================================================
+
+
+def test_halfface_data(halfface):
+    other = HalfFace.from_data(json.loads(json.dumps(halfface.data)))
+
+    assert halfface.data == other.data
+    assert halfface.default_vertex_attributes == other.default_vertex_attributes
+    assert halfface.default_edge_attributes == other.default_edge_attributes
+    assert halfface.default_face_attributes == other.default_face_attributes
+    assert halfface.default_cell_attributes == other.default_cell_attributes
+    assert halfface.number_of_vertices() == other.number_of_vertices()
+    assert halfface.number_of_edges() == other.number_of_edges()
+    assert halfface.number_of_faces() == other.number_of_faces()
+    assert halfface.number_of_cells() == other.number_of_cells()
+
+    if not compas.IPY:
+        assert HalfFace.validate_data(halfface.data)
+        assert HalfFace.validate_data(other.data)
+
+
+# ==============================================================================
+# Constructors
+# ==============================================================================
+
+# ==============================================================================
+# Properties
+# ==============================================================================
+
+# ==============================================================================
+# Accessors
+# ==============================================================================
+
+# ==============================================================================
+# Builders
+# ==============================================================================
+
+# ==============================================================================
+# Modifiers
+# ==============================================================================
+
+# ==============================================================================
+# Samples
 # ==============================================================================
 
 # ==============================================================================
