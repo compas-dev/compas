@@ -8,9 +8,17 @@ from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import CylindricalSurface
 from compas.geometry import close
+from compas.utilities import linspace
 
 
-@pytest.mark.parametrize("radius", [0, 1, random()])
+@pytest.mark.parametrize(
+    "radius",
+    [
+        0,
+        1,
+        random(),
+    ],
+)
 def test_cylinder(radius):
     cylinder = CylindricalSurface(radius)
 
@@ -18,6 +26,35 @@ def test_cylinder(radius):
     assert cylinder.frame == Frame.worldXY()
 
     other = eval(repr(cylinder))
+
+    for u in linspace(0.0, 1.0, num=100):
+        for v in linspace(0.0, 1.0, num=100):
+            assert cylinder.point_at(u, v) == cylinder.point_at(u, v, world=False)
+
+    assert close(cylinder.radius, other.radius, tol=1e-12)
+    assert cylinder.frame == other.frame
+
+
+@pytest.mark.parametrize(
+    "frame",
+    [
+        Frame.worldXY(),
+        Frame.worldZX(),
+        Frame.worldYZ(),
+    ],
+)
+def test_cylinder_frame(frame):
+    radius = random()
+    cylinder = CylindricalSurface(radius, frame)
+
+    assert cylinder.radius == radius
+    assert cylinder.frame == frame
+
+    other = eval(repr(cylinder))
+
+    for u in linspace(0.0, 1.0, num=100):
+        for v in linspace(0.0, 1.0, num=100):
+            assert cylinder.point_at(u, v) == cylinder.point_at(u, v, world=False).transformed(cylinder.transformation)
 
     assert close(cylinder.radius, other.radius, tol=1e-12)
     assert cylinder.frame == other.frame

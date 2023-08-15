@@ -8,6 +8,7 @@ from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import PlanarSurface
 from compas.geometry import close
+from compas.utilities import linspace
 
 
 @pytest.mark.parametrize(
@@ -26,6 +27,38 @@ def test_plane(xsize, ysize):
     assert plane.xsize == xsize
     assert plane.ysize == ysize
     assert plane.frame == Frame.worldXY()
+
+    for u in linspace(0.0, 1.0, num=100):
+        for v in linspace(0.0, 1.0, num=100):
+            assert plane.point_at(u, v) == plane.point_at(u, v, world=False)
+
+    other = eval(repr(plane))
+
+    assert close(plane.xsize, other.xsize, tol=1e-12)
+    assert close(plane.ysize, other.ysize, tol=1e-12)
+    assert plane.frame == other.frame
+
+
+@pytest.mark.parametrize(
+    "frame",
+    [
+        Frame.worldXY(),
+        Frame.worldZX(),
+        Frame.worldYZ(),
+    ],
+)
+def test_plane_frame(frame):
+    xsize = random()
+    ysize = random()
+    plane = PlanarSurface(xsize=xsize, ysize=ysize, frame=frame)
+
+    assert plane.xsize == xsize
+    assert plane.ysize == ysize
+    assert plane.frame == frame
+
+    for u in linspace(0.0, 1.0, num=100):
+        for v in linspace(0.0, 1.0, num=100):
+            assert plane.point_at(u, v) == plane.point_at(u, v, world=False).transformed(plane.transformation)
 
     other = eval(repr(plane))
 
