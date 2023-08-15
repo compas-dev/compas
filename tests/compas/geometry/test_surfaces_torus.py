@@ -12,7 +12,7 @@ from compas.geometry import close
 
 
 @pytest.mark.parametrize(
-    "radius_axis, radius_pipe",
+    "radius_axis,radius_pipe",
     [
         (0, 0),
         (1, 0),
