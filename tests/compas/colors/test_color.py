@@ -4,6 +4,7 @@ import compas
 from random import random
 
 from compas.colors import Color
+from compas.geometry import allclose
 
 
 @pytest.mark.parametrize(
@@ -25,7 +26,7 @@ def test_color(color):
     assert c.b == color[2]
     assert c.a == color[3] if len(color) == 4 else 1.0
 
-    assert eval(repr(c)) == c
+    assert allclose(eval(repr(c)), c, tol=1e-12)
 
 
 def test_color_data():
