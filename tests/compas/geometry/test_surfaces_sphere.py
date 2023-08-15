@@ -1,19 +1,38 @@
 import pytest
+import json
+import compas
+from random import random
 
 from compas.utilities import linspace
+from compas.geometry import Point  # noqa: F401
+from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import SphericalSurface
+from compas.geometry import close
 
 
-def test_create_spherical_surface():
-    surf = SphericalSurface(radius=1.0)
+@pytest.mark.parametrize(
+    "radius",
+    [
+        0,
+        1,
+        random(),
+    ],
+)
+def test_spherical_surface(radius):
+    surf = SphericalSurface(radius)
 
-    assert surf.radius == 1.0
+    assert surf.radius == radius
     assert surf.frame == Frame.worldXY()
 
     for u in linspace(0.0, 1.0, num=100):
         for v in linspace(0.0, 1.0, num=100):
             assert surf.point_at(u, v) == surf.point_at(u, v, world=False)
+
+    other = eval(repr(surf))
+
+    assert close(surf.radius, other.radius, tol=1e-12)
+    assert surf.frame == other.frame
 
 
 @pytest.mark.parametrize(
@@ -24,7 +43,7 @@ def test_create_spherical_surface():
         Frame.worldYZ(),
     ],
 )
-def test_create_spherical_surface_frame(frame):
+def test_spherical_surface_with_frame(frame):
     surf = SphericalSurface(radius=1.0, frame=frame)
 
     assert surf.radius == 1.0
@@ -33,6 +52,30 @@ def test_create_spherical_surface_frame(frame):
     for u in linspace(0.0, 1.0, num=100):
         for v in linspace(0.0, 1.0, num=100):
             assert surf.point_at(u, v) == surf.point_at(u, v, world=False).transformed(surf.transformation)
+
+    other = eval(repr(surf))
+
+    assert close(surf.radius, other.radius, tol=1e-12)
+    assert surf.frame == other.frame
+
+
+# =============================================================================
+# Data
+# =============================================================================
+
+
+def test_spherical_surface_data():
+    radius = random()
+    surf = SphericalSurface(radius=radius)
+    other = SphericalSurface.from_data(json.loads(json.dumps(surf.data)))
+
+    assert surf.data == other.data
+    assert surf.radius == radius
+    assert surf.frame == Frame.worldXY()
+
+    if not compas.IPY:
+        assert SphericalSurface.validate_data(surf.data)
+        assert SphericalSurface.validate_data(other.data)
 
 
 # =============================================================================
