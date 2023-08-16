@@ -1,7 +1,7 @@
 import pytest
 import compas
 import json
-from random import random
+from random import random, randint
 
 from compas.datastructures import Network
 from compas.geometry import Pointcloud
@@ -57,7 +57,7 @@ def test_network_from_obj(filepath):
 
 
 def test_network_from_pointcloud():
-    cloud = Pointcloud.from_bounds(random(), random(), random(), int(100 * random()))
+    cloud = Pointcloud.from_bounds(random(), random(), random(), randint(10, 100))
     network = Network.from_pointcloud(cloud=cloud, degree=3)
     assert network.number_of_nodes() == len(cloud)
     for node in network.nodes():
@@ -70,7 +70,7 @@ def test_network_from_pointcloud():
 
 
 def test_network_data():
-    cloud = Pointcloud.from_bounds(random(), random(), random(), int(100 * random()))
+    cloud = Pointcloud.from_bounds(random(), random(), random(), randint(10, 100))
     network = Network.from_pointcloud(cloud=cloud, degree=3)
     other = Network.from_data(json.loads(json.dumps(network.data)))
 
