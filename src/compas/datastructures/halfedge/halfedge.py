@@ -169,7 +169,7 @@ class HalfEdge(Datastructure):
             attr = facedata.get(fkey) or {}
             halfedge.add_face(vertices, fkey=fkey, attr_dict=attr)
 
-        halfedge.edgedata.update(edgedata)
+        halfedge.edgedata = edgedata
 
         halfedge._max_vertex = data.get("max_vertex", halfedge._max_vertex)
         halfedge._max_face = data.get("max_face", halfedge._max_face)
@@ -500,13 +500,17 @@ class HalfEdge(Datastructure):
 
         """
         for u, v in self.face_halfedges(fkey):
-            self.halfedge[u][v] = None
-            if self.halfedge[v][u] is None:
-                del self.halfedge[u][v]
-                del self.halfedge[v][u]
-                edge = "-".join(map(str, sorted([u, v])))
-                if edge in self.edgedata:
-                    del self.edgedata[edge]
+            if self.halfedge[u][v] == fkey:
+                # if the halfedge still points to the face
+                # this might not be the case of the deletion is executed
+                # during the procedure of adding a new (replacement) face
+                self.halfedge[u][v] = None
+                if self.halfedge[v][u] is None:
+                    del self.halfedge[u][v]
+                    del self.halfedge[v][u]
+                    edge = "-".join(map(str, sorted([u, v])))
+                    if edge in self.edgedata:
+                        del self.edgedata[edge]
         del self.face[fkey]
         if fkey in self.facedata:
             del self.facedata[fkey]
