@@ -158,6 +158,7 @@ class Part(Datastructure):
             "attributes": {"type": "object"},
             "key": {"type": ["integer", "string"]},
             "frame": Frame.DATASCHEMA,
+            "features": {"type": "array"},
         },
         "required": ["key", "frame"],
     }
@@ -170,13 +171,13 @@ class Part(Datastructure):
         self.frame = frame or Frame.worldXY()
         self.features = []
 
-    # features are not included here?!
     @property
     def data(self):
         return {
             "attributes": self.attributes,
             "key": self.key,
             "frame": self.frame.data,
+            "features": self.features,
         }
 
     @classmethod
@@ -185,6 +186,7 @@ class Part(Datastructure):
         part.attributes.update(data["attributes"] or {})
         part.key = data["key"]
         part.frame = Frame.from_data(data["frame"])
+        part.features = data["features"] or []
         return part
 
     def get_geometry(self, with_features=False):
