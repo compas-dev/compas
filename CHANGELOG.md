@@ -160,6 +160,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed base class of `compas.geometry.Polyline` to `compas.geometry.Curve.`
 * Changed `compas.geometry.oriented_bounding_box_numpy` to minimize volume.
 * Changed `compas.datastructures.Graph.delete_edge` to delete invalid (u, u) edges and not delete edges in opposite directions (v, u)
+* Fixed bug in `compas.geometry.angle_vectors_signed`.
 
 ### Removed
 
