@@ -9,6 +9,7 @@ from compas.geometry import allclose
 from compas.geometry import angle_vectors
 from compas.geometry import angle_planes
 from compas.geometry import angles_vectors
+from compas.geometry import angle_vectors_signed
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polyhedron
 from compas.geometry import close
@@ -124,6 +125,17 @@ def test_angles_vectors_fails_when_input_is_zero(u, v):
 )
 def test_angle_planes(a, b, angle):
     assert close(angle_planes(a, b), angle)
+
+
+@pytest.mark.parametrize(
+    "u,v,normal,result",
+    [
+        ([1, 0, 0], [0, 1, 0], [0, 0, 1], +pi / 2),
+        ([1, 0, 0], [0, 1, 0], [0, 0, -1], -pi / 2),
+    ],
+)
+def test_angle_vectors_signed(u, v, normal, result):
+    assert close(angle_vectors_signed(u, v, normal), result, tol=1e-12)
 
 
 # ==============================================================================
