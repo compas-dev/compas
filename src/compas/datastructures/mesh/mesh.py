@@ -794,7 +794,7 @@ class Mesh(HalfEdge):
         w = self.add_vertex(key=key, x=x, y=y, z=z)
         for u, v in self.face_halfedges(fkey):
             fkeys.append(self.add_face([u, v, w]))
-        del self.face[fkey]
+        self.delete_face(fkey)
         if return_fkeys:
             return w, fkeys
         return w
