@@ -3,6 +3,7 @@ import pytest
 import json
 import compas
 
+
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
@@ -12,24 +13,35 @@ from compas.geometry import Translation
 from compas.geometry import allclose
 
 
-@pytest.fixture
-def tet():
+def _tet():
     return Mesh.from_polyhedron(4)
 
 
 @pytest.fixture
-def cube():
+def tet():
+    return _tet()
+
+
+def _cube():
     return Mesh.from_polyhedron(6)
 
 
 @pytest.fixture
-def box():
+def cube():
+    return _cube()
+
+
+def _box():
     box = Box.from_width_height_depth(2, 2, 2)
     return Mesh.from_shape(box)
 
 
 @pytest.fixture
-def hexagon():
+def box():
+    return _box()
+
+
+def _hexagon():
     polygon = Polygon.from_sides_and_radius_xy(6, 1)
     vertices = polygon.points
     vertices.append(polygon.centroid)
@@ -38,7 +50,11 @@ def hexagon():
 
 
 @pytest.fixture
-def hexagongrid():
+def hexagon():
+    return _hexagon()
+
+
+def _hexagongrid():
     polygon = Polygon.from_sides_and_radius_xy(6, 1)
     vertices = polygon.points
     vertices.append(polygon.centroid)
@@ -61,7 +77,11 @@ def hexagongrid():
 
 
 @pytest.fixture
-def biohazard():
+def hexagongrid():
+    return _hexagongrid()
+
+
+def _biohazard():
     polygon = Polygon.from_sides_and_radius_xy(6, 1)
     vertices = polygon.points
     vertices.append(polygon.centroid)
@@ -70,12 +90,21 @@ def biohazard():
 
 
 @pytest.fixture
-def triangleboundarychain():
+def biohazard():
+    return _biohazard()
+
+
+def _triangleboundarychain():
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     faces = mesh.faces_on_boundaries()[0]
     for face in faces:
         mesh.insert_vertex(face)
     return mesh
+
+
+@pytest.fixture
+def triangleboundarychain():
+    return _triangleboundarychain()
 
 
 # --------------------------------------------------------------------------
@@ -181,16 +210,15 @@ def test_from_ploygons():
 @pytest.mark.parametrize(
     "mesh",
     [
-        "tet",
-        "cube",
-        "box",
-        "hexagon",
-        "hexagongrid",
-        "triangleboundarychain",
+        _tet(),
+        _cube(),
+        _box(),
+        _hexagon(),
+        _hexagongrid(),
+        _triangleboundarychain(),
     ],
 )
-def test_mesh_data(mesh, request):
-    mesh = request.getfixturevalue(mesh)
+def test_mesh_data(mesh):
     other = Mesh.from_data(json.loads(json.dumps(mesh.data)))
 
     assert mesh.data == other.data
