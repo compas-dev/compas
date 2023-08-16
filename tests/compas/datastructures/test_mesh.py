@@ -1,8 +1,8 @@
 import tempfile
-
 import pytest
-
+import json
 import compas
+
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
@@ -171,6 +171,39 @@ def test_from_ploygons():
     assert mesh.number_of_faces() == 2
     assert mesh.number_of_vertices() == 4
     assert mesh.number_of_edges() == 5
+
+
+# --------------------------------------------------------------------------
+# data
+# --------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "mesh",
+    [
+        "tet",
+        "cube",
+        "box",
+        "hexagon",
+        "hexagongrid",
+        "triangleboundarychain",
+    ],
+)
+def test_mesh_data(mesh, request):
+    mesh = request.getfixturevalue(mesh)
+    other = Mesh.from_data(json.loads(json.dumps(mesh.data)))
+
+    assert mesh.data == other.data
+    assert mesh.default_vertex_attributes == other.default_vertex_attributes
+    assert mesh.default_edge_attributes == other.default_edge_attributes
+    assert mesh.default_face_attributes == other.default_face_attributes
+    assert mesh.number_of_vertices() == other.number_of_vertices()
+    assert mesh.number_of_edges() == other.number_of_edges()
+    assert mesh.number_of_faces() == other.number_of_faces()
+
+    if not compas.IPY:
+        assert Mesh.validate_data(mesh.data)
+        assert Mesh.validate_data(other.data)
 
 
 # --------------------------------------------------------------------------
