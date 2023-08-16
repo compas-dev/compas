@@ -41,6 +41,13 @@ def is_viewer_open():
 
     """
     # TODO: implement [without introducing compas_view2 as a dependency..?]
+    # make the viewer app a singleton
+    # check for the exitence of an instance of the singleton
+    # if the instance exists, return True
+    # in this case, the viewer is the current context
+    # to do this without introducing compas_view2 as a dependency,
+    # creating the singleton instance should modify a class attribute of the Artist
+    # (or potentially a module level attribute of compas itself)
     return False
 
 
@@ -53,6 +60,7 @@ def is_plotter_open():
 
     """
     # TODO: implement
+    # the plotter should be removed from this module and be its own separate thing
     return False
 
 
