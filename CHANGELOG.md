@@ -173,6 +173,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `__repr__` of `compas.geometry.Point` and `compas.geometry.Vector` to not use limited precision (`compas.PRECISION`) to ensure proper object reconstruction through `eval(repr(point))`.
 * Changed `compas.datastructures.Graph.delete_edge` to delete invalid (u, u) edges and not delete edges in opposite directions (v, u)
 * Fixed bug in `compas.datastructures.Mesh.insert_vertex`.
+* Fixed bug in `compas.geometry.angle_vectors_signed`.
 
 ### Removed
 
