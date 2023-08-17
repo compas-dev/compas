@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.plugins import pluggable
+from compas.plugins import PluginNotInstalledError
 from compas.geometry import Point
 from compas.utilities import linspace
 from compas.utilities import meshgrid
@@ -12,27 +13,27 @@ from .surface import Surface
 
 @pluggable(category="factories")
 def new_nurbssurface(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def new_nurbssurface_from_parameters(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def new_nurbssurface_from_points(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def new_nurbssurface_from_fill(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def new_nurbssurface_from_step(cls, *args, **kwargs):
-    raise NotImplementedError
+    raise PluginNotInstalledError
 
 
 class NurbsSurface(Surface):
@@ -64,10 +65,10 @@ class NurbsSurface(Surface):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "items": {"type": "array", "items": Point.JSONSCHEMA}},
+            "points": {"type": "array", "items": {"type": "array", "items": Point.DATASCHEMA}},
             "weights": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
             "u_knots": {"type": "array", "items": {"type": "number"}},
             "v_knots": {"type": "array", "items": {"type": "number"}},
@@ -88,24 +89,20 @@ class NurbsSurface(Surface):
     def __init__(self, name=None):
         super(NurbsSurface, self).__init__(name=name)
 
-    def __str__(self):
-        lines = [
-            "NurbsSurface",
-            "------------",
-            "Points: {}".format(self.points),
-            "Weights: {}".format(self.weights),
-            "U Knots: {}".format(self.u_knots),
-            "V Knots: {}".format(self.v_knots),
-            "U Mults: {}".format(self.u_mults),
-            "V Mults: {}".format(self.v_mults),
-            "U Degree: {}".format(self.u_degree),
-            "V Degree: {}".format(self.v_degree),
-            "U Domain: {}".format(self.u_domain),
-            "V Domain: {}".format(self.v_domain),
-            "U Periodic: {}".format(self.is_u_periodic),
-            "V Periodic: {}".format(self.is_v_periodic),
-        ]
-        return "\n".join(lines)
+    def __repr__(self):
+        return "{0}(points={1!r}, weigths={2}, u_knots={3}, v_knots={4}, u_mults={5}, v_mults={6}, u_degree={7}, v_degree={8}, is_u_periodic={9}, is_v_periodic={10})".format(
+            type(self).__name__,
+            self.points,
+            self.weights,
+            self.u_knots,
+            self.v_knots,
+            self.u_mults,
+            self.v_mults,
+            self.u_degree,
+            self.v_degree,
+            self.is_u_periodic,
+            self.is_v_periodic,
+        )
 
     # ==============================================================================
     # Data
@@ -117,9 +114,8 @@ class NurbsSurface(Surface):
 
     @property
     def data(self):
-        """dict : Representation of the curve as a dict containing only native Python objects."""
         return {
-            "points": self.points,
+            "points": [point.data for point in self.points],
             "weights": self.weights,
             "u_knots": self.u_knots,
             "v_knots": self.v_knots,
@@ -130,10 +126,6 @@ class NurbsSurface(Surface):
             "is_u_periodic": self.is_u_periodic,
             "is_v_periodic": self.is_v_periodic,
         }
-
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
 
     @classmethod
     def from_data(cls, data):
@@ -150,27 +142,17 @@ class NurbsSurface(Surface):
             The constructed surface.
 
         """
-        points = data["points"]
-        weights = data["weights"]
-        u_knots = data["u_knots"]
-        v_knots = data["v_knots"]
-        u_mults = data["u_mults"]
-        v_mults = data["v_mults"]
-        u_degree = data["u_degree"]
-        v_degree = data["v_degree"]
-        is_u_periodic = data["is_u_periodic"]
-        is_v_periodic = data["is_v_periodic"]
         return cls.from_parameters(
-            points,
-            weights,
-            u_knots,
-            v_knots,
-            u_mults,
-            v_mults,
-            u_degree,
-            v_degree,
-            is_u_periodic,
-            is_v_periodic,
+            data["points"],
+            data["weights"],
+            data["u_knots"],
+            data["v_knots"],
+            data["u_mults"],
+            data["v_mults"],
+            data["u_degree"],
+            data["v_degree"],
+            data["is_u_periodic"],
+            data["is_v_periodic"],
         )
 
     # ==============================================================================

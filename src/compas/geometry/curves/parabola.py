@@ -4,6 +4,7 @@ from __future__ import division
 
 from compas.geometry import Vector
 from compas.geometry import Point
+from compas.geometry import Frame
 from .line import Line
 from .conic import Conic
 
@@ -84,7 +85,11 @@ class Parabola(Conic):
         self.focal = focal
 
     def __repr__(self):
-        return "Parabola(focal={0!r}, frame={1!r})".format(self.focal, self.frame)
+        return "{0}(focal={1}, frame={2!r})".format(
+            type(self).__name__,
+            self.focal,
+            self.frame,
+        )
 
     def __eq__(self, other):
         try:
@@ -98,7 +103,14 @@ class Parabola(Conic):
 
     @property
     def data(self):
-        return {"frame": self.frame, "focal": self.focal}
+        return {"focal": self.focal, "frame": self.frame.data}
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            focal=data["focal"],
+            frame=Frame.from_data(data["frame"]),
+        )
 
     # ==========================================================================
     # properties

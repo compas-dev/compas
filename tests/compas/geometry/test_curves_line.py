@@ -1,4 +1,7 @@
 import pytest
+import json
+import compas
+
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import normalize_vector
@@ -27,11 +30,34 @@ from compas.geometry import Line
         ([0, 0, 0], Point(1, 2, 3)),
     ],
 )
-def test_create_line(p1, p2):
+def test_line_create(p1, p2):
     line = Line(p1, p2)
 
     assert line.start == p1
     assert line.end == p2
+    assert line.frame == Frame.worldXY()
+
+
+def test_line_create_with_frame():
+    with pytest.raises(AttributeError):
+        Line([0, 0, 0], [1, 0, 0], frame=Frame.worldXY())
+
+
+# =============================================================================
+# Data
+# =============================================================================
+
+
+def test_line_data():
+    line = Line([0, 0, 0], [1, 0, 0])
+    other = Line.from_data(json.loads(json.dumps(line.data)))
+
+    assert line.start == other.start
+    assert line.end == other.end
+
+    if not compas.IPY:
+        assert Line.validate_data(line.data)
+        assert Line.validate_data(other.data)
 
 
 # =============================================================================
@@ -50,7 +76,7 @@ def test_create_line(p1, p2):
         (Point(0, 0, 0), Vector(1, 2, 3)),
     ],
 )
-def test_create_line_from_point_and_vector(point, vector):
+def test_line_create_from_point_and_vector(point, vector):
     line = Line.from_point_and_vector(point, vector)
 
     assert line.start == point
@@ -68,7 +94,7 @@ def test_create_line_from_point_and_vector(point, vector):
         (Point(0, 0, 0), Vector(1, 2, 3), 3.0),
     ],
 )
-def test_create_line_from_point_direction_length(point, direction, length):
+def test_line_create_from_point_direction_length(point, direction, length):
     line = Line.from_point_direction_length(point, direction, length)
 
     assert line.start == point

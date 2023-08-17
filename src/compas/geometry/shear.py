@@ -51,9 +51,6 @@ class Shear(Transformation):
                 raise ValueError("This is not a proper shear matrix.")
         super(Shear, self).__init__(matrix=matrix)
 
-    def __repr__(self):
-        return "Shear({0!r}, check=False)".format(self.matrix)
-
     @classmethod
     def from_angle_direction_plane(cls, angle, direction, plane):
         """Construct a shear transformation from an angle, direction and plane.

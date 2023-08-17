@@ -1,11 +1,13 @@
 import pytest
+import json
+import compas
 
 from compas.geometry import allclose
 from compas.geometry import Frame
 from compas.geometry import Parabola
 
 
-def test_create_parabola():
+def test_parabola_create():
     parabola = Parabola(focal=1)
 
     assert parabola.focal == 1
@@ -16,7 +18,7 @@ def test_create_parabola():
     assert allclose(parabola.point_at(1.0), parabola.point_at(1.0, world=False), tol=1e-12)
 
 
-def test_create_parabola_frame():
+def test_parabola_create_with_frame():
     frame = Frame.worldZX()
     parabola = Parabola(focal=1, frame=frame)
 
@@ -42,6 +44,25 @@ def test_create_parabola_frame():
         parabola.point_at(1.0, world=False).transformed(parabola.transformation),
         tol=1e-12,
     )
+
+
+# =============================================================================
+# Data
+# =============================================================================
+
+
+def test_parabola_data():
+    parabola = Parabola(focal=1)
+    other = Parabola.from_data(json.loads(json.dumps(parabola.data)))
+
+    assert parabola.focal == other.focal
+    assert parabola.frame.point == other.frame.point
+    assert allclose(parabola.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(parabola.frame.yaxis, other.frame.yaxis, tol=1e-12)
+
+    if not compas.IPY:
+        assert Parabola.validate_data(parabola.data)
+        assert Parabola.validate_data(other.data)
 
 
 # =============================================================================

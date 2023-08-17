@@ -1,10 +1,13 @@
 import pytest
+import json
+import compas
+
 from compas.geometry import allclose
 from compas.geometry import Frame
 from compas.geometry import Bezier
 
 
-def test_create_bezier():
+def test_bezier_create():
     curve = Bezier([[-1, 0, 0], [0, 1, 0], [+1, 0, 0]])
 
     assert allclose(curve.points[0], [-1, 0, 0], tol=1e-12)
@@ -16,9 +19,28 @@ def test_create_bezier():
     assert allclose(curve.point_at(1.0), [+1, 0, 0], tol=1e-12)
 
 
-def test_create_bezier_frame():
+def test_bezier_create_with_frame():
     with pytest.raises(Exception):
         Bezier([[-1, 0, 0], [0, 1, 0], [+1, 0, 0]], frame=Frame.worldXY())
+
+
+# =============================================================================
+# Data
+# =============================================================================
+
+
+def test_bezier_data():
+    curve = Bezier([[-1, 0, 0], [0, 1, 0], [+1, 0, 0]])
+    other = Bezier.from_data(json.loads(json.dumps(curve.data)))
+
+    assert curve.points == other.points
+    assert curve.frame.point == other.frame.point
+    assert allclose(curve.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(curve.frame.yaxis, other.frame.yaxis, tol=1e-12)
+
+    if not compas.IPY:
+        assert Bezier.validate_data(curve.data)
+        assert Bezier.validate_data(other.data)
 
 
 # =============================================================================

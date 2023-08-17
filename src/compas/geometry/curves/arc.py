@@ -111,14 +111,14 @@ class Arc(Curve):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "value": {
             "type": "object",
             "properties": {
                 "radius": {"type": "number", "minimum": 0},
                 "start_angle": {"type": "number", "minimum": 0, "optional": True},
                 "end_angle": {"type": "number", "minimum": 0},
-                "frame": Frame.JSONSCHEMA,
+                "frame": Frame.DATASCHEMA,
             },
             "required": ["frame", "radius", "start_angle", "end_angle"],
         }
@@ -141,7 +141,8 @@ class Arc(Curve):
         self.end_angle = end_angle
 
     def __repr__(self):
-        return "Arc(radius={0!r}, start_angle={1!r}, end_angle={2!r}, frame={3!r})".format(
+        return "{0}(radius={1}, start_angle={2}, end_angle={3}, frame={4!r})".format(
+            type(self).__name__,
             self.radius,
             self.start_angle,
             self.end_angle,
@@ -166,11 +167,20 @@ class Arc(Curve):
     @property
     def data(self):
         return {
-            "frame": self.frame,
             "radius": self.radius,
             "start_angle": self.start_angle,
             "end_angle": self.end_angle,
+            "frame": self.frame.data,
         }
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            radius=data["radius"],
+            start_angle=data["start_angle"],
+            end_angle=data["end_angle"],
+            frame=Frame.from_data(data["frame"]),
+        )
 
     # =============================================================================
     # Properties

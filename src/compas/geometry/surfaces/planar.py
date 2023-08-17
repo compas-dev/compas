@@ -27,12 +27,12 @@ class PlanarSurface(Surface):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "xsize": {"type": "number", "minimum": 0},
             "ysize": {"type": "number", "minimum": 0},
-            "frame": Frame.JSONSCHEMA,
+            "frame": Frame.DATASCHEMA,
         },
         "required": ["xsize", "ysize", "frame"],
     }
@@ -52,7 +52,12 @@ class PlanarSurface(Surface):
         self.ysize = ysize
 
     def __repr__(self):
-        return "PlanarSurface(xsize={0!r}, ysize={1!r}, frame={2!r})".format(self.xsize, self.ysize, self.frame)
+        return "{0}(xsize={1}, ysize={2}, frame={3!r})".format(
+            type(self).__name__,
+            self.xsize,
+            self.ysize,
+            self.frame,
+        )
 
     def __eq__(self, other):
         try:
@@ -63,38 +68,52 @@ class PlanarSurface(Surface):
             return False
         return self.xsize == other_xsize and self.ysize == other_ysize and self.frame == other_frame
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def data(self):
-        return {"xsize": self.xsize, "ysize": self.ysize, "frame": self.frame}
+        return {
+            "xsize": self.xsize,
+            "ysize": self.ysize,
+            "frame": self.frame.data,
+        }
 
-    @data.setter
-    def data(self, data):
-        self.frame = data["frame"]
-        self.xsize = data["xsize"]
-        self.ysize = data["ysize"]
+    @classmethod
+    def from_data(cls, data):
+        return cls(
+            xsize=data["xsize"],
+            ysize=data["ysize"],
+            frame=Frame.from_data(data["frame"]),
+        )
+
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def xsize(self):
-        if not self._xsize:
+        if self._xsize is None:
             raise ValueError("The size of the surface in the local X-direction is not set.")
         return self._xsize
 
     @xsize.setter
     def xsize(self, xsize):
-        if xsize <= 0:
-            raise ValueError("The size of the surface in the local X-direction should be larger than zero.")
+        if xsize < 0:
+            raise ValueError("The size of the surface in the local X-direction should be at least zero.")
         self._xsize = float(xsize)
 
     @property
     def ysize(self):
-        if not self._ysize:
+        if self._ysize is None:
             raise ValueError("The size of the surface in the local Y-direction is not set.")
         return self._ysize
 
     @ysize.setter
     def ysize(self, ysize):
-        if ysize <= 0:
-            raise ValueError("The size of the surface in the local Y-direction should be larger than zero.")
+        if ysize < 0:
+            raise ValueError("The size of the surface in the local Y-direction should be at least zero.")
         self._ysize = float(ysize)
 
     # =============================================================================

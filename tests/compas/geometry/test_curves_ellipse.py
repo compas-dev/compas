@@ -1,4 +1,7 @@
 import pytest
+import json
+import compas
+
 from compas.geometry import close
 from compas.geometry import allclose
 from compas.geometry import Frame
@@ -6,13 +9,12 @@ from compas.geometry import Ellipse
 from compas.geometry import Plane
 
 
-def test_create_ellipse():
+def test_ellipse_create():
     ellipse = Ellipse(major=1.0, minor=0.5)
 
     assert close(ellipse.major, 1.0, tol=1e-12)
     assert close(ellipse.minor, 0.5, tol=1e-12)
     assert close(ellipse.area, 1.5707963267948966, tol=1e-12)
-    # assert close(ellipse.circumference, 4.442882938158366, tol=1e-12)
     assert close(ellipse.semifocal, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.eccentricity, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.focal, 1.7320508075688772, tol=1e-12)
@@ -35,13 +37,12 @@ def test_create_ellipse():
     assert allclose(ellipse.point_at(1.0), ellipse.point_at(1.0, world=False), tol=1e-12)
 
 
-def test_create_ellipse_frame():
+def test_ellipse_create_with_frame():
     ellipse = Ellipse(major=1.0, minor=0.5, frame=Frame.worldZX())
 
     assert close(ellipse.major, 1.0, tol=1e-12)
     assert close(ellipse.minor, 0.5, tol=1e-12)
     assert close(ellipse.area, 1.5707963267948966, tol=1e-12)
-    # assert close(ellipse.circumference, 4.442882938158366, tol=1e-12)
     assert close(ellipse.semifocal, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.eccentricity, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.focal, 1.7320508075688772, tol=1e-12)
@@ -91,17 +92,36 @@ def test_create_ellipse_frame():
 
 
 # =============================================================================
+# Data
+# =============================================================================
+
+
+def test_ellipse_data():
+    ellipse = Ellipse(major=1.0, minor=0.5)
+    other = Ellipse.from_data(json.loads(json.dumps(ellipse.data)))
+
+    assert ellipse.major == other.major
+    assert ellipse.minor == other.minor
+    assert ellipse.frame.point == other.frame.point
+    assert allclose(ellipse.frame.xaxis, other.frame.xaxis, tol=1e-12)
+    assert allclose(ellipse.frame.yaxis, other.frame.yaxis, tol=1e-12)
+
+    if not compas.IPY:
+        assert Ellipse.validate_data(ellipse.data)
+        assert Ellipse.validate_data(other.data)
+
+
+# =============================================================================
 # Constructors
 # =============================================================================
 
 
-def test_create_ellipse_from_point_major_minor():
+def test_ellipse_create_from_point_major_minor():
     ellipse = Ellipse.from_point_major_minor([1.0, 2.0, 3.0], 1.0, 0.5)
 
     assert close(ellipse.major, 1.0, tol=1e-12)
     assert close(ellipse.minor, 0.5, tol=1e-12)
     assert close(ellipse.area, 1.5707963267948966, tol=1e-12)
-    # assert close(ellipse.circumference, 4.442882938158366, tol=1e-12)
     assert close(ellipse.semifocal, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.eccentricity, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.focal, 1.7320508075688772, tol=1e-12)
@@ -115,7 +135,7 @@ def test_create_ellipse_from_point_major_minor():
     assert allclose(ellipse.frame.zaxis, Frame.worldXY().zaxis, tol=1e-12)
 
 
-def test_create_ellipse_from_plane_major_minor():
+def test_ellipse_create_from_plane_major_minor():
     plane = Plane([1.0, 2.0, 3.0], [0.0, 0.0, 1.0])
     frame = Frame.from_plane(plane)
     ellipse = Ellipse.from_plane_major_minor(plane, 1.0, 0.5)
@@ -123,7 +143,6 @@ def test_create_ellipse_from_plane_major_minor():
     assert close(ellipse.major, 1.0, tol=1e-12)
     assert close(ellipse.minor, 0.5, tol=1e-12)
     assert close(ellipse.area, 1.5707963267948966, tol=1e-12)
-    # assert close(ellipse.circumference, 4.442882938158366, tol=1e-12)
     assert close(ellipse.semifocal, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.eccentricity, 0.8660254037844386, tol=1e-12)
     assert close(ellipse.focal, 1.7320508075688772, tol=1e-12)

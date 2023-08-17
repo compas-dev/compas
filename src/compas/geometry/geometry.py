@@ -11,6 +11,9 @@ class Geometry(Data):
     def __init__(self, *args, **kwargs):
         super(Geometry, self).__init__(*args, **kwargs)
 
+    def __eq__(self, other):
+        raise NotImplementedError
+
     def __ne__(self, other):
         # this is not obvious to ironpython
         return not self.__eq__(other)

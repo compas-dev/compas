@@ -82,9 +82,6 @@ class Translation(Transformation):
         z = self.matrix[2][3]
         return Vector(x, y, z)
 
-    def __repr__(self):
-        return "Translation({0!r}, check=False)".format(self.matrix)
-
     @classmethod
     def from_vector(cls, vector):
         """Create a translation transformation from a translation vector.

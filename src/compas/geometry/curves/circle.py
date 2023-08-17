@@ -85,10 +85,10 @@ class Circle(Conic):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.JSONSCHEMA,
+            "frame": Frame.DATASCHEMA,
             "radius": {"type": "number", "minimum": 0},
         },
         "required": ["frame", "radius"],
@@ -100,7 +100,11 @@ class Circle(Conic):
         self.radius = radius
 
     def __repr__(self):
-        return "Circle(radius={0!r}, frame={1!r})".format(self.radius, self.frame)
+        return "{0}(radius={1!r}, frame={2!r})".format(
+            type(self).__name__,
+            self.radius,
+            self.frame,
+        )
 
     def __eq__(self, other):
         try:
@@ -116,7 +120,11 @@ class Circle(Conic):
 
     @property
     def data(self):
-        return {"frame": self.frame, "radius": self.radius}
+        return {"radius": self.radius, "frame": self.frame.data}
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(radius=data["radius"], frame=Frame.from_data(data["frame"]))
 
     # ==========================================================================
     # Properties

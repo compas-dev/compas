@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 try:
-    basestring
+    basestring  # type: ignore
 except NameError:
     basestring = str
 
@@ -104,6 +104,17 @@ class Color(Data):
 
     """
 
+    DATASCHEMA = {
+        "type": "object",
+        "properties": {
+            "red": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "green": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "blue": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "alpha": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        },
+        "required": ["red", "green", "blue", "alpha"],
+    }
+
     def __init__(self, red, green, blue, alpha=1.0, **kwargs):
         super(Color, self).__init__(**kwargs)
         self._r = 1.0
@@ -115,27 +126,64 @@ class Color(Data):
         self.b = blue
         self.a = alpha
 
+    def __repr__(self):
+        return "{0}({1}, {2}, {3}, alpha={4})".format(type(self).__name__, self.r, self.g, self.b, self.a)
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.r
+        if key == 1:
+            return self.g
+        if key == 2:
+            return self.b
+        raise KeyError
+
+    def __len__(self):
+        return 3
+
+    def __iter__(self):
+        return iter(self.rgb)
+
+    def __eq__(self, other):
+        return all(a == b for a, b in zip(self, other))
+
     # --------------------------------------------------------------------------
-    # data
+    # Descriptor
+    # --------------------------------------------------------------------------
+
+    def __set_name__(self, owner, name):
+        self.public_name = name
+        self.private_name = "_" + name
+
+    def __get__(self, obj, otype=None):
+        return getattr(obj, self.private_name, None) or self
+
+    def __set__(self, obj, value):
+        if not obj:
+            return
+
+        if not value:
+            return
+
+        if Color.is_rgb255(value):
+            value = Color.from_rgb255(value[0], value[1], value[2])
+        elif Color.is_hex(value):
+            value = Color.from_hex(value)
+        else:
+            value = Color(value[0], value[1], value[2])
+
+        setattr(obj, self.private_name, value)
+
+    # --------------------------------------------------------------------------
+    # Data
     # --------------------------------------------------------------------------
 
     @property
     def data(self):
         return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
-    @data.setter
-    def data(self, data):
-        self.r = data["red"]
-        self.g = data["green"]
-        self.b = data["blue"]
-        self.a = data["alpha"]
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(data["red"], data["green"], data["blue"], data["alpha"])
-
     # --------------------------------------------------------------------------
-    # properties
+    # Properties
     # --------------------------------------------------------------------------
 
     @property
@@ -272,59 +320,7 @@ class Color(Data):
         return (maxval - minval) / maxval
 
     # --------------------------------------------------------------------------
-    # descriptor
-    # --------------------------------------------------------------------------
-
-    def __set_name__(self, owner, name):
-        self.public_name = name
-        self.private_name = "_" + name
-
-    def __get__(self, obj, otype=None):
-        return getattr(obj, self.private_name, None) or self
-
-    def __set__(self, obj, value):
-        if not obj:
-            return
-
-        if not value:
-            return
-
-        if Color.is_rgb255(value):
-            value = Color.from_rgb255(value[0], value[1], value[2])
-        elif Color.is_hex(value):
-            value = Color.from_hex(value)
-        else:
-            value = Color(value[0], value[1], value[2])
-
-        setattr(obj, self.private_name, value)
-
-    # --------------------------------------------------------------------------
-    # customization
-    # --------------------------------------------------------------------------
-
-    def __repr__(self):
-        return "Color({}, {}, {}, {})".format(self.r, self.g, self.b, self.a)
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.r
-        if key == 1:
-            return self.g
-        if key == 2:
-            return self.b
-        raise KeyError
-
-    def __len__(self):
-        return 3
-
-    def __iter__(self):
-        return iter(self.rgb)
-
-    def __eq__(self, other):
-        return all(a == b for a, b in zip(self, other))
-
-    # --------------------------------------------------------------------------
-    # constructors
+    # Constructors
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -529,7 +525,7 @@ class Color(Data):
         return cls.from_rgb255(*rgb255)
 
     # --------------------------------------------------------------------------
-    # presets
+    # Presets
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -698,7 +694,7 @@ class Color(Data):
         return cls(1.0, 0.0, 0.5)
 
     # --------------------------------------------------------------------------
-    # other presets
+    # Other presets
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -786,7 +782,7 @@ class Color(Data):
     # salmon
 
     # --------------------------------------------------------------------------
-    # methods
+    # Methods
     # --------------------------------------------------------------------------
 
     @staticmethod

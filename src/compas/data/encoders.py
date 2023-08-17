@@ -4,9 +4,8 @@ from __future__ import division
 
 import json
 import platform
-import uuid
 
-from compas.data.exceptions import DecoderError
+from .exceptions import DecoderError
 
 IDictionary = None
 numpy_support = False
@@ -96,6 +95,8 @@ class DataEncoder(json.JSONEncoder):
 
     """
 
+    minimal = False
+
     def default(self, o):
         """Return an object in serialized form.
 
@@ -110,29 +111,9 @@ class DataEncoder(json.JSONEncoder):
             The serialized object.
 
         """
-        if hasattr(o, "to_jsondata"):
-            value = o.to_jsondata()
-            if hasattr(o, "dtype"):
-                dtype = o.dtype
-            else:
-                dtype = "{}/{}".format(
-                    ".".join(o.__class__.__module__.split(".")[:-1]),
-                    o.__class__.__name__,
-                )
 
-            return {"dtype": dtype, "value": value, "guid": str(o.guid)}
-
-        if hasattr(o, "to_data"):
-            value = o.to_data()
-            if hasattr(o, "dtype"):
-                dtype = o.dtype
-            else:
-                dtype = "{}/{}".format(
-                    ".".join(o.__class__.__module__.split(".")[:-1]),
-                    o.__class__.__name__,
-                )
-
-            return {"dtype": dtype, "value": value, "guid": str(o.guid)}
+        if hasattr(o, "__jsondump__"):
+            return o.__jsondump__(minimal=DataEncoder.minimal)
 
         if hasattr(o, "__next__"):
             return list(o)
@@ -154,10 +135,10 @@ class DataEncoder(json.JSONEncoder):
                     np.uint16,
                     np.uint32,
                     np.uint64,
-                ),
+                ),  # type: ignore
             ):
                 return int(o)
-            if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):
+            if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):  # type: ignore
                 return float(o)
             if isinstance(o, np.bool_):
                 return bool(o)
@@ -233,7 +214,8 @@ class DataDecoder(json.JSONDecoder):
         except ValueError:
             raise DecoderError(
                 "The data type of the object should be in the following format: '{}/{}'".format(
-                    o.__class__.__module__, o.__class__.__name__
+                    o.__class__.__module__,
+                    o.__class__.__name__,
                 )
             )
 
@@ -243,18 +225,13 @@ class DataDecoder(json.JSONDecoder):
         except AttributeError:
             raise DecoderError("The data type can't be found in the specified module: {}.".format(o["dtype"]))
 
-        obj_value = o["value"]
+        data = o["data"]
+        guid = o.get("guid")
 
         # Kick-off from_data from a rebuilt Python dictionary instead of the C# data type
         if IDictionary and isinstance(o, IDictionary[str, object]):
-            obj_value = {key: obj_value[key] for key in obj_value.Keys}
+            data = {key: data[key] for key in data.Keys}
 
-        if hasattr(cls, "from_jsondata"):
-            obj = cls.from_jsondata(obj_value)
-        else:
-            obj = cls.from_data(obj_value)
-
-        if "guid" in o:
-            obj._guid = uuid.UUID(o["guid"])
+        obj = cls.__jsonload__(data, guid)
 
         return obj

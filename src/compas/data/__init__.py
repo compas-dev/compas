@@ -8,12 +8,12 @@ from .validators import is_int3
 from .validators import is_float3
 from .validators import is_float4x4
 from .validators import is_item_iterable
-from .validators import validate_data
 from .encoders import DataEncoder
 from .encoders import DataDecoder
 from .data import Data
-
 from .json import json_load, json_loads, json_dump, json_dumps
+from .schema import dataclass_dataschema, dataclass_typeschema, dataclass_jsonschema
+from .schema import compas_dataclasses
 
 __all__ = [
     "Data",
@@ -31,5 +31,8 @@ __all__ = [
     "json_loads",
     "json_dump",
     "json_dumps",
-    "validate_data",
+    "dataclass_dataschema",
+    "dataclass_typeschema",
+    "dataclass_jsonschema",
+    "compas_dataclasses",
 ]

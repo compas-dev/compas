@@ -62,9 +62,6 @@ class Scale(Transformation):
                 raise ValueError("This is not a proper scale matrix.")
         super(Scale, self).__init__(matrix=matrix)
 
-    def __repr__(self):
-        return "Scale({0!r}, check=False)".format(self.matrix)
-
     @classmethod
     def from_factors(cls, factors, frame=None):
         """Construct a scale transformation from scale factors.

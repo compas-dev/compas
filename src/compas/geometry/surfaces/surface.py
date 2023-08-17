@@ -63,40 +63,13 @@ class Surface(Geometry):
         if frame:
             self.frame = frame
 
-    def __eq__(self, other):
-        raise NotImplementedError
-
-    def __str__(self):
-        return "<Surface with parameter domain U: {} and V: {}>".format(self.u_domain, self.v_domain)
-
-    # ==============================================================================
-    # Data
-    # ==============================================================================
-
-    @property
-    def data(self):
-        raise NotImplementedError
-
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a surface from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Surface`
-            The constructed surface.
-
-        """
-        return cls(**data)
+    def __repr__(self):
+        return "{0}(frame={1!r}, u_domain={2}, v_domain={3})".format(
+            type(self).__name__,
+            self.frame,
+            self.u_domain,
+            self.v_domain,
+        )
 
     # ==============================================================================
     # Properties

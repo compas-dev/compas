@@ -1,5 +1,7 @@
 import pytest
 import math
+import json
+import compas
 
 from compas.geometry import Frame
 from compas.geometry import Polyline
@@ -14,15 +16,31 @@ from compas.geometry import Polyline
         [[0, 0, 0], [1, 0, 0], [2, 0, 0]],
     ],
 )
-def test_create_polyline(points):
+def test_polyline_create(points):
     curve = Polyline(points)
 
     assert curve.frame == Frame.worldXY()
 
 
-def test_create_polyline_frame():
+def test_polyline_create_with_frame():
     with pytest.raises(AttributeError):
         Polyline([], frame=Frame.worldXY())
+
+
+# =============================================================================
+# Data
+# =============================================================================
+
+
+def test_polyline_data():
+    curve = Polyline([[0, 0, 0], [1, 0, 0]])
+    other = Polyline.from_data(json.loads(json.dumps(curve.data)))
+
+    assert curve.points == other.points
+
+    if not compas.IPY:
+        assert Polyline.validate_data(curve.data)
+        assert Polyline.validate_data(other.data)
 
 
 # =============================================================================

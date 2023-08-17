@@ -169,7 +169,7 @@ class Polyhedron(Geometry):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "vertices": {
@@ -203,7 +203,11 @@ class Polyhedron(Geometry):
         self.faces = faces
 
     def __repr__(self):
-        return "<Polyhedron with {} vertices and {} faces>".format(len(self.vertices), len(self.faces))
+        return "{0}(vertices={1!r}, faces={2!r})".format(
+            type(self).__name__,
+            self.vertices,
+            self.faces,
+        )
 
     def __len__(self):
         return 2
@@ -255,43 +259,15 @@ class Polyhedron(Geometry):
         return self.__add__(other)
 
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
     def data(self):
         return {"vertices": self.vertices, "faces": self.faces}
 
-    @data.setter
-    def data(self, data):
-        self.vertices = data["vertices"]
-        self.faces = data["faces"]
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a polyhedron from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`~compas.geometry.Polyhedron`
-            The constructed polyhedron.
-
-        Examples
-        --------
-        >>> from compas.geometry import Polyhedron
-        >>> p = Polyhedron.from_platonicsolid(4)
-        >>> q = Polyhedron.from_data(p.data)
-
-        """
-        return cls(**data)
-
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
