@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Brep.contours" href="compas.geometry.Brep.contours.html" />
-    <link rel="prev" title="Torus.validate_jsonstring" href="compas.geometry.Torus.validate_jsonstring.html" />
+    <link rel="prev" title="Torus.validate_data" href="compas.geometry.Torus.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1178,70 +1177,73 @@ Note: this is not a full implementation of Brep and rather relies on COMPAS’s 
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_cylinder.html#compas.geometry.Brep.from_cylinder" title="compas.geometry.Brep.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS cylinder.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_extrusion.html#compas.geometry.Brep.from_extrusion" title="compas.geometry.Brep.from_extrusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_extrusion</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_data.html#compas.geometry.Brep.from_data" title="compas.geometry.Brep.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_extrusion.html#compas.geometry.Brep.from_extrusion" title="compas.geometry.Brep.from_extrusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_extrusion</span></code></a></p></td>
 <td><p>Construct a Brep by extruding a closed curve along a direction vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_mesh.html#compas.geometry.Brep.from_mesh" title="compas.geometry.Brep.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_mesh.html#compas.geometry.Brep.from_mesh" title="compas.geometry.Brep.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_native.html#compas.geometry.Brep.from_native" title="compas.geometry.Brep.from_native"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_native</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_native.html#compas.geometry.Brep.from_native" title="compas.geometry.Brep.from_native"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_native</span></code></a></p></td>
 <td><p>Creates a Brep from an instance of a native backend Brep type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_polygons.html#compas.geometry.Brep.from_polygons" title="compas.geometry.Brep.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_polygons.html#compas.geometry.Brep.from_polygons" title="compas.geometry.Brep.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a></p></td>
 <td><p>Construct a Brep from a set of polygons.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sphere.html#compas.geometry.Brep.from_sphere" title="compas.geometry.Brep.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sphere.html#compas.geometry.Brep.from_sphere" title="compas.geometry.Brep.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS sphere.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_step_file.html#compas.geometry.Brep.from_step_file" title="compas.geometry.Brep.from_step_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step_file</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_step_file.html#compas.geometry.Brep.from_step_file" title="compas.geometry.Brep.from_step_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step_file</span></code></a></p></td>
 <td><p>Conctruct a Brep from the data contained in a STEP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sweep.html#compas.geometry.Brep.from_sweep" title="compas.geometry.Brep.from_sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sweep</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sweep.html#compas.geometry.Brep.from_sweep" title="compas.geometry.Brep.from_sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sweep</span></code></a></p></td>
 <td><p>Construct a BRep by sweeping a profile along a path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_torus.html#compas.geometry.Brep.from_torus" title="compas.geometry.Brep.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_torus.html#compas.geometry.Brep.from_torus" title="compas.geometry.Brep.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS torus.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.make_solid.html#compas.geometry.Brep.make_solid" title="compas.geometry.Brep.make_solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_solid</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.make_solid.html#compas.geometry.Brep.make_solid" title="compas.geometry.Brep.make_solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_solid</span></code></a></p></td>
 <td><p>Convert the current shape to a solid if it is a shell.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.overlap.html#compas.geometry.Brep.overlap" title="compas.geometry.Brep.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.overlap.html#compas.geometry.Brep.overlap" title="compas.geometry.Brep.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a></p></td>
 <td><p>Compute the overlap between this BRep and another.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.sew.html#compas.geometry.Brep.sew" title="compas.geometry.Brep.sew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sew</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.sew.html#compas.geometry.Brep.sew" title="compas.geometry.Brep.sew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sew</span></code></a></p></td>
 <td><p>Sew together the individual parts of the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.slice.html#compas.geometry.Brep.slice" title="compas.geometry.Brep.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.slice.html#compas.geometry.Brep.slice" title="compas.geometry.Brep.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a></p></td>
 <td><p>Slice through the BRep with a plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.split.html#compas.geometry.Brep.split" title="compas.geometry.Brep.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.split.html#compas.geometry.Brep.split" title="compas.geometry.Brep.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p>Slice through the BRep with a plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_json.html#compas.geometry.Brep.to_json" title="compas.geometry.Brep.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_json.html#compas.geometry.Brep.to_json" title="compas.geometry.Brep.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Export the BRep to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_meshes.html#compas.geometry.Brep.to_meshes" title="compas.geometry.Brep.to_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_meshes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_meshes.html#compas.geometry.Brep.to_meshes" title="compas.geometry.Brep.to_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_meshes</span></code></a></p></td>
 <td><p>Convert the faces of this Brep shape to meshes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_step.html#compas.geometry.Brep.to_step" title="compas.geometry.Brep.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_step.html#compas.geometry.Brep.to_step" title="compas.geometry.Brep.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the BRep shape to a STEP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_tesselation.html#compas.geometry.Brep.to_tesselation" title="compas.geometry.Brep.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_tesselation.html#compas.geometry.Brep.to_tesselation" title="compas.geometry.Brep.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
 <td><p>Create a tesselation of the shape for visualisation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_viewmesh.html#compas.geometry.Brep.to_viewmesh" title="compas.geometry.Brep.to_viewmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_viewmesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_viewmesh.html#compas.geometry.Brep.to_viewmesh" title="compas.geometry.Brep.to_viewmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_viewmesh</span></code></a></p></td>
 <td><p>Convert this Brep to a view mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.trim.html#compas.geometry.Brep.trim" title="compas.geometry.Brep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.trim.html#compas.geometry.Brep.trim" title="compas.geometry.Brep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p>Trim this Brep using the given trimming plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges" title="compas.geometry.Brep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges" title="compas.geometry.Brep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
 <td><p>Identify the edges connected to a given vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces" title="compas.geometry.Brep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces" title="compas.geometry.Brep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
 <td><p>Identify the faces connected to a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors" title="compas.geometry.Brep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors" title="compas.geometry.Brep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
 <td><p>Identify the neighbouring vertices of a given vertex.</p></td>
 </tr>
 </tbody>
@@ -1259,23 +1261,11 @@ Note: this is not a full implementation of Brep and rather relies on COMPAS’s 
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.copy.html#compas.geometry.Brep.copy" title="compas.geometry.Brep.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_data.html#compas.geometry.Brep.from_data" title="compas.geometry.Brep.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_json.html#compas.geometry.Brep.from_json" title="compas.geometry.Brep.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_jsonstring.html#compas.geometry.Brep.from_jsonstring" title="compas.geometry.Brep.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.sha256.html#compas.geometry.Brep.sha256" title="compas.geometry.Brep.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.sha256.html#compas.geometry.Brep.sha256" title="compas.geometry.Brep.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_data.html#compas.geometry.Brep.to_data" title="compas.geometry.Brep.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_data.html#compas.geometry.Brep.to_data" title="compas.geometry.Brep.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_jsonstring.html#compas.geometry.Brep.to_jsonstring" title="compas.geometry.Brep.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.transform.html#compas.geometry.Brep.transform" title="compas.geometry.Brep.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the geometry.</p></td>
@@ -1283,14 +1273,8 @@ Note: this is not a full implementation of Brep and rather relies on COMPAS’s 
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.transformed.html#compas.geometry.Brep.transformed" title="compas.geometry.Brep.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.validate_json.html#compas.geometry.Brep.validate_json" title="compas.geometry.Brep.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.validate_jsondata.html#compas.geometry.Brep.validate_jsondata" title="compas.geometry.Brep.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.validate_jsonstring.html#compas.geometry.Brep.validate_jsonstring" title="compas.geometry.Brep.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.validate_data.html#compas.geometry.Brep.validate_data" title="compas.geometry.Brep.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1310,12 +1294,12 @@ Note: this is not a full implementation of Brep and rather relies on COMPAS’s 
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.Torus.validate_jsonstring.html"
+       href="compas.geometry.Torus.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Torus.validate_jsonstring</p>
+        <p class="prev-next-title">Torus.validate_data</p>
       </div>
     </a>
     <a class="right-next"

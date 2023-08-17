@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Color.from_data" href="compas.robots.Color.from_data.html" />
-    <link rel="prev" title="Texture.validate_jsonstring" href="compas.robots.Texture.validate_jsonstring.html" />
+    <link rel="prev" title="Texture.validate_data" href="compas.robots.Texture.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1127,32 +1126,14 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Color.copy.html#compas.robots.Color.copy" title="compas.robots.Color.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Color.from_json.html#compas.robots.Color.from_json" title="compas.robots.Color.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Color.from_jsonstring.html#compas.robots.Color.from_jsonstring" title="compas.robots.Color.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Color.sha256.html#compas.robots.Color.sha256" title="compas.robots.Color.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Color.to_data.html#compas.robots.Color.to_data" title="compas.robots.Color.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Color.to_json.html#compas.robots.Color.to_json" title="compas.robots.Color.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Color.to_jsonstring.html#compas.robots.Color.to_jsonstring" title="compas.robots.Color.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Color.validate_json.html#compas.robots.Color.validate_json" title="compas.robots.Color.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Color.validate_jsondata.html#compas.robots.Color.validate_jsondata" title="compas.robots.Color.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Color.validate_jsonstring.html#compas.robots.Color.validate_jsonstring" title="compas.robots.Color.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Color.validate_data.html#compas.robots.Color.validate_data" title="compas.robots.Color.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1172,12 +1153,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.robots.Texture.validate_jsonstring.html"
+       href="compas.robots.Texture.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Texture.validate_jsonstring</p>
+        <p class="prev-next-title">Texture.validate_data</p>
       </div>
     </a>
     <a class="right-next"

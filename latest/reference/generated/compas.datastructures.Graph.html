@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Graph.add_edge" href="compas.datastructures.Graph.add_edge.html" />
-    <link rel="prev" title="Datastructure.validate_jsonstring" href="compas.datastructures.Datastructure.validate_jsonstring.html" />
+    <link rel="prev" title="Datastructure.validate_data" href="compas.datastructures.Datastructure.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1172,11 +1171,11 @@ for every edge attribute used in the data structure.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.edges_where_predicate.html#compas.datastructures.Graph.edges_where_predicate" title="compas.datastructures.Graph.edges_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_where_predicate</span></code></a></p></td>
 <td><p>Get edges for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_edges.html#compas.datastructures.Graph.from_edges" title="compas.datastructures.Graph.from_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_edges</span></code></a></p></td>
-<td><p>Create a new graph instance from information about the edges.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_data.html#compas.datastructures.Graph.from_data" title="compas.datastructures.Graph.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_jsondata.html#compas.datastructures.Graph.from_jsondata" title="compas.datastructures.Graph.from_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsondata</span></code></a></p></td>
-<td><p>Construct a graph from structured data representing the graph in JSON format.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_edges.html#compas.datastructures.Graph.from_edges" title="compas.datastructures.Graph.from_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_edges</span></code></a></p></td>
+<td><p>Create a new graph instance from information about the edges.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_networkx.html#compas.datastructures.Graph.from_networkx" title="compas.datastructures.Graph.from_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_networkx</span></code></a></p></td>
 <td><p>Create a new graph instance from a NetworkX DiGraph instance.</p></td>
@@ -1250,28 +1249,25 @@ for every edge attribute used in the data structure.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.summary.html#compas.datastructures.Graph.summary" title="compas.datastructures.Graph.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a></p></td>
 <td><p>Return a summary of the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_jsondata.html#compas.datastructures.Graph.to_jsondata" title="compas.datastructures.Graph.to_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsondata</span></code></a></p></td>
-<td><p>Returns a dictionary of structured data representing the graph that can be serialised to JSON format.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_networkx.html#compas.datastructures.Graph.to_networkx" title="compas.datastructures.Graph.to_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_networkx</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_networkx.html#compas.datastructures.Graph.to_networkx" title="compas.datastructures.Graph.to_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_networkx</span></code></a></p></td>
 <td><p>Create a new NetworkX graph instance from a graph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.unset_edge_attribute.html#compas.datastructures.Graph.unset_edge_attribute" title="compas.datastructures.Graph.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.unset_edge_attribute.html#compas.datastructures.Graph.unset_edge_attribute" title="compas.datastructures.Graph.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of an edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.unset_node_attribute.html#compas.datastructures.Graph.unset_node_attribute" title="compas.datastructures.Graph.unset_node_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_node_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.unset_node_attribute.html#compas.datastructures.Graph.unset_node_attribute" title="compas.datastructures.Graph.unset_node_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_node_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a node.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_dea.html#compas.datastructures.Graph.update_dea" title="compas.datastructures.Graph.update_dea"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dea</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_dea.html#compas.datastructures.Graph.update_dea" title="compas.datastructures.Graph.update_dea"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dea</span></code></a></p></td>
 <td><p>Update the default edge attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_default_edge_attributes.html#compas.datastructures.Graph.update_default_edge_attributes" title="compas.datastructures.Graph.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_default_edge_attributes.html#compas.datastructures.Graph.update_default_edge_attributes" title="compas.datastructures.Graph.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a></p></td>
 <td><p>Update the default edge attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_default_node_attributes.html#compas.datastructures.Graph.update_default_node_attributes" title="compas.datastructures.Graph.update_default_node_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_node_attributes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_default_node_attributes.html#compas.datastructures.Graph.update_default_node_attributes" title="compas.datastructures.Graph.update_default_node_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_node_attributes</span></code></a></p></td>
 <td><p>Update the default node attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_dna.html#compas.datastructures.Graph.update_dna" title="compas.datastructures.Graph.update_dna"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dna</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.update_dna.html#compas.datastructures.Graph.update_dna" title="compas.datastructures.Graph.update_dna"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dna</span></code></a></p></td>
 <td><p>Update the default node attributes.</p></td>
 </tr>
 </tbody>
@@ -1289,35 +1285,14 @@ for every edge attribute used in the data structure.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.copy.html#compas.datastructures.Graph.copy" title="compas.datastructures.Graph.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_data.html#compas.datastructures.Graph.from_data" title="compas.datastructures.Graph.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_json.html#compas.datastructures.Graph.from_json" title="compas.datastructures.Graph.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_jsonstring.html#compas.datastructures.Graph.from_jsonstring" title="compas.datastructures.Graph.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.sha256.html#compas.datastructures.Graph.sha256" title="compas.datastructures.Graph.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.sha256.html#compas.datastructures.Graph.sha256" title="compas.datastructures.Graph.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_data.html#compas.datastructures.Graph.to_data" title="compas.datastructures.Graph.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_data.html#compas.datastructures.Graph.to_data" title="compas.datastructures.Graph.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_json.html#compas.datastructures.Graph.to_json" title="compas.datastructures.Graph.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_jsonstring.html#compas.datastructures.Graph.to_jsonstring" title="compas.datastructures.Graph.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_json.html#compas.datastructures.Graph.validate_json" title="compas.datastructures.Graph.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_jsondata.html#compas.datastructures.Graph.validate_jsondata" title="compas.datastructures.Graph.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_jsonstring.html#compas.datastructures.Graph.validate_jsonstring" title="compas.datastructures.Graph.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_data.html#compas.datastructures.Graph.validate_data" title="compas.datastructures.Graph.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1337,12 +1312,12 @@ for every edge attribute used in the data structure.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.datastructures.Datastructure.validate_jsonstring.html"
+       href="compas.datastructures.Datastructure.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Datastructure.validate_jsonstring</p>
+        <p class="prev-next-title">Datastructure.validate_data</p>
       </div>
     </a>
     <a class="right-next"

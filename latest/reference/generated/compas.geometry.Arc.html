@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Arc.from_circle" href="compas.geometry.Arc.from_circle.html" />
-    <link rel="prev" title="Pointcloud.validate_jsonstring" href="compas.geometry.Pointcloud.validate_jsonstring.html" />
+    <link rel="prev" title="Pointcloud.validate_data" href="compas.geometry.Pointcloud.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1183,13 +1182,16 @@ aligned with the world ZX plane at a distance of 1.0 from the world origin along
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.from_circle.html#compas.geometry.Arc.from_circle" title="compas.geometry.Arc.from_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circle</span></code></a></p></td>
 <td><p>Creates an Arc from a circle and start and end angles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.normal_at.html#compas.geometry.Arc.normal_at" title="compas.geometry.Arc.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.from_data.html#compas.geometry.Arc.from_data" title="compas.geometry.Arc.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.normal_at.html#compas.geometry.Arc.normal_at" title="compas.geometry.Arc.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
 <td><p>Construct a normal vector to the arc at a specific parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.point_at.html#compas.geometry.Arc.point_at" title="compas.geometry.Arc.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.point_at.html#compas.geometry.Arc.point_at" title="compas.geometry.Arc.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Returns the point at the specified parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.tangent_at.html#compas.geometry.Arc.tangent_at" title="compas.geometry.Arc.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.tangent_at.html#compas.geometry.Arc.tangent_at" title="compas.geometry.Arc.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
 <td><p>Construct a tangent on the circle at a specific parameter.</p></td>
 </tr>
 </tbody>
@@ -1228,80 +1230,59 @@ aligned with the world ZX plane at a distance of 1.0 from the world origin along
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.frame_at.html#compas.geometry.Arc.frame_at" title="compas.geometry.Arc.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Compute the local frame of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.from_data.html#compas.geometry.Arc.from_data" title="compas.geometry.Arc.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct a curve from its data representation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.from_json.html#compas.geometry.Arc.from_json" title="compas.geometry.Arc.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.from_jsonstring.html#compas.geometry.Arc.from_jsonstring" title="compas.geometry.Arc.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.from_obj.html#compas.geometry.Arc.from_obj" title="compas.geometry.Arc.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.from_obj.html#compas.geometry.Arc.from_obj" title="compas.geometry.Arc.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a curve from an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.from_step.html#compas.geometry.Arc.from_step" title="compas.geometry.Arc.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.from_step.html#compas.geometry.Arc.from_step" title="compas.geometry.Arc.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Load a curve from a STP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.offset.html#compas.geometry.Arc.offset" title="compas.geometry.Arc.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.offset.html#compas.geometry.Arc.offset" title="compas.geometry.Arc.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.reverse.html#compas.geometry.Arc.reverse" title="compas.geometry.Arc.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.reverse.html#compas.geometry.Arc.reverse" title="compas.geometry.Arc.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
 <td><p>Reverse the parametrisation of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.reversed.html#compas.geometry.Arc.reversed" title="compas.geometry.Arc.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.reversed.html#compas.geometry.Arc.reversed" title="compas.geometry.Arc.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
 <td><p>Reverse a copy of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.sha256.html#compas.geometry.Arc.sha256" title="compas.geometry.Arc.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.sha256.html#compas.geometry.Arc.sha256" title="compas.geometry.Arc.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.smooth.html#compas.geometry.Arc.smooth" title="compas.geometry.Arc.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.smooth.html#compas.geometry.Arc.smooth" title="compas.geometry.Arc.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.split.html#compas.geometry.Arc.split" title="compas.geometry.Arc.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.split.html#compas.geometry.Arc.split" title="compas.geometry.Arc.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.to_data.html#compas.geometry.Arc.to_data" title="compas.geometry.Arc.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.to_data.html#compas.geometry.Arc.to_data" title="compas.geometry.Arc.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.to_json.html#compas.geometry.Arc.to_json" title="compas.geometry.Arc.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.to_jsonstring.html#compas.geometry.Arc.to_jsonstring" title="compas.geometry.Arc.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.to_obj.html#compas.geometry.Arc.to_obj" title="compas.geometry.Arc.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.to_obj.html#compas.geometry.Arc.to_obj" title="compas.geometry.Arc.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the curve geometry to an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.to_points.html#compas.geometry.Arc.to_points" title="compas.geometry.Arc.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.to_points.html#compas.geometry.Arc.to_points" title="compas.geometry.Arc.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
 <td><p>Convert the curve to a list of points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.to_polygon.html#compas.geometry.Arc.to_polygon" title="compas.geometry.Arc.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.to_polygon.html#compas.geometry.Arc.to_polygon" title="compas.geometry.Arc.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
 <td><p>Convert the curve to a polygon.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.to_polyline.html#compas.geometry.Arc.to_polyline" title="compas.geometry.Arc.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.to_polyline.html#compas.geometry.Arc.to_polyline" title="compas.geometry.Arc.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
 <td><p>Convert the curve to a polyline.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.to_step.html#compas.geometry.Arc.to_step" title="compas.geometry.Arc.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.to_step.html#compas.geometry.Arc.to_step" title="compas.geometry.Arc.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the curve geometry to a STP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.transform.html#compas.geometry.Arc.transform" title="compas.geometry.Arc.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.transform.html#compas.geometry.Arc.transform" title="compas.geometry.Arc.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.transformed.html#compas.geometry.Arc.transformed" title="compas.geometry.Arc.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.transformed.html#compas.geometry.Arc.transformed" title="compas.geometry.Arc.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.trim.html#compas.geometry.Arc.trim" title="compas.geometry.Arc.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.trim.html#compas.geometry.Arc.trim" title="compas.geometry.Arc.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.validate_json.html#compas.geometry.Arc.validate_json" title="compas.geometry.Arc.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.validate_jsondata.html#compas.geometry.Arc.validate_jsondata" title="compas.geometry.Arc.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Arc.validate_jsonstring.html#compas.geometry.Arc.validate_jsonstring" title="compas.geometry.Arc.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Arc.validate_data.html#compas.geometry.Arc.validate_data" title="compas.geometry.Arc.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1321,12 +1302,12 @@ aligned with the world ZX plane at a distance of 1.0 from the world origin along
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.Pointcloud.validate_jsonstring.html"
+       href="compas.geometry.Pointcloud.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Pointcloud.validate_jsonstring</p>
+        <p class="prev-next-title">Pointcloud.validate_data</p>
       </div>
     </a>
     <a class="right-next"

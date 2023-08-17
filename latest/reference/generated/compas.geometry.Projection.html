@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Projection.from_entries" href="compas.geometry.Projection.from_entries.html" />
-    <link rel="prev" title="BrepVertex.validate_jsonstring" href="compas.geometry.BrepVertex.validate_jsonstring.html" />
+    <link rel="prev" title="BrepVertex.validate_data" href="compas.geometry.BrepVertex.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1155,12 +1154,6 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_frame_to_frame.html#compas.geometry.Projection.from_frame_to_frame" title="compas.geometry.Projection.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a></p></td>
 <td><p>Construct a transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_json.html#compas.geometry.Projection.from_json" title="compas.geometry.Projection.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_jsonstring.html#compas.geometry.Projection.from_jsonstring" title="compas.geometry.Projection.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_list.html#compas.geometry.Projection.from_list" title="compas.geometry.Projection.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
 <td><p>Creates a transformation from a list of 16 numbers.</p></td>
 </tr>
@@ -1182,26 +1175,14 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.to_data.html#compas.geometry.Projection.to_data" title="compas.geometry.Projection.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.to_json.html#compas.geometry.Projection.to_json" title="compas.geometry.Projection.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.to_jsonstring.html#compas.geometry.Projection.to_jsonstring" title="compas.geometry.Projection.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.transpose.html#compas.geometry.Projection.transpose" title="compas.geometry.Projection.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a></p></td>
 <td><p>Transpose the matrix of this transformation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.transposed.html#compas.geometry.Projection.transposed" title="compas.geometry.Projection.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a></p></td>
 <td><p>Create a transposed copy of this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.validate_json.html#compas.geometry.Projection.validate_json" title="compas.geometry.Projection.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.validate_jsondata.html#compas.geometry.Projection.validate_jsondata" title="compas.geometry.Projection.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.validate_jsonstring.html#compas.geometry.Projection.validate_jsonstring" title="compas.geometry.Projection.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.validate_data.html#compas.geometry.Projection.validate_data" title="compas.geometry.Projection.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1221,12 +1202,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.BrepVertex.validate_jsonstring.html"
+       href="compas.geometry.BrepVertex.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">BrepVertex.validate_jsonstring</p>
+        <p class="prev-next-title">BrepVertex.validate_data</p>
       </div>
     </a>
     <a class="right-next"

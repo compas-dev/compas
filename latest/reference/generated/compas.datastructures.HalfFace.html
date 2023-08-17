@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="HalfFace.add_cell" href="compas.datastructures.HalfFace.add_cell.html" />
-    <link rel="prev" title="HalfEdge.validate_jsonstring" href="compas.datastructures.HalfEdge.validate_jsonstring.html" />
+    <link rel="prev" title="HalfEdge.validate_data" href="compas.datastructures.HalfEdge.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1254,157 +1253,160 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.faces_where_predicate.html#compas.datastructures.HalfFace.faces_where_predicate" title="compas.datastructures.HalfFace.faces_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where_predicate</span></code></a></p></td>
 <td><p>Get faces for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_adjacent_halfface.html#compas.datastructures.HalfFace.halfface_adjacent_halfface" title="compas.datastructures.HalfFace.halfface_adjacent_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_adjacent_halfface</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_data.html#compas.datastructures.HalfFace.from_data" title="compas.datastructures.HalfFace.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_adjacent_halfface.html#compas.datastructures.HalfFace.halfface_adjacent_halfface" title="compas.datastructures.HalfFace.halfface_adjacent_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_adjacent_halfface</span></code></a></p></td>
 <td><p>Return the halfface adjacent to the halfface across the halfedge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_cell.html#compas.datastructures.HalfFace.halfface_cell" title="compas.datastructures.HalfFace.halfface_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_cell</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_cell.html#compas.datastructures.HalfFace.halfface_cell" title="compas.datastructures.HalfFace.halfface_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_cell</span></code></a></p></td>
 <td><p>The cell to which the halfface belongs to.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_halfedges.html#compas.datastructures.HalfFace.halfface_halfedges" title="compas.datastructures.HalfFace.halfface_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_halfedges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_halfedges.html#compas.datastructures.HalfFace.halfface_halfedges" title="compas.datastructures.HalfFace.halfface_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_halfedges</span></code></a></p></td>
 <td><p>The halfedges of a halfface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_manifold_neighborhood.html#compas.datastructures.HalfFace.halfface_manifold_neighborhood" title="compas.datastructures.HalfFace.halfface_manifold_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighborhood</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_manifold_neighborhood.html#compas.datastructures.HalfFace.halfface_manifold_neighborhood" title="compas.datastructures.HalfFace.halfface_manifold_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighborhood</span></code></a></p></td>
 <td><p>Return the halfface neighborhood of a halfface across their edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_manifold_neighbors.html#compas.datastructures.HalfFace.halfface_manifold_neighbors" title="compas.datastructures.HalfFace.halfface_manifold_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighbors</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_manifold_neighbors.html#compas.datastructures.HalfFace.halfface_manifold_neighbors" title="compas.datastructures.HalfFace.halfface_manifold_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighbors</span></code></a></p></td>
 <td><p>Return the halfface neighbors of a halfface that are on the same manifold.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_opposite_cell.html#compas.datastructures.HalfFace.halfface_opposite_cell" title="compas.datastructures.HalfFace.halfface_opposite_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_cell</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_opposite_cell.html#compas.datastructures.HalfFace.halfface_opposite_cell" title="compas.datastructures.HalfFace.halfface_opposite_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_cell</span></code></a></p></td>
 <td><p>The cell to which the opposite halfface belongs to.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_opposite_halfface.html#compas.datastructures.HalfFace.halfface_opposite_halfface" title="compas.datastructures.HalfFace.halfface_opposite_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_halfface</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_opposite_halfface.html#compas.datastructures.HalfFace.halfface_opposite_halfface" title="compas.datastructures.HalfFace.halfface_opposite_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_halfface</span></code></a></p></td>
 <td><p>The opposite face of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_vertex_ancestor.html#compas.datastructures.HalfFace.halfface_vertex_ancestor" title="compas.datastructures.HalfFace.halfface_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_ancestor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_vertex_ancestor.html#compas.datastructures.HalfFace.halfface_vertex_ancestor" title="compas.datastructures.HalfFace.halfface_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_ancestor</span></code></a></p></td>
 <td><p>Return the vertex before the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_vertex_descendent.html#compas.datastructures.HalfFace.halfface_vertex_descendent" title="compas.datastructures.HalfFace.halfface_vertex_descendent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_descendent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_vertex_descendent.html#compas.datastructures.HalfFace.halfface_vertex_descendent" title="compas.datastructures.HalfFace.halfface_vertex_descendent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_descendent</span></code></a></p></td>
 <td><p>Return the vertex after the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_vertices.html#compas.datastructures.HalfFace.halfface_vertices" title="compas.datastructures.HalfFace.halfface_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halfface_vertices.html#compas.datastructures.HalfFace.halfface_vertices" title="compas.datastructures.HalfFace.halfface_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertices</span></code></a></p></td>
 <td><p>The vertices of a halfface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halffaces.html#compas.datastructures.HalfFace.halffaces" title="compas.datastructures.HalfFace.halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halffaces.html#compas.datastructures.HalfFace.halffaces" title="compas.datastructures.HalfFace.halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces</span></code></a></p></td>
 <td><p>Iterate over the halffaces of the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halffaces_on_boundaries.html#compas.datastructures.HalfFace.halffaces_on_boundaries" title="compas.datastructures.HalfFace.halffaces_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_on_boundaries</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.halffaces_on_boundaries.html#compas.datastructures.HalfFace.halffaces_on_boundaries" title="compas.datastructures.HalfFace.halffaces_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_on_boundaries</span></code></a></p></td>
 <td><p>Find the faces on the boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.has_edge.html#compas.datastructures.HalfFace.has_edge" title="compas.datastructures.HalfFace.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.has_edge.html#compas.datastructures.HalfFace.has_edge" title="compas.datastructures.HalfFace.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
 <td><p>Verify that the volmesh contains a directed edge (u, v).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.has_halfface.html#compas.datastructures.HalfFace.has_halfface" title="compas.datastructures.HalfFace.has_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfface</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.has_halfface.html#compas.datastructures.HalfFace.has_halfface" title="compas.datastructures.HalfFace.has_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfface</span></code></a></p></td>
 <td><p>Verify that a face is part of the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.has_vertex.html#compas.datastructures.HalfFace.has_vertex" title="compas.datastructures.HalfFace.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.has_vertex.html#compas.datastructures.HalfFace.has_vertex" title="compas.datastructures.HalfFace.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a></p></td>
 <td><p>Verify that a vertex is in the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.index_vertex.html#compas.datastructures.HalfFace.index_vertex" title="compas.datastructures.HalfFace.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.index_vertex.html#compas.datastructures.HalfFace.index_vertex" title="compas.datastructures.HalfFace.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a></p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in the vertex dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_cell_on_boundary.html#compas.datastructures.HalfFace.is_cell_on_boundary" title="compas.datastructures.HalfFace.is_cell_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cell_on_boundary</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_cell_on_boundary.html#compas.datastructures.HalfFace.is_cell_on_boundary" title="compas.datastructures.HalfFace.is_cell_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cell_on_boundary</span></code></a></p></td>
 <td><p>Verify that a cell is on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_edge_on_boundary.html#compas.datastructures.HalfFace.is_edge_on_boundary" title="compas.datastructures.HalfFace.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_edge_on_boundary.html#compas.datastructures.HalfFace.is_edge_on_boundary" title="compas.datastructures.HalfFace.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a></p></td>
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_halfface_on_boundary.html#compas.datastructures.HalfFace.is_halfface_on_boundary" title="compas.datastructures.HalfFace.is_halfface_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_halfface_on_boundary</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_halfface_on_boundary.html#compas.datastructures.HalfFace.is_halfface_on_boundary" title="compas.datastructures.HalfFace.is_halfface_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_halfface_on_boundary</span></code></a></p></td>
 <td><p>Verify that a face is on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_valid.html#compas.datastructures.HalfFace.is_valid" title="compas.datastructures.HalfFace.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_valid.html#compas.datastructures.HalfFace.is_valid" title="compas.datastructures.HalfFace.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a></p></td>
 <td><p>Verify that the volmesh is valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_vertex_on_boundary.html#compas.datastructures.HalfFace.is_vertex_on_boundary" title="compas.datastructures.HalfFace.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.is_vertex_on_boundary.html#compas.datastructures.HalfFace.is_vertex_on_boundary" title="compas.datastructures.HalfFace.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a></p></td>
 <td><p>Verify that a vertex is on a boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_cells.html#compas.datastructures.HalfFace.number_of_cells" title="compas.datastructures.HalfFace.number_of_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cells</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_cells.html#compas.datastructures.HalfFace.number_of_cells" title="compas.datastructures.HalfFace.number_of_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cells</span></code></a></p></td>
 <td><p>Count the number of faces in the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_edges.html#compas.datastructures.HalfFace.number_of_edges" title="compas.datastructures.HalfFace.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_edges.html#compas.datastructures.HalfFace.number_of_edges" title="compas.datastructures.HalfFace.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
 <td><p>Count the number of edges in the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_faces.html#compas.datastructures.HalfFace.number_of_faces" title="compas.datastructures.HalfFace.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_faces.html#compas.datastructures.HalfFace.number_of_faces" title="compas.datastructures.HalfFace.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a></p></td>
 <td><p>Count the number of faces in the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_vertices.html#compas.datastructures.HalfFace.number_of_vertices" title="compas.datastructures.HalfFace.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.number_of_vertices.html#compas.datastructures.HalfFace.number_of_vertices" title="compas.datastructures.HalfFace.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a></p></td>
 <td><p>Count the number of vertices in the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.remove_unused_vertices.html#compas.datastructures.HalfFace.remove_unused_vertices" title="compas.datastructures.HalfFace.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.remove_unused_vertices.html#compas.datastructures.HalfFace.remove_unused_vertices" title="compas.datastructures.HalfFace.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a></p></td>
 <td><p>Remove all unused vertices from the volmesh object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_cell_attribute.html#compas.datastructures.HalfFace.unset_cell_attribute" title="compas.datastructures.HalfFace.unset_cell_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_cell_attribute</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_cell_attribute.html#compas.datastructures.HalfFace.unset_cell_attribute" title="compas.datastructures.HalfFace.unset_cell_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_cell_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a cell.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_edge_attribute.html#compas.datastructures.HalfFace.unset_edge_attribute" title="compas.datastructures.HalfFace.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_edge_attribute.html#compas.datastructures.HalfFace.unset_edge_attribute" title="compas.datastructures.HalfFace.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of an edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_face_attribute.html#compas.datastructures.HalfFace.unset_face_attribute" title="compas.datastructures.HalfFace.unset_face_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_face_attribute</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_face_attribute.html#compas.datastructures.HalfFace.unset_face_attribute" title="compas.datastructures.HalfFace.unset_face_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_face_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_vertex_attribute.html#compas.datastructures.HalfFace.unset_vertex_attribute" title="compas.datastructures.HalfFace.unset_vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_vertex_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.unset_vertex_attribute.html#compas.datastructures.HalfFace.unset_vertex_attribute" title="compas.datastructures.HalfFace.unset_vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_vertex_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_cell_attributes.html#compas.datastructures.HalfFace.update_default_cell_attributes" title="compas.datastructures.HalfFace.update_default_cell_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_cell_attributes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_cell_attributes.html#compas.datastructures.HalfFace.update_default_cell_attributes" title="compas.datastructures.HalfFace.update_default_cell_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_cell_attributes</span></code></a></p></td>
 <td><p>Update the default cell attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_edge_attributes.html#compas.datastructures.HalfFace.update_default_edge_attributes" title="compas.datastructures.HalfFace.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_edge_attributes.html#compas.datastructures.HalfFace.update_default_edge_attributes" title="compas.datastructures.HalfFace.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a></p></td>
 <td><p>Update the default edge attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_face_attributes.html#compas.datastructures.HalfFace.update_default_face_attributes" title="compas.datastructures.HalfFace.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_face_attributes.html#compas.datastructures.HalfFace.update_default_face_attributes" title="compas.datastructures.HalfFace.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a></p></td>
 <td><p>Update the default face attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_vertex_attributes.html#compas.datastructures.HalfFace.update_default_vertex_attributes" title="compas.datastructures.HalfFace.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.update_default_vertex_attributes.html#compas.datastructures.HalfFace.update_default_vertex_attributes" title="compas.datastructures.HalfFace.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a></p></td>
 <td><p>Update the default vertex attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_attribute.html#compas.datastructures.HalfFace.vertex_attribute" title="compas.datastructures.HalfFace.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_attribute.html#compas.datastructures.HalfFace.vertex_attribute" title="compas.datastructures.HalfFace.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a></p></td>
 <td><p>Get or set an attribute of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_attributes.html#compas.datastructures.HalfFace.vertex_attributes" title="compas.datastructures.HalfFace.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_attributes.html#compas.datastructures.HalfFace.vertex_attributes" title="compas.datastructures.HalfFace.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a></p></td>
 <td><p>Get or set multiple attributes of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_cells.html#compas.datastructures.HalfFace.vertex_cells" title="compas.datastructures.HalfFace.vertex_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_cells</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_cells.html#compas.datastructures.HalfFace.vertex_cells" title="compas.datastructures.HalfFace.vertex_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_cells</span></code></a></p></td>
 <td><p>Return all cells connected to a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_degree.html#compas.datastructures.HalfFace.vertex_degree" title="compas.datastructures.HalfFace.vertex_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_degree</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_degree.html#compas.datastructures.HalfFace.vertex_degree" title="compas.datastructures.HalfFace.vertex_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_degree</span></code></a></p></td>
 <td><p>Count the neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_halffaces.html#compas.datastructures.HalfFace.vertex_halffaces" title="compas.datastructures.HalfFace.vertex_halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_halffaces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_halffaces.html#compas.datastructures.HalfFace.vertex_halffaces" title="compas.datastructures.HalfFace.vertex_halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_halffaces</span></code></a></p></td>
 <td><p>Return all halffaces connected to a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_index.html#compas.datastructures.HalfFace.vertex_index" title="compas.datastructures.HalfFace.vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_index</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_index.html#compas.datastructures.HalfFace.vertex_index" title="compas.datastructures.HalfFace.vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_index</span></code></a></p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_max_degree.html#compas.datastructures.HalfFace.vertex_max_degree" title="compas.datastructures.HalfFace.vertex_max_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_max_degree</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_max_degree.html#compas.datastructures.HalfFace.vertex_max_degree" title="compas.datastructures.HalfFace.vertex_max_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_max_degree</span></code></a></p></td>
 <td><p>Compute the maximum degree of all vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_min_degree.html#compas.datastructures.HalfFace.vertex_min_degree" title="compas.datastructures.HalfFace.vertex_min_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_min_degree</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_min_degree.html#compas.datastructures.HalfFace.vertex_min_degree" title="compas.datastructures.HalfFace.vertex_min_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_min_degree</span></code></a></p></td>
 <td><p>Compute the minimum degree of all vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_neighborhood.html#compas.datastructures.HalfFace.vertex_neighborhood" title="compas.datastructures.HalfFace.vertex_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_neighborhood.html#compas.datastructures.HalfFace.vertex_neighborhood" title="compas.datastructures.HalfFace.vertex_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood</span></code></a></p></td>
 <td><p>Return the vertices in the neighborhood of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_neighbors.html#compas.datastructures.HalfFace.vertex_neighbors" title="compas.datastructures.HalfFace.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_neighbors.html#compas.datastructures.HalfFace.vertex_neighbors" title="compas.datastructures.HalfFace.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
 <td><p>Return the vertex neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_sample.html#compas.datastructures.HalfFace.vertex_sample" title="compas.datastructures.HalfFace.vertex_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_sample</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertex_sample.html#compas.datastructures.HalfFace.vertex_sample" title="compas.datastructures.HalfFace.vertex_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_sample</span></code></a></p></td>
 <td><p>Get the identifiers of a set of random vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices.html#compas.datastructures.HalfFace.vertices" title="compas.datastructures.HalfFace.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices.html#compas.datastructures.HalfFace.vertices" title="compas.datastructures.HalfFace.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a></p></td>
 <td><p>Iterate over the vertices of the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_attribute.html#compas.datastructures.HalfFace.vertices_attribute" title="compas.datastructures.HalfFace.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_attribute.html#compas.datastructures.HalfFace.vertices_attribute" title="compas.datastructures.HalfFace.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a></p></td>
 <td><p>Get or set an attribute of multiple vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_attributes.html#compas.datastructures.HalfFace.vertices_attributes" title="compas.datastructures.HalfFace.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_attributes.html#compas.datastructures.HalfFace.vertices_attributes" title="compas.datastructures.HalfFace.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a></p></td>
 <td><p>Get or set multiple attributes of multiple vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_on_boundaries.html#compas.datastructures.HalfFace.vertices_on_boundaries" title="compas.datastructures.HalfFace.vertices_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundaries</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_on_boundaries.html#compas.datastructures.HalfFace.vertices_on_boundaries" title="compas.datastructures.HalfFace.vertices_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundaries</span></code></a></p></td>
 <td><p>Find the vertices on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_where.html#compas.datastructures.HalfFace.vertices_where" title="compas.datastructures.HalfFace.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_where.html#compas.datastructures.HalfFace.vertices_where" title="compas.datastructures.HalfFace.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a></p></td>
 <td><p>Get vertices for which a certain condition or set of conditions is true.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_where_predicate.html#compas.datastructures.HalfFace.vertices_where_predicate" title="compas.datastructures.HalfFace.vertices_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.vertices_where_predicate.html#compas.datastructures.HalfFace.vertices_where_predicate" title="compas.datastructures.HalfFace.vertices_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code></a></p></td>
 <td><p>Get vertices for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 </tbody>
@@ -1422,35 +1424,14 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.copy.html#compas.datastructures.HalfFace.copy" title="compas.datastructures.HalfFace.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_data.html#compas.datastructures.HalfFace.from_data" title="compas.datastructures.HalfFace.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_json.html#compas.datastructures.HalfFace.from_json" title="compas.datastructures.HalfFace.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_jsonstring.html#compas.datastructures.HalfFace.from_jsonstring" title="compas.datastructures.HalfFace.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.sha256.html#compas.datastructures.HalfFace.sha256" title="compas.datastructures.HalfFace.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.sha256.html#compas.datastructures.HalfFace.sha256" title="compas.datastructures.HalfFace.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_data.html#compas.datastructures.HalfFace.to_data" title="compas.datastructures.HalfFace.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_data.html#compas.datastructures.HalfFace.to_data" title="compas.datastructures.HalfFace.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_json.html#compas.datastructures.HalfFace.to_json" title="compas.datastructures.HalfFace.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_jsonstring.html#compas.datastructures.HalfFace.to_jsonstring" title="compas.datastructures.HalfFace.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_json.html#compas.datastructures.HalfFace.validate_json" title="compas.datastructures.HalfFace.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_jsondata.html#compas.datastructures.HalfFace.validate_jsondata" title="compas.datastructures.HalfFace.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_jsonstring.html#compas.datastructures.HalfFace.validate_jsonstring" title="compas.datastructures.HalfFace.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_data.html#compas.datastructures.HalfFace.validate_data" title="compas.datastructures.HalfFace.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1470,12 +1451,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.datastructures.HalfEdge.validate_jsonstring.html"
+       href="compas.datastructures.HalfEdge.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">HalfEdge.validate_jsonstring</p>
+        <p class="prev-next-title">HalfEdge.validate_data</p>
       </div>
     </a>
     <a class="right-next"

@@ -64,8 +64,8 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SphericalSurface.from_plane_and_radius" href="compas.geometry.SphericalSurface.from_plane_and_radius.html" />
-    <link rel="prev" title="PlanarSurface.validate_jsonstring" href="compas.geometry.PlanarSurface.validate_jsonstring.html" />
+    <link rel="next" title="SphericalSurface.from_data" href="compas.geometry.SphericalSurface.from_data.html" />
+    <link rel="prev" title="PlanarSurface.validate_data" href="compas.geometry.PlanarSurface.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1101,19 +1100,22 @@ document.write(`
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_plane_and_radius.html#compas.geometry.SphericalSurface.from_plane_and_radius" title="compas.geometry.SphericalSurface.from_plane_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radius</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_data.html#compas.geometry.SphericalSurface.from_data" title="compas.geometry.SphericalSurface.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_plane_and_radius.html#compas.geometry.SphericalSurface.from_plane_and_radius" title="compas.geometry.SphericalSurface.from_plane_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radius</span></code></a></p></td>
 <td><p>Construct a sphere from a plane and a radius.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_points.html#compas.geometry.SphericalSurface.from_points" title="compas.geometry.SphericalSurface.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_points.html#compas.geometry.SphericalSurface.from_points" title="compas.geometry.SphericalSurface.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
 <td><p>Construct the sphere that best fits a set of points in the least squares sense.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_three_points.html#compas.geometry.SphericalSurface.from_three_points" title="compas.geometry.SphericalSurface.from_three_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_three_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_three_points.html#compas.geometry.SphericalSurface.from_three_points" title="compas.geometry.SphericalSurface.from_three_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_three_points</span></code></a></p></td>
 <td><p>Construct a sphere from three points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.normal_at.html#compas.geometry.SphericalSurface.normal_at" title="compas.geometry.SphericalSurface.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.normal_at.html#compas.geometry.SphericalSurface.normal_at" title="compas.geometry.SphericalSurface.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
 <td><p>Construct a normal vector at a point on the sphere.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.point_at.html#compas.geometry.SphericalSurface.point_at" title="compas.geometry.SphericalSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.point_at.html#compas.geometry.SphericalSurface.point_at" title="compas.geometry.SphericalSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Construct a point on the sphere.</p></td>
 </tr>
 </tbody>
@@ -1146,101 +1148,80 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.frame_at.html#compas.geometry.SphericalSurface.frame_at" title="compas.geometry.SphericalSurface.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Compute the local frame at a point on the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_data.html#compas.geometry.SphericalSurface.from_data" title="compas.geometry.SphericalSurface.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct a surface from its data representation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_json.html#compas.geometry.SphericalSurface.from_json" title="compas.geometry.SphericalSurface.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_jsonstring.html#compas.geometry.SphericalSurface.from_jsonstring" title="compas.geometry.SphericalSurface.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_obj.html#compas.geometry.SphericalSurface.from_obj" title="compas.geometry.SphericalSurface.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_obj.html#compas.geometry.SphericalSurface.from_obj" title="compas.geometry.SphericalSurface.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a surface from an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_plane.html#compas.geometry.SphericalSurface.from_plane" title="compas.geometry.SphericalSurface.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_plane.html#compas.geometry.SphericalSurface.from_plane" title="compas.geometry.SphericalSurface.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
 <td><p>Construct a surface from a plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_step.html#compas.geometry.SphericalSurface.from_step" title="compas.geometry.SphericalSurface.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.from_step.html#compas.geometry.SphericalSurface.from_step" title="compas.geometry.SphericalSurface.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Load a surface from a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.intersections_with_curve.html#compas.geometry.SphericalSurface.intersections_with_curve" title="compas.geometry.SphericalSurface.intersections_with_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_curve</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.intersections_with_curve.html#compas.geometry.SphericalSurface.intersections_with_curve" title="compas.geometry.SphericalSurface.intersections_with_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_curve</span></code></a></p></td>
 <td><p>Compute the intersections with a curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.intersections_with_line.html#compas.geometry.SphericalSurface.intersections_with_line" title="compas.geometry.SphericalSurface.intersections_with_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_line</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.intersections_with_line.html#compas.geometry.SphericalSurface.intersections_with_line" title="compas.geometry.SphericalSurface.intersections_with_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_line</span></code></a></p></td>
 <td><p>Compute the intersections with a line.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.intersections_with_plane.html#compas.geometry.SphericalSurface.intersections_with_plane" title="compas.geometry.SphericalSurface.intersections_with_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_plane</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.intersections_with_plane.html#compas.geometry.SphericalSurface.intersections_with_plane" title="compas.geometry.SphericalSurface.intersections_with_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_plane</span></code></a></p></td>
 <td><p>Compute the intersections with a plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.obb.html#compas.geometry.SphericalSurface.obb" title="compas.geometry.SphericalSurface.obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.obb.html#compas.geometry.SphericalSurface.obb" title="compas.geometry.SphericalSurface.obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb</span></code></a></p></td>
 <td><p>Compute the oriented bounding box of the surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.pointgrid.html#compas.geometry.SphericalSurface.pointgrid" title="compas.geometry.SphericalSurface.pointgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pointgrid</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.pointgrid.html#compas.geometry.SphericalSurface.pointgrid" title="compas.geometry.SphericalSurface.pointgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pointgrid</span></code></a></p></td>
 <td><p>Compute point locations corresponding to evenly spaced parameters over the surface domain.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.sha256.html#compas.geometry.SphericalSurface.sha256" title="compas.geometry.SphericalSurface.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.sha256.html#compas.geometry.SphericalSurface.sha256" title="compas.geometry.SphericalSurface.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_brep.html#compas.geometry.SphericalSurface.to_brep" title="compas.geometry.SphericalSurface.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_brep.html#compas.geometry.SphericalSurface.to_brep" title="compas.geometry.SphericalSurface.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Convert the surface to a BREP representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_data.html#compas.geometry.SphericalSurface.to_data" title="compas.geometry.SphericalSurface.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_data.html#compas.geometry.SphericalSurface.to_data" title="compas.geometry.SphericalSurface.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_json.html#compas.geometry.SphericalSurface.to_json" title="compas.geometry.SphericalSurface.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_jsonstring.html#compas.geometry.SphericalSurface.to_jsonstring" title="compas.geometry.SphericalSurface.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_mesh.html#compas.geometry.SphericalSurface.to_mesh" title="compas.geometry.SphericalSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_mesh.html#compas.geometry.SphericalSurface.to_mesh" title="compas.geometry.SphericalSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
 <td><p>Convert the surface to a mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_polyhedron.html#compas.geometry.SphericalSurface.to_polyhedron" title="compas.geometry.SphericalSurface.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_polyhedron.html#compas.geometry.SphericalSurface.to_polyhedron" title="compas.geometry.SphericalSurface.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the surface to a polyhedron.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_quads.html#compas.geometry.SphericalSurface.to_quads" title="compas.geometry.SphericalSurface.to_quads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_quads</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_quads.html#compas.geometry.SphericalSurface.to_quads" title="compas.geometry.SphericalSurface.to_quads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_quads</span></code></a></p></td>
 <td><p>Convert the surface to a list of quads.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_step.html#compas.geometry.SphericalSurface.to_step" title="compas.geometry.SphericalSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_step.html#compas.geometry.SphericalSurface.to_step" title="compas.geometry.SphericalSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the surface geometry to a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_tesselation.html#compas.geometry.SphericalSurface.to_tesselation" title="compas.geometry.SphericalSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_tesselation.html#compas.geometry.SphericalSurface.to_tesselation" title="compas.geometry.SphericalSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
 <td><p>Convert the surface to a triangle mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_triangles.html#compas.geometry.SphericalSurface.to_triangles" title="compas.geometry.SphericalSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_triangles.html#compas.geometry.SphericalSurface.to_triangles" title="compas.geometry.SphericalSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
 <td><p>Convert the surface to a list of triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_vertices_and_faces.html#compas.geometry.SphericalSurface.to_vertices_and_faces" title="compas.geometry.SphericalSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_vertices_and_faces.html#compas.geometry.SphericalSurface.to_vertices_and_faces" title="compas.geometry.SphericalSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Convert the surface to a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transform.html#compas.geometry.SphericalSurface.transform" title="compas.geometry.SphericalSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transform.html#compas.geometry.SphericalSurface.transform" title="compas.geometry.SphericalSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transformed.html#compas.geometry.SphericalSurface.transformed" title="compas.geometry.SphericalSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transformed.html#compas.geometry.SphericalSurface.transformed" title="compas.geometry.SphericalSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.u_isocurve.html#compas.geometry.SphericalSurface.u_isocurve" title="compas.geometry.SphericalSurface.u_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_isocurve</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.u_isocurve.html#compas.geometry.SphericalSurface.u_isocurve" title="compas.geometry.SphericalSurface.u_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_isocurve</span></code></a></p></td>
 <td><p>Compute the isoparametric curve at parameter u.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.u_space.html#compas.geometry.SphericalSurface.u_space" title="compas.geometry.SphericalSurface.u_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_space</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.u_space.html#compas.geometry.SphericalSurface.u_space" title="compas.geometry.SphericalSurface.u_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_space</span></code></a></p></td>
 <td><p>Compute evenly spaced parameters over the surface domain in the U direction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.v_isocurve.html#compas.geometry.SphericalSurface.v_isocurve" title="compas.geometry.SphericalSurface.v_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_isocurve</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.v_isocurve.html#compas.geometry.SphericalSurface.v_isocurve" title="compas.geometry.SphericalSurface.v_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_isocurve</span></code></a></p></td>
 <td><p>Compute the isoparametric curve at parameter v.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.v_space.html#compas.geometry.SphericalSurface.v_space" title="compas.geometry.SphericalSurface.v_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_space</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.v_space.html#compas.geometry.SphericalSurface.v_space" title="compas.geometry.SphericalSurface.v_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_space</span></code></a></p></td>
 <td><p>Compute evenly spaced parameters over the surface domain in the V direction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.validate_json.html#compas.geometry.SphericalSurface.validate_json" title="compas.geometry.SphericalSurface.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.validate_jsondata.html#compas.geometry.SphericalSurface.validate_jsondata" title="compas.geometry.SphericalSurface.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.validate_jsonstring.html#compas.geometry.SphericalSurface.validate_jsonstring" title="compas.geometry.SphericalSurface.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.validate_data.html#compas.geometry.SphericalSurface.validate_data" title="compas.geometry.SphericalSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1260,20 +1241,20 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.PlanarSurface.validate_jsonstring.html"
+       href="compas.geometry.PlanarSurface.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">PlanarSurface.validate_jsonstring</p>
+        <p class="prev-next-title">PlanarSurface.validate_data</p>
       </div>
     </a>
     <a class="right-next"
-       href="compas.geometry.SphericalSurface.from_plane_and_radius.html"
+       href="compas.geometry.SphericalSurface.from_data.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">SphericalSurface.from_plane_and_radius</p>
+        <p class="prev-next-title">SphericalSurface.from_data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

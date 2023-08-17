@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Sphere.contains_point" href="compas.geometry.Sphere.contains_point.html" />
-    <link rel="prev" title="Polyhedron.validate_jsonstring" href="compas.geometry.Polyhedron.validate_jsonstring.html" />
+    <link rel="prev" title="Polyhedron.validate_data" href="compas.geometry.Polyhedron.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1074,7 +1073,7 @@ document.write(`
 <h1>Sphere</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Sphere">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.shapes.shape.Shape</span></code></p>
 <p>A sphere is defined by a point and a radius.</p>
 <dl class="field-list simple">
@@ -1138,13 +1137,16 @@ The center of the circle is at the origin of the local coordinate system.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.contains_points.html#compas.geometry.Sphere.contains_points" title="compas.geometry.Sphere.contains_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains_points</span></code></a></p></td>
 <td><p>Verify if a list of points are inside the sphere.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.from_point_and_radius.html#compas.geometry.Sphere.from_point_and_radius" title="compas.geometry.Sphere.from_point_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_and_radius</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.from_data.html#compas.geometry.Sphere.from_data" title="compas.geometry.Sphere.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.from_point_and_radius.html#compas.geometry.Sphere.from_point_and_radius" title="compas.geometry.Sphere.from_point_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_and_radius</span></code></a></p></td>
 <td><p>Construct a sphere from a point and a radius.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.scale.html#compas.geometry.Sphere.scale" title="compas.geometry.Sphere.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.scale.html#compas.geometry.Sphere.scale" title="compas.geometry.Sphere.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the sphere.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_vertices_and_faces.html#compas.geometry.Sphere.to_vertices_and_faces" title="compas.geometry.Sphere.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_vertices_and_faces.html#compas.geometry.Sphere.to_vertices_and_faces" title="compas.geometry.Sphere.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Returns a list of vertices and faces</p></td>
 </tr>
 </tbody>
@@ -1162,53 +1164,32 @@ The center of the circle is at the origin of the local coordinate system.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.copy.html#compas.geometry.Sphere.copy" title="compas.geometry.Sphere.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.from_data.html#compas.geometry.Sphere.from_data" title="compas.geometry.Sphere.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.from_json.html#compas.geometry.Sphere.from_json" title="compas.geometry.Sphere.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.from_jsonstring.html#compas.geometry.Sphere.from_jsonstring" title="compas.geometry.Sphere.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.rotate.html#compas.geometry.Sphere.rotate" title="compas.geometry.Sphere.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.rotate.html#compas.geometry.Sphere.rotate" title="compas.geometry.Sphere.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
 <td><p>Rotate the shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.sha256.html#compas.geometry.Sphere.sha256" title="compas.geometry.Sphere.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.sha256.html#compas.geometry.Sphere.sha256" title="compas.geometry.Sphere.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_brep.html#compas.geometry.Sphere.to_brep" title="compas.geometry.Sphere.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_brep.html#compas.geometry.Sphere.to_brep" title="compas.geometry.Sphere.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Convert the shape to a Brep.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_data.html#compas.geometry.Sphere.to_data" title="compas.geometry.Sphere.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_data.html#compas.geometry.Sphere.to_data" title="compas.geometry.Sphere.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_json.html#compas.geometry.Sphere.to_json" title="compas.geometry.Sphere.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_jsonstring.html#compas.geometry.Sphere.to_jsonstring" title="compas.geometry.Sphere.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_polyhedron.html#compas.geometry.Sphere.to_polyhedron" title="compas.geometry.Sphere.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.to_polyhedron.html#compas.geometry.Sphere.to_polyhedron" title="compas.geometry.Sphere.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.transform.html#compas.geometry.Sphere.transform" title="compas.geometry.Sphere.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.transform.html#compas.geometry.Sphere.transform" title="compas.geometry.Sphere.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.transformed.html#compas.geometry.Sphere.transformed" title="compas.geometry.Sphere.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.transformed.html#compas.geometry.Sphere.transformed" title="compas.geometry.Sphere.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.translate.html#compas.geometry.Sphere.translate" title="compas.geometry.Sphere.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.translate.html#compas.geometry.Sphere.translate" title="compas.geometry.Sphere.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.validate_json.html#compas.geometry.Sphere.validate_json" title="compas.geometry.Sphere.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.validate_jsondata.html#compas.geometry.Sphere.validate_jsondata" title="compas.geometry.Sphere.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Sphere.validate_jsonstring.html#compas.geometry.Sphere.validate_jsonstring" title="compas.geometry.Sphere.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Sphere.validate_data.html#compas.geometry.Sphere.validate_data" title="compas.geometry.Sphere.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1228,12 +1209,12 @@ The center of the circle is at the origin of the local coordinate system.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.Polyhedron.validate_jsonstring.html"
+       href="compas.geometry.Polyhedron.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Polyhedron.validate_jsonstring</p>
+        <p class="prev-next-title">Polyhedron.validate_data</p>
       </div>
     </a>
     <a class="right-next"

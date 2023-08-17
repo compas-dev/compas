@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Circle.closest_point" href="compas.geometry.Circle.closest_point.html" />
-    <link rel="prev" title="Bezier.validate_jsonstring" href="compas.geometry.Bezier.validate_jsonstring.html" />
+    <link rel="prev" title="Bezier.validate_data" href="compas.geometry.Bezier.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1163,25 +1162,28 @@ The default value is <code class="docutils literal notranslate"><span class="pre
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.contains_point.html#compas.geometry.Circle.contains_point" title="compas.geometry.Circle.contains_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains_point</span></code></a></p></td>
 <td><p>Verify that the circle contains a given point.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_plane_and_radius.html#compas.geometry.Circle.from_plane_and_radius" title="compas.geometry.Circle.from_plane_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radius</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_data.html#compas.geometry.Circle.from_data" title="compas.geometry.Circle.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.from_plane_and_radius.html#compas.geometry.Circle.from_plane_and_radius" title="compas.geometry.Circle.from_plane_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radius</span></code></a></p></td>
 <td><p>Construct a circle from a plane and a radius.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.from_point_and_radius.html#compas.geometry.Circle.from_point_and_radius" title="compas.geometry.Circle.from_point_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_and_radius</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_point_and_radius.html#compas.geometry.Circle.from_point_and_radius" title="compas.geometry.Circle.from_point_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_and_radius</span></code></a></p></td>
 <td><p>Construct a circle from a point and a radius.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_points.html#compas.geometry.Circle.from_points" title="compas.geometry.Circle.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.from_points.html#compas.geometry.Circle.from_points" title="compas.geometry.Circle.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
 <td><p>Construct a circle from a list of at least three points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.from_three_points.html#compas.geometry.Circle.from_three_points" title="compas.geometry.Circle.from_three_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_three_points</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_three_points.html#compas.geometry.Circle.from_three_points" title="compas.geometry.Circle.from_three_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_three_points</span></code></a></p></td>
 <td><p>Construct a circle from three points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.normal_at.html#compas.geometry.Circle.normal_at" title="compas.geometry.Circle.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.normal_at.html#compas.geometry.Circle.normal_at" title="compas.geometry.Circle.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
 <td><p>Construct a normal on the circle at a specific parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.point_at.html#compas.geometry.Circle.point_at" title="compas.geometry.Circle.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.point_at.html#compas.geometry.Circle.point_at" title="compas.geometry.Circle.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Construct a point on the circle at a specific parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.tangent_at.html#compas.geometry.Circle.tangent_at" title="compas.geometry.Circle.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.tangent_at.html#compas.geometry.Circle.tangent_at" title="compas.geometry.Circle.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
 <td><p>Construct a tangent on the circle at a specific parameter.</p></td>
 </tr>
 </tbody>
@@ -1217,83 +1219,62 @@ The default value is <code class="docutils literal notranslate"><span class="pre
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.frame_at.html#compas.geometry.Circle.frame_at" title="compas.geometry.Circle.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Compute the local frame of the curve at a parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_data.html#compas.geometry.Circle.from_data" title="compas.geometry.Circle.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct a curve from its data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.from_json.html#compas.geometry.Circle.from_json" title="compas.geometry.Circle.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_jsonstring.html#compas.geometry.Circle.from_jsonstring" title="compas.geometry.Circle.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.from_obj.html#compas.geometry.Circle.from_obj" title="compas.geometry.Circle.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_obj.html#compas.geometry.Circle.from_obj" title="compas.geometry.Circle.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a curve from an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.from_step.html#compas.geometry.Circle.from_step" title="compas.geometry.Circle.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.from_step.html#compas.geometry.Circle.from_step" title="compas.geometry.Circle.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Load a curve from a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.length.html#compas.geometry.Circle.length" title="compas.geometry.Circle.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.length.html#compas.geometry.Circle.length" title="compas.geometry.Circle.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
 <td><p>Compute the length of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.offset.html#compas.geometry.Circle.offset" title="compas.geometry.Circle.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.offset.html#compas.geometry.Circle.offset" title="compas.geometry.Circle.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.reverse.html#compas.geometry.Circle.reverse" title="compas.geometry.Circle.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.reverse.html#compas.geometry.Circle.reverse" title="compas.geometry.Circle.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
 <td><p>Reverse the parametrisation of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.reversed.html#compas.geometry.Circle.reversed" title="compas.geometry.Circle.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.reversed.html#compas.geometry.Circle.reversed" title="compas.geometry.Circle.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
 <td><p>Reverse a copy of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.sha256.html#compas.geometry.Circle.sha256" title="compas.geometry.Circle.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.sha256.html#compas.geometry.Circle.sha256" title="compas.geometry.Circle.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.smooth.html#compas.geometry.Circle.smooth" title="compas.geometry.Circle.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.smooth.html#compas.geometry.Circle.smooth" title="compas.geometry.Circle.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.split.html#compas.geometry.Circle.split" title="compas.geometry.Circle.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.split.html#compas.geometry.Circle.split" title="compas.geometry.Circle.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.to_data.html#compas.geometry.Circle.to_data" title="compas.geometry.Circle.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.to_data.html#compas.geometry.Circle.to_data" title="compas.geometry.Circle.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.to_json.html#compas.geometry.Circle.to_json" title="compas.geometry.Circle.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.to_jsonstring.html#compas.geometry.Circle.to_jsonstring" title="compas.geometry.Circle.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.to_obj.html#compas.geometry.Circle.to_obj" title="compas.geometry.Circle.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.to_obj.html#compas.geometry.Circle.to_obj" title="compas.geometry.Circle.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the curve geometry to an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.to_points.html#compas.geometry.Circle.to_points" title="compas.geometry.Circle.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.to_points.html#compas.geometry.Circle.to_points" title="compas.geometry.Circle.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
 <td><p>Convert the curve to a list of points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.to_polygon.html#compas.geometry.Circle.to_polygon" title="compas.geometry.Circle.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.to_polygon.html#compas.geometry.Circle.to_polygon" title="compas.geometry.Circle.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
 <td><p>Convert the curve to a polygon.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.to_polyline.html#compas.geometry.Circle.to_polyline" title="compas.geometry.Circle.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.to_polyline.html#compas.geometry.Circle.to_polyline" title="compas.geometry.Circle.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
 <td><p>Convert the curve to a polyline.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.to_step.html#compas.geometry.Circle.to_step" title="compas.geometry.Circle.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.to_step.html#compas.geometry.Circle.to_step" title="compas.geometry.Circle.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the curve geometry to a STP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.transform.html#compas.geometry.Circle.transform" title="compas.geometry.Circle.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.transform.html#compas.geometry.Circle.transform" title="compas.geometry.Circle.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.transformed.html#compas.geometry.Circle.transformed" title="compas.geometry.Circle.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.transformed.html#compas.geometry.Circle.transformed" title="compas.geometry.Circle.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.trim.html#compas.geometry.Circle.trim" title="compas.geometry.Circle.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.trim.html#compas.geometry.Circle.trim" title="compas.geometry.Circle.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.validate_json.html#compas.geometry.Circle.validate_json" title="compas.geometry.Circle.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.validate_jsondata.html#compas.geometry.Circle.validate_jsondata" title="compas.geometry.Circle.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Circle.validate_jsonstring.html#compas.geometry.Circle.validate_jsonstring" title="compas.geometry.Circle.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Circle.validate_data.html#compas.geometry.Circle.validate_data" title="compas.geometry.Circle.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1313,12 +1294,12 @@ The default value is <code class="docutils literal notranslate"><span class="pre
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.Bezier.validate_jsonstring.html"
+       href="compas.geometry.Bezier.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Bezier.validate_jsonstring</p>
+        <p class="prev-next-title">Bezier.validate_data</p>
       </div>
     </a>
     <a class="right-next"

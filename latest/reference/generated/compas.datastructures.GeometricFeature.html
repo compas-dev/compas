@@ -64,8 +64,8 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="GeometricFeature.ToString" href="compas.datastructures.GeometricFeature.ToString.html" />
-    <link rel="prev" title="Feature.validate_jsonstring" href="compas.datastructures.Feature.validate_jsonstring.html" />
+    <link rel="next" title="GeometricFeature.from_data" href="compas.datastructures.GeometricFeature.from_data.html" />
+    <link rel="prev" title="Feature.validate_data" href="compas.datastructures.Feature.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1101,6 +1100,18 @@ mapping the geometry type to its corresponding operation.</p>
 <span class="gp">&gt;&gt;&gt; </span>               <span class="k">return</span> <span class="n">operation</span><span class="p">(</span><span class="n">part_geometry</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="p">)</span>
 </pre></div>
 </div>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.from_data.html#compas.datastructures.GeometricFeature.from_data" title="compas.datastructures.GeometricFeature.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <colgroup>
@@ -1117,35 +1128,14 @@ mapping the geometry type to its corresponding operation.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.copy.html#compas.datastructures.GeometricFeature.copy" title="compas.datastructures.GeometricFeature.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.from_data.html#compas.datastructures.GeometricFeature.from_data" title="compas.datastructures.GeometricFeature.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.from_json.html#compas.datastructures.GeometricFeature.from_json" title="compas.datastructures.GeometricFeature.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.from_jsonstring.html#compas.datastructures.GeometricFeature.from_jsonstring" title="compas.datastructures.GeometricFeature.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.sha256.html#compas.datastructures.GeometricFeature.sha256" title="compas.datastructures.GeometricFeature.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.sha256.html#compas.datastructures.GeometricFeature.sha256" title="compas.datastructures.GeometricFeature.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.to_data.html#compas.datastructures.GeometricFeature.to_data" title="compas.datastructures.GeometricFeature.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.to_data.html#compas.datastructures.GeometricFeature.to_data" title="compas.datastructures.GeometricFeature.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.to_json.html#compas.datastructures.GeometricFeature.to_json" title="compas.datastructures.GeometricFeature.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.to_jsonstring.html#compas.datastructures.GeometricFeature.to_jsonstring" title="compas.datastructures.GeometricFeature.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.validate_json.html#compas.datastructures.GeometricFeature.validate_json" title="compas.datastructures.GeometricFeature.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.validate_jsondata.html#compas.datastructures.GeometricFeature.validate_jsondata" title="compas.datastructures.GeometricFeature.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.validate_jsonstring.html#compas.datastructures.GeometricFeature.validate_jsonstring" title="compas.datastructures.GeometricFeature.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.GeometricFeature.validate_data.html#compas.datastructures.GeometricFeature.validate_data" title="compas.datastructures.GeometricFeature.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1165,20 +1155,20 @@ mapping the geometry type to its corresponding operation.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.datastructures.Feature.validate_jsonstring.html"
+       href="compas.datastructures.Feature.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Feature.validate_jsonstring</p>
+        <p class="prev-next-title">Feature.validate_data</p>
       </div>
     </a>
     <a class="right-next"
-       href="compas.datastructures.GeometricFeature.ToString.html"
+       href="compas.datastructures.GeometricFeature.from_data.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">GeometricFeature.ToString</p>
+        <p class="prev-next-title">GeometricFeature.from_data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

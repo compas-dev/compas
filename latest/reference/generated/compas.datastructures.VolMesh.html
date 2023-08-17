@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="VolMesh.bounding_box" href="compas.datastructures.VolMesh.bounding_box.html" />
-    <link rel="prev" title="Network.validate_jsonstring" href="compas.datastructures.Network.validate_jsonstring.html" />
+    <link rel="prev" title="Network.validate_data" href="compas.datastructures.Network.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1394,12 +1393,6 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.from_data.html#compas.datastructures.VolMesh.from_data" title="compas.datastructures.VolMesh.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.from_json.html#compas.datastructures.VolMesh.from_json" title="compas.datastructures.VolMesh.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.from_jsonstring.html#compas.datastructures.VolMesh.from_jsonstring" title="compas.datastructures.VolMesh.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.halfface_adjacent_halfface.html#compas.datastructures.VolMesh.halfface_adjacent_halfface" title="compas.datastructures.VolMesh.halfface_adjacent_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_adjacent_halfface</span></code></a></p></td>
 <td><p>Return the halfface adjacent to the halfface across the halfedge.</p></td>
 </tr>
@@ -1484,12 +1477,6 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.to_data.html#compas.datastructures.VolMesh.to_data" title="compas.datastructures.VolMesh.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.to_json.html#compas.datastructures.VolMesh.to_json" title="compas.datastructures.VolMesh.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.to_jsonstring.html#compas.datastructures.VolMesh.to_jsonstring" title="compas.datastructures.VolMesh.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.unset_cell_attribute.html#compas.datastructures.VolMesh.unset_cell_attribute" title="compas.datastructures.VolMesh.unset_cell_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_cell_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a cell.</p></td>
 </tr>
@@ -1514,14 +1501,8 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.update_default_vertex_attributes.html#compas.datastructures.VolMesh.update_default_vertex_attributes" title="compas.datastructures.VolMesh.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a></p></td>
 <td><p>Update the default vertex attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.validate_json.html#compas.datastructures.VolMesh.validate_json" title="compas.datastructures.VolMesh.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.validate_jsondata.html#compas.datastructures.VolMesh.validate_jsondata" title="compas.datastructures.VolMesh.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.validate_jsonstring.html#compas.datastructures.VolMesh.validate_jsonstring" title="compas.datastructures.VolMesh.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.validate_data.html#compas.datastructures.VolMesh.validate_data" title="compas.datastructures.VolMesh.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_attribute.html#compas.datastructures.VolMesh.vertex_attribute" title="compas.datastructures.VolMesh.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a></p></td>
 <td><p>Get or set an attribute of a vertex.</p></td>
@@ -1592,12 +1573,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.datastructures.Network.validate_jsonstring.html"
+       href="compas.datastructures.Network.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Network.validate_jsonstring</p>
+        <p class="prev-next-title">Network.validate_data</p>
       </div>
     </a>
     <a class="right-next"

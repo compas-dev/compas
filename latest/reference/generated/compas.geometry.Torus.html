@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Torus.from_data" href="compas.geometry.Torus.from_data.html" />
-    <link rel="prev" title="Sphere.validate_jsonstring" href="compas.geometry.Sphere.validate_jsonstring.html" />
+    <link rel="prev" title="Sphere.validate_data" href="compas.geometry.Sphere.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -461,7 +461,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.validate_data.html">validate_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -1074,7 +1073,7 @@ document.write(`
 <h1>Torus</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Torus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_pipe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius_axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_pipe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.shapes.shape.Shape</span></code></p>
 <p>A torus is defined by a plane and two radii.</p>
 <dl class="field-list">
@@ -1135,7 +1134,7 @@ The center of the circle is at the origin of the local coordinate system.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.from_data.html#compas.geometry.Torus.from_data" title="compas.geometry.Torus.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct a torus from its data representation.</p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.from_plane_and_radii.html#compas.geometry.Torus.from_plane_and_radii" title="compas.geometry.Torus.from_plane_and_radii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radii</span></code></a></p></td>
 <td><p>Construct a torus from a plane and two radii.</p></td>
@@ -1167,12 +1166,6 @@ The center of the circle is at the origin of the local coordinate system.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.copy.html#compas.geometry.Torus.copy" title="compas.geometry.Torus.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.from_json.html#compas.geometry.Torus.from_json" title="compas.geometry.Torus.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.from_jsonstring.html#compas.geometry.Torus.from_jsonstring" title="compas.geometry.Torus.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.rotate.html#compas.geometry.Torus.rotate" title="compas.geometry.Torus.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
 <td><p>Rotate the shape.</p></td>
 </tr>
@@ -1188,12 +1181,6 @@ The center of the circle is at the origin of the local coordinate system.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.to_data.html#compas.geometry.Torus.to_data" title="compas.geometry.Torus.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.to_json.html#compas.geometry.Torus.to_json" title="compas.geometry.Torus.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.to_jsonstring.html#compas.geometry.Torus.to_jsonstring" title="compas.geometry.Torus.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Serialize the data representation of an object to a JSON string.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.to_polyhedron.html#compas.geometry.Torus.to_polyhedron" title="compas.geometry.Torus.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>
 </tr>
@@ -1203,14 +1190,8 @@ The center of the circle is at the origin of the local coordinate system.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.translate.html#compas.geometry.Torus.translate" title="compas.geometry.Torus.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.validate_json.html#compas.geometry.Torus.validate_json" title="compas.geometry.Torus.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON document against the object's JSON data schema.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.validate_jsondata.html#compas.geometry.Torus.validate_jsondata" title="compas.geometry.Torus.validate_jsondata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsondata</span></code></a></p></td>
-<td><p>Validate the JSON data against the objects's JSON data schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.validate_jsonstring.html#compas.geometry.Torus.validate_jsonstring" title="compas.geometry.Torus.validate_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_jsonstring</span></code></a></p></td>
-<td><p>Validate the data contained in the JSON string against the objects's JSON data schema.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.validate_data.html#compas.geometry.Torus.validate_data" title="compas.geometry.Torus.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1230,12 +1211,12 @@ The center of the circle is at the origin of the local coordinate system.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.Sphere.validate_jsonstring.html"
+       href="compas.geometry.Sphere.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Sphere.validate_jsonstring</p>
+        <p class="prev-next-title">Sphere.validate_data</p>
       </div>
     </a>
     <a class="right-next"
