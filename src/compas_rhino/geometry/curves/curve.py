@@ -49,7 +49,7 @@ class RhinoCurve(Curve):
         self._rhino_curve = None
 
     def __eq__(self, other):
-        return self.rhino_curve.IsEqual(other.rhino_curve)
+        return self.rhino_curve.IsEqual(other.rhino_curve)  # type: ignore
 
     # ==============================================================================
     # Data
@@ -136,7 +136,7 @@ class RhinoCurve(Curve):
         """
         cls = type(self)
         curve = cls()
-        curve.rhino_curve = self.rhino_curve.Duplicate()
+        curve.rhino_curve = self.rhino_curve.Duplicate()  # type: ignore
         return curve
 
     def transform(self, T):
@@ -152,7 +152,7 @@ class RhinoCurve(Curve):
         None
 
         """
-        self.rhino_curve.Transform(xform_to_rhino(T))
+        self.rhino_curve.Transform(xform_to_rhino(T))  # type: ignore
 
     def reverse(self):
         """Reverse the parametrisation of the curve.
@@ -162,7 +162,7 @@ class RhinoCurve(Curve):
         None
 
         """
-        self.rhino_curve.Reverse()
+        self.rhino_curve.Reverse()  # type: ignore
 
     def point_at(self, t):
         """Compute a point on the curve.
@@ -178,7 +178,7 @@ class RhinoCurve(Curve):
             the corresponding point on the curve.
 
         """
-        point = self.rhino_curve.PointAt(t)
+        point = self.rhino_curve.PointAt(t)  # type: ignore
         return point_to_compas(point)
 
     def tangent_at(self, t):
@@ -195,7 +195,7 @@ class RhinoCurve(Curve):
             The corresponding tangent vector.
 
         """
-        vector = self.rhino_curve.TangentAt(t)
+        vector = self.rhino_curve.TangentAt(t)  # type: ignore
         return vector_to_compas(vector)
 
     def curvature_at(self, t):
@@ -212,7 +212,7 @@ class RhinoCurve(Curve):
             The corresponding curvature vector.
 
         """
-        vector = self.rhino_curve.CurvatureAt(t)
+        vector = self.rhino_curve.CurvatureAt(t)  # type: ignore
         return vector_to_compas(vector)
 
     def frame_at(self, t):
@@ -229,7 +229,7 @@ class RhinoCurve(Curve):
             The corresponding local frame.
 
         """
-        t, plane = self.rhino_curve.FrameAt(t)
+        t, plane = self.rhino_curve.FrameAt(t)  # type: ignore
         return plane_to_compas_frame(plane)
 
     def torsion_at(self, t):
@@ -246,7 +246,7 @@ class RhinoCurve(Curve):
             The torsion value.
 
         """
-        return self.rhino_curve.TorsionAt(t)
+        return self.rhino_curve.TorsionAt(t)  # type: ignore
 
     # ==============================================================================
     # Methods continued
@@ -269,7 +269,7 @@ class RhinoCurve(Curve):
             If `return_parameter` is True, the closest point and the corresponding parameter are returned.
 
         """
-        result, t = self.rhino_curve.ClosestPoint(point_to_rhino(point))
+        result, t = self.rhino_curve.ClosestPoint(point_to_rhino(point))  # type: ignore
         if not result:
             return
         point = self.point_at(t)
@@ -296,7 +296,7 @@ class RhinoCurve(Curve):
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
         """
-        params = self.rhino_curve.DivideByCount(count, True)
+        params = self.rhino_curve.DivideByCount(count, True)  # type: ignore
         if return_points:
             points = [self.point_at(t) for t in params]
             return params, points
@@ -321,7 +321,7 @@ class RhinoCurve(Curve):
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
         """
-        params = self.rhino_curve.DivideByLength(length, True)
+        params = self.rhino_curve.DivideByLength(length, True)  # type: ignore
         if return_points:
             points = [self.point_at(t) for t in params]
             return params, points
@@ -335,7 +335,7 @@ class RhinoCurve(Curve):
         :class:`~compas.geometry.Box`
 
         """
-        box = self.rhino_curve.getBoundingBox(True)
+        box = self.rhino_curve.getBoundingBox(True)  # type: ignore
         return box_to_compas(box)
 
     def length(self, precision=1e-8):
@@ -347,7 +347,7 @@ class RhinoCurve(Curve):
             Required precision of the calculated length.
 
         """
-        return self.rhino_curve.GetLength(precision)
+        return self.rhino_curve.GetLength(precision)  # type: ignore
 
     def fair(self, tol=1e-3):
         raise NotImplementedError
@@ -368,10 +368,10 @@ class RhinoCurve(Curve):
         None
 
         """
-        point = self.point_at(self.domain[0])
+        point = self.point_at(self.domain[0])  # type: ignore
         plane = Plane(point, direction)
         plane = plane_to_rhino(plane)
-        self.rhino_curve = self.rhino_curve.Offset(plane, distance, tolerance, 0)[0]
+        self.rhino_curve = self.rhino_curve.Offset(plane, distance, tolerance, 0)[0]  # type: ignore
 
     def smooth(self):
         raise NotImplementedError
