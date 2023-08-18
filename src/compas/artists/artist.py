@@ -13,7 +13,7 @@ from compas.artists.exceptions import NoArtistContextError
 from compas.plugins import PluginValidator
 from compas.plugins import pluggable
 
-from .colordict import DescriptorProtocol
+from .descriptors.protocol import DescriptorProtocol
 
 
 @pluggable(category="drawing-utils")
@@ -138,6 +138,7 @@ class Artist(object):
 
     """
 
+    # add this to support the descriptor protocol vor Python versions below 3.6
     __metaclass__ = DescriptorProtocol
 
     __ARTISTS_REGISTERED = False
