@@ -148,33 +148,6 @@ class Color(Data):
         return all(a == b for a, b in zip(self, other))
 
     # --------------------------------------------------------------------------
-    # Descriptor
-    # --------------------------------------------------------------------------
-
-    def __set_name__(self, owner, name):
-        self.public_name = name
-        self.private_name = "_" + name
-
-    def __get__(self, obj, otype=None):
-        return getattr(obj, self.private_name, None) or self
-
-    def __set__(self, obj, value):
-        if not obj:
-            return
-
-        if not value:
-            return
-
-        if Color.is_rgb255(value):
-            value = Color.from_rgb255(value[0], value[1], value[2])
-        elif Color.is_hex(value):
-            value = Color.from_hex(value)
-        else:
-            value = Color(value[0], value[1], value[2])
-
-        setattr(obj, self.private_name, value)
-
-    # --------------------------------------------------------------------------
     # Data
     # --------------------------------------------------------------------------
 
