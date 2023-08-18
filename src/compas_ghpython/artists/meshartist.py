@@ -2,13 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import Rhino
+import Rhino  # type: ignore
 import compas_ghpython
-from compas.artists import MeshArtist
+from compas.artists import MeshArtist as BaseArtist
 from .artist import GHArtist
 
 
-class MeshArtist(GHArtist, MeshArtist):
+class MeshArtist(GHArtist, BaseArtist):
     """Artist for drawing mesh data structures.
 
     Parameters

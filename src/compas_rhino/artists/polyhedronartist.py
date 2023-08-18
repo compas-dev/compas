@@ -15,16 +15,14 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
     ----------
     polyhedron : :class:`~compas.geometry.Polyhedron`
         A COMPAS polyhedron.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 
-    def __init__(self, polyhedron, layer=None, **kwargs):
-        super(PolyhedronArtist, self).__init__(shape=polyhedron, layer=layer, **kwargs)
+    def __init__(self, polyhedron, **kwargs):
+        super(PolyhedronArtist, self).__init__(shape=polyhedron, **kwargs)
 
     def draw(self, color=None):
         """Draw the polyhedron associated with the artist.

@@ -3,28 +3,26 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
 from .artist import RhinoArtist
 
 
-class PointArtist(RhinoArtist, PrimitiveArtist):
+class PointArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing points.
 
     Parameters
     ----------
     point : :class:`~compas.geometry.Point`
         A COMPAS point.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
+        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 
-    def __init__(self, point, layer=None, **kwargs):
-        super(PointArtist, self).__init__(primitive=point, layer=layer, **kwargs)
+    def __init__(self, point, **kwargs):
+        super(PointArtist, self).__init__(geometry=point, **kwargs)
 
     def draw(self, color=None):
         """Draw the point.
@@ -33,7 +31,7 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the point.
-            Default is :attr:`compas.artists.PrimitiveArtist.color`.
+            Default is :attr:`compas.artists.GeometryArtist.color`.
 
         Returns
         -------
@@ -44,10 +42,11 @@ class PointArtist(RhinoArtist, PrimitiveArtist):
         color = Color.coerce(color) or self.color
         points = [
             {
-                "pos": list(self.primitive),
-                "color": color.rgb255,
-                "name": self.primitive.name,
+                "pos": list(self.geometry),
+                "color": color.rgb255,  # type: ignore
+                "name": self.geometry.name,
             }
         ]
+
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         return guids

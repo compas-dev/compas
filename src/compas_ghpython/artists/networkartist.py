@@ -20,8 +20,8 @@ class NetworkArtist(GHArtist, NetworkArtist):
 
     """
 
-    def __init__(self, network, **kwargs):
-        super(NetworkArtist, self).__init__(network=network, **kwargs)
+    # def __init__(self, network, **kwargs):
+    #     super(NetworkArtist, self).__init__(network=network, **kwargs)
 
     def draw(self):
         """Draw the entire network with default color settings.

@@ -15,16 +15,14 @@ class VolMeshArtist(RhinoArtist, VolMeshArtist):
     ----------
     volmesh : :class:`~compas.datastructures.VolMesh`
         A COMPAS volmesh.
-    layer : str, optional
-        The name of the layer that will contain the volmesh.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info, see :class:`RhinoArtist` and :class:`VolMeshArtist`.
 
     """
 
-    def __init__(self, volmesh, layer=None, **kwargs):
-        super(VolMeshArtist, self).__init__(volmesh=volmesh, layer=layer, **kwargs)
+    def __init__(self, volmesh, **kwargs):
+        super(VolMeshArtist, self).__init__(volmesh=volmesh, **kwargs)
 
     # ==========================================================================
     # clear

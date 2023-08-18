@@ -3,12 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
 from .artist import RhinoArtist
 
 
-class FrameArtist(RhinoArtist, PrimitiveArtist):
+class FrameArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing frames.
 
     Parameters
@@ -17,11 +17,9 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
         A COMPAS frame.
     scale: float, optional
         Scale factor that controls the length of the axes.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
+        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     Attributes
     ----------
@@ -39,8 +37,8 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
 
     """
 
-    def __init__(self, frame, layer=None, scale=1.0, **kwargs):
-        super(FrameArtist, self).__init__(primitive=frame, layer=layer, **kwargs)
+    def __init__(self, frame, scale=1.0, **kwargs):
+        super(FrameArtist, self).__init__(geometry=frame, **kwargs)
         self.scale = scale or 1.0
         self.color_origin = Color.black()
         self.color_xaxis = Color.red()
@@ -58,11 +56,14 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
         """
         points = []
         lines = []
-        origin = list(self.primitive.point)
-        X = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
-        Y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
-        Z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
+
+        origin = list(self.geometry.point)
+        X = list(self.geometry.point + self.geometry.xaxis.scaled(self.scale))
+        Y = list(self.geometry.point + self.geometry.yaxis.scaled(self.scale))
+        Z = list(self.geometry.point + self.geometry.zaxis.scaled(self.scale))
+
         points = [{"pos": origin, "color": self.color_origin.rgb255}]
+
         lines = [
             {
                 "start": origin,
@@ -83,6 +84,8 @@ class FrameArtist(RhinoArtist, PrimitiveArtist):
                 "arrow": "end",
             },
         ]
+
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+
         return guids
