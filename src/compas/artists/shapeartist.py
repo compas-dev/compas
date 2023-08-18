@@ -2,28 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.colors import Color
-from .artist import Artist
+from .geometryartist import GeometryArtist
 
 
-class ShapeArtist(Artist):
+class ShapeArtist(GeometryArtist):
     """Base class for artists for geometric shapes.
 
     Parameters
     ----------
     shape : :class:`~compas.geometry.Shape`
         The geometry of the shape.
-    color : tuple[float, float, float] | :class:`~compas.colors.Color`, optional
-        The RGB color.
 
     Attributes
     ----------
-    shape : :class:`~compas.geometry.Shape`
-        The geometry of the shape.
-    color : :class:`~compas.colors.Color`
-        The color of the shape.
-    default_color : :class:`~compas.colors.Color`
-        The default color of the shape.
     u : int
         The resolution in the U direction of the discrete shape representation.
     v : int
@@ -31,43 +22,18 @@ class ShapeArtist(Artist):
 
     See Also
     --------
-    :class:`compas.artists.PrimitiveArtist`
+    :class:`compas.artists.MeshArtist`
+    :class:`compas.artists.NetworkArtist`
+    :class:`compas.artists.VolMeshArtist`
 
     """
 
-    default_color = Color.from_hex("#0092D2")
-
-    def __init__(self, shape, color=None, **kwargs):
-        super(ShapeArtist, self).__init__()
-        self._default_color = None
-
+    def __init__(self, shape, **kwargs):
+        super(ShapeArtist, self).__init__(geometry=shape, **kwargs)
         self._u = None
         self._v = None
-        self._shape = None
-        self._color = None
-
-        self.shape = shape
-        self.color = color
         self.u = kwargs.get("u")
         self.v = kwargs.get("v")
-
-    @property
-    def shape(self):
-        return self._shape
-
-    @shape.setter
-    def shape(self, shape):
-        self._shape = shape
-
-    @property
-    def color(self):
-        if not self._color:
-            self.color = self.default_color
-        return self._color
-
-    @color.setter
-    def color(self, value):
-        self._color = Color.coerce(value)
 
     @property
     def u(self):
