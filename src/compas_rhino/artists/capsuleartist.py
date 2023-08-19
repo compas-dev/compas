@@ -16,6 +16,29 @@ from compas_rhino.conversions import line_to_rhino_curve
 from .artist import RhinoArtist
 
 
+def capsule_to_rhino_brep(capsule):
+    """Convert a COMPAS capsule to a Rhino Brep.
+
+    Parameters
+    ----------
+    capsule : :class:`~compas.geometry.Capsule`
+        A COMPAS capsule.
+
+    Returns
+    -------
+    list[Rhino.Geometry.Brep]
+
+    """
+    abs_tol = sc.doc.ModelAbsoluteTolerance
+    ang_tol = sc.doc.ModelAngleToleranceRadians
+
+    radius = capsule.radius
+    line = capsule.axis
+    curve = line_to_rhino_curve(line)
+
+    return RhinoBrep.CreatePipe(curve, radius, False, PipeCapMode.Round, False, abs_tol, ang_tol)
+
+
 class CapsuleArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing capsule shapes.
 
@@ -69,18 +92,11 @@ class CapsuleArtist(RhinoArtist, GeometryArtist):
         color = Color.coerce(color) or self.color
         color = FromArgb(*color.rgb255)  # type: ignore
 
-        abs_tol = sc.doc.ModelAbsoluteTolerance
-        ang_tol = sc.doc.ModelAngleToleranceRadians
-
-        radius = self.geometry.radius
-        line = self.geometry.axis
-        curve = line_to_rhino_curve(line)
-
         attr = ObjectAttributes()
         attr.ObjectColor = color
         attr.ColorSource = ColorFromObject
 
-        breps = RhinoBrep.CreatePipe(curve, radius, False, PipeCapMode.Round, False, abs_tol, ang_tol)
+        breps = capsule_to_rhino_brep(self.geometry)
         guids = [sc.doc.Objects.AddBrep(brep, attr) for brep in breps]
 
         return guids
