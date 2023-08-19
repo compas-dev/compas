@@ -2,31 +2,70 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import ShapeArtist
+from Rhino.Geometry import Torus as RhinoTorus  # type: ignore
+from System.Drawing.Color import FromArgb  # type: ignore
+from Rhino.DocObjects.ObjectColorSource import ColorFromObject  # type: ignore
+from Rhino.DocObjects import ObjectAttributes  # type: ignore
+
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import frame_to_rhino
 from .artist import RhinoArtist
 
 
-class TorusArtist(RhinoArtist, ShapeArtist):
+def torus_to_rhino(torus):
+    """Convert a COMPAS torus to a Rhino torus.
+
+    Parameters
+    ----------
+    torus : :class:`~compas.geometry.Torus`
+        A COMPAS torus.
+
+    Returns
+    -------
+    tuple
+        The Rhino torus representation.
+
+    """
+    return RhinoTorus(frame_to_rhino(torus.frame), torus.radius_axis, torus.radius_pipe)
+
+
+def torus_to_rhino_brep(torus):
+    """Convert a COMPAS torus to a Rhino Brep.
+
+    Parameters
+    ----------
+    torus : :class:`~compas.geometry.Torus`
+        A COMPAS torus.
+
+    Returns
+    -------
+    Rhino.Geometry.Brep
+        The Rhino brep representation.
+
+    """
+    return torus_to_rhino(torus).ToNurbsSurface().ToBrep()
+
+
+class TorusArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing torus shapes.
 
     Parameters
     ----------
     torus : :class:`~compas.geometry.Torus`
         A COMPAS torus.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 
-    def __init__(self, torus, layer=None, **kwargs):
-        super(TorusArtist, self).__init__(shape=torus, layer=layer, **kwargs)
+    def __init__(self, torus, **kwargs):
+        super(TorusArtist, self).__init__(geometry=torus, **kwargs)
 
-    def draw(self, color=None, u=None, v=None):
+    def draw(self, color=None):
         """Draw the torus associated with the artist.
 
         Parameters
@@ -34,12 +73,6 @@ class TorusArtist(RhinoArtist, ShapeArtist):
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the torus.
             Default is :attr:`compas.artists.ShapeArtist.color`.
-        u : int, optional
-            Number of faces in the "u" direction.
-            Default is :attr:`TorusArtist.u`.
-        v : int, optional
-            Number of faces in the "v" direction.
-            Default is :attr:`TorusArtist.v`.
 
         Returns
         -------
@@ -47,17 +80,29 @@ class TorusArtist(RhinoArtist, ShapeArtist):
             The GUIDs of the objects created in Rhino.
 
         """
+        # color = Color.coerce(color) or self.color
+        # u = u or self.u
+        # v = v or self.v
+        # vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
+        # vertices = [list(vertex) for vertex in vertices]
+        # guid = compas_rhino.draw_mesh(
+        #     vertices,
+        #     faces,
+        #     layer=self.layer,
+        #     name=self.shape.name,
+        #     color=color.rgb255,
+        #     disjoint=True,
+        # )
+        # return [guid]
+
         color = Color.coerce(color) or self.color
-        u = u or self.u
-        v = v or self.v
-        vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        vertices = [list(vertex) for vertex in vertices]
-        guid = compas_rhino.draw_mesh(
-            vertices,
-            faces,
-            layer=self.layer,
-            name=self.shape.name,
-            color=color.rgb255,
-            disjoint=True,
-        )
+        color = FromArgb(*color.rgb255)  # type: ignore
+
+        attr = ObjectAttributes()
+        attr.ObjectColor = color
+        attr.ColorSource = ColorFromObject
+
+        brep = torus_to_rhino_brep(self.geometry)
+
+        guid = sc.doc.Objects.AddBrep(brep, attr)
         return [guid]
