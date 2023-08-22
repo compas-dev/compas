@@ -1,3 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+# TODO: this should have a base brep artist
+# TODO: brep drawing should be handled here
+
 import compas_rhino
 from .artist import RhinoArtist
 
@@ -6,7 +13,7 @@ class BrepArtist(RhinoArtist):
     """An artist for drawing a RhinoBrep.
 
     Parameters
-    ==========
+    ----------
     brep : :class:`~compas_rhino.geometry.RhinoBrep`
         The Brep to draw.
 

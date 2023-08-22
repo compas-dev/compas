@@ -2,11 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+import scriptcontext as sc  # type: ignore
+
 from compas.geometry import Point
 from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class VectorArtist(RhinoArtist, GeometryArtist):
@@ -46,29 +49,19 @@ class VectorArtist(RhinoArtist, GeometryArtist):
 
         """
         color = Color.coerce(color) or self.color
-        color = color.rgb255  # type: ignore
-
         point = point or [0, 0, 0]
         start = Point(*point)
         end = start + self.geometry
-        start = list(start)
-        end = list(end)
 
         guids = []
 
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer, arrow="end")
+        guid = sc.doc.Objects.AddLine(point_to_rhino(start), point_to_rhino(end), attr)
+        guids.append(guid)
+
         if show_point:
-            points = [{"pos": start, "color": color, "name": self.geometry.name}]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+            attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+            guid = sc.doc.Objects.AddPoint(point_to_rhino(start), attr)
+            guids.append(guid)
 
-        lines = [
-            {
-                "start": start,
-                "end": end,
-                "arrow": "end",
-                "color": color,
-                "name": self.geometry.name,
-            }
-        ]
-
-        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         return guids

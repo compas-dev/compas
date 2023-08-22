@@ -2,51 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from Rhino.Geometry import Cylinder as RhinoCylinder  # type: ignore
-from System.Drawing.Color import FromArgb  # type: ignore
-from Rhino.DocObjects.ObjectColorSource import ColorFromObject  # type: ignore
-from Rhino.DocObjects import ObjectAttributes  # type: ignore
-
 import scriptcontext as sc  # type: ignore
 
 from compas.artists import GeometryArtist
 from compas.colors import Color
-from compas_rhino.conversions import circle_to_rhino
+from compas_rhino.conversions import cylinder_to_rhino_brep
 from .artist import RhinoArtist
-
-
-def cylinder_to_rhino_cylinder(cylinder):
-    """Convert a COMPAS cylinder to a Rhino cylinder.
-
-    Parameters
-    ----------
-    cylinder : :class:`~compas.geometry.Cylinder`
-        A COMPAS cylinder.
-
-    Returns
-    -------
-    Rhino.Geometry.Cylinder
-
-    """
-    circle = cylinder.circle
-    circle.frame.point = circle.frame.point - circle.frame.zaxis * cylinder.height * 0.5
-    return RhinoCylinder(circle_to_rhino(circle), cylinder.height)
-
-
-def cylinder_to_rhino_brep(cylinder):
-    """Convert a COMPAS cylinder to a Rhino Brep.
-
-    Parameters
-    ----------
-    cylinder : :class:`~compas.geometry.Cylinder`
-        A COMPAS cylinder.
-
-    Returns
-    -------
-    Rhino.Geometry.Brep
-
-    """
-    return RhinoCylinder.ToBrep(cylinder_to_rhino_cylinder(cylinder), True, True)
+from ._helpers import attributes
 
 
 class CylinderArtist(RhinoArtist, GeometryArtist):
@@ -80,24 +42,7 @@ class CylinderArtist(RhinoArtist, GeometryArtist):
             The GUIDs of the objects created in Rhino.
 
         """
-        # color = Color.coerce(color) or self.color
-        # u = u or self.u
-        # vertices, faces = self.shape.to_vertices_and_faces(u=u)
-        # vertices = [list(vertex) for vertex in vertices]
-        # guid = compas_rhino.draw_mesh(
-        #     vertices,
-        #     faces,
-        #     layer=self.layer,
-        #     name=self.shape.name,
-        #     color=color.rgb255,
-        #     disjoint=True,
-        # )
-        # return [guid]
-
         color = Color.coerce(color) or self.color
-        color = FromArgb(*color.rgb255)  # type: ignore
-        attr = ObjectAttributes()
-        attr.ObjectColor = color
-        attr.ColorSource = ColorFromObject
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         guid = sc.doc.Objects.AddBrep(cylinder_to_rhino_brep(self.geometry), attr)
         return [guid]

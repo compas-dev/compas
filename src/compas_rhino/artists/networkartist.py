@@ -2,10 +2,17 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from Rhino.Geometry import TextDot  # type: ignore
+import scriptcontext as sc  # type: ignore
+
 import compas_rhino
-from compas.geometry import centroid_points
+from compas.geometry import Point
+from compas.geometry import Line
 from compas.artists import NetworkArtist as BaseArtist
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class NetworkArtist(RhinoArtist, BaseArtist):
@@ -108,7 +115,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         guids += self.draw_edges(edges=edges, color=edgecolor, text=edgetext)
         return guids
 
-    def draw_nodes(self, nodes=None, color=None, text=None):
+    def draw_nodes(self, nodes=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
         """Draw a selection of nodes.
 
         Parameters
@@ -129,43 +136,35 @@ class NetworkArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino point objects.
 
         """
+        nodes = nodes or self.network.nodes()  # type: ignore
+
         self.node_color = color
         self.node_text = text
-        nodes = nodes or self.network.nodes()  # type: ignore
         node_xyz = self.node_xyz
         node_color = self.node_color
         node_text = self.node_text
 
-        points = []
-        labels = []
+        guids = []
 
         for node in nodes:
-            pos = node_xyz[node]
-            name = self.network.name  # type: ignore
-            color = node_color[node].rgb255  # type: ignore
+            point = point_to_rhino(Point(*node_xyz[node]))
+            name = "{}.node.{}".format(self.network.name, node)  # type: ignore
+            color = node_color[node]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+            guid = sc.doc.Objects.AddPoint(point, attr)
+            guids.append(guid)
 
-            points.append(
-                {
-                    "pos": pos,
-                    "name": "{}.node.{}".format(name, node),
-                    "color": color,
-                }
-            )
-            if node in self.node_text:
-                labels.append(
-                    {
-                        "pos": pos,
-                        "name": "{}.node.{}.label".format(name, node),
-                        "color": color,
-                        "text": node_text[node],  # type: ignore
-                    }
-                )
+            if text and node in node_text:
+                name = "{}.label".format(name)
+                attr = attributes(name=name, color=color, layer=self.layer)
+                dot = TextDot(str(node_text[node]), point)  # type: ignore
+                dot.FontHeight = fontheight
+                dot.FontFace = fontface
+                guid = sc.doc.Objects.AddTextDot(dot, attr)
 
-        if labels:
-            compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        return guids
 
-    def draw_edges(self, edges=None, color=None, text=None):
+    def draw_edges(self, edges=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
         """Draw a selection of edges.
 
         Parameters
@@ -186,42 +185,31 @@ class NetworkArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        edges = edges or self.network.edges()  # type: ignore
+
         self.edge_color = color
         self.edge_text = text
-        edges = edges or self.network.edges()  # type: ignore
         node_xyz = self.node_xyz
         edge_color = self.edge_color
         edge_text = self.edge_text
-        name = self.network.name  # type: ignore
 
-        lines = []
-        labels = []
+        guids = []
 
         for edge in edges:
             u, v = edge
-            a, b = node_xyz[u], node_xyz[v]
-            m = centroid_points([a, b])
-            color = edge_color[edge].rgb255  # type: ignore
+            line = Line(node_xyz[u], node_xyz[v])
+            color = edge_color[edge]  # type: ignore
+            name = "{}.edge.{}-{}".format(self.network.name, u, v)  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+            guids.append(guid)
 
-            lines.append(
-                {
-                    "start": a,
-                    "end": b,
-                    "color": color,
-                    "name": "{}.edge.{}-{}".format(name, u, v),
-                }
-            )
+            if text and edge in edge_text:
+                name = "{}.label".format(name)
+                attr = attributes(name=name, color=color, layer=self.layer)
+                dot = TextDot(str(edge_text[edge]), point_to_rhino(line.midpoint))  # type: ignore
+                dot.FontHeight = fontheight
+                dot.FontFace = fontface
+                sc.doc.Objects.AddTextDot(dot, attr)
 
-            if edge in edge_text:
-                labels.append(
-                    {
-                        "pos": m,
-                        "name": "{}.edge.{}-{}.label".format(name, u, v),
-                        "color": color,
-                        "text": edge_text[edge],  # type: ignore
-                    }
-                )
-
-        if labels:
-            compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        return guids

@@ -2,10 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+import scriptcontext as sc  # type: ignore
+
 from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class LineArtist(RhinoArtist, GeometryArtist):
@@ -41,21 +44,18 @@ class LineArtist(RhinoArtist, GeometryArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        start = list(self.geometry.start)
-        end = list(self.geometry.end)
+        start = point_to_rhino(self.geometry.start)
+        end = point_to_rhino(self.geometry.end)
         color = Color.coerce(color) or self.color
-        color = color.rgb255  # type: ignore
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        guids = []
+        guid = sc.doc.Objects.AddLine(start, end, attr)
+        guids = [guid]
 
         if show_points:
-            points = [
-                {"pos": start, "color": color, "name": self.geometry.name},
-                {"pos": end, "color": color, "name": self.geometry.name},
-            ]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-
-        lines = [{"start": start, "end": end, "color": color, "name": self.geometry.name}]
-        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+            guid = sc.doc.Objects.AddPoint(start, attr)
+            guids.append(guid)
+            guid = sc.doc.Objects.AddPoint(end, attr)
+            guids.append(guid)
 
         return guids

@@ -2,29 +2,30 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import SurfaceArtist
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import surface_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class SurfaceArtist(RhinoArtist, SurfaceArtist):
+class SurfaceArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing surfaces.
 
     Parameters
     ----------
-    surface : :class:`~compas.geometry.Surface`
+    surface : :class:`~compas.geometry.Geometry`
         A COMPAS surface.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`~compas.artists.SurfaceArtist`.
+        For more info, see :class:`RhinoArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 
-    def __init__(self, surface, layer=None, **kwargs):
-        super(SurfaceArtist, self).__init__(surface=surface, layer=layer, **kwargs)
+    def __init__(self, surface, **kwargs):
+        super(SurfaceArtist, self).__init__(geometry=surface, **kwargs)
 
     def draw(self, color=None):
         """Draw the surface.
@@ -33,7 +34,7 @@ class SurfaceArtist(RhinoArtist, SurfaceArtist):
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the surface.
-            The default color is :attr:`compas.artists.SurfaceArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
 
         Returns
         -------
@@ -42,5 +43,7 @@ class SurfaceArtist(RhinoArtist, SurfaceArtist):
 
         """
         color = Color.coerce(color) or self.color
-        surfaces = [{"surface": self.surface, "color": color.rgb255, "name": self.surface.name}]
-        return compas_rhino.draw_surfaces(surfaces, layer=self.layer, clear=False, redraw=False)
+        surface = surface_to_rhino(self.geometry)
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        guid = sc.doc.Objects.AddSurface(surface, attr)
+        return [guid]

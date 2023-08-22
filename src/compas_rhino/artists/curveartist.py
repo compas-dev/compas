@@ -2,10 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+import scriptcontext as sc  # type: ignore
+
 from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import curve_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class CurveArtist(RhinoArtist, GeometryArtist):
@@ -40,5 +43,6 @@ class CurveArtist(RhinoArtist, GeometryArtist):
 
         """
         color = Color.coerce(color) or self.color
-        curves = [{"curve": self.geometry, "color": color.rgb255, "name": self.geometry.name}]  # type: ignore
-        return compas_rhino.draw_curves(curves, layer=self.layer, clear=False, redraw=False)
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        guid = sc.doc.Objects.AddCurve(curve_to_rhino(self.geometry), attr)
+        return [guid]

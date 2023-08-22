@@ -2,13 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import ShapeArtist
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import vertices_and_faces_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class PolyhedronArtist(RhinoArtist, ShapeArtist):
+class PolyhedronArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing polyhedron shapes.
 
     Parameters
@@ -22,7 +25,7 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
     """
 
     def __init__(self, polyhedron, **kwargs):
-        super(PolyhedronArtist, self).__init__(shape=polyhedron, **kwargs)
+        super(PolyhedronArtist, self).__init__(geometry=polyhedron, **kwargs)
 
     def draw(self, color=None):
         """Draw the polyhedron associated with the artist.
@@ -40,14 +43,8 @@ class PolyhedronArtist(RhinoArtist, ShapeArtist):
 
         """
         color = Color.coerce(color) or self.color
-        vertices = [list(vertex) for vertex in self.shape.vertices]
-        faces = self.shape.faces
-        guid = compas_rhino.draw_mesh(
-            vertices,
-            faces,
-            layer=self.layer,
-            name=self.shape.name,
-            color=color.rgb255,
-            disjoint=True,
-        )
+        vertices = [list(vertex) for vertex in self.geometry.vertices]
+        faces = self.geometry.faces
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces), attr)
         return [guid]

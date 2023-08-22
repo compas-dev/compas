@@ -2,10 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+import scriptcontext as sc  # type: ignore
+
 from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import vertices_and_faces_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class PolygonArtist(RhinoArtist, GeometryArtist):
@@ -24,7 +29,7 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
     def __init__(self, polygon, **kwargs):
         super(PolygonArtist, self).__init__(geometry=polygon, **kwargs)
 
-    def draw(self, color=None, show_points=False, show_edges=False, show_face=True):
+    def draw(self, color=None, show_points=False, show_edges=False):
         """Draw the polygon.
 
         Parameters
@@ -36,8 +41,6 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
             If True, draw the corner points of the polygon.
         show_edges : bool, optional
             If True, draw the boundary edges of the polygon.
-        show_face : bool, optional
-            If True, draw the face of the polygon.
 
         Returns
         -------
@@ -46,29 +49,22 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
 
         """
         color = Color.coerce(color) or self.color
-        color = color.rgb255  # type: ignore
-        _points = map(list, self.geometry.points)
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
         guids = []
 
+        vertices = self.geometry.points
+        faces = self.geometry.faces
+        mesh = vertices_and_faces_to_rhino(vertices, faces)
+        guid = sc.doc.Objects.AddMesh(mesh, attr)
+        guids.append(guid)
+
         if show_points:
-            points = [{"pos": point, "color": color, "name": self.geometry.name} for point in _points]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+            for point in self.geometry.points:
+                guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+                guids.append(guid)
 
         if show_edges:
-            lines = [
-                {
-                    "start": list(a),
-                    "end": list(b),
-                    "color": color,
-                    "name": self.geometry.name,
-                }
-                for a, b in self.geometry.lines
-            ]
-            guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-
-        if show_face:
-            polygons = [{"points": _points, "color": color, "name": self.geometry.name}]
-            guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
-
-        return guids
+            for line in self.geometry.lines:
+                guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+                guids.append(guid)

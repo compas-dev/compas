@@ -2,10 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+import scriptcontext as sc  # type: ignore
+
 from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import polyline_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class PolylineArtist(RhinoArtist, GeometryArtist):
@@ -42,16 +46,14 @@ class PolylineArtist(RhinoArtist, GeometryArtist):
 
         """
         color = Color.coerce(color) or self.color
-        color = color.rgb255  # type: ignore
-        _points = map(list, self.geometry.points)
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        guids = []
+        guid = sc.doc.Objects.AddPolyline(polyline_to_rhino(self.geometry), attr)
+        guids = [guid]
 
         if show_points:
-            points = [{"pos": point, "color": color, "name": self.geometry.name} for point in _points]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-
-        polylines = [{"points": _points, "color": color, "name": self.geometry.name}]
-        guids += compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
+            for point in self.geometry.points:
+                guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+                guids.append(guid)
 
         return guids

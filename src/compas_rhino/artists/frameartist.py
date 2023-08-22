@@ -2,10 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+import scriptcontext as sc  # type: ignore
+
 from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class FrameArtist(RhinoArtist, GeometryArtist):
@@ -54,38 +57,34 @@ class FrameArtist(RhinoArtist, GeometryArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        points = []
-        lines = []
+        guids = []
 
-        origin = list(self.geometry.point)
-        X = list(self.geometry.point + self.geometry.xaxis.scaled(self.scale))
-        Y = list(self.geometry.point + self.geometry.yaxis.scaled(self.scale))
-        Z = list(self.geometry.point + self.geometry.zaxis.scaled(self.scale))
+        attr = attributes(name=self.geometry.name, color=self.color_origin, layer=self.layer)
+        guid = sc.doc.Objects.AddPoint(point_to_rhino(self.geometry.point), attr)
+        guids.append(guid)
 
-        points = [{"pos": origin, "color": self.color_origin.rgb255}]
+        attr = attributes(name=self.geometry.name, color=self.color_xaxis, layer=self.layer, arrow="end")
+        guid = sc.doc.Objects.AddLine(
+            point_to_rhino(self.geometry.point),
+            point_to_rhino(self.geometry.point + self.geometry.xaxis.scaled(self.scale)),
+            attr,
+        )
+        guids.append(guid)
 
-        lines = [
-            {
-                "start": origin,
-                "end": X,
-                "color": self.color_xaxis.rgb255,
-                "arrow": "end",
-            },
-            {
-                "start": origin,
-                "end": Y,
-                "color": self.color_yaxis.rgb255,
-                "arrow": "end",
-            },
-            {
-                "start": origin,
-                "end": Z,
-                "color": self.color_zaxis.rgb255,
-                "arrow": "end",
-            },
-        ]
+        attr = attributes(name=self.geometry.name, color=self.color_yaxis, layer=self.layer, arrow="end")
+        guid = sc.doc.Objects.AddLine(
+            point_to_rhino(self.geometry.point),
+            point_to_rhino(self.geometry.point + self.geometry.yaxis.scaled(self.scale)),
+            attr,
+        )
+        guids.append(guid)
 
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        attr = attributes(name=self.geometry.name, color=self.color_zaxis, layer=self.layer, arrow="end")
+        guid = sc.doc.Objects.AddLine(
+            point_to_rhino(self.geometry.point),
+            point_to_rhino(self.geometry.point + self.geometry.zaxis.scaled(self.scale)),
+            attr,
+        )
+        guids.append(guid)
 
         return guids

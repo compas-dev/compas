@@ -2,11 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.geometry import add_vectors
+import scriptcontext as sc  # type: ignore
+
 from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import circle_to_rhino
+from compas_rhino.conversions import point_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
 class CircleArtist(RhinoArtist, GeometryArtist):
@@ -45,31 +48,21 @@ class CircleArtist(RhinoArtist, GeometryArtist):
 
         """
         color = Color.coerce(color) or self.color
-        color = color.rgb255  # type: ignore
-        point = list(self.geometry.plane.point)
-        normal = list(self.geometry.plane.normal)
-        plane = point, normal
-        radius = self.geometry.radius
+        point = self.geometry.frame.point
+        normal = self.geometry.frame.zaxis
 
-        guids = []
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        guid = sc.doc.Objects.AddCircle(circle_to_rhino(self.geometry), attr)
+        guids = [guid]
 
         if show_point:
-            points = [{"pos": point, "color": color, "name": self.geometry.name}]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+            guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+            guids.append(guid)
 
         if show_normal:
-            lines = [
-                {
-                    "start": point,
-                    "end": add_vectors(point, normal),
-                    "arrow": "end",
-                    "color": color,
-                    "name": self.geometry.name,
-                }
-            ]
-            guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-
-        circles = [{"plane": plane, "radius": radius, "color": color, "name": self.geometry.name}]
-        guids += compas_rhino.draw_circles(circles, layer=self.layer, clear=False, redraw=False)
+            end = point + normal
+            attr = attributes(name=self.geometry.name, color=color, layer=self.layer, arrow="end")
+            guid = sc.doc.Objects.AddLine(point_to_rhino(point), point_to_rhino(end), attr)
+            guids.append(guid)
 
         return guids

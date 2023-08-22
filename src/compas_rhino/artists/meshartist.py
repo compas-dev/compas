@@ -2,14 +2,22 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry import add_vectors
-from compas.geometry import scale_vector
+from Rhino.Geometry import TextDot  # type: ignore
+import scriptcontext as sc  # type: ignore
+
 from compas.geometry import centroid_points
+from compas.geometry import Point
+from compas.geometry import Line
 
 import compas_rhino
 from compas.artists import MeshArtist as BaseArtist
 from compas.colors import Color
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
+from ._helpers import ngon
 
 
 class MeshArtist(RhinoArtist, BaseArtist):
@@ -84,7 +92,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertexnormal.*".format(self.mesh.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.vertex.*.normal".format(self.mesh.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facenormals(self):
@@ -95,7 +103,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.facenormal.*".format(self.mesh.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.face.*.normal".format(self.mesh.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexlabels(self):
@@ -106,7 +114,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertexlabel.*".format(self.mesh.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.vertex.*.label".format(self.mesh.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
@@ -117,7 +125,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.mesh.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.edge.*.label".format(self.mesh.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
@@ -128,7 +136,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.facelabel.*".format(self.mesh.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.face.*.label".format(self.mesh.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     # ==========================================================================
@@ -157,24 +165,18 @@ class MeshArtist(RhinoArtist, BaseArtist):
         Faces with more than 4 vertices will be triangulated on-the-fly.
 
         """
-        self.color = color
+        color = Color.coerce(color) or self.color
         vertex_index = self.mesh.vertex_index()  # type: ignore
         vertex_xyz = self.vertex_xyz
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]  # type: ignore
         faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]  # type: ignore
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)  # type: ignore
-        guid = compas_rhino.draw_mesh(
-            vertices,
-            faces,
-            layer=layer,
-            name=name,
-            color=self.color.rgb255,  # type: ignore
-            disjoint=disjoint,
-        )
+        attr = attributes(name=name, color=color, layer=layer)
+        guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=disjoint), attr)
         return [guid]
 
-    def draw_vertices(self, vertices=None, color=None):
+    def draw_vertices(self, vertices=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
         """Draw a selection of vertices.
 
         Parameters
@@ -185,28 +187,48 @@ class MeshArtist(RhinoArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the vertices.
             The default is the value of :attr:`MeshArtist.default_vertexcolor`.
+        text : dict[int, str], optional
+            A dictionary of vertex labels as vertex-text pairs.
+        fontheight : int, optional
+            Font height of the vertex labels.
+        fontface : str, optional
+            Font face of the vertex labels.
 
         Returns
         -------
         list[System.Guid]
-            The GUIDs of the created Rhino objects.
+            The GUIDs of the created Rhino point objects.
 
         """
-        self.vertex_color = color
         vertices = vertices or self.mesh.vertices()  # type: ignore
-        vertex_xyz = self.vertex_xyz
-        points = []
-        for vertex in vertices:
-            points.append(
-                {
-                    "pos": vertex_xyz[vertex],
-                    "name": "{}.vertex.{}".format(self.mesh.name, vertex),  # type: ignore
-                    "color": self.vertex_color[vertex].rgb255,  # type: ignore
-                }
-            )
-        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
-    def draw_edges(self, edges=None, color=None):
+        self.vertex_color = color
+        self.vertex_text = text
+        vertex_xyz = self.vertex_xyz
+        vertex_color = self.vertex_color
+        vertex_text = self.vertex_text
+
+        guids = []
+
+        for vertex in vertices:
+            point = point_to_rhino(vertex_xyz[vertex])
+            name = "{}.vertex.{}".format(self.mesh.name, vertex)  # type: ignore
+            color = vertex_color[vertex]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+            guid = sc.doc.Objects.AddPoint(point, attr)
+            guids.append(guid)
+
+            if text:
+                if vertex in vertex_text:
+                    attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+                    dot = TextDot(str(vertex_text[vertex]), point)  # type: ignore
+                    dot.FontHeight = fontheight
+                    dot.FontFace = fontface
+                    sc.doc.Objects.AddTextDot(dot, attr)
+
+        return guids
+
+    def draw_edges(self, edges=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
         """Draw a selection of edges.
 
         Parameters
@@ -217,30 +239,49 @@ class MeshArtist(RhinoArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
             The default color is the value of :attr:`MeshArtist.default_edgecolor`.
+        text : dict[tuple[int, int], str], optional
+            A dictionary of edge labels as edge-text pairs.
+        fontheight : int, optional
+            Font height of the edge labels.
+        fontface : str, optional
+            Font face of the edge labels.
 
         Returns
         -------
         list[System.Guid]
-            The GUIDs of the created Rhino objects.
+            The GUIDs of the created Rhino line objects.
 
         """
-        self.edge_color = color
         edges = edges or self.mesh.edges()  # type: ignore
+
+        self.edge_color = color
+        self._edge_text = text
         vertex_xyz = self.vertex_xyz
-        lines = []
+        edge_color = self.edge_color
+        edge_text = self.edge_text
+
+        guids = []
+
         for edge in edges:
-            lines.append(
-                {
-                    "start": vertex_xyz[edge[0]],
-                    "end": vertex_xyz[edge[1]],
-                    "color": self.edge_color[edge].rgb255,  # type: ignore
-                    "name": "{}.edge.{}-{}".format(self.mesh.name, *edge),  # type: ignore
-                }
-            )
-        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+            name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
+            color = edge_color[edge]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+            line = Line(vertex_xyz[edge[0]], vertex_xyz[edge[1]])
+            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+            guids.append(guid)
+
+            if text:
+                if edge in edge_text:
+                    point = point_to_rhino(line.midpoint)
+                    attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+                    dot = TextDot(str(edge_text[edge]), point)  # type: ignore
+                    dot.FontHeight = fontheight
+                    dot.FontFace = fontface
+                    sc.doc.Objects.AddTextDot(dot, attr)
+
         return guids
 
-    def draw_faces(self, faces=None, color=None, join_faces=False):
+    def draw_faces(self, faces=None, color=None, text=None, fontheight=10, fontface="Arial Regular", join_faces=False):
         """Draw a selection of faces.
 
         Parameters
@@ -251,35 +292,53 @@ class MeshArtist(RhinoArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the faces.
             The default color is the value of :attr:`MeshArtist.default_facecolor`.
+        text : dict[int, str], optional
+            A dictionary of face labels as face-text pairs.
+        fontheight : int, optional
+            Font height of the face labels.
+        fontface : str, optional
+            Font face of the face labels.
         join_faces : bool, optional
             If True, join the faces into a single mesh.
 
         Returns
         -------
         list[System.Guid]
-            The GUIDs of the created Rhino objects.
+            The GUIDs of the created Rhino mesh objects.
 
         """
-        self.face_color = color
-        faces = faces or self.mesh.faces()  # type: ignore
-        vertex_xyz = self.vertex_xyz
-        facets = []
-        for face in faces:
-            facets.append(
-                {
-                    "points": [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],  # type: ignore
-                    "name": "{}.face.{}".format(self.mesh.name, face),  # type: ignore
-                    "color": self.face_color[face].rgb255,  # type: ignore
-                }
-            )
-        guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
         if join_faces:
-            guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
-            compas_rhino.rs.ObjectLayer(guid, self.layer)
-            compas_rhino.rs.ObjectName(guid, "{}.mesh".format(self.mesh.name))  # type: ignore
-            if color:
-                compas_rhino.rs.ObjectColor(guid, color)
-            guids = [guid]
+            return self.draw(color=color, disjoint=True)
+
+        faces = faces or self.mesh.faces()  # type: ignore
+
+        self.face_color = color
+        self.face_text = text
+        vertex_xyz = self.vertex_xyz
+        face_color = self.face_color
+        face_text = self.face_text
+
+        guids = []
+
+        for face in faces:
+            name = "{}.face.{}".format(self.mesh.name, face)  # type: ignore
+            color = face_color[face]  # type: ignore
+            vertices = [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
+            facet = ngon(len(vertices))
+            if facet:
+                attr = attributes(name=name, color=color, layer=self.layer)
+                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
+                guids.append(guid)
+
+            if text:
+                if face in face_text:
+                    point = point_to_rhino(centroid_points(vertices))  # type: ignore
+                    attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+                    dot = TextDot(str(face_text[face]), point)  # type: ignore
+                    dot.FontHeight = fontheight
+                    dot.FontFace = fontface
+                    sc.doc.Objects.AddTextDot(dot, attr)
+
         return guids
 
     # ==========================================================================
@@ -305,24 +364,19 @@ class MeshArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        color = Color.coerce(color).rgb255  # type: ignore
+        color = Color.coerce(color)
         vertex_xyz = self.vertex_xyz
         vertices = vertices or self.mesh.vertices()  # type: ignore
-        lines = []
+        guids = []
         for vertex in vertices:
-            a = vertex_xyz[vertex]
-            n = self.mesh.vertex_normal(vertex)  # type: ignore
-            b = add_vectors(a, scale_vector(n, scale))
-            lines.append(
-                {
-                    "start": a,
-                    "end": b,
-                    "color": color,
-                    "name": "{}.vertexnormal.{}".format(self.mesh.name, vertex),  # type: ignore
-                    "arrow": "end",
-                }
-            )
-        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+            normal = self.mesh.vertex_normal(vertex)  # type: ignore
+            start = Point(*vertex_xyz[vertex])
+            end = start + normal * scale
+            name = "{}.vertex.{}.normal".format(self.mesh.name, vertex)  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+            guid = sc.doc.Objects.AddLine(point_to_rhino(start), point_to_rhino(end), attr)
+            guids.append(guid)
+        return guids
 
     def draw_facenormals(self, faces=None, color=(0, 255, 255), scale=1.0):
         """Draw the normals of the faces.
@@ -343,112 +397,17 @@ class MeshArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        color = Color.coerce(color).rgb255  # type: ignore
+        color = Color.coerce(color)
         vertex_xyz = self.vertex_xyz
         faces = faces or self.mesh.faces()  # type: ignore
-        lines = []
+        guids = []
         for face in faces:
-            a = centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])  # type: ignore
-            n = self.mesh.face_normal(face)  # type: ignore
-            b = add_vectors(a, scale_vector(n, scale))
-            lines.append(
-                {
-                    "start": a,
-                    "end": b,
-                    "name": "{}.facenormal.{}".format(self.mesh.name, face),  # type: ignore
-                    "color": color,
-                    "arrow": "end",
-                }
-            )
-        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-
-    # ==========================================================================
-    # draw labels
-    # ==========================================================================
-
-    def draw_vertexlabels(self, text=None):
-        """Draw labels for a selection vertices.
-
-        Parameters
-        ----------
-        text : dict[int, str], optional
-            A dictionary of vertex labels as vertex-text pairs.
-            The default value is None, in which case every vertex will be labelled with its identifier.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        self.vertex_text = text
-        vertex_xyz = self.vertex_xyz
-        labels = []
-        for vertex in self.vertex_text:  # type: ignore
-            labels.append(
-                {
-                    "pos": vertex_xyz[vertex],
-                    "name": "{}.vertexlabel.{}".format(self.mesh.name, vertex),  # type: ignore
-                    "color": self.vertex_color[vertex].rgb255,  # type: ignore
-                    "text": self.vertex_text[vertex],  # type: ignore
-                }
-            )
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-
-    def draw_edgelabels(self, text=None):
-        """Draw labels for a selection of edges.
-
-        Parameters
-        ----------
-        text : dict[tuple[int, int], str], optional
-            A dictionary of edge labels as edge-text pairs.
-            The default value is None, in which case every edge will be labelled with its identifier.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        self.edge_text = text
-        vertex_xyz = self.vertex_xyz
-        labels = []
-        for edge in self.edge_text:  # type: ignore
-            labels.append(
-                {
-                    "pos": centroid_points([vertex_xyz[edge[0]], vertex_xyz[edge[1]]]),
-                    "name": "{}.edgelabel.{}-{}".format(self.mesh.name, *edge),  # type: ignore
-                    "color": self.edge_color[edge].rgb255,  # type: ignore
-                    "text": self.edge_text[edge],  # type: ignore
-                }
-            )
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-
-    def draw_facelabels(self, text=None):
-        """Draw labels for a selection of faces.
-
-        Parameters
-        ----------
-        text : dict[int, str], optional
-            A dictionary of face labels as face-text pairs.
-            The default value is None, in which case every face will be labelled with its key.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        self.face_text = text
-        vertex_xyz = self.vertex_xyz
-        labels = []
-        for face in self.face_text:  # type: ignore
-            labels.append(
-                {
-                    "pos": centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]),  # type: ignore
-                    "name": "{}.facelabel.{}".format(self.mesh.name, face),  # type: ignore
-                    "color": self.face_color[face].rgb255,  # type: ignore
-                    "text": self.face_text[face],  # type: ignore
-                }
-            )
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+            point = Point(*centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]))  # type: ignore
+            normal = self.mesh.face_normal(face)  # type: ignore
+            start = point
+            end = start + normal * scale
+            name = "{}.face.{}.normal".format(self.mesh.name, face)  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+            guid = sc.doc.Objects.AddLine(point_to_rhino(start), point_to_rhino(end), attr)
+            guids.append(guid)
+        return guids
