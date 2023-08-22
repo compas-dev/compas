@@ -1,13 +1,25 @@
-from compas.geometry import centroid_polygon
-from compas.utilities import pairwise
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-from Rhino.Geometry import Mesh as RhinoMesh
+from Rhino.Geometry import Mesh as RhinoMesh  # type: ignore
 
 try:
     # MeshNgon is not available in older versions of Rhino
-    from Rhino.Geometry import MeshNgon
+    from Rhino.Geometry import MeshNgon  # type: ignore
 except ImportError:
-    MeshNgon = False
+    MeshNgon = None
+
+from compas.colors import Color
+from compas.datastructures import Mesh
+from compas.geometry import centroid_polygon
+from compas.utilities import pairwise
+from .geometry import vector_to_compas
+
+
+# =============================================================================
+# To Rhino
+# =============================================================================
 
 
 def mesh_to_rhino(compas_mesh, disjoint=True, face_callback=None):
@@ -89,7 +101,7 @@ def vertices_and_faces_to_rhino(vertices, faces, disjoint=True, face_callback=No
             face_callback(face)
 
     else:
-        for (x, y, z) in vertices:
+        for x, y, z in vertices:
             mesh.Vertices.Add(x, y, z)
 
         for face in faces:
@@ -114,4 +126,53 @@ def vertices_and_faces_to_rhino(vertices, faces, disjoint=True, face_callback=No
 
     mesh.Normals.ComputeNormals()
     mesh.Compact()
+    return mesh
+
+
+# =============================================================================
+# To COMPAS
+# =============================================================================
+
+
+def mesh_to_compas(rhinomesh, cls=None):
+    """Convert a Rhino mesh object to a COMPAS mesh.
+
+    Parameters
+    ----------
+    rhinomesh : :class:`Rhino.Geometry.Mesh`
+        A Rhino mesh object.
+    cls: :class:`~compas.datastructures.Mesh`, optional
+        The mesh type.
+
+    Returns
+    -------
+    :class:`compas.datastructures.Mesh`
+        A COMPAS mesh.
+
+    """
+    cls = cls or Mesh
+    mesh = cls()
+    mesh.default_vertex_attributes.update(normal=None, color=None)
+    mesh.default_face_attributes.update(normal=None)
+
+    for vertex, normal, color in zip(rhinomesh.Vertices, rhinomesh.Normals, rhinomesh.VertexColors):
+        mesh.add_vertex(
+            x=vertex.X,
+            y=vertex.Y,
+            z=vertex.Z,
+            normal=vector_to_compas(normal),
+            color=Color(
+                color.R,
+                color.G,
+                color.B,
+            ),
+        )
+
+    for face, normal in zip(rhinomesh.Faces, rhinomesh.FaceNormals):
+        if face.IsTriangle:
+            vertices = [face.A, face.B, face.C]
+        else:
+            vertices = [face.A, face.B, face.C, face.D]
+        mesh.add_face(vertices, normal=vector_to_compas(normal))
+
     return mesh
