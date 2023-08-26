@@ -46,7 +46,7 @@ class CellNetwork(HalfFace):
     """
 
     # notes on the implementation
-    # we derive from HalfFace, but we need to be able to add edges without faces as well, that is why we have a separate _partial edge dictionary
+    # we derive from HalfFace, but we need to be able to add edges without faces as well,
 
     def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, default_cell_attributes=None):
         _default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
@@ -158,8 +158,6 @@ class CellNetwork(HalfFace):
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
         key = super(CellNetwork, self).add_vertex(key=key, attr_dict=attr_dict, **kwattr)
-        if key not in self.partial_edge:
-            self.partial_edge[key] = {}
         if key not in self._edge:
             self._edge[key] = {}
         return key
