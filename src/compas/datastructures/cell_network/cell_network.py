@@ -62,7 +62,6 @@ class CellNetwork(HalfFace):
             default_face_attributes=_default_face_attributes,
             default_cell_attributes=_default_cell_attributes,
         )
-        self.partial_edge = {}
         self._edge = {}
 
     def __str__(self):
@@ -83,13 +82,7 @@ class CellNetwork(HalfFace):
 
         for edge in self.face_edges(fkey):
             self.add_edge(*edge)
-            self.partial_edge[edge[0]][edge[1]].add(fkey)  # why double
-            # self.partial_edge[edge[1]][edge[0]].add(fkey)  # why double
         return fkey
-
-        # self.partial_edge[u][v] = fkey
-        #    if u not in self.halfedge[v]:
-        #        self.halfedge[v][u] = None
 
     # --------------------------------------------------------------------------
     # special properties
@@ -232,10 +225,6 @@ class CellNetwork(HalfFace):
         data = self._edge[u].get(v, {})
         data.update(attr)
         self._edge[u][v] = data  # or is this edge data?
-        if v not in self.partial_edge[u]:  # here we need to store the faces
-            self.partial_edge[u][v] = set()  # the face(s)
-        if u not in self.partial_edge[v]:
-            self.partial_edge[v][u] = set()
         return u, v
 
     def edge_faces(self, edge):
@@ -253,12 +242,12 @@ class CellNetwork(HalfFace):
 
         """
         u, v = edge
-        faces = []
-        if v in self.partial_edge[u]:
-            faces += list(self.partial_edge[u][v])  # we don't need double assignment, or do we?
-        if u in self.partial_edge[v]:
-            faces += list(self.partial_edge[v][u])  # we don't need double assignment, or do we?
-        return faces
+        faces = set()
+        if v in self._plane[u]:
+            faces.add(self._plane[u][v].keys())
+        if u in self._plane[v]:
+            faces.add(self._plane[v][u].keys())
+        return list(faces)
 
     def edges(self, data=False):
         for u, nbrs in iter(self._edge.items()):
@@ -1112,7 +1101,7 @@ if __name__ == "__main__":
     import os
 
     path = os.path.dirname(filepath)
-    cell_network.to_json(os.path.join(path, "cell_network.json"))
+    # cell_network.to_json(os.path.join(path, "cell_network.json"))
 
     print("3 ")
 
