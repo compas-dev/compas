@@ -13,6 +13,12 @@ from compas.datastructures.attributes import CellAttributeView
 from compas.utilities import pairwise
 
 
+def iter_edges_from_vertices(vertices):
+    for i, u in enumerate(vertices):
+        j = (i + 1) % len(vertices)
+        yield u, vertices[j]
+
+
 class HalfFace(Datastructure):
     """Base half-face data structure for representing volumetric meshes.
 
@@ -474,22 +480,14 @@ class HalfFace(Datastructure):
         self._halfface[fkey] = vertices
         for name, value in attr.items():
             self.face_attribute(fkey, name, value)
-        for i in range(-2, len(vertices) - 2):
-            u = vertices[i]
-            v = vertices[i + 1]
-            w = vertices[i + 2]
-            if u == v or v == w:
-                continue
-            self.add_vertex(key=u)
-            self.add_vertex(key=v)
-            self.add_vertex(key=w)
+        for u, v in iter_edges_from_vertices(vertices):
             if v not in self._plane[u]:
                 self._plane[u][v] = {}
-            self._plane[u][v][w] = None
-            if v not in self._plane[w]:
-                self._plane[w][v] = {}
-            if u not in self._plane[w][v]:
-                self._plane[w][v][u] = None
+            self._plane[u][v][fkey] = None
+            if u not in self._plane[v]:
+                self._plane[v][u] = {}
+            self._plane[v][u][fkey] = None
+
         return fkey
 
     def add_cell(self, faces, ckey=None, attr_dict=None, **kwattr):
@@ -543,14 +541,12 @@ class HalfFace(Datastructure):
         for vertices in faces:
             fkey = self.add_halfface(vertices)
             vertices = self.halfface_vertices(fkey)
-            for i in range(-2, len(vertices) - 2):
-                u = vertices[i]
-                v = vertices[i + 1]
-                w = vertices[i + 2]
+            for u, v in iter_edges_from_vertices(vertices):
                 if u not in self._cell[ckey]:
                     self._cell[ckey][u] = {}
-                self._plane[u][v][w] = ckey
+                self._plane[u][v][fkey] = ckey
                 self._cell[ckey][u][v] = fkey
+
         return ckey
 
     # --------------------------------------------------------------------------
@@ -608,14 +604,11 @@ class HalfFace(Datastructure):
                 del self._vertex[vertex]
         for face in cell_faces:
             vertices = self.halfface_vertices(face)
-            for i in range(-2, len(vertices) - 2):
-                u = vertices[i]
-                v = vertices[i + 1]
-                w = vertices[i + 2]
-                self._plane[u][v][w] = None
-                if self._plane[w][v][u] is None:
-                    del self._plane[u][v][w]
-                    del self._plane[w][v][u]
+            for u, v in iter_edges_from_vertices(vertices):
+                self._plane[u][v][face] = None
+                if self._plane[v][u][face] is None:
+                    del self._plane[u][v][face]
+                    del self._plane[v][u][face]
             del self._halfface[face]
             key = "-".join(map(str, sorted(vertices)))
             if key in self._face_data:
@@ -2473,10 +2466,9 @@ class HalfFace(Datastructure):
                 halfface = self._cell[cell][v][u]
                 if self.is_halfface_on_boundary(halfface):
                     break
-        for i in range(len(cells)):
+        for _ in cells:
             halfface = self._cell[cell][u][v]
-            w = self.halfface_vertex_descendent(halfface, v)
-            cell = self._plane[w][v][u]
+            cell = self._plane[v][u][halfface]
             halffaces.append(halfface)
         return halffaces
 
@@ -2612,8 +2604,8 @@ class HalfFace(Datastructure):
         :meth:`halfface_opposite_cell`
 
         """
-        u, v, w = self._halfface[halfface][0:3]
-        return self._plane[u][v][w]
+        u, v = self._halfface[halfface][:2]
+        return self._plane[u][v][halfface]
 
     def halfface_opposite_cell(self, halfface):
         """The cell to which the opposite halfface belongs to.
@@ -2633,8 +2625,8 @@ class HalfFace(Datastructure):
         :meth:`halfface_cell`
 
         """
-        u, v, w = self._halfface[halfface][0:3]
-        return self._plane[w][v][u]
+        u, v = self._halfface[halfface][:2]
+        return self._plane[v][u][halfface]
 
     def halfface_opposite_halfface(self, halfface):
         """The opposite face of a face.
@@ -2659,11 +2651,9 @@ class HalfFace(Datastructure):
         For a boundary face, the opposite face is None.
 
         """
-        u, v, w = self._halfface[halfface][0:3]
-        nbr = self._plane[w][v][u]
-        if nbr is None:
-            return None
-        return self._cell[nbr][v][u]
+        u, v = self._halfface[halfface][:2]
+        nbr = self._plane[v][u][halfface]
+        return None if nbr is None else self._cell[nbr][v][u]
 
     def halfface_adjacent_halfface(self, halfface, halfedge):
         """Return the halfface adjacent to the halfface across the halfedge.
@@ -2693,11 +2683,8 @@ class HalfFace(Datastructure):
         u, v = halfedge
         cell = self.halfface_cell(halfface)
         nbr_halfface = self._cell[cell][v][u]
-        w = self.halfface_vertex_ancestor(nbr_halfface, v)
-        nbr_cell = self._plane[u][v][w]
-        if nbr_cell is None:
-            return None
-        return self._cell[nbr_cell][v][u]
+        nbr_cell = self._plane[u][v][nbr_halfface]
+        return None if nbr_cell is None else self._cell[nbr_cell][v][u]
 
     def halfface_vertex_ancestor(self, halfface, vertex):
         """Return the vertex before the specified vertex in a specific face.
@@ -2783,8 +2770,7 @@ class HalfFace(Datastructure):
         cell = self.halfface_cell(halfface)
         for u, v in self.halfface_halfedges(halfface):
             nbr_halfface = self._cell[cell][v][u]
-            w = self.halfface_vertex_ancestor(nbr_halfface, v)
-            nbr_cell = self._plane[u][v][w]
+            nbr_cell = self._plane[u][v][nbr_halfface]
             if nbr_cell is not None:
                 nbr = self._cell[nbr_cell][v][u]
                 nbrs.append(nbr)
@@ -2843,8 +2829,8 @@ class HalfFace(Datastructure):
         :meth:`is_vertex_on_boundary`, :meth:`is_edge_on_boundary`, :meth:`is_cell_on_boundary`
 
         """
-        u, v, w = self._halfface[halfface][0:3]
-        return self._plane[w][v][u] is None
+        u, v = self._halfface[halfface][:2]
+        return self._plane[v][u][halfface] is None
 
     # --------------------------------------------------------------------------
     # Cell topology
