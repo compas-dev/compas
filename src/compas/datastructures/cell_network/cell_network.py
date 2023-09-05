@@ -3,12 +3,13 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.datastructures import HalfFace
-from compas.datastructures import Mesh, Network, HalfEdge
-
-from compas.geometry import Point, Vector, Line, Polygon, Polyhedron
-
-from compas.geometry import add_vectors
-from compas.geometry import bestfit_plane
+from compas.datastructures import Mesh
+from compas.datastructures import Network
+from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.geometry import Polyhedron
+from compas.geometry import Vector
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
@@ -16,19 +17,24 @@ from compas.geometry import distance_point_point
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
-from compas.geometry import project_point_plane
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
-
-from compas.utilities import geometric_key
-from compas.utilities import pairwise
+from compas.geometry import volume_polyhedron
 from compas.topology import face_adjacency
-from compas.topology import unify_cycles
 
 
 class CellNetwork(HalfFace):
     """Geometric implementation of a data structure for a collection of mixed topologic entities such as cells, faces, edges and nodes.
 
+    Examples
+    --------
+    >>> from compas.datastructures import CellNetwork
+    >>> cell_network = CellNetwork()
+    >>> vertices = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
+    >>> faces = [[0, 1, 2, 3], [0, 3, 5, 4],[3, 2, 6, 5], [2, 1, 7, 6],[1, 0, 4, 7],[4, 5, 6, 7]]
+    >>> cells = [[0, 1, 2, 3, 4, 5]]
+    >>> [network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]
+    >>> [cell_network.add_face(fverts) for fverts in faces]
+    >>> [cell_network.add_cell(fkeys) for fkeys in cells]
+    >>> cell_network
 
     Parameters
     ----------
@@ -42,13 +48,16 @@ class CellNetwork(HalfFace):
         Default values for face attributes.
     default_cell_attributes: dict, optional
         Default values for cell attributes.
-
     """
 
-    # notes on the implementation
-    # we derive from HalfFace, but we need to be able to add edges without faces as well,
-
-    def __init__(self, name=None, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, default_cell_attributes=None):
+    def __init__(
+        self,
+        name=None,
+        default_vertex_attributes=None,
+        default_edge_attributes=None,
+        default_face_attributes=None,
+        default_cell_attributes=None,
+    ):
         _default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = default_edge_attributes or {}
         _default_face_attributes = default_face_attributes or {}
@@ -74,93 +83,36 @@ class CellNetwork(HalfFace):
         )
 
     # --------------------------------------------------------------------------
-    # customisation
-    # --------------------------------------------------------------------------
-
-    def add_face(self, vertices, fkey=None, attr_dict=None, **kwattr):
-        fkey = self.add_halfface(vertices, fkey=fkey, attr_dict=attr_dict, **kwattr)
-
-        for edge in self.face_edges(fkey):
-            self.add_edge(*edge)
-        return fkey
-
-    # --------------------------------------------------------------------------
-    # special properties
-    # --------------------------------------------------------------------------
-
-    def cell_to_mesh(self, cell):
-        """Construct a mesh object from from a cell of a cell network.
-
-        Parameters
-        ----------
-        cell : int
-            Identifier of the cell.
-
-        Returns
-        -------
-        :class:`~compas.datastructures.Mesh`
-            A mesh object.
-
-        See Also
-        --------
-        :meth:`cell_to_vertices_and_faces`
-
-        """
-        vertices, faces = self.cell_to_vertices_and_faces(cell)
-        return Mesh.from_vertices_and_faces(vertices, faces)
-
-    def cell_to_vertices_and_faces(self, cell):
-        """Return the vertices and faces of a cell.
-
-        Parameters
-        ----------
-        cell : int
-            Identifier of the cell.
-
-        Returns
-        -------
-        list[list[float]]
-            A list of vertices, represented by their XYZ coordinates,
-        list[list[int]]
-            A list of faces, with each face a list of vertex indices.
-
-        See Also
-        --------
-        :meth:`cell_to_mesh`
-
-        """
-        vertices = self.cell_vertices(cell)
-        faces = self.cell_faces(cell)
-        vertex_index = {vertex: index for index, vertex in enumerate(vertices)}
-        vertices = [self.vertex_coordinates(vertex) for vertex in vertices]
-        faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
-        return vertices, faces
-
-    # --------------------------------------------------------------------------
-    # helpers
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # builders
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # modifiers
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # cell network geometry
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # vertex geometry
+    # vertex
     # --------------------------------------------------------------------------
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
+        """Add a vertex and specify its attributes.
+
+        Parameters
+        ----------
+        key : hashable, optional
+            The identifier of the vertex.
+            Defaults to None.
+        attr_dict : dict, optional
+            A dictionary of vertex attributes.
+            Defaults to None.
+        **kwattr : dict, optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        hashable
+            The identifier of the vertex.
+        """
         key = super(CellNetwork, self).add_vertex(key=key, attr_dict=attr_dict, **kwattr)
         if key not in self._edge:
             self._edge[key] = {}
         return key
+
+    # --------------------------------------------------------------------------
+    # vertex geometry
+    # --------------------------------------------------------------------------
 
     def vertex_coordinates(self, vertex, axes="xyz"):
         """Return the coordinates of a vertex.
@@ -177,15 +129,25 @@ class CellNetwork(HalfFace):
         -------
         list[float]
             Coordinates of the vertex.
-
-        See Also
-        --------
-        :meth:`vertex_point`, :meth:`vertex_laplacian`, :meth:`vertex_neighborhood_centroid`
-
         """
         return [self._vertex[vertex][axis] for axis in axes]
 
     def vertices_coordinates(self, vertices, axes="xyz"):
+        """Return the coordinates of multiple vertices.
+
+        Parameters
+        ----------
+        vertices : list of int
+            The vertex identifiers.
+        axes : str, optional
+            The axes alon which to take the coordinates.
+            Should be a combination of x, y, and z.
+
+        Returns
+        -------
+        list of list[float]
+            Coordinates of the vertices.
+        """
         return [self.vertex_coordinates(vertex, axes=axes) for vertex in vertices]
 
     def vertex_point(self, vertex):
@@ -200,60 +162,126 @@ class CellNetwork(HalfFace):
         -------
         :class:`compas.geometry.Point`
             The point.
-
-        See Also
-        --------
-        :meth:`vertex_laplacian`, :meth:`vertex_neighborhood_centroid`
-
         """
         return Point(*self.vertex_coordinates(vertex))
 
     def vertices_points(self, vertices):
+        """Returns the point representation of multiple vertices.
+
+        Parameters
+        ----------
+         vertices : list of int
+            The vertex identifiers.
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Point`
+            The points.
+        """
         return [self.vertex_point(vertex) for vertex in vertices]
 
     # --------------------------------------------------------------------------
-    # edge geometry
+    # edge
     # --------------------------------------------------------------------------
 
     def add_edge(self, u, v, attr_dict=None, **kwattr):
+        """Add an edge and specify its attributes.
+
+        Parameters
+        ----------
+        u : hashable
+            The identifier of the first node of the edge.
+        v : hashable
+            The identifier of the second node of the edge.
+        attr_dict : dict[str, Any], optional
+            A dictionary of edge attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        tuple[hashable, hashable]
+            The identifier of the edge.
+
+        """
         attr = attr_dict or {}
         attr.update(kwattr)
-        assert u in self._vertex
-        assert v in self._vertex
+        assert u in self._vertex, "Cannot add edge {}, {} has no vertex {}".format((u, v), self.name, u)
+        assert v in self._vertex, "Cannot add edge {}, {} has no vertex {}".format((u, v), self.name, u)
         data = self._edge[u].get(v, {})
         data.update(attr)
-        self._edge[u][v] = data  # or is this edge data?
+        self._edge[u][v] = data
+        if v not in self._edge:
+            self._edge[v] = {}
+        if v not in self._plane[u]:
+            self._plane[u][v] = {}
+        if u not in self._plane[v]:
+            self._plane[v][u] = {}
         return u, v
 
-    def edge_faces(self, edge):
-        """Return the faces adjacent to an edge.
+    def edge_attribute(self, edge, name, value=None):
+        """Get or set an attribute of an edge.
 
         Parameters
         ----------
         edge : tuple[int, int]
             The edge identifier.
+        name : str
+            The name of the attribute.
+        value : object, optional
+            The value of the attribute.
 
         Returns
         -------
-        list[int]
-            The identifiers of the adjacent faces.
+        object | None
+            The value of the attribute, or None when the function is used as a "setter".
 
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
         """
         u, v = edge
-        faces = set()
-        if v in self._plane[u]:
-            faces.add(self._plane[u][v].keys())
-        if u in self._plane[v]:
-            faces.add(self._plane[v][u].keys())
-        return list(faces)
+        if u not in self._edge or v not in self._edge[u]:
+            raise KeyError(edge)
+        attr = self._edge[u][v]
+        if value is not None:
+            attr[name] = value
+            return
+        if name in attr:
+            return attr[name]
+        if name in self.default_edge_attributes:
+            return self.default_edge_attributes[name]
 
     def edges(self, data=False):
+        """Iterate over the edges of the cell network.
+
+        Parameters
+        ----------
+        data : bool, optional
+            If True, yield the edge attributes in addition to the edge identifiers.
+
+        Yields
+        ------
+        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
+            If `data` is False, the next edge identifier (u, v).
+            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        """
+        seen = set()
         for u, nbrs in iter(self._edge.items()):
             for v, attr in iter(nbrs.items()):
+                if (u, v) in seen or (v, u) in seen:
+                    continue
+                seen.add((u, v))
+                seen.add((v, u))
                 if data:
                     yield (u, v), attr
                 else:
                     yield u, v
+
+    # --------------------------------------------------------------------------
+    # edge geometry
+    # --------------------------------------------------------------------------
 
     def edge_coordinates(self, edge, axes="xyz"):
         """Return the coordinates of the start and end point of an edge.
@@ -270,13 +298,6 @@ class CellNetwork(HalfFace):
         tuple[list[float], list[float]]
             The coordinates of the start point.
             The coordinates of the end point.
-
-        See Also
-        --------
-        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`, :meth:`edge_point`
-        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_line`
-        :meth:`edge_length`
-
         """
         u, v = edge
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
@@ -293,11 +314,6 @@ class CellNetwork(HalfFace):
         -------
         :class:`compas.geometry.Vector`
             The vector from start to end.
-
-        See Also
-        --------
-        :meth:`edge_direction`, :meth:`edge_line`
-
         """
         a, b = self.edge_coordinates(edge)
         return Vector.from_start_end(a, b)
@@ -314,11 +330,6 @@ class CellNetwork(HalfFace):
         -------
         :class:`compas.geometry.Vector`
             The direction vector of the edge.
-
-        See Also
-        --------
-        :meth:`edge_vector`, :meth:`edge_line`
-
         """
         return Vector(*normalize_vector(self.edge_vector(edge)))
 
@@ -334,11 +345,6 @@ class CellNetwork(HalfFace):
         -------
         :class:`compas.geometry.Line`
             The line.
-
-        See Also
-        --------
-        :meth:`edge_vector`, :meth:`edge_direction`
-
         """
         return Line(self.edge_start(edge), self.edge_end(edge))
 
@@ -354,10 +360,142 @@ class CellNetwork(HalfFace):
         -------
         float
             The length of the edge.
-
         """
         a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
+
+    # --------------------------------------------------------------------------
+    # edge topology
+    # --------------------------------------------------------------------------
+
+    def edge_faces(self, edge):
+        """Return the faces adjacent to an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        list[int]
+            The identifiers of the adjacent faces.
+        """
+        u, v = edge
+        faces = set()
+        if v in self._plane[u]:
+            faces.update(self._plane[u][v].keys())
+        if u in self._plane[v]:
+            faces.update(self._plane[v][u].keys())
+        return sorted(list(faces))
+
+    def edges_no_face(self):
+        """Find the edges that are not part of a face.
+
+        Returns
+        -------
+        list[int]
+            The edges without face.
+
+        """
+        edges = {edge for edge in self.edges() if not self.edge_faces(edge)}
+        return list(edges)
+
+    def non_manifold_edges(self):
+        """Returns the edges that belong to more than two faces.
+
+        Returns
+        -------
+        list[int]
+            The edges without face.
+
+        """
+        edges = {edge for edge in self.edges() if len(self.edge_faces(edge)) > 2}
+        return list(edges)
+
+    # --------------------------------------------------------------------------
+    # faces
+    # --------------------------------------------------------------------------
+
+    def add_face(self, vertices, fkey=None, attr_dict=None, **kwattr):
+        """Add a face to the cell network.
+
+        Parameters
+        ----------
+        vertices : list[int]
+            A list of ordered vertex keys representing the face.
+            For every vertex that does not yet exist, a new vertex is created.
+        fkey : int, optional
+            The face identifier.
+        attr_dict : dict[str, Any], optional
+            dictionary of halfface attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        int
+            The key of the face.
+
+        See Also
+        --------
+        :meth:`add_vertex`, :meth:`add_cell`, :meth:`add_edge`
+
+        Notes
+        -----
+        If no key is provided for the face, one is generated
+        automatically. An automatically generated key is an integer that increments
+        the highest integer value of any key used so far by 1.
+
+        If a key with an integer value is provided that is higher than the current
+        highest integer key value, then the highest integer value is updated accordingly.
+        """
+        fkey = self.add_halfface(vertices, fkey=fkey, attr_dict=attr_dict, **kwattr)
+
+        for edge in self.face_edges(fkey):
+            self.add_edge(*edge)
+        return fkey
+
+    def face_attribute(self, face, name, value=None):
+        """Get or set an attribute of a face.
+
+        Parameters
+        ----------
+        face : int
+            The face identifier.
+        name : str
+            The name of the attribute.
+        value : object, optional
+            The value of the attribute.
+
+        Returns
+        -------
+        object | None
+            The value of the attribute, or None when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+
+        See Also
+        --------
+        :meth:`unset_face_attribute`
+        :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`
+        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`cell_attribute`
+
+        """
+        if face not in self._halfface:
+            raise KeyError(face)
+        if value is not None:
+            if face not in self._face_data:
+                self._face_data[face] = {}
+            self._face_data[face][name] = value
+            return
+        if face in self._face_data and name in self._face_data[face]:
+            return self._face_data[face][name]
+        if name in self.default_face_attributes:
+            return self.default_face_attributes[name]
 
     # --------------------------------------------------------------------------
     # face geometry
@@ -378,9 +516,6 @@ class CellNetwork(HalfFace):
 
         """
         return self.halfface_vertices(face)
-
-    def face_edges(self, face):
-        return self.halfface_halfedges(face)
 
     def face_coordinates(self, face, axes="xyz"):
         """Compute the coordinates of the vertices of a face.
@@ -528,73 +663,259 @@ class CellNetwork(HalfFace):
         """
         return length_vector(self.face_normal(face, unitized=False))
 
-    def face_flatness(self, face, maxdev=0.02):
-        """Compute the flatness of a face.
-
-        Parameters
-        ----------
-        face : int
-            The identifier of the face.
-
-        Returns
-        -------
-        float
-            The flatness.
-
-        See Also
-        --------
-        :meth:`face_area`, :meth:`face_aspect_ratio`
-
-        Notes
-        -----
-        compas.geometry.mesh_flatness function currently only works for quadrilateral faces.
-        This function uses the distance between each face vertex and its projected point
-        on the best-fit plane of the face as the flatness metric.
-
-        """
-        deviation = 0
-        polygon = self.face_coordinates(face)
-        plane = bestfit_plane(polygon)
-        for pt in polygon:
-            pt_proj = project_point_plane(pt, plane)
-            dev = distance_point_point(pt, pt_proj)
-            if dev > deviation:
-                deviation = dev
-        return deviation
-
-    def face_aspect_ratio(self, face):
-        """Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.
-
-        Parameters
-        ----------
-        face : int
-            The identifier of the face.
-
-        Returns
-        -------
-        float
-            The aspect ratio.
-
-        See Also
-        --------
-        :meth:`face_area`, :meth:`face_flatness`
-
-        References
-        ----------
-        .. [1] Wikipedia. *Types of mesh*.
-               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
-
-        """
-        face_edge_lengths = [self.edge_length(edge) for edge in self.halfface_halfedges(face)]
-        return max(face_edge_lengths) / min(face_edge_lengths)
-
     halfface_area = face_area
     halfface_centroid = face_centroid
     halfface_center = face_center
     halfface_coordinates = face_coordinates
-    halfface_flatness = face_flatness
     halfface_normal = face_normal
-    halfface_aspect_ratio = face_aspect_ratio
+
+    def mesh_from_faces(self, faces, data=False):
+        """Construct a mesh from a list of faces.
+
+        Parameters
+        ----------
+        faces : list
+            A list of face identifiers.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            A mesh.
+
+        """
+        faces_vertices = [self.face_vertices(face) for face in faces]
+        mesh = Mesh()
+        for fkey, vertices in zip(faces, faces_vertices):
+            for v in vertices:
+                x, y, z = self.vertex_coordinates(v)
+                mesh.add_vertex(key=v, x=x, y=y, z=z)
+            if data:
+                mesh.add_face(vertices, fkey=fkey, attr_dict=self.face_attributes(fkey))
+            else:
+                mesh.add_face(vertices, fkey=fkey)
+        return mesh
+
+    # --------------------------------------------------------------------------
+    # face topology
+    # --------------------------------------------------------------------------
+
+    def face_edges(self, face):
+        return self.halfface_halfedges(face)
+
+    def face_neighbors(self, fkey):
+        """Return the neighbors of a face across its edges.
+
+        Parameters
+        ----------
+        fkey : int
+            The identifier of the face.
+
+        Returns
+        -------
+        list[int]
+            The identifiers of the neighboring faces.
+        """
+        nbrs = set()
+        for edge in self.face_edges(fkey):
+            nbrs.update(self.edge_faces(edge))
+        return list(nbrs - {fkey})
+
+    def edge_face_adjacency(self, faces=None):
+        """Returns an adjacency where adjacency[edge] = {face1, face2}.
+
+        Parameters
+        ----------
+        faces : list of int, optional
+            The faces for which to compute the adjacency, defaults to all faces in the datastructure
+
+        Returns
+        -------
+        dict
+            A dictionary dict[edge] = face key
+        """
+        faces = faces or self.faces()
+        adjacency = {}
+        for face in faces:
+            for u, v in self.face_edges(face):
+                key = (u, v) if u < v else (v, u)
+                if key not in adjacency:
+                    adjacency[key] = {face}
+                else:
+                    adjacency[key].add(face)
+        return adjacency
+
+    def face_adjacency(self, faces=None):
+        """Construct a face adjacency dictionary from a list of faces.
+
+        Parameters
+        ----------
+        faces : list
+            A list of faces.
+
+        Returns
+        -------
+        dict
+            A face adjacency dictionary.
+        """
+        faces_vertices = [self.face_vertices(face) for face in faces]
+        vertices = list({v: None for face in faces_vertices for v in face}.keys())  # unique, but keep order
+        return face_adjacency(vertices, faces)
+
+    def face_cells(self, fkey):
+        """Return the cells connected to a face.
+
+        Parameters
+        ----------
+        fkey : int
+            The identifier of the face.
+
+        Returns
+        -------
+        list[int]
+            The identifiers of the cells connected to the face.
+        """
+        cells = {cell for cell in [self.halfface_cell(fkey), self.halfface_opposite_cell(fkey)] if cell is not None}
+        return list(cells)
+
+    def faces_no_cell(self):
+        """Find the faces that are not part of a cell.
+
+        Returns
+        -------
+        list[int]
+            The faces without cell.
+
+        """
+        faces = {fkey for fkey in self.faces() if not self.face_cells(fkey)}
+        return list(faces)
+
+    def is_halfface_on_boundary(self, halfface):
+        """Verify that a face is on the boundary.
+
+        Parameters
+        ----------
+        halfface : int
+            The identifier of the halfface.
+
+        Returns
+        -------
+        bool
+            True if the face is on the boundary.
+            False otherwise.
+        """
+        u, v = self._halfface[halfface][:2]
+        cu = 0 if self._plane[v][u][halfface] is None else 1
+        cv = 0 if self._plane[u][v][halfface] is None else 1
+        return (cu + cv) == 1  # only one of them
+
+    is_face_on_boundary = is_halfface_on_boundary
+
+    def faces_on_boundaries(self):
+        return self.halffaces_on_boundaries()
+
+    def face_cell_adjacency(self, faces=None):
+        """Returns an adjacency where adjacency[face] = [cell1, cell2].
+
+        Parameters
+        ----------
+        faces : list of int, optional
+            The faces for which to compute the adjacency, defaults to all faces in the datastructure
+        """
+        faces = faces or self.faces()
+        adjacency = {}
+        for face in faces:
+            cells = self.face_cells(face)
+            if len(cells):
+                adjacency[face] = cells
+        return adjacency
+
+    # --------------------------------------------------------------------------
+    # cell
+    # --------------------------------------------------------------------------
+
+    def add_cell(self, faces, ckey=None, attr_dict=None, **kwattr):
+        """Add a cell to the cell network object.
+
+        In order to add a valid cell to the network, the faces must form a closed mesh.
+        If the faces do not form a closed mesh, the cell is not added to the network.
+
+        Parameters
+        ----------
+        faces : list[int]
+            The face keys of the cell.
+        ckey : int, optional
+            The cell identifier.
+        attr_dict : dict[str, Any], optional
+            A dictionary of cell attributes.
+        **kwattr : dict[str, Any], optional
+            A dictionary of additional attributes compiled of remaining named arguments.
+
+        Returns
+        -------
+        int
+            The key of the cell.
+
+        Raises
+        ------
+        TypeError
+            If the provided cell key is of an unhashable type.
+
+
+        Notes
+        -----
+        If no key is provided for the cell, one is generated
+        automatically. An automatically generated key is an integer that increments
+        the highest integer value of any key used so far by 1.
+
+        If a key with an integer value is provided that is higher than the current
+        highest integer key value, then the highest integer value is updated accordingly.
+
+
+        """
+
+        faces = list(set(faces))
+
+        # 1. Check if the faces form a closed cell
+        #    Note: We cannot use mesh.is_closed() here because it only works if the faces are unified
+        if any(len(edge_faces) != 2 for _, edge_faces in self.edge_face_adjacency(faces).items()):
+            print("Cannot add cell, faces {} do not form a closed cell.".format(faces))
+            return
+
+        # 2. Check if the faces can be unified
+        mesh = self.mesh_from_faces(faces, data=False)
+        try:
+            mesh.unify_cycles()
+        except AssertionError:
+            print("Cannot add cell, faces {} can not be unified.".format(faces))
+            return
+
+        # 3. Check if the faces are oriented correctly
+        #    If the volume of the polyhedron is negative, we need to flip the faces
+        vertices, faces = mesh.to_vertices_and_faces()
+        volume = volume_polyhedron((vertices, faces))
+        if volume < 0:
+            mesh.flip_cycles()
+
+        if ckey is None:
+            ckey = self._max_cell = self._max_cell + 1
+        ckey = int(ckey)
+        if ckey > self._max_cell:
+            self._max_cell = ckey
+        attr = attr_dict or {}
+        attr.update(kwattr)
+        self._cell[ckey] = {}
+        for name, value in attr.items():
+            self.cell_attribute(ckey, name, value)
+        for fkey in mesh.faces():
+            vertices = mesh.face_vertices(fkey)
+            for i in range(-2, len(vertices) - 2):
+                u = vertices[i]
+                v = vertices[i + 1]
+                if u not in self._cell[ckey]:
+                    self._cell[ckey][u] = {}
+                self._plane[u][v][fkey] = ckey
+                self._cell[ckey][u][v] = fkey
+        return ckey
 
     # --------------------------------------------------------------------------
     # cell geometry
@@ -616,7 +937,6 @@ class CellNetwork(HalfFace):
         See Also
         --------
         :meth:`cell_polygon`, :meth:`cell_centroid`, :meth:`cell_center`
-
         """
         return [self.vertex_point(vertex) for vertex in self.cell_vertices(cell)]
 
@@ -636,7 +956,6 @@ class CellNetwork(HalfFace):
         See Also
         --------
         :meth:`cell_center`
-
         """
         vertices = self.cell_vertices(cell)
         return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in vertices]))
@@ -657,7 +976,6 @@ class CellNetwork(HalfFace):
         See Also
         --------
         :meth:`cell_centroid`
-
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Point(*centroid_polyhedron((vertices, faces)))
@@ -700,32 +1018,104 @@ class CellNetwork(HalfFace):
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Polyhedron(vertices, faces)
 
+    def cell_to_vertices_and_faces(self, cell):
+        """Return the vertices and faces of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            Identifier of the cell.
+
+        Returns
+        -------
+        list[list[float]]
+            A list of vertices, represented by their XYZ coordinates,
+        list[list[int]]
+            A list of faces, with each face a list of vertex indices.
+
+        See Also
+        --------
+        :meth:`cell_to_mesh`
+
+        """
+        vertices = self.cell_vertices(cell)
+        faces = self.cell_faces(cell)
+        vertex_index = {vertex: index for index, vertex in enumerate(vertices)}
+        vertices = [self.vertex_coordinates(vertex) for vertex in vertices]
+        faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
+        return vertices, faces
+
+    def cell_to_mesh(self, cell):
+        """Construct a mesh object from from a cell of a cell network.
+
+        Parameters
+        ----------
+        cell : int
+            Identifier of the cell.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.Mesh`
+            A mesh object.
+
+        See Also
+        --------
+        :meth:`cell_to_vertices_and_faces`
+
+        """
+        vertices, faces = self.cell_to_vertices_and_faces(cell)
+        return Mesh.from_vertices_and_faces(vertices, faces)
+
+    # --------------------------------------------------------------------------
+    # cell topology
+    # --------------------------------------------------------------------------
+
+    def cells_on_boundaries(self):
+        """Find the cells on the boundary.
+
+        Returns
+        -------
+        list[int]
+            The cells of the boundary.
+
+        See Also
+        --------
+        :meth:`vertices_on_boundaries`, :meth:`faces_on_boundaries`
+
+        """
+        cells = set()
+        for face in self.faces_on_boundaries():
+            cells.update(self.face_cells(face))
+        return list(cells)
+
+    # --------------------------------------------------------------------------
+    # data
+    # --------------------------------------------------------------------------
+
     @property
     def data(self):
-        """Returns a dictionary of structured data representing the volmesh data object.
+        """Returns a dictionary of structured data representing the cell network data object.
 
         Note that some of the data stored internally in the data structure object is not included in the dictionary representation of the object.
         This is the case for data that is considered private and/or redundant.
-        Specifically, the halfface dictionary and the plane dictionary are not included.
+        Specifically, the plane dictionary are not included.
         This is because the information in these dictionaries can be reconstructed from the other data.
         Therefore, to keep the dictionary representation as compact as possible, these dictionaries are not included.
-
-        To reconstruct the complete object representation from the compact data, the setter of the data property uses the vertex and cell builder methods (:meth:`add_vertex`, :meth:`add_cell`).
 
         Returns
         -------
         dict
-            The structured data representing the volmesh.
+            The structured data representing the cell network.
 
         """
         cell = {}
         for c in self._cell:
-            faces = []
-            for u in sorted(self._cell[c]):
-                for v in sorted(self._cell[c][u]):
-                    # faces.append(self._halfface[self._cell[c][u][v]])
-                    faces.append(self._cell[c][u][v])
-            cell[c] = faces
+            faces = set()
+            for u in self._cell[c]:
+                for v in self._cell[c][u]:
+                    faces.add(self._cell[c][u][v])
+            cell[c] = sorted(list(faces))
+
         return {
             "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
@@ -736,7 +1126,6 @@ class CellNetwork(HalfFace):
             "cell": cell,
             "face": self._halfface,
             "edge": self._edge,
-            "edge_data": self._edge_data,
             "face_data": self._face_data,
             "cell_data": self._cell_data,
             "max_vertex": self._max_vertex,
@@ -744,13 +1133,18 @@ class CellNetwork(HalfFace):
             "max_cell": self._max_cell,
         }
 
+    @classmethod
+    def from_data(cls, data):
+        cell_network = cls()
+        cell_network.data = data
+        return cell_network
+
     @data.setter
     def data(self, data):
         self._vertex = {}
         self._halfface = {}
         self._cell = {}
         self._plane = {}
-        self._edge_data = {}
         self._face_data = {}
         self._cell_data = {}
         self._max_vertex = -1
@@ -760,450 +1154,45 @@ class CellNetwork(HalfFace):
         cell = data.get("cell", {})
         face = data.get("face", {})
         edge = data.get("edge", {})
-        edge_data = data.get("edge_data", {})
-        face_data = data.get("face_data", {})
-        cell_data = data.get("cell_data", {})
+
         self.attributes.update(data.get("attributes", {}))
         self.default_vertex_attributes.update(data.get("dva") or {})
         self.default_edge_attributes.update(data.get("dea") or {})
         self.default_face_attributes.update(data.get("dfa") or {})
         self.default_cell_attributes.update(data.get("dca") or {})
         for key, attr in iter(vertex.items()):
-            print(key)
             self.add_vertex(key=key, attr_dict=attr)
-        # for u in edge:
-        #    for v in edge[u]:
-        #        try:
-        #            self.add_edge(u, v)
-        #        except AssertionError:
-        #            pass
-        #            # print("has u", u, u in self._vertex)
-        #            # print("has v", v, v in self._vertex)
+        for u in edge:
+            for v, attr in edge[u].items():
+                self.add_edge(u, v, attr_dict=attr)
+        face_data = data.get("face_data", {})
         for key, vertices in iter(face.items()):
             attr = face_data.get(key) or {}
             self.add_halfface(vertices, fkey=key, attr_dict=attr)
+        cell_data = data.get("cell_data", {})
         for ckey, faces in iter(cell.items()):
             attr = cell_data.get(ckey) or {}
-            print("ckey, faces", ckey, faces)
             self.add_cell(faces, ckey=ckey, attr_dict=attr)
-        for edge in edge_data:
-            self._edge_data[edge] = edge_data[edge] or {}
-        for face in face_data:
-            self._face_data[face] = face_data[face] or {}
         self._max_vertex = data.get("max_vertex", self._max_vertex)
         self._max_face = data.get("max_face", self._max_face)
         self._max_cell = data.get("max_cell", self._max_cell)
 
+    # --------------------------------------------------------------------------
+    # extraction
+    # --------------------------------------------------------------------------
+
     def to_network(self):
+        """Convert the cell network to a network.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Network`
+            A network object.
+        """
         network = Network()
-        for vertex in self.vertices():
+        for vertex, attr in self.vertices(data=True):
             x, y, z = self.vertex_coordinates(vertex)
-            network.add_node(key=vertex, x=x, y=y, z=z)
-        for u, v in self.edges():
-            network.add_edge(u, v)
+            network.add_node(key=vertex, x=x, y=y, z=z, attr_dict=attr)
+        for (u, v), attr in self.edges(data=True):
+            network.add_edge(u, v, attr_dict=attr)
         return network
-
-    def edge_face_adjacency(self, faces=None):
-        adjacency = {}
-        for face in faces:
-            for u, v in self.face_edges(face):
-                key = (u, v) if u < v else (v, u)
-                if key not in adjacency:
-                    adjacency[key] = {face}
-                else:
-                    adjacency[key].add(face)
-        return adjacency
-
-    def halfedge_from_faces(self, faces):
-        """Construct a halfedge dictionary from a list of faces.
-
-        Parameters
-        ----------
-        faces : list
-            A list of faces.
-
-        Returns
-        -------
-        dict
-            A halfedge dictionary.
-
-        """
-        faces_vertices = self.unified_faces_vertices(faces)
-        if not faces_vertices:
-            return None
-        halfedge = HalfEdge()
-        for fkey, vertices in zip(faces, faces_vertices):
-            for v in vertices:
-                halfedge.add_vertex(v)
-            halfedge.add_face(vertices, fkey=fkey)
-        return halfedge
-
-    def face_neighbors(self, fkey):
-        """Return the neighbors of a face across its edges.
-
-        Parameters
-        ----------
-        fkey : int
-            The identifier of the face.
-
-        Returns
-        -------
-        list[int]
-            The identifiers of the neighboring faces.
-        """
-        nbrs = set()
-        for edge in self.face_edges(fkey):
-            nbrs.update(self.edge_faces(edge))
-        return list(nbrs - {fkey})
-
-    def face_adjacency(self, faces=None):
-        """Construct a face adjacency dictionary from a list of faces.
-
-        Parameters
-        ----------
-        faces : list
-            A list of faces.
-
-        Returns
-        -------
-        dict
-            A face adjacency dictionary.
-        """
-        faces_vertices = [self.face_vertices(face) for face in faces]
-        vertices = list({v: None for face in faces_vertices for v in face}.keys())  # unique vertices
-        return face_adjacency(vertices, faces)
-
-    def unified_faces_vertices(self, faces):
-        faces_vertices = [self.face_vertices(face) for face in faces]
-        vertices = list({v: None for face in faces_vertices for v in face}.keys())
-        try:
-            return unify_cycles(vertices, faces_vertices, root=0)
-        except Exception:
-            print("Cannot unify faces vertices.")
-            raise
-            return None
-
-    def add_cell(self, faces, ckey=None, attr_dict=None, **kwattr):
-        """Add a cell to the volmesh object.
-
-        Parameters
-        ----------
-        faces : list[int]
-            The faces of the cell defined as lists of vertices.
-        ckey : int, optional
-            The cell identifier.
-        attr_dict : dict[str, Any], optional
-            A dictionary of cell attributes.
-        **kwattr : dict[str, Any], optional
-            A dictionary of additional attributes compiled of remaining named arguments.
-
-        Returns
-        -------
-        int
-            The key of the cell.
-
-        Raises
-        ------
-        TypeError
-            If the provided cell key is of an unhashable type.
-
-        See also
-        --------
-        :meth:`add_vertex`, :meth:`add_halfface`
-
-        Notes
-        -----
-        If no key is provided for the cell, one is generated
-        automatically. An automatically generated key is an integer that increments
-        the highest integer value of any key used so far by 1.
-
-        If a key with an integer value is provided that is higher than the current
-        highest integer key value, then the highest integer value is updated accordingly.
-
-        """
-
-        def flip_cycles(mesh):
-            mesh.halfedge = {key: {} for key in mesh.vertices()}
-            for fkey in mesh.faces():
-                mesh.face[fkey][:] = mesh.face[fkey][::-1]
-                for u, v in mesh.face_halfedges(fkey):
-                    mesh.halfedge[u][v] = fkey
-                    if u not in mesh.halfedge[v]:
-                        mesh.halfedge[v][u] = None
-
-        faces = list(set(faces))
-        # First check if the faces are valid and form a closed cell
-        halfedge = self.halfedge_from_faces(faces)
-        if not halfedge or not halfedge.is_closed():
-            print("Cannot add cell {}, faces {} can not be unified or are not closed.".format(ckey, faces))
-            return
-
-        # we know that the faces are unified, but do they all look in the correct direction?
-        # first we now go to the faces and check if one of them is already part of a cell
-        if self.number_of_cells() > 0:
-            for face in faces:
-                a_cell = self.halfface_cell(face)
-                b_cell = self.halfface_opposite_cell(face)
-                if a_cell is not None:
-                    a_vertices = self.face_vertices(face)
-                elif b_cell is not None:
-                    a_vertices = list(reversed(self.face_vertices(face)))
-                else:
-                    continue
-                # compare with the calculated vertices
-                u, v = halfedge.face_vertices(face)[:2]
-                i = a_vertices.index(u)
-                j = a_vertices.index(v)
-                if i == j - 1 or (j == 0 and u == a_vertices[-1]):
-                    print("flipping halfedge")
-                    flip_cycles(halfedge)
-                    break
-            else:
-                print("We cannot detect if we need to flip the halfedge")
-                return
-                # if we dont find a cell.. we actually dont know ..
-
-        if ckey is None:
-            ckey = self._max_cell = self._max_cell + 1
-        ckey = int(ckey)
-        if ckey > self._max_cell:
-            self._max_cell = ckey
-        attr = attr_dict or {}
-        attr.update(kwattr)
-        self._cell[ckey] = {}
-        for name, value in attr.items():
-            self.cell_attribute(ckey, name, value)
-        for fkey in halfedge.faces():
-            vertices = halfedge.face_vertices(fkey)
-            for i in range(-2, len(vertices) - 2):
-                u = vertices[i]
-                v = vertices[i + 1]
-                w = vertices[i + 2]
-                if u not in self._cell[ckey]:
-                    self._cell[ckey][u] = {}
-                # self._plane[u][v][w] = ckey
-                # self._plane[u][v][fkey] = ckey
-                self._plane[u][v][fkey] = ckey
-                self._cell[ckey][u][v] = fkey
-        return ckey
-
-    def face_cells(self, fkey):
-        """Return the cells connected to a face."""
-        cells = []
-        for cell in [self.halfface_cell(fkey), self.halfface_opposite_cell(fkey)]:
-            if cell is not None:
-                cells.append(cell)
-        return cells
-
-
-if __name__ == "__main__":
-    # import doctest
-    from compas.colors import Color
-    from compas.geometry import Point, Vector, Line, Polygon, Polyhedron, Box, Frame
-    from ast import literal_eval
-    import compas
-    import json
-    import os
-
-    path = "/Users/romanarust/workspace/refmodel/data/model_12"
-
-    # cell_network = CellNetwork.from_json(os.path.join(path, "cell_network.json"))
-    # for cell in cell_network.cells():
-    #    print(cell)
-
-    # """
-    def invert_dictionary(dictionary):
-        inverted = {}
-        for k, v in dictionary.items():
-            vlist = v if isinstance(v, list) else [v]
-            for v in vlist:
-                if v not in inverted:
-                    inverted[v] = [k]
-                else:
-                    inverted[v].append(k)
-        return {k: list(set(v)) for k, v in inverted.items()}
-
-    filepath = "/Users/romanarust/workspace/refmodel/data/model_12/refmodel_spaces.json"
-    # data = compas.json_load(filepath)
-    with open(filepath, "r") as f:
-        data = json.load(f)
-
-    network = Network.from_data(data["network"])
-    faces = {literal_eval(key): attr for key, attr in data["faces"].items()}
-    # spaces = {literal_eval(key): attr for key, attr in data["spaces"].items()}
-
-    halfedge = {literal_eval(key): attr for key, attr in data["halfedge"].items()}
-    halfface = {literal_eval(key): attr for key, attr in data["halfface"].items()} if "halfface" in data else {}
-    # print(halfface)
-
-    # 1. add vertices
-    cell_network = CellNetwork()
-    for node in network.nodes():
-        x, y, z = network.node_coordinates(node)
-        cell_network.add_vertex(key=node, x=x, y=y, z=z)
-
-    # 2. add faces
-    for face, vertices in faces.items():
-        nfkey = cell_network.add_face(vertices, fkey=face)
-        assert nfkey == face
-
-    print("============================")
-
-    cells = invert_dictionary(halfface)
-    try_later = []
-    for ckey, faces in cells.items():
-        print(faces)
-        print(list(set(faces)))
-        ok = cell_network.add_cell(faces)
-        if ok != ckey:
-            print("Cannot add cell", ckey)
-            try_later.append(ckey)
-        break
-
-    print(cell_network.face_vertices(29))
-    print(cell_network.face_vertices(57))
-    # add neighbors
-    nbrs = set()
-    for face in cells[ckey]:
-        ckeys = halfface[face]
-
-        for k in ckeys:
-            if k != ckey:
-                nbrs.add(k)
-    print(nbrs)
-    for nbr in nbrs:
-        faces = cells[nbr]
-        print(faces)
-        ok = cell_network.add_cell(faces)
-        if ok != ckey:
-            print("Cannot add cell", ckey)
-            try_later.append(ckey)
-    print("1")
-
-    def try_adding_cells_recursively(try_later, cell_network):
-        next_round = []
-        for ckey in try_later:
-            faces = cells[ckey]
-            ok = cell_network.add_cell(faces, ckey=ckey)
-            if ok != ckey:
-                next_round.append(ckey)
-            else:
-                print("added cell", ckey)
-        if len(next_round) < len(try_later):
-            try_adding_cells_recursively(next_round, cell_network)
-        elif len(next_round) > 0:
-            print("Could not add cells", next_round)
-
-    # try_adding_cells_recursively(try_later, cell_network)
-    print("2    ")
-    import os
-
-    path = os.path.dirname(filepath)
-    # cell_network.to_json(os.path.join(path, "cell_network.json"))
-
-    print("3 ")
-
-    # for face, vertices in faces.items():
-    #    print(face, vertices)
-    # """
-    """
-
-    # doctest.testmod(globs=globals())
-    network = CellNetwork()
-
-    
-
-    frame = Frame.worldXY()
-    frame.point = Point(0.5, 0.5, 0.5)
-    box = Box(1, 1, 1, frame)
-
-    from scipy.spatial import cKDTree
-
-    def add_box_to_cell_network(box, network, tree=None, nodes=None, tol=1e-3):
-        vertices, faces = box.to_vertices_and_faces()
-        map_vtx = {}
-        for i, point in enumerate(vertices):
-            if tree:
-                (d,), (n,) = tree.query([point])
-                vkey = nodes[n]
-                if d < tol:
-                    map_vtx[i] = vkey
-                    continue
-            x, y, z = point
-            vkey = network.add_vertex(x=x, y=y, z=z)
-            nodes = list(network.vertices())
-            tree = cKDTree(network.vertices_coordinates(nodes))
-            map_vtx[i] = vkey
-        fkeys = []
-        for face in faces:
-            fkey = network.add_face([map_vtx[f] for f in face])
-            fkeys.append(fkey)
-        # network.add_cell(fkeys)
-        return fkeys, tree, nodes
-
-    a_keys, tree, nodes = add_box_to_cell_network(box, network)
-    print("a_keys", a_keys)
-    network.add_cell(a_keys)
-    print(a_keys)
-
-    # get the face of the box that is on the right side
-    box_b = box.copy()
-    box_b.frame.point += Vector(1, 0, 0)
-
-    b_keys = add_box_to_cell_network(box_b, network, tree, nodes)
-
-    # 0 [0, 1, 2, 3, 4, 5]
-    # 1 [6, 7, 8, 9, 10, 11]
-    # 1 [6, 7, 8, 9, 2, 11]
-
-    network.add_cell([6, 7, 8, 9, 2, 11])
-
-    print(b_keys)
-    # add_box_to_cell_network(box_b, network)
-
-    na, nb = 4, 5
-    pta, ptb = network.vertices_points([na, nb])
-    v = Vector(0, 0, 1)
-    ptd, ptc = pta + v, ptb + v
-    nc = network.add_vertex(x=ptc[0], y=ptc[1], z=ptc[2])
-    nd = network.add_vertex(x=ptd[0], y=ptd[1], z=ptd[2])
-    network.add_face([na, nb, nc, nd])
-
-    for cell in network.cells():
-        print(cell, network.cell_faces(cell))
-
-    # for k, v in CellNetwork.from_data(network.data).data.items():
-    #    print(k, v)
-    """
-    from compas.geometry import project_points_plane, normal_polygon, centroid_polygon, Plane
-    from compas_view2.app import App
-
-    # colorisation
-    color_yellow = Color(255 / 255.0, 175 / 255.0, 10 / 255.0)
-    color_blue = Color(0, 0, 1)  # faces not belonging
-    color_lila = Color(127 / 255.0, 137 / 255.0, 255 / 255.0)  # faces on border
-    color_grey = Color(212 / 255.0, 212 / 255.0, 212 / 255.0)  # faces belonging to 2 cells
-    opacity = 0.5
-    viewer = App()
-
-    for face in cell_network.faces():
-        # print(face, network.face_vertices(face))
-        cells = cell_network.face_cells(face)
-        vertices = cell_network.face_coordinates(face)
-
-        if not len(cells):
-            # viewer.add(Polygon(vertices), facecolor=color_lila, opacity=opacity)
-            pass
-        elif len(cells) == 1:
-            viewer.add(Polygon(vertices), facecolor=color_blue, opacity=opacity)
-        else:
-            print(face, cells[0] != cells[1], cells)
-            viewer.add(Polygon(vertices), facecolor=color_yellow, opacity=opacity)
-        # break
-
-    viewer.view.camera.zoom_extents()
-    viewer.show()
-    # """
-
-    # viewer.add(cell_network.to_network(), show_lines=True)
-    # viewer.add(network, show_lines=True)
