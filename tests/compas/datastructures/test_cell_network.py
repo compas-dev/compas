@@ -1,10 +1,9 @@
-# import pytest
-import json
+import pytest
 from compas.datastructures import CellNetwork
 from compas.geometry import Point
 
 
-# @pytest.fixture
+@pytest.fixture
 def example_cell_network():
     network = CellNetwork()
 
@@ -83,7 +82,4 @@ def test_cell_network_boundary(example_cell_network):
     assert set(ds.faces_on_boundaries()) == {0, 1, 2, 3, 4, 6, 7, 8, 9, 10}
     assert set(ds.faces_no_cell()) == {11}
     assert set(ds.edges_no_face()) == {(13, 15), (12, 14)}
-
-
-test_cell_network_data(example_cell_network())
-test_cell_network_boundary(example_cell_network())
+    assert set(ds.non_manifold_edges()) == {(6, 7), (4, 5), (5, 6), (4, 7)}
