@@ -143,7 +143,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
     # draw
     # ==========================================================================
 
-    def draw(self, color=None, disjoint=False):
+    def draw(self, color=None, vertexcolors=None, facecolors=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
 
         Parameters
@@ -165,15 +165,31 @@ class MeshArtist(RhinoArtist, BaseArtist):
         Faces with more than 4 vertices will be triangulated on-the-fly.
 
         """
-        color = Color.coerce(color) or self.color
+        # when drawing the actual mesh
+        # vertex colors or face colors have to be provided as lists with colors for all vertices or faces
+        # when drawing the mesh as individual components (vertices, edges, faces)
+        # colors have to be provided as dicts that map colors to specific components
         vertex_index = self.mesh.vertex_index()  # type: ignore
         vertex_xyz = self.vertex_xyz
+
         vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]  # type: ignore
         faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]  # type: ignore
+
+        color = Color.coerce(color) or self.color
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)  # type: ignore
         attr = attributes(name=name, color=color, layer=layer)
-        guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=disjoint), attr)
+
+        guid = sc.doc.Objects.AddMesh(
+            vertices_and_faces_to_rhino(
+                vertices,
+                faces,
+                vertexcolors=vertexcolors,
+                facecolors=facecolors,
+                disjoint=disjoint,
+            ),
+            attr,
+        )
         return [guid]
 
     def draw_vertices(self, vertices=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
@@ -281,7 +297,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
 
         return guids
 
-    def draw_faces(self, faces=None, color=None, text=None, fontheight=10, fontface="Arial Regular", join_faces=False):
+    def draw_faces(self, faces=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
         """Draw a selection of faces.
 
         Parameters
@@ -298,8 +314,6 @@ class MeshArtist(RhinoArtist, BaseArtist):
             Font height of the face labels.
         fontface : str, optional
             Font face of the face labels.
-        join_faces : bool, optional
-            If True, join the faces into a single mesh.
 
         Returns
         -------
@@ -307,9 +321,6 @@ class MeshArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino mesh objects.
 
         """
-        if join_faces:
-            return self.draw(color=color, disjoint=True)
-
         faces = faces or self.mesh.faces()  # type: ignore
 
         self.face_color = color

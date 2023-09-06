@@ -6,13 +6,15 @@ from itertools import groupby
 
 from compas.geometry import Point
 from compas.geometry import NurbsSurface
+from compas.geometry import knots_and_mults_to_knotvector
+from compas.utilities import flatten
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
 
 from .surface import RhinoSurface
 
-import Rhino.Geometry
+import Rhino.Geometry  # type: ignore
 
 
 class ControlPoints(object):
@@ -52,47 +54,58 @@ class ControlPoints(object):
 def rhino_surface_from_parameters(
     points,
     weights,
-    u_knots,
-    v_knots,
-    u_mults,
-    v_mults,
-    u_degree,
-    v_degree,
-    is_u_periodic=False,
-    is_v_periodic=False,
+    knots_u,
+    knots_v,
+    mults_u,
+    mults_v,
+    degree_u,
+    degree_v,
+    is_periodic_u=False,
+    is_periodic_v=False,
 ):
-    u_order = u_degree + 1
-    v_order = v_degree + 1
-    u_point_count = len(points)
-    v_point_count = len(points[0])
-    is_rational = True  # TODO: check if all weights are equal? https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/
+    order_u = degree_u + 1
+    order_v = degree_v + 1
+    pointcount_u = len(points)
+    pointcount_v = len(points[0])
+    is_rational = any(weight != 1.0 for weight in flatten(weights))
     dimensions = 3
+
     rhino_surface = Rhino.Geometry.NurbsSurface.Create(
-        dimensions, is_rational, u_order, v_order, u_point_count, v_point_count
+        dimensions,
+        is_rational,
+        order_u,
+        order_v,
+        pointcount_u,
+        pointcount_v,
     )
 
     if not rhino_surface:
-        message = "dimensions: {} is_rational: {} u_order: {} v_order: {} u_points: {} v_points: {}".format(
-            dimensions, is_rational, u_order, v_order, u_point_count, v_point_count
+        message = "dimensions: {} is_rational: {} order_u: {} order_v: {} u_points: {} v_points: {}".format(
+            dimensions,
+            is_rational,
+            order_u,
+            order_v,
+            pointcount_u,
+            pointcount_v,
         )
         raise ValueError("Failed to create NurbsSurface with params:\n{}".format(message))
 
-    u_knotvector = [knot for knot, mult in zip(u_knots, u_mults) for _ in range(mult)]
-    v_knotvector = [knot for knot, mult in zip(v_knots, v_mults) for _ in range(mult)]
+    knotvector_u = knots_and_mults_to_knotvector(knots_u, mults_u)
+    knotvector_v = knots_and_mults_to_knotvector(knots_v, mults_v)
     # account for superfluous knots
     # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
-    if len(u_knotvector) == u_point_count + u_order:
-        u_knotvector[:] = u_knotvector[1:-1]
-    if len(v_knotvector) == v_point_count + v_order:
-        v_knotvector[:] = v_knotvector[1:-1]
+    if len(knotvector_u) == pointcount_u + order_u:
+        knotvector_u[:] = knotvector_u[1:-1]
+    if len(knotvector_v) == pointcount_v + order_v:
+        knotvector_v[:] = knotvector_v[1:-1]
     # add knots
-    for index, knot in enumerate(u_knotvector):
+    for index, knot in enumerate(knotvector_u):
         rhino_surface.KnotsU[index] = knot
-    for index, knot in enumerate(v_knotvector):
+    for index, knot in enumerate(knotvector_v):
         rhino_surface.KnotsV[index] = knot
     # add control points
-    for i in range(u_point_count):
-        for j in range(v_point_count):
+    for i in range(pointcount_u):
+        for j in range(pointcount_v):
             rhino_surface.Points.SetPoint(i, j, point_to_rhino(points[i][j]), weights[i][j])
     return rhino_surface
 
@@ -106,17 +119,17 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         The control points of the surface.
     weights: list[list[float]]
         The weights of the control points.
-    u_knots: list[float]
+    knots_u: list[float]
         The knot vector, in the U direction, without duplicates.
-    v_knots: list[float]
+    knots_v: list[float]
         The knot vector, in the V direction, without duplicates.
-    u_mults: list[int]
+    mults_u: list[int]
         The multiplicities of the knots in the knot vector of the U direction.
-    v_mults: list[int]
+    mults_v: list[int]
         The multiplicities of the knots in the knot vector of the V direction.
-    u_degree: int
+    degree_u: int
         The degree of the polynomials in the U direction.
-    v_degree: int
+    degree_v: int
         The degree of the polynomials in the V direction.
 
     """
@@ -134,48 +147,48 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         # add superfluous knots
         # for compatibility with all/most other NURBS implementations
         # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
-        u_mults = self.u_mults[:]
-        v_mults = self.v_mults[:]
-        u_mults[0] += 1
-        u_mults[-1] += 1
-        v_mults[0] += 1
-        v_mults[-1] += 1
+        mults_u = self.mults_u[:]  # type: ignore
+        mults_v = self.mults_v[:]  # type: ignore
+        mults_u[0] += 1
+        mults_u[-1] += 1
+        mults_v[0] += 1
+        mults_v[-1] += 1
         return {
-            "points": [[point.data for point in row] for row in self.points],
+            "points": [[point.data for point in row] for row in self.points],  # type: ignore
             "weights": self.weights,
-            "u_knots": self.u_knots,
-            "v_knots": self.v_knots,
-            "u_mults": u_mults,
-            "v_mults": v_mults,
-            "u_degree": self.u_degree,
-            "v_degree": self.v_degree,
-            "is_u_periodic": self.is_u_periodic,
-            "is_v_periodic": self.is_v_periodic,
+            "knots_u": self.knots_u,
+            "knots_v": self.knots_v,
+            "mults_u": mults_u,
+            "mults_v": mults_v,
+            "degree_u": self.degree_u,
+            "degree_v": self.degree_v,
+            "is_periodic_u": self.is_periodic_u,
+            "is_periodic_v": self.is_periodic_v,
         }
 
     @data.setter
     def data(self, data):
         points = [[Point.from_data(point) for point in row] for row in data["points"]]
         weights = data["weights"]
-        u_knots = data["u_knots"]
-        v_knots = data["v_knots"]
-        u_mults = data["u_mults"]
-        v_mults = data["v_mults"]
-        u_degree = data["u_degree"]
-        v_degree = data["v_degree"]
-        is_u_periodic = data["is_u_periodic"]
-        is_v_periodic = data["is_v_periodic"]
+        knots_u = data["knots_u"]
+        knots_v = data["knots_v"]
+        mults_u = data["mults_u"]
+        mults_v = data["mults_v"]
+        degree_u = data["degree_u"]
+        degree_v = data["degree_v"]
+        is_periodic_u = data["is_periodic_u"]
+        is_periodic_v = data["is_periodic_v"]
         self.rhino_surface = NurbsSurface.from_parameters(
             points,
             weights,
-            u_knots,
-            v_knots,
-            u_mults,
-            v_mults,
-            u_degree,
-            v_degree,
-            is_u_periodic,
-            is_v_periodic,
+            knots_u,
+            knots_v,
+            mults_u,
+            mults_v,
+            degree_u,
+            degree_v,
+            is_periodic_u,
+            is_periodic_v,
         )
 
     @classmethod
@@ -195,25 +208,25 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         """
         points = [[Point.from_data(point) for point in row] for row in data["points"]]
         weights = data["weights"]
-        u_knots = data["u_knots"]
-        v_knots = data["v_knots"]
-        u_mults = data["u_mults"]
-        v_mults = data["v_mults"]
-        u_degree = data["u_degree"]
-        v_degree = data["v_degree"]
-        is_u_periodic = data["is_u_periodic"]
-        is_v_periodic = data["is_v_periodic"]
+        knots_u = data["knots_u"]
+        knots_v = data["knots_v"]
+        mults_u = data["mults_u"]
+        mults_v = data["mults_v"]
+        degree_u = data["degree_u"]
+        degree_v = data["degree_v"]
+        is_periodic_u = data["is_periodic_u"]
+        is_periodic_v = data["is_periodic_v"]
         return cls.from_parameters(
             points,
             weights,
-            u_knots,
-            v_knots,
-            u_mults,
-            v_mults,
-            u_degree,
-            v_degree,
-            is_u_periodic,
-            is_v_periodic,
+            knots_u,
+            knots_v,
+            mults_u,
+            mults_v,
+            degree_u,
+            degree_v,
+            is_periodic_u,
+            is_periodic_v,
         )
 
     # ==============================================================================
@@ -239,42 +252,42 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
             return weights
 
     @property
-    def u_knots(self):
+    def knots_u(self):
         if self.rhino_surface:
             return [key for key, _ in groupby(self.rhino_surface.KnotsU)]
 
     @property
-    def u_knotsequence(self):
-        if self.rhino_surface:
-            return list(self.rhino_surface.KnotsU)
-
-    @property
-    def v_knots(self):
-        if self.rhino_surface:
-            return [key for key, _ in groupby(self.rhino_surface.KnotsV)]
-
-    @property
-    def v_knotsequence(self):
-        if self.rhino_surface:
-            return list(self.rhino_surface.KnotsV)
-
-    @property
-    def u_mults(self):
+    def mults_u(self):
         if self.rhino_surface:
             return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsU)]
 
     @property
-    def v_mults(self):
+    def knotvector_u(self):
+        if self.rhino_surface:
+            return list(self.rhino_surface.KnotsU)
+
+    @property
+    def knots_v(self):
+        if self.rhino_surface:
+            return [key for key, _ in groupby(self.rhino_surface.KnotsV)]
+
+    @property
+    def mults_v(self):
         if self.rhino_surface:
             return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsV)]
 
     @property
-    def u_degree(self):
+    def knotvector_v(self):
+        if self.rhino_surface:
+            return list(self.rhino_surface.KnotsV)
+
+    @property
+    def degree_u(self):
         if self.rhino_surface:
             return self.rhino_surface.Degree(0)
 
     @property
-    def v_degree(self):
+    def degree_v(self):
         if self.rhino_surface:
             return self.rhino_surface.Degree(1)
 
@@ -287,14 +300,14 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         cls,
         points,
         weights,
-        u_knots,
-        v_knots,
-        u_mults,
-        v_mults,
-        u_degree,
-        v_degree,
-        is_u_periodic=False,
-        is_v_periodic=False,
+        knots_u,
+        knots_v,
+        mults_u,
+        mults_v,
+        degree_u,
+        degree_v,
+        is_periodic_u=False,
+        is_periodic_v=False,
     ):
         """Construct a NURBS surface from explicit parameters.
 
@@ -304,17 +317,17 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
             The control points.
         weights : list[list[float]]
             The weights of the control points.
-        u_knots : list[float]
+        knots_u : list[float]
             The knots in the U direction, without multiplicity.
-        v_knots : list[float]
+        knots_v : list[float]
             The knots in the V direction, without multiplicity.
-        u_mults : list[int]
+        mults_u : list[int]
             Multiplicity of the knots in the U direction.
-        v_mults : list[int]
+        mults_v : list[int]
             Multiplicity of the knots in the V direction.
-        u_degree : int
+        degree_u : int
             Degree in the U direction.
-        v_degree : int
+        degree_v : int
             Degree in the V direction.
 
         Returns
@@ -324,21 +337,21 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         """
         surface = cls()
         surface.rhino_surface = rhino_surface_from_parameters(
-            points, weights, u_knots, v_knots, u_mults, v_mults, u_degree, v_degree
+            points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v
         )
         return surface
 
     @classmethod
-    def from_points(cls, points, u_degree=3, v_degree=3):
+    def from_points(cls, points, degree_u=3, degree_v=3):
         """Construct a NURBS surface from control points.
 
         Parameters
         ----------
         points : list[list[:class:`~compas.geometry.Point`]]
             The control points.
-        u_degree : int
+        degree_u : int
             Degree in the U direction.
-        v_degree : int
+        degree_v : int
             Degree in the V direction.
 
         Returns
@@ -346,13 +359,16 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         :class:`~compas_rhino.geometry.RhinoNurbsSurface`
 
         """
+        # this of course depends on the order in which the points are given.
+        # with the current convention this should not be needed.
         points = list(zip(*points))
-        u_count = len(points[0])
-        v_count = len(points)
+
+        pointcount_u = len(points)
+        pointcount_v = len(points[0])
         points[:] = [point_to_rhino(point) for row in points for point in row]
         surface = cls()
         surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(
-            points, v_count, u_count, u_degree, v_degree
+            points, pointcount_u, pointcount_v, degree_u, degree_v
         )
         return surface
 

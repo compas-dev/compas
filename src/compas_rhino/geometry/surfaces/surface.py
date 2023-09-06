@@ -11,13 +11,13 @@ from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import frame_to_rhino_plane
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import box_to_compas
-from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 
 from compas_rhino.geometry.curves import RhinoCurve
 
-import Rhino.Geometry
+import Rhino.Geometry  # type: ignore
 
 
 class RhinoSurface(Surface):
@@ -25,13 +25,13 @@ class RhinoSurface(Surface):
 
     Attributes
     ----------
-    u_domain: tuple[float, float]
+    domain_u: tuple[float, float]
         The parameter domain in the U direction.
-    v_domain: tuple[float, float]
+    domain_v: tuple[float, float]
         The parameter domain in the V direction.
-    is_u_periodic: bool
+    is_periodic_u: bool
         True if the surface is periodic in the U direction.
-    is_v_periodic: bool
+    is_periodic_v: bool
         True if the surface is periodic in the V direction.
 
     """
@@ -57,22 +57,22 @@ class RhinoSurface(Surface):
     # ==============================================================================
 
     @property
-    def u_domain(self):
+    def domain_u(self):
         if self.rhino_surface:
             return self.rhino_surface.Domain(0)
 
     @property
-    def v_domain(self):
+    def domain_v(self):
         if self.rhino_surface:
             return self.rhino_surface.Domain(1)
 
     @property
-    def is_u_periodic(self):
+    def is_periodic_u(self):
         if self.rhino_surface:
             return self.rhino_surface.IsPeriodic(0)
 
     @property
-    def is_v_periodic(self):
+    def is_periodic_v(self):
         if self.rhino_surface:
             return self.rhino_surface.IsPeriodic(1)
 
@@ -235,7 +235,7 @@ class RhinoSurface(Surface):
         """
         cls = type(self)
         surface = cls()
-        surface.rhino_surface = self.rhino_surface.Duplicate()
+        surface.rhino_surface = self.rhino_surface.Duplicate()  # type: ignore
         return surface
 
     def transform(self, T):
@@ -251,7 +251,7 @@ class RhinoSurface(Surface):
         None
 
         """
-        self.rhino_surface.Transform(xform_to_rhino(T))
+        self.rhino_surface.Transform(transformation_to_rhino(T))  # type: ignore
 
     def u_isocurve(self, u):
         """Compute the isoparametric curve at parameter u.
@@ -265,7 +265,7 @@ class RhinoSurface(Surface):
         :class:`~compas_rhino.geometry.RhinoCurve`
 
         """
-        curve = self.rhino_surface.IsoCurve(1, u)
+        curve = self.rhino_surface.IsoCurve(1, u)  # type: ignore
         return RhinoCurve.from_rhino(curve)
 
     def v_isocurve(self, v):
@@ -280,7 +280,7 @@ class RhinoSurface(Surface):
         :class:`~compas_rhino.geometry.RhinoCurve`
 
         """
-        curve = self.rhino_surface.IsoCurve(0, v)
+        curve = self.rhino_surface.IsoCurve(0, v)  # type: ignore
         return RhinoCurve.from_rhino(curve)
 
     def point_at(self, u, v):
@@ -296,7 +296,7 @@ class RhinoSurface(Surface):
         :class:`~compas.geometry.Point`
 
         """
-        point = self.rhino_surface.PointAt(u, v)
+        point = self.rhino_surface.PointAt(u, v)  # type: ignore
         return point_to_compas(point)
 
     def curvature_at(self, u, v):
@@ -315,7 +315,7 @@ class RhinoSurface(Surface):
             value for the point at UV. None at failure.
 
         """
-        surface_curvature = self.rhino_surface.CurvatureAt(u, v)
+        surface_curvature = self.rhino_surface.CurvatureAt(u, v)  # type: ignore
         if surface_curvature:
             point, normal, kappa_u, direction_u, kappa_v, direction_v, gaussian, mean = surface_curvature
             cpoint = point_to_compas(point)
@@ -337,7 +337,7 @@ class RhinoSurface(Surface):
         :class:`~compas.geometry.Frame`
 
         """
-        result, plane = self.rhino_surface.FrameAt(u, v)
+        result, plane = self.rhino_surface.FrameAt(u, v)  # type: ignore
         if result:
             return plane_to_compas_frame(plane)
 
@@ -363,7 +363,7 @@ class RhinoSurface(Surface):
             If `return_parameters` is True.
 
         """
-        result, u, v = self.rhino_surface.ClosestPoint(point_to_rhino(point))
+        result, u, v = self.rhino_surface.ClosestPoint(point_to_rhino(point))  # type: ignore
         if not result:
             return
         point = self.point_at(u, v)
@@ -385,7 +385,7 @@ class RhinoSurface(Surface):
         :class:`~compas.geometry.Box`
 
         """
-        box = self.rhino_surface.GetBoundingBox(optimal)
+        box = self.rhino_surface.GetBoundingBox(optimal)  # type: ignore
         return box_to_compas(Rhino.Geometry.Box(box))
 
     def intersections_with_curve(self, curve, tolerance=1e-3, overlap=1e-3):

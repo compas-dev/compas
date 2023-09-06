@@ -85,6 +85,8 @@ def _detect_current_context():
         return "Grasshopper"
     if compas.is_rhino():
         return "Rhino"
+    if compas.is_blender():
+        return "Blender"
     other_contexts = [v for v in Artist.ITEM_ARTIST.keys() if v != "Plotter"]  # TODO: remove when Plotter is removed
     if other_contexts:
         return other_contexts[0]

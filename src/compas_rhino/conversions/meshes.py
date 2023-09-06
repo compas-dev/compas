@@ -2,6 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from itertools import izip_longest  # type: ignore
+
+from System.Drawing import Color as SystemColor  # type: ignore
+from System.Array import CreateInstance  # type: ignore
 from Rhino.Geometry import Mesh as RhinoMesh  # type: ignore
 
 try:
@@ -17,17 +21,67 @@ from compas.utilities import pairwise
 from .geometry import vector_to_compas
 
 
+def average_color(colors):
+    c = len(colors)
+    r, g, b = zip(*colors)
+    r = sum(r) / c
+    g = sum(g) / c
+    b = sum(b) / c
+    return int(r), int(g), int(b)
+
+
+def connected_ngon(face, vertices, rmesh):
+    points = [vertices[index] for index in face]
+    centroid = centroid_polygon(points)
+
+    c = rmesh.Vertices.Add(*centroid)
+
+    facets = []
+    for i, j in pairwise(face + face[:1]):
+        facets.append(rmesh.Faces.AddFace(i, j, c))
+
+    ngon = MeshNgon.Create(face, facets)  # type: ignore
+    rmesh.Ngons.AddNgon(ngon)
+
+
+def disjoint_ngon(face, vertices, rmesh):
+    points = [vertices[vertex] for vertex in face]
+    centroid = centroid_polygon(points)
+
+    indices = []
+    for point in points:
+        x, y, z = point
+        indices.append(rmesh.Vertices.Add(x, y, z))
+
+    c = rmesh.Vertices.Add(*centroid)
+
+    facets = []
+    for i, j in pairwise(indices + indices[:1]):
+        facets.append(rmesh.Faces.AddFace(i, j, c))
+
+    ngon = MeshNgon.Create(indices, facets)  # type: ignore
+    rmesh.Ngons.AddNgon(ngon)
+
+
+def disjoint_face(face, vertices, rmesh):
+    indices = []
+    for index in face:
+        x, y, z = vertices[index]
+        indices.append(rmesh.Vertices.Add(x, y, z))
+    rmesh.Faces.AddFace(*indices)
+
+
 # =============================================================================
 # To Rhino
 # =============================================================================
 
 
-def mesh_to_rhino(compas_mesh, disjoint=True, face_callback=None):
+def mesh_to_rhino(mesh, disjoint=True, face_callback=None):
     """Convert a COMPAS Mesh or a Polyhedron to a Rhino mesh object.
 
     Parameters
     ----------
-    compas_mesh : :class:`compas.datastructures.Mesh` | :class:`compas.geometry.Polyhedron`
+    mesh : :class:`compas.datastructures.Mesh` | :class:`compas.geometry.Polyhedron`
         A COMPAS Mesh or a Polyhedron.
     disjoint : bool, optional
         If ``True``, each face of the resulting mesh will be independently defined (have a copy of its own vertices).
@@ -40,14 +94,27 @@ def mesh_to_rhino(compas_mesh, disjoint=True, face_callback=None):
         A Rhino mesh object.
 
     """
-    vertices, faces = compas_mesh.to_vertices_and_faces()
-    return vertices_and_faces_to_rhino(vertices, faces, disjoint, face_callback)
+    vertices, faces = mesh.to_vertices_and_faces()
+    return vertices_and_faces_to_rhino(
+        vertices,
+        faces,
+        disjoint=disjoint,
+        face_callback=face_callback,
+    )
 
 
 polyhedron_to_rhino = mesh_to_rhino
 
 
-def vertices_and_faces_to_rhino(vertices, faces, disjoint=True, face_callback=None):
+def vertices_and_faces_to_rhino(
+    vertices,
+    faces,
+    color=None,
+    vertexcolors=None,
+    facecolors=None,
+    disjoint=True,
+    face_callback=None,
+):
     """Convert COMPAS vertices and faces to a Rhino mesh object.
 
     Parameters
@@ -67,37 +134,41 @@ def vertices_and_faces_to_rhino(vertices, faces, disjoint=True, face_callback=No
         A Rhino mesh object.
 
     """
+    if disjoint and facecolors:
+        if len(faces) != len(facecolors):
+            raise ValueError("The number of face colors does not match the number of faces.")
+
+    if not disjoint and vertexcolors:
+        if len(vertices) != len(vertexcolors):
+            raise ValueError("The number of vertex colors does not match the number of vertices.")
+
     face_callback = face_callback or (lambda _: None)
     mesh = RhinoMesh()
 
     if disjoint:
-        for face in faces:
+        vertexcolors = []
+
+        for face, facecolor in izip_longest(faces, facecolors or []):
             f = len(face)
+
             if f < 3:
-                continue  # ignore degenerate faces
+                continue
+
             if f > 4:
                 if MeshNgon is None:
                     raise NotImplementedError("MeshNgons are not supported in this version of Rhino.")
-                points = [vertices[vertex] for vertex in face]
-                centroid = centroid_polygon(points)
-                indices = []
-                for point in points:
-                    x, y, z = point
-                    indices.append(mesh.Vertices.Add(x, y, z))
-                c = mesh.Vertices.Add(*centroid)
 
-                facets = []
-                for i, j in pairwise(indices + indices[:1]):
-                    facets.append(mesh.Faces.AddFace(i, j, c))
-                ngon = MeshNgon.Create(indices, facets)
-                mesh.Ngons.AddNgon(ngon)
+                disjoint_ngon(face, vertices, mesh)
+                if facecolor:
+                    for _ in range(f + 1):
+                        vertexcolors.append(facecolor)
+
             else:
-                # triangle or quad faces
-                v_indices = []
-                for v_index in face:
-                    x, y, z = vertices[v_index]
-                    v_indices.append(mesh.Vertices.Add(x, y, z))
-                mesh.Faces.AddFace(*v_indices)
+                disjoint_face(face, vertices, mesh)
+                if facecolor:
+                    for _ in range(f):
+                        vertexcolors.append(facecolor)
+
             face_callback(face)
 
     else:
@@ -106,26 +177,41 @@ def vertices_and_faces_to_rhino(vertices, faces, disjoint=True, face_callback=No
 
         for face in faces:
             f = len(face)
+
             if f < 3:
-                continue  # ignore degenerate faces
+                continue
+
             if f > 4:
                 if MeshNgon is None:
                     raise NotImplementedError("MeshNgons are not supported in this version of Rhino.")
 
-                centroid = centroid_polygon([vertices[index] for index in face])
-                c = mesh.Vertices.Add(*centroid)
-                facets = []
-                for i, j in pairwise(face + face[:1]):
-                    facets.append(mesh.Faces.AddFace(i, j, c))
-                ngon = MeshNgon.Create(face, facets)
-                mesh.Ngons.AddNgon(ngon)
+                connected_ngon(face, vertices, mesh)
+                if vertexcolors:
+                    vertexcolors.append(average_color([vertexcolors[index] for index in face]))
+
             else:
-                # triangle or quad faces
                 mesh.Faces.AddFace(*face)
+
             face_callback(face)
 
+    if color:
+        mesh.VertexColors.CreateMonotoneMesh(SystemColor.FromArgb(*color.rgb255))
+
+    else:
+        if vertexcolors:
+            if len(mesh.Vertices) != len(vertexcolors):
+                raise ValueError("The number of vertex colors does not match the number of vertices.")
+
+            colors = CreateInstance(SystemColor, len(vertexcolors))
+            for index, color in enumerate(vertexcolors):
+                colors[index] = SystemColor.FromArgb(*color.rgb255)
+
+            mesh.VertexColors.SetColors(colors)
+
+    # mesh.UnifyNormals()
     mesh.Normals.ComputeNormals()
     mesh.Compact()
+
     return mesh
 
 

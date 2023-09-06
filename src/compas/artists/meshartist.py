@@ -62,11 +62,11 @@ class MeshArtist(Artist):
 
     """
 
-    color = ColorAttribute(default=Color.grey().lightened(50))
+    color = ColorAttribute(default=Color.black())
 
     vertex_color = ColorDictAttribute(default=Color.white())
     edge_color = ColorDictAttribute(default=Color.black())
-    face_color = ColorDictAttribute(default=Color.grey().lightened(50))
+    face_color = ColorDictAttribute(default=Color.black())
 
     default_vertexsize = 5  # replace with a descriptor (IntegerAttribute or ConstrainedIntegerAttribute)
     default_edgewidth = 1.0  # replace with a descriptor (FloatAttribute or ConstrainedFloatAttribute)
@@ -271,7 +271,6 @@ class MeshArtist(Artist):
         """
         return self.draw(*args, **kwargs)
 
-    @abstractmethod
     def clear(self):
         """Clear all components of the mesh.
 
@@ -282,7 +281,6 @@ class MeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_vertices(self):
         """Clear the vertices of the mesh.
 
@@ -293,7 +291,6 @@ class MeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_edges(self):
         """Clear the edges of the mesh.
 
@@ -304,7 +301,6 @@ class MeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_faces(self):
         """Clear the faces of the mesh.
 

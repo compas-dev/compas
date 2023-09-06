@@ -15,6 +15,22 @@ from .shapes import sphere_to_compas
 # To Rhino
 # =============================================================================
 
+
+def brep_to_rhino(brep):
+    """Convert a COMPAS brep to a Rhino brep.
+
+    Parameters
+    ----------
+    brep : :class:`~compas.geometry.Brep`
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Brep`
+
+    """
+    return brep.native_brep
+
+
 # =============================================================================
 # To COMPAS
 # =============================================================================

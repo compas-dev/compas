@@ -8,7 +8,7 @@ from compas.geometry import Plane
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import vector_to_compas
-from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import box_to_compas
@@ -152,7 +152,7 @@ class RhinoCurve(Curve):
         None
 
         """
-        self.rhino_curve.Transform(xform_to_rhino(T))  # type: ignore
+        self.rhino_curve.Transform(transformation_to_rhino(T))  # type: ignore
 
     def reverse(self):
         """Reverse the parametrisation of the curve.

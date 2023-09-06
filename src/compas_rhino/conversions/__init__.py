@@ -28,6 +28,7 @@ To Rhino
 
     arc_to_rhino
     box_to_rhino
+    brep_to_rhino
     capsule_to_rhino_brep
     circle_to_rhino
     circle_to_rhino_curve
@@ -48,6 +49,7 @@ To Rhino
     polygon_to_rhino
     polyhedron_to_rhino
     polyline_to_rhino
+    polyline_to_rhino_curve
     sphere_to_rhino
     surface_to_rhino
     torus_to_rhino
@@ -124,6 +126,7 @@ from .curves import (
     line_to_rhino,
     line_to_rhino_curve,
     polyline_to_rhino,
+    polyline_to_rhino_curve,
     arc_to_compas,
     circle_to_compas,
     curve_to_compas_circle,
@@ -164,6 +167,7 @@ from .meshes import (
     polyhedron_to_rhino,
 )
 from .breps import (
+    brep_to_rhino,
     brep_to_compas_box,
     brep_to_compas_cone,
     brep_to_compas_cylinder,
@@ -199,6 +203,7 @@ __all__ = [
     "line_to_rhino",
     "line_to_rhino_curve",
     "polyline_to_rhino",
+    "polyline_to_rhino_curve",
     "circle_to_rhino",
     "circle_to_rhino_curve",
     "ellipse_to_rhino",
@@ -241,6 +246,7 @@ __all__ = [
     "vertices_and_faces_to_rhino",
     "mesh_to_compas",
     # breps
+    "brep_to_rhino",
     "brep_to_compas_box",
     "brep_to_compas_cone",
     "brep_to_compas_cylinder",

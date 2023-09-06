@@ -10,6 +10,7 @@ from Rhino.Geometry import Line as RhinoLine  # type: ignore
 from Rhino.Geometry import Circle as RhinoCircle  # type: ignore
 from Rhino.Geometry import Ellipse as RhinoEllipse  # type: ignore
 from Rhino.Geometry import Polyline as RhinoPolyline  # type: ignore
+from Rhino.Geometry import PolylineCurve as RhinoPolylineCurve  # type: ignore
 from Rhino.Geometry import Arc as RhinoArc  # type: ignore
 from Rhino.DocObjects import RhinoObject  # type: ignore
 
@@ -108,6 +109,21 @@ def polyline_to_rhino(polyline, tol=None):
     polyline = RhinoPolyline([point_to_rhino(point) for point in polyline])
     polyline.DeleteShortSegments(tol)
     return polyline
+
+
+def polyline_to_rhino_curve(polyline):
+    """Convert a COMPAS polyline to a Rhino curve.
+
+    Parameters
+    ----------
+    polyline : :class:`~compas.geometry.Polyline`
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.PolylineCurve`
+
+    """
+    return RhinoPolylineCurve([point_to_rhino(point) for point in polyline])
 
 
 def circle_to_rhino(circle):

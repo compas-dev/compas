@@ -239,6 +239,15 @@ from ._core.predicates_3 import (
     is_intersection_plane_plane,
 )
 
+from ._core.nurbsutils import (
+    construct_knotvector,
+    find_span,
+    compute_basisfuncs,
+    compute_basisfuncsderivs,
+    knots_and_mults_to_knotvector,
+    knotvector_to_knots_and_mults,
+)
+
 # =============================================================================
 # Algorithms
 # =============================================================================
@@ -661,6 +670,12 @@ __all__ = [
     "trimesh_remesh_constrained",
     "trimesh_remesh_along_isoline",
     "trimesh_slice",
+    "find_span",
+    "compute_basisfuncs",
+    "compute_basisfuncsderivs",
+    "construct_knotvector",
+    "knots_and_mults_to_knotvector",
+    "knotvector_to_knots_and_mults",
     "Geometry",
     "Bezier",
     "Arc",

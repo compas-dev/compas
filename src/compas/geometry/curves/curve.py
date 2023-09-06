@@ -104,7 +104,7 @@ class Curve(Geometry):
     @property
     def transformation(self):
         if not self._transformation:
-            self._transformation = Transformation.from_frame(self.frame)
+            self._transformation = Transformation.from_frame_to_frame(self.frame, Frame.worldXY())
         return self._transformation
 
     @property

@@ -159,11 +159,11 @@ class NurbsCurve(Curve):
         raise NotImplementedError
 
     @property
-    def knotsequence(self):
+    def multiplicities(self):
         raise NotImplementedError
 
     @property
-    def multiplicities(self):
+    def knotvector(self):
         raise NotImplementedError
 
     @property
@@ -390,3 +390,18 @@ class NurbsCurve(Curve):
             self.degree,
             self.is_periodic,
         )
+
+    def insert_knot(self):
+        pass
+
+    def refine_knot(self):
+        pass
+
+    def remove_knot(self):
+        pass
+
+    def elevate_degree(self):
+        pass
+
+    def reduce_degree(self):
+        pass

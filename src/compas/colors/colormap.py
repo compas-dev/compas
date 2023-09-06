@@ -282,7 +282,7 @@ class ColorMap(object):
         return cls(colors)
 
     @classmethod
-    def from_rgb(cls):
+    def from_rgb(cls, n=256):
         """Construct a color map from the complete rgb color space.
 
         Returns
@@ -291,7 +291,7 @@ class ColorMap(object):
 
         """
         colors = []
-        for i in linspace(0, 1.0, 256):
+        for i in linspace(0, 1.0, n):
             colors.append(Color.from_i(i))
         return cls(colors)
 
