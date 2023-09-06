@@ -1,12 +1,16 @@
-from compas_ghpython.artists import GHArtist
-from compas_ghpython.utilities import draw_brep
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+from compas_rhino.conversions import brep_to_rhino
+from .artist import GHArtist
 
 
 class BrepArtist(GHArtist):
     """An artist for drawing a brep in Grasshopper.
 
     Parameters
-    ==========
+    ----------
     brep : :class:`~compas_rhino.geometry.RhinoBrep`
         The brep to draw.
 
@@ -25,4 +29,4 @@ class BrepArtist(GHArtist):
             The Grasshopper geometry instance.
 
         """
-        return draw_brep(self._brep)
+        return brep_to_rhino(self._brep)

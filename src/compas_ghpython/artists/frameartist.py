@@ -2,13 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_ghpython
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import frame_to_rhino
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
 from .artist import GHArtist
 
 
-class FrameArtist(GHArtist, PrimitiveArtist):
+class FrameArtist(GHArtist, GeometryArtist):
     """Artist for drawing frames.
 
     Parameters
@@ -37,7 +39,7 @@ class FrameArtist(GHArtist, PrimitiveArtist):
     """
 
     def __init__(self, frame, scale=1.0, **kwargs):
-        super(FrameArtist, self).__init__(primitive=frame, **kwargs)
+        super(FrameArtist, self).__init__(geometry=frame, **kwargs)
         self.scale = scale
         self.color_origin = Color.black()
         self.color_xaxis = Color.red()
@@ -52,7 +54,7 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         :rhino:`Rhino.Geometry.Plane`
 
         """
-        return compas_ghpython.draw_frame(self.primitive)
+        return frame_to_rhino(self.geometry)
 
     def draw_origin(self):
         """Draw the frame's origin.
@@ -62,8 +64,7 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         :rhino:`Rhino.Geometry.Point`
 
         """
-        point = {"pos": list(self.primitive.point), "color": self.color_origin.rgb255}
-        return compas_ghpython.draw_points([point])[0]
+        return point_to_rhino(self.geometry.point)
 
     def draw_axes(self):
         """Draw the frame's axes.
@@ -73,28 +74,12 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         list[:rhino:`Rhino.Geometry.Line`]
 
         """
-        origin = list(self.primitive.point)
-        x = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
-        y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
-        z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
-        lines = [
-            {
-                "start": origin,
-                "end": x,
-                "color": self.color_xaxis.rgb255,
-                "arrow": "end",
-            },
-            {
-                "start": origin,
-                "end": y,
-                "color": self.color_yaxis.rgb255,
-                "arrow": "end",
-            },
-            {
-                "start": origin,
-                "end": z,
-                "color": self.color_zaxis.rgb255,
-                "arrow": "end",
-            },
+        origin = self.geometry.point
+        x = self.geometry.point + self.geometry.xaxis * self.scale
+        y = self.geometry.point + self.geometry.yaxis * self.scale
+        z = self.geometry.point + self.geometry.zaxis * self.scale
+        return [
+            line_to_rhino([origin, x]),
+            line_to_rhino([origin, y]),
+            line_to_rhino([origin, z]),
         ]
-        return compas_ghpython.draw_lines(lines)

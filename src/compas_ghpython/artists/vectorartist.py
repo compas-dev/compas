@@ -2,15 +2,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas_ghpython
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Point
-from compas.colors import Color
-
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import point_to_rhino
 from .artist import GHArtist
 
 
-class VectorArtist(GHArtist, PrimitiveArtist):
+class VectorArtist(GHArtist, GeometryArtist):
     """Artist for drawing vectors.
 
     Parameters
@@ -24,16 +23,13 @@ class VectorArtist(GHArtist, PrimitiveArtist):
     """
 
     def __init__(self, vector, **kwargs):
-        super(VectorArtist, self).__init__(primitive=vector, **kwargs)
+        super(VectorArtist, self).__init__(geometry=vector, **kwargs)
 
-    def draw(self, color=None, point=None, show_point=False):
+    def draw(self, point=None, show_point=False):
         """Draw the vector.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
-            The RGB color of the vector.
-            Default is :attr:`compas.artists.PrimitiveArtist.color`.
         point : [float, float, float] | :class:`~compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
@@ -46,25 +42,14 @@ class VectorArtist(GHArtist, PrimitiveArtist):
             The Rhino line and endpoints, if requested.
 
         """
-        color = Color.coerce(color) or self.color
-        color = color.rgb255
         point = point or [0, 0, 0]
         start = Point(*point)
-        end = start + self.primitive
-        start = list(start)
-        end = list(end)
+        end = start + self.geometry
+
         result = []
+        result.append(line_to_rhino([start, end]))
+
         if show_point:
-            points = [{"pos": start, "color": color, "name": self.primitive.name}]
-            result += compas_ghpython.draw_points(points)
-        lines = [
-            {
-                "start": start,
-                "end": end,
-                "arrow": "end",
-                "color": color,
-                "name": self.primitive.name,
-            }
-        ]
-        result += compas_ghpython.draw_lines(lines)
+            result.append(point_to_rhino(start))
+
         return result

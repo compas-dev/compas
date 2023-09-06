@@ -2,9 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import Rhino  # type: ignore
-import compas_ghpython
 from compas.artists import MeshArtist as BaseArtist
+from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.artists._helpers import ngon
 from .artist import GHArtist
 
 
@@ -24,25 +27,42 @@ class MeshArtist(GHArtist, BaseArtist):
     def __init__(self, mesh, **kwargs):
         super(MeshArtist, self).__init__(mesh=mesh, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self, color=None, vertexcolors=None, facecolors=None, disjoint=False):
         """Draw the mesh.
 
         Parameters
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The color of the mesh.
-            Default is the value of :attr:`MeshArtist.default_color`.
 
         Returns
         -------
         :rhino:`Rhino.Geometry.Mesh`
 
         """
-        self.color = color
-        vertices, faces = self.mesh.to_vertices_and_faces()
-        return compas_ghpython.draw_mesh(vertices, faces, self.color.rgb255)
+        # the rhino artist can set an overal color and component colors simultaneously
+        # because it can set an overall color on the mesh object attributes
+        # this is not possible in GH (since there is no such object)
+        # either we set an overall color or we set component colors
+        if not vertexcolors and not facecolors:
+            color = Color.coerce(color) or self.color
 
-    def draw_mesh(self, color=None):
+        vertex_index = self.mesh.vertex_index()  # type: ignore
+        vertex_xyz = self.vertex_xyz
+
+        vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]  # type: ignore
+        faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]  # type: ignore
+
+        return vertices_and_faces_to_rhino(
+            vertices,
+            faces,
+            color=color,
+            vertexcolors=vertexcolors,
+            facecolors=facecolors,
+            disjoint=disjoint,
+        )
+
+    def draw_mesh(self, color=None, vertexcolors=None, facecolors=None, disjoint=False):
         """Draw the mesh as a RhinoMesh.
 
         This method is an alias for :attr:`MeshArtist.draw`.
@@ -51,7 +71,6 @@ class MeshArtist(GHArtist, BaseArtist):
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The color of the mesh.
-            Default is the value of :attr:`MeshArtist.default_color`.
 
         Returns
         -------
@@ -63,9 +82,9 @@ class MeshArtist(GHArtist, BaseArtist):
         Faces with more than 4 vertices will be triangulated on-the-fly.
 
         """
-        return self.draw(color=color)
+        return self.draw(color=color, vertexcolors=vertexcolors, facecolors=facecolors, disjoint=disjoint)
 
-    def draw_vertices(self, vertices=None, color=None):
+    def draw_vertices(self, vertices=None):
         """Draw a selection of vertices.
 
         Parameters
@@ -73,30 +92,23 @@ class MeshArtist(GHArtist, BaseArtist):
         vertices : list[int], optional
             A selection of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
-            The color specification for the vertices.
-            The default is the value of :attr:`MeshArtist.default_vertexcolor`.
 
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Point3d`]
 
         """
-        self.vertex_color = color
-        vertices = vertices or list(self.mesh.vertices())
+        vertices = vertices or self.mesh.vertices()  # type: ignore
         vertex_xyz = self.vertex_xyz
-        points = []
-        for vertex in vertices:
-            points.append(
-                {
-                    "pos": vertex_xyz[vertex],
-                    "name": "{}.vertex.{}".format(self.mesh.name, vertex),
-                    "color": self.vertex_color[vertex].rgb255,
-                }
-            )
-        return compas_ghpython.draw_points(points)
 
-    def draw_faces(self, faces=None, color=None, join_faces=False):
+        points = []
+
+        for vertex in vertices:
+            points.append(point_to_rhino(vertex_xyz[vertex]))
+
+        return points
+
+    def draw_faces(self, faces=None, color=None):
         """Draw a selection of faces.
 
         Parameters
@@ -106,36 +118,30 @@ class MeshArtist(GHArtist, BaseArtist):
             The default is None, in which case all faces are drawn.
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the faces.
-            The default color is the value of :attr:`MeshArtist.default_facecolor`.
-        join_faces : bool, optional
-            If True, join the individual faces into one mesh.
 
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Mesh`]
 
         """
-        self.face_color = color
-        faces = faces or list(self.mesh.faces())
-        vertex_xyz = self.vertex_xyz
-        facets = []
-        for face in faces:
-            facets.append(
-                {
-                    "points": [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
-                    "name": "{}.face.{}".format(self.mesh.name, face),
-                    "color": self.face_color[face].rgb255,
-                }
-            )
-        meshes = compas_ghpython.draw_faces(facets)
-        if not join_faces:
-            return meshes
-        joined_mesh = Rhino.Geometry.Mesh()
-        for mesh in meshes:
-            joined_mesh.Append(mesh)
-        return [joined_mesh]
+        faces = faces or self.mesh.faces()  # type: ignore
 
-    def draw_edges(self, edges=None, color=None):
+        self.face_color = color
+        vertex_xyz = self.vertex_xyz
+        face_color = self.face_color
+
+        meshes = []
+
+        for face in faces:
+            color = face_color[face]  # type: ignore
+            vertices = [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
+            facet = ngon(len(vertices))
+            if facet:
+                meshes.append(vertices_and_faces_to_rhino(vertices, [facet]))
+
+        return meshes
+
+    def draw_edges(self, edges=None):
         """Draw a selection of edges.
 
         Parameters
@@ -143,57 +149,19 @@ class MeshArtist(GHArtist, BaseArtist):
         edges : list[tuple[int, int]], optional
             A selection of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
-            The color specification for the edges.
-            The default color is the value of :attr:`MeshArtist.default_edgecolor`.
 
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Line`]
 
         """
-        self.edge_color = color
-        edges = edges or list(self.mesh.edges())
+        edges = edges or self.mesh.edges()  # type: ignore
+
         vertex_xyz = self.vertex_xyz
+
         lines = []
+
         for edge in edges:
-            u, v = edge
-            lines.append(
-                {
-                    "start": vertex_xyz[u],
-                    "end": vertex_xyz[v],
-                    "color": self.edge_color[edge].rgb255,
-                    "name": "{}.edge.{}-{}".format(self.mesh.name, u, v),
-                }
-            )
-        return compas_ghpython.draw_lines(lines)
+            lines.append(line_to_rhino((vertex_xyz[edge[0]], vertex_xyz[edge[1]])))
 
-    def clear_edges(self):
-        """GH Artists are state-less. Therefore, clear does not have any effect.
-
-        Returns
-        -------
-        None
-
-        """
-        pass
-
-    def clear_vertices(self):
-        """GH Artists are state-less. Therefore, clear does not have any effect.
-
-        Returns
-        -------
-        None
-
-        """
-        pass
-
-    def clear_faces(self):
-        """GH Artists are state-less. Therefore, clear does not have any effect.
-
-        Returns
-        -------
-        None
-
-        """
-        pass
+        return lines

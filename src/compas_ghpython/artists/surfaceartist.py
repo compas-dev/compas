@@ -2,11 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.artists import SurfaceArtist
+from compas.artists import GeometryArtist
+from compas_rhino.conversions import surface_to_rhino
 from .artist import GHArtist
 
 
-class SurfaceArtist(GHArtist, SurfaceArtist):
+class SurfaceArtist(GHArtist, GeometryArtist):
     """Artist for drawing surfaces.
 
     Parameters
@@ -23,7 +24,7 @@ class SurfaceArtist(GHArtist, SurfaceArtist):
     """
 
     def __init__(self, surface, **kwargs):
-        super(SurfaceArtist, self).__init__(surface=surface, **kwargs)
+        super(SurfaceArtist, self).__init__(geometry=surface, **kwargs)
 
     def draw(self):
         """Draw the surface.
@@ -33,4 +34,4 @@ class SurfaceArtist(GHArtist, SurfaceArtist):
         :rhino:`Rhino.Geometry.Surface`
 
         """
-        return self.surface.rhino_surface
+        return surface_to_rhino(self.geometry)

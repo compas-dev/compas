@@ -2,13 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_ghpython
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
 from .artist import GHArtist
 
 
-class PolygonArtist(GHArtist, PrimitiveArtist):
+class PolygonArtist(GHArtist, GeometryArtist):
     """Artist for drawing polygons.
 
     Parameters
@@ -22,22 +24,19 @@ class PolygonArtist(GHArtist, PrimitiveArtist):
     """
 
     def __init__(self, polygon, **kwargs):
-        super(PolygonArtist, self).__init__(primitive=polygon, **kwargs)
+        super(PolygonArtist, self).__init__(geometry=polygon, **kwargs)
 
-    def draw(self, color=None, show_points=False, show_edges=False, show_face=True):
+    def draw(self, color=None, show_vertices=False, show_edges=False):
         """Draw the polygon.
 
         Parameters
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the polygon.
-            Default is :attr:`compas.artists.PrimitiveArtist.color`.
-        show_points : bool, optional
-            If True, draw the points of the polygon.
+        show_vertices : bool, optional
+            If True, draw the vertices of the polygon.
         show_edges : bool, optional
             If True, draw the edges of the polygon.
-        show_face : bool, optional
-            If True, draw the face of the polygon.
 
         Returns
         -------
@@ -46,24 +45,18 @@ class PolygonArtist(GHArtist, PrimitiveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        color = color.rgb255
-        _points = map(list, self.primitive.points)
+        vertices = self.geometry.vertices
+        faces = self.geometry.faces
+
         result = []
-        if show_points:
-            points = [{"pos": point, "color": color, "name": self.primitive.name} for point in _points]
-            result += compas_ghpython.draw_points(points)
+        result.append(vertices_and_faces_to_rhino(vertices, faces, color=color))
+
+        if show_vertices:
+            for point in vertices:
+                result.append(point_to_rhino(point))
+
         if show_edges:
-            lines = [
-                {
-                    "start": list(a),
-                    "end": list(b),
-                    "color": color,
-                    "name": self.primitive.name,
-                }
-                for a, b in self.primitive.lines
-            ]
-            result += compas_ghpython.draw_lines(lines)
-        if show_face:
-            polygons = [{"points": _points, "color": color, "name": self.primitive.name}]
-            result += compas_ghpython.draw_faces(polygons)
+            for edge in self.geometry.edges:
+                result.append(line_to_rhino([vertices[edge[0]], vertices[edge[1]]]))
+
         return result

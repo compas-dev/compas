@@ -2,13 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_ghpython
-from compas.artists import PrimitiveArtist
-from compas.colors import Color
+from compas.artists import GeometryArtist
+from compas_rhino.conversions import line_to_rhino
 from .artist import GHArtist
 
 
-class LineArtist(GHArtist, PrimitiveArtist):
+class LineArtist(GHArtist, GeometryArtist):
     """Artist for drawing lines.
 
     Parameters
@@ -22,24 +21,14 @@ class LineArtist(GHArtist, PrimitiveArtist):
     """
 
     def __init__(self, line, **kwargs):
-        super(LineArtist, self).__init__(primitive=line, **kwargs)
+        super(LineArtist, self).__init__(geometry=line, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the line.
-
-        Parameters
-        ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
-            The RGB color of the line.
-            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
         :rhino:`Rhino.Geometry.Line`
 
         """
-        color = Color.coerce(color) or self.color
-        start = list(self.primitive.start)
-        end = list(self.primitive.end)
-        lines = [{"start": start, "end": end, "color": color.rgb255}]
-        return compas_ghpython.draw_lines(lines)[0]
+        return line_to_rhino(self.geometry)

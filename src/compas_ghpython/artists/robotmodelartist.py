@@ -5,7 +5,7 @@ from __future__ import print_function
 import compas_ghpython
 from compas.utilities import rgb_to_rgb
 
-from compas_rhino.geometry.transformations import xtransform
+# from compas_rhino.geometry.transformations import xtransform
 
 from compas.artists import RobotModelArtist
 from .artist import GHArtist

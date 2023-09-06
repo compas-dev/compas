@@ -3,11 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas.artists import NetworkArtist
+from compas.artists import NetworkArtist as BaseArtist
 from .artist import GHArtist
 
 
-class NetworkArtist(GHArtist, NetworkArtist):
+class NetworkArtist(GHArtist, BaseArtist):
     """Artist for drawing network data structures.
 
     Parameters
@@ -20,8 +20,8 @@ class NetworkArtist(GHArtist, NetworkArtist):
 
     """
 
-    # def __init__(self, network, **kwargs):
-    #     super(NetworkArtist, self).__init__(network=network, **kwargs)
+    def __init__(self, network, **kwargs):
+        super(NetworkArtist, self).__init__(network=network, **kwargs)
 
     def draw(self):
         """Draw the entire network with default color settings.
