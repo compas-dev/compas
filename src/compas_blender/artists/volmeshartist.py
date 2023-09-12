@@ -310,7 +310,7 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
             faces = self.volmesh.cell_faces(cell)
             vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
             vertices = [vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
+            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]
             obj = compas_blender.draw_mesh(
                 vertices,
                 faces,

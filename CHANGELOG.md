@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed uninstall post-process.
 * Fixed `area_polygon` that was, in some cases, returning a negative area
 * Fixed support for `System.Decimal` data type on json serialization.
+* Fixed `AttributeError` in Plotter's `PolylineArtist` and `SegementArtist`.
+* Fixed wrong key type when de-serializing `Graph` with integer keys leading to node not found.
+* Fixed bug in `VolMeshArtist.draw_cells` for Rhino, Blender and Grasshopper.
+* Fixed bug in the `is_polygon_in_polygon_xy` that was not correctly generating all the edges of the second polygon before checking for intersections.
 
 ### Removed
 
