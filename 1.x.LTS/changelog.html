@@ -119,6 +119,10 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed uninstall post-process.</p></li>
 <li><p>Fixed <code class="docutils literal notranslate"><span class="pre">area_polygon</span></code> that was, in some cases, returning a negative area</p></li>
 <li><p>Fixed support for <code class="docutils literal notranslate"><span class="pre">System.Decimal</span></code> data type on json serialization.</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> in Plotter’s <code class="docutils literal notranslate"><span class="pre">PolylineArtist</span></code> and <code class="docutils literal notranslate"><span class="pre">SegementArtist</span></code>.</p></li>
+<li><p>Fixed wrong key type when de-serializing <code class="docutils literal notranslate"><span class="pre">Graph</span></code> with integer keys leading to node not found.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">VolMeshArtist.draw_cells</span></code> for Rhino, Blender and Grasshopper.</p></li>
+<li><p>Fixed bug in the <code class="docutils literal notranslate"><span class="pre">is_polygon_in_polygon_xy</span></code> that was not correctly generating all the edges of the second polygon before checking for intersections.</p></li>
 </ul>
 </section>
 <section id="removed">
