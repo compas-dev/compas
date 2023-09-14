@@ -1,10 +1,10 @@
-import bpy
-
 from typing import Dict
 from typing import List
 from typing import Union
 from typing import Tuple
 from typing import Text
+
+import bpy  # type: ignore
 
 from compas_blender.utilities import create_collection
 
