@@ -120,8 +120,7 @@ def cylinder_to_rhino(cylinder):
 
     """
     circle = cylinder.circle.copy()
-    height = cylinder.height
-    circle.plane.point += circle.plane.normal * (-0.5 * height)
+    circle.frame.point += circle.frame.zaxis * (-0.5 * cylinder.height)
     return RhinoCylinder(circle_to_rhino(circle), cylinder.height)
 
 
