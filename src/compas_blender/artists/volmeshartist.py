@@ -5,7 +5,7 @@ from typing import List
 from typing import Dict
 from typing import Tuple
 
-import bpy
+import bpy  # type: ignore
 
 import compas_blender
 
@@ -40,7 +40,6 @@ class VolMeshArtist(BlenderArtist, VolMeshArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-
         super().__init__(volmesh=volmesh, collection=collection or volmesh.name, **kwargs)
 
     @property

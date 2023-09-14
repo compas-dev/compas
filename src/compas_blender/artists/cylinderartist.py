@@ -1,18 +1,17 @@
 from typing import Any
-from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
-import compas_blender
 from compas.geometry import Cylinder
-from compas.artists import ShapeArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_blender.conversions import vertices_and_faces_to_blender
 from .artist import BlenderArtist
 
 
-class CylinderArtist(BlenderArtist, ShapeArtist):
+class CylinderArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing cylinder shapes in Blender.
 
     Parameters
@@ -24,7 +23,7 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.ShapeArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -55,12 +54,18 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
     """
 
     def __init__(
-        self, cylinder: Cylinder, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any
+        self,
+        cylinder: Cylinder,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any,
     ):
+        super().__init__(
+            geometry=cylinder,
+            collection=collection or cylinder.name,
+            **kwargs,
+        )
 
-        super().__init__(shape=cylinder, collection=collection or cylinder.name, **kwargs)
-
-    def draw(self, color: Optional[Color] = None, u: int = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, u: int = 16) -> bpy.types.Object:
         """Draw the cylinder associated with the artist.
 
         Parameters
@@ -69,22 +74,23 @@ class CylinderArtist(BlenderArtist, ShapeArtist):
             The RGB color of the cylinder.
         u : int, optional
             Number of faces in the "u" direction.
-            Default is :attr:`~CylinderArtist.u`.
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
+        :blender:`bpy.types.Object`
             The objects created in Blender.
 
         """
-        u = u or self.u
         color = Color.coerce(color) or self.color
-        vertices, faces = self.shape.to_vertices_and_faces(u=u)
-        obj = compas_blender.draw_mesh(
-            vertices,
-            faces,
-            name=self.shape.name,
-            color=color,
-            collection=self.collection,
-        )
-        return [obj]
+
+        vertices, faces = self.geometry.to_vertices_and_faces(u=u)
+        mesh = vertices_and_faces_to_blender(vertices, faces, name=self.geometry.name)
+
+        obj = bpy.data.objects.new(self.geometry.name, mesh)
+        obj.show_wire = True
+
+        self.link_object(obj)
+        if color:
+            self.assign_object_color(obj, color)
+
+        return obj

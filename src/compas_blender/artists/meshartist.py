@@ -5,7 +5,7 @@ from typing import Optional
 from typing import Tuple
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
 import compas_blender
 from compas.datastructures import Mesh
@@ -14,11 +14,12 @@ from compas.geometry import centroid_points
 from compas.geometry import scale_vector
 
 from compas.colors import Color
-from compas.artists import MeshArtist
+from compas.artists import MeshArtist as BaseArtist
+from compas_blender.conversions import mesh_to_blender
 from .artist import BlenderArtist
 
 
-class MeshArtist(BlenderArtist, MeshArtist):
+class MeshArtist(BlenderArtist, BaseArtist):
     """Artist for drawing mesh data structures in Blender.
 
     Parameters
@@ -77,7 +78,6 @@ class MeshArtist(BlenderArtist, MeshArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-
         super().__init__(mesh=mesh, collection=collection or mesh.name, **kwargs)
 
     @property
@@ -169,7 +169,7 @@ class MeshArtist(BlenderArtist, MeshArtist):
     # draw
     # ==========================================================================
 
-    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None) -> bpy.types.Object:
         """Draw the mesh.
 
         Parameters
@@ -183,16 +183,14 @@ class MeshArtist(BlenderArtist, MeshArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        self.color = color
-        vertices, faces = self.mesh.to_vertices_and_faces()
-        obj = compas_blender.draw_mesh(
-            vertices,
-            faces,
-            color=self.color,
-            name=self.mesh.name,
-            collection=self.collection,
-        )
-        return [obj]
+        color = Color.coerce(color) or self.color
+        mesh = mesh_to_blender(self.mesh)  # type: ignore
+        obj = bpy.data.objects.new(self.mesh.name, mesh)  # type: ignore
+        obj.show_wire = True
+        self.link_object(obj)
+        if color:
+            self.assign_object_color(obj, color)
+        return obj
 
     def draw_vertices(
         self,
@@ -215,19 +213,26 @@ class MeshArtist(BlenderArtist, MeshArtist):
         list[:blender:`bpy.types.Object`]
 
         """
+        # self.vertex_color = color
+        # vertices = vertices or self.vertices
+        # points = []
+        # for vertex in vertices:
+        #     points.append(
+        #         {
+        #             "pos": self.vertex_xyz[vertex],
+        #             "name": f"{self.mesh.name}.vertex.{vertex}",
+        #             "color": self.vertex_color[vertex],
+        #             "radius": 0.01,
+        #         }
+        #     )
+        # return compas_blender.draw_points(points, self.vertexcollection)
+        vertices = vertices or self.mesh.vertices()  # type: ignore
+
         self.vertex_color = color
-        vertices = vertices or self.vertices
-        points = []
-        for vertex in vertices:
-            points.append(
-                {
-                    "pos": self.vertex_xyz[vertex],
-                    "name": f"{self.mesh.name}.vertex.{vertex}",
-                    "color": self.vertex_color[vertex],
-                    "radius": 0.01,
-                }
-            )
-        return compas_blender.draw_points(points, self.vertexcollection)
+        self.vertex_text = text
+        vertex_xyz = self.vertex_xyz
+        vertex_color = self.vertex_color
+        vertex_text = self.vertex_text
 
     def draw_edges(
         self,

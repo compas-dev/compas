@@ -2,10 +2,12 @@ from typing import Union
 from typing import Optional
 from typing import Any
 
-import bpy
+import bpy  # type: ignore
 import compas_blender
 
+from compas.colors import Color
 from compas.artists import Artist
+from compas_blender.conversions import color_to_blender_material
 
 
 class BlenderArtist(Artist):
@@ -44,3 +46,52 @@ class BlenderArtist(Artist):
             self._collection = compas_blender.create_collection(value)
         else:
             raise Exception("Collection must be of type `str` or `bpy.types.Collection`.")
+
+    def link_object(self, obj: bpy.types.Object):
+        """Link an object to the collection of this artist.
+
+        Parameters
+        ----------
+        obj : :class:`bpy.types.Object`
+            The Blender object to link.
+
+        """
+        self.unlink_object(obj)
+        self.collection.objects.link(obj)
+
+    def unlink_object(self, obj: bpy.types.Object):
+        """Unlink an object from the collection of this artist.
+
+        Parameters
+        ----------
+        obj : :class:`bpy.types.Object`
+            The Blender object to unlink.
+
+        """
+        for c in obj.users_collection:
+            c.objects.unlink(obj)
+
+    def assign_object_color(self, obj: bpy.types.Object, color: Color):
+        """Assign a color to a Blender object.
+
+        Parameters
+        ----------
+        obj : :class:`bpy.types.Object`
+            The Blender object.
+        color : str | tuple, optional
+            The color specification.
+
+        Returns
+        -------
+        :class:`bpy.types.Material`
+            The Blender color material assigned to the object.
+
+        """
+        material = color_to_blender_material(color)
+        obj.color = color.rgba
+        if obj.data.materials:
+            obj.data.materials[0] = material
+        else:
+            obj.data.materials.append(material)
+        obj.active_material = material
+        return material

@@ -5,7 +5,7 @@ from typing import Optional
 from typing import Tuple
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 from functools import partial
 
 import compas_blender
@@ -76,7 +76,6 @@ class NetworkArtist(BlenderArtist, NetworkArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-
         super().__init__(network=network, collection=collection or network.name, **kwargs)
 
     @property

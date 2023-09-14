@@ -1,18 +1,16 @@
 from typing import Any
-from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
-import compas_blender
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Point
 from compas.colors import Color
 from .artist import BlenderArtist
 
 
-class PointArtist(BlenderArtist, PrimitiveArtist):
+class PointArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing points in Blender.
 
     Parameters
@@ -24,7 +22,7 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -60,30 +58,46 @@ class PointArtist(BlenderArtist, PrimitiveArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-        super().__init__(primitive=point, collection=collection or point.name, **kwargs)
+        super().__init__(
+            geometry=point,
+            collection=collection or point.name,
+            **kwargs,
+        )
 
-    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        size: float = 0.01,
+        u: int = 16,
+        v: int = 16,
+    ) -> bpy.types.Object:
         """Draw the point.
 
         Parameters
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             Color of the point object.
-            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
+        :blender:`bpy.types.Object`
 
         """
         color = Color.coerce(color) or self.color
-        points = [
-            {
-                "pos": self.primitive,
-                "name": f"{self.primitive.name}",
-                "color": color,
-                "radius": 0.01,
-            }
-        ]
-        objects = compas_blender.draw_points(points, self.collection)
-        return objects
+
+        bpy.ops.mesh.primitive_uv_sphere_add(
+            location=self.geometry,
+            radius=size,
+            segments=u,
+            ring_count=v,
+        )
+
+        obj = bpy.context.object
+        obj.name = self.geometry.name
+
+        self.link_object(obj)
+        if color:
+            self.assign_object_color(obj, color)
+
+        return obj

@@ -3,16 +3,16 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
 import compas_blender
-from compas.artists import SurfaceArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Surface
 from compas.colors import Color
 from compas_blender.artists import BlenderArtist
 
 
-class SurfaceArtist(BlenderArtist, SurfaceArtist):
+class SurfaceArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing surfaces in Blender.
 
     Parameters
@@ -24,7 +24,7 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -55,8 +55,7 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
     """
 
     def __init__(self, surface: Surface, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
-
-        super().__init__(surface=surface, collection=collection or surface.name, **kwargs)
+        super().__init__(geometry=surface, collection=collection or surface.name, **kwargs)
 
     def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
         """Draw the surface.
@@ -73,5 +72,5 @@ class SurfaceArtist(BlenderArtist, SurfaceArtist):
 
         """
         color = Color.coerce(color) or self.color
-        surfaces = [{"surface": self.surface, "color": color, "name": self.surface.name}]
+        surfaces = [{"surface": self.geometry, "color": color, "name": self.geometry.name}]
         return compas_blender.draw_surfaces(surfaces, collection=self.collection)

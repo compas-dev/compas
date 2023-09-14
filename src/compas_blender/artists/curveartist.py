@@ -1,18 +1,17 @@
 from typing import Any
-from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
-import compas_blender
-from compas.artists import CurveArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Curve
 from compas.colors import Color
+from compas_blender.conversions import nurbscurve_to_blender_curve
 from compas_blender.artists import BlenderArtist
 
 
-class CurveArtist(BlenderArtist, CurveArtist):
+class CurveArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing curves in Blender.
 
     Parameters
@@ -24,7 +23,7 @@ class CurveArtist(BlenderArtist, CurveArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -54,11 +53,19 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
     """
 
-    def __init__(self, curve: Curve, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
+    def __init__(
+        self,
+        curve: Curve,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        **kwargs: Any,
+    ):
+        super().__init__(
+            geometry=curve,
+            collection=collection or curve.name,
+            **kwargs,
+        )
 
-        super().__init__(curve=curve, collection=collection or curve.name, **kwargs)
-
-    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None) -> bpy.types.Object:
         """Draw the curve.
 
         Parameters
@@ -69,9 +76,16 @@ class CurveArtist(BlenderArtist, CurveArtist):
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
+        :blender:`bpy.types.Object`
 
         """
         color = Color.coerce(color) or self.color
-        curves = [{"curve": self.curve, "color": color, "name": self.curve.name}]
-        return compas_blender.draw_curves(curves, collection=self.collection)
+        curve = nurbscurve_to_blender_curve(self.geometry)
+
+        obj = bpy.data.objects.new(self.geometry.name, curve)
+
+        self.link_object(obj)
+        if color:
+            self.assign_object_color(obj, color)
+
+        return obj

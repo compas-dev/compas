@@ -3,16 +3,16 @@ from typing import Any
 from typing import List
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
 import compas_blender
 from compas.geometry import Torus
-from compas.artists import ShapeArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
 from .artist import BlenderArtist
 
 
-class TorusArtist(BlenderArtist, ShapeArtist):
+class TorusArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing torus shapes in Blender.
 
     Parameters
@@ -24,7 +24,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.ShapeArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -55,8 +55,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
     """
 
     def __init__(self, torus: Torus, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
-
-        super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
+        super().__init__(geometry=torus, collection=collection or torus.name, **kwargs)
 
     def draw(
         self,
@@ -70,7 +69,7 @@ class TorusArtist(BlenderArtist, ShapeArtist):
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the torus.
-            The default color is :attr:`compas.artists.ShapeArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
         u : int, optional
             Number of faces in the "u" direction.
             Default is :attr:`TorusArtist.u`.
@@ -87,11 +86,11 @@ class TorusArtist(BlenderArtist, ShapeArtist):
         u = u or self.u
         v = v or self.v
         color = Color.coerce(color) or self.color
-        vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
+        vertices, faces = self.geometry.to_vertices_and_faces(u=u, v=v)
         obj = compas_blender.draw_mesh(
             vertices,
             faces,
-            name=self.shape.name,
+            name=self.geometry.name,
             color=color,
             collection=self.collection,
         )

@@ -3,17 +3,17 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
 from compas.geometry import Frame
 
 import compas_blender
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
 from .artist import BlenderArtist
 
 
-class FrameArtist(BlenderArtist, PrimitiveArtist):
+class FrameArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing frames in Blender.
 
     Parameters
@@ -27,7 +27,7 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Attributes
     ----------
@@ -53,8 +53,7 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         scale: float = 1.0,
         **kwargs: Any,
     ):
-
-        super().__init__(primitive=frame, collection=collection or frame.name, **kwargs)
+        super().__init__(geometry=frame, collection=collection or frame.name, **kwargs)
 
         self.scale = scale or 1.0
         self.color_origin = Color.black()
@@ -86,8 +85,8 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         """
         points = [
             {
-                "pos": self.primitive.point,
-                "name": f"{self.primitive.name}.origin",
+                "pos": self.geometry.point,
+                "name": f"{self.geometry.name}.origin",
                 "color": self.color_origin,
                 "radius": 0.01,
             }
@@ -102,28 +101,28 @@ class FrameArtist(BlenderArtist, PrimitiveArtist):
         list[:blender:`bpy.types.Object`]
 
         """
-        origin = self.primitive.point
-        X = self.primitive.point + self.primitive.xaxis.scaled(self.scale)
-        Y = self.primitive.point + self.primitive.yaxis.scaled(self.scale)
-        Z = self.primitive.point + self.primitive.zaxis.scaled(self.scale)
+        origin = self.geometry.point
+        X = self.geometry.point + self.geometry.xaxis.scaled(self.scale)
+        Y = self.geometry.point + self.geometry.yaxis.scaled(self.scale)
+        Z = self.geometry.point + self.geometry.zaxis.scaled(self.scale)
         lines = [
             {
                 "start": origin,
                 "end": X,
                 "color": self.color_xaxis,
-                "name": f"{self.primitive.name}.xaxis",
+                "name": f"{self.geometry.name}.xaxis",
             },
             {
                 "start": origin,
                 "end": Y,
                 "color": self.color_yaxis,
-                "name": f"{self.primitive.name}.yaxis",
+                "name": f"{self.geometry.name}.yaxis",
             },
             {
                 "start": origin,
                 "end": Z,
                 "color": self.color_zaxis,
-                "name": f"{self.primitive.name}.zaxis",
+                "name": f"{self.geometry.name}.zaxis",
             },
         ]
         return compas_blender.draw_lines(lines, self.collection)

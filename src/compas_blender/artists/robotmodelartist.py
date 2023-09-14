@@ -4,7 +4,7 @@ from typing import Optional
 from typing import Any
 from typing import List
 
-import bpy
+import bpy  # type: ignore
 import mathutils
 
 import compas_blender

@@ -3,17 +3,17 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
 import compas_blender
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.colors import Color
 from .artist import BlenderArtist
 
 
-class VectorArtist(BlenderArtist, PrimitiveArtist):
+class VectorArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing vectors in Blender.
 
     Parameters
@@ -25,7 +25,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -61,7 +61,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-        super().__init__(primitive=vector, collection=collection or vector.name, **kwargs)
+        super().__init__(geometry=vector, collection=collection or vector.name, **kwargs)
 
     def draw(
         self,
@@ -75,7 +75,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the vector.
-            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
         point : [float, float, float] | :class:`~compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
@@ -89,14 +89,14 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
         """
         point = point or (0.0, 0.0, 0.0)
         start = Point(*point)
-        end = start + self.primitive
+        end = start + self.geometry
         color = Color.coerce(color) or self.color
         lines = [
             {
                 "start": start,
                 "end": end,
                 "color": color,
-                "name": f"{self.primitive.name}",
+                "name": f"{self.geometry.name}",
             },
         ]
         objects = compas_blender.draw_lines(lines, self.collection)
@@ -104,7 +104,7 @@ class VectorArtist(BlenderArtist, PrimitiveArtist):
             points = [
                 {
                     "pos": start,
-                    "name": f"{self.primitive.name}.origin",
+                    "name": f"{self.geometry.name}.origin",
                     "color": (1.0, 1.0, 1.0),
                     "radius": 0.01,
                 }

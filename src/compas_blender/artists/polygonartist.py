@@ -3,16 +3,16 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
 import compas_blender
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Polygon
 from compas.colors import Color
 from .artist import BlenderArtist
 
 
-class PolygonArtist(BlenderArtist, PrimitiveArtist):
+class PolygonArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing polygons in Blender.
 
     Parameters
@@ -24,7 +24,7 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -51,7 +51,7 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
     """
 
     def __init__(self, polygon: Polygon, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
-        super().__init__(primitive=polygon, collection=collection or polygon.name, **kwargs)
+        super().__init__(geometry=polygon, collection=collection or polygon.name, **kwargs)
 
     def draw(
         self,
@@ -66,7 +66,7 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the polygon.
-            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
         show_points : bool, optional
             If True, draw the corner points of the polygon.
         show_edges : bool, optional
@@ -86,23 +86,21 @@ class PolygonArtist(BlenderArtist, PrimitiveArtist):
                 {
                     "pos": point,
                     "color": color,
-                    "name": self.primitive.name,
+                    "name": self.geometry.name,
                     "radius": 0.01,
                 }
-                for point in self.primitive.points
+                for point in self.geometry.points
             ]
             objects += compas_blender.draw_points(points, collection=self.collection)
         if show_edges:
-            lines = [
-                {"start": a, "end": b, "color": color, "name": self.primitive.name} for a, b in self.primitive.lines
-            ]
+            lines = [{"start": a, "end": b, "color": color, "name": self.geometry.name} for a, b in self.geometry.lines]
             objects += compas_blender.draw_lines(lines, collection=self.collection)
         if show_face:
             polygons = [
                 {
-                    "points": self.primitive.points,
+                    "points": self.geometry.points,
                     "color": color,
-                    "name": self.primitive.name,
+                    "name": self.geometry.name,
                 }
             ]
             objects += compas_blender.draw_faces(polygons, collection=self.collection)

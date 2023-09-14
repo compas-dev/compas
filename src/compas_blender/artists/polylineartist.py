@@ -3,16 +3,16 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
 import compas_blender
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Polyline
 from compas.colors import Color
 from .artist import BlenderArtist
 
 
-class PolylineArtist(BlenderArtist, PrimitiveArtist):
+class PolylineArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing polylines in Blender.
 
     Parameters
@@ -24,7 +24,7 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -60,7 +60,7 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-        super().__init__(primitive=polyline, collection=collection or polyline.name, **kwargs)
+        super().__init__(geometry=polyline, collection=collection or polyline.name, **kwargs)
 
     def draw(self, color: Optional[Color] = None, show_points: Optional[bool] = False) -> List[bpy.types.Object]:
         """Draw the line.
@@ -69,7 +69,7 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the polyline.
-            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
         show_points : bool, optional
             If True, draw the corner points of the polyline.
 
@@ -85,9 +85,9 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
                 "start": start,
                 "end": end,
                 "color": self.color,
-                "name": f"{self.primitive.name}",
+                "name": f"{self.geometry.name}",
             }
-            for start, end in self.primitive.lines
+            for start, end in self.geometry.lines
         ]
         objects = compas_blender.draw_lines(lines, collection=self.collection)
 
@@ -95,11 +95,11 @@ class PolylineArtist(BlenderArtist, PrimitiveArtist):
             points = [
                 {
                     "pos": point,
-                    "name": f"{self.primitive.name}.point",
+                    "name": f"{self.geometry.name}.point",
                     "color": color,
                     "radius": 0.01,
                 }
-                for point in self.primitive.points
+                for point in self.geometry.points
             ]
             objects += compas_blender.draw_points(points, collection=self.collection)
         return objects

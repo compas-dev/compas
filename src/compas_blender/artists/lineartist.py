@@ -3,16 +3,17 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
-import compas_blender
-from compas.artists import PrimitiveArtist
+from compas.artists import GeometryArtist
 from compas.geometry import Line
 from compas.colors import Color
 from compas_blender.artists import BlenderArtist
 
+from compas_blender.conversions import line_to_blender_curve
 
-class LineArtist(BlenderArtist, PrimitiveArtist):
+
+class LineArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing lines in Blender.
 
     Parameters
@@ -24,7 +25,7 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -60,16 +61,24 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         **kwargs: Any,
     ):
-        super().__init__(primitive=line, collection=collection or line.name, **kwargs)
+        super().__init__(
+            geometry=line,
+            collection=collection or line.name,
+            **kwargs,
+        )
 
-    def draw(self, color: Optional[Color] = None, show_points: bool = False) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        show_points: bool = False,
+    ) -> List[bpy.types.Object]:
         """Draw the line.
 
         Parameters
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
-            The default color is :attr:`compas.artists.PrimitiveArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
         show_points : bool, optional
             If True, show the start and end point in addition to the line.
 
@@ -79,32 +88,12 @@ class LineArtist(BlenderArtist, PrimitiveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        start = self.primitive.start
-        end = self.primitive.end
-        objects = []
-        if show_points:
-            points = [
-                {
-                    "pos": start,
-                    "name": f"{self.primitive.name}.start",
-                    "color": color,
-                    "radius": 0.01,
-                },
-                {
-                    "pos": end,
-                    "name": f"{self.primitive.name}.end",
-                    "color": color,
-                    "radius": 0.01,
-                },
-            ]
-            objects += compas_blender.draw_points(points, collection=self.collection)
-        lines = [
-            {
-                "start": start,
-                "end": end,
-                "color": color,
-                "name": f"{self.primitive.name}",
-            },
-        ]
-        objects += compas_blender.draw_lines(lines, collection=self.collection)
-        return objects
+
+        curve = line_to_blender_curve(self.geometry)
+        obj = bpy.data.objects.new(self.geometry.name, curve)
+
+        self.link_object(obj)
+        if color:
+            self.assign_object_color(obj, color)
+
+        return obj

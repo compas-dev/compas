@@ -3,15 +3,15 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-import bpy
+import bpy  # type: ignore
 import compas_blender
 from compas.geometry import Polyhedron
-from compas.artists import ShapeArtist
+from compas.artists import GeometryArtist
 from compas.colors import Color
 from .artist import BlenderArtist
 
 
-class PolyhedronArtist(BlenderArtist, ShapeArtist):
+class PolyhedronArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing polyhedron shapes in Blender.
 
     Parameters
@@ -23,7 +23,7 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.ShapeArtist`.
+        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     Examples
     --------
@@ -56,8 +56,7 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
     def __init__(
         self, polyhedron: Polyhedron, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any
     ):
-
-        super().__init__(shape=polyhedron, collection=collection or polyhedron.name, **kwargs)
+        super().__init__(geometry=polyhedron, collection=collection or polyhedron.name, **kwargs)
 
     def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
         """Draw the polyhedron associated with the artist.
@@ -66,7 +65,7 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the polyhedron.
-            The default color is :attr:`compas.artists.ShapeArtist.color`.
+            The default color is :attr:`compas.artists.GeometryArtist.color`.
 
         Returns
         -------
@@ -75,11 +74,11 @@ class PolyhedronArtist(BlenderArtist, ShapeArtist):
 
         """
         color = Color.coerce(color) or self.color
-        vertices, faces = self.shape.to_vertices_and_faces()
+        vertices, faces = self.geometry.to_vertices_and_faces()
         obj = compas_blender.draw_mesh(
             vertices,
             faces,
-            name=self.shape.name,
+            name=self.geometry.name,
             color=color,
             collection=self.collection,
         )
