@@ -5,6 +5,7 @@ from __future__ import division
 from abc import abstractmethod
 
 from compas.colors import Color
+from compas.geometry import transform_points
 from .artist import Artist
 from .descriptors.color import ColorAttribute
 from .descriptors.colordict import ColorDictAttribute
@@ -37,14 +38,6 @@ class VolMeshArtist(Artist):
     cell_color : dict[int, :class:`~compas.colors.Color`]
         Mapping between cells and colors.
         Missing cells get the default cell color: :attr:`default_facecolor`.
-    vertex_text : dict[int, str]
-        Mapping between vertices and text labels.
-    edge_text : dict[tuple[int, int], str]
-        Mapping between edges and text labels.
-    face_text : dict[int, str]
-        Mapping between faces and text lables.
-    cell_text : dict[int, str]
-        Mapping between cells and text lables.
 
     See Also
     --------
@@ -64,20 +57,6 @@ class VolMeshArtist(Artist):
         super(VolMeshArtist, self).__init__(**kwargs)
         self._volmesh = None
         self._vertex_xyz = None
-        self._vertex_text = None
-        self._edge_text = None
-        self._face_text = None
-        self._cell_text = None
-        self._vertexcollection = None
-        self._edgecollection = None
-        self._facecollection = None
-        self._cellcollection = None
-        self._vertexnormalcollection = None
-        self._facenormalcollection = None
-        self._vertexlabelcollection = None
-        self._edgelabelcollection = None
-        self._facelabelcollection = None
-        self._celllabelcollection = None
         self.volmesh = volmesh
 
     @property
@@ -87,77 +66,30 @@ class VolMeshArtist(Artist):
     @volmesh.setter
     def volmesh(self, volmesh):
         self._volmesh = volmesh
+        self._transformation = None
         self._vertex_xyz = None
 
     @property
+    def transformation(self):
+        return self._transformation
+
+    @transformation.setter
+    def transformation(self, transformation):
+        self._vertex_xyz = None
+        self._transformation = transformation
+
+    @property
     def vertex_xyz(self):
-        if not self._vertex_xyz:
-            self._vertex_xyz = {vertex: self.volmesh.vertex_coordinates(vertex) for vertex in self.volmesh.vertices()}  # type: ignore
+        if self._vertex_xyz is None:
+            points = self.volmesh.vertices_attributes("xyz")  # type: ignore
+            if self.transformation:
+                points = transform_points(points, self.transformation)
+            self._vertex_xyz = dict(zip(self.volmesh.vertices(), points))  # type: ignore
         return self._vertex_xyz
 
     @vertex_xyz.setter
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
-
-    @property
-    def vertex_text(self):
-        if not self._vertex_text:
-            self._vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}  # type: ignore
-        return self._vertex_text
-
-    @vertex_text.setter
-    def vertex_text(self, text):
-        if text == "key":
-            self._vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}  # type: ignore
-        elif text == "index":
-            self._vertex_text = {vertex: str(index) for index, vertex in enumerate(self.volmesh.vertices())}  # type: ignore
-        elif isinstance(text, dict):
-            self._vertex_text = text
-
-    @property
-    def edge_text(self):
-        if not self._edge_text:
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}  # type: ignore
-        return self._edge_text
-
-    @edge_text.setter
-    def edge_text(self, text):
-        if text == "key":
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}  # type: ignore
-        elif text == "index":
-            self._edge_text = {edge: str(index) for index, edge in enumerate(self.volmesh.edges())}  # type: ignore
-        elif isinstance(text, dict):
-            self._edge_text = text
-
-    @property
-    def face_text(self):
-        if not self._face_text:
-            self._face_text = {face: str(face) for face in self.volmesh.faces()}  # type: ignore
-        return self._face_text
-
-    @face_text.setter
-    def face_text(self, text):
-        if text == "key":
-            self._face_text = {face: str(face) for face in self.volmesh.faces()}  # type: ignore
-        elif text == "index":
-            self._face_text = {face: str(index) for index, face in enumerate(self.volmesh.faces())}  # type: ignore
-        elif isinstance(text, dict):
-            self._face_text = text
-
-    @property
-    def cell_text(self):
-        if not self._cell_text:
-            self._cell_text = {cell: str(cell) for cell in self.volmesh.cells()}  # type: ignore
-        return self._cell_text
-
-    @cell_text.setter
-    def cell_text(self, text):
-        if text == "key":
-            self._cell_text = {cell: str(cell) for cell in self.volmesh.cells()}  # type: ignore
-        elif text == "index":
-            self._cell_text = {cell: str(index) for index, cell in enumerate(self.volmesh.cells())}  # type: ignore
-        elif isinstance(text, dict):
-            self._cell_text = text
 
     @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):

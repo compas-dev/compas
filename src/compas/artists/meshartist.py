@@ -4,7 +4,7 @@ from __future__ import division
 
 from abc import abstractmethod
 
-from compas.colors import Color
+from compas.geometry import transform_points
 from .artist import Artist
 from .descriptors.color import ColorAttribute
 from .descriptors.colordict import ColorDictAttribute
@@ -62,34 +62,16 @@ class MeshArtist(Artist):
 
     """
 
-    color = ColorAttribute(default=Color.black())
+    color = ColorAttribute(default=None)
 
-    vertex_color = ColorDictAttribute(default=Color.white())
-    edge_color = ColorDictAttribute(default=Color.black())
-    face_color = ColorDictAttribute(default=Color.black())
-
-    default_vertexsize = 5  # replace with a descriptor (IntegerAttribute or ConstrainedIntegerAttribute)
-    default_edgewidth = 1.0  # replace with a descriptor (FloatAttribute or ConstrainedFloatAttribute)
+    vertex_color = ColorDictAttribute(default=None)
+    edge_color = ColorDictAttribute(default=None)
+    face_color = ColorDictAttribute(default=None)
 
     def __init__(self, mesh, **kwargs):
-        super(MeshArtist, self).__init__(**kwargs)
+        super(MeshArtist, self).__init__(item=mesh, **kwargs)
         self._mesh = None
         self._vertex_xyz = None
-        self._vertex_text = None
-        self._edge_text = None
-        self._face_text = None
-        self._vertex_size = None
-        self._edge_width = None
-        # these are the objects drawn by the artist?
-        self._vertexcollection = None
-        self._edgecollection = None
-        self._facecollection = None
-        self._vertexnormalcollection = None
-        self._facenormalcollection = None
-        self._vertexlabelcollection = None
-        self._edgelabelcollection = None
-        self._facelabelcollection = None
-        # the mesh of the artist
         self.mesh = mesh
 
     @property
@@ -99,88 +81,30 @@ class MeshArtist(Artist):
     @mesh.setter
     def mesh(self, mesh):
         self._mesh = mesh
+        self._transformation = None
         self._vertex_xyz = None
+
+    @property
+    def transformation(self):
+        return self._transformation
+
+    @transformation.setter
+    def transformation(self, transformation):
+        self._vertex_xyz = None
+        self._transformation = transformation
 
     @property
     def vertex_xyz(self):
         if self._vertex_xyz is None:
-            return {vertex: self.mesh.vertex_coordinates(vertex) for vertex in self.mesh.vertices()}  # type: ignore
+            points = self.mesh.vertices_attributes("xyz")  # type: ignore
+            if self.transformation:
+                points = transform_points(points, self.transformation)
+            self._vertex_xyz = dict(zip(self.mesh.vertices(), points))  # type: ignore
         return self._vertex_xyz
 
     @vertex_xyz.setter
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
-
-    @property
-    def vertex_size(self):
-        if not self._vertex_size:
-            self._vertex_size = {vertex: self.default_vertexsize for vertex in self.mesh.vertices()}  # type: ignore
-        return self._vertex_size
-
-    @vertex_size.setter
-    def vertex_size(self, vertexsize):
-        if isinstance(vertexsize, dict):
-            self._vertex_size = vertexsize
-        elif isinstance(vertexsize, (int, float)):
-            self._vertex_size = {vertex: vertexsize for vertex in self.mesh.vertices()}  # type: ignore
-
-    @property
-    def edge_width(self):
-        if not self._edge_width:
-            self._edge_width = {edge: self.default_edgewidth for edge in self.mesh.edges()}  # type: ignore
-        return self._edge_width
-
-    @edge_width.setter
-    def edge_width(self, edgewidth):
-        if isinstance(edgewidth, dict):
-            self._edge_width = edgewidth
-        elif isinstance(edgewidth, (int, float)):
-            self._edge_width = {edge: edgewidth for edge in self.mesh.edges()}  # type: ignore
-
-    @property
-    def vertex_text(self):
-        if self._vertex_text is None:
-            self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}  # type: ignore
-        return self._vertex_text
-
-    @vertex_text.setter
-    def vertex_text(self, text):
-        if text == "key":
-            self._vertex_text = {vertex: str(vertex) for vertex in self.mesh.vertices()}  # type: ignore
-        elif text == "index":
-            self._vertex_text = {vertex: str(index) for index, vertex in enumerate(self.mesh.vertices())}  # type: ignore
-        elif isinstance(text, dict):
-            self._vertex_text = text
-
-    @property
-    def edge_text(self):
-        if self._edge_text is None:
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}  # type: ignore
-        return self._edge_text
-
-    @edge_text.setter
-    def edge_text(self, text):
-        if text == "key":
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.mesh.edges()}  # type: ignore
-        elif text == "index":
-            self._edge_text = {edge: str(index) for index, edge in enumerate(self.mesh.edges())}  # type: ignore
-        elif isinstance(text, dict):
-            self._edge_text = text
-
-    @property
-    def face_text(self):
-        if self._face_text is None:
-            self._face_text = {face: str(face) for face in self.mesh.faces()}  # type: ignore
-        return self._face_text
-
-    @face_text.setter
-    def face_text(self, text):
-        if text == "key":
-            self._face_text = {face: str(face) for face in self.mesh.faces()}  # type: ignore
-        elif text == "index":
-            self._face_text = {face: str(index) for index, face in enumerate(self.mesh.faces())}  # type: ignore
-        elif isinstance(text, dict):
-            self._face_text = text
 
     @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):

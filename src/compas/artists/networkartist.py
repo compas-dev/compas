@@ -5,6 +5,7 @@ from __future__ import division
 from abc import abstractmethod
 
 from compas.colors import Color
+from compas.geometry import transform_points
 from .artist import Artist
 from .descriptors.colordict import ColorDictAttribute
 
@@ -53,22 +54,10 @@ class NetworkArtist(Artist):
     node_color = ColorDictAttribute(default=Color.white())
     edge_color = ColorDictAttribute(default=Color.black())
 
-    default_nodesize = 5
-    default_edgewidth = 1.0
-
     def __init__(self, network, **kwargs):
         super(NetworkArtist, self).__init__(**kwargs)
         self._network = None
         self._node_xyz = None
-        self._node_text = None
-        self._edge_text = None
-        self._edge_width = None
-        # collect items that have been drawn?
-        self._nodecollection = None
-        self._edgecollection = None
-        self._nodelabelcollection = None
-        self._edgelabelcollection = None
-        # the network of the artist
         self.network = network
 
     @property
@@ -78,73 +67,30 @@ class NetworkArtist(Artist):
     @network.setter
     def network(self, network):
         self._network = network
+        self._transformation = None
         self._node_xyz = None
 
     @property
+    def transformation(self):
+        return self._transformation
+
+    @transformation.setter
+    def transformation(self, transformation):
+        self._node_xyz = None
+        self._transformation = transformation
+
+    @property
     def node_xyz(self):
-        if not self._node_xyz:
-            return {node: self.network.node_coordinates(node) for node in self.network.nodes()}  # type: ignore
+        if self._node_xyz is None:
+            points = self.network.nodes_attributes("xyz")  # type: ignore
+            if self.transformation:
+                points = transform_points(points, self.transformation)
+            self._node_xyz = dict(zip(self.network.nodes(), points))  # type: ignore
         return self._node_xyz
 
     @node_xyz.setter
     def node_xyz(self, node_xyz):
         self._node_xyz = node_xyz
-
-    @property
-    def node_size(self):
-        if not self._node_size:
-            self._node_size = {node: self.default_nodesize for node in self.network.nodes()}  # type: ignore
-        return self._node_size
-
-    @node_size.setter
-    def node_size(self, nodesize):
-        if isinstance(nodesize, dict):
-            self._node_size = nodesize
-        elif isinstance(nodesize, (int, float)):
-            self._node_size = {node: nodesize for node in self.network.nodes()}  # type: ignore
-
-    @property
-    def node_text(self):
-        if not self._node_text:
-            self._node_text = {node: str(node) for node in self.network.nodes()}  # type: ignore
-        return self._node_text
-
-    @node_text.setter
-    def node_text(self, text):
-        if text == "key":
-            self._node_text = {node: str(node) for node in self.network.nodes()}  # type: ignore
-        elif text == "index":
-            self._node_text = {node: str(index) for index, node in enumerate(self.network.nodes())}  # type: ignore
-        elif isinstance(text, dict):
-            self._node_text = text
-
-    @property
-    def edge_text(self):
-        if not self._edge_text:
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}  # type: ignore
-        return self._edge_text
-
-    @edge_text.setter
-    def edge_text(self, text):
-        if text == "key":
-            self._edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}  # type: ignore
-        elif text == "index":
-            self._edge_text = {edge: str(index) for index, edge in enumerate(self.network.edges())}  # type: ignore
-        elif isinstance(text, dict):
-            self._edge_text = text
-
-    @property
-    def edge_width(self):
-        if not self._edge_width:
-            self._edge_width = {edge: self.default_edgewidth for edge in self.network.edges()}  # type: ignore
-        return self._edge_width
-
-    @edge_width.setter
-    def edge_width(self, edgewidth):
-        if isinstance(edgewidth, dict):
-            self._edge_width = edgewidth
-        elif isinstance(edgewidth, (int, float)):
-            self._edge_width = {edge: edgewidth for edge in self.network.edges()}  # type: ignore
 
     @abstractmethod
     def draw_nodes(self, nodes=None, color=None, text=None):
