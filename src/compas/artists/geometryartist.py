@@ -33,5 +33,5 @@ class GeometryArtist(Artist):
     color = ColorAttribute(default=Color.black())
 
     def __init__(self, geometry, **kwargs):
-        super(GeometryArtist, self).__init__()
+        super(GeometryArtist, self).__init__(item=geometry, **kwargs)
         self.geometry = geometry

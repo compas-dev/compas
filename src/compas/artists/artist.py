@@ -161,6 +161,10 @@ class Artist(object):
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
 
+    def __init__(self, item, **kwargs):
+        self._item = item
+        self._transformation = None
+
     @staticmethod
     def build(item, **kwargs):
         """Build an artist corresponding to the item type.
@@ -255,6 +259,25 @@ class Artist(object):
 
         """
         Artist.ITEM_ARTIST[context][item_type] = artist_type
+
+    @property
+    def transformation(self):
+        """The transformation matrix of the artist.
+
+        Returns
+        -------
+        :class:`Transformation` or None
+            The transformation matrix.
+
+        """
+        # if not self._transformation:
+        #     if hasattr(self._item, "transformation"):
+        #         self._transformation = self._item.transformation
+        return self._transformation
+
+    @transformation.setter
+    def transformation(self, transformation):
+        self._transformation = transformation
 
     @abstractmethod
     def draw(self):
