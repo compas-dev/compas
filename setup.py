@@ -58,7 +58,6 @@ setup(
         "compas_rhino",
         "compas_blender",
         "compas_ghpython",
-        "compas_plotters",
     ],
     package_dir={"": "src"},
     package_data={"compas": ["data/schemas/*.json"]},
