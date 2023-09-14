@@ -76,7 +76,14 @@ def disjoint_face(face, vertices, rmesh):
 # =============================================================================
 
 
-def mesh_to_rhino(mesh, disjoint=True, face_callback=None):
+def mesh_to_rhino(
+    mesh,
+    color=None,
+    vertexcolors=None,
+    facecolors=None,
+    disjoint=True,
+    face_callback=None,
+):
     """Convert a COMPAS Mesh or a Polyhedron to a Rhino mesh object.
 
     Parameters
@@ -98,6 +105,9 @@ def mesh_to_rhino(mesh, disjoint=True, face_callback=None):
     return vertices_and_faces_to_rhino(
         vertices,
         faces,
+        color=color,
+        vertexcolors=vertexcolors,
+        facecolors=facecolors,
         disjoint=disjoint,
         face_callback=face_callback,
     )
@@ -194,10 +204,11 @@ def vertices_and_faces_to_rhino(
 
             face_callback(face)
 
-    if color:
-        mesh.VertexColors.CreateMonotoneMesh(SystemColor.FromArgb(*color.rgb255))
+    # if color:
+    #     mesh.VertexColors.CreateMonotoneMesh(SystemColor.FromArgb(*color.rgb255))
 
-    else:
+    # else:
+    if not color:
         if vertexcolors:
             if len(mesh.Vertices) != len(vertexcolors):
                 raise ValueError("The number of vertex colors does not match the number of vertices.")
@@ -260,5 +271,8 @@ def mesh_to_compas(rhinomesh, cls=None):
         else:
             vertices = [face.A, face.B, face.C, face.D]
         mesh.add_face(vertices, normal=vector_to_compas(normal))
+
+    for key in rhinomesh.UserDictionary:
+        mesh.attributes[key] = rhinomesh.UserDictionary[key]
 
     return mesh
