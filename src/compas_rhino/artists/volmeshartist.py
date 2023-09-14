@@ -150,7 +150,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         """
         return self.draw_cells(cells=cells, color=color)
 
-    def draw_vertices(self, vertices=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
+    def draw_vertices(self, vertices=None, color=None, group=None):
         """Draw a selection of vertices.
 
         Parameters
@@ -160,12 +160,8 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
             Default is None, in which case all vertices are drawn.
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the vertices.
-        text : dict[int, str], optional
-            A dictionary of vertex labels as vertex-text pairs.
-        fontheight : int, optional
-            Font height of the vertex labels.
-        fontface : str, optional
-            Font face of the vertex labels.
+        group : str, optional
+            The name of the group in which the vertices are combined.
 
         Returns
         -------
@@ -173,34 +169,23 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino point objects.
 
         """
-        vertices = vertices or self.volmesh.vertices()  # type: ignore
         self.vertex_color = color
-        self.vertex_text = text
-        vertex_xyz = self.vertex_xyz
-        vertex_color = self.vertex_color
-        vertex_text = self.vertex_text
 
         guids = []
 
-        for vertex in vertices:
-            point = vertex_xyz[vertex]
-            color = vertex_color[vertex]  # type: ignore
+        for vertex in vertices or self.volmesh.vertices():  # type: ignore
             name = "{}.vertex.{}".format(self.volmesh.name, vertex)  # type: ignore
+            color = self.vertex_color[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
+
+            point = self.vertex_xyz[vertex]
+
             guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
             guids.append(guid)
 
-            if text:
-                if vertex in vertex_text:
-                    attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
-                    dot = TextDot(str(vertex_text[vertex]), point)  # type: ignore
-                    dot.FontHeight = fontheight
-                    dot.FontFace = fontface
-                    sc.doc.Objects.AddTextDot(dot, attr)
-
         return guids
 
-    def draw_edges(self, edges=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
+    def draw_edges(self, edges=None, color=None, group=None):
         """Draw a selection of edges.
 
         Parameters
@@ -210,12 +195,8 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
             The default is None, in which case all edges are drawn.
         color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
-        text : dict[tuple[int, int], str], optional
-            A dictionary of edge labels as edge-text pairs.
-        fontheight : int, optional
-            Font height of the edge labels.
-        fontface : str, optional
-            Font face of the edge labels.
+        group : str, optional
+            The name of the group in which the edges are combined.
 
         Returns
         -------
@@ -223,36 +204,26 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino line objects.
 
         """
-        edges = edges or self.volmesh.edges()  # type: ignore
-
         self.edge_color = color
-        self.edge_text = text
-        vertex_xyz = self.vertex_xyz
-        edge_color = self.edge_color
-        edge_text = self.edge_text
 
         guids = []
 
-        for edge in edges:
-            color = edge_color[edge]  # type: ignore
+        for edge in edges or self.volmesh.edges():  # type: ignore
             name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)  # type: ignore
+            color = self.edge_color[edge]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
-            line = Line(vertex_xyz[edge[0]], vertex_xyz[edge[1]])
+
+            line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
+
             guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
             guids.append(guid)
 
-            if text:
-                if edge in edge_text:
-                    point = point_to_rhino(line.midpoint)
-                    attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
-                    dot = TextDot(str(edge_text[edge]), point)  # type: ignore
-                    dot.FontHeight = fontheight
-                    dot.FontFace = fontface
-                    sc.doc.Objects.AddTextDot(dot, attr)
+        if group:
+            self.add_to_group(group, guids)
 
         return guids
 
-    def draw_faces(self, faces=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
+    def draw_faces(self, faces=None, color=None, group=None):
         """Draw a selection of faces.
 
         Parameters
@@ -262,8 +233,182 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
             The default is None, in which case all faces are drawn.
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the faces.
-        text : dict[int, str], optional
+        group : str, optional
+            The name of the group in which the faces are combined.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
+
+        """
+        self.face_color = color
+
+        guids = []
+
+        for face in faces or self.volmesh.faces():  # type: ignore
+            name = "{}.face.{}".format(self.volmesh.name, face)  # type: ignore
+            color = self.face_color[face]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+
+            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
+            facet = ngon(vertices)
+
+            if facet:
+                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
+                guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    def draw_cells(self, cells=None, color=None, group=None):
+        """Draw a selection of cells.
+
+        Parameters
+        ----------
+        cells : list[int], optional
+            A list of cells to draw.
+            The default is None, in which case all cells are drawn.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the cells.
+        group : str, optional
+            The name of the group in which the cells are combined.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
+            Every cell is drawn as an individual mesh.
+
+        """
+        self.cell_color = color
+
+        guids = []
+
+        for cell in cells or self.volmesh.cells():  # type: ignore
+            name = "{}.cell.{}".format(self.volmesh.name, cell)  # type: ignore
+            color = self.cell_color[cell]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+
+            vertices = self.volmesh.cell_vertices(cell)  # type: ignore
+            faces = self.volmesh.cell_faces(cell)  # type: ignore
+            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
+            vertices = [self.vertex_xyz[vertex] for vertex in vertices]
+            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]  # type: ignore
+
+            guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=True), attr)
+            guids.append(guid)
+
+        return guids
+
+    # =============================================================================
+    # draw labels
+    # =============================================================================
+
+    def draw_vertexlabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
+        """Draw a selection of vertex labels.
+
+        Parameters
+        ----------
+        text : dict[int, str]
+            A dictionary of vertex labels as vertex-text pairs.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the vertices.
+        group : str, optional
+            The name of the group in which the labels are combined.
+        fontheight : int, optional
+            Font height of the vertex labels.
+        fontface : str, optional
+            Font face of the vertex labels.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
+
+        """
+        self.vertex_color = color
+
+        guids = []
+
+        for vertex in text:
+            name = "{}.vertex.{}.label".format(self.volmesh.name, vertex)  # type: ignore
+            color = self.vertex_color[vertex]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+
+            point = self.vertex_xyz[vertex]
+
+            dot = TextDot(str(text[vertex]), point)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
+
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    def draw_edgelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
+        """Draw a selection of edge labels.
+
+        Parameters
+        ----------
+        text : dict[tuple[int, int], str], optional
+            A dictionary of edge labels as edge-text pairs.
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+            The color of the edges.
+        group : str, optional
+            The name of the group in which the labels are combined.
+        fontheight : int, optional
+            Font height of the edge labels.
+        fontface : str, optional
+            Font face of the edge labels.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
+
+        """
+        self.edge_color = color
+
+        guids = []
+
+        for edge in text:
+            name = "{}.edge.{}-{}.label".format(self.volmesh.name, *edge)  # type: ignore
+            color = self.edge_color[edge]  # type: ignore
+            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+
+            line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
+            point = point_to_rhino(line.midpoint)
+
+            dot = TextDot(str(text[edge]), point)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
+
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    def draw_facelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
+        """Draw a selection of face labels.
+
+        Parameters
+        ----------
+        text : dict[int, str]
             A dictionary of face labels as face-text pairs.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the faces.
+        group : str, optional
+            The name of the group in which the labels are combined.
         fontheight : int, optional
             Font height of the face labels.
         fontface : str, optional
@@ -275,48 +420,41 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        faces = faces or self.volmesh.faces()  # type: ignore
         self.face_color = color
-        self.face_text = text
-        vertex_xyz = self.vertex_xyz
-        face_color = self.face_color
-        face_text = self.face_text
 
         guids = []
 
-        for face in faces:
-            color = face_color[face]  # type: ignore
-            name = "{}.face.{}".format(self.volmesh.name, face)  # type: ignore
-            vertices = [vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
-            facet = ngon(vertices)
-            if facet:
-                attr = attributes(name=name, color=color, layer=self.layer)
-                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
-                guids.append(guid)
+        for face in text:
+            name = "{}.face.{}.label".format(self.volmesh.name, face)  # type: ignore
+            color = self.face_color[face]  # type: ignore
+            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
-            if text:
-                if face in face_text:
-                    point = point_to_rhino(centroid_points(vertices))  # type: ignore
-                    attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
-                    dot = TextDot(str(face_text[face]), point)  # type: ignore
-                    dot.FontHeight = fontheight
-                    dot.FontFace = fontface
-                    sc.doc.Objects.AddTextDot(dot, attr)
+            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
+            point = point_to_rhino(centroid_points(vertices))  # type: ignore
+
+            dot = TextDot(str(text[face]), point)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
+
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
 
         return guids
 
-    def draw_cells(self, cells=None, color=None, text=None, fontheight=10, fontface="Arial Regular"):
+    def draw_celllabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
         """Draw a selection of cells.
 
         Parameters
         ----------
-        cells : list[int], optional
-            A list of cells to draw.
-            The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
-            The color of the cells.
         text : dict[int, str], optional
             A dictionary of face labels as cell-text pairs.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the cells.
+        group : str, optional
+            The name of the group in which the labels are combined.
         fontheight : int, optional
             Font height of the cell labels.
         fontface : str, optional
@@ -326,37 +464,36 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         -------
         list[System.Guid]
             The GUIDs of the created Rhino objects.
-            Every cell is drawn as an individual mesh.
 
         """
-        cells = cells or self.volmesh.cells()  # type: ignore
         self.cell_color = color
-        self.cell_text = text
-        vertex_xyz = self.vertex_xyz
-        cell_color = self.cell_color
-        cell_text = self.cell_text
 
         guids = []
 
-        for cell in cells:
-            vertices = self.volmesh.cell_vertices(cell)  # type: ignore
-            faces = self.volmesh.cell_faces(cell)  # type: ignore
-            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
-            vertices = [vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]  # type: ignore
-            name = "{}.cell.{}".format(self.volmesh.name, cell)  # type: ignore
-            color = cell_color[cell]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
-            guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=True), attr)
+        for cell in text:
+            name = "{}.cell.{}.label".format(self.volmesh.name, cell)  # type: ignore
+            color = self.cell_color[cell]  # type: ignore
+            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+
+            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.cell_vertices(cell)]  # type: ignore
+            point = point_to_rhino(centroid_points(vertices))  # type: ignore
+
+            dot = TextDot(str(text[cell]), point)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
+
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
             guids.append(guid)
 
-            if text:
-                if cell in cell_text:
-                    point = point_to_rhino(centroid_points(vertices))  # type: ignore
-                    attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
-                    dot = TextDot(str(cell_text[cell]), point)  # type: ignore
-                    dot.FontHeight = fontheight
-                    dot.FontFace = fontface
-                    sc.doc.Objects.AddTextDot(dot, attr)
+        if group:
+            self.add_to_group(group, guids)
 
         return guids
+
+    # =============================================================================
+    # draw normals
+    # =============================================================================
+
+    # =============================================================================
+    # draw miscellaneous
+    # =============================================================================

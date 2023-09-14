@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.artists import GeometryArtist
 from compas.colors import Color
 from compas_rhino.conversions import capsule_to_rhino_brep
+from compas_rhino.conversions import transformation_to_rhino
 from .artist import RhinoArtist
 from ._helpers import attributes
 
@@ -32,9 +33,8 @@ class CapsuleArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the capsule.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
@@ -44,6 +44,13 @@ class CapsuleArtist(RhinoArtist, GeometryArtist):
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
         breps = capsule_to_rhino_brep(self.geometry)
+
+        if self.transformation:
+            transformation = transformation_to_rhino(self.transformation)
+            for geometry in breps:
+                geometry.Transform(transformation)
+
         guids = [sc.doc.Objects.AddBrep(brep, attr) for brep in breps]
         return guids

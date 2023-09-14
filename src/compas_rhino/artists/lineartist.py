@@ -6,7 +6,7 @@ import scriptcontext as sc  # type: ignore
 
 from compas.artists import GeometryArtist
 from compas.colors import Color
-from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
 from .artist import RhinoArtist
 from ._helpers import attributes
 
@@ -27,35 +27,24 @@ class LineArtist(RhinoArtist, GeometryArtist):
     def __init__(self, line, **kwargs):
         super(LineArtist, self).__init__(geometry=line, **kwargs)
 
-    def draw(self, color=None, show_points=False):
+    def draw(self, color=None):
         """Draw the line.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the line.
             Default is :attr:`compas.artists.GeometryArtist.color`.
-        show_points : bool, optional
-            If True, draw the start and end point of the line.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
+        System.Guid
+            The GUID of the created Rhino object.
 
         """
-        start = point_to_rhino(self.geometry.start)
-        end = point_to_rhino(self.geometry.end)
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        guid = sc.doc.Objects.AddLine(start, end, attr)
-        guids = [guid]
+        geometry = line_to_rhino(self.geometry)
 
-        if show_points:
-            guid = sc.doc.Objects.AddPoint(start, attr)
-            guids.append(guid)
-            guid = sc.doc.Objects.AddPoint(end, attr)
-            guids.append(guid)
-
-        return guids
+        return sc.doc.Objects.AddLine(geometry, attr)

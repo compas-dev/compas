@@ -87,4 +87,6 @@ class FrameArtist(RhinoArtist, GeometryArtist):
         )
         guids.append(guid)
 
+        self.add_to_group("Frame.{}".format(self.geometry.name), guids)
+
         return guids

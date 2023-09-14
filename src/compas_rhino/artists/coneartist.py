@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.artists import GeometryArtist
 from compas.colors import Color
 from compas_rhino.conversions import cone_to_rhino_brep
+from compas_rhino.conversions import transformation_to_rhino
 from .artist import RhinoArtist
 from ._helpers import attributes
 
@@ -32,17 +33,21 @@ class ConeArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the cone.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the objects created in Rhino.
+        System.Guid
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        guid = sc.doc.Objects.AddBrep(cone_to_rhino_brep(self.geometry), attr)
-        return [guid]
+
+        geometry = cone_to_rhino_brep(self.geometry)
+
+        if self.transformation:
+            geometry.Transform(transformation_to_rhino(self.transformation))
+
+        return sc.doc.Objects.AddBrep(geometry, attr)

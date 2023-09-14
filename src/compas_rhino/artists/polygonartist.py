@@ -29,18 +29,36 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
     def __init__(self, polygon, **kwargs):
         super(PolygonArtist, self).__init__(geometry=polygon, **kwargs)
 
-    def draw(self, color=None, show_points=False, show_edges=False):
+    def draw(self, color=None):
         """Draw the polygon.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the polygon.
-            Default is :attr:`compas.artists.GeometryArtist.color`.
-        show_points : bool, optional
-            If True, draw the corner points of the polygon.
-        show_edges : bool, optional
-            If True, draw the boundary edges of the polygon.
+
+        Returns
+        -------
+        System.Guid
+            The GUID of the created Rhino object.
+
+        """
+        color = Color.coerce(color) or self.color
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
+        vertices = self.geometry.points
+        faces = self.geometry.faces
+        mesh = vertices_and_faces_to_rhino(vertices, faces)
+
+        return sc.doc.Objects.AddMesh(mesh, attr)
+
+    def draw_vertices(self, color=None):
+        """Draw the polygon vertices.
+
+        Parameters
+        ----------
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+            The RGB color of the polygon vertices.
 
         Returns
         -------
@@ -53,18 +71,33 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
 
         guids = []
 
-        vertices = self.geometry.points
-        faces = self.geometry.faces
-        mesh = vertices_and_faces_to_rhino(vertices, faces)
-        guid = sc.doc.Objects.AddMesh(mesh, attr)
-        guids.append(guid)
+        for point in self.geometry.points:
+            guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+            guids.append(guid)
 
-        if show_points:
-            for point in self.geometry.points:
-                guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
-                guids.append(guid)
+        return guids
 
-        if show_edges:
-            for line in self.geometry.lines:
-                guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
-                guids.append(guid)
+    def draw_edges(self, color=None):
+        """Draw the polygon edges.
+
+        Parameters
+        ----------
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+            The RGB color of the polygon edges.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
+
+        """
+        color = Color.coerce(color) or self.color
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
+        guids = []
+
+        for line in self.geometry.lines:
+            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+            guids.append(guid)
+
+        return guids

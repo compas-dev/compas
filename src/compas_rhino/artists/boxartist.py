@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.artists import GeometryArtist
 from compas.colors import Color
 from compas_rhino.conversions import box_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .artist import RhinoArtist
 from ._helpers import attributes
 
@@ -32,17 +33,22 @@ class BoxArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the objects created in Rhino.
+        System.Guid
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        guid = sc.doc.Objects.AddBox(box_to_rhino(self.geometry), attr)
-        return [guid]
+
+        geometry = box_to_rhino(self.geometry)
+
+        if self.transformation:
+            transformation = transformation_to_rhino(self.transformation)
+            geometry.Transform(transformation)
+
+        return sc.doc.Objects.AddBox(geometry, attr)

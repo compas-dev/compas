@@ -32,17 +32,15 @@ class SphereArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the sphere.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the objects created in Rhino.
+        System.Guid
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        guid = sc.doc.Objects.AddSphere(sphere_to_rhino(self.geometry), attr)
-        return [guid]
+        return sc.doc.Objects.AddSphere(sphere_to_rhino(self.geometry), attr)

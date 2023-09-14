@@ -32,19 +32,19 @@ class PolyhedronArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the polyhedron.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the objects created in Rhino.
+        System.Guid
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
         vertices = [list(vertex) for vertex in self.geometry.vertices]
         faces = self.geometry.faces
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces), attr)
-        return [guid]
+
+        return sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces), attr)

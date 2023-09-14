@@ -28,16 +28,32 @@ class PolylineArtist(RhinoArtist, GeometryArtist):
     def __init__(self, polyline, **kwargs):
         super(PolylineArtist, self).__init__(geometry=polyline, **kwargs)
 
-    def draw(self, color=None, show_points=False):
+    def draw(self, color=None):
         """Draw the polyline.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the polyline.
-            Default is :attr:`compas.artists.GeometryArtist.color`.
-        show_points : bool, optional
-            If True, draw the points of the polyline.
+
+        Returns
+        -------
+        System.Guid
+            The GUID of the created Rhino object.
+
+        """
+        color = Color.coerce(color) or self.color
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
+        return sc.doc.Objects.AddPolyline(polyline_to_rhino(self.geometry), attr)
+
+    def draw_points(self, color=None):
+        """Draw the polyline points.
+
+        Parameters
+        ----------
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+            The RGB color of the polyline points.
 
         Returns
         -------
@@ -48,12 +64,10 @@ class PolylineArtist(RhinoArtist, GeometryArtist):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        guid = sc.doc.Objects.AddPolyline(polyline_to_rhino(self.geometry), attr)
-        guids = [guid]
+        guids = []
 
-        if show_points:
-            for point in self.geometry.points:
-                guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
-                guids.append(guid)
+        for point in self.geometry.points:
+            guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+            guids.append(guid)
 
         return guids

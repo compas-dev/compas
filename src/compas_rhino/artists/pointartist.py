@@ -32,17 +32,15 @@ class PointArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the point.
-            Default is :attr:`compas.artists.GeometryArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
+        System.Guid
+            The GUID of the created Rhino object.
 
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        guid = sc.doc.Objects.AddPoint(point_to_rhino(self.geometry), attr)
-        return [guid]
+        return sc.doc.Objects.AddPoint(point_to_rhino(self.geometry), attr)
