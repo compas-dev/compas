@@ -130,6 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.compute_basisfuncsderivs`.
 * Added `compas.geometry.DefaultNurbsCurve` as try-last, Python-only plugin for `compas.geometry.NurbsCurve`.
 * Added `compas.geometry.DefaultNurbsSurface` as try-last, Python-only plugin for `compas.geometry.NurbsSurface`.
+* Added color count to constructor functions of `compas.colors.ColorMap`.
 
 ### Changed
 
