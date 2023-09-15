@@ -258,8 +258,6 @@ class Polyline(Curve):
         ----------
         point : [float, float, float] | :class:`~compas.geometry.Point`
             The point on the polyline.
-        snap : bool, optional
-            If True, return the closest polyline point.
         tol : float, optional
             A tolerance for membership verification.
 
@@ -276,6 +274,8 @@ class Polyline(Curve):
         0.5
 
         """
+        if not point.on_polyline(self):
+            raise Exception("{} not found!".format(point))
         dx = 0
         for line in self.lines:
             if not is_point_on_line(point, line, tol):
@@ -283,8 +283,6 @@ class Polyline(Curve):
                 continue
             dx += line.start.distance_to_point(point)
             break
-        if dx > 1:
-            raise Exception("{} not found!".format(point))
         return dx / self.length
 
     def tangent_at(self, t):
