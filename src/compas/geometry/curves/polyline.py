@@ -368,7 +368,7 @@ class Polyline(Curve):
             seg_ids.append(0)
 
         for seg1, seg2 in pairwise(seg_ids):
-            angle = self.lines[seg1].vector.angle(self.lines[seg2].vector)
+            angle = self.lines[seg2].vector.angle(-self.lines[seg1].vector)
             if angle >= angle_threshold:
                 corner_ids.append(seg1 + 1)
 
