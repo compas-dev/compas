@@ -97,6 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Surface.point_at`.
 * Added `compas.geometry.Surface.normal_at`.
 * Added `compas.geometry.Surface.frame_at`.
+* Added `compas.geometry.Polyline.parameter_at`
+* Added `compas.geometry.Polyline.divide_at_corners`
 * Added `mesh_to_rhino` to `compas_rhino.conversions`.
 * Added `vertices_and_faces_to_rhino` to `compas_rhino.conversions`.
 * Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
