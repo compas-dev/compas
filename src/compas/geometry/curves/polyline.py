@@ -6,7 +6,7 @@ from compas.utilities import pairwise
 
 from compas.geometry import allclose
 from compas.geometry import transform_points
-from compas.geometry import is_point_on_line
+from compas.geometry import is_point_on_line, is_point_on_polyline
 from compas.geometry import Point
 from compas.geometry import Line
 from compas.geometry import Frame
@@ -274,7 +274,7 @@ class Polyline(Curve):
         0.5
 
         """
-        if not point.on_polyline(self):
+        if not is_point_on_polyline(point, self, tol):
             raise Exception("{} not found!".format(point))
         dx = 0
         for line in self.lines:
