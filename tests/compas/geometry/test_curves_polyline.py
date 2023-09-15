@@ -452,7 +452,11 @@ def test_polyline_tangent_at_point(coords, input, expected):
 @pytest.mark.parametrize("input, expected", [((0, 0, 0), 0.0), ((1, 0, 0), 0.5), ((1, 1, 0), 1.0), ((2, 0, 0), None)])
 def test_polyline_parameter_at(input, expected):
     polyline = Polyline(((0, 0, 0), (1, 0, 0), (1, 1, 0)))
-    assert expected == polyline.parameter_at(input)
+    if expected is not None:
+        assert expected == polyline.parameter_at(input)
+    else:
+        with pytest.raises(Exception):
+            polyline.parameter_at(input)
 
 
 @pytest.mark.parametrize(
