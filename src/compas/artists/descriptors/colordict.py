@@ -95,33 +95,3 @@ class ColorDictAttribute(object):
             colordict.default = value
 
 
-# if __name__ == "__main__":
-
-#     class Test1:
-#         vertex_color = ColorDictAttribute()
-
-#     test1 = Test1()
-#     # test1.vertex_color.default = (0.0, 1.0, 0.0)
-#     print(test1.vertex_color[0])
-
-#     class Test2:
-#         vertex_color = ColorDictAttribute()
-
-#     test2 = Test2()
-#     test2.vertex_color = (1.0, 0.0, 0.0)
-#     print()
-#     print(test2.vertex_color[0])
-
-#     print()
-#     print(test1.vertex_color[0])
-#     print(test1.vertex_color[1])
-
-#     class Test3:
-#         vertex_color = ColorDictAttribute((0.0, 0.0, 1.0))
-
-#     test3 = Test3()
-#     test3.vertex_color = {0: (1.0, 0.0, 0.0), 2: (0.0, 1.0, 1.0)}
-#     print()
-#     print(test3.vertex_color[0])
-#     print(test3.vertex_color[1])
-#     print(test3.vertex_color[2])
