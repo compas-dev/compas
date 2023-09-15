@@ -265,8 +265,8 @@ class Polyline(Curve):
 
         Returns
         -------
-        float | None
-            The parameter of the polyline. None if point is not on the polyline.
+        float
+            The parameter of the polyline.
 
         Examples
         --------
@@ -284,7 +284,7 @@ class Polyline(Curve):
             dx += line.start.distance_to_point(point)
             break
         if dx > 1:
-            return None
+            raise Exception("{} not found!".format(point))
         return dx / self.length
 
     def tangent_at(self, t):
