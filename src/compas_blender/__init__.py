@@ -1,8 +1,9 @@
+# type: ignore
 import os
 import compas
 
 try:
-    import bpy  # noqa: F401
+    import bpy
 except ImportError:
     pass
 else:
