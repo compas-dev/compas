@@ -12,6 +12,7 @@ from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
+from compas.geometry import Pointcloud
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Polyline
@@ -36,6 +37,7 @@ from .lineartist import LineArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .pointartist import PointArtist
+from .pointcloudartist import PointcloudArtist
 from .polygonartist import PolygonArtist
 from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
@@ -70,6 +72,7 @@ def register_artists():
     Artist.register(Mesh, MeshArtist, context="Blender")
     Artist.register(Network, NetworkArtist, context="Blender")
     Artist.register(Point, PointArtist, context="Blender")
+    Artist.register(Pointcloud, PointcloudArtist, context="Blender")
     Artist.register(Polygon, PolygonArtist, context="Blender")
     Artist.register(Polyhedron, PolyhedronArtist, context="Blender")
     Artist.register(Polyline, PolylineArtist, context="Blender")
@@ -95,6 +98,7 @@ __all__ = [
     "MeshArtist",
     "NetworkArtist",
     "PointArtist",
+    "PointcloudArtist",
     "PolygonArtist",
     "PolyhedronArtist",
     "PolylineArtist",

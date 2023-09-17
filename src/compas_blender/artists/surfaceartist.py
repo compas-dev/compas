@@ -1,15 +1,15 @@
 from typing import Any
-from typing import List
 from typing import Optional
-from typing import Union
 
 import bpy  # type: ignore
 
-import compas_blender
-from compas.artists import GeometryArtist
 from compas.geometry import Surface
 from compas.colors import Color
+
+from compas.artists import GeometryArtist
 from compas_blender.artists import BlenderArtist
+
+from compas_blender import conversions
 
 
 class SurfaceArtist(BlenderArtist, GeometryArtist):
@@ -19,58 +19,37 @@ class SurfaceArtist(BlenderArtist, GeometryArtist):
     ----------
     surface : :class:`~compas.geometry.Surface`
         A COMPAS surface.
-    collection : str | :blender:`bpy.types.Collection`
-        The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
         see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
-    Examples
-    --------
-    Use the Blender artist explicitly.
-
-    .. code-block:: python
-
-        from compas.geometry import NurbsSurface
-        from compas_blender.artists import SurfaceArtist
-
-        surface = NurbsSurface([[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 1, 1]])
-
-        artist = SurfaceArtist(surface)
-        artist.draw()
-
-    Or, use the artist through the plugin mechanism.
-
-    .. code-block:: python
-
-        from compas.geometry import NurbsSurface
-        from compas.artists import Artist
-
-        surface = NurbsSurface([[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 1, 1]])
-
-        artist = Artist(surface)
-        artist.draw()
-
     """
 
-    def __init__(self, surface: Surface, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
-        super().__init__(geometry=surface, collection=collection or surface.name, **kwargs)
+    def __init__(self, surface: Surface, **kwargs: Any):
+        super().__init__(geometry=surface, **kwargs)
 
-    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> bpy.types.Object:
         """Draw the surface.
 
         Parameters
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the surface.
-            The default color is :attr:`compas.artists.SurfaceArtist.color`.
+        collection : str, optional
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
+        :blender:`bpy.types.Object`
 
         """
+        name = self.geometry.name
         color = Color.coerce(color) or self.color
-        surfaces = [{"surface": self.geometry, "color": color, "name": self.geometry.name}]
-        return compas_blender.draw_surfaces(surfaces, collection=self.collection)
+
+        surface = conversions.nurbssurface_to_blender_surface(self.geometry)
+
+        obj = self.create_object(surface, name=name)
+        self.update_object(obj, color=color, collection=collection)
+
+        return obj

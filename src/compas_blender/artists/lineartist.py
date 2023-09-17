@@ -1,16 +1,16 @@
 from typing import Any
 from typing import List
 from typing import Optional
-from typing import Union
 
 import bpy  # type: ignore
 
-from compas.artists import GeometryArtist
 from compas.geometry import Line
 from compas.colors import Color
+
+from compas.artists import GeometryArtist
 from compas_blender.artists import BlenderArtist
 
-from compas_blender.conversions import line_to_blender_curve
+from compas_blender import conversions
 
 
 class LineArtist(BlenderArtist, GeometryArtist):
@@ -20,57 +20,20 @@ class LineArtist(BlenderArtist, GeometryArtist):
     ----------
     line : :class:`~compas.geometry.Line`
         A COMPAS line.
-    collection : str | :blender:`bpy.types.Collection`
-        The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
         see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
-    Examples
-    --------
-    Use the Blender artist explicitly.
-
-    .. code-block:: python
-
-        from compas.geometry import Line
-        from compas_blender.artists import LineArtist
-
-        line = Line([0, 0, 0], [1, 1, 1])
-
-        artist = LineArtist(line)
-        artist.draw()
-
-    Or, use the artist through the plugin mechanism.
-
-    .. code-block:: python
-
-        from compas.geometry import Line
-        from compas.artists import Artist
-
-        line = Line([0, 0, 0], [1, 1, 1])
-
-        artist = Artist(line)
-        artist.draw()
-
     """
 
-    def __init__(
-        self,
-        line: Line,
-        collection: Optional[Union[str, bpy.types.Collection]] = None,
-        **kwargs: Any,
-    ):
-        super().__init__(
-            geometry=line,
-            collection=collection or line.name,
-            **kwargs,
-        )
+    def __init__(self, line: Line, **kwargs: Any):
+        super().__init__(geometry=line, **kwargs)
 
     def draw(
         self,
         color: Optional[Color] = None,
-        show_points: bool = False,
+        collection: Optional[str] = None,
     ) -> List[bpy.types.Object]:
         """Draw the line.
 
@@ -78,22 +41,20 @@ class LineArtist(BlenderArtist, GeometryArtist):
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
-            The default color is :attr:`compas.artists.GeometryArtist.color`.
-        show_points : bool, optional
-            If True, show the start and end point in addition to the line.
+        collection : str, optional
+            The Blender scene collection containing the created objects.
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
+        :blender:`bpy.types.Object`
 
         """
+        name = self.geometry.name
         color = Color.coerce(color) or self.color
 
-        curve = line_to_blender_curve(self.geometry)
-        obj = bpy.data.objects.new(self.geometry.name, curve)
+        curve = conversions.line_to_blender_curve(self.geometry)
 
-        self.link_object(obj)
-        if color:
-            self.assign_object_color(obj, color)
+        obj = self.create_object(curve, name=name)
+        self.update_object(obj, color=color, collection=collection, show_wire=True)
 
         return obj

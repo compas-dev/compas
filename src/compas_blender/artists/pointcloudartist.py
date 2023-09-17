@@ -4,8 +4,6 @@ from typing import Optional
 import bpy  # type: ignore
 
 from compas.geometry import Point
-from compas.geometry import Vector
-from compas.geometry import Line
 from compas.colors import Color
 
 from compas.artists import GeometryArtist
@@ -14,13 +12,13 @@ from .artist import BlenderArtist
 from compas_blender import conversions
 
 
-class VectorArtist(BlenderArtist, GeometryArtist):
-    """Artist for drawing vectors in Blender.
+class PointcloudArtist(BlenderArtist, GeometryArtist):
+    """Artist for drawing pointclouds in Blender.
 
     Parameters
     ----------
-    primitive : :class:`~compas.geometry.Vector`
-        A COMPAS vector.
+    pointcloud : :class:`~compas.geometry.Pointcloud`
+        A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
@@ -28,26 +26,31 @@ class VectorArtist(BlenderArtist, GeometryArtist):
 
     """
 
-    def __init__(self, vector: Vector, **kwargs: Any):
-        super().__init__(geometry=vector, **kwargs)
+    def __init__(self, point: Point, **kwargs: Any):
+        super().__init__(geometry=point, **kwargs)
 
     def draw(
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-        point: Optional[Point] = None,
+        size: float = 0.01,
+        u: int = 16,
+        v: int = 16,
     ) -> bpy.types.Object:
-        """Draw the vector.
+        """Draw the pointcloud.
 
         Parameters
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
-            The RGB color of the vector.
+            Color of the point object.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
-        point : [float, float, float] | :class:`~compas.geometry.Point`, optional
-            Point of application of the vector.
-            Default is ``Point(0, 0, 0)``.
+        size : float, optional
+            Radius of the point object.
+        u : int, optional
+            Number of faces in the "u" direction.
+        v : int, optional
+            Number of faces in the "v" direction.
 
         Returns
         -------
@@ -57,14 +60,9 @@ class VectorArtist(BlenderArtist, GeometryArtist):
         name = self.geometry.name
         color = Color.coerce(color) or self.color
 
-        point = point or (0.0, 0.0, 0.0)  # type: ignore
-        start = Point(*point)  # type: ignore
-        end = start + self.geometry
-        line = Line(start, end)
+        mesh = conversions.pointcloud_to_blender(self.geometry, name=self.geometry.name)
 
-        curve = conversions.line_to_blender_curve(line)
-
-        obj = self.create_object(curve, name=name)
-        self.update_object(obj, color=color, collection=collection)
+        obj = self.create_object(mesh, name=name)
+        self.update_object(obj, name=name, color=color, collection=collection)
 
         return obj
