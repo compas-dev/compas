@@ -1,3 +1,5 @@
+from typing import Optional
+
 import bpy  # type: ignore
 
 from compas.geometry import Circle
@@ -42,7 +44,7 @@ def line_to_blender_curve(line: Line) -> bpy.types.Curve:
     return curve
 
 
-def polyline_to_blender_curve(polyline: Polyline) -> bpy.types.Curve:
+def polyline_to_blender_curve(polyline: Polyline, name: Optional[str] = None) -> bpy.types.Curve:
     """Convert a COMPAS polyline to a Blender curve.
 
     Parameters
@@ -56,7 +58,7 @@ def polyline_to_blender_curve(polyline: Polyline) -> bpy.types.Curve:
         A Blender curve.
 
     """
-    curve = bpy.data.curves.new(name=polyline.name, type="CURVE")
+    curve = bpy.data.curves.new(name=name or polyline.name, type="CURVE")
     curve.dimensions = "3D"
 
     spline = curve.splines.new("POLY")
@@ -87,7 +89,7 @@ def circle_to_blender_curve(circle: Circle) -> bpy.types.Curve:
     raise NotImplementedError
 
 
-def nurbscurve_to_blender(nurbscurve: NurbsCurve) -> bpy.types.Curve:
+def nurbscurve_to_blender_curve(nurbscurve: NurbsCurve) -> bpy.types.Curve:
     """Convert a COMPAS NURBS curve to a Blender curve.
 
     Parameters

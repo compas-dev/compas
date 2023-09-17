@@ -26,10 +26,10 @@ def mesh_to_blender(mesh: Mesh) -> bpy.types.Mesh:
 
     """
     vertices, faces = mesh.to_vertices_and_faces()
-    return vertices_and_faces_to_blender(vertices, faces, name=mesh.name)  # type: ignore
+    return vertices_and_faces_to_blender_mesh(vertices, faces, name=mesh.name)  # type: ignore
 
 
-def vertices_and_faces_to_blender(
+def vertices_and_faces_to_blender_mesh(
     vertices: list[list[float]],
     faces: list[list[int]],
     name: Optional[str] = None,

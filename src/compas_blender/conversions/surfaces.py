@@ -7,7 +7,7 @@ from compas.geometry import NurbsSurface
 # =============================================================================
 
 
-def nurbssurface_to_blender(nurbssurface: NurbsSurface, u=32, v=32) -> bpy.types.Curve:
+def nurbssurface_to_blender_surface(nurbssurface: NurbsSurface, u=32, v=32) -> bpy.types.Curve:
     """Convert a COMPAS NURBS surface to a Blender surface.
 
     Parameters
