@@ -9,7 +9,6 @@ from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .geometryartist import GeometryArtist
 from .robotmodelartist import RobotModelArtist
-from .shapeartist import ShapeArtist
 from .volmeshartist import VolMeshArtist
 
 from .artist import clear  # noqa: F401
@@ -27,6 +26,5 @@ __all__ = [
     "NetworkArtist",
     "GeometryArtist",
     "RobotModelArtist",
-    "ShapeArtist",
     "VolMeshArtist",
 ]
