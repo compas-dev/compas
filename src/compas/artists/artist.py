@@ -270,9 +270,6 @@ class Artist(object):
             The transformation matrix.
 
         """
-        # if not self._transformation:
-        #     if hasattr(self._item, "transformation"):
-        #         self._transformation = self._item.transformation
         return self._transformation
 
     @transformation.setter
