@@ -57,7 +57,7 @@ class ColorMap(object):
     """
 
     def __init__(self, colors):
-        self._colors = None
+        self._colors = []
         self.colors = colors
 
     # --------------------------------------------------------------------------
@@ -299,36 +299,36 @@ class ColorMap(object):
     # methods
     # --------------------------------------------------------------------------
 
-    def plot(self):
-        """Visualize the current map with the plotter.
+    # def plot(self):
+    #     """Visualize the current map with the plotter.
 
-        Returns
-        -------
-        None
+    #     Returns
+    #     -------
+    #     None
 
-        """
-        from compas_plotters.plotter import Plotter
-        from compas.geometry import Pointcloud
-        from compas.geometry import Plane, Circle, Polygon
+    #     """
+    #     from compas_plotters.plotter import Plotter
+    #     from compas.geometry import Pointcloud
+    #     from compas.geometry import Plane, Circle, Polygon
 
-        plotter = Plotter(figsize=(16, 12))
-        w = 16
-        h = 10
-        n = len(self.colors)
-        d = w / n
-        cloud = Pointcloud.from_bounds(w, h, 0, n)
-        white = Color.white()
-        for i, color in enumerate(self.colors):
-            c = Circle(Plane(cloud[i], [0, 0, 1]), 0.1)
-            p = Polygon(
-                [
-                    [i * d, -2, 0],
-                    [(i + 1) * d, -2, 0],
-                    [(i + 1) * d, -1, 0],
-                    [i * d, -1, 0],
-                ]
-            )
-            plotter.add(c, facecolor=color, edgecolor=white, linewidth=0.5)
-            plotter.add(p, facecolor=color, edgecolor=color)
-        plotter.zoom_extents()
-        plotter.show()
+    #     plotter = Plotter(figsize=(16, 12))
+    #     w = 16
+    #     h = 10
+    #     n = len(self.colors)
+    #     d = w / n
+    #     cloud = Pointcloud.from_bounds(w, h, 0, n)
+    #     white = Color.white()
+    #     for i, color in enumerate(self.colors):
+    #         c = Circle(Plane(cloud[i], [0, 0, 1]), 0.1)
+    #         p = Polygon(
+    #             [
+    #                 [i * d, -2, 0],
+    #                 [(i + 1) * d, -2, 0],
+    #                 [(i + 1) * d, -1, 0],
+    #                 [i * d, -1, 0],
+    #             ]
+    #         )
+    #         plotter.add(c, facecolor=color, edgecolor=white, linewidth=0.5)
+    #         plotter.add(p, facecolor=color, edgecolor=color)
+    #     plotter.zoom_extents()
+    #     plotter.show()
