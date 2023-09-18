@@ -40,7 +40,7 @@ class PolygonArtist(BlenderArtist, GeometryArtist):
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the polygon.
         collection : str, optional
-            The Blender scene collection containing the created objects.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------

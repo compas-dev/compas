@@ -123,16 +123,16 @@ class MeshArtist(BlenderArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the vertices.
         collection : str, optional
-            The name of the collection that should contain the vertices.
+            The name of the Blender scene collection containing the created object(s).
 
         Other Parameters
         ----------------
         radius : float, optional
             The radius of the vertex spheres.
         u : int, optional
-            Number of faces in the "u" direction.
+            Number of faces in the "u" direction of the vertex spheres.
         v : int, optional
-            Number of faces in the "v" direction.
+            Number of faces in the "v" direction of the vertex spheres.
 
         Returns
         -------
@@ -173,7 +173,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
         collection : str, optional
-            The name of the collection that should contain the edges.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
@@ -211,7 +211,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the faces.
         collection : str, optional
-            The name of the collection that should contain the faces.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
@@ -257,7 +257,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         scale : float, optional
             Scale factor for the vertex normals.
         collection : str, optional
-            The name of the collection that should contain the normals.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
@@ -303,7 +303,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         scale : float, optional
             Scale factor for the face normals.
         collection : str, optional
-            The name of the collection that should contain the normals.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
@@ -435,7 +435,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the spheres.
         collection : str, optional
-            The name of the collection the should contain the objects.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
@@ -475,7 +475,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the pipes.
         collection : str, optional
-            The name of the collection to store the objects in.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------

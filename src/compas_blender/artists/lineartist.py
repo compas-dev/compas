@@ -42,7 +42,7 @@ class LineArtist(BlenderArtist, GeometryArtist):
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
         collection : str, optional
-            The Blender scene collection containing the created objects.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------

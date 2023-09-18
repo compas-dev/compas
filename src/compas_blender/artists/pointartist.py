@@ -31,7 +31,7 @@ class PointArtist(BlenderArtist, GeometryArtist):
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-        size: float = 0.01,
+        radius: float = 0.01,
         u: int = 16,
         v: int = 16,
     ) -> bpy.types.Object:
@@ -43,7 +43,7 @@ class PointArtist(BlenderArtist, GeometryArtist):
             Color of the point object.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
-        size : float, optional
+        radius : float, optional
             Radius of the point object.
         u : int, optional
             Number of faces in the "u" direction.
@@ -60,7 +60,7 @@ class PointArtist(BlenderArtist, GeometryArtist):
 
         bpy.ops.mesh.primitive_uv_sphere_add(
             location=self.geometry,
-            radius=size,
+            radius=radius,
             segments=u,
             ring_count=v,
         )

@@ -131,7 +131,7 @@ class NetworkArtist(BlenderArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
             The color specification for the nodes.
         collection : str, optional
-            The name of the collection to draw in.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
@@ -172,7 +172,7 @@ class NetworkArtist(BlenderArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
             The color specification for the edges.
         collection : str, optional
-            The name of the collection to draw in.
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
