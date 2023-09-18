@@ -22,10 +22,6 @@ class NetworkArtist(Artist):
     ----------
     network : :class:`~compas.datastructures.Network`
         The COMPAS network associated with the artist.
-    default_nodesize : float
-        The default size for nodes that do not have a specified size.
-    default_edgewidth : float
-        The default width for edges that do not have a specified width.
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.
@@ -33,16 +29,6 @@ class NetworkArtist(Artist):
         Mapping between nodes and RGB color values.
     edge_color : :class:`~compas.colors.ColorDict`
         Mapping between edges and colors.
-    node_text : dict[hashable, str]
-        Mapping between nodes and text labels.
-    edge_text : dict[tuple[hashable, hashable], str]
-        Mapping between edges and text labels.
-    node_size : dict[hashable, float]
-        Mapping between nodes and sizes.
-        Missing nodes get assigned the default node size :attr:`default_nodesize`.
-    edge_width : dict[tuple[hashable, hashable], float]
-        Mapping between edges and line widths.
-        Missing edges get assigned the default edge width :attr:`default_edgewidth`.
 
     See Also
     --------

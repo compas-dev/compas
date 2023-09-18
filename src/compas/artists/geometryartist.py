@@ -26,7 +26,6 @@ class GeometryArtist(Artist):
     --------
     :class:`compas.artists.CurveArtist`
     :class:`compas.artists.SurfaceArtist`
-    :class:`compas.artists.ShapeArtist`
 
     """
 

@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
-from warnings import warn
 from abc import abstractmethod
 from collections import defaultdict
 
@@ -51,19 +50,6 @@ def is_viewer_open():
     return False
 
 
-def is_plotter_open():
-    """Returns True if an instance of the Plotter is available.
-
-    Returns
-    -------
-    bool
-
-    """
-    # TODO: implement
-    # the plotter should be removed from this module and be its own separate thing
-    return False
-
-
 def _detect_current_context():
     """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
     1. Viewer
@@ -79,15 +65,13 @@ def _detect_current_context():
     """
     if is_viewer_open():
         return "Viewer"
-    if is_plotter_open():
-        return "Plotter"
     if compas.is_grasshopper():
         return "Grasshopper"
     if compas.is_rhino():
         return "Rhino"
     if compas.is_blender():
         return "Blender"
-    other_contexts = [v for v in Artist.ITEM_ARTIST.keys() if v != "Plotter"]  # TODO: remove when Plotter is removed
+    other_contexts = [v for v in Artist.ITEM_ARTIST.keys()]
     if other_contexts:
         return other_contexts[0]
     raise NoArtistContextError()
@@ -96,10 +80,6 @@ def _detect_current_context():
 def _get_artist_cls(data, **kwargs):
     # in any case user gets to override the choice
     context_name = kwargs.get("context") or _detect_current_context()
-
-    # TODO: remove when Plotter is removed
-    if context_name == "Plotter":
-        warn("The usage of Plotter with COMPAS Artist is deprecated!")
 
     dtype = type(data)
     cls = None
@@ -250,7 +230,7 @@ class Artist(object):
             The type of data item.
         artist_type : :class:`~compas.artists.Artist`
             The type of the corresponding/compatible artist.
-        context : Literal['Rhino', 'Grasshopper', 'Blender', 'Plotter'], optional
+        context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
             The visualization context in which the pair should be registered.
 
         Returns

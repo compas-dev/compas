@@ -22,10 +22,6 @@ class MeshArtist(Artist):
     ----------
     mesh : :class:`~compas.datastructures.Mesh`
         The mesh data structure.
-    default_vertexsize : float
-        The default size of the vertices of the mesh.
-    default_edgewidth : float
-        The default width of the edges of the mesh.
     vertex_xyz : dict[int, list[float]]
         View coordinates of the vertices.
         Defaults to the real coordinates.
@@ -37,23 +33,6 @@ class MeshArtist(Artist):
         Edge colors.
     face_color : :class:`~compas.colors.ColorDict`
         Face colors.
-    vertex_text : dict[int, str]
-        Vertex labels.
-        Defaults to the vertex identifiers.
-    edge_text : dict[tuple[int, int], str]
-        Edge labels.
-        Defaults to the edge identifiers.
-    face_text : dict[int, str]
-        Face labels.
-        Defaults to the face identifiers.
-    vertex_size : dict[int, float]
-        Vertex sizes.
-        Defaults to 1.
-        Visualization of vertices with variable size is not available for all visualization contexts.
-    edge_width : dict[tuple[int, int], float]
-        Edge widths.
-        Defaults to 1.
-        Visualization of edges with variable width is not available for all visualization contexts.
 
     See Also
     --------
