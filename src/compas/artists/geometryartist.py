@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.colors import Color
 from .artist import Artist
 from .descriptors.color import ColorAttribute
 
@@ -29,7 +28,7 @@ class GeometryArtist(Artist):
 
     """
 
-    color = ColorAttribute(default=Color.black())
+    color = ColorAttribute(default=None)
 
     def __init__(self, geometry, **kwargs):
         super(GeometryArtist, self).__init__(item=geometry, **kwargs)
