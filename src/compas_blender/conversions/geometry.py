@@ -66,6 +66,8 @@ def pointcloud_to_blender(
         faces += [[f + len(vertices) for f in face] for face in fs]
     mesh = bpy.data.meshes.new(name or pointcloud.name)
     mesh.from_pydata(vertices, [], faces)
+    mesh.validate(verbose=False)
+    mesh.update(calc_edges=True)
     return mesh
 
     # mesh = bpy.data.meshes.new(name or pointcloud.name)
