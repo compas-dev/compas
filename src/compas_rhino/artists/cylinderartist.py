@@ -21,7 +21,6 @@ class CylinderArtist(RhinoArtist, GeometryArtist):
         A COMPAS cylinder.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 
@@ -35,7 +34,6 @@ class CylinderArtist(RhinoArtist, GeometryArtist):
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the cylinder.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------

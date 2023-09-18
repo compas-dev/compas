@@ -26,7 +26,6 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         A COMPAS volmesh.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`VolMeshArtist`.
 
     """
 

@@ -21,7 +21,6 @@ class CurveArtist(RhinoArtist, GeometryArtist):
         A COMPAS curve.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 

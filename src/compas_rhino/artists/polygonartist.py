@@ -22,7 +22,6 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
         A COMPAS polygon.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 

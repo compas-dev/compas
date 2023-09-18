@@ -20,7 +20,6 @@ class PointArtist(RhinoArtist, GeometryArtist):
         A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 

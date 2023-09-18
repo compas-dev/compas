@@ -4,8 +4,9 @@ from typing import Optional
 import bpy  # type: ignore
 
 from compas.geometry import Circle
-from compas.artists import GeometryArtist
 from compas.colors import Color
+
+from compas.artists import GeometryArtist
 from .artist import BlenderArtist
 
 
@@ -18,8 +19,6 @@ class CircleArtist(BlenderArtist, GeometryArtist):
         A COMPAS circle.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 

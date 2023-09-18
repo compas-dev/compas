@@ -21,7 +21,6 @@ class ConeArtist(RhinoArtist, GeometryArtist):
         A COMPAS cone.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 

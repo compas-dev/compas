@@ -2,10 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.artists import GeometryArtist
+from compas_rhino import conversions
+
 from compas.geometry import Point
-from compas_rhino.conversions import line_to_rhino
-from compas_rhino.conversions import point_to_rhino
+from compas.artists import GeometryArtist
 from .artist import GHArtist
 
 
@@ -18,7 +18,6 @@ class VectorArtist(GHArtist, GeometryArtist):
         A COMPAS vector.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 
@@ -33,23 +32,20 @@ class VectorArtist(GHArtist, GeometryArtist):
         point : [float, float, float] | :class:`~compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
-        show_point : bool, optional
-            If True, draw the point of application of the vector.
 
         Returns
         -------
-        list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
-            The Rhino line and endpoints, if requested.
+        :rhino:`Rhino.Geometry.Line`
 
         """
         point = point or [0, 0, 0]
         start = Point(*point)
         end = start + self.geometry
 
-        result = []
-        result.append(line_to_rhino([start, end]))
+        geometry = conversions.line_to_rhino([start, end])
 
-        if show_point:
-            result.append(point_to_rhino(start))
+        if self.transformation:
+            transformation = conversions.transformation_to_rhino(self.transformation)
+            geometry.Transform(transformation)
 
-        return result
+        return geometry

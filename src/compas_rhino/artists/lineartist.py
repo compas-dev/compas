@@ -20,7 +20,6 @@ class LineArtist(RhinoArtist, GeometryArtist):
         A COMPAS line.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 
@@ -34,7 +33,6 @@ class LineArtist(RhinoArtist, GeometryArtist):
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the line.
-            Default is :attr:`compas.artists.GeometryArtist.color`.
 
         Returns
         -------

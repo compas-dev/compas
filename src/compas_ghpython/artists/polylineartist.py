@@ -2,8 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas_rhino import conversions
+
 from compas.artists import GeometryArtist
-from compas_rhino.conversions import polyline_to_rhino_curve
 from .artist import GHArtist
 
 
@@ -16,7 +17,6 @@ class PolylineArtist(GHArtist, GeometryArtist):
         A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     """
 
@@ -31,4 +31,9 @@ class PolylineArtist(GHArtist, GeometryArtist):
         :rhino:`Rhino.Geometry.PolylineCurve`.
 
         """
-        return polyline_to_rhino_curve(self.geometry)
+        geometry = conversions.polyline_to_rhino_curve(self.geometry)
+
+        if self.transformation:
+            geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+
+        return geometry

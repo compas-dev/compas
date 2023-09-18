@@ -5,9 +5,11 @@ from typing import Union
 import bpy  # type: ignore
 
 from compas.geometry import Box
-from compas.artists import GeometryArtist
 from compas.colors import Color
+
 from compas_blender import conversions
+
+from compas.artists import GeometryArtist
 from .artist import BlenderArtist
 
 
@@ -20,8 +22,6 @@ class BoxArtist(BlenderArtist, GeometryArtist):
         A COMPAS box.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 
@@ -52,10 +52,6 @@ class BoxArtist(BlenderArtist, GeometryArtist):
         # add option for local coordinates
         vertices, faces = self.geometry.to_vertices_and_faces()
         mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
-
-        # mp = centroid_points(vertices) if centroid else [0, 0, 0]
-        # vertices = [subtract_vectors(vertex, mp) for vertex in vertices]
-        # obj.location = self.geometry.frame.point
 
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection, show_wire=True)

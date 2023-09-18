@@ -22,7 +22,6 @@ class FrameArtist(RhinoArtist, GeometryArtist):
         Scale factor that controls the length of the axes.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     Attributes
     ----------

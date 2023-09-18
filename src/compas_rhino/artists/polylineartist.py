@@ -21,7 +21,6 @@ class PolylineArtist(RhinoArtist, GeometryArtist):
         A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 

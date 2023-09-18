@@ -20,7 +20,6 @@ class SurfaceArtist(RhinoArtist, GeometryArtist):
         A COMPAS surface.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 

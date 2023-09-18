@@ -35,7 +35,6 @@ class MeshArtist(RhinoArtist, BaseArtist):
         A COMPAS mesh.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`MeshArtist`.
 
     """
 

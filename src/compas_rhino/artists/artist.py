@@ -17,7 +17,6 @@ class RhinoArtist(Artist):
         A layer name.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`Artist` for more info.
 
     """
 

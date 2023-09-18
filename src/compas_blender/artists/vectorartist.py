@@ -23,8 +23,6 @@ class VectorArtist(BlenderArtist, GeometryArtist):
         A COMPAS vector.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 

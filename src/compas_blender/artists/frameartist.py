@@ -5,9 +5,9 @@ from typing import Optional
 import bpy  # type: ignore
 
 from compas.geometry import Frame
+from compas.colors import Color
 
 from compas.artists import GeometryArtist
-from compas.colors import Color
 from .artist import BlenderArtist
 
 

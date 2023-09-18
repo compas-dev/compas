@@ -3,11 +3,12 @@ from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.artists import GeometryArtist
 from compas.geometry import Curve
 from compas.colors import Color
 from compas_blender import conversions
-from compas_blender.artists import BlenderArtist
+
+from compas.artists import GeometryArtist
+from .artist import BlenderArtist
 
 
 class CurveArtist(BlenderArtist, GeometryArtist):
@@ -19,8 +20,6 @@ class CurveArtist(BlenderArtist, GeometryArtist):
         A COMPAS curve.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 

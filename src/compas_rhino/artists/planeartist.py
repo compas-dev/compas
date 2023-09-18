@@ -15,7 +15,6 @@ class PlaneArtist(RhinoArtist, GeometryArtist):
         A COMPAS plane.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 

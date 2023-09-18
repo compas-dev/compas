@@ -21,7 +21,6 @@ class VectorArtist(RhinoArtist, GeometryArtist):
         A COMPAS vector.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 

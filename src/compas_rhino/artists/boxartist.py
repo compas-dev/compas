@@ -21,7 +21,6 @@ class BoxArtist(RhinoArtist, GeometryArtist):
         A COMPAS box.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`GeometryArtist`.
 
     """
 

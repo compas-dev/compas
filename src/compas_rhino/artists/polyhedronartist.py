@@ -20,7 +20,6 @@ class PolyhedronArtist(RhinoArtist, GeometryArtist):
         A COMPAS polyhedron.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 

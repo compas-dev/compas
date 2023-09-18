@@ -2,9 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas_rhino import conversions
+
 from compas.artists import GeometryArtist
-from compas.colors import Color
-from compas_rhino.conversions import vertices_and_faces_to_rhino
 from .artist import GHArtist
 
 
@@ -17,7 +17,6 @@ class CylinderArtist(GHArtist, GeometryArtist):
         A COMPAS cylinder.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 
@@ -39,6 +38,9 @@ class CylinderArtist(GHArtist, GeometryArtist):
         :rhino:`Rhino.Geometry.Mesh`
 
         """
-        color = Color.coerce(color) or self.color
-        vertices, faces = self.geometry.to_vertices_and_faces(u=u)
-        return vertices_and_faces_to_rhino(vertices, faces, color=color)
+        geometry = conversions.cylinder_to_rhino_brep(self.geometry)
+
+        if self.transformation:
+            geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+
+        return geometry

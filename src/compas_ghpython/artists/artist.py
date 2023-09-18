@@ -12,4 +12,4 @@ class GHArtist(Artist):
         super(GHArtist, self).__init__(**kwargs)
 
     def clear(self):
-        pass
+        raise NotImplementedError

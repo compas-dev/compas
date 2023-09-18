@@ -27,7 +27,6 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         A COMPAS network.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`NetworkArtist`.
 
     """
 

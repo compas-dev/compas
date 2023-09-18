@@ -22,8 +22,6 @@ class SphereArtist(BlenderArtist, GeometryArtist):
         A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
 
     """
 

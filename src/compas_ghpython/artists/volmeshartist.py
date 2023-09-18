@@ -2,12 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_ghpython
-from compas.artists import VolMeshArtist
+from compas_rhino import conversions
+from compas_rhino.artists._helpers import ngon
+
+from compas.artists import VolMeshArtist as BaseArtist
 from .artist import GHArtist
 
 
-class VolMeshArtist(GHArtist, VolMeshArtist):
+class VolMeshArtist(GHArtist, BaseArtist):
     """Artist for drawing volmesh data structures.
 
     Parameters
@@ -16,161 +18,11 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
         A COMPAS volmesh.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.VolMeshArtist` for more info.
 
     """
 
     def __init__(self, volmesh, **kwargs):
         super(VolMeshArtist, self).__init__(volmesh=volmesh, **kwargs)
-
-    def draw(self, cells=None, color=None):
-        """Draw a selection of cells.
-
-        Parameters
-        ----------
-        cells : list[int], optional
-            A list of cells to draw.
-            The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
-            The color of the cells.
-            The default color is :attr:`VolMeshArtist.default_cellcolor`.
-
-        Returns
-        -------
-        list[:rhino:`Rhino.Geometry.Mesh`]
-            The GUIDs of the created Rhino objects.
-            Every cell is drawn as an individual mesh.
-
-        """
-        return self.draw_cells(cells=cells, color=color)
-
-    def draw_vertices(self, vertices=None, color=None):
-        """Draw a selection of vertices.
-
-        Parameters
-        ----------
-        vertices : list
-            A list of vertices to draw.
-            Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`]
-            The color specification for the vertices.
-            The default color of the vertices is :attr:`VolMeshArtist.default_vertexcolor`.
-
-        Returns
-        -------
-        list[:rhino:`Rhino.Geometry.Point3d`]
-
-        """
-        self.vertex_color = color
-        vertices = vertices or self.vertices
-        vertex_xyz = self.vertex_xyz
-        points = []
-        for vertex in vertices:
-            points.append(
-                {
-                    "pos": vertex_xyz[vertex],
-                    "name": "{}.vertex.{}".format(self.volmesh.name, vertex),
-                    "color": self.vertex_color[vertex].rgb255,
-                }
-            )
-        return compas_ghpython.draw_points(points)
-
-    def draw_edges(self, edges=None, color=None):
-        """Draw a selection of edges.
-
-        Parameters
-        ----------
-        edges : list[tuple[int, int]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
-            The color specification for the edges.
-            The default color is :attr:`VolMeshArtist.default_edgecolor`.
-
-        Returns
-        -------
-        list[:rhino:`Rhino.Geometry.Line`]
-
-        """
-        self.edge_color = color
-        edges = edges or self.edges
-        vertex_xyz = self.vertex_xyz
-        lines = []
-        for edge in edges:
-            u, v = edge
-            lines.append(
-                {
-                    "start": vertex_xyz[u],
-                    "end": vertex_xyz[v],
-                    "color": self.edge_color[edge].rgb255,
-                    "name": "{}.edge.{}-{}".format(self.volmesh.name, u, v),
-                }
-            )
-        return compas_ghpython.draw_lines(lines)
-
-    def draw_faces(self, faces=None, color=None, join_faces=False):
-        """Draw a selection of faces.
-
-        Parameters
-        ----------
-        faces : list[list[int]], optional
-            A list of faces to draw.
-            The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
-            The color specification for the faces.
-            The default color is :attr:`VolMeshArtist.default_facecolor`.
-        join_faces : bool, optional
-            If True, join the faces into one mesh.
-
-        Returns
-        -------
-        list[:rhino:`Rhino.Geometry.Mesh`]
-
-        """
-        self.face_color = color
-        faces = faces or self.faces
-        vertex_xyz = self.vertex_xyz
-        facets = []
-        for face in faces:
-            facets.append(
-                {
-                    "points": [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)],
-                    "name": "{}.face.{}".format(self.volmesh.name, face),
-                    "color": self.face_color[face].rgb255,
-                }
-            )
-        return compas_ghpython.draw_faces(facets)
-
-    def draw_cells(self, cells=None, color=None):
-        """Draw a selection of cells.
-
-        Parameters
-        ----------
-        cells : list[int], optional
-            A list of cells to draw.
-            The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
-            The color of the cells.
-            The default color is :attr:`VolMeshArtist.default_cellcolor`.
-
-        Returns
-        -------
-        list[:rhino:`Rhino.Geometry.Mesh`]
-
-        """
-        self.cell_color = color
-        cells = cells or self.cells
-        vertex_xyz = self.vertex_xyz
-        meshes = []
-        for cell in cells:
-            vertices = self.volmesh.cell_vertices(cell)
-            faces = self.volmesh.cell_faces(cell)
-            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
-            vertices = [vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]
-            mesh = compas_ghpython.draw_mesh(vertices, faces, color=self.cell_color[cell].rgb255)
-            meshes.append(mesh)
-        return meshes
 
     def clear_vertices(self):
         """GH Artists are state-less. Therefore, clear does not have any effect.
@@ -251,3 +103,132 @@ class VolMeshArtist(GHArtist, VolMeshArtist):
 
         """
         pass
+
+    def draw(self, cells=None, color=None):
+        """Draw a selection of cells.
+
+        Parameters
+        ----------
+        cells : list[int], optional
+            A list of cells to draw.
+            The default is None, in which case all cells are drawn.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the cells.
+            The default color is :attr:`VolMeshArtist.default_cellcolor`.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Mesh`]
+            The GUIDs of the created Rhino objects.
+            Every cell is drawn as an individual mesh.
+
+        """
+        return self.draw_cells(cells=cells, color=color)
+
+    def draw_vertices(self, vertices=None):
+        """Draw a selection of vertices.
+
+        Parameters
+        ----------
+        vertices : list
+            A list of vertices to draw.
+            Default is None, in which case all vertices are drawn.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Point3d`]
+
+        """
+        points = []
+
+        for vertex in vertices or self.volmesh.vertices():  # type: ignore
+            points.append(conversions.point_to_rhino(self.vertex_xyz[vertex]))
+
+        return points
+
+    def draw_edges(self, edges=None):
+        """Draw a selection of edges.
+
+        Parameters
+        ----------
+        edges : list[tuple[int, int]], optional
+            A list of edges to draw.
+            The default is None, in which case all edges are drawn.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Line`]
+
+        """
+        lines = []
+
+        for edge in edges or self.volmesh.edges():  # type: ignore
+            lines.append(conversions.line_to_rhino((self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])))
+
+        return lines
+
+    def draw_faces(self, faces=None, color=None):
+        """Draw a selection of faces.
+
+        Parameters
+        ----------
+        faces : list[list[int]], optional
+            A list of faces to draw.
+            The default is None, in which case all faces are drawn.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color specification for the faces.
+            The default color is :attr:`VolMeshArtist.default_facecolor`.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Mesh`]
+
+        """
+        faces = faces or self.volmesh.faces()  # type: ignore
+
+        self.face_color = color
+
+        meshes = []
+
+        for face in faces:
+            color = self.face_color[face]  # type: ignore
+            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
+            facet = ngon(len(vertices))
+            if facet:
+                meshes.append(conversions.vertices_and_faces_to_rhino(vertices, [facet]))
+
+        return meshes
+
+    def draw_cells(self, cells=None, color=None):
+        """Draw a selection of cells.
+
+        Parameters
+        ----------
+        cells : list[int], optional
+            A list of cells to draw.
+            The default is None, in which case all cells are drawn.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the cells.
+
+        Returns
+        -------
+        list[:rhino:`Rhino.Geometry.Mesh`]
+
+        """
+        self.cell_color = color
+
+        meshes = []
+
+        for cell in cells or self.volmesh.cells():  # type: ignore
+            color = self.cell_color[cell]  # type: ignore
+
+            vertices = self.volmesh.cell_vertices(cell)  # type: ignore
+            faces = self.volmesh.cell_faces(cell)  # type: ignore
+            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
+            vertices = [self.vertex_xyz[vertex] for vertex in vertices]
+            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]  # type: ignore
+
+            mesh = conversions.vertices_and_faces_to_rhino(vertices, faces, disjoint=True)
+            meshes.append(mesh)
+
+        return meshes

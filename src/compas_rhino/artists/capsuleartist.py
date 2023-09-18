@@ -21,7 +21,6 @@ class CapsuleArtist(RhinoArtist, GeometryArtist):
         A COMPAS capsule.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 
