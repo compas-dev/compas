@@ -29,7 +29,10 @@ class BoxArtist(BlenderArtist, GeometryArtist):
         super().__init__(geometry=box, **kwargs)
 
     def draw(
-        self, color: Optional[Color] = None, collection: Optional[Union[str, bpy.types.Collection]] = None
+        self,
+        color: Optional[Color] = None,
+        collection: Optional[Union[str, bpy.types.Collection]] = None,
+        show_wire: bool = True,
     ) -> bpy.types.Object:
         """Draw the box associated with the artist.
 
@@ -39,6 +42,8 @@ class BoxArtist(BlenderArtist, GeometryArtist):
             The RGB color of the box.
         collection : str | :blender:`bpy.types.Collection`, optional
             The name of the Blender scene collection containing the created object(s).
+        show_wire : bool, optional
+            Display the wireframe of the box.
 
         Returns
         -------
@@ -54,6 +59,6 @@ class BoxArtist(BlenderArtist, GeometryArtist):
         mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
 
         obj = self.create_object(mesh, name=name)
-        self.update_object(obj, color=color, collection=collection, show_wire=True)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
         return obj

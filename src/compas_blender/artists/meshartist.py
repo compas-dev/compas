@@ -80,7 +80,9 @@ class MeshArtist(BlenderArtist, BaseArtist):
     # draw
     # ==========================================================================
 
-    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> bpy.types.Object:
+    def draw(
+        self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
+    ) -> bpy.types.Object:
         """Draw the mesh.
 
         Parameters
@@ -89,6 +91,8 @@ class MeshArtist(BlenderArtist, BaseArtist):
             The color of the mesh.
         collection : str, optional
             The name of the collection that should contain the mesh.
+        show_wire : bool, optional
+            Display the wireframe of the mesh.
 
         Returns
         -------
@@ -100,7 +104,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         mesh = conversions.mesh_to_blender(self.mesh)  # type: ignore
 
         obj = self.create_object(mesh, name=name)
-        self.update_object(obj, color=color, collection=collection, show_wire=True)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
         return obj
 
@@ -152,7 +156,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
             bpy.ops.mesh.primitive_uv_sphere_add(location=point, radius=radius, segments=u, ring_count=v)
             obj = bpy.context.object
             self.objects.append(obj)
-            self.update_object(obj, name=name, color=color, collection=collection)
+            self.update_object(obj, name=name, color=color, collection=collection)  # type: ignore
             objects.append(obj)
 
         return objects
@@ -190,7 +194,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
             curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
 
             obj = self.create_object(curve, name=name)
-            self.update_object(obj, color=color, collection=collection)
+            self.update_object(obj, color=color, collection=collection)  # type: ignore
             objects.append(obj)
 
         return objects
@@ -200,6 +204,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         faces: Optional[List[int]] = None,
         color: Optional[Union[Color, Dict[int, Color]]] = None,
         collection: Optional[str] = None,
+        show_wire: bool = True,
     ) -> List[bpy.types.Object]:
         """Draw a selection of faces.
 
@@ -212,6 +217,8 @@ class MeshArtist(BlenderArtist, BaseArtist):
             The color specification for the faces.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
+        show_wire : bool, optional
+            Display the wireframe of the faces.
 
         Returns
         -------
@@ -229,7 +236,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
             mesh = conversions.polygon_to_blender_mesh(points, name=name)  # type: ignore
 
             obj = self.create_object(mesh, name=name)
-            self.update_object(obj, color=color, collection=collection, show_wire=False)
+            self.update_object(obj, color=color, collection=collection, show_wire=show_wire)  # type: ignore
             objects.append(obj)
 
         return objects
@@ -454,7 +461,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
             geometry = conversions.sphere_to_blender_mesh(sphere, name=name)
 
             obj = self.create_object(geometry, name=name)
-            self.update_object(obj, color=color, collection=collection)
+            self.update_object(obj, color=color, collection=collection)  # type: ignore
 
             objects.append(obj)
 
@@ -495,7 +502,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
             geometry = conversions.cylinder_to_blender_mesh(cylinder)
 
             obj = self.create_object(geometry, name=name)
-            self.update_object(obj, color=color, collection=collection)
+            self.update_object(obj, color=color, collection=collection)  # type: ignore
 
             objects.append(obj)
 

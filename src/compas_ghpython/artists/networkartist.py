@@ -23,14 +23,6 @@ class NetworkArtist(GHArtist, BaseArtist):
     def __init__(self, network, **kwargs):
         super(NetworkArtist, self).__init__(network=network, **kwargs)
 
-    def clear_edges(self):
-        """GH Artists are state-less. Therefore, clear does not have any effect."""
-        pass
-
-    def clear_nodes(self):
-        """GH Artists are state-less. Therefore, clear does not have any effect."""
-        pass
-
     def draw(self):
         """Draw the entire network with default color settings.
 

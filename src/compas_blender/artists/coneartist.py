@@ -32,6 +32,8 @@ class ConeArtist(BlenderArtist, GeometryArtist):
         color: Optional[Color] = None,
         collection: Optional[str] = None,
         u: int = 16,
+        show_wire: bool = False,
+        shade_smooth: bool = True,
     ) -> bpy.types.Object:
         """Draw the cone associated with the artist.
 
@@ -43,6 +45,10 @@ class ConeArtist(BlenderArtist, GeometryArtist):
             The name of the Blender scene collection containing the created object(s).
         u : int, optional
             Number of faces in the "u" direction.
+        show_wire : bool, optional
+            Display the wireframe of the cone.
+        shade_smooth : bool, optional
+            Display smooth shading on the cone.
 
         Returns
         -------
@@ -55,8 +61,10 @@ class ConeArtist(BlenderArtist, GeometryArtist):
 
         vertices, faces = self.geometry.to_vertices_and_faces(u=u)
         mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
+        if shade_smooth:
+            mesh.shade_smooth()
 
         obj = self.create_object(mesh, name=name)
-        self.update_object(obj, color=color, collection=collection, show_wire=True)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
         return obj

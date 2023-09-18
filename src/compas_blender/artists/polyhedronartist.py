@@ -27,7 +27,9 @@ class PolyhedronArtist(BlenderArtist, GeometryArtist):
     def __init__(self, polyhedron: Polyhedron, **kwargs: Any):
         super().__init__(geometry=polyhedron, **kwargs)
 
-    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> List[bpy.types.Object]:
+    def draw(
+        self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
+    ) -> List[bpy.types.Object]:
         """Draw the polyhedron associated with the artist.
 
         Parameters
@@ -36,6 +38,8 @@ class PolyhedronArtist(BlenderArtist, GeometryArtist):
             The RGB color of the polyhedron.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
+        show_wire : bool, optional
+            Display the wireframe of the polyhedron.
 
         Returns
         -------
@@ -50,6 +54,6 @@ class PolyhedronArtist(BlenderArtist, GeometryArtist):
         mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
 
         obj = self.create_object(mesh, name=name)
-        self.update_object(obj, color=color, collection=collection, show_wire=True)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
         return obj

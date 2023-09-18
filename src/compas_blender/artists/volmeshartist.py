@@ -155,7 +155,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
             bpy.ops.mesh.primitive_uv_sphere_add(location=point, radius=radius, segments=u, ring_count=v)
             obj = bpy.context.object
             self.objects.append(obj)
-            self.update_object(obj, name=name, color=color, collection=collection)
+            self.update_object(obj, name=name, color=color, collection=collection)  # type: ignore
             objects.append(obj)
 
         return objects
@@ -193,7 +193,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
             curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
 
             obj = self.create_object(curve, name=name)
-            self.update_object(obj, color=color, collection=collection)
+            self.update_object(obj, color=color, collection=collection)  # type: ignore
             objects.append(obj)
 
         return objects
@@ -203,6 +203,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         faces: Optional[List[int]] = None,
         color: Optional[Union[Color, Dict[int, Color]]] = None,
         collection: Optional[str] = None,
+        show_wire: bool = True,
     ) -> List[bpy.types.Object]:
         """Draw a selection of faces.
 
@@ -215,6 +216,8 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
             The color specification for the faces.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
+        show_wire : bool, optional
+            Display the wireframe of the faces.
 
         Returns
         -------
@@ -232,7 +235,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
             mesh = conversions.polygon_to_blender_mesh(points, name=name)  # type: ignore
 
             obj = self.create_object(mesh, name=name)
-            self.update_object(obj, color=color, collection=collection, show_wire=False)
+            self.update_object(obj, color=color, collection=collection, show_wire=show_wire)  # type: ignore
             objects.append(obj)
 
         return objects
@@ -242,6 +245,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         cells: Optional[List[int]] = None,
         color: Optional[Union[Color, Dict[int, Color]]] = None,
         collection: Optional[str] = None,
+        show_wire: bool = True,
     ) -> List[bpy.types.Object]:
         """Draw a selection of cells.
 
@@ -254,6 +258,8 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
             The color of the cells.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
+        show_wire : bool, optional
+            Display the wireframe of the cells.
 
         Returns
         -------
@@ -278,7 +284,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
             mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=name)  # type: ignore
 
             obj = self.create_object(mesh, name=name)
-            self.update_object(obj, color=color, collection=collection, show_wire=True)
+            self.update_object(obj, color=color, collection=collection, show_wire=show_wire)  # type: ignore
 
             objects.append(obj)
 
