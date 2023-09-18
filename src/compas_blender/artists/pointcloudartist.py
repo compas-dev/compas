@@ -33,7 +33,7 @@ class PointcloudArtist(BlenderArtist, GeometryArtist):
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-        size: float = 0.01,
+        radius: float = 0.01,
         u: int = 16,
         v: int = 16,
     ) -> bpy.types.Object:
@@ -45,12 +45,12 @@ class PointcloudArtist(BlenderArtist, GeometryArtist):
             Color of the point object.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
-        size : float, optional
-            Radius of the point object.
+        radius : float, optional
+            The radius of the spheres representing the vertices.
         u : int, optional
-            Number of faces in the "u" direction.
+            Number of faces in the "u" direction of the spheres representing the vertices.
         v : int, optional
-            Number of faces in the "v" direction.
+            Number of faces in the "v" direction of the spheres representing the vertices.
 
         Returns
         -------
@@ -60,9 +60,9 @@ class PointcloudArtist(BlenderArtist, GeometryArtist):
         name = self.geometry.name
         color = Color.coerce(color) or self.color
 
-        mesh = conversions.pointcloud_to_blender(self.geometry, name=self.geometry.name)
+        mesh = conversions.pointcloud_to_blender(self.geometry, name=name, u=u, v=v, radius=radius)
 
         obj = self.create_object(mesh, name=name)
-        self.update_object(obj, name=name, color=color, collection=collection)
+        self.update_object(obj, color=color, collection=collection)
 
         return obj
