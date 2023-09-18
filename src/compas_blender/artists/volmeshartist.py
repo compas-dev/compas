@@ -91,7 +91,9 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
     # draw
     # ==========================================================================
 
-    def draw(self, cells: Optional[List[int]] = None, color: Optional[Color] = None) -> List[bpy.types.Object]:
+    def draw(
+        self, cells: Optional[List[int]] = None, color: Optional[Color] = None, collection: Optional[str] = None
+    ) -> List[bpy.types.Object]:
         """Draw a selection of cells.
 
         Parameters
@@ -102,13 +104,15 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the cells.
             The default color is :attr:`VolMeshArtist.default_cellcolor`.
+        collection : str, optional
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
         list[:blender:`bpy.types.Object`]
 
         """
-        return self.draw_cells(cells=cells, color=color)
+        return self.draw_cells(cells=cells, color=color, collection=collection)
 
     def draw_vertices(
         self,
