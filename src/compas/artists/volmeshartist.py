@@ -54,7 +54,7 @@ class VolMeshArtist(Artist):
     cell_color = ColorDictAttribute(default=Color.grey())
 
     def __init__(self, volmesh, **kwargs):
-        super(VolMeshArtist, self).__init__(**kwargs)
+        super(VolMeshArtist, self).__init__(item=volmesh, **kwargs)
         self._volmesh = None
         self._vertex_xyz = None
         self.volmesh = volmesh
