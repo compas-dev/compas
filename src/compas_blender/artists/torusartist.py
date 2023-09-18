@@ -31,8 +31,8 @@ class TorusArtist(BlenderArtist, GeometryArtist):
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-        u: Optional[int] = None,
-        v: Optional[int] = None,
+        u: Optional[int] = 16,
+        v: Optional[int] = 16,
     ) -> bpy.types.Object:
         """Draw the torus associated with the artist.
 
