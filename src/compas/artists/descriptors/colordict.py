@@ -93,5 +93,3 @@ class ColorDictAttribute(object):
         else:
             colordict.clear()
             colordict.default = value
-
-
