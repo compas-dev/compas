@@ -1,10 +1,13 @@
 from typing import Any
+from typing import Union
+from typing import Optional
 
 import bpy  # type: ignore
 import compas_blender
 
 from compas.colors import Color
 from compas.artists import Artist
+from compas.geometry import Transformation
 
 from compas_blender import conversions
 
@@ -18,17 +21,15 @@ class BlenderArtist(Artist):
         The Blender scene collection the object(s) created by the artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`~compas.artists.Artist` for more info.
 
     Attributes
     ----------
-    collection : :blender:`bpy.types.Collection`
-        The collection containing the object(s) created by this artist.
+    objects : list[:blender:`bpy.types.Object`]
+        The Blender objects created by the artist.
 
     """
 
     def __init__(self, **kwargs: Any):
-        # Initialize collection before even calling super because other classes depend on that
         super().__init__(**kwargs)
         self.objects = []
 
@@ -39,7 +40,9 @@ class BlenderArtist(Artist):
     # Objects
     # =============================================================================
 
-    def create_object(self, geometry, name=None):
+    def create_object(
+        self, geometry: Union[bpy.types.Mesh, bpy.types.Curve], name: Optional[str] = None
+    ) -> bpy.types.Object:
         """Add an object to the Blender scene.
 
         Parameters
@@ -59,7 +62,15 @@ class BlenderArtist(Artist):
         self.objects.append(obj)
         return obj
 
-    def update_object(self, obj, name=None, color=None, collection=None, transformation=None, show_wire=False):
+    def update_object(
+        self,
+        obj: bpy.types.Object,
+        name: Optional[str] = None,
+        color: Optional[Color] = None,
+        collection: Optional[str] = None,
+        transformation: Optional[Transformation] = None,
+        show_wire: Optional[bool] = False,
+    ) -> None:
         """Update an object in the Blender scene.
 
         Parameters
@@ -68,9 +79,9 @@ class BlenderArtist(Artist):
             The Blender object data.
         name : str, optional
             The name of the object.
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
+        color : :class:`compas.colors.Color`, optional
             The color specification.
-        collection : str | :blender:`bpy.types.Collection`, optional
+        collection : str, optional
             The collection to which the object should be added.
         transformation : :class:`compas.geometry.Transformation`, optional
             The transformation to apply to the object.
@@ -88,11 +99,15 @@ class BlenderArtist(Artist):
         if name:
             obj.name = name
 
+        if color:
+            self.set_object_color(obj, color)
+
         self.set_object_tranformation(obj, transformation)
         self.add_object_to_collection(obj, collection)
-        self.set_object_color(obj, color)
 
-    def add_object_to_collection(self, obj, name=None, do_unlink=True):
+    def add_object_to_collection(
+        self, obj: bpy.types.Object, name: Optional[str] = None, do_unlink: Optional[bool] = True
+    ) -> bpy.types.Collection:
         """Add an object to a collection.
 
         Parameters
@@ -119,7 +134,7 @@ class BlenderArtist(Artist):
         collection.objects.link(obj)
         return collection
 
-    def set_object_color(self, obj, color):
+    def set_object_color(self, obj: bpy.types.Object, color: Color) -> None:
         """Set the color of a Blender object.
 
         Parameters
@@ -134,7 +149,7 @@ class BlenderArtist(Artist):
         None
 
         """
-        color = Color.coerce(color)
+        color = Color.coerce(color)  # type: ignore
         if not color:
             return
 
@@ -146,7 +161,7 @@ class BlenderArtist(Artist):
             obj.data.materials.append(material)
         obj.active_material = material
 
-    def set_object_tranformation(self, obj, transformation):
+    def set_object_tranformation(self, obj: bpy.types.Object, transformation: Optional[Transformation] = None) -> None:
         """Set the transformation of a Blender object.
 
         Parameters
@@ -201,7 +216,7 @@ class BlenderArtist(Artist):
             parent = collection
         return collection
 
-    def clear_collection(self, name: str, include_children: bool = True):
+    def clear_collection(self, name: str, include_children: Optional[bool] = True) -> None:
         """Clear the objects in a collection.
 
         Parameters
@@ -224,7 +239,7 @@ class BlenderArtist(Artist):
             for child in collection.children:
                 self.clear_collection(child.name)
 
-    def delete_collection(self, name: str):
+    def delete_collection(self, name: str) -> None:
         """Delete a collection.
 
         Parameters
