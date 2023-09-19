@@ -5,8 +5,8 @@ compas_rhino.artists
 .. currentmodule:: compas_rhino.artists
 
 
-Geometry Artists
-================
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -21,26 +21,17 @@ Geometry Artists
     CylinderArtist
     FrameArtist
     LineArtist
+    MeshArtist
+    NetworkArtist
     PlaneArtist
     PointArtist
     PolygonArtist
     PolyhedronArtist
     PolylineArtist
-    VectorArtist
     SphereArtist
     SurfaceArtist
     TorusArtist
-
-
-Datastructure Artists
-=====================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    MeshArtist
-    NetworkArtist
+    VectorArtist
     VolMeshArtist
 
 

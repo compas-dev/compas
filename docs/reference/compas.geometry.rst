@@ -23,22 +23,8 @@ Base Classes
     Transformation
 
 
-Geometry
-========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Point
-    Vector
-    Plane
-    Frame
-    Pointcloud
-
-
-Curves
-======
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -46,86 +32,46 @@ Curves
 
     Arc
     Bezier
-    Circle
-    Ellipse
-    Hyperbola
-    Line
-    NurbsCurve
-    Polyline
-
-
-Surfaces
-========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    ConicalSurface
-    CylindricalSurface
-    NurbsSurface
-    PlanarSurface
-    SphericalSurface
-    ToroidalSurface
-
-
-Shapes
-======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     Box
-    Capsule
-    Cone
-    Cylinder
-    Polyhedron
-    Sphere
-    Torus
-
-
-BREPs
-=====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     Brep
+    BrepEdge
     BrepFace
     BrepLoop
-    BrepEdge
     BrepVertex
-
-
-Transformations
-===============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    Capsule
+    Circle
+    Cone
+    ConicalSurface
+    Cylinder
+    CylindricalSurface
+    Ellipse
+    Frame
+    Hyperbola
+    KDTree
+    Line
+    NurbsCurve
+    NurbsSurface
+    Plane
+    PlanarSurface
+    Point
+    Pointcloud
+    Polyhedron
+    Polyline
     Projection
     Reflection
     Rotation
     Scale
     Shear
+    Sphere
+    SphericalSurface
+    ToroidalSurface
+    Torus
     Translation
+    Vector
 
 
-Spatial Indexing
-================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    KDTree
-
-
-Algorithms
-==========
+Functions
+=========
 
 .. autosummary::
     :toctree: generated/

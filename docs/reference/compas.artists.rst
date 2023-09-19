@@ -36,18 +36,6 @@ Exceptions
     NoArtistContextError
 
 
-Pluggables
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    clear
-    redraw
-    register_artists
-
-
 Base Classes
 ============
 

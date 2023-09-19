@@ -11,8 +11,8 @@ The artists in this package provide plugins for the pluggable methods of the bas
 Therefore, they can be used directly, from here, or through the base artists :class:`~compas.artists.Artist`.
 
 
-Geometry Artists
-================
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -27,25 +27,16 @@ Geometry Artists
     CylinderArtist
     FrameArtist
     LineArtist
+    MeshArtist
+    NetworkArtist
     PointArtist
     PolygonArtist
     PolyhedronArtist
     PolylineArtist
-    VectorArtist
     SphereArtist
     SurfaceArtist
     TorusArtist
-
-
-Datastructure Artists
-=====================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    MeshArtist
-    NetworkArtist
+    VectorArtist
     VolMeshArtist
 
 
