@@ -14,7 +14,6 @@ def compas_api():
         "compas.geometry",
         "compas.numerical",
         "compas.plugins",
-        "compas.robots",
         "compas.rpc",
         "compas.topology",
         "compas.utilities",

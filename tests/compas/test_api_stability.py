@@ -76,7 +76,6 @@ if __name__ == "__main__":
         "compas.geometry",
         "compas.numerical",
         "compas.plugins",
-        "compas.robots",
         "compas.rpc",
         "compas.topology",
         "compas.utilities",
@@ -98,9 +97,6 @@ if __name__ == "__main__":
     if compas_api["metadata"]["compas_version"] == "1.0.0":
         name = "compas.datastructures"
         compas_api["modules"][name] = [m for m in compas_api["modules"][name] if m not in ("IPY")]
-
-        name = "compas.robots"
-        compas_api["modules"][name] = [m for m in compas_api["modules"][name] if m not in ("Frame", "Transformation")]
 
         name = "compas.geometry"
         compas_api["modules"][name] = [m for m in compas_api["modules"][name] if m not in ("pluggable")]
