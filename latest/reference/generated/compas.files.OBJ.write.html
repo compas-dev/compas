@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="OBJReader" href="compas.files.OBJReader.html" />
+    <link rel="next" title="OBJParser" href="compas.files.OBJParser.html" />
     <link rel="prev" title="OBJ.read" href="compas.files.OBJ.read.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -431,9 +431,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.clear.html">clear</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.redraw.html">redraw</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.register_artists.html">register_artists</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
 </ul>
 </li>
@@ -446,17 +443,17 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.data.Data.html">Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DataEncoder.html">DataEncoder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DataDecoder.html">DataDecoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.data.is_int3.html">is_int3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_float.html">is_sequence_of_float</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_int.html">is_sequence_of_int</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_uint.html">is_sequence_of_uint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.json_load.html">json_load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.json_loads.html">json_loads</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.json_dump.html">json_dump</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.json_dumps.html">json_dumps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_int.html">is_sequence_of_int</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_uint.html">is_sequence_of_uint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_float.html">is_sequence_of_float</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_int3.html">is_int3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
 </ul>
 </li>
@@ -589,41 +586,40 @@ document.write(`
 </li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../compas.files.html">compas.files</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="compas.files.DXF.html">DXF</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.DXFReader.html">DXFReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.DXFParser.html">DXFParser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.DXFReader.html">DXFReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTF.html">GLTF</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFReader.html">GLTFReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFParser.html">GLTFParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFContent.html">GLTFContent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFMesh.html">GLTFMesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFExporter.html">GLTFExporter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFMesh.html">GLTFMesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFParser.html">GLTFParser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFReader.html">GLTFReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.LAS.html">LAS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.LASReader.html">LASReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.LASParser.html">LASParser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.LASReader.html">LASReader</a></li>
 <li class="toctree-l3 current active"><a class="reference internal" href="compas.files.OBJ.html">OBJ</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.OBJReader.html">OBJReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OBJParser.html">OBJParser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.OBJReader.html">OBJReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OBJWriter.html">OBJWriter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OFF.html">OFF</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OFFReader.html">OFFReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OFFWriter.html">OFFWriter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.PLY.html">PLY</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.PLYReader.html">PLYReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.PLYParser.html">PLYParser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.PLYReader.html">PLYReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.PLYWriter.html">PLYWriter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.STL.html">STL</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.STLReader.html">STLReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.STLParser.html">STLParser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.STLReader.html">STLReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.STLWriter.html">STLWriter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.URDF.html">URDF</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.URDFParser.html">URDFParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.URDFElement.html">URDFElement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.URDFGenericElement.html">URDFGenericElement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.URDFParser.html">URDFParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.XML.html">XML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.XMLElement.html">XMLElement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.XMLReader.html">XMLReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.XMLWriter.html">XMLWriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.XMLElement.html">XMLElement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.prettify_string.html">prettify_string</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.geometry.html">compas.geometry</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -631,44 +627,44 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Geometry.html">Geometry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Surface.html">Surface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Transformation.html">Transformation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Point.html">Point</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Vector.html">Vector</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Plane.html">Plane</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Frame.html">Frame</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Pointcloud.html">Pointcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Arc.html">Arc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Bezier.html">Bezier</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Circle.html">Circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Ellipse.html">Ellipse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Hyperbola.html">Hyperbola</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Line.html">Line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.html">NurbsCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Polyline.html">Polyline</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.ConicalSurface.html">ConicalSurface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.CylindricalSurface.html">CylindricalSurface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsSurface.html">NurbsSurface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.PlanarSurface.html">PlanarSurface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.SphericalSurface.html">SphericalSurface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.ToroidalSurface.html">ToroidalSurface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Box.html">Box</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Capsule.html">Capsule</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Cone.html">Cone</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Cylinder.html">Cylinder</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Polyhedron.html">Polyhedron</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Sphere.html">Sphere</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Torus.html">Torus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Brep.html">Brep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepEdge.html">BrepEdge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepFace.html">BrepFace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepLoop.html">BrepLoop</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepEdge.html">BrepEdge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepVertex.html">BrepVertex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Capsule.html">Capsule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Circle.html">Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Cone.html">Cone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.ConicalSurface.html">ConicalSurface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Cylinder.html">Cylinder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.CylindricalSurface.html">CylindricalSurface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Ellipse.html">Ellipse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Frame.html">Frame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Hyperbola.html">Hyperbola</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.KDTree.html">KDTree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Line.html">Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.html">NurbsCurve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsSurface.html">NurbsSurface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Plane.html">Plane</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.PlanarSurface.html">PlanarSurface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Point.html">Point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Pointcloud.html">Pointcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Polyhedron.html">Polyhedron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Polyline.html">Polyline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Projection.html">Projection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Reflection.html">Reflection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Rotation.html">Rotation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Scale.html">Scale</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Shear.html">Shear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Sphere.html">Sphere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.SphericalSurface.html">SphericalSurface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.ToroidalSurface.html">ToroidalSurface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Torus.html">Torus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Translation.html">Translation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.KDTree.html">KDTree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.Vector.html">Vector</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.bestfit_circle_numpy.html">bestfit_circle_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.bestfit_frame_numpy.html">bestfit_frame_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.bestfit_line_numpy.html">bestfit_line_numpy</a></li>
@@ -928,21 +924,21 @@ document.write(`
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.topology.html">compas.topology</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.adjacency_from_edges.html">adjacency_from_edges</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.topology.vertex_coloring.html">vertex_coloring</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.topology.connected_components.html">connected_components</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.topology.face_adjacency.html">face_adjacency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.topology.face_adjacency_numpy.html">face_adjacency_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.topology.unify_cycles.html">unify_cycles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.topology.unify_cycles_numpy.html">unify_cycles_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.astar_lightest_path.html">astar_lightest_path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.astar_shortest_path.html">astar_shortest_path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.breadth_first_ordering.html">breadth_first_ordering</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.breadth_first_traverse.html">breadth_first_traverse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.breadth_first_paths.html">breadth_first_paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.topology.connected_components.html">connected_components</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.depth_first_ordering.html">depth_first_ordering</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.dijkstra_distances.html">dijkstra_distances</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.dijkstra_path.html">dijkstra_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.topology.face_adjacency.html">face_adjacency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.topology.face_adjacency_numpy.html">face_adjacency_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.topology.shortest_path.html">shortest_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.topology.unify_cycles.html">unify_cycles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.topology.unify_cycles_numpy.html">unify_cycles_numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.topology.vertex_coloring.html">vertex_coloring</a></li>
 </ul>
 </li>
 </ul>
@@ -957,27 +953,30 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CylinderArtist.html">CylinderArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.FrameArtist.html">FrameArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.LineArtist.html">LineArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.MeshArtist.html">MeshArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PointArtist.html">PointArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PointcloudArtist.html">PointcloudArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PolygonArtist.html">PolygonArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PolyhedronArtist.html">PolyhedronArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PolylineArtist.html">PolylineArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.VectorArtist.html">VectorArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.SphereArtist.html">SphereArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.TorusArtist.html">TorusArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.MeshArtist.html">MeshArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.NetworkArtist.html">NetworkArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.VectorArtist.html">VectorArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.bmesh_to_compas.html">bmesh_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.circle_to_blender_curve.html">circle_to_blender_curve</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.color_to_blender_material.html">color_to_blender_material</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.cylinder_to_blender_mesh.html">cylinder_to_blender_mesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.line_to_blender_curve.html">line_to_blender_curve</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.mesh_to_blender.html">mesh_to_blender</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.mesh_to_compas.html">mesh_to_compas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.monkey_to_compas.html">monkey_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.nurbscurve_to_blender_curve.html">nurbscurve_to_blender_curve</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.nurbssurface_to_blender_surface.html">nurbssurface_to_blender_surface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.pointcloud_to_blender.html">pointcloud_to_blender</a></li>
@@ -985,11 +984,8 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.polyline_to_blender_curve.html">polyline_to_blender_curve</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.sphere_to_blender_mesh.html">sphere_to_blender_mesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.transformation_to_blender.html">transformation_to_blender</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.vertices_and_faces_to_blender_mesh.html">vertices_and_faces_to_blender_mesh</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.bmesh_to_compas.html">bmesh_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.mesh_to_compas.html">mesh_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.monkey_to_compas.html">monkey_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.transformation_to_compas.html">transformation_to_compas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.vertices_and_faces_to_blender_mesh.html">vertices_and_faces_to_blender_mesh</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
@@ -1006,29 +1002,24 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.CylinderArtist.html">CylinderArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.FrameArtist.html">FrameArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.LineArtist.html">LineArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.MeshArtist.html">MeshArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.PointArtist.html">PointArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.PolygonArtist.html">PolygonArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.PolyhedronArtist.html">PolyhedronArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.PolylineArtist.html">PolylineArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.VectorArtist.html">VectorArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.SphereArtist.html">SphereArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.TorusArtist.html">TorusArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.MeshArtist.html">MeshArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.html">NetworkArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.VectorArtist.html">VectorArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_ghpython.artists.GHArtist.html">GHArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_ghpython.components.html">components</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-17"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.components.install_userobjects.html">install_userobjects</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_ghpython.components.uninstall_userobjects.html">uninstall_userobjects</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_rhino.html">compas_rhino</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-18"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.artists.html">compas_rhino.artists</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-19"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_rhino.html">compas_rhino</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-17"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.artists.html">compas_rhino.artists</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-18"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.BoxArtist.html">BoxArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.BrepArtist.html">BrepArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.CapsuleArtist.html">CapsuleArtist</a></li>
@@ -1038,88 +1029,88 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.CylinderArtist.html">CylinderArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.FrameArtist.html">FrameArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.LineArtist.html">LineArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.MeshArtist.html">MeshArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.PlaneArtist.html">PlaneArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.PointArtist.html">PointArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.PolygonArtist.html">PolygonArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.PolyhedronArtist.html">PolyhedronArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.PolylineArtist.html">PolylineArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.VectorArtist.html">VectorArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.SphereArtist.html">SphereArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.TorusArtist.html">TorusArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.MeshArtist.html">MeshArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.NetworkArtist.html">NetworkArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.VectorArtist.html">VectorArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.artists.RhinoArtist.html">RhinoArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.conversions.html">compas_rhino.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-20"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.conversions.html">compas_rhino.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-19"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.ConversionError.html">ConversionError</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.arc_to_compas.html">arc_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.arc_to_rhino.html">arc_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.box_to_compas.html">box_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.box_to_rhino.html">box_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_box.html">brep_to_compas_box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_cone.html">brep_to_compas_cone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_cylinder.html">brep_to_compas_cylinder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_sphere.html">brep_to_compas_sphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_rhino.html">brep_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.capsule_to_rhino_brep.html">capsule_to_rhino_brep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.circle_to_compas.html">circle_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.circle_to_rhino.html">circle_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.circle_to_rhino_curve.html">circle_to_rhino_curve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cone_to_compas.html">cone_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cone_to_rhino.html">cone_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cone_to_rhino_brep.html">cone_to_rhino_brep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_circle.html">curve_to_compas_circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_ellipse.html">curve_to_compas_ellipse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_line.html">curve_to_compas_line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_polyline.html">curve_to_compas_polyline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_rhino.html">curve_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cylinder_to_compas.html">cylinder_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cylinder_to_rhino.html">cylinder_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cylinder_to_rhino_brep.html">cylinder_to_rhino_brep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.ellipse_to_compas.html">ellipse_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.ellipse_to_rhino.html">ellipse_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.ellipse_to_rhino_curve.html">ellipse_to_rhino_curve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_box.html">extrusion_to_compas_box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_cylinder.html">extrusion_to_compas_cylinder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_torus.html">extrusion_to_compas_torus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.frame_to_rhino.html">frame_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.frame_to_rhino_plane.html">frame_to_rhino_plane</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.line_to_compas.html">line_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.line_to_rhino.html">line_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.line_to_rhino_curve.html">line_to_rhino_curve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.mesh_to_compas.html">mesh_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.mesh_to_rhino.html">mesh_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.plane_to_compas.html">plane_to_compas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.plane_to_compas_frame.html">plane_to_compas_frame</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.plane_to_rhino.html">plane_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.point_to_compas.html">point_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.point_to_rhino.html">point_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polygon_to_compas.html">polygon_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polygon_to_rhino.html">polygon_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polyhedron_to_rhino.html">polyhedron_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polyline_to_compas.html">polyline_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polyline_to_rhino.html">polyline_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polyline_to_rhino_curve.html">polyline_to_rhino_curve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.sphere_to_compas.html">sphere_to_compas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.sphere_to_rhino.html">sphere_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas.html">surface_to_compas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas_data.html">surface_to_compas_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas_mesh.html">surface_to_compas_mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas_quadmesh.html">surface_to_compas_quadmesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_rhino.html">surface_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.torus_to_rhino.html">torus_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.torus_to_rhino_brep.html">torus_to_rhino_brep</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.transformation_to_rhino.html">transformation_to_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.transformation_matrix_to_rhino.html">transformation_matrix_to_rhino</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.vertices_and_faces_to_rhino.html">vertices_and_faces_to_rhino</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.vector_to_rhino.html">vector_to_rhino</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.arc_to_compas.html">arc_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.box_to_compas.html">box_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_box.html">brep_to_compas_box</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_cone.html">brep_to_compas_cone</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_cylinder.html">brep_to_compas_cylinder</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_sphere.html">brep_to_compas_sphere</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.circle_to_compas.html">circle_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cone_to_compas.html">cone_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_circle.html">curve_to_compas_circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_ellipse.html">curve_to_compas_ellipse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_line.html">curve_to_compas_line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_polyline.html">curve_to_compas_polyline</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.cylinder_to_compas.html">cylinder_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.ellipse_to_compas.html">ellipse_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_box.html">extrusion_to_compas_box</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_cylinder.html">extrusion_to_compas_cylinder</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_torus.html">extrusion_to_compas_torus</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.line_to_compas.html">line_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.mesh_to_compas.html">mesh_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.plane_to_compas.html">plane_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.plane_to_compas_frame.html">plane_to_compas_frame</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.point_to_compas.html">point_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polygon_to_compas.html">polygon_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.polyline_to_compas.html">polyline_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.sphere_to_compas.html">sphere_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas.html">surface_to_compas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas_data.html">surface_to_compas_data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas_mesh.html">surface_to_compas_mesh</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas_quadmesh.html">surface_to_compas_quadmesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.vector_to_compas.html">vector_to_compas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.vector_to_rhino.html">vector_to_rhino</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.conversions.vertices_and_faces_to_rhino.html">vertices_and_faces_to_rhino</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.forms.html">compas_rhino.forms</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-21"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.forms.html">compas_rhino.forms</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-20"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.forms.BrowserForm.html">BrowserForm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.forms.ChartForm.html">ChartForm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.forms.ImageForm.html">ImageForm</a></li>
@@ -1128,15 +1119,15 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.forms.BaseForm.html">BaseForm</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.geometry.html">compas_rhino.geometry</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-22"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.html">RhinoNurbsCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.html">RhinoNurbsSurface</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_rhino.geometry.html">compas_rhino.geometry</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-21"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html">RhinoBrep</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepVertex.html">RhinoBrepVertex</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.html">RhinoBrepEdge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepFace.html">RhinoBrepFace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepLoop.html">RhinoBrepLoop</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepTrim.html">RhinoBrepTrim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepVertex.html">RhinoBrepVertex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.html">RhinoNurbsCurve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.html">RhinoNurbsSurface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.booleans.boolean_difference_mesh_mesh.html">boolean_difference_mesh_mesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.booleans.boolean_intersection_mesh_mesh.html">boolean_intersection_mesh_mesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.booleans.boolean_union_mesh_mesh.html">boolean_union_mesh_mesh</a></li>
@@ -1234,11 +1225,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="compas.files.OBJReader.html"
+       href="compas.files.OBJParser.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">OBJReader</p>
+        <p class="prev-next-title">OBJParser</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
