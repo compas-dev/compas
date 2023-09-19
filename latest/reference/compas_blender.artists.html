@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="CircleArtist" href="generated/compas_blender.artists.CircleArtist.html" />
+    <link rel="next" title="BoxArtist" href="generated/compas_blender.artists.BoxArtist.html" />
     <link rel="prev" title="compas_blender" href="compas_blender.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -425,7 +425,7 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="compas.html">compas</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.Artist.html">Artist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.GeometryArtist.html">GeometryArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
@@ -434,6 +434,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.clear.html">clear</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.redraw.html">redraw</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.register_artists.html">register_artists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.Artist.html">Artist</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="compas.colors.html">compas.colors</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -972,23 +973,26 @@ document.write(`
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="compas_blender.html">compas_blender</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">compas_blender.artists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.BoxArtist.html">BoxArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.CapsuleArtist.html">CapsuleArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.CircleArtist.html">CircleArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.ConeArtist.html">ConeArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.CurveArtist.html">CurveArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.CylinderArtist.html">CylinderArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.FrameArtist.html">FrameArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.LineArtist.html">LineArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.PointArtist.html">PointArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.PointcloudArtist.html">PointcloudArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.PolygonArtist.html">PolygonArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.PolyhedronArtist.html">PolyhedronArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.PolylineArtist.html">PolylineArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.VectorArtist.html">VectorArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.BoxArtist.html">BoxArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.CapsuleArtist.html">CapsuleArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.ConeArtist.html">ConeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.CylinderArtist.html">CylinderArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.PolyhedronArtist.html">PolyhedronArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.SphereArtist.html">SphereArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.SurfaceArtist.html">SurfaceArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.TorusArtist.html">TorusArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.NetworkArtist.html">NetworkArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
@@ -1067,43 +1071,11 @@ document.write(`
                   
   <section id="compas-blender-artists">
 <h1>compas_blender.artists</h1>
-<p class="lead">Artists for visualizing (painting) COMPAS geometry, robots, and data structures in Blender.
+<p class="lead">Artists for visualizing (painting) COMPAS geometry and data structures in Blender.
 The artists in this package provide plugins for the pluggable methods of the base artists defined in <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.artists</span></code>.
 They can be used directly from here (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender.artists</span></code>), or through the base artist <a class="reference internal" href="generated/compas.artists.Artist.html" title="compas.artists.Artist"><code class="xref py py-class docutils literal notranslate"><span class="pre">Artist</span></code></a>.</p>
-<section id="primitive-artists">
-<h2>Primitive Artists</h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.CircleArtist.html" title="compas_blender.artists.CircleArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CircleArtist</span></code></a></p></td>
-<td><p>Artist for drawing circles in Blender.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.FrameArtist.html" title="compas_blender.artists.FrameArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FrameArtist</span></code></a></p></td>
-<td><p>Artist for drawing frames in Blender.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.LineArtist.html" title="compas_blender.artists.LineArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LineArtist</span></code></a></p></td>
-<td><p>Artist for drawing lines in Blender.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.PointArtist.html" title="compas_blender.artists.PointArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PointArtist</span></code></a></p></td>
-<td><p>Artist for drawing points in Blender.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.PolygonArtist.html" title="compas_blender.artists.PolygonArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolygonArtist</span></code></a></p></td>
-<td><p>Artist for drawing polygons in Blender.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.PolylineArtist.html" title="compas_blender.artists.PolylineArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolylineArtist</span></code></a></p></td>
-<td><p>Artist for drawing polylines in Blender.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.VectorArtist.html" title="compas_blender.artists.VectorArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorArtist</span></code></a></p></td>
-<td><p>Artist for drawing vectors in Blender.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="shape-artists">
-<h2>Shape Artists</h2>
+<section id="geometry-artists">
+<h2>Geometry Artists</h2>
 <table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
@@ -1116,34 +1088,50 @@ They can be used directly from here (<code class="xref py py-mod docutils litera
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.CapsuleArtist.html" title="compas_blender.artists.CapsuleArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CapsuleArtist</span></code></a></p></td>
 <td><p>Artist for drawing capsule shapes in Blender.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.ConeArtist.html" title="compas_blender.artists.ConeArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConeArtist</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.CircleArtist.html" title="compas_blender.artists.CircleArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CircleArtist</span></code></a></p></td>
+<td><p>Artist for drawing circles in Blender.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.ConeArtist.html" title="compas_blender.artists.ConeArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConeArtist</span></code></a></p></td>
 <td><p>Artist for drawing cone shapes in Blender.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.CurveArtist.html" title="compas_blender.artists.CurveArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CurveArtist</span></code></a></p></td>
+<td><p>Artist for drawing curves in Blender.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.CylinderArtist.html" title="compas_blender.artists.CylinderArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CylinderArtist</span></code></a></p></td>
 <td><p>Artist for drawing cylinder shapes in Blender.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.PolyhedronArtist.html" title="compas_blender.artists.PolyhedronArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolyhedronArtist</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.FrameArtist.html" title="compas_blender.artists.FrameArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FrameArtist</span></code></a></p></td>
+<td><p>Artist for drawing frames in Blender.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.LineArtist.html" title="compas_blender.artists.LineArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LineArtist</span></code></a></p></td>
+<td><p>Artist for drawing lines in Blender.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.PointArtist.html" title="compas_blender.artists.PointArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PointArtist</span></code></a></p></td>
+<td><p>Artist for drawing points in Blender.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.PointcloudArtist.html" title="compas_blender.artists.PointcloudArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PointcloudArtist</span></code></a></p></td>
+<td><p>Artist for drawing pointclouds in Blender.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.PolygonArtist.html" title="compas_blender.artists.PolygonArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolygonArtist</span></code></a></p></td>
+<td><p>Artist for drawing polygons in Blender.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.PolyhedronArtist.html" title="compas_blender.artists.PolyhedronArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolyhedronArtist</span></code></a></p></td>
 <td><p>Artist for drawing polyhedron shapes in Blender.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.SphereArtist.html" title="compas_blender.artists.SphereArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SphereArtist</span></code></a></p></td>
-<td><p>Artist for drawing sphere shapes in Blender.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.PolylineArtist.html" title="compas_blender.artists.PolylineArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolylineArtist</span></code></a></p></td>
+<td><p>Artist for drawing polylines in Blender.</p></td>
 </tr>
-</tbody>
-</table>
-</section>
-<section id="curve-and-surface-artists">
-<h2>Curve and Surface Artists</h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.CurveArtist.html" title="compas_blender.artists.CurveArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CurveArtist</span></code></a></p></td>
-<td><p>Artist for drawing curves in Blender.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.VectorArtist.html" title="compas_blender.artists.VectorArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorArtist</span></code></a></p></td>
+<td><p>Artist for drawing vectors in Blender.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.SphereArtist.html" title="compas_blender.artists.SphereArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SphereArtist</span></code></a></p></td>
+<td><p>Artist for drawing sphere shapes in Blender.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.SurfaceArtist.html" title="compas_blender.artists.SurfaceArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceArtist</span></code></a></p></td>
 <td><p>Artist for drawing surfaces in Blender.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.TorusArtist.html" title="compas_blender.artists.TorusArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorusArtist</span></code></a></p></td>
+<td><p>Artist for drawing torus shapes in Blender.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1162,17 +1150,9 @@ They can be used directly from here (<code class="xref py py-mod docutils litera
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.NetworkArtist.html" title="compas_blender.artists.NetworkArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkArtist</span></code></a></p></td>
 <td><p>Artist for drawing network data structures in Blender.</p></td>
 </tr>
-</tbody>
-</table>
-</section>
-<section id="robot-artist">
-<h2>Robot Artist</h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.VolMeshArtist.html" title="compas_blender.artists.VolMeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMeshArtist</span></code></a></p></td>
+<td><p>An artist for drawing volumetric mesh data structures in Blender.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -1213,11 +1193,11 @@ They can be used directly from here (<code class="xref py py-mod docutils litera
       </div>
     </a>
     <a class="right-next"
-       href="generated/compas_blender.artists.CircleArtist.html"
+       href="generated/compas_blender.artists.BoxArtist.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">CircleArtist</p>
+        <p class="prev-next-title">BoxArtist</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1239,11 +1219,8 @@ They can be used directly from here (<code class="xref py py-mod docutils litera
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primitive-artists">Primitive Artists</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-artists">Shape Artists</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#curve-and-surface-artists">Curve and Surface Artists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-artists">Geometry Artists</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datastructure-artists">Datastructure Artists</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robot-artist">Robot Artist</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-classes">Base Classes</a></li>
 </ul>
   </nav></div>

@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="MeshArtist" href="compas.artists.MeshArtist.html" />
+    <link rel="next" title="compas.colors" href="../compas.colors.html" />
     <link rel="prev" title="Artist.register" href="compas.artists.Artist.register.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -425,7 +425,7 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3 current active"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.artists.GeometryArtist.html">GeometryArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
@@ -434,6 +434,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.clear.html">clear</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.redraw.html">redraw</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.register_artists.html">register_artists</a></li>
+<li class="toctree-l3 current active"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.colors.html">compas.colors</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -972,23 +973,26 @@ document.write(`
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.html">compas_blender</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.artists.html">compas_blender.artists</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BoxArtist.html">BoxArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CapsuleArtist.html">CapsuleArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CircleArtist.html">CircleArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.ConeArtist.html">ConeArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CurveArtist.html">CurveArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CylinderArtist.html">CylinderArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.FrameArtist.html">FrameArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.LineArtist.html">LineArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PointArtist.html">PointArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PointcloudArtist.html">PointcloudArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PolygonArtist.html">PolygonArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PolyhedronArtist.html">PolyhedronArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PolylineArtist.html">PolylineArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.VectorArtist.html">VectorArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BoxArtist.html">BoxArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CapsuleArtist.html">CapsuleArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.ConeArtist.html">ConeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CylinderArtist.html">CylinderArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.PolyhedronArtist.html">PolyhedronArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.SphereArtist.html">SphereArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.SurfaceArtist.html">SurfaceArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.TorusArtist.html">TorusArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.NetworkArtist.html">NetworkArtist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
@@ -1104,11 +1108,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="compas.artists.MeshArtist.html"
+       href="../compas.colors.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">MeshArtist</p>
+        <p class="prev-next-title">compas.colors</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
