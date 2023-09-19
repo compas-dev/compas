@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
-from warnings import warn
 from abc import abstractmethod
 from collections import defaultdict
 
@@ -13,7 +12,7 @@ from compas.artists.exceptions import NoArtistContextError
 from compas.plugins import PluginValidator
 from compas.plugins import pluggable
 
-from .colordict import DescriptorProtocol
+from .descriptors.protocol import DescriptorProtocol
 
 
 @pluggable(category="drawing-utils")
@@ -41,18 +40,13 @@ def is_viewer_open():
 
     """
     # TODO: implement [without introducing compas_view2 as a dependency..?]
-    return False
-
-
-def is_plotter_open():
-    """Returns True if an instance of the Plotter is available.
-
-    Returns
-    -------
-    bool
-
-    """
-    # TODO: implement
+    # make the viewer app a singleton
+    # check for the exitence of an instance of the singleton
+    # if the instance exists, return True
+    # in this case, the viewer is the current context
+    # to do this without introducing compas_view2 as a dependency,
+    # creating the singleton instance should modify a class attribute of the Artist
+    # (or potentially a module level attribute of compas itself)
     return False
 
 
@@ -71,13 +65,13 @@ def _detect_current_context():
     """
     if is_viewer_open():
         return "Viewer"
-    if is_plotter_open():
-        return "Plotter"
     if compas.is_grasshopper():
         return "Grasshopper"
     if compas.is_rhino():
         return "Rhino"
-    other_contexts = [v for v in Artist.ITEM_ARTIST.keys() if v != "Plotter"]  # TODO: remove when Plotter is removed
+    if compas.is_blender():
+        return "Blender"
+    other_contexts = [v for v in Artist.ITEM_ARTIST.keys()]
     if other_contexts:
         return other_contexts[0]
     raise NoArtistContextError()
@@ -86,10 +80,6 @@ def _detect_current_context():
 def _get_artist_cls(data, **kwargs):
     # in any case user gets to override the choice
     context_name = kwargs.get("context") or _detect_current_context()
-
-    # TODO: remove when Plotter is removed
-    if context_name == "Plotter":
-        warn("The usage of Plotter with COMPAS Artist is deprecated!")
 
     dtype = type(data)
     cls = None
@@ -130,6 +120,7 @@ class Artist(object):
 
     """
 
+    # add this to support the descriptor protocol vor Python versions below 3.6
     __metaclass__ = DescriptorProtocol
 
     __ARTISTS_REGISTERED = False
@@ -149,6 +140,10 @@ class Artist(object):
         cls = _get_artist_cls(item, **kwargs)
         PluginValidator.ensure_implementations(cls)
         return super(Artist, cls).__new__(cls)
+
+    def __init__(self, item, **kwargs):
+        self._item = item
+        self._transformation = None
 
     @staticmethod
     def build(item, **kwargs):
@@ -235,7 +230,7 @@ class Artist(object):
             The type of data item.
         artist_type : :class:`~compas.artists.Artist`
             The type of the corresponding/compatible artist.
-        context : Literal['Rhino', 'Grasshopper', 'Blender', 'Plotter'], optional
+        context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
             The visualization context in which the pair should be registered.
 
         Returns
@@ -244,6 +239,22 @@ class Artist(object):
 
         """
         Artist.ITEM_ARTIST[context][item_type] = artist_type
+
+    @property
+    def transformation(self):
+        """The transformation matrix of the artist.
+
+        Returns
+        -------
+        :class:`Transformation` or None
+            The transformation matrix.
+
+        """
+        return self._transformation
+
+    @transformation.setter
+    def transformation(self, transformation):
+        self._transformation = transformation
 
     @abstractmethod
     def draw(self):

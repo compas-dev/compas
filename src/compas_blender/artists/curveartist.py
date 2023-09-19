@@ -1,77 +1,55 @@
 from typing import Any
-from typing import List
 from typing import Optional
-from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
-import compas_blender
-from compas.artists import CurveArtist
 from compas.geometry import Curve
 from compas.colors import Color
-from compas_blender.artists import BlenderArtist
+from compas_blender import conversions
+
+from compas.artists import GeometryArtist
+from .artist import BlenderArtist
 
 
-class CurveArtist(BlenderArtist, CurveArtist):
+class CurveArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing curves in Blender.
 
     Parameters
     ----------
     curve : :class:`~compas.geometry.Curve`
         A COMPAS curve.
-    collection : str | :blender:`bpy.types.Collection`
-        The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.PrimitiveArtist`.
-
-    Examples
-    --------
-    Use the Blender artist explicitly.
-
-    .. code-block:: python
-
-        from compas.geometry import NurbsCurve
-        from compas_blender.artists import CurveArtist
-
-        curve = NurbsCurve([[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 1, 1]])
-
-        artist = CurveArtist(curve)
-        artist.draw()
-
-    Or, use the artist through the plugin mechanism.
-
-    .. code-block:: python
-
-        from compas.geometry import NurbsCurve
-        from compas.artists import Artist
-
-        curve = NurbsCurve([[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 1, 1]])
-
-        artist = Artist(curve)
-        artist.draw()
 
     """
 
-    def __init__(self, curve: Curve, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
+    def __init__(self, curve: Curve, **kwargs: Any):
+        super().__init__(geometry=curve, **kwargs)
 
-        super().__init__(curve=curve, collection=collection or curve.name, **kwargs)
-
-    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        collection: Optional[str] = None,
+    ) -> bpy.types.Object:
         """Draw the curve.
 
         Parameters
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the curve.
-            The default color is :attr:`compas.artists.CurveArtist.color`.
+        collection : str, optional
+            The name of the Blender scene collection containing the created object(s).
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
+        :blender:`bpy.types.Object`
 
         """
+        name = self.geometry.name
         color = Color.coerce(color) or self.color
-        curves = [{"curve": self.curve, "color": color, "name": self.curve.name}]
-        return compas_blender.draw_curves(curves, collection=self.collection)
+        curve = conversions.nurbscurve_to_blender_curve(self.geometry)
+
+        obj = self.create_object(curve, name=name)
+        self.update_object(obj, color=color, collection=collection)
+
+        return obj

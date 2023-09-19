@@ -2,54 +2,52 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import ShapeArtist
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import box_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class BoxArtist(RhinoArtist, ShapeArtist):
+class BoxArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing box shapes.
 
     Parameters
     ----------
     box : :class:`~compas.geometry.Box`
         A COMPAS box.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 
-    def __init__(self, box, layer=None, **kwargs):
-        super(BoxArtist, self).__init__(shape=box, layer=layer, **kwargs)
+    def __init__(self, box, **kwargs):
+        super(BoxArtist, self).__init__(geometry=box, **kwargs)
 
     def draw(self, color=None):
         """Draw the box associated with the artist.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the box.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the objects created in Rhino.
+        System.Guid
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
-        vertices = [list(vertex) for vertex in self.shape.vertices]
-        faces = self.shape.faces
-        guid = compas_rhino.draw_mesh(
-            vertices,
-            faces,
-            layer=self.layer,
-            name=self.shape.name,
-            color=color.rgb255,
-            disjoint=True,
-        )
-        return [guid]
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
+        geometry = box_to_rhino(self.geometry)
+
+        if self.transformation:
+            transformation = transformation_to_rhino(self.transformation)
+            geometry.Transform(transformation)
+
+        return sc.doc.Objects.AddBox(geometry, attr)

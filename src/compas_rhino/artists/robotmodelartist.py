@@ -4,40 +4,38 @@ from __future__ import print_function
 
 import time
 
-import Rhino.Geometry
-import scriptcontext as sc
-from System.Drawing import Color
-from Rhino.DocObjects.ObjectColorSource import ColorFromObject
-from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
-from Rhino.DocObjects.ObjectMaterialSource import MaterialFromObject
+import Rhino.Geometry  # type: ignore
+import scriptcontext as sc  # type: ignore
+from System.Drawing import Color  # type: ignore
+from Rhino.DocObjects.ObjectColorSource import ColorFromObject  # type: ignore
+from Rhino.DocObjects.ObjectColorSource import ColorFromLayer  # type: ignore
+from Rhino.DocObjects.ObjectMaterialSource import MaterialFromObject  # type: ignore
 
-from compas.artists import RobotModelArtist
+from compas.artists import RobotModelArtist as BaseArtist
 
 import compas_rhino
 from compas_rhino.artists import RhinoArtist
-from compas_rhino.geometry.transformations import xform_from_transformation
+from compas_rhino.conversions import transformation_to_rhino
 
 
-class RobotModelArtist(RhinoArtist, RobotModelArtist):
+class RobotModelArtist(RhinoArtist, BaseArtist):
     """Artist for drawing robot models.
 
     Parameters
     ----------
     model : :class:`~compas.robots.RobotModel`
         Robot model.
-    layer : str, optional
-        The name of the layer that will contain the robot meshes.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info, see :class:`RhinoArtist` and :class:`RobotModelArtist`.
 
     """
 
-    def __init__(self, model, layer=None, **kwargs):
-        super(RobotModelArtist, self).__init__(model=model, layer=layer, **kwargs)
+    def __init__(self, model, **kwargs):
+        super(RobotModelArtist, self).__init__(model=model, **kwargs)
 
     def transform(self, native_mesh, transformation):
-        T = xform_from_transformation(transformation)
+        T = transformation_to_rhino(transformation)
         native_mesh.Transform(T)
 
     def create_geometry(self, geometry, name=None, color=None):

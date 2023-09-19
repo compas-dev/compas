@@ -2,13 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_ghpython
-from compas.artists import PrimitiveArtist
-from compas.colors import Color
+from compas_rhino import conversions
+
+from compas.artists import GeometryArtist
 from .artist import GHArtist
 
 
-class FrameArtist(GHArtist, PrimitiveArtist):
+class FrameArtist(GHArtist, GeometryArtist):
     """Artist for drawing frames.
 
     Parameters
@@ -19,7 +19,6 @@ class FrameArtist(GHArtist, PrimitiveArtist):
         The scale of the vectors representing the axes of the frame.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.PrimitiveArtist` for more info.
 
     Attributes
     ----------
@@ -37,64 +36,28 @@ class FrameArtist(GHArtist, PrimitiveArtist):
     """
 
     def __init__(self, frame, scale=1.0, **kwargs):
-        super(FrameArtist, self).__init__(primitive=frame, **kwargs)
+        super(FrameArtist, self).__init__(geometry=frame, **kwargs)
         self.scale = scale
-        self.color_origin = Color.black()
-        self.color_xaxis = Color.red()
-        self.color_yaxis = Color.green()
-        self.color_zaxis = Color.blue()
 
     def draw(self):
         """Draw the frame.
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Plane`
+        list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
 
         """
-        return compas_ghpython.draw_frame(self.primitive)
+        geometry = []
 
-    def draw_origin(self):
-        """Draw the frame's origin.
+        origin = self.geometry.point
+        x = self.geometry.point + self.geometry.xaxis * self.scale
+        y = self.geometry.point + self.geometry.yaxis * self.scale
+        z = self.geometry.point + self.geometry.zaxis * self.scale
 
-        Returns
-        -------
-        :rhino:`Rhino.Geometry.Point`
+        # geometry.append(conversions.frame_to_rhino(self.geometry))
+        geometry.append(conversions.point_to_rhino(self.geometry.point))
+        geometry.append(conversions.line_to_rhino([origin, x]))
+        geometry.append(conversions.line_to_rhino([origin, y]))
+        geometry.append(conversions.line_to_rhino([origin, z]))
 
-        """
-        point = {"pos": list(self.primitive.point), "color": self.color_origin.rgb255}
-        return compas_ghpython.draw_points([point])[0]
-
-    def draw_axes(self):
-        """Draw the frame's axes.
-
-        Returns
-        -------
-        list[:rhino:`Rhino.Geometry.Line`]
-
-        """
-        origin = list(self.primitive.point)
-        x = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
-        y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
-        z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
-        lines = [
-            {
-                "start": origin,
-                "end": x,
-                "color": self.color_xaxis.rgb255,
-                "arrow": "end",
-            },
-            {
-                "start": origin,
-                "end": y,
-                "color": self.color_yaxis.rgb255,
-                "arrow": "end",
-            },
-            {
-                "start": origin,
-                "end": z,
-                "color": self.color_zaxis.rgb255,
-                "arrow": "end",
-            },
-        ]
-        return compas_ghpython.draw_lines(lines)
+        return geometry

@@ -5,7 +5,7 @@ from __future__ import print_function
 import compas_ghpython
 from compas.utilities import rgb_to_rgb
 
-from compas_rhino.geometry.transformations import xtransform
+# from compas_rhino.geometry.transformations import xtransform
 
 from compas.artists import RobotModelArtist
 from .artist import GHArtist
@@ -27,9 +27,9 @@ class RobotModelArtist(GHArtist, RobotModelArtist):
     def __init__(self, model, **kwargs):
         super(RobotModelArtist, self).__init__(model=model, **kwargs)
 
-    # again not really sure why this is here
-    def transform(self, native_mesh, transformation):
-        xtransform(native_mesh, transformation)
+    # # again not really sure why this is here
+    # def transform(self, native_mesh, transformation):
+    #     xtransform(native_mesh, transformation)
 
     # same here
     # there is no reference to self...

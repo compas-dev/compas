@@ -1,8 +1,9 @@
+# type: ignore
 import os
 import compas
 
 try:
-    import bpy  # noqa: F401
+    import bpy
 except ImportError:
     pass
 else:
@@ -78,4 +79,5 @@ __all__ = [name for name in dir() if not name.startswith("_")]
 __all_plugins__ = [
     "compas_blender.geometry.booleans",
     "compas_blender.artists",
+    # "compas_blender.geometry.curves",
 ]

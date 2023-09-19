@@ -141,8 +141,6 @@ from .curveartist import CurveArtist
 from .surfaceartist import SurfaceArtist
 from .brepartist import BrepArtist
 
-BaseArtist = RhinoArtist
-
 
 @plugin(category="drawing-utils", pluggable_name="clear", requires=["Rhino"])
 def clear_rhino():
@@ -182,7 +180,6 @@ def register_artists():
 
 
 __all__ = [
-    "BaseArtist",
     "RhinoArtist",
     "CircleArtist",
     "FrameArtist",

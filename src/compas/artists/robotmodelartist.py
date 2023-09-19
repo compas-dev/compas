@@ -70,8 +70,8 @@ class RobotModelArtist(AbstractRobotModelArtist, Artist):
 
     """
 
-    def __init__(self, model):
-        super(RobotModelArtist, self).__init__()
+    def __init__(self, model, **kwargs):
+        super(RobotModelArtist, self).__init__(item=model, **kwargs)
         self.model = model
         self.create()
         self.scale_factor = 1.0

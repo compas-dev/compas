@@ -50,17 +50,17 @@ class NurbsSurface(Surface):
         The control points as rows along the U direction.
     weights : list[list[float]], read-only
         The weights of the control points.
-    u_knots : list[float], read-only
+    knots_u : list[float], read-only
         The knots in the U direction, without multiplicity.
-    v_knots : list[float], read-only
+    knots_v : list[float], read-only
         The knots in the V direction, without multiplicity.
-    u_mults : list[int], read-only
+    mults_u : list[int], read-only
         Multiplicity of the knots in the U direction.
-    v_mults : list[int], read-only
+    mults_v : list[int], read-only
         Multiplicity of the knots in the V direction.
-    u_degree : list[int], read-only
+    degree_u : list[int], read-only
         The degree of the surface in the U direction.
-    v_degree : list[int], read-only
+    degree_v : list[int], read-only
         The degree of the surface in the V direction.
 
     """
@@ -70,14 +70,14 @@ class NurbsSurface(Surface):
         "properties": {
             "points": {"type": "array", "items": {"type": "array", "items": Point.DATASCHEMA}},
             "weights": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
-            "u_knots": {"type": "array", "items": {"type": "number"}},
-            "v_knots": {"type": "array", "items": {"type": "number"}},
-            "u_mults": {"type": "array", "items": {"type": "integer"}},
-            "v_mults": {"type": "array", "items": {"type": "integer"}},
-            "u_degree": {"type": "integer", "exclusiveMinimum": 0},
-            "v_degree": {"type": "integer", "exclusiveMinimum": 0},
-            "is_u_periodic": {"type": "boolean"},
-            "is_v_periodic": {"type": "boolean"},
+            "knots_u": {"type": "array", "items": {"type": "number"}},
+            "knots_v": {"type": "array", "items": {"type": "number"}},
+            "mults_u": {"type": "array", "items": {"type": "integer"}},
+            "mults_v": {"type": "array", "items": {"type": "integer"}},
+            "degree_u": {"type": "integer", "exclusiveMinimum": 0},
+            "degree_v": {"type": "integer", "exclusiveMinimum": 0},
+            "is_periodic_u": {"type": "boolean"},
+            "is_periodic_v": {"type": "boolean"},
         },
         "additionalProperties": False,
         "minProperties": 10,
@@ -90,18 +90,18 @@ class NurbsSurface(Surface):
         super(NurbsSurface, self).__init__(name=name)
 
     def __repr__(self):
-        return "{0}(points={1!r}, weigths={2}, u_knots={3}, v_knots={4}, u_mults={5}, v_mults={6}, u_degree={7}, v_degree={8}, is_u_periodic={9}, is_v_periodic={10})".format(
+        return "{0}(points={1!r}, weigths={2}, knots_u={3}, knots_v={4}, mults_u={5}, mults_v={6}, degree_u={7}, degree_v={8}, is_periodic_u={9}, is_periodic_v={10})".format(
             type(self).__name__,
             self.points,
             self.weights,
-            self.u_knots,
-            self.v_knots,
-            self.u_mults,
-            self.v_mults,
-            self.u_degree,
-            self.v_degree,
-            self.is_u_periodic,
-            self.is_v_periodic,
+            self.knots_u,
+            self.knots_v,
+            self.mults_u,
+            self.mults_v,
+            self.degree_u,
+            self.degree_v,
+            self.is_periodic_u,
+            self.is_periodic_v,
         )
 
     # ==============================================================================
@@ -117,14 +117,14 @@ class NurbsSurface(Surface):
         return {
             "points": [point.data for point in self.points],
             "weights": self.weights,
-            "u_knots": self.u_knots,
-            "v_knots": self.v_knots,
-            "u_mults": self.u_mults,
-            "v_mults": self.v_mults,
-            "u_degree": self.u_degree,
-            "v_degree": self.v_degree,
-            "is_u_periodic": self.is_u_periodic,
-            "is_v_periodic": self.is_v_periodic,
+            "knots_u": self.knots_u,
+            "knots_v": self.knots_v,
+            "mults_u": self.mults_u,
+            "mults_v": self.mults_v,
+            "degree_u": self.degree_u,
+            "degree_v": self.degree_v,
+            "is_periodic_u": self.is_periodic_u,
+            "is_periodic_v": self.is_periodic_v,
         }
 
     @classmethod
@@ -145,14 +145,14 @@ class NurbsSurface(Surface):
         return cls.from_parameters(
             data["points"],
             data["weights"],
-            data["u_knots"],
-            data["v_knots"],
-            data["u_mults"],
-            data["v_mults"],
-            data["u_degree"],
-            data["v_degree"],
-            data["is_u_periodic"],
-            data["is_v_periodic"],
+            data["knots_u"],
+            data["knots_v"],
+            data["mults_u"],
+            data["mults_v"],
+            data["degree_u"],
+            data["degree_v"],
+            data["is_periodic_u"],
+            data["is_periodic_v"],
         )
 
     # ==============================================================================
@@ -168,27 +168,35 @@ class NurbsSurface(Surface):
         raise NotImplementedError
 
     @property
-    def u_knots(self):
+    def knots_u(self):
         raise NotImplementedError
 
     @property
-    def v_knots(self):
+    def mults_u(self):
         raise NotImplementedError
 
     @property
-    def u_mults(self):
+    def knotvector_u(self):
         raise NotImplementedError
 
     @property
-    def v_mults(self):
+    def knots_v(self):
         raise NotImplementedError
 
     @property
-    def u_degree(self):
+    def mults_v(self):
         raise NotImplementedError
 
     @property
-    def v_degree(self):
+    def knotvector_v(self):
+        raise NotImplementedError
+
+    @property
+    def degree_u(self):
+        raise NotImplementedError
+
+    @property
+    def degree_v(self):
         raise NotImplementedError
 
     # ==============================================================================
@@ -200,14 +208,14 @@ class NurbsSurface(Surface):
         cls,
         points,
         weights,
-        u_knots,
-        v_knots,
-        u_mults,
-        v_mults,
-        u_degree,
-        v_degree,
-        is_u_periodic=False,
-        is_v_periodic=False,
+        knots_u,
+        knots_v,
+        mults_u,
+        mults_v,
+        degree_u,
+        degree_v,
+        is_periodic_u=False,
+        is_periodic_v=False,
     ):
         """Construct a NURBS surface from explicit parameters.
 
@@ -217,17 +225,17 @@ class NurbsSurface(Surface):
             The control points.
         weights : list[list[float]]
             The weights of the control points.
-        u_knots : list[float]
+        knots_u : list[float]
             The knots in the U direction, without multiplicity.
-        v_knots : list[float]
+        knots_v : list[float]
             The knots in the V direction, without multiplicity.
-        u_mults : list[int]
+        mults_u : list[int]
             Multiplicity of the knots in the U direction.
-        v_mults : list[int]
+        mults_v : list[int]
             Multiplicity of the knots in the V direction.
-        u_degree : int
+        degree_u : int
             Degree in the U direction.
-        v_degree : int
+        degree_v : int
             Degree in the V direction.
 
         Returns
@@ -239,27 +247,27 @@ class NurbsSurface(Surface):
             cls,
             points,
             weights,
-            u_knots,
-            v_knots,
-            u_mults,
-            v_mults,
-            u_degree,
-            v_degree,
-            is_u_periodic=is_u_periodic,
-            is_v_periodic=is_v_periodic,
+            knots_u,
+            knots_v,
+            mults_u,
+            mults_v,
+            degree_u,
+            degree_v,
+            is_periodic_u=is_periodic_u,
+            is_periodic_v=is_periodic_v,
         )
 
     @classmethod
-    def from_points(cls, points, u_degree=3, v_degree=3):
+    def from_points(cls, points, degree_u=3, degree_v=3):
         """Construct a NURBS surface from control points.
 
         Parameters
         ----------
         points : list[list[[float, float, float] | :class:`~compas.geometry.Point`]]
             The control points.
-        u_degree : int
+        degree_u : int
             Degree in the U direction.
-        v_degree : int
+        degree_v : int
             Degree in the V direction.
 
         Returns
@@ -267,7 +275,7 @@ class NurbsSurface(Surface):
         :class:`~compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_points(cls, points, u_degree=u_degree, v_degree=v_degree)
+        return new_nurbssurface_from_points(cls, points, degree_u=degree_u, degree_v=degree_v)
 
     @classmethod
     def from_meshgrid(cls, nu=10, nv=10):
@@ -356,12 +364,12 @@ class NurbsSurface(Surface):
         return NurbsSurface.from_parameters(
             self.points,
             self.weights,
-            self.u_knots,
-            self.v_knots,
-            self.u_mults,
-            self.v_mults,
-            self.u_degree,
-            self.v_degree,
-            self.is_u_periodic,
-            self.is_v_periodic,
+            self.knots_u,
+            self.knots_v,
+            self.mults_u,
+            self.mults_v,
+            self.degree_u,
+            self.degree_v,
+            self.is_periodic_u,
+            self.is_periodic_v,
         )
