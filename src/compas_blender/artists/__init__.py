@@ -23,7 +23,6 @@ from compas.geometry import Vector
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
-from compas.robots import RobotModel
 
 from .artist import BlenderArtist
 from .boxartist import BoxArtist
@@ -41,7 +40,6 @@ from .pointcloudartist import PointcloudArtist
 from .polygonartist import PolygonArtist
 from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
-from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
 from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
@@ -76,7 +74,6 @@ def register_artists():
     Artist.register(Polygon, PolygonArtist, context="Blender")
     Artist.register(Polyhedron, PolyhedronArtist, context="Blender")
     Artist.register(Polyline, PolylineArtist, context="Blender")
-    Artist.register(RobotModel, RobotModelArtist, context="Blender")
     Artist.register(Sphere, SphereArtist, context="Blender")
     Artist.register(Surface, SurfaceArtist, context="Blender")
     Artist.register(Torus, TorusArtist, context="Blender")
@@ -102,7 +99,6 @@ __all__ = [
     "PolygonArtist",
     "PolyhedronArtist",
     "PolylineArtist",
-    "RobotModelArtist",
     "SphereArtist",
     "SurfaceArtist",
     "TorusArtist",

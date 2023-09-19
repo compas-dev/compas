@@ -8,14 +8,11 @@ from .artist import Artist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .geometryartist import GeometryArtist
-from .robotmodelartist import RobotModelArtist
 from .volmeshartist import VolMeshArtist
 
 from .artist import clear  # noqa: F401
 from .artist import redraw  # noqa: F401
 from .artist import register_artists  # noqa: F401
-
-BaseRobotModelArtist = RobotModelArtist
 
 
 __all__ = [
@@ -25,6 +22,5 @@ __all__ = [
     "MeshArtist",
     "NetworkArtist",
     "GeometryArtist",
-    "RobotModelArtist",
     "VolMeshArtist",
 ]

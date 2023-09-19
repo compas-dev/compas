@@ -1,75 +1,3 @@
-"""
-********************************************************************************
-artists
-********************************************************************************
-
-.. currentmodule:: compas_ghpython.artists
-
-.. rst-class:: lead
-
-Artists for visualizing (painting) COMPAS geometry, robots, and data structures in Grasshopper using the GH Python component.
-The artists in this package provide plugins for the pluggable methods of the base artists in :mod:`compas.artists`.
-Therefore, they can be used directly, from here, or through the base artists :class:`~compas.artists.Artist`.
-
-
-Primitive Artists
-=================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BoxArtist
-    CapsuleArtist
-    CircleArtist
-    ConeArtist
-    CurveArtist
-    CylinderArtist
-    FrameArtist
-    LineArtist
-    PointArtist
-    PolygonArtist
-    PolyhedronArtist
-    PolylineArtist
-    SphereArtist
-    SurfaceArtist
-    TorusArtist
-    VectorArtist
-    BrepArtist
-
-
-Datastructure Artists
-=====================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    MeshArtist
-    NetworkArtist
-    VolMeshArtist
-
-
-Robot Artist
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    RobotModelArtist
-
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    GHArtist
-
-"""
 from __future__ import absolute_import
 
 from compas.plugins import plugin
@@ -97,8 +25,6 @@ from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
-from compas.robots import RobotModel
-
 from .artist import GHArtist
 from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
@@ -114,7 +40,6 @@ from .pointartist import PointArtist
 from .polygonartist import PolygonArtist
 from .polyhedronartist import PolyhedronArtist
 from .polylineartist import PolylineArtist
-from .robotmodelartist import RobotModelArtist
 from .sphereartist import SphereArtist
 from .surfaceartist import SurfaceArtist
 from .torusartist import TorusArtist
@@ -139,7 +64,6 @@ def register_artists():
     Artist.register(Polygon, PolygonArtist, context="Grasshopper")
     Artist.register(Polyhedron, PolyhedronArtist, context="Grasshopper")
     Artist.register(Polyline, PolylineArtist, context="Grasshopper")
-    Artist.register(RobotModel, RobotModelArtist, context="Grasshopper")
     Artist.register(Sphere, SphereArtist, context="Grasshopper")
     Artist.register(Surface, SurfaceArtist, context="Grasshopper")
     Artist.register(Torus, TorusArtist, context="Grasshopper")
@@ -165,7 +89,6 @@ __all__ = [
     "PolygonArtist",
     "PolyhedronArtist",
     "PolylineArtist",
-    "RobotModelArtist",
     "SphereArtist",
     "SurfaceArtist",
     "TorusArtist",

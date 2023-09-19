@@ -285,6 +285,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas_rhino.artists.VolMeshArtist.draw_edgelabels`.
 * Removed `compas_rhino.artists.VolMeshArtist.draw_facelabels`.
 * Removed `compas_rhino.artists.VolMeshArtist.draw_celllabels`.
+* Removed `compas.robots`.
+* Removed `compas.artists.robotmodelartist`.
+* Removed `compas_blender.artists.robotmodelartist`.
+* Removed `compas_ghpython.artists.robotmodelartist`.
+* Removed `compas_rhino.artists.robotmodelartist`.
 
 ## [1.17.5] 2023-02-16
 
