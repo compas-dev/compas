@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Polyline.divide" href="compas.geometry.Polyline.divide.html" />
+    <link rel="next" title="Polyline.append" href="compas.geometry.Polyline.append.html" />
     <link rel="prev" title="NurbsCurve.validate_data" href="compas.geometry.NurbsCurve.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -426,13 +426,9 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.RobotModelArtist.html">RobotModelArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.PrimitiveArtist.html">PrimitiveArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.ShapeArtist.html">ShapeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
@@ -1028,12 +1024,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html">BlenderGeometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderCurve.html">BlenderCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderMesh.html">BlenderMesh</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.ui.html">compas_blender.ui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.utilities.html">compas_blender.utilities</a></li>
@@ -1139,17 +1130,23 @@ This is always the world XY frame.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide.html#compas.geometry.Polyline.divide" title="compas.geometry.Polyline.divide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.append.html#compas.geometry.Polyline.append" title="compas.geometry.Polyline.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a></p></td>
+<td><p>Append a point to the end of the polyline.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide.html#compas.geometry.Polyline.divide" title="compas.geometry.Polyline.divide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide</span></code></a></p></td>
 <td><p>Divide a polyline in equal segments.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_by_length.html#compas.geometry.Polyline.divide_by_length" title="compas.geometry.Polyline.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.divide_by_length.html#compas.geometry.Polyline.divide_by_length" title="compas.geometry.Polyline.divide_by_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">divide_by_length</span></code></a></p></td>
 <td><p>Divide a polyline in segments of a given length.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.extend.html#compas.geometry.Polyline.extend" title="compas.geometry.Polyline.extend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extend</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.extend.html#compas.geometry.Polyline.extend" title="compas.geometry.Polyline.extend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extend</span></code></a></p></td>
 <td><p>Extends a polyline by a given length, by modifying the first and/or last point tangentially.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.extended.html#compas.geometry.Polyline.extended" title="compas.geometry.Polyline.extended"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extended</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.extended.html#compas.geometry.Polyline.extended" title="compas.geometry.Polyline.extended"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extended</span></code></a></p></td>
 <td><p>Returns a copy of this polyline extended by a given length.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyline.insert.html#compas.geometry.Polyline.insert" title="compas.geometry.Polyline.insert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert</span></code></a></p></td>
+<td><p>Insert a point at the specified index.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyline.point_at.html#compas.geometry.Polyline.point_at" title="compas.geometry.Polyline.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Point on the polyline at a specific normalized parameter.</p></td>
@@ -1292,11 +1289,11 @@ This is always the world XY frame.</p>
       </div>
     </a>
     <a class="right-next"
-       href="compas.geometry.Polyline.divide.html"
+       href="compas.geometry.Polyline.append.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Polyline.divide</p>
+        <p class="prev-next-title">Polyline.append</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

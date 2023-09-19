@@ -426,13 +426,9 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.RobotModelArtist.html">RobotModelArtist</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.PrimitiveArtist.html">PrimitiveArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.ShapeArtist.html">ShapeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
@@ -1028,12 +1024,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html">BlenderGeometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderCurve.html">BlenderCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderMesh.html">BlenderMesh</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.ui.html">compas_blender.ui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.utilities.html">compas_blender.utilities</a></li>
@@ -1081,21 +1072,6 @@ document.write(`
 <dd class="field-odd"><dl>
 <dt><strong>mesh</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></span></dt><dd><p>A COMPAS mesh.</p>
 </dd>
-<dt><strong>vertices</strong><span class="classifier">list[int], optional</span></dt><dd><p>Selection of vertices to draw.</p>
-</dd>
-<dt><strong>edges</strong><span class="classifier">list[tuple[int, int]], optional</span></dt><dd><p>Selection of edges to draw.</p>
-</dd>
-<dt><strong>faces</strong><span class="classifier">list[int], optional</span></dt><dd><p>Selection of faces to draw.</p>
-</dd>
-<dt><strong>vertexcolor</strong><span class="classifier">tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</span></dt><dd><p>Color of the vertices.
-Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_vertexcolor</span></code>.</p>
-</dd>
-<dt><strong>edgecolor</strong><span class="classifier">tuple[float, float, float] | dict[tuple[int, int], tuple[float, float, float]], optional</span></dt><dd><p>Color of the edges.
-Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_edgecolor</span></code>.</p>
-</dd>
-<dt><strong>facecolor</strong><span class="classifier">tuple[float, float, float] | dict[int, tuple[float, float, float]], optional</span></dt><dd><p>Color of the faces.
-Default color is <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtists.default_facecolor</span></code>.</p>
-</dd>
 </dl>
 </dd>
 </dl>
@@ -1111,55 +1087,16 @@ Default color is <code class="xref py py-attr docutils literal notranslate"><spa
 <dd class="field-odd"><dl>
 <dt><strong>mesh</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a></span></dt><dd><p>The mesh data structure.</p>
 </dd>
-<dt><strong>vertices</strong><span class="classifier">list[int]</span></dt><dd><p>The selection of vertices that should be included in the drawing.
-Defaults to all vertices.</p>
-</dd>
-<dt><strong>edges</strong><span class="classifier">list[tuple[int, int]]</span></dt><dd><p>The selection of edges that should be included in the drawing.
-Defaults to all edges.</p>
-</dd>
-<dt><strong>faces</strong><span class="classifier">list[int]</span></dt><dd><p>The selection of faces that should be included in the drawing.
-Defaults to all faces.</p>
-</dd>
-<dt><strong>color</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The base RGB color of the mesh.</p>
-</dd>
 <dt><strong>vertex_xyz</strong><span class="classifier">dict[int, list[float]]</span></dt><dd><p>View coordinates of the vertices.
 Defaults to the real coordinates.</p>
 </dd>
-<dt><strong>vertex_color</strong><span class="classifier">dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Vertex colors.
-Missing vertices get the default vertex color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_vertexcolor</span></code>.</p>
+<dt><strong>color</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The base RGB color of the mesh.</p>
 </dd>
-<dt><strong>default_vertexcolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color of the vertices of the mesh.</p>
+<dt><strong>vertex_color</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorDict</span></code>]</span></dt><dd><p>Vertex colors.</p>
 </dd>
-<dt><strong>edge_color</strong><span class="classifier">dict[tuple[int, int], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Edge colors.
-Missing edges get the default edge color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p>
+<dt><strong>edge_color</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorDict</span></code></span></dt><dd><p>Edge colors.</p>
 </dd>
-<dt><strong>default_edgecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color of the edges of the mesh.</p>
-</dd>
-<dt><strong>face_color</strong><span class="classifier">dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Face colors.
-Missing faces get the default face color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p>
-</dd>
-<dt><strong>default_facecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color of the faces of the mesh.</p>
-</dd>
-<dt><strong>vertex_text</strong><span class="classifier">dict[int, str]</span></dt><dd><p>Vertex labels.
-Defaults to the vertex identifiers.</p>
-</dd>
-<dt><strong>edge_text</strong><span class="classifier">dict[tuple[int, int], str]</span></dt><dd><p>Edge labels.
-Defaults to the edge identifiers.</p>
-</dd>
-<dt><strong>face_text</strong><span class="classifier">dict[int, str]</span></dt><dd><p>Face labels.
-Defaults to the face identifiers.</p>
-</dd>
-<dt><strong>vertex_size</strong><span class="classifier">dict[int, float]</span></dt><dd><p>Vertex sizes.
-Defaults to 1.
-Visualization of vertices with variable size is not available for all visualization contexts.</p>
-</dd>
-<dt><strong>default_vertexsize</strong><span class="classifier">float</span></dt><dd><p>The default size of the vertices of the mesh.</p>
-</dd>
-<dt><strong>edge_width</strong><span class="classifier">dict[tuple[int, int], float]</span></dt><dd><p>Edge widths.
-Defaults to 1.
-Visualization of edges with variable width is not available for all visualization contexts.</p>
-</dd>
-<dt><strong>default_edgewidth</strong><span class="classifier">float</span></dt><dd><p>The default width of the edges of the mesh.</p>
+<dt><strong>face_color</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorDict</span></code></span></dt><dd><p>Face colors.</p>
 </dd>
 </dl>
 </dd>

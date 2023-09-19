@@ -426,13 +426,9 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.RobotModelArtist.html">RobotModelArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.PrimitiveArtist.html">PrimitiveArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.ShapeArtist.html">ShapeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
@@ -1028,12 +1024,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html">BlenderGeometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderCurve.html">BlenderCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderMesh.html">BlenderMesh</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.ui.html">compas_blender.ui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.utilities.html">compas_blender.utilities</a></li>
@@ -1090,13 +1081,13 @@ Default is the world coordinate system.</p>
 </dd>
 <dt><strong>transformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a>, read-only</span></dt><dd><p>The transformation from the surface’s local coordinate system to the world coordinate system.</p>
 </dd>
-<dt><strong>u_domain</strong><span class="classifier">tuple[float, float], read-only</span></dt><dd><p>The parameter domain of the surface in the U direction.</p>
+<dt><strong>domain_u</strong><span class="classifier">tuple[float, float], read-only</span></dt><dd><p>The parameter domain of the surface in the U direction.</p>
 </dd>
-<dt><strong>v_domain</strong><span class="classifier">tuple[float, float], read-only</span></dt><dd><p>The parameter domain of the surface in the V direction.</p>
+<dt><strong>domain_v</strong><span class="classifier">tuple[float, float], read-only</span></dt><dd><p>The parameter domain of the surface in the V direction.</p>
 </dd>
-<dt><strong>is_u_periodic</strong><span class="classifier">bool, read-only</span></dt><dd><p>Flag indicating if the surface is periodic in the U direction.</p>
+<dt><strong>is_periodic_u</strong><span class="classifier">bool, read-only</span></dt><dd><p>Flag indicating if the surface is periodic in the U direction.</p>
 </dd>
-<dt><strong>is_v_periodic</strong><span class="classifier">bool, read-only</span></dt><dd><p>Flag indicating if the surface is periodic in the V direction.</p>
+<dt><strong>is_periodic_v</strong><span class="classifier">bool, read-only</span></dt><dd><p>Flag indicating if the surface is periodic in the V direction.</p>
 </dd>
 </dl>
 </dd>

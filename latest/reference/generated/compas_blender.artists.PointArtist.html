@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="PointArtist.draw" href="compas_blender.artists.PointArtist.draw.html" />
-    <link rel="prev" title="LineArtist.register_artists" href="compas_blender.artists.LineArtist.register_artists.html" />
+    <link rel="prev" title="LineArtist.update_object" href="compas_blender.artists.LineArtist.update_object.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -426,13 +426,9 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas.html">compas</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.RobotModelArtist.html">RobotModelArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.PrimitiveArtist.html">PrimitiveArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.ShapeArtist.html">ShapeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
@@ -1028,12 +1024,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html">BlenderGeometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderCurve.html">BlenderCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderMesh.html">BlenderMesh</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.ui.html">compas_blender.ui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.utilities.html">compas_blender.utilities</a></li>
@@ -1074,43 +1065,18 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_blender.artists.PointArtist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.artists.</span></span><span class="sig-name descname"><span class="pre">PointArtist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.artist.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.BlenderArtist</span></code></a>, <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.primitiveartist.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.primitiveartist.PrimitiveArtist</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.artist.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.BlenderArtist</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.artists.geometryartist.GeometryArtist</span></code></p>
 <p>Artist for drawing points in Blender.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>point</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a></span></dt><dd><p>A COMPAS point.</p>
 </dd>
-<dt><strong>collection</strong><span class="classifier">str | <a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Collection.html">bpy.types.Collection</a></span></dt><dd><p>The Blender scene collection the object(s) created by this artist belong to.</p>
-</dd>
-<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional keyword arguments.
-For more info,
-see <a class="reference internal" href="compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist" title="compas_blender.artists.BlenderArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlenderArtist</span></code></a> and <a class="reference internal" href="compas.artists.PrimitiveArtist.html#compas.artists.PrimitiveArtist" title="compas.artists.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrimitiveArtist</span></code></a>.</p>
+<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional keyword arguments.</p>
 </dd>
 </dl>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<p>Use the Blender artist explicitly.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
-<span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">PointArtist</span>
-
-<span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-
-<span class="n">artist</span> <span class="o">=</span> <span class="n">PointArtist</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Or, use the artist through the plugin mechanism.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
-<span class="kn">from</span> <span class="nn">compas.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
-
-<span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-
-<span class="n">artist</span> <span class="o">=</span> <span class="n">Artist</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <colgroup>
@@ -1130,26 +1096,50 @@ see <a class="reference internal" href="compas_blender.artists.BlenderArtist.htm
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.build.html#compas_blender.artists.PointArtist.build" title="compas_blender.artists.PointArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.add_object_to_collection.html#compas_blender.artists.PointArtist.add_object_to_collection" title="compas_blender.artists.PointArtist.add_object_to_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_object_to_collection</span></code></a></p></td>
+<td><p>Add an object to a collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.build.html#compas_blender.artists.PointArtist.build" title="compas_blender.artists.PointArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
 <td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.build_as.html#compas_blender.artists.PointArtist.build_as" title="compas_blender.artists.PointArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.build_as.html#compas_blender.artists.PointArtist.build_as" title="compas_blender.artists.PointArtist.build_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_as</span></code></a></p></td>
 <td><p>Build an artist with the given type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.clear.html#compas_blender.artists.PointArtist.clear" title="compas_blender.artists.PointArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.clear.html#compas_blender.artists.PointArtist.clear" title="compas_blender.artists.PointArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear all objects from the view.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.draw_collection.html#compas_blender.artists.PointArtist.draw_collection" title="compas_blender.artists.PointArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.clear_collection.html#compas_blender.artists.PointArtist.clear_collection" title="compas_blender.artists.PointArtist.clear_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collection</span></code></a></p></td>
+<td><p>Clear the objects in a collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.create_collection.html#compas_blender.artists.PointArtist.create_collection" title="compas_blender.artists.PointArtist.create_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_collection</span></code></a></p></td>
+<td><p>Create a collection with the given name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.create_object.html#compas_blender.artists.PointArtist.create_object" title="compas_blender.artists.PointArtist.create_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_object</span></code></a></p></td>
+<td><p>Add an object to the Blender scene.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.delete_collection.html#compas_blender.artists.PointArtist.delete_collection" title="compas_blender.artists.PointArtist.delete_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_collection</span></code></a></p></td>
+<td><p>Delete a collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.draw_collection.html#compas_blender.artists.PointArtist.draw_collection" title="compas_blender.artists.PointArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
 <td><p>Drawing method for drawing an entire collection of objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.redraw.html#compas_blender.artists.PointArtist.redraw" title="compas_blender.artists.PointArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.redraw.html#compas_blender.artists.PointArtist.redraw" title="compas_blender.artists.PointArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
 <td><p>Redraw the view.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.register.html#compas_blender.artists.PointArtist.register" title="compas_blender.artists.PointArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.register.html#compas_blender.artists.PointArtist.register" title="compas_blender.artists.PointArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a></p></td>
 <td><p>Register an artist type to a data type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.register_artists.html#compas_blender.artists.PointArtist.register_artists" title="compas_blender.artists.PointArtist.register_artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_artists</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.register_artists.html#compas_blender.artists.PointArtist.register_artists" title="compas_blender.artists.PointArtist.register_artists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_artists</span></code></a></p></td>
 <td><p>Register Artists using available plugins.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.set_object_color.html#compas_blender.artists.PointArtist.set_object_color" title="compas_blender.artists.PointArtist.set_object_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_color</span></code></a></p></td>
+<td><p>Set the color of a Blender object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.set_object_tranformation.html#compas_blender.artists.PointArtist.set_object_tranformation" title="compas_blender.artists.PointArtist.set_object_tranformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_tranformation</span></code></a></p></td>
+<td><p>Set the transformation of a Blender object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.PointArtist.update_object.html#compas_blender.artists.PointArtist.update_object" title="compas_blender.artists.PointArtist.update_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_object</span></code></a></p></td>
+<td><p>Update an object in the Blender scene.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1169,12 +1159,12 @@ see <a class="reference internal" href="compas_blender.artists.BlenderArtist.htm
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas_blender.artists.LineArtist.register_artists.html"
+       href="compas_blender.artists.LineArtist.update_object.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">LineArtist.register_artists</p>
+        <p class="prev-next-title">LineArtist.update_object</p>
       </div>
     </a>
     <a class="right-next"

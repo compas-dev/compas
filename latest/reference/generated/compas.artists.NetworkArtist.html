@@ -426,13 +426,9 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.RobotModelArtist.html">RobotModelArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">NetworkArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.PrimitiveArtist.html">PrimitiveArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.ShapeArtist.html">ShapeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
@@ -1028,12 +1024,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html">BlenderGeometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderCurve.html">BlenderCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderMesh.html">BlenderMesh</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.ui.html">compas_blender.ui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.utilities.html">compas_blender.utilities</a></li>
@@ -1081,16 +1072,6 @@ document.write(`
 <dd class="field-odd"><dl>
 <dt><strong>network</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a></span></dt><dd><p>A COMPAS network.</p>
 </dd>
-<dt><strong>nodes</strong><span class="classifier">list[hashable], optional</span></dt><dd><p>A list of node identifiers.
-Default is None, in which case all nodes are drawn.</p>
-</dd>
-<dt><strong>edges</strong><span class="classifier">list[tuple[hashable, hashable]], optional</span></dt><dd><p>A list of edge keys (as uv pairs) identifying which edges to draw.
-The default is None, in which case all edges are drawn.</p>
-</dd>
-<dt><strong>nodecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[hashable, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional</span></dt><dd><p>The color specification for the nodes.</p>
-</dd>
-<dt><strong>edgecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a> | dict[tuple[hashable, hashable]], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>], optional</span></dt><dd><p>The color specification for the edges.</p>
-</dd>
 </dl>
 </dd>
 </dl>
@@ -1106,38 +1087,12 @@ The default is None, in which case all edges are drawn.</p>
 <dd class="field-odd"><dl>
 <dt><strong>network</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a></span></dt><dd><p>The COMPAS network associated with the artist.</p>
 </dd>
-<dt><strong>nodes</strong><span class="classifier">list[hashable]</span></dt><dd><p>The list of nodes to draw.
-Defaults to all nodes.</p>
-</dd>
-<dt><strong>edges</strong><span class="classifier">list[tuple[hashable, hashable]]</span></dt><dd><p>The list of edges to draw.
-Default is a list of all edges of the network.</p>
-</dd>
 <dt><strong>node_xyz</strong><span class="classifier">dict[hashable, list[float]]</span></dt><dd><p>Mapping between nodes and their view coordinates.
 The default view coordinates are the actual coordinates of the nodes of the network.</p>
 </dd>
-<dt><strong>node_color</strong><span class="classifier">dict[hashable, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Mapping between nodes and RGB color values.
-Missing nodes get the default node color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_nodecolor</span></code>.</p>
+<dt><strong>node_color</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorDict</span></code></span></dt><dd><p>Mapping between nodes and RGB color values.</p>
 </dd>
-<dt><strong>default_nodecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color for nodes that do not have a specified color.</p>
-</dd>
-<dt><strong>edge_color</strong><span class="classifier">dict[tuple[hashable, hashable], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Mapping between edges and colors.
-Missing edges get the default edge color <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p>
-</dd>
-<dt><strong>default_edgecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color for edges that do not have a specified color.</p>
-</dd>
-<dt><strong>node_text</strong><span class="classifier">dict[hashable, str]</span></dt><dd><p>Mapping between nodes and text labels.</p>
-</dd>
-<dt><strong>edge_text</strong><span class="classifier">dict[tuple[hashable, hashable], str]</span></dt><dd><p>Mapping between edges and text labels.</p>
-</dd>
-<dt><strong>node_size</strong><span class="classifier">dict[hashable, float]</span></dt><dd><p>Mapping between nodes and sizes.
-Missing nodes get assigned the default node size <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_nodesize</span></code>.</p>
-</dd>
-<dt><strong>default_nodesize</strong><span class="classifier">float</span></dt><dd><p>The default size for nodes that do not have a specified size.</p>
-</dd>
-<dt><strong>edge_width</strong><span class="classifier">dict[tuple[hashable, hashable], float]</span></dt><dd><p>Mapping between edges and line widths.
-Missing edges get assigned the default edge width <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgewidth</span></code>.</p>
-</dd>
-<dt><strong>default_edgewidth</strong><span class="classifier">float</span></dt><dd><p>The default width for edges that do not have a specified width.</p>
+<dt><strong>edge_color</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorDict</span></code></span></dt><dd><p>Mapping between edges and colors.</p>
 </dd>
 </dl>
 </dd>

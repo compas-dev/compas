@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="VolMeshArtist.clear_cells" href="compas.artists.VolMeshArtist.clear_cells.html" />
-    <link rel="prev" title="SurfaceArtist.register_artists" href="compas.artists.SurfaceArtist.register_artists.html" />
+    <link rel="prev" title="NetworkArtist.register_artists" href="compas.artists.NetworkArtist.register_artists.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -426,13 +426,9 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.RobotModelArtist.html">RobotModelArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.PrimitiveArtist.html">PrimitiveArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.ShapeArtist.html">ShapeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
@@ -1028,12 +1024,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html">BlenderGeometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderCurve.html">BlenderCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderMesh.html">BlenderMesh</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.ui.html">compas_blender.ui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.utilities.html">compas_blender.utilities</a></li>
@@ -1096,48 +1087,20 @@ document.write(`
 <dd class="field-odd"><dl>
 <dt><strong>volmesh</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">VolMesh</span></code></a></span></dt><dd><p>The COMPAS volmesh associated with the artist.</p>
 </dd>
-<dt><strong>vertices</strong><span class="classifier">list[int]</span></dt><dd><p>The list of vertices to draw.
-Default is a list of all vertices of the volmesh.</p>
-</dd>
-<dt><strong>edges</strong><span class="classifier">list[tuple[int, int]]</span></dt><dd><p>The list of edges to draw.
-Default is a list of all edges of the volmesh.</p>
-</dd>
-<dt><strong>faces</strong><span class="classifier">list[int]</span></dt><dd><p>The list of faces to draw.
-Default is a list of all faces of the volmesh.</p>
-</dd>
-<dt><strong>cells</strong><span class="classifier">list[int]</span></dt><dd><p>The list of cells to draw.
-Default is a list of all cells of the volmesh.</p>
-</dd>
 <dt><strong>vertex_xyz</strong><span class="classifier">dict[int, list[float]]</span></dt><dd><p>The view coordinates of the vertices.
 By default, the actual vertex coordinates are used.</p>
 </dd>
 <dt><strong>vertex_color</strong><span class="classifier">dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Mapping between vertices and colors.
 Missing vertices get the default vertex color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_vertexcolor</span></code>.</p>
 </dd>
-<dt><strong>default_vertexcolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color of the vertices of the mesh that don’t have a specified color.</p>
-</dd>
 <dt><strong>edge_color</strong><span class="classifier">dict[tuple[int, int], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Mapping between edges and colors.
 Missing edges get the default edge color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_edgecolor</span></code>.</p>
-</dd>
-<dt><strong>default_edgecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color of the edges of the mesh that don’t have a specified color.</p>
 </dd>
 <dt><strong>face_color</strong><span class="classifier">dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Mapping between faces and colors.
 Missing faces get the default face color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p>
 </dd>
-<dt><strong>default_facecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color of the faces of the mesh that don’t have a specified color.</p>
-</dd>
 <dt><strong>cell_color</strong><span class="classifier">dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>]</span></dt><dd><p>Mapping between cells and colors.
 Missing cells get the default cell color: <code class="xref py py-attr docutils literal notranslate"><span class="pre">default_facecolor</span></code>.</p>
-</dd>
-<dt><strong>default_cellcolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></span></dt><dd><p>The default color of the cells of the mesh that don’t have a specified color.</p>
-</dd>
-<dt><strong>vertex_text</strong><span class="classifier">dict[int, str]</span></dt><dd><p>Mapping between vertices and text labels.</p>
-</dd>
-<dt><strong>edge_text</strong><span class="classifier">dict[tuple[int, int], str]</span></dt><dd><p>Mapping between edges and text labels.</p>
-</dd>
-<dt><strong>face_text</strong><span class="classifier">dict[int, str]</span></dt><dd><p>Mapping between faces and text lables.</p>
-</dd>
-<dt><strong>cell_text</strong><span class="classifier">dict[int, str]</span></dt><dd><p>Mapping between cells and text lables.</p>
 </dd>
 </dl>
 </dd>
@@ -1224,12 +1187,12 @@ Missing cells get the default cell color: <code class="xref py py-attr docutils 
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.artists.SurfaceArtist.register_artists.html"
+       href="compas.artists.NetworkArtist.register_artists.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">SurfaceArtist.register_artists</p>
+        <p class="prev-next-title">NetworkArtist.register_artists</p>
       </div>
     </a>
     <a class="right-next"

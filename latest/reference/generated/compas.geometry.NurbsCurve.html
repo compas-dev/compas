@@ -426,13 +426,9 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.CurveArtist.html">CurveArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.RobotModelArtist.html">RobotModelArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.PrimitiveArtist.html">PrimitiveArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.ShapeArtist.html">ShapeArtist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.SurfaceArtist.html">SurfaceArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
@@ -1028,12 +1024,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_blender.artists.BlenderArtist.html">BlenderArtist</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderGeometry.html">BlenderGeometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderCurve.html">BlenderCurve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas_blender.conversions.BlenderMesh.html">BlenderMesh</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.ui.html">compas_blender.ui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas_blender.utilities.html">compas_blender.utilities</a></li>
@@ -1114,32 +1105,47 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.copy.html#compas.geometry.NurbsCurve.copy" title="compas.geometry.NurbsCurve.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the current curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_arc.html#compas.geometry.NurbsCurve.from_arc" title="compas.geometry.NurbsCurve.from_arc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_arc</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.elevate_degree.html#compas.geometry.NurbsCurve.elevate_degree" title="compas.geometry.NurbsCurve.elevate_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">elevate_degree</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_arc.html#compas.geometry.NurbsCurve.from_arc" title="compas.geometry.NurbsCurve.from_arc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_arc</span></code></a></p></td>
 <td><p>Construct a NURBS curve from an arc.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_circle.html#compas.geometry.NurbsCurve.from_circle" title="compas.geometry.NurbsCurve.from_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circle</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_circle.html#compas.geometry.NurbsCurve.from_circle" title="compas.geometry.NurbsCurve.from_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circle</span></code></a></p></td>
 <td><p>Construct a NURBS curve from a circle.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_data.html#compas.geometry.NurbsCurve.from_data" title="compas.geometry.NurbsCurve.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_data.html#compas.geometry.NurbsCurve.from_data" title="compas.geometry.NurbsCurve.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
 <td><p>Construct a NURBS curve from its data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_ellipse.html#compas.geometry.NurbsCurve.from_ellipse" title="compas.geometry.NurbsCurve.from_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ellipse</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_ellipse.html#compas.geometry.NurbsCurve.from_ellipse" title="compas.geometry.NurbsCurve.from_ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ellipse</span></code></a></p></td>
 <td><p>Construct a NURBS curve from an ellipse.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_interpolation.html#compas.geometry.NurbsCurve.from_interpolation" title="compas.geometry.NurbsCurve.from_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_interpolation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_interpolation.html#compas.geometry.NurbsCurve.from_interpolation" title="compas.geometry.NurbsCurve.from_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_interpolation</span></code></a></p></td>
 <td><p>Construct a NURBS curve by interpolating a set of points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_line.html#compas.geometry.NurbsCurve.from_line" title="compas.geometry.NurbsCurve.from_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_line</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_line.html#compas.geometry.NurbsCurve.from_line" title="compas.geometry.NurbsCurve.from_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_line</span></code></a></p></td>
 <td><p>Construct a NURBS curve from a line.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_parameters.html#compas.geometry.NurbsCurve.from_parameters" title="compas.geometry.NurbsCurve.from_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_parameters</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_parameters.html#compas.geometry.NurbsCurve.from_parameters" title="compas.geometry.NurbsCurve.from_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_parameters</span></code></a></p></td>
 <td><p>Construct a NURBS curve from explicit curve parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_points.html#compas.geometry.NurbsCurve.from_points" title="compas.geometry.NurbsCurve.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_points.html#compas.geometry.NurbsCurve.from_points" title="compas.geometry.NurbsCurve.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
 <td><p>Construct a NURBS curve from control points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_step.html#compas.geometry.NurbsCurve.from_step" title="compas.geometry.NurbsCurve.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.from_step.html#compas.geometry.NurbsCurve.from_step" title="compas.geometry.NurbsCurve.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Load a NURBS curve from an STP file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.insert_knot.html#compas.geometry.NurbsCurve.insert_knot" title="compas.geometry.NurbsCurve.insert_knot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_knot</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.reduce_degree.html#compas.geometry.NurbsCurve.reduce_degree" title="compas.geometry.NurbsCurve.reduce_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_degree</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.refine_knot.html#compas.geometry.NurbsCurve.refine_knot" title="compas.geometry.NurbsCurve.refine_knot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine_knot</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.NurbsCurve.remove_knot.html#compas.geometry.NurbsCurve.remove_knot" title="compas.geometry.NurbsCurve.remove_knot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_knot</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
