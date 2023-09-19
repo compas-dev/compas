@@ -6,29 +6,13 @@ compas_blender.artists
 
 .. rst-class:: lead
 
-Artists for visualizing (painting) COMPAS geometry, robots, and data structures in Blender.
+Artists for visualizing (painting) COMPAS geometry and data structures in Blender.
 The artists in this package provide plugins for the pluggable methods of the base artists defined in :mod:`compas.artists`.
 They can be used directly from here (:mod:`compas_blender.artists`), or through the base artist :class:`~compas.artists.Artist`.
 
 
-Primitive Artists
-=================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    CircleArtist
-    FrameArtist
-    LineArtist
-    PointArtist
-    PolygonArtist
-    PolylineArtist
-    VectorArtist
-
-
-Shape Artists
-=============
+Geometry Artists
+================
 
 .. autosummary::
     :toctree: generated/
@@ -36,21 +20,22 @@ Shape Artists
 
     BoxArtist
     CapsuleArtist
+    CircleArtist
     ConeArtist
-    CylinderArtist
-    PolyhedronArtist
-    SphereArtist
-
-
-Curve and Surface Artists
-=========================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     CurveArtist
+    CylinderArtist
+    FrameArtist
+    LineArtist
+    PlaneArtist
+    PointArtist
+    PointcloudArtist
+    PolygonArtist
+    PolyhedronArtist
+    PolylineArtist
+    VectorArtist
+    SphereArtist
     SurfaceArtist
+    TorusArtist
 
 
 Datastructure Artists
@@ -62,16 +47,7 @@ Datastructure Artists
 
     MeshArtist
     NetworkArtist
-
-
-Robot Artist
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    RobotModelArtist
+    VolMeshArtist
 
 
 Base Classes
