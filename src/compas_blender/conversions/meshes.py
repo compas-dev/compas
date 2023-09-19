@@ -5,6 +5,11 @@ import bmesh  # type: ignore
 from compas.geometry import Translation
 from compas.datastructures import Mesh
 
+# To Do
+# -----
+# - [ ] Write COMPAS Mesh attributes to Blender
+# - [ ] Read Mesh attributes from Blender to COMPAS
+# - [ ] Include results of modifiers in VOMPAS Mesh
 
 # =============================================================================
 # To Blender

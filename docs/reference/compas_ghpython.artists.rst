@@ -27,7 +27,6 @@ Geometry Artists
     CylinderArtist
     FrameArtist
     LineArtist
-    PlaneArtist
     PointArtist
     PolygonArtist
     PolyhedronArtist

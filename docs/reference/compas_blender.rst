@@ -19,6 +19,5 @@ Modules
     compas_blender.artists
     compas_blender.conversions
     compas_blender.geometry
-    compas_blender.utilities
 
 

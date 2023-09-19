@@ -11,7 +11,6 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    RhinoCurve
     RhinoNurbsCurve
     RhinoNurbsSurface
 

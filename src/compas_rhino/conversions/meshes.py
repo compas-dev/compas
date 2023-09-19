@@ -2,7 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from itertools import izip_longest  # type: ignore
+try:
+    from itertools import zip_longest
+except ImportError:
+    from itertools import izip_longest as zip_longest  # type: ignore
 
 from System.Drawing import Color as SystemColor  # type: ignore
 from System.Array import CreateInstance  # type: ignore
@@ -158,7 +161,7 @@ def vertices_and_faces_to_rhino(
     if disjoint:
         vertexcolors = []
 
-        for face, facecolor in izip_longest(faces, facecolors or []):
+        for face, facecolor in zip_longest(faces, facecolors or []):
             f = len(face)
 
             if f < 3:

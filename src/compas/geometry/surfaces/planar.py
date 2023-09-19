@@ -22,9 +22,6 @@ class PlanarSurface(Surface):
     ysize : float, optional
         The size of the surface in the local Y-direction.
 
-    Attributes
-    ----------
-
     """
 
     DATASCHEMA = {
