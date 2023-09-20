@@ -31,7 +31,7 @@ in Architecture, Engineering, Fabrication, and Construction.
 
 .. The documentation is divided into the following sections.
 
-.. grid:: 2
+.. grid:: 1 1 2 2
    :gutter: 4
 
    .. grid-item-card::
@@ -65,6 +65,20 @@ in Architecture, Engineering, Fabrication, and Construction.
 
    .. grid-item-card::
 
+      Developer Guide
+      ^^^^^^^^^^^^^^^
+
+      If you want to contribute to COMPAS, this is the place to start.
+
+      .. toctree::
+         :maxdepth: 2
+         :titlesonly:
+
+         devguide/index
+
+
+   .. grid-item-card::
+
       Extensions
       ^^^^^^^^^^
 
@@ -76,15 +90,3 @@ in Architecture, Engineering, Fabrication, and Construction.
 
          extensions/index
 
-   .. grid-item-card::
-
-      Developer Guide
-      ^^^^^^^^^^^^^^^
-
-      If you want to contribute to COMPAS, this is the place to start.
-
-      .. toctree::
-         :maxdepth: 2
-         :titlesonly:
-
-         devguide/index

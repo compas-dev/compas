@@ -19,6 +19,7 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    Artist
     GeometryArtist
     MeshArtist
     NetworkArtist
@@ -34,13 +35,3 @@ Exceptions
 
     DataArtistNotRegistered
     NoArtistContextError
-
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Artist
