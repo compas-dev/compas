@@ -8,6 +8,7 @@ from test_api_stability import get_names_in_module
 
 def compas_api():
     modules = [
+        "compas.artists",
         "compas.data",
         "compas.datastructures",
         "compas.files",
@@ -31,7 +32,7 @@ def compas_stubs():
     HOME = os.path.abspath(os.path.join(HERE, "../.."))
     TEMP = os.path.abspath(os.path.join(HOME, "temp/stubs"))
     DOCS = os.path.abspath(os.path.join(HOME, "docs"))
-    API = os.path.abspath(os.path.join(DOCS, "api"))
+    API = os.path.abspath(os.path.join(DOCS, "reference"))
 
     shutil.rmtree(TEMP, ignore_errors=True)
 
