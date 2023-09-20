@@ -107,10 +107,10 @@ class Artist(object):
 
     Parameters
     ----------
-    item: Any
+    item : Any
         The item which should be visualized using the created Artist.
-    context: str, optional
-        Explicit context to pick the Artist from. One of :attr:`AVAILABLE_CONTEXTS`.
+    context : str, optional
+        Explicit context to pick the Artist from.
         If not specified, an attempt will be made to automatically detect the appropriate context.
 
     Attributes
@@ -144,6 +144,22 @@ class Artist(object):
     def __init__(self, item, **kwargs):
         self._item = item
         self._transformation = None
+
+    @property
+    def transformation(self):
+        """The transformation matrix of the artist.
+
+        Returns
+        -------
+        :class:`Transformation` or None
+            The transformation matrix.
+
+        """
+        return self._transformation
+
+    @transformation.setter
+    def transformation(self, transformation):
+        self._transformation = transformation
 
     @staticmethod
     def build(item, **kwargs):
@@ -239,22 +255,6 @@ class Artist(object):
 
         """
         Artist.ITEM_ARTIST[context][item_type] = artist_type
-
-    @property
-    def transformation(self):
-        """The transformation matrix of the artist.
-
-        Returns
-        -------
-        :class:`Transformation` or None
-            The transformation matrix.
-
-        """
-        return self._transformation
-
-    @transformation.setter
-    def transformation(self, transformation):
-        self._transformation = transformation
 
     @abstractmethod
     def draw(self):

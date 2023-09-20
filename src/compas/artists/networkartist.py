@@ -128,7 +128,6 @@ class NetworkArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_nodes(self):
         """Clear the nodes of the network.
 
@@ -139,7 +138,6 @@ class NetworkArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_edges(self):
         """Clear the edges of the network.
 

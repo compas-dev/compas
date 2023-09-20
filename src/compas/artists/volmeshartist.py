@@ -191,7 +191,6 @@ class VolMeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_vertices(self):
         """Clear the vertices of the mesh.
 
@@ -202,7 +201,6 @@ class VolMeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_edges(self):
         """Clear the edges of the mesh.
 
@@ -213,7 +211,6 @@ class VolMeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_faces(self):
         """Clear the faces of the mesh.
 
@@ -224,7 +221,6 @@ class VolMeshArtist(Artist):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def clear_cells(self):
         """Clear the cells of the mesh.
 

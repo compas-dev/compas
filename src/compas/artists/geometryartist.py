@@ -21,11 +21,6 @@ class GeometryArtist(Artist):
     color : :class:`~compas.colors.Color`
         The color of the object.
 
-    See Also
-    --------
-    :class:`compas.artists.CurveArtist`
-    :class:`compas.artists.SurfaceArtist`
-
     """
 
     color = ColorAttribute(default=None)
