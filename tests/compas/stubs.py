@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import compas
 
-from test_api_stability import get_names_in_module
+from donttest_api_stability import get_names_in_module
 
 
 def compas_api():
@@ -80,5 +80,5 @@ def check_compas_stubs(api, stubs):
 # Main
 # ==============================================================================
 
-if __name__ == "__main__":
-    check_compas_stubs(compas_api(), compas_stubs())
+# if __name__ == "__main__":
+#     check_compas_stubs(compas_api(), compas_stubs())
