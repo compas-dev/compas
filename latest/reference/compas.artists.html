@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="GeometryArtist" href="generated/compas.artists.GeometryArtist.html" />
+    <link rel="next" title="Artist" href="generated/compas.artists.Artist.html" />
     <link rel="prev" title="compas" href="compas.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -176,15 +176,15 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -331,15 +331,15 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -425,17 +425,18 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">compas.artists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.Artist.html">Artist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.GeometryArtist.html">GeometryArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.Artist.html">Artist</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="compas.colors.html">compas.colors</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.colors.Color.html">Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.colors.ColorDict.html">ColorDict</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.colors.ColorMap.html">ColorMap</a></li>
 </ul>
 </li>
@@ -1187,16 +1188,19 @@ that receive an implementation from plugins defined by various visualization con
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.artists.GeometryArtist.html" title="compas.artists.GeometryArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeometryArtist</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.artists.Artist.html" title="compas.artists.Artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Artist</span></code></a></p></td>
+<td><p>Base class for all artists.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.artists.GeometryArtist.html" title="compas.artists.GeometryArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeometryArtist</span></code></a></p></td>
 <td><p>Base class for artists for geometry objects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.artists.MeshArtist.html" title="compas.artists.MeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeshArtist</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.artists.MeshArtist.html" title="compas.artists.MeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeshArtist</span></code></a></p></td>
 <td><p>Base class for all mesh artists.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.artists.NetworkArtist.html" title="compas.artists.NetworkArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkArtist</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.artists.NetworkArtist.html" title="compas.artists.NetworkArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkArtist</span></code></a></p></td>
 <td><p>Artist for drawing network data structures.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.artists.VolMeshArtist.html" title="compas.artists.VolMeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMeshArtist</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.artists.VolMeshArtist.html" title="compas.artists.VolMeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMeshArtist</span></code></a></p></td>
 <td><p>Artist for drawing volmesh data structures.</p></td>
 </tr>
 </tbody>
@@ -1215,20 +1219,6 @@ that receive an implementation from plugins defined by various visualization con
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.artists.NoArtistContextError.html" title="compas.artists.NoArtistContextError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoArtistContextError</span></code></a></p></td>
 <td><p>Exception that is raised when no artist context is assigned is registered for a given data type.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="base-classes">
-<h2>Base Classes</h2>
-<table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.artists.Artist.html" title="compas.artists.Artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Artist</span></code></a></p></td>
-<td><p>Base class for all artists.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1256,11 +1246,11 @@ that receive an implementation from plugins defined by various visualization con
       </div>
     </a>
     <a class="right-next"
-       href="generated/compas.artists.GeometryArtist.html"
+       href="generated/compas.artists.Artist.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">GeometryArtist</p>
+        <p class="prev-next-title">Artist</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1284,7 +1274,6 @@ that receive an implementation from plugins defined by various visualization con
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exceptions">Exceptions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-classes">Base Classes</a></li>
 </ul>
   </nav></div>
 

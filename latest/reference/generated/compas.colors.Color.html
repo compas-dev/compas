@@ -176,15 +176,15 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -331,15 +331,15 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -425,17 +425,18 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.GeometryArtist.html">GeometryArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../compas.colors.html">compas.colors</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.colors.ColorDict.html">ColorDict</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.colors.ColorMap.html">ColorMap</a></li>
 </ul>
 </li>
@@ -1183,11 +1184,11 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>red</strong><span class="classifier">float</span></dt><dd><p>The red component in the range of 0-1.</p>
+<dt><strong>red</strong><span class="classifier">float</span></dt><dd><p>The red component in the range <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.</p>
 </dd>
-<dt><strong>green</strong><span class="classifier">float</span></dt><dd><p>The green component in the range of 0-1.</p>
+<dt><strong>green</strong><span class="classifier">float</span></dt><dd><p>The green component in the range of <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.</p>
 </dd>
-<dt><strong>blue</strong><span class="classifier">float</span></dt><dd><p>The blue component in the range of 0-1.</p>
+<dt><strong>blue</strong><span class="classifier">float</span></dt><dd><p>The blue component in the range of <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.</p>
 </dd>
 <dt><strong>alpha</strong><span class="classifier">float, optional</span></dt><dd><p>Transparency setting.
 If <code class="docutils literal notranslate"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">0.0</span></code>, the color is fully transparent.
@@ -1197,7 +1198,7 @@ If <code class="docutils literal notranslate"><span class="pre">alpha</span> <sp
 </dd>
 <dt class="field-even">Other Parameters</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code> for more information.</p>
+<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>See <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a> for more information.</p>
 </dd>
 </dl>
 </dd>
@@ -1208,29 +1209,72 @@ If <code class="docutils literal notranslate"><span class="pre">alpha</span> <sp
 <dt><a class="reference internal" href="compas.colors.ColorMap.html#compas.colors.ColorMap" title="compas.colors.ColorMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorMap</span></code></a></dt><dd></dd>
 </dl>
 </div>
+<p class="rubric">Notes</p>
+<p>The following methods are static methods:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="compas.colors.Color.is_hex.html#compas.colors.Color.is_hex" title="compas.colors.Color.is_hex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_hex()</span></code></a> : Check if a string is a valid hexadecimal color string.</p></li>
+<li><p><a class="reference internal" href="compas.colors.Color.is_rgb1.html#compas.colors.Color.is_rgb1" title="compas.colors.Color.is_rgb1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_rgb1()</span></code></a> : Check if a tuple is a valid RGB1 color tuple.</p></li>
+<li><p><a class="reference internal" href="compas.colors.Color.is_rgb255.html#compas.colors.Color.is_rgb255" title="compas.colors.Color.is_rgb255"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_rgb255()</span></code></a> : Check if a tuple is a valid RGB255 color tuple.</p></li>
+<li><p><a class="reference internal" href="compas.colors.Color.coerce.html#compas.colors.Color.coerce" title="compas.colors.Color.coerce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">coerce()</span></code></a> : Coerce any valid color specification to a <a class="reference internal" href="#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> object.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">Color</span><span class="o">.</span><span class="n">is_hex</span><span class="p">(</span><span class="s2">&quot;#ff0000&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is a valid hexadecimal color string.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">Color</span><span class="o">.</span><span class="n">is_rgb1</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is a valid RGB1 color tuple.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">Color</span><span class="o">.</span><span class="n">is_rgb255</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is a valid RGB255 color tuple.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">coerce</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
 <p class="rubric">Examples</p>
+<p>By default, this class will create a color with the RGB components in the range <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="go">Color(1.0, 0.0, 0.0, 1.0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Attempting to create a color with components outside of the range <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code> will raise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Components of an RGBA color should be in the range 0-1.</span>
+</pre></div>
+</div>
+<p>To create a color with components in the range <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">255]</span></code>, use the <a class="reference internal" href="compas.colors.Color.from_rgb255.html#compas.colors.Color.from_rgb255" title="compas.colors.Color.from_rgb255"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_rgb255()</span></code></a> constructor.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">from_rgb255</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="go">Color(1.0, 0.0, 0.0, 1.0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
-<span class="go">True</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">magenta</span><span class="p">()</span>
-<span class="go">Color(1.0, 0.0, 1.0, 1.0)</span>
+<p>Similarly, other constructors are available to create colors from other color spaces.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">from_hls</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">from_hsv</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">from_yiq</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">from_yuv</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or, to construct specific colors, for example, …</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">magenta</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">lime</span><span class="p">()</span>
-<span class="go">Color(0.5, 1.0, 0.0, 1.0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">navy</span><span class="p">()</span>
-<span class="go">Color(0.0, 0.0, 0.5, 1.0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">olive</span><span class="p">()</span>
-<span class="go">Color(0.5, 0.5, 0.0, 1.0)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">lime</span><span class="p">()</span><span class="o">.</span><span class="n">is_light</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">navy</span><span class="p">()</span><span class="o">.</span><span class="n">is_light</span>
-<span class="go">False</span>
+<p>Colors can be modified through inversion, saturation/desaturation, and lightening/darkening.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+<span class="go">Color(0.875, 0.125, 0.125, alpha=1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="go">Color(0.75, 0.25, 0.25, alpha=1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">75</span><span class="p">)</span>
+<span class="go">Color(0.625, 0.375, 0.375, alpha=1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">Color(0.5, 0.5, 0.5, alpha=1.0)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -1242,9 +1286,15 @@ If <code class="docutils literal notranslate"><span class="pre">alpha</span> <sp
 </dd>
 <dt><strong>b</strong><span class="classifier">float</span></dt><dd><p>Blue component of the color in RGB1 color space.</p>
 </dd>
-<dt><strong>rgb</strong><span class="classifier">tuple[float, float, float]</span></dt><dd><p>RGB1 color tuple, with components in the range 0-1.</p>
+<dt><strong>a</strong><span class="classifier">float</span></dt><dd><p>Transparency in RGB1 color space.</p>
 </dd>
-<dt><strong>rgb255</strong><span class="classifier">tuple[int, int, int]</span></dt><dd><p>RGB255 color tuple, with components in the range 0-255.</p>
+<dt><strong>rgb</strong><span class="classifier">tuple[float, float, float]</span></dt><dd><p>RGB1 color tuple, with components in the range <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.</p>
+</dd>
+<dt><strong>rgba</strong><span class="classifier">tuple[float, float, float, float]</span></dt><dd><p>RGBA1 color tuple (including alpha), with components in the range <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.</p>
+</dd>
+<dt><strong>rgb255</strong><span class="classifier">tuple[int, int, int]</span></dt><dd><p>RGB255 color tuple, with components in the range <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">255]</span></code>.</p>
+</dd>
+<dt><strong>rgba255</strong><span class="classifier">tuple[int, int, int, int]</span></dt><dd><p>RGBA255 color tuple (including alpha), with components in the range <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">255]</span></code>.</p>
 </dd>
 <dt><strong>hex</strong><span class="classifier">str</span></dt><dd><p>Hexadecimal color string.</p>
 </dd>
@@ -1259,6 +1309,16 @@ Making a color “lighter” is like adding more white.</p>
 <dt><strong>brightness</strong><span class="classifier">float</span></dt><dd><p>How well-lit the color appears to be.
 This is the “Value” in HSV.
 Making a color “brighter” is like shining a stronger light on it, or illuminating it better.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">yuv</span></code><span class="classifier">tuple[float, float, float]</span></dt><dd><p>tuple[float, float, float] :</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">luma</span></code><span class="classifier">float</span></dt><dd><p>float :</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">chroma</span></code><span class="classifier">tuple[float, float]</span></dt><dd><p>tuple[float, float] :</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">luminance</span></code><span class="classifier">float</span></dt><dd><p>float :</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">saturation</span></code><span class="classifier">float</span></dt><dd><p>float : The perceived freedom of whiteness.</p>
 </dd>
 <dt><strong>is_light</strong><span class="classifier">bool</span></dt><dd><p>If True, the color is considered light.</p>
 </dd>

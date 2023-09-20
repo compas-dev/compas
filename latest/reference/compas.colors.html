@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Color" href="generated/compas.colors.Color.html" />
-    <link rel="prev" title="Artist.register_artists" href="generated/compas.artists.Artist.register_artists.html" />
+    <link rel="prev" title="NoArtistContextError" href="generated/compas.artists.NoArtistContextError.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -176,15 +176,15 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -331,15 +331,15 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -425,17 +425,18 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.Artist.html">Artist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.GeometryArtist.html">GeometryArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/compas.artists.Artist.html">Artist</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">compas.colors</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.colors.Color.html">Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/compas.colors.ColorDict.html">ColorDict</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/compas.colors.ColorMap.html">ColorMap</a></li>
 </ul>
 </li>
@@ -1188,8 +1189,11 @@ and color maps for various color palettes.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.colors.Color.html" title="compas.colors.Color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Color</span></code></a></p></td>
 <td><p>Class for working with colors.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.colors.ColorMap.html" title="compas.colors.ColorMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorMap</span></code></a></p></td>
-<td><p>Class providing a map for colors of a specific color palette.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.colors.ColorDict.html" title="compas.colors.ColorDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorDict</span></code></a></p></td>
+<td><p>Class representing a dictionary of colors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.colors.ColorMap.html" title="compas.colors.ColorMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorMap</span></code></a></p></td>
+<td><p>Class providing a map for 256 distinct colors of a specific color palette.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1208,12 +1212,12 @@ and color maps for various color palettes.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="generated/compas.artists.Artist.register_artists.html"
+       href="generated/compas.artists.NoArtistContextError.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Artist.register_artists</p>
+        <p class="prev-next-title">NoArtistContextError</p>
       </div>
     </a>
     <a class="right-next"

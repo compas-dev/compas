@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="ColorMap.from_color" href="compas.colors.ColorMap.from_color.html" />
-    <link rel="prev" title="Color.validate_data" href="compas.colors.Color.validate_data.html" />
+    <link rel="prev" title="ColorDict.validate_data" href="compas.colors.ColorDict.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -176,15 +176,15 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -331,15 +331,15 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../extensions/index.html">
-                        Extensions
+                      <a class="nav-link nav-internal" href="../../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../../extensions/index.html">
+                        Extensions
                       </a>
                     </li>
                 
@@ -425,17 +425,18 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.html">compas</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.artists.html">compas.artists</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.GeometryArtist.html">GeometryArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.MeshArtist.html">MeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NetworkArtist.html">NetworkArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.VolMeshArtist.html">VolMeshArtist</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.DataArtistNotRegistered.html">DataArtistNotRegistered</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.artists.NoArtistContextError.html">NoArtistContextError</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.artists.Artist.html">Artist</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../compas.colors.html">compas.colors</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="compas.colors.Color.html">Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.colors.ColorDict.html">ColorDict</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">ColorMap</a></li>
 </ul>
 </li>
@@ -1179,11 +1180,18 @@ document.write(`
 <dt class="sig sig-object py" id="compas.colors.ColorMap">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.colors.</span></span><span class="sig-name descname"><span class="pre">ColorMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colors</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Class providing a map for colors of a specific color palette.</p>
+<p>Class providing a map for 256 distinct colors of a specific color palette.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>colors</strong><span class="classifier">sequence[tuple[float, float, float]]</span></dt><dd><p>A sequence of colors forming the map.</p>
+<dt><strong>colors</strong><span class="classifier">sequence[tuple[float, float, float]]</span></dt><dd><p>A sequence of colors forming the map.
+The number of colors in the sequence should be 256.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the number of colors in the sequence is not 256.</p>
 </dd>
 </dl>
 </dd>
@@ -1207,10 +1215,6 @@ document.write(`
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 <span class="gp">...</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">&#39;light&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>    
 </pre></div>
 </div>
 <dl class="field-list">
@@ -1264,12 +1268,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.colors.Color.validate_data.html"
+       href="compas.colors.ColorDict.validate_data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Color.validate_data</p>
+        <p class="prev-next-title">ColorDict.validate_data</p>
       </div>
     </a>
     <a class="right-next"
