@@ -23,18 +23,6 @@ this is the place to start.
    userguide/index
 
 
-Package Reference
-=================
-
-The reference documentation of the core package and the CAD packages.
-
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
-
-   reference/index
-
-
 Developer Guide
 ===============
 
@@ -45,6 +33,18 @@ If you want to contribute to COMPAS, this is the place to start.
    :titlesonly:
 
    devguide/index
+
+
+Package Reference
+=================
+
+The reference documentation of the core package and the CAD packages.
+
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+
+   reference/index
 
 
 Extensions
