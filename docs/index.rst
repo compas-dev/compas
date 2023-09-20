@@ -10,62 +10,51 @@ This is the documentation of the core infratructure of COMPAS,
 an open source framework for computational research and collaboration
 in Architecture, Engineering, Fabrication, and Construction.
 
-.. grid:: 1 1 2 2
-   :gutter: 4
+User Guide
+==========
 
-   .. grid-item-card::
+If you want to use COMPAS for your research or in one of your projects,
+this is the place to start.
 
-      User Guide
-      ^^^^^^^^^^
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
 
-      If you want to use COMPAS for your research or in one of your projects,
-      this is the place to start.
-
-      .. toctree::
-         :maxdepth: 2
-         :titlesonly:
-
-         userguide/index
+   userguide/index
 
 
-   .. grid-item-card::
+Package Reference
+=================
 
-      Package Reference
-      ^^^^^^^^^^^^^^^^^
+The reference documentation of the core package and the CAD packages.
 
-      The reference documentation of the core package and the CAD packages.
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
 
-      .. toctree::
-         :maxdepth: 2
-         :titlesonly:
-
-         reference/index
+   reference/index
 
 
-   .. grid-item-card::
+Developer Guide
+===============
 
-      Developer Guide
-      ^^^^^^^^^^^^^^^
+If you want to contribute to COMPAS, this is the place to start.
 
-      If you want to contribute to COMPAS, this is the place to start.
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
 
-      .. toctree::
-         :maxdepth: 2
-         :titlesonly:
-
-         devguide/index
+   devguide/index
 
 
-   .. grid-item-card::
+Extensions
+==========
 
-      Extensions
-      ^^^^^^^^^^
+The core extensions to COMPAS and the AEC toolboxes manages by the compas-dev team are listed here.
 
-      The core extensions to COMPAS and the AEC toolboxes manages by the compas-dev team are listed here.
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
 
-      .. toctree::
-         :maxdepth: 2
-         :titlesonly:
-
-         extensions/index
+   extensions/index
 
