@@ -8,9 +8,9 @@ geometry processing, form finding, digital fabrication, discrete element modelli
 Here, the extensions are listed that are managed by the core development team.
 Extensions contributed by the community can be found at ...
 
-.. figure:: /_images/COMPAS.png
-     :figclass: figure
-     :class: figure-img img-fluid
+.. .. figure:: /_images/COMPAS.png
+..      :figclass: figure
+..      :class: figure-img img-fluid
 
 
 Core Extensions
