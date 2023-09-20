@@ -19,6 +19,7 @@ Base Classes
 
     Curve
     Geometry
+    Shape
     Surface
     Transformation
 
