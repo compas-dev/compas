@@ -21,17 +21,23 @@ mpl = {
 
 
 class ColorMap(object):
-    """Class providing a map for colors of a specific color palette.
+    """Class providing a map for 256 distinct colors of a specific color palette.
 
     Parameters
     ----------
     colors : sequence[tuple[float, float, float]]
         A sequence of colors forming the map.
+        The number of colors in the sequence should be 256.
 
     Attributes
     ----------
     colors : list[:class:`~compas.colors.Color`]
         The colors of the map.
+
+    Raises
+    ------
+    ValueError
+        If the number of colors in the sequence is not 256.
 
     Examples
     --------
@@ -46,9 +52,6 @@ class ColorMap(object):
     >>> for i in range(n):
     ...     color = cmap(i, 0, n - 1)
     ...
-
-    >>> cmap = ColorMap.from_color(Color.red(), rangetype='light')
-    >>> cmap.plot()    # doctest: +SKIP
 
     See Also
     --------
@@ -70,17 +73,16 @@ class ColorMap(object):
 
     @colors.setter
     def colors(self, colors):
+        if len(colors) != 256:
+            raise ValueError("The color map should have 256 colors.")
         self._colors = [Color(r, g, b) for r, g, b in colors]
 
     # --------------------------------------------------------------------------
     # customization
     # --------------------------------------------------------------------------
 
-    def __getitem__(self, index):
-        return self.colors[index]
-
     def __call__(self, value, minval=0.0, maxval=1.0):
-        """Returns the color in the map corresponding to the given value.
+        """Returns the color in the map corresponding to the given value in the range ``[minval, maxval]``.
 
         Parameters
         ----------
@@ -94,6 +96,11 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.Color`
+
+        Raises
+        ------
+        KeyError
+            If the value is not in the range ``[minval, maxval]``.
 
         """
         key = (value - minval) / (maxval - minval)
@@ -118,6 +125,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         Raises
         ------
@@ -158,6 +166,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         Raises
         ------
@@ -190,6 +199,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.Color`
+            A color map with 256 colors.
 
         """
         n = 256
@@ -228,6 +238,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         """
         colors = []
@@ -266,6 +277,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         """
         colors = []
@@ -282,7 +294,7 @@ class ColorMap(object):
         return cls(colors)
 
     @classmethod
-    def from_rgb(cls, n=256):
+    def from_rgb(cls):
         """Construct a color map from the complete rgb color space.
 
         Returns
@@ -291,7 +303,7 @@ class ColorMap(object):
 
         """
         colors = []
-        for i in linspace(0, 1.0, n):
+        for i in linspace(0, 1.0, 256):
             colors.append(Color.from_i(i))
         return cls(colors)
 
