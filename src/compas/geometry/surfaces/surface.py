@@ -39,13 +39,13 @@ class Surface(Geometry):
         Default is the world coordinate system.
     transformation : :class:`~compas.geometry.Transformation`, read-only
         The transformation from the surface's local coordinate system to the world coordinate system.
-    u_domain : tuple[float, float], read-only
+    domain_u : tuple[float, float], read-only
         The parameter domain of the surface in the U direction.
-    v_domain : tuple[float, float], read-only
+    domain_v : tuple[float, float], read-only
         The parameter domain of the surface in the V direction.
-    is_u_periodic : bool, read-only
+    is_periodic_u : bool, read-only
         Flag indicating if the surface is periodic in the U direction.
-    is_v_periodic : bool, read-only
+    is_periodic_v : bool, read-only
         Flag indicating if the surface is periodic in the V direction.
 
     """
@@ -57,18 +57,18 @@ class Surface(Geometry):
         super(Surface, self).__init__(name=name)
         self._frame = None
         self._transformation = None
-        self._u_domain = None
-        self._v_domain = None
+        self._domain_u = None
+        self._domain_v = None
         self._point = None
         if frame:
             self.frame = frame
 
     def __repr__(self):
-        return "{0}(frame={1!r}, u_domain={2}, v_domain={3})".format(
+        return "{0}(frame={1!r}, domain_u={2}, domain_v={3})".format(
             type(self).__name__,
             self.frame,
-            self.u_domain,
-            self.v_domain,
+            self.domain_u,
+            self.domain_v,
         )
 
     # ==============================================================================
@@ -122,27 +122,27 @@ class Surface(Geometry):
         return 3
 
     @property
-    def u_domain(self):
-        if not self._u_domain:
-            self._u_domain = (0.0, 1.0)
-        return self._u_domain
+    def domain_u(self):
+        if not self._domain_u:
+            self._domain_u = (0.0, 1.0)
+        return self._domain_u
 
     @property
-    def v_domain(self):
-        if not self._v_domain:
-            self._v_domain = (0.0, 1.0)
-        return self._v_domain
+    def domain_v(self):
+        if not self._domain_v:
+            self._domain_v = (0.0, 1.0)
+        return self._domain_v
 
     @property
     def is_closed(self):
         raise NotImplementedError
 
     @property
-    def is_u_periodic(self):
+    def is_periodic_u(self):
         raise NotImplementedError
 
     @property
-    def is_v_periodic(self):
+    def is_periodic_v(self):
         raise NotImplementedError
 
     # ==============================================================================
@@ -242,12 +242,12 @@ class Surface(Geometry):
             The faces of the surface discretisation as lists of vertex indices.
 
         """
-        u_domain = du or self.u_domain
-        v_domain = dv or self.v_domain
+        domain_u = du or self.domain_u
+        domain_v = dv or self.domain_v
 
         vertices = [
             self.point_at(i, j)
-            for i, j in product(linspace(u_domain[0], u_domain[1], nu + 1), linspace(v_domain[0], v_domain[1], nv + 1))
+            for i, j in product(linspace(domain_u[0], domain_u[1], nu + 1), linspace(domain_v[0], domain_v[1], nv + 1))
         ]
         faces = [
             [
@@ -444,7 +444,7 @@ class Surface(Geometry):
         list[float]
 
         """
-        umin, umax = self.u_domain
+        umin, umax = self.domain_u
         return linspace(umin, umax, n)
 
     def v_space(self, n=10):
@@ -460,7 +460,7 @@ class Surface(Geometry):
         list[float]
 
         """
-        vmin, vmax = self.v_domain
+        vmin, vmax = self.domain_v
         return linspace(vmin, vmax, n)
 
     def u_isocurve(self, u):

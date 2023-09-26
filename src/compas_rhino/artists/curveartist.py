@@ -2,45 +2,51 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import CurveArtist
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import curve_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class CurveArtist(RhinoArtist, CurveArtist):
+class CurveArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing curves.
 
     Parameters
     ----------
     curve : :class:`~compas.geometry.Curve`
         A COMPAS curve.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`~compas.artists.CurveArtist`.
 
     """
 
-    def __init__(self, curve, layer=None, **kwargs):
-        super(CurveArtist, self).__init__(curve=curve, layer=layer, **kwargs)
+    def __init__(self, curve, **kwargs):
+        super(CurveArtist, self).__init__(geometry=curve, **kwargs)
 
     def draw(self, color=None):
         """Draw the curve.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the curve.
-            The default color is :attr:`compas.artists.CurveArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
+        System.Guid
+            The GUID of the created Rhino object.
 
         """
         color = Color.coerce(color) or self.color
-        curves = [{"curve": self.curve, "color": color.rgb255, "name": self.curve.name}]
-        return compas_rhino.draw_curves(curves, layer=self.layer, clear=False, redraw=False)
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
+        geometry = curve_to_rhino(self.geometry)
+
+        if self.transformation:
+            geometry.Transform(transformation_to_rhino(self.transformation))
+
+        return sc.doc.Objects.AddCurve(geometry, attr)

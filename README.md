@@ -21,7 +21,7 @@ COMPAS has dedicated packages for working with Rhino, Grasshopper, and Blender, 
 
 We are working on a new major release of the framework, COMPAS 2.0!
 Therefore, be aware that the current version of the repository already contains some changes that are incompatible with the version 1 releases.
-The documentation of the latest stable version (COMPAS 1.17.5) [is available here](https://compas.dev/compas/1.17.5).
+The documentation of the latest stable version (COMPAS 1.17.6) [is available here](https://compas.dev/compas/1.17.6).
 
 ## Installation
 

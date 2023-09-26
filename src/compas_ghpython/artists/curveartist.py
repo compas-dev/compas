@@ -2,11 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.artists import CurveArtist
+from compas_rhino import conversions
+
+from compas.artists import GeometryArtist
 from .artist import GHArtist
 
 
-class CurveArtist(GHArtist, CurveArtist):
+class CurveArtist(GHArtist, GeometryArtist):
     """Artist for drawing curves.
 
     Parameters
@@ -18,25 +20,24 @@ class CurveArtist(GHArtist, CurveArtist):
     ----------------
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`GHArtist` and :class:`~compas.artists.CurveArtist`.
 
     """
 
     def __init__(self, curve, **kwargs):
-        super(CurveArtist, self).__init__(curve=curve, **kwargs)
+        super(CurveArtist, self).__init__(geometry=curve, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the curve.
-
-        Parameters
-        ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
-            The RGB color of the curve.
-            Default is :attr:`compas.artists.CurveArtist.color`.
 
         Returns
         -------
         :rhino:`Rhino.Geometry.Curve`
 
         """
-        return self.curve.rhino_curve
+        geometry = conversions.curve_to_rhino(self.geometry)
+
+        if self.transformation:
+            transformation = conversions.transformation_to_rhino(self.transformation)
+            geometry.Transform(transformation)
+
+        return geometry

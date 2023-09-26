@@ -2,62 +2,44 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import ShapeArtist
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import sphere_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class SphereArtist(RhinoArtist, ShapeArtist):
+class SphereArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing sphere shapes.
 
     Parameters
     ----------
     sphere : :class:`~compas.geometry.Sphere`
         A COMPAS sphere.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`ShapeArtist`.
 
     """
 
-    def __init__(self, sphere, layer=None, **kwargs):
-        super(SphereArtist, self).__init__(shape=sphere, layer=layer, **kwargs)
+    def __init__(self, sphere, **kwargs):
+        super(SphereArtist, self).__init__(geometry=sphere, **kwargs)
 
-    def draw(self, color=None, u=None, v=None):
+    def draw(self, color=None):
         """Draw the sphere associated with the artist.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the sphere.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
-        u : int, optional
-            Number of faces in the "u" direction.
-            Default is :attr:`SphereArtist.u`.
-        v : int, optional
-            Number of faces in the "v" direction.
-            Default is :attr:`SphereArtist.v`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the objects created in Rhino.
+        System.Guid
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
-        u = u or self.u
-        v = v or self.v
-        vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        vertices = [list(vertex) for vertex in vertices]
-        guid = compas_rhino.draw_mesh(
-            vertices,
-            faces,
-            layer=self.layer,
-            name=self.shape.name,
-            color=color.rgb255,
-            disjoint=True,
-        )
-        return [guid]
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        return sc.doc.Objects.AddSphere(sphere_to_rhino(self.geometry), attr)

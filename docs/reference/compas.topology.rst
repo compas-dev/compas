@@ -8,54 +8,26 @@ compas.topology
 
 Package containing topological algorithms for traversal, connectivity, combinatorics, etc.
 
-Connectivity
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    adjacency_from_edges
-
-
-Combinatorics
-=============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    vertex_coloring
-    connected_components
-
-
-Orientation
-===========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    face_adjacency
-    face_adjacency_numpy
-    unify_cycles
-    unify_cycles_numpy
-
-
-Traversal
+Functions
 =========
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    adjacency_from_edges
     astar_lightest_path
     astar_shortest_path
     breadth_first_ordering
     breadth_first_traverse
     breadth_first_paths
+    connected_components
     depth_first_ordering
     dijkstra_distances
     dijkstra_path
+    face_adjacency
+    face_adjacency_numpy
     shortest_path
-
+    unify_cycles
+    unify_cycles_numpy
+    vertex_coloring

@@ -21,12 +21,6 @@ class ConicalSurface(Surface):
     frame : :class:`Frame`
         The local coordinate system of the cone.
 
-    Attributes
-    ----------
-
-    Examples
-    --------
-
     """
 
     DATASCHEMA = {

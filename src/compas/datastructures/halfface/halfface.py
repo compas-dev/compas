@@ -2511,8 +2511,8 @@ class HalfFace(Datastructure):
         --------
         :meth:`is_vertex_on_boundary`, :meth:`is_face_on_boundary`, :meth:`is_cell_on_boundary`
 
-        Note
-        ----
+        Notes
+        -----
         This method simply checks if u-v or v-u is on the edge of the volmesh.
         The direction u-v does not matter.
 

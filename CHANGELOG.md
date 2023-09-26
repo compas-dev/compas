@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [2.0.0a0] 2023-09-20
 
 ### Added
 
@@ -102,7 +102,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
 * Added `from_mesh` plugin to `compas_rhino.geometry.RhinoBrep`.
 * Added `compas.geometry.Plane.worldYZ` and `compas.geometry.Plane.worldZX`.
-* Added `compas.datastructures.CellNetwork`
+* Added `compas.datastructures.CellNetwork`.
+* Added `compas_rhino.conversions.brep_to_compas_box`.
+* Added `compas_rhino.conversions.brep_to_compas_cone`.
+* Added `compas_rhino.conversions.brep_to_compas_cylinder`.
+* Added `compas_rhino.conversions.brep_to_compas_sphere`.
+* Added `compas_rhino.conversions.brep_to_rhino`.
+* Added `compas_rhino.conversions.capsule_to_rhino_brep`.
+* Added `compas_rhino.conversions.cone_to_rhino_brep`.
+* Added `compas_rhino.conversions.curve_to_rhino`.
+* Added `compas_rhino.conversions.cylinder_to_rhino_brep`.
+* Added `compas_rhino.conversions.extrusion_to_compas_box`.
+* Added `compas_rhino.conversions.extrusion_to_rhino_cylinder`.
+* Added `compas_rhino.conversions.extrusion_to_rhino_torus`.
+* Added `compas_rhino.conversions.polyline_to_rhino_curve`.
+* Added `compas_rhino.conversions.surface_to_compas`.
+* Added `compas_rhino.conversions.surface_to_compas_mesh`.
+* Added `compas_rhino.conversions.surface_to_compas_quadmesh`.
+* Added `compas_rhino.conversions.surface_to_rhino`.
+* Added `compas_rhino.conversions.torus_to_rhino_brep`.
+* Added `compas_rhino.artists._helpers.attributes`.
+* Added `compas_rhino.artists._helpers.ngon`.
+* Added `compas.geometry.find_span`.
+* Added `compas.geometry.construct_knotvector`.
+* Added `compas.geometry.knotvector_to_knots_and_mults`.
+* Added `compas.geometry.knots_and_mults_to_knotvector`.
+* Added `compas.geometry.compute_basisfuncs`.
+* Added `compas.geometry.compute_basisfuncsderivs`.
+* Added `compas.geometry.DefaultNurbsCurve` as try-last, Python-only plugin for `compas.geometry.NurbsCurve`.
+* Added `compas.geometry.DefaultNurbsSurface` as try-last, Python-only plugin for `compas.geometry.NurbsSurface`.
+* Added color count to constructor functions of `compas.colors.ColorMap`.
 
 ### Changed
 
@@ -175,6 +204,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.datastructures.Graph.delete_edge` to delete invalid (u, u) edges and not delete edges in opposite directions (v, u)
 * Fixed bug in `compas.datastructures.Mesh.insert_vertex`.
 * Fixed bug in `compas.geometry.angle_vectors_signed`.
+* Changed `compas.artists.MeshArtist` default colors.
 * Changed internal _plane storage of the `compas.datastructures.Halfface` from `_plane[u][v][w]` to `_plane[u][v][fkey]`
 
 ### Removed
@@ -236,6 +266,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed classmethod `compas.color.Color.from_data`.
 * Removed `validate_data` from `compas.data.validators`.
 * Removed `json_validate` from `compas.data.json`.
+* Removed `compas_rhino.conversions.Box`.
+* Removed `compas_rhino.conversions.Circle`.
+* Removed `compas_rhino.conversions.Cone`.
+* Removed `compas_rhino.conversions.Curve`.
+* Removed `compas_rhino.conversions.Cylinder`.
+* Removed `compas_rhino.conversions.Ellipse`.
+* Removed `compas_rhino.conversions.Line`.
+* Removed `compas_rhino.conversions.Mesh`.
+* Removed `compas_rhino.conversions.Plane`.
+* Removed `compas_rhino.conversions.Point`.
+* Removed `compas_rhino.conversions.Polyline`.
+* Removed `compas_rhino.conversions.Vector`.
+* Removed `compas_rhino.artists.NetworkArtist.draw_nodelabels`.
+* Removed `compas_rhino.artists.NetworkArtist.draw_edgelabels`.
+* Removed `compas_rhino.artists.MeshArtist.draw_vertexlabels`.
+* Removed `compas_rhino.artists.MeshArtist.draw_edgelabels`.
+* Removed `compas_rhino.artists.MeshArtist.draw_facelabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_vertexlabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_edgelabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_facelabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_celllabels`.
+* Removed `compas.robots`.
+* Removed `compas.artists.robotmodelartist`.
+* Removed `compas_blender.artists.robotmodelartist`.
+* Removed `compas_ghpython.artists.robotmodelartist`.
+* Removed `compas_rhino.artists.robotmodelartist`.
 
 ## [1.17.5] 2023-02-16
 

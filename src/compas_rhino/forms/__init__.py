@@ -1,36 +1,3 @@
-"""
-********************************************************************************
-forms
-********************************************************************************
-
-.. currentmodule:: compas_rhino.forms
-
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BrowserForm
-    ChartForm
-    ImageForm
-    SliderForm
-    TextForm
-
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseForm
-
-
-"""
 from __future__ import absolute_import
 
 from .base import BaseForm
