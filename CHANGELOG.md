@@ -204,6 +204,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.datastructures.Mesh.insert_vertex`.
 * Fixed bug in `compas.geometry.angle_vectors_signed`.
 * Changed `compas.artists.MeshArtist` default colors.
+* Changed internal _plane storage of the `compas.datastructures.Halfface` from `_plane[u][v][w]` to `_plane[u][v][fkey]`
 
 ### Removed
 
