@@ -86,7 +86,6 @@ class Line(Curve):
         self._point = None
         self._vector = None
         self._direction = None
-        self._end = None
         self.start = start
         self.end = end
 
@@ -164,7 +163,6 @@ class Line(Curve):
     def vector(self, vector):
         self._vector = Vector(*vector)
         self._direction = None
-        self._end = None
 
     @property
     def length(self):
@@ -186,15 +184,12 @@ class Line(Curve):
 
     @property
     def end(self):
-        if not self._end:
-            self._end = self.start + self.vector
-        return self._end
+        return self.start + self.vector
 
     @end.setter
     def end(self, point):
         self._vector = Vector.from_start_end(self.start, point)
         self._direction = None
-        self._end = None
 
     @property
     def midpoint(self):

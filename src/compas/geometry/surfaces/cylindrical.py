@@ -23,12 +23,6 @@ class CylindricalSurface(Surface):
     frame : :class:`Frame`
         The local coordinate system of the cylinder.
 
-    Attributes
-    ----------
-
-    Examples
-    --------
-
     """
 
     DATASCHEMA = {

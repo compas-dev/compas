@@ -1,4 +1,4 @@
-import bpy
+import bpy  # type: ignore
 from typing import List, Text
 
 from compas_blender.utilities import delete_objects

@@ -2,52 +2,44 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import PrimitiveArtist
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class PointArtist(RhinoArtist, PrimitiveArtist):
+class PointArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing points.
 
     Parameters
     ----------
     point : :class:`~compas.geometry.Point`
         A COMPAS point.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
 
     """
 
-    def __init__(self, point, layer=None, **kwargs):
-        super(PointArtist, self).__init__(primitive=point, layer=layer, **kwargs)
+    def __init__(self, point, **kwargs):
+        super(PointArtist, self).__init__(geometry=point, **kwargs)
 
     def draw(self, color=None):
         """Draw the point.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the point.
-            Default is :attr:`compas.artists.PrimitiveArtist.color`.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
+        System.Guid
+            The GUID of the created Rhino object.
 
         """
         color = Color.coerce(color) or self.color
-        points = [
-            {
-                "pos": list(self.primitive),
-                "color": color.rgb255,
-                "name": self.primitive.name,
-            }
-        ]
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        return guids
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        return sc.doc.Objects.AddPoint(point_to_rhino(self.geometry), attr)

@@ -2,40 +2,57 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-from compas.artists import PrimitiveArtist
+import scriptcontext as sc  # type: ignore
+
+from compas.artists import GeometryArtist
 from compas.colors import Color
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import polyline_to_rhino
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class PolylineArtist(RhinoArtist, PrimitiveArtist):
+class PolylineArtist(RhinoArtist, GeometryArtist):
     """Artist for drawing polylines.
 
     Parameters
     ----------
     polyline : :class:`~compas.geometry.Polyline`
         A COMPAS polyline.
-    layer : str, optional
-        The layer that should contain the drawing.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`PrimitiveArtist`.
 
     """
 
-    def __init__(self, polyline, layer=None, **kwargs):
-        super(PolylineArtist, self).__init__(primitive=polyline, layer=layer, **kwargs)
+    def __init__(self, polyline, **kwargs):
+        super(PolylineArtist, self).__init__(geometry=polyline, **kwargs)
 
-    def draw(self, color=None, show_points=False):
+    def draw(self, color=None):
         """Draw the polyline.
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
             The RGB color of the polyline.
-            Default is :attr:`compas.artists.PrimitiveArtist.color`.
-        show_points : bool, optional
-            If True, draw the points of the polyline.
+
+        Returns
+        -------
+        System.Guid
+            The GUID of the created Rhino object.
+
+        """
+        color = Color.coerce(color) or self.color
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
+        return sc.doc.Objects.AddPolyline(polyline_to_rhino(self.geometry), attr)
+
+    def draw_points(self, color=None):
+        """Draw the polyline points.
+
+        Parameters
+        ----------
+        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+            The RGB color of the polyline points.
 
         Returns
         -------
@@ -44,12 +61,12 @@ class PolylineArtist(RhinoArtist, PrimitiveArtist):
 
         """
         color = Color.coerce(color) or self.color
-        color = color.rgb255
-        _points = map(list, self.primitive.points)
+        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+
         guids = []
-        if show_points:
-            points = [{"pos": point, "color": color, "name": self.primitive.name} for point in _points]
-            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        polylines = [{"points": _points, "color": color, "name": self.primitive.name}]
-        guids += compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
+
+        for point in self.geometry.points:
+            guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+            guids.append(guid)
+
         return guids

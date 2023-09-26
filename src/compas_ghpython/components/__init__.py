@@ -1,25 +1,3 @@
-"""
-********************************************************************************
-components
-********************************************************************************
-
-.. currentmodule:: compas_ghpython.components
-
-.. rst-class:: lead
-
-Utilities to work with Grasshopper components.
-
-Installation
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    install_userobjects
-    uninstall_userobjects
-
-"""
 from __future__ import absolute_import
 
 import glob
@@ -34,7 +12,7 @@ import compas_rhino
 
 def get_version_from_args():
     args = compas_rhino.INSTALLATION_ARGUMENTS
-    return _check_rhino_version(args.version)
+    return _check_rhino_version(args.version)  # type: ignore
 
 
 def install_userobjects(source):

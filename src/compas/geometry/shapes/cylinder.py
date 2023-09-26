@@ -159,7 +159,7 @@ class Cylinder(Shape):
 
     @property
     def circle(self):
-        return Circle(self.frame, self.radius)
+        return Circle(radius=self.radius, frame=self.frame)
 
     @property
     def diameter(self):

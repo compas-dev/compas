@@ -21,17 +21,23 @@ mpl = {
 
 
 class ColorMap(object):
-    """Class providing a map for colors of a specific color palette.
+    """Class providing a map for 256 distinct colors of a specific color palette.
 
     Parameters
     ----------
     colors : sequence[tuple[float, float, float]]
         A sequence of colors forming the map.
+        The number of colors in the sequence should be 256.
 
     Attributes
     ----------
     colors : list[:class:`~compas.colors.Color`]
         The colors of the map.
+
+    Raises
+    ------
+    ValueError
+        If the number of colors in the sequence is not 256.
 
     Examples
     --------
@@ -47,9 +53,6 @@ class ColorMap(object):
     ...     color = cmap(i, 0, n - 1)
     ...
 
-    >>> cmap = ColorMap.from_color(Color.red(), rangetype='light')
-    >>> cmap.plot()    # doctest: +SKIP
-
     See Also
     --------
     :class:`compas.colors.Color`
@@ -57,7 +60,7 @@ class ColorMap(object):
     """
 
     def __init__(self, colors):
-        self._colors = None
+        self._colors = []
         self.colors = colors
 
     # --------------------------------------------------------------------------
@@ -70,17 +73,16 @@ class ColorMap(object):
 
     @colors.setter
     def colors(self, colors):
+        if len(colors) != 256:
+            raise ValueError("The color map should have 256 colors.")
         self._colors = [Color(r, g, b) for r, g, b in colors]
 
     # --------------------------------------------------------------------------
     # customization
     # --------------------------------------------------------------------------
 
-    def __getitem__(self, index):
-        return self.colors[index]
-
     def __call__(self, value, minval=0.0, maxval=1.0):
-        """Returns the color in the map corresponding to the given value.
+        """Returns the color in the map corresponding to the given value in the range ``[minval, maxval]``.
 
         Parameters
         ----------
@@ -94,6 +96,11 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.Color`
+
+        Raises
+        ------
+        KeyError
+            If the value is not in the range ``[minval, maxval]``.
 
         """
         key = (value - minval) / (maxval - minval)
@@ -118,6 +125,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         Raises
         ------
@@ -158,6 +166,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         Raises
         ------
@@ -190,6 +199,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.Color`
+            A color map with 256 colors.
 
         """
         n = 256
@@ -228,6 +238,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         """
         colors = []
@@ -266,6 +277,7 @@ class ColorMap(object):
         Returns
         -------
         :class:`~compas.colors.ColorMap`
+            A color map with 256 colors.
 
         """
         colors = []
@@ -299,36 +311,36 @@ class ColorMap(object):
     # methods
     # --------------------------------------------------------------------------
 
-    def plot(self):
-        """Visualize the current map with the plotter.
+    # def plot(self):
+    #     """Visualize the current map with the plotter.
 
-        Returns
-        -------
-        None
+    #     Returns
+    #     -------
+    #     None
 
-        """
-        from compas_plotters.plotter import Plotter
-        from compas.geometry import Pointcloud
-        from compas.geometry import Plane, Circle, Polygon
+    #     """
+    #     from compas_plotters.plotter import Plotter
+    #     from compas.geometry import Pointcloud
+    #     from compas.geometry import Plane, Circle, Polygon
 
-        plotter = Plotter(figsize=(16, 12))
-        w = 16
-        h = 10
-        n = len(self.colors)
-        d = w / n
-        cloud = Pointcloud.from_bounds(w, h, 0, n)
-        white = Color.white()
-        for i, color in enumerate(self.colors):
-            c = Circle(Plane(cloud[i], [0, 0, 1]), 0.1)
-            p = Polygon(
-                [
-                    [i * d, -2, 0],
-                    [(i + 1) * d, -2, 0],
-                    [(i + 1) * d, -1, 0],
-                    [i * d, -1, 0],
-                ]
-            )
-            plotter.add(c, facecolor=color, edgecolor=white, linewidth=0.5)
-            plotter.add(p, facecolor=color, edgecolor=color)
-        plotter.zoom_extents()
-        plotter.show()
+    #     plotter = Plotter(figsize=(16, 12))
+    #     w = 16
+    #     h = 10
+    #     n = len(self.colors)
+    #     d = w / n
+    #     cloud = Pointcloud.from_bounds(w, h, 0, n)
+    #     white = Color.white()
+    #     for i, color in enumerate(self.colors):
+    #         c = Circle(Plane(cloud[i], [0, 0, 1]), 0.1)
+    #         p = Polygon(
+    #             [
+    #                 [i * d, -2, 0],
+    #                 [(i + 1) * d, -2, 0],
+    #                 [(i + 1) * d, -1, 0],
+    #                 [i * d, -1, 0],
+    #             ]
+    #         )
+    #         plotter.add(c, facecolor=color, edgecolor=white, linewidth=0.5)
+    #         plotter.add(p, facecolor=color, edgecolor=color)
+    #     plotter.zoom_extents()
+    #     plotter.show()

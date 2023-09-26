@@ -10,118 +10,45 @@ This package provides classes for working with selected file formats that are ca
 of storing information about 2D and 3D geometry, robots, pointclouds, ...
 
 
-DXF
-===
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     DXF
-    DXFReader
     DXFParser
-
-
-GLTF
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    DXFReader
     GLTF
-    GLTFReader
-    GLTFParser
     GLTFContent
-    GLTFMesh
     GLTFExporter
-
-
-LAS
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    GLTFMesh
+    GLTFParser
+    GLTFReader
     LAS
-    LASReader
     LASParser
-
-
-OBJ
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    LASReader
     OBJ
-    OBJReader
     OBJParser
+    OBJReader
     OBJWriter
-
-
-OFF
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     OFF
     OFFReader
     OFFWriter
-
-
-PLY
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     PLY
-    PLYReader
     PLYParser
+    PLYReader
     PLYWriter
-
-
-STL
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     STL
-    STLReader
     STLParser
+    STLReader
     STLWriter
-
-
-URDF
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     URDF
-    URDFParser
     URDFElement
     URDFGenericElement
-
-
-XML
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    URDFParser
     XML
+    XMLElement
     XMLReader
     XMLWriter
-    XMLElement
-    prettify_string

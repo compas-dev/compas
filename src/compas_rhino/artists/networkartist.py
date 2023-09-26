@@ -2,30 +2,36 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from Rhino.Geometry import TextDot  # type: ignore
+import scriptcontext as sc  # type: ignore
+
 import compas_rhino
-from compas.geometry import centroid_points
-from compas.artists import NetworkArtist
+from compas.geometry import Line
+from compas.geometry import Cylinder
+from compas.geometry import Sphere
+from compas.artists import NetworkArtist as BaseArtist
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import cylinder_to_rhino_brep
 from .artist import RhinoArtist
+from ._helpers import attributes
 
 
-class NetworkArtist(RhinoArtist, NetworkArtist):
+class NetworkArtist(RhinoArtist, BaseArtist):
     """Artist for drawing network data structures.
 
     Parameters
     ----------
     network : :class:`~compas.datastructures.Network`
         A COMPAS network.
-    layer : str, optional
-        The parent layer of the network.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info, see :class:`RhinoArtist` and :class:`NetworkArtist`.
 
     """
 
-    def __init__(self, network, layer=None, **kwargs):
-
-        super(NetworkArtist, self).__init__(network=network, layer=layer, **kwargs)
+    def __init__(self, network, **kwargs):
+        super(NetworkArtist, self).__init__(network=network, **kwargs)
 
     # ==========================================================================
     # clear
@@ -39,7 +45,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.*".format(self.network.name))
+        guids = compas_rhino.get_objects(name="{}.*".format(self.network.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_nodes(self):
@@ -50,7 +56,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.network.name))
+        guids = compas_rhino.get_objects(name="{}.node.*".format(self.network.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
@@ -61,36 +67,20 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.network.name))
-        compas_rhino.delete_objects(guids, purge=True)
-
-    def clear_nodelabels(self):
-        """Delete all node labels drawn by this artist.
-
-        Returns
-        -------
-        None
-
-        """
-        guids = compas_rhino.get_objects(name="{}.nodexlabel.*".format(self.network.name))
-        compas_rhino.delete_objects(guids, purge=True)
-
-    def clear_edgelabels(self):
-        """Delete all edge labels drawn by this artist.
-
-        Returns
-        -------
-        None
-
-        """
-        guids = compas_rhino.get_objects(name="{}.edgelabel.*".format(self.network.name))
+        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.network.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     # ==========================================================================
     # draw
     # ==========================================================================
 
-    def draw(self, nodes=None, edges=None, nodecolor=None, edgecolor=None):
+    def draw(
+        self,
+        nodes=None,
+        edges=None,
+        nodecolor=None,
+        edgecolor=None,
+    ):
         """Draw the network using the chosen visualisation settings.
 
         Parameters
@@ -103,10 +93,8 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             The default is None, in which case all edges are drawn.
         nodecolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the nodes.
-            The default color is :attr:`NetworkArtist.default_nodecolor`.
         edgecolor : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             The color of the edges.
-            The default color is :attr:`NetworkArtist.default_edgecolor`.
 
         Returns
         -------
@@ -119,7 +107,7 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
         guids += self.draw_edges(edges=edges, color=edgecolor)
         return guids
 
-    def draw_nodes(self, nodes=None, color=None):
+    def draw_nodes(self, nodes=None, color=None, group=None):
         """Draw a selection of nodes.
 
         Parameters
@@ -129,29 +117,32 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             Default is None, in which case all nodes are drawn.
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             Color of the nodes.
-            The default color is :attr:`NetworkArtist.default_nodecolor`.
 
         Returns
         -------
         list[System.Guid]
-            The GUIDs of the created Rhino objects.
+            The GUIDs of the created Rhino point objects.
 
         """
-        self.node_color = color
-        nodes = nodes or self.nodes
-        node_xyz = self.node_xyz
-        points = []
-        for node in nodes:
-            points.append(
-                {
-                    "pos": node_xyz[node],
-                    "name": "{}.node.{}".format(self.network.name, node),
-                    "color": self.node_color[node].rgb255,
-                }
-            )
-        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        guids = []
 
-    def draw_edges(self, edges=None, color=None):
+        self.node_color = color
+
+        for node in nodes or self.network.nodes():  # type: ignore
+            name = "{}.node.{}".format(self.network.name, node)  # type: ignore
+            attr = attributes(name=name, color=self.node_color[node], layer=self.layer)  # type: ignore
+
+            point = point_to_rhino(self.node_xyz[node])
+
+            guid = sc.doc.Objects.AddPoint(point, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    def draw_edges(self, edges=None, color=None, group=None, show_direction=False):
         """Draw a selection of edges.
 
         Parameters
@@ -161,7 +152,10 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             The default is None, in which case all edges are drawn.
         color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
             Color of the edges.
-            The default color is :attr:`NetworkArtist.default_edgecolor`.
+        group : str, optional
+            The name of a group to add the edges to.
+        show_direction : bool, optional
+            Show the direction of the edges.
 
         Returns
         -------
@@ -169,63 +163,139 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        guids = []
+
+        arrow = "end" if show_direction else None
         self.edge_color = color
-        edges = edges or self.edges
-        node_xyz = self.node_xyz
-        lines = []
-        for edge in edges:
+
+        for edge in edges or self.network.edges():  # type: ignore
             u, v = edge
-            lines.append(
-                {
-                    "start": node_xyz[u],
-                    "end": node_xyz[v],
-                    "color": self.edge_color[edge].rgb255,
-                    "name": "{}.edge.{}-{}".format(self.network.name, u, v),
-                }
-            )
-        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
-    # ==========================================================================
+            color = self.edge_color[edge]  # type: ignore
+            name = "{}.edge.{}-{}".format(self.network.name, u, v)  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer, arrow=arrow)  # type: ignore
+
+            line = Line(self.node_xyz[u], self.node_xyz[v])
+
+            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    # =============================================================================
     # draw labels
-    # ==========================================================================
+    # =============================================================================
 
-    def draw_nodelabels(self, text=None):
-        """Draw labels for a selection nodes.
+    def draw_nodelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
+        """Draw labels for a selection of nodes.
 
         Parameters
         ----------
-        text : dict[int, str], optional
+        text : dict[int, str]
             A dictionary of node labels as node-text pairs.
-            The default value is None, in which case every node will be labelled with its key.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            Color of the labels.
+        group : str, optional
+            The name of a group to add the labels to.
+        fontheight : float, optional
+            Font height of the labels.
+        fontface : str, optional
+            Font face of the labels.
 
         Returns
         -------
         list[System.Guid]
-            The GUIDs of the created Rhino objects.
+            The GUIDs of the created Rhino text objects.
 
         """
-        self.node_text = text
-        node_xyz = self.node_xyz
-        labels = []
-        for node in self.node_text:
-            labels.append(
-                {
-                    "pos": node_xyz[node],
-                    "name": "{}.nodelabel.{}".format(self.network.name, node),
-                    "color": self.node_color[node].rgb255,
-                    "text": self.node_text[node],
-                }
-            )
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        guids = []
 
-    def draw_edgelabels(self, text=None):
+        self.node_color = color
+
+        for node in text:
+            name = "{}.node.{}.label".format(self.network.name, node)  # type: ignore
+            attr = attributes(name=name, color=self.node_color[node], layer=self.layer)  # type: ignore
+
+            point = point_to_rhino(self.node_xyz[node])
+
+            dot = TextDot(str(text[node]), point)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
+
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    def draw_edgelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
         """Draw labels for a selection of edges.
 
         Parameters
         ----------
-        text : dict[tuple[int, int], str], optional
-            A dictionary of edgelabels as edge-text pairs.
-            The default value is None, in which case every edge will be labelled with its key.
+        text : dict[tuple[int, int], str]
+            A dictionary of edge labels as edge-text pairs.
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+            Color of the labels.
+        group : str, optional
+            The name of a group to add the labels to.
+        fontheight : float, optional
+            Font height of the labels.
+        fontface : str, optional
+            Font face of the labels.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino text objects.
+
+        """
+        guids = []
+
+        self.edge_color = color
+
+        for edge in text:
+            u, v = edge
+
+            color = self.edge_color[edge]  # type: ignore
+            name = "{}.edge.{}-{}.label".format(self.network.name, u, v)  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+
+            line = Line(self.node_xyz[u], self.node_xyz[v])
+            point = point_to_rhino(line.midpoint)
+
+            dot = TextDot(str(text[edge]), point)
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
+
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    # =============================================================================
+    # draw miscellaneous
+    # =============================================================================
+
+    def draw_spheres(self, radius, color=None, group=None):
+        """Draw spheres at the vertices of the network.
+
+        Parameters
+        ----------
+        radius : dict[int, float], optional
+            The radius of the spheres.
+        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+            The color of the spheres.
+        group : str, optional
+            The name of a group to join the created Rhino objects in.
 
         Returns
         -------
@@ -233,17 +303,61 @@ class NetworkArtist(RhinoArtist, NetworkArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        self.edge_text = text
-        node_xyz = self.node_xyz
-        labels = []
-        for edge in self.edge_text:
-            u, v = edge
-            labels.append(
-                {
-                    "pos": centroid_points([node_xyz[u], node_xyz[v]]),
-                    "name": "{}.edgelabel.{}-{}".format(self.network.name, u, v),
-                    "color": self.edge_color[edge].rgb255,
-                    "text": self.edge_text[edge],
-                }
-            )
-        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        guids = []
+
+        self.node_color = color
+
+        for node in radius:
+            name = "{}.node.{}.sphere".format(self.network.name, node)  # type: ignore
+            color = self.node_color[node]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+
+            sphere = Sphere.from_point_and_radius(self.node_xyz[node], radius[node])
+            geometry = sphere_to_rhino(sphere)
+
+            guid = sc.doc.Objects.AddSphere(geometry, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids
+
+    def draw_pipes(self, radius, color=None, group=None):
+        """Draw pipes around the edges of the network.
+
+        Parameters
+        ----------
+        radius : dict[tuple[int, int], float]
+            The radius per edge.
+        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+            The color of the pipes.
+        group : str, optional
+            The name of a group to join the created Rhino objects in.
+
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
+
+        """
+        guids = []
+
+        self.edge_color = color
+
+        for edge in radius:
+            name = "{}.edge.{}-{}.pipe".format(self.network.name, *edge)  # type: ignore
+            color = self.edge_color[edge]  # type: ignore
+            attr = attributes(name=name, color=color, layer=self.layer)
+
+            line = Line(self.node_xyz[edge[0]], self.node_xyz[edge[1]])
+            cylinder = Cylinder.from_line_and_radius(line, radius[edge])
+            geometry = cylinder_to_rhino_brep(cylinder)
+
+            guid = sc.doc.Objects.AddBrep(geometry, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        return guids

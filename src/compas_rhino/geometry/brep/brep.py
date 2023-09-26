@@ -4,7 +4,7 @@ from compas.geometry import BrepTrimmingError
 from compas.geometry import Plane
 
 from compas_rhino.conversions import box_to_rhino
-from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
@@ -260,7 +260,7 @@ class RhinoBrep(Brep):
         None
 
         """
-        self._brep.Transform(xform_to_rhino(matrix))
+        self._brep.Transform(transformation_to_rhino(matrix))
 
     def trim(self, trimming_plane, tolerance=TOLERANCE):
         """Trim this brep by the given trimming plane
