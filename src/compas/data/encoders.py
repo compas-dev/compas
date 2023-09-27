@@ -25,7 +25,7 @@ try:
     import numpy as np
 
     numpy_support = True
-except ImportError:
+except (ImportError, SyntaxError):
     numpy_support = False
 
 
