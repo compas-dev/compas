@@ -16,6 +16,7 @@ Classes
     :nosignatures:
 
     Datastructure
+    CellNetwork
     Graph
     HalfEdge
     HalfFace
@@ -185,3 +186,10 @@ Assembly
     :toctree: generated/
     :nosignatures:
 
+
+CellNetwork
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:

@@ -102,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
 * Added `from_mesh` plugin to `compas_rhino.geometry.RhinoBrep`.
 * Added `compas.geometry.Plane.worldYZ` and `compas.geometry.Plane.worldZX`.
+* Added `compas.datastructures.CellNetwork`.
 * Added `compas_rhino.conversions.brep_to_compas_box`.
 * Added `compas_rhino.conversions.brep_to_compas_cone`.
 * Added `compas_rhino.conversions.brep_to_compas_cylinder`.
