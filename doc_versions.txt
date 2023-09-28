@@ -1,7 +1,6 @@
 latest
 stable
 1.x.LTS
-2.0.0
 1.9.3
 1.8.1
 1.7.1
