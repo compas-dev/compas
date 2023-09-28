@@ -1,0 +1,1241 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction &#8212; COMPAS docs</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../../../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'userguide/tutorials/geometry/intro';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../../../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Working with Frames and Transformations" href="frames_and_transformations.html" />
+    <link rel="prev" title="Geometry" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.17.6 is available <a href='https://compas.dev/compas/1.17.6/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        Package Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../extensions/index.html">
+                        Extensions
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        Package Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../extensions/index.html">
+                        Extensions
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../configuration.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/vscode.html">Visual Studio Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/rhino.html">Rhino (Windows and Mac)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/grasshopper.html">Grasshopper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/blender.html">Blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/rhino5.html">Rhino 5 on Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data.html">Data</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Geometry</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="frames_and_transformations.html">Working with Frames and Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="curves.html">Working with Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="surfaces.html">Working with Surfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="breps.html">Boundary Representation</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../datastructures/index.html">Data Structures</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../datastructures/intro.html">Intoduction to Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datastructures/networks.html">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datastructures/meshes.html">Meshes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datastructures/volmeshes.html">Vol(umetric) Meshes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datastructures/assemblies.html">Assemblies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rpc.html">Remote Procedure Calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../colors.html">Colors and Color Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="introduction">
+<h1>Introduction</h1>
+<p>The geometry package of COMPAS (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code>) provides implementations of
+various basic geometry objects, frames, transformations, curves, surfaces, solids, boundary representation objects (BREPs),
+and many algorithms that operate on these geometric entities.</p>
+<p>All classes and functions in the examples of this introduction can be imported directly from the <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code> module.
+We will omit the import statements in the examples for brevity.</p>
+<section id="points-and-vectors">
+<h2>Points and Vectors</h2>
+<p>Points and vectors are the most fundamental geometric entities in the COMPAS geometry library.
+They are explicitly defined through their XYZ coordinates.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vector</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The coordinates of a point or vector can be accessed by their respective properties <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, and <code class="docutils literal notranslate"><span class="pre">z</span></code>,
+or through the corresponding indexes <code class="docutils literal notranslate"><span class="pre">[0]</span> <span class="pre">=&gt;</span> <span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">[1]</span> <span class="pre">=&gt;</span> <span class="pre">y</span></code>, and <code class="docutils literal notranslate"><span class="pre">[2]</span> <span class="pre">=&gt;</span> <span class="pre">z</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">x</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>Points and vectors support basic arithmetic operations such as addition, subtraction, multiplication, and division.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="go">Point(3.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="go">Point(2.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="go">Point(1.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<p>The basic arithmetic operations return new objects of the same type as the first operand.
+Note, however, that subtraction of two points returns a vector.
+This is the vector pointing from the second point tothe first.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
+<span class="go">Vector(1.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<p>To modify an object in-place instead of returning a new object, use the corresponding in-place operators.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+=</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">Point(3.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<p>Points and vectors can be compared with one another using the standard comparison operators.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">!=</span> <span class="n">b</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Vectors have a length, and support operations such as dot product, cross product, angle calculation, unitisation, scaling, etc.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">Vector(0.000, 0.000, 3.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">length</span>
+<span class="go">3.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">1.5707963267948966</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">length</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the <a class="reference internal" href="../../../reference/generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> and <a class="reference internal" href="../../../reference/generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a> documentation.</p>
+</section>
+<section id="planes">
+<h2>Planes</h2>
+<p>Planes are defined by a base point and a normal vector.
+The base point and normal vector can be accessed by their respective properties <code class="docutils literal notranslate"><span class="pre">point</span></code> and <code class="docutils literal notranslate"><span class="pre">normal</span></code>,
+or with the corresponding indexes: <code class="docutils literal notranslate"><span class="pre">[0]</span> <span class="pre">=&gt;</span> <span class="pre">point</span></code>, <code class="docutils literal notranslate"><span class="pre">[1]</span> <span class="pre">=&gt;</span> <span class="pre">normal</span></code>.
+The indexes correspond to the order in which the properties are listed as input arguments when constructing the plane.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="o">.</span><span class="n">point</span>
+<span class="go">Point(0.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="o">.</span><span class="n">point</span> <span class="o">==</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span>
+<span class="go">Vector(0.000, 0.000, 1.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span> <span class="o">==</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note that planes can also be constructed from simple lists or tuples containing the XYZ coordinates of the base point and the normal vector.
+The input will be converted automatically to the appropriate geometry objects.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="o">.</span><span class="n">point</span>
+<span class="go">Point(0.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span>
+<span class="go">Vector(0.000, 0.000, 1.000)</span>
+</pre></div>
+</div>
+<p>Planes can also be constructed from various other types of input using alternative constructor methods.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Plane.from_three_points.html" title="compas.geometry.Plane.from_three_points"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Plane.from_three_points()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Plane.from_point_and_two_vectors.html" title="compas.geometry.Plane.from_point_and_two_vectors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Plane.from_point_and_two_vectors()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Plane.from_points.html" title="compas.geometry.Plane.from_points"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Plane.from_points()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Plane.from_frame.html" title="compas.geometry.Plane.from_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Plane.from_frame()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Plane.from_abcd.html" title="compas.geometry.Plane.from_abcd"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Plane.from_abcd()</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="o">.</span><span class="n">from_three_points</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span>
+<span class="go">Plane(Point(0.000, 0.000, 0.000), Vector(0.000, 0.000, 1.000))</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../../../reference/generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a> class provides various methods for identifying relationships to other objects, and computing distances, intersections, projections, etc.
+For a complete overview of the available methods, please refer to the <a class="reference internal" href="../../../reference/generated/compas.geometry.Plane.html" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a> documentation.</p>
+</section>
+<section id="frames">
+<h2>Frames</h2>
+<p>Frames represent right-handed coordinate systems, and are defined by a base point and two input vectors.
+The base point is the origin of the frame.
+The cross product of the two input vectors defines the Z axis of the frame, or the normal vector of the XY plane.
+The first input vector defines the X axis.
+The Y axis is determined by the cross product of the Z and X axes.
+Frames are mostly used to define (local) coordinate systems and are closely related to transformations.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span>
+<span class="go">Frame(Point(0.000, 0.000, 0.000), Vector(1.000, 0.000, 0.000), Vector(0.000, 1.000, 0.000))</span>
+</pre></div>
+</div>
+<p>Note that the second input vector only defines the orientation of the XY plane.
+It doesn’t have to be perpendicular to the first one.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span>
+<span class="go">Frame(Point(0.000, 0.000, 0.000), Vector(1.000, 0.000, 0.000), Vector(0.000, 1.000, 0.000))</span>
+</pre></div>
+</div>
+<p>The base point and the three axes of the frame can be accessed by their respective properties <code class="docutils literal notranslate"><span class="pre">point</span></code>, <code class="docutils literal notranslate"><span class="pre">xaxis</span></code>, <code class="docutils literal notranslate"><span class="pre">yaxis</span></code>, and <code class="docutils literal notranslate"><span class="pre">zaxis</span></code>,
+or through the corresponding indexes, with: <code class="docutils literal notranslate"><span class="pre">[0]</span> <span class="pre">=&gt;</span> <span class="pre">point</span></code>, <code class="docutils literal notranslate"><span class="pre">[1]</span> <span class="pre">=&gt;</span> <span class="pre">xaxis</span></code>, <code class="docutils literal notranslate"><span class="pre">[2]</span> <span class="pre">=&gt;</span> <span class="pre">yaxis</span></code>, and <code class="docutils literal notranslate"><span class="pre">[3]</span> <span class="pre">=&gt;</span> <span class="pre">zaxis</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+<span class="go">Point(0.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">Point(0.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span> <span class="o">==</span> <span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span> <span class="o">==</span> <span class="n">frame</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Frames can also be constructed from simple lists or tuples containing the XYZ coordinates of the base point and the two input vectors.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+<span class="go">Point(0.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span>
+<span class="go">Vector(1.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<p>Frames can also be constructed from various other types of input using alternative constructor methods.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_axis_angle_vector.html" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_axis_angle_vector()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_euler_angles.html" title="compas.geometry.Frame.from_euler_angles"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_euler_angles()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_list.html" title="compas.geometry.Frame.from_list"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_list()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_matrix.html" title="compas.geometry.Frame.from_matrix"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_matrix()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_plane.html" title="compas.geometry.Frame.from_plane"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_plane()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_points.html" title="compas.geometry.Frame.from_points"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_points()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_quaternion.html" title="compas.geometry.Frame.from_quaternion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_quaternion()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_rotation.html" title="compas.geometry.Frame.from_rotation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_rotation()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.from_transformation.html" title="compas.geometry.Frame.from_transformation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.from_transformation()</span></code></a></p></li>
+</ul>
+<p>And to match specific planes of the world coordinate system.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.worldXY.html" title="compas.geometry.Frame.worldXY"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.worldXY()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.worldYZ.html" title="compas.geometry.Frame.worldYZ"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.worldYZ()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.worldZX.html" title="compas.geometry.Frame.worldZX"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.worldZX()</span></code></a></p></li>
+</ul>
+<p>For a complete overview of the available methods, please refer to the <a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a> documentation.
+For more information about transformations, please refer to the <span class="xref std std-ref">Transformations</span> section.
+For more information about working with frames and transformations, please refer to <span class="xref std std-ref">Working with Frames and Transformations</span>.</p>
+</section>
+<section id="transformations">
+<h2>Transformations</h2>
+<p>Transformation objects represent transformations in 3D space.
+They can be used to transform points, vectors, frames, and other geometric objects.
+Transformation objects are implemented using 4x4 transformation matrices, which support homogenous coordinates and allow to distinguish between points and vectors.
+These matrices acan also be used to perform perspective projections, in addition to translations, rotations, and scale and shear transformations.</p>
+<p>The default transformation is the identity transformation, which does not change the input.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Transformations can be applied to all geometry objects through the <a class="reference internal" href="../../../reference/generated/compas.geometry.Geometry.transform.html" title="compas.geometry.Geometry.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Geometry.transform()</span></code></a> method.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="go">Point(1.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<p>To return a transformed copy of the object instead of transforming the object in-place, use the method <a class="reference internal" href="../../../reference/generated/compas.geometry.Geometry.transformed.html" title="compas.geometry.Geometry.transformed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Geometry.transformed()</span></code></a> instead.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>Elements of the transformation matrix can be accessed (and modified) by their row and column index.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>General transformation matrices can be constructed from various types of input using alternative constructor methods.
+The most interesting ones are those that relate to transformations between different coordinate systems, or “frames”.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Transformation.from_change_of_basis.html" title="compas.geometry.Transformation.from_change_of_basis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transformation.from_change_of_basis()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Transformation.from_frame.html" title="compas.geometry.Transformation.from_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transformation.from_frame()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Transformation.from_frame_to_frame.html" title="compas.geometry.Transformation.from_frame_to_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transformation.from_frame_to_frame()</span></code></a></p></li>
+</ul>
+<p><a class="reference internal" href="../../../reference/generated/compas.geometry.Transformation.from_frame_to_frame.html" title="compas.geometry.Transformation.from_frame_to_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transformation.from_frame_to_frame()</span></code></a> generates a transformation matrix that transforms points from one frame to another.
+The coordinates of the points are the same in both frames, but the frames themselves are oriented differently in space, and therefore the points are as well.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frame1</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame2</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldZX</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_frame_to_frame</span><span class="p">(</span><span class="n">frame1</span><span class="p">,</span> <span class="n">frame2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span>
+<span class="go">Point(0.000, 0.000, 1.000)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../../reference/generated/compas.geometry.Transformation.from_change_of_basis.html" title="compas.geometry.Transformation.from_change_of_basis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transformation.from_change_of_basis()</span></code></a> generates a transformation matrix that transforms points from one frame to another,
+such that their coordinates in the first frame stay the same, but expressed with respect to the second coordinate system.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">frame1</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame2</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldZX</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="n">frame1</span><span class="p">,</span> <span class="n">frame2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span>
+<span class="go">Point(0.000, 1.000, 0.000)</span>
+</pre></div>
+</div>
+<p>Several subclasses of the <a class="reference internal" href="../../../reference/generated/compas.geometry.Transformation.html" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a> class are available to construct specific types of transformations.
+Each of these have their own constructor methods.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Translation.html" title="compas.geometry.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Rotation.html" title="compas.geometry.Rotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Scale.html" title="compas.geometry.Scale"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scale</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Reflection.html" title="compas.geometry.Reflection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reflection</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Projection.html" title="compas.geometry.Projection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Shear.html" title="compas.geometry.Shear"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shear</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span>
+<span class="go">Point(0.000, 1.000, 0.000)</span>
+</pre></div>
+</div>
+<p>Transformations can be combined through multiplication.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">T</span> <span class="o">*</span> <span class="n">R</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span>
+<span class="go">Point(1.000, 1.000, 0.000)</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the documentation of
+<a class="reference internal" href="../../../reference/generated/compas.geometry.Transformation.html" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a>, <a class="reference internal" href="../../../reference/generated/compas.geometry.Translation.html" title="compas.geometry.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a>, <a class="reference internal" href="../../../reference/generated/compas.geometry.Rotation.html" title="compas.geometry.Rotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rotation</span></code></a>, <a class="reference internal" href="../../../reference/generated/compas.geometry.Scale.html" title="compas.geometry.Scale"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scale</span></code></a>, <a class="reference internal" href="../../../reference/generated/compas.geometry.Reflection.html" title="compas.geometry.Reflection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reflection</span></code></a>, <a class="reference internal" href="../../../reference/generated/compas.geometry.Projection.html" title="compas.geometry.Projection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Projection</span></code></a>, and <a class="reference internal" href="../../../reference/generated/compas.geometry.Shear.html" title="compas.geometry.Shear"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shear</span></code></a>.</p>
+</section>
+<section id="parametric-curves">
+<h2>Parametric Curves</h2>
+<p>The geometry package of COMPAS provides a number of parametric curves.
+All parametric curves inherit from a base curve object and implement at least the following methods.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Curve.point_at.html" title="compas.geometry.Curve.point_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Curve.point_at()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Curve.tangent_at.html" title="compas.geometry.Curve.tangent_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Curve.tangent_at()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Curve.normal_at.html" title="compas.geometry.Curve.normal_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Curve.normal_at()</span></code></a></p></li>
+</ul>
+<p>All parametric curves can be converted to a sequence of points spread evenly over their parameter space, using <a class="reference internal" href="../../../reference/generated/compas.geometry.Curve.to_points.html" title="compas.geometry.Curve.to_points"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Curve.to_points()</span></code></a>,
+or directly to a <a class="reference internal" href="../../../reference/generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polyline</span></code></a> using <a class="reference internal" href="../../../reference/generated/compas.geometry.Curve.to_polyline.html" title="compas.geometry.Curve.to_polyline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Curve.to_polyline()</span></code></a>.
+For a complete overview of the curve interface, please refer to the <a class="reference internal" href="../../../reference/generated/compas.geometry.Curve.html" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a> documentation.</p>
+<section id="lines-and-polylines">
+<h3>Lines and Polylines</h3>
+<p>Lines are defined by a start point and a direction vector.
+The direction vector points from the start point of the curve to the end point.
+The direction vector is unitized.
+The parameter domain is defined such that the start point of the line segment corresponds to parameter <code class="docutils literal notranslate"><span class="pre">0.0</span></code> and the end point to parameter <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">start</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">end</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">end</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">vector</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Other points on the line can be constructed using the base point and direction vector.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">direction</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="go">Point(3.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<p>Or by evaluating the line at a specific parameter value.
+Note that the parametrisation is related to the length of the line segment, i.e. to the distance between the start and end point.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">Point(6.000, 0.000, 0.000)</span>
+</pre></div>
+</div>
+<p>Polylines are defined by a sequence of points, with a line segment defined between each two consecutive points.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span> <span class="o">=</span> <span class="n">Polyline</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">start</span> <span class="o">==</span> <span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">end</span> <span class="o">==</span> <span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The parameter domain of a polyline is defined such that the start point of the first line segment corresponds to parameter <code class="docutils literal notranslate"><span class="pre">0.0</span></code> and the end point of the last line segment to parameter <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">polyline</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">start</span> <span class="o">==</span> <span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polyline</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">polyline</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">end</span> <span class="o">==</span> <span class="n">polyline</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the documentation for <a class="reference internal" href="../../../reference/generated/compas.geometry.Line.html" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Line</span></code></a> and <a class="reference internal" href="../../../reference/generated/compas.geometry.Polyline.html" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polyline</span></code></a>.</p>
+</section>
+<section id="conic-sections">
+<h3>Conic Sections</h3>
+<p>The conic sections include the circle (<a class="reference internal" href="../../../reference/generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code></a>), ellipse (<a class="reference internal" href="../../../reference/generated/compas.geometry.Ellipse.html" title="compas.geometry.Ellipse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ellipse</span></code></a>), hyperbola (<a class="reference internal" href="../../../reference/generated/compas.geometry.Hyperbola.html" title="compas.geometry.Hyperbola"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hyperbola</span></code></a>), and parabola (<code class="xref py py-class docutils literal notranslate"><span class="pre">Parabola</span></code>).
+Each of these curves is defined parametrically with respect to a local coordinate system, represented by a frame (<a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>).
+The default frame is the world XY plane (<a class="reference internal" href="../../../reference/generated/compas.geometry.Frame.worldXY.html" title="compas.geometry.Frame.worldXY"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Frame.worldXY()</span></code></a>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+<span class="go">Point(0.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span>
+<span class="go">Vector(1.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span>
+<span class="go">Vector(0.000, 1.000, 0.000)</span>
+</pre></div>
+</div>
+<p>To create a conic section with a different orientation, simply specify the desired frame as an input argument.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldZX</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The geometry methods listed above, can be used to evaluate the curve at a specific parameter value.
+By default, the returned points and vectors are defined with respect to the world coordinate system.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldZX</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="go">Point(1.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="go">Point(0.000, 0.000, 1.000)</span>
+</pre></div>
+</div>
+<p>In order to obtain local coordinates, set the optional argument <code class="docutils literal notranslate"><span class="pre">local</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">Point(0.000, 1.000, 0.000)</span>
+</pre></div>
+</div>
+<p>To transform local coordinates to world coordinates, use the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Circle.transformation</span></code> property.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">circle_at</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
+<span class="go">Point(0.000, 0.000, 1.000)</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the documentation for <a class="reference internal" href="../../../reference/generated/compas.geometry.Circle.html" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code></a>, <a class="reference internal" href="../../../reference/generated/compas.geometry.Ellipse.html" title="compas.geometry.Ellipse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ellipse</span></code></a>, <a class="reference internal" href="../../../reference/generated/compas.geometry.Hyperbola.html" title="compas.geometry.Hyperbola"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hyperbola</span></code></a>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">Parabola</span></code>.</p>
+</section>
+<section id="bezier-curves">
+<h3>Bézier Curves</h3>
+<p>Bézier curves are defined by a set of control points.
+The degree of the curve is the number of control points minus one.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">Bezier</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">degree</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>Bézier curves are always defined with respect to the world coordinate system.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">frame</span> <span class="o">==</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The geometry methods listed above, can be used to evaluate the curve at a specific parameter value.
+The parameter domain of a Bézier curve is always [0.0, 1.0].</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">curve</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">curve</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The tangent vector points in the direction of the curve at the evaluated point.
+The normal vector points in the direction of the center of the oscillating circle at the evaluated point.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">tangent_at</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">Vector(1.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">normal_at</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">Vector(0.000, -1.000, 0.000)</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the documentation for <a class="reference internal" href="../../../reference/generated/compas.geometry.Bezier.html" title="compas.geometry.Bezier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bezier</span></code></a>.</p>
+</section>
+<section id="nurbs-curves">
+<h3>NURBS Curves</h3>
+<p>NURBS curves are defined by control points, weights, a knot vector, and a curve degree.
+Currently, COMPAS doesn’t provide an implementation of NURBS curves directly.
+Instead, NURBS curves are pluggables and receive their implementation from plugins.
+Two plugins exist.
+The first one is based on the NURBS implementation of RhinoCommon, and is available when COMPAS is used in Rhino or Grasshopper.
+The second one is based on the NURBS implmentation of OpenCasCade, and is available when <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_occ</span></code> is installed in the same environment as COMPAS.
+In both cases, the implementations can be accessed through the <a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.html" title="compas.geometry.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">NurbsCurve</span></code></a> class of <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code>.</p>
+<p>As with other geometries, many different constructors exist to produce NURBS curves from different types of geometric input.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.from_points.html" title="compas.geometry.NurbsCurve.from_points"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsCurve.from_points()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.from_parameters.html" title="compas.geometry.NurbsCurve.from_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsCurve.from_parameters()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.from_interpolation.html" title="compas.geometry.NurbsCurve.from_interpolation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsCurve.from_interpolation()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.from_arc.html" title="compas.geometry.NurbsCurve.from_arc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsCurve.from_arc()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.from_ellipse.html" title="compas.geometry.NurbsCurve.from_ellipse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsCurve.from_ellipse()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.from_circle.html" title="compas.geometry.NurbsCurve.from_circle"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsCurve.from_circle()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.from_line.html" title="compas.geometry.NurbsCurve.from_line"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsCurve.from_line()</span></code></a></p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">NurbsCurve</span><span class="o">.</span><span class="n">from_points</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">degree</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">domain</span>
+<span class="go">(0.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">weights</span>
+<span class="go">[1.0, 1.0, 1.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">knots</span>
+<span class="go">[0.0, 1.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">multiplicities</span>
+<span class="go">[3, 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">knotsequence</span>
+<span class="go">[0.0, 0.0, 0.0, 1.0, 1.0, 1.0]</span>
+</pre></div>
+</div>
+<p>Alternatively, a NURBS curve can be loaded from a STP file.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span> <span class="o">=</span> <span class="n">NurbsCurve</span><span class="o">.</span><span class="n">from_stp</span><span class="p">(</span><span class="s1">&#39;curve.stp&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The curve can be evaluated over its parameter domain using the geometry methods listed above.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">curve</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">curve</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The tangent vector points in the direction of the curve at the evaluated point.
+The normal vector points in the direction of the center of the oscillating circle at the evaluated point.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">tangent_at</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">Vector(1.000, 0.000, 0.000)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">curve</span><span class="o">.</span><span class="n">normal_at</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">Vector(0.000, -1.000, 0.000)</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the documentation for <a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsCurve.html" title="compas.geometry.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">NurbsCurve</span></code></a>.</p>
+</section>
+</section>
+<section id="parametric-surfaces">
+<h2>Parametric Surfaces</h2>
+<p>The geometry package provides a number of parametric surfaces, which inherit from the base surface class (<a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.html" title="compas.geometry.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a>).</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.PlanarSurface.html" title="compas.geometry.PlanarSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlanarSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.CylindricalSurface.html" title="compas.geometry.CylindricalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">CylindricalSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.SphericalSurface.html" title="compas.geometry.SphericalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">SphericalSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.ConicalSurface.html" title="compas.geometry.ConicalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConicalSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.ToroidalSurface.html" title="compas.geometry.ToroidalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToroidalSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsSurface.html" title="compas.geometry.NurbsSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">NurbsSurface</span></code></a></p></li>
+</ul>
+<p>All parametric surface have methods to evaluate the surface geometry a specific parameter values,</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.point_at.html" title="compas.geometry.Surface.point_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.point_at()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.normal_at.html" title="compas.geometry.Surface.normal_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.normal_at()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.frame_at.html" title="compas.geometry.Surface.frame_at"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.frame_at()</span></code></a></p></li>
+</ul>
+<p>and can be converted to various discretised representations.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.to_vertices_and_faces.html" title="compas.geometry.Surface.to_vertices_and_faces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.to_vertices_and_faces()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.to_triangles.html" title="compas.geometry.Surface.to_triangles"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.to_triangles()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.to_quads.html" title="compas.geometry.Surface.to_quads"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.to_quads()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.to_polyhedron.html" title="compas.geometry.Surface.to_polyhedron"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.to_polyhedron()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.to_mesh.html" title="compas.geometry.Surface.to_mesh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Surface.to_mesh()</span></code></a></p></li>
+</ul>
+<p>For a complete overview of the surface API, see the documentation for <a class="reference internal" href="../../../reference/generated/compas.geometry.Surface.html" title="compas.geometry.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a>.</p>
+<section id="elementary-surfaces">
+<h3>Elementary Surfaces</h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.PlanarSurface.html" title="compas.geometry.PlanarSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlanarSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.CylindricalSurface.html" title="compas.geometry.CylindricalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">CylindricalSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.SphericalSurface.html" title="compas.geometry.SphericalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">SphericalSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.ConicalSurface.html" title="compas.geometry.ConicalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConicalSurface</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.ToroidalSurface.html" title="compas.geometry.ToroidalSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToroidalSurface</span></code></a></p></li>
+</ul>
+<p>More info coming soon…</p>
+</section>
+<section id="nurbs-surfaces">
+<h3>NURBS Surfaces</h3>
+<p>NURBS surfaces are defined by control points, weights, knots, knot multiplicities, and degrees in the U and V parameter directions.
+Note that COMPAS doesn’t provide an implementation of NURBS surfaces directly.
+Instead, NURBS surfaces are pluggables and receive their implementation from plugins.
+Two plugins exist.
+The first one is based on the NURBS implementation of RhinoCommon, and is only available when COMPAS is used in Rhino or Grasshopper.
+The second one is based on the NURBS implmentation of OpenCasCade, and is only available when <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_occ</span></code> is installed in the same environment as COMPAS.</p>
+<p>The following constructor methods are available to create NURBS surfaces from different types of geometric input.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsSurface.from_points.html" title="compas.geometry.NurbsSurface.from_points"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsSurface.from_points()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsSurface.from_parameters.html" title="compas.geometry.NurbsSurface.from_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsSurface.from_parameters()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsSurface.from_meshgrid.html" title="compas.geometry.NurbsSurface.from_meshgrid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsSurface.from_meshgrid()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsSurface.from_fill.html" title="compas.geometry.NurbsSurface.from_fill"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsSurface.from_fill()</span></code></a></p></li>
+</ul>
+<p>NURBS surfaces can also be loaded from a STEP file using <a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsSurface.from_step.html" title="compas.geometry.NurbsSurface.from_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NurbsSurface.from_step()</span></code></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span> <span class="o">=</span> <span class="n">NurbsSurface</span><span class="o">.</span><span class="n">from_points</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">weights</span>
+<span class="go">[[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">u_knots</span>
+<span class="go">[0.0, 1.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">v_knots</span>
+<span class="go">[0.0, 1.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">u_mults</span>
+<span class="go">[3, 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">v_mults</span>
+<span class="go">[3, 3]</span>
+</pre></div>
+</div>
+<p>NURBS surfaces can be evaluated at specific parameter values using the geometry methods listed above.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">surface</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">==</span> <span class="n">surface</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="go">Point(0.500, 0.500, 0.125)</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the documentation for <a class="reference internal" href="../../../reference/generated/compas.geometry.NurbsSurface.html" title="compas.geometry.NurbsSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">NurbsSurface</span></code></a>.</p>
+</section>
+<section id="surfaces-of-revolution">
+<h3>Surfaces of Revolution</h3>
+<p>More info coming soon…</p>
+</section>
+<section id="surfaces-of-extrusion">
+<h3>Surfaces of Extrusion</h3>
+<p>More info coming soon…</p>
+</section>
+</section>
+<section id="shapes">
+<h2>Shapes</h2>
+<p>More info coming soon…</p>
+</section>
+<section id="polygons-and-polyhedrons">
+<h2>Polygons and Polyhedrons</h2>
+<p>Polygons are defined by a sequence of points, with a line segment defined between each two consecutive points.
+The geometry of a polygon can be skewed, i.e. not planar.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">polygon</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">start</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">polygon</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">end</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Polygons support basic boolean operations such as union, intersection, difference and symmetric difference.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">boolean_union</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">area</span>
+<span class="go">1.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">boolean_intersection</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">area</span>
+<span class="go">0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">boolean_difference</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">area</span>
+<span class="go">0.75</span>
+</pre></div>
+</div>
+<p>For a complete overview of the available methods, please refer to the documentation for <code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code>.</p>
+<p>Polyhedrons are defined by vertices and faces.
+The geometry of a polyhedron can be skewed, i.e. the faces of a polyhedron are not necessarily planar.
+A polyhedron can be constructed explicitly, by providing a list of vertices and faces, or through alternative constructor methods.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Polyhedron.from_platonicsolid.html" title="compas.geometry.Polyhedron.from_platonicsolid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Polyhedron.from_platonicsolid()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Polyhedron.from_halfspaces.html" title="compas.geometry.Polyhedron.from_halfspaces"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Polyhedron.from_halfspaces()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Polyhedron.from_planes.html" title="compas.geometry.Polyhedron.from_planes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Polyhedron.from_planes()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../../reference/generated/compas.geometry.Polyhedron.from_convex_hull.html" title="compas.geometry.Polyhedron.from_convex_hull"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Polyhedron.from_convex_hull()</span></code></a></p></li>
+</ul>
+</section>
+<section id="pointclouds">
+<h2>Pointclouds</h2>
+</section>
+<section id="triangle-meshes">
+<h2>Triangle Meshes</h2>
+<p>Here is a basic overview of methods for Delaunay triangulation, remeshing, and other geometic operations on triangle meshes.
+For information about mesh data structures, please refer to the section about</p>
+</section>
+<section id="quad-meshes">
+<h2>Quad Meshes</h2>
+</section>
+<section id="intersections">
+<h2>Intersections</h2>
+</section>
+<section id="boolean-operations">
+<h2>Boolean Operations</h2>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Geometry</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="frames_and_transformations.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working with Frames and Transformations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#points-and-vectors">Points and Vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planes">Planes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frames">Frames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformations">Transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-curves">Parametric Curves</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lines-and-polylines">Lines and Polylines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conic-sections">Conic Sections</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bezier-curves">Bézier Curves</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nurbs-curves">NURBS Curves</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-surfaces">Parametric Surfaces</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elementary-surfaces">Elementary Surfaces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nurbs-surfaces">NURBS Surfaces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surfaces-of-revolution">Surfaces of Revolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surfaces-of-extrusion">Surfaces of Extrusion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shapes">Shapes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polygons-and-polyhedrons">Polygons and Polyhedrons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pointclouds">Pointclouds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#triangle-meshes">Triangle Meshes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quad-meshes">Quad Meshes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intersections">Intersections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#boolean-operations">Boolean Operations</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/compas-dev/compas/edit/main/docs/userguide/tutorials/geometry/intro.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

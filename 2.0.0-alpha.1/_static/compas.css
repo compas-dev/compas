@@ -1,0 +1,105 @@
+html {
+    --pst-font-size-base: 1rem;
+    --pst-sidebar-font-size: 0.8rem;
+}
+
+html[data-theme="light"] {
+    --pst-color-primary: #0092d2;
+    --pst-color-info: #0092d2;
+    --pst-color-text-muted: #888;
+}
+
+body {
+    line-height: 1.75;
+    font-weight: 300;
+}
+
+.bd-header {
+    box-shadow: none;
+    border-bottom: 1px solid var(--pst-color-shadow);
+}
+
+.bd-sidebar-primary div#rtd-footer-container {
+    bottom: 0 !important;
+    margin: 0 !important;
+    display: none;
+}
+
+.bd-sidebar-primary {
+    width: 20%;
+}
+
+/* .bd-content {
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.bd-page-width {
+    max-width: 100%;
+}
+
+.bd-sidebar-primary {
+    padding-top: 1rem;
+} */
+
+.bd-sidebar-primary .toctree-l3 {
+    font-size: 0.8rem;
+}
+
+@media (min-width: 960px) {
+    /* .bd-sidebar-primary {
+        max-width: 20%;
+    } */
+    /* html[data-theme="light"] .bd-sidebar-primary {
+        background-color: var(--pst-color-surface);
+    } */
+}
+
+/* html[data-theme="light"] .bd-header {
+    background-color: var(--pst-color-primary);
+}
+
+html[data-theme="light"] .bd-header .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+html[data-theme="light"] .bd-header .navbar-nav > .active > .nav-link {
+    color: rgba(255, 255, 255, 1);
+} */
+
+.navbar-brand img {
+    height: 32px;
+}
+
+.bd-header .navbar-brand {
+    margin-right: 1rem;
+}
+
+dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) dt.field-even,
+dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) dt.field-odd {
+    background-color: var(--pst-color-surface);
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+/* .bd-header-announcement::after {
+    background-color: var(--pst-color-attention);
+} */
+
+.lead {
+    font-size: 1rem !important;
+    font-weight: unset;
+}
+
+.highlight pre {
+    line-height: 150% !important;
+    /* font-size: 0.75rem; */
+}
+
+.bd-footer-article {
+    margin-top: 2rem;
+}
+
+.bd-breadcrumbs {
+    margin-top: 1rem;
+}
