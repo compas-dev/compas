@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed `Network.is_planar` to rely on `NetworkX` instead `planarity` for planarity checking.
+* Removed `planarity` from requirements.
+
 ### Removed
 
 
