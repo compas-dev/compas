@@ -17,7 +17,7 @@ __all__ = ["install", "installable_rhino_packages", "after_rhino_install"]
 INSTALLED_VERSION = None
 
 
-def install(version=None, packages=None, clean=False):
+def install(version=None, packages=None, clean=False, location=None):
     """Install COMPAS for Rhino.
 
     Parameters
@@ -32,6 +32,10 @@ def install(version=None, packages=None, clean=False):
     clean : bool, optional
         If True, this will clean up the entire scripts folder and remove
         also existing symlinks that are not importable in the current environment.
+    location : str, optional
+        The location of the Rhino installation.
+        This optional argument could be used to install in a different location than the standard one.
+        The value of this argument should be the full path of the folder containing
 
     Examples
     --------
@@ -45,6 +49,8 @@ def install(version=None, packages=None, clean=False):
         python -m compas_rhino.install
 
     """
+    compas_rhino.RHINO_APPDATA = location
+
     version = compas_rhino._check_rhino_version(version)
 
     # We install COMPAS packages in the scripts folder
@@ -372,9 +378,19 @@ if __name__ == "__main__":
         help="The version of Rhino to install the packages in.",
     )
     parser.add_argument("-p", "--packages", nargs="+", help="The packages to install.")
-    parser.add_argument("-c", "--clean", default=False, action="store_true", help="Clean up the installation directory")
+    parser.add_argument("--clean", dest="clean", default=False, action="store_true")
+    parser.add_argument(
+        "--location",
+        dest="location",
+        help="The location of the folder containing the top level 'McNeel' folder, if not APPDATA (Windows) or Application Support (OSX).",
+    )
 
     args = parser.parse_args()
     compas_rhino.INSTALLATION_ARGUMENTS = args
 
-    install(version=args.version, packages=args.packages, clean=args.clean)
+    install(
+        version=args.version,
+        packages=args.packages,
+        clean=args.clean,
+        location=args.location,
+    )
