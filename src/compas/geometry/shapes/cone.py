@@ -154,7 +154,7 @@ class Cone(Shape):
 
     @property
     def circle(self):
-        return Circle(self.frame, self.radius)
+        return Circle(self.radius, self.frame)
 
     @property
     def diameter(self):

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Changed `Network.is_planar` to rely on `NetworkX` instead `planarity` for planarity checking.
 * Removed `planarity` from requirements.
+* Fixed argument order at `compas.geometry.cone.circle`.
 
 ### Removed
 
