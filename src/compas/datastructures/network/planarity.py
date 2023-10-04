@@ -164,7 +164,7 @@ def network_is_planar(network):
     Raises
     ------
     ImportError
-        If the planarity package is not installed.
+        If the networkx package is not installed.
 
     Notes
     -----
@@ -173,19 +173,15 @@ def network_is_planar(network):
     the plane exists, and, furthermore, that straight-line embedding in the plane
     exists.
 
-    Warnings
-    --------
-    This function uses the python binding of the *edge addition planarity suite*.
-    It is available on Anaconda: https://anaconda.org/conda-forge/python-planarity.
-
     """
     try:
-        import planarity
+        import networkx as nx
     except ImportError:
-        print("Planarity is not installed.")
+        print("NetworkX is not installed.")
         raise
 
-    return planarity.is_planar(list(network.edges()))
+    nxgraph = network.to_networkx()
+    return nx.is_planar(nxgraph)
 
 
 def network_is_planar_embedding(network):

@@ -66,7 +66,7 @@ setup(
     zip_safe=False,
     install_requires=requirements,
     python_requires=">=2.7",
-    extras_require={"planarity": ["planarity"], "numba": ["numba"]},
+    extras_require={"numba": ["numba"]},
     entry_points={"console_scripts": ["compas_rpc=compas.rpc.__main__:main"]},
     ext_modules=[],
     cmdclass={},
