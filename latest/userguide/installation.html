@@ -534,14 +534,6 @@ pip<span class="w"> </span>install<span class="w"> </span>compas
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-<p>By default, <code class="docutils literal notranslate"><span class="pre">planarity</span></code> is marked as an optional requirement for installation with <code class="docutils literal notranslate"><span class="pre">pip</span></code> on Windows.
-To include <code class="docutils literal notranslate"><span class="pre">planarity</span></code>, add a conditional to the install command.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>compas<span class="o">[</span>planarity<span class="o">]</span>
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>planarity<span class="o">]</span>
-</pre></div>
-</div>
 </section>
 <section id="update-with-conda">
 <h2>Update with conda</h2>
@@ -569,15 +561,6 @@ To include <code class="docutils literal notranslate"><span class="pre">planarit
 <h2>Known Issues</h2>
 <p>If you encounter a problem that is not described here,
 please file an issue using the <a class="reference external" href="https://github.com/compas-dev/compas/issues">Issue Tracker</a>.</p>
-<section id="installing-planarity">
-<h3>Installing Planarity</h3>
-<p>The installation process with <code class="docutils literal notranslate"><span class="pre">pip</span></code> can fail while installing <code class="docutils literal notranslate"><span class="pre">planarity</span></code>, because <code class="docutils literal notranslate"><span class="pre">cython</span></code> is not installed.
-If this is the case, install <code class="docutils literal notranslate"><span class="pre">cython</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (or <code class="docutils literal notranslate"><span class="pre">conda</span></code>), before installing COMPAS.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>cython<span class="w"> </span>--install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
-pip<span class="w"> </span>install<span class="w"> </span>compas
-</pre></div>
-</div>
-</section>
 <section id="microsoft-visual-c-build-tools">
 <h3>Microsoft Visual C++ Build Tools</h3>
 <p>The installation with <code class="docutils literal notranslate"><span class="pre">pip</span></code> can fail because “Microsoft Visual C++ Build Tools are missing”.
@@ -650,7 +633,6 @@ See the detail of the bug here: <a class="github reference external" href="https
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-with-conda">Update with conda</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-with-pip">Update with pip</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-planarity">Installing Planarity</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#microsoft-visual-c-build-tools">Microsoft Visual C++ Build Tools</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runtimeerror-the-current-numpy-installation-fails-to-pass-a-sanity-check">RuntimeError: The current Numpy installation (…) fails to pass a sanity check</a></li>
 </ul>
