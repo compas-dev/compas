@@ -190,6 +190,10 @@ class Frame(Geometry):
             self._zaxis = self.xaxis.cross(self.yaxis)
         return self._zaxis
 
+    def axes(self):
+        """The xyz axes of the frame."""
+        return [self.xaxis, self.yaxis, self.zaxis]
+
     @property
     def quaternion(self):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
