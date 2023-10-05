@@ -1,98 +1,72 @@
 from typing import Optional
 from typing import Any
-from typing import List
-from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
-import compas_blender
 from compas.geometry import Torus
-from compas.artists import ShapeArtist
 from compas.colors import Color
+
+from compas.artists import GeometryArtist
 from .artist import BlenderArtist
 
+from compas_blender import conversions
 
-class TorusArtist(BlenderArtist, ShapeArtist):
+
+class TorusArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing torus shapes in Blender.
 
     Parameters
     ----------
     torus : :class:`~compas.geometry.Torus`
         A COMPAS torus.
-    collection: str | :blender:`bpy.types.Collection`
-        The name of the collection the object belongs to.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.ShapeArtist`.
-
-    Examples
-    --------
-    Use the Blender artist explicitly.
-
-    .. code-block:: python
-
-        from compas.geometry import Plane, Torus
-        from compas_blender.artists import TorusArtist
-
-        torus = Torus(Plane([0, 0, 0], [0, 0, 1]), 1.0, 0.3)
-
-        artist = TorusArtist(torus)
-        artist.draw()
-
-    Or, use the artist through the plugin mechanism.
-
-    .. code-block:: python
-
-        from compas.geometry import Plane, Torus
-        from compas.artists import Artist
-
-        torus = Torus(Plane([0, 0, 0], [0, 0, 1]), 1.0, 0.3)
-
-        artist = Artist(torus)
-        artist.draw()
 
     """
 
-    def __init__(self, torus: Torus, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any):
-
-        super().__init__(shape=torus, collection=collection or torus.name, **kwargs)
+    def __init__(self, torus: Torus, **kwargs: Any):
+        super().__init__(geometry=torus, **kwargs)
 
     def draw(
         self,
         color: Optional[Color] = None,
-        u: Optional[int] = None,
-        v: Optional[int] = None,
-    ) -> List[bpy.types.Object]:
+        collection: Optional[str] = None,
+        u: Optional[int] = 16,
+        v: Optional[int] = 16,
+        show_wire: bool = False,
+        shade_smooth: bool = True,
+    ) -> bpy.types.Object:
         """Draw the torus associated with the artist.
 
         Parameters
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the torus.
-            The default color is :attr:`compas.artists.ShapeArtist.color`.
+        collection : str, optional
+            The name of the Blender scene collection containing the created object(s).
         u : int, optional
             Number of faces in the "u" direction.
-            Default is :attr:`TorusArtist.u`.
         v : int, optional
             Number of faces in the "v" direction.
-            Default is :attr:`TorusArtist.v`.
+        show_wire : bool, optional
+            Display the wireframe of the torus.
+        shade_smooth : bool, optional
+            Display smooth shading on the torus.
 
         Returns
         -------
-        list
-            The objects created in Blender.
+        :blender:`bpy.types.Curve`
 
         """
-        u = u or self.u
-        v = v or self.v
+        name = self.geometry.name
         color = Color.coerce(color) or self.color
-        vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        obj = compas_blender.draw_mesh(
-            vertices,
-            faces,
-            name=self.shape.name,
-            color=color,
-            collection=self.collection,
-        )
-        return [obj]
+
+        vertices, faces = self.geometry.to_vertices_and_faces(u=u, v=v)
+        mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
+        if shade_smooth:
+            mesh.shade_smooth()
+
+        obj = self.create_object(mesh, name=name)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
+
+        return obj

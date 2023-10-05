@@ -18,4 +18,5 @@ Classes
     :nosignatures:
 
     Color
+    ColorDict
     ColorMap

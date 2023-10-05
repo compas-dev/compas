@@ -168,15 +168,6 @@ class Brep(Geometry):
     is_surface : bool, read-only
         True if this brep is a surface, False otherwise.
 
-    Other Attributes
-    ----------------
-    native_brep
-        The underlying instance of the backend brep.
-    type : :class:`~compas.geometry.BrepType`, read-only
-        The type of Brep shape.
-    orientation : :class:`~compas.geometry.BrepOrientation`, read-obly
-        Orientation of the shape.
-
     """
 
     def __new__(cls, *args, **kwargs):
@@ -204,25 +195,19 @@ class Brep(Geometry):
     # ==============================================================================
 
     @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "faces": list,
-            }
-        )
-
-    @property
     def data(self):
         faces = []
         for face in self.faces:
             faces.append(face.data)
         return {"faces": faces}
 
-    @data.setter
-    def data(self):
-        raise NotImplementedError
+    @classmethod
+    def from_data(cls, data):
+        # faces = []
+        # for face in data["faces"]:
+        #     faces.append(BrepFace.from_data(face))
+        # return cls.from_brepfaces(faces)
+        pass
 
     # ==============================================================================
     # Properties

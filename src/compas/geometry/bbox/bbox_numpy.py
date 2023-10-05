@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import array
 from numpy import asarray
 from numpy import argmax
@@ -10,6 +6,8 @@ from numpy import amax
 from numpy import amin
 from numpy import dot
 from numpy import sum
+from numpy import zeros
+from numpy import vstack
 
 from scipy.spatial import ConvexHull
 
@@ -17,14 +15,11 @@ from compas.numerical import pca_numpy
 from compas.geometry import local_axes
 from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
-from compas.geometry import transform_points_numpy
 
 from .bbox import bounding_box
 
 
-# make alternative implementation using PCA
-# compare results
-def oriented_bounding_box_numpy(points):
+def oriented_bounding_box_numpy(points, tol=1e-12):
     r"""Compute the oriented minimum bounding box of a set of points in 3D space.
 
     Parameters
@@ -40,24 +35,12 @@ def oriented_bounding_box_numpy(points):
     Raises
     ------
     AssertionError
-        If the input data is 2D.
-    QhullError
-        If the data is essentially 2D.
+        If the input data is not 3D.
 
-    Notes
-    -----
-    The *oriented (minimum) bounding box* (OBB) of a given set of points
-    is computed using the following procedure:
-
-    1. Compute the convex hull of the points.
-    2. For each of the faces on the hull:
-
-       1. Compute face frame.
-       2. Compute coordinates of other points in face frame.
-       3. Find "peak-to-peak" (PTP) values of point coordinates along local axes.
-       4. Compute volume of box formed with PTP values.
-
-    3. Select the box with the smallest volume.
+    See Also
+    --------
+    :func:`compas.geometry.bounding_box`
+    :func:`compas.geometry.oriented_bounding_box_xy_numpy`
 
     Examples
     --------
@@ -93,52 +76,53 @@ def oriented_bounding_box_numpy(points):
     points = asarray(points)
     n, dim = points.shape
 
-    assert 2 < dim, "The point coordinates should be at least 3D: %i" % dim
+    assert dim == 3, "The point coordinates should be 3D: %i" % dim
 
     points = points[:, :3]
 
-    try:
-        hull = ConvexHull(points)
-    except Exception:
-        return oabb_numpy(points)
-        # if 'QH6154' in str(e):
-        #     hull = ConvexHull(points, qhull_options='Qb2:0B2:0')
-        # else:
-        #     raise e
+    mean, vectors, values = pca_numpy(points)
+    frame = mean, vectors[0], vectors[1]
 
-    hull = ConvexHull(points)
+    if values[2] < tol:
+        # the points are essentially 2D
+        # therefore compute the minimum area rectangle instead of the minimum volume box
+        # also compute the axis aligned bounding box
+        # and compare the areas of the two
 
-    volume = None
-    bbox = []
+        rect1, area1 = minimum_area_rectangle_xy(points, return_size=True)
 
-    # this can be vectorised!
-    for simplex in hull.simplices:
-        a, b, c = points[simplex]
-        uvw = local_axes(a, b, c)
-        xyz = points[hull.vertices]
-        frame = [a, uvw[0], uvw[1]]
-        rst = world_to_local_coordinates_numpy(frame, xyz)
-        rmin, smin, tmin = amin(rst, axis=0)
-        rmax, smax, tmax = amax(rst, axis=0)
-        dr = rmax - rmin
-        ds = smax - smin
-        dt = tmax - tmin
-        v = dr * ds * dt
+        points = world_to_local_coordinates_numpy(frame, points)
+        rect2 = bounding_box(points)[:4]
+        area2 = (rect2[1][0] - rect2[0][0]) * (rect2[3][1] - rect2[0][1])
 
-        if volume is None or v < volume:
-            bbox = [
-                [rmin, smin, tmin],
-                [rmax, smin, tmin],
-                [rmax, smax, tmin],
-                [rmin, smax, tmin],
-                [rmin, smin, tmax],
-                [rmax, smin, tmax],
-                [rmax, smax, tmax],
-                [rmin, smax, tmax],
-            ]
-            bbox = local_to_world_coordinates_numpy(frame, bbox)
-            volume = v
+        if area1 < area2:
+            rect = [[x, y, 0.0] for x, y in rect1]
+            bbox = rect + rect
+        else:
+            rect = [[x, y, 0.0] for x, y in rect2]
+            bbox = local_to_world_coordinates_numpy(frame, rect)
+            bbox = vstack((bbox, bbox)).tolist()
 
+        # return a box with identical top and bottom faces
+        return bbox
+
+    # the points are truly 3D
+    # therefore compute the minimum volume box instead of the minimum area rectangle
+    # also compute the axis aligned bounding box
+    # and compare the volumes of the two
+
+    box1, volume1 = minimum_volume_box(points, return_size=True)
+
+    points = world_to_local_coordinates_numpy(frame, points)
+    box2 = bounding_box(points)
+    volume2 = (box2[1][0] - box2[0][0]) * (box2[3][1] - box2[0][1]) * (box2[4][2] - box2[0][2])
+
+    if volume1 < volume2:
+        bbox = box1.tolist()
+    else:
+        bbox = local_to_world_coordinates_numpy(frame, box2).tolist()
+
+    # return the transformed box
     return bbox
 
 
@@ -155,41 +139,113 @@ def oriented_bounding_box_xy_numpy(points):
     list[[float, float, float]]
         XYZ coordinates of 8 points defining a box.
 
-    Notes
-    -----
-    The *oriented (minimum) bounding box* (OBB) is computed using the following
-    procedure:
+    Raises
+    ------
+    AssertionError
+        If the input data is not at least 2D.
 
-    1. Compute the convex hull of the points.
-    2. For each of the edges on the hull:
-
-       1. Compute the s-axis as the unit vector in the direction of the edge
-       2. Compute the othorgonal t-axis.
-       3. Use the start point of the edge as origin.
-       4. Compute the spread of the points along the s-axis. (dot product of the point vecor in local coordinates and the s-axis)
-       5. Compute the spread along the t-axis.
-       6. Determine the side of s on which the points are.
-       7. Compute and store the corners of the bbox and its area.
-
-    3. Select the box with the smallest area.
-
-    Examples
+    See Also
     --------
-    >>>
+    :func:`compas.geometry.bounding_box_xy`
+    :func:`compas.geometry.oriented_bounding_box_numpy`
 
     """
     points = asarray(points)
     n, dim = points.shape
 
-    assert 1 < dim, "The point coordinates should be at least 2D: %i" % dim
+    assert dim >= 2, "The point coordinates should be at least 2D: %i" % dim
 
-    points = points[:, :2]
+    if dim == 2:
+        temp = zeros((n, 3))
+        temp[:, :2] = points
+        points = temp
 
+    elif dim == 3:
+        points[:, 2] = 0
+
+    rect1 = minimum_area_rectangle_xy(points)
+
+    bbox = [[x, y, 0.0] for x, y in rect1]
+    return bbox
+
+
+def minimum_volume_box(points, return_size=False):
+    """Compute the minimum volume box from a convex hull of a set of 3D points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XYZ coordinates of the points.
+    return_size : bool, optional
+        If True, return the size of the box.
+
+    Returns
+    -------
+    list
+        XYZ coordinates of 8 points defining a box.
+
+    """
     hull = ConvexHull(points)
-    xy_hull = points[hull.vertices].reshape((-1, 2))
-
+    xyz = points[hull.vertices]
     boxes = []
-    m = sum(xy_hull, axis=0) / n
+
+    for simplex in hull.simplices:
+        a, b, c = points[simplex]
+        uvw = local_axes(a, b, c)
+        frame = [a, uvw[0], uvw[1]]
+        rst = world_to_local_coordinates_numpy(frame, xyz)
+        rmin, smin, tmin = amin(rst, axis=0)
+        rmax, smax, tmax = amax(rst, axis=0)
+        dr = rmax - rmin
+        ds = smax - smin
+        dt = tmax - tmin
+        v = dr * ds * dt
+
+        bbox = [
+            [rmin, smin, tmin],
+            [rmax, smin, tmin],
+            [rmax, smax, tmin],
+            [rmin, smax, tmin],
+            [rmin, smin, tmax],
+            [rmax, smin, tmax],
+            [rmax, smax, tmax],
+            [rmin, smax, tmax],
+        ]
+
+        boxes.append([frame, bbox, v])
+
+    frame, bbox, volume = min(boxes, key=lambda b: b[2])
+    bbox = local_to_world_coordinates_numpy(frame, bbox)
+
+    if return_size:
+        return bbox, volume
+
+    return bbox
+
+
+def minimum_area_rectangle_xy(points, return_size=False):
+    """Compute the minimum area rectangle from a convex hull of a set of 2D points.
+
+    Parameters
+    ----------
+    points : array_like[point]
+        XY(Z) coordinates of the points.
+    return_size : bool, optional
+        If True, return the size of the rectangle.
+
+    Returns
+    -------
+    list
+        XYZ coordinates of 4 points defining a rectangle.
+
+    """
+    boxes = []
+
+    n = len(points)
+    points = points[:, :2]
+    hull = ConvexHull(points)
+    xy = points[hull.vertices, :2]
+    mean = sum(xy, axis=0) / n
 
     for simplex in hull.simplices:
         p0 = points[simplex[0]]
@@ -199,7 +255,7 @@ def oriented_bounding_box_xy_numpy(points):
         s = p1 - p0
         sl = sum(s**2) ** 0.5
         su = s / sl
-        vn = xy_hull - p0
+        vn = xy - p0
         sc = (sum(vn * s, axis=1) / sl).reshape((-1, 1))
         scmax = argmax(sc)
         scmin = argmin(sc)
@@ -212,7 +268,7 @@ def oriented_bounding_box_xy_numpy(points):
         t = array([-s[1], s[0]])
         tl = sum(t**2) ** 0.5
         tu = t / tl
-        vn = xy_hull - p0
+        vn = xy - p0
         tc = (sum(vn * t, axis=1) / tl).reshape((-1, 1))
         tcmax = argmax(tc)
         tcmin = argmin(tc)
@@ -223,7 +279,7 @@ def oriented_bounding_box_xy_numpy(points):
         a = w * h
 
         # box corners
-        if dot(t, m - p0) < 0:
+        if dot(t, mean - p0) < 0:
             b3 = b0 - h * tu
             b2 = b1 - h * tu
         else:
@@ -233,32 +289,9 @@ def oriented_bounding_box_xy_numpy(points):
         # box
         boxes.append([[b0, b1, b2, b3], a[0]])
 
-    # return the box with the smallest area
-    return [point.tolist() for point in min(boxes, key=lambda b: b[1])[0]]
+    # find the box with the smallest area
+    bbox, area = min(boxes, key=lambda b: b[1])
 
-
-def oabb_numpy(points):
-    """Oriented bounding box of a set of points.
-
-    Parameters
-    ----------
-    points : array_like[point]
-        XYZ coordinates of the points.
-
-    Returns
-    -------
-    list[[float, float, float]]
-        XYZ coordinates of 8 points defining a box.
-
-    """
-    from compas.geometry import Frame
-    from compas.geometry import Transformation
-
-    origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
-    frame = Frame(origin, xaxis, yaxis)
-    world = Frame.worldXY()
-    X = Transformation.from_frame_to_frame(frame, world)
-    points = transform_points_numpy(points, X)
-    bbox = bounding_box(points)
-    bbox = transform_points_numpy(bbox, X.inverse())
+    if return_size:
+        return bbox, area
     return bbox

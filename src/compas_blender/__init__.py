@@ -1,8 +1,9 @@
+# type: ignore
 import os
 import compas
 
 try:
-    import bpy  # noqa: F401
+    import bpy
 except ImportError:
     pass
 else:
@@ -34,7 +35,7 @@ def redraw():
     bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
 
 
-__version__ = "1.17.5"
+__version__ = "2.0.0-alpha.1"
 
 
 def _check_blender_version(version):
@@ -78,4 +79,5 @@ __all__ = [name for name in dir() if not name.startswith("_")]
 __all_plugins__ = [
     "compas_blender.geometry.booleans",
     "compas_blender.artists",
+    # "compas_blender.geometry.curves",
 ]

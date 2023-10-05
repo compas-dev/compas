@@ -1,16 +1,74 @@
+import pytest
+import json
+import compas
+
 from compas.datastructures import HalfFace
+from compas.datastructures import VolMesh
 
 
 # ==============================================================================
 # Fixtures
 # ==============================================================================
 
+
+@pytest.fixture
+def halfface():
+    return VolMesh.from_meshgrid(1, 1, 1, 2, 2, 2)
+
+
 # ==============================================================================
-# Tests - Schema & jsonschema
+# Basics
 # ==============================================================================
 
 # ==============================================================================
-# Tests - Vertex Attributes
+# Data
+# ==============================================================================
+
+
+def test_halfface_data(halfface):
+    other = HalfFace.from_data(json.loads(json.dumps(halfface.data)))
+
+    assert halfface.data == other.data
+    assert halfface.default_vertex_attributes == other.default_vertex_attributes
+    assert halfface.default_edge_attributes == other.default_edge_attributes
+    assert halfface.default_face_attributes == other.default_face_attributes
+    assert halfface.default_cell_attributes == other.default_cell_attributes
+    assert halfface.number_of_vertices() == other.number_of_vertices()
+    assert halfface.number_of_edges() == other.number_of_edges()
+    assert halfface.number_of_faces() == other.number_of_faces()
+    assert halfface.number_of_cells() == other.number_of_cells()
+
+    if not compas.IPY:
+        assert HalfFace.validate_data(halfface.data)
+        assert HalfFace.validate_data(other.data)
+
+
+# ==============================================================================
+# Constructors
+# ==============================================================================
+
+# ==============================================================================
+# Properties
+# ==============================================================================
+
+# ==============================================================================
+# Accessors
+# ==============================================================================
+
+# ==============================================================================
+# Builders
+# ==============================================================================
+
+# ==============================================================================
+# Modifiers
+# ==============================================================================
+
+# ==============================================================================
+# Samples
+# ==============================================================================
+
+# ==============================================================================
+# Vertex Attributes
 # ==============================================================================
 
 
@@ -24,7 +82,7 @@ def test_default_vertex_attributes():
 
 
 # ==============================================================================
-# Tests - Face Attributes
+# Face Attributes
 # ==============================================================================
 
 
@@ -38,7 +96,7 @@ def test_default_face_attributes():
 
 
 # ==============================================================================
-# Tests - Edge Attributes
+# Edge Attributes
 # ==============================================================================
 
 
@@ -52,7 +110,7 @@ def test_default_edge_attributes():
 
 
 # ==============================================================================
-# Tests - Cell Attributes
+# Cell Attributes
 # ==============================================================================
 
 
@@ -66,7 +124,7 @@ def test_default_cell_attributes():
 
 
 # ==============================================================================
-# Tests - Vertex Queries
+# Vertex Queries
 # ==============================================================================
 
 
@@ -88,7 +146,7 @@ def test_vertices_where_predicate():
 
 
 # ==============================================================================
-# Tests - Edge Queries
+# Edge Queries
 # ==============================================================================
 
 
@@ -111,13 +169,13 @@ def test_edges_where_predicate():
 
 
 # ==============================================================================
-# Tests - Face Queries
+# Face Queries
 # ==============================================================================
 
 
 def test_faces_where():
     hf = HalfFace(default_face_attributes={"a": 1, "b": 2})
-    for vkey in range(4):
+    for vkey in range(5):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_halfface([i, i + 1, i + 2])
@@ -127,7 +185,7 @@ def test_faces_where():
 
 def test_faces_where_predicate():
     hf = HalfFace(default_face_attributes={"a": 1, "b": 2})
-    for vkey in range(4):
+    for vkey in range(5):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_halfface([i, i + 1, i + 2])
@@ -136,13 +194,13 @@ def test_faces_where_predicate():
 
 
 # ==============================================================================
-# Tests - Cell Queries
+# Cell Queries
 # ==============================================================================
 
 
 def test_cells_where():
     hf = HalfFace(default_cell_attributes={"a": 1, "b": 2})
-    for vkey in range(5):
+    for vkey in range(6):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_cell(
@@ -159,7 +217,7 @@ def test_cells_where():
 
 def test_cells_where_predicate():
     hf = HalfFace(default_cell_attributes={"a": 1, "b": 2})
-    for vkey in range(5):
+    for vkey in range(6):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_cell(

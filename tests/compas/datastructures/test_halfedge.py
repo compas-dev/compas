@@ -1,5 +1,7 @@
 import pytest
 import random
+import json
+import compas
 
 from compas.geometry import Sphere
 from compas.geometry import Box
@@ -42,7 +44,7 @@ def edge_key():
 
 @pytest.fixture
 def sphere():
-    sphere = Sphere([0, 0, 0], 1.0)
+    sphere = Sphere(radius=1.0)
     mesh = Mesh.from_shape(sphere, u=16, v=16)
     return mesh
 
@@ -61,7 +63,7 @@ def grid():
 
 
 # ==============================================================================
-# Tests - Schema & jsonschema
+# ???
 # ==============================================================================
 
 
@@ -81,7 +83,52 @@ def test_edgedata_io(mesh):
 
 
 # ==============================================================================
-# Tests - Samples
+# Basics
+# ==============================================================================
+
+# ==============================================================================
+# Data
+# ==============================================================================
+
+
+def test_halfedge_data(mesh):
+    other = HalfEdge.from_data(json.loads(json.dumps(mesh.data)))
+
+    assert mesh.data == other.data
+    assert mesh.default_vertex_attributes == other.default_vertex_attributes
+    assert mesh.default_edge_attributes == other.default_edge_attributes
+    assert mesh.default_face_attributes == other.default_face_attributes
+    assert mesh.number_of_vertices() == other.number_of_vertices()
+    assert mesh.number_of_edges() == other.number_of_edges()
+    assert mesh.number_of_faces() == other.number_of_faces()
+
+    if not compas.IPY:
+        assert HalfEdge.validate_data(mesh.data)
+        assert HalfEdge.validate_data(other.data)
+
+
+# ==============================================================================
+# Constructors
+# ==============================================================================
+
+# ==============================================================================
+# Properties
+# ==============================================================================
+
+# ==============================================================================
+# Accessors
+# ==============================================================================
+
+# ==============================================================================
+# Builders
+# ==============================================================================
+
+# ==============================================================================
+# Modifiers
+# ==============================================================================
+
+# ==============================================================================
+# Samples
 # ==============================================================================
 
 
@@ -107,7 +154,7 @@ def test_face_sample(mesh):
 
 
 # ==============================================================================
-# Tests - Vertex Attributes
+# Vertex Attributes
 # ==============================================================================
 
 
@@ -158,7 +205,7 @@ def test_del_vertex_attribute_in_view(mesh, vertex_key):
 
 
 # ==============================================================================
-# Tests - Face Attributes
+# Face Attributes
 # ==============================================================================
 
 
@@ -208,7 +255,7 @@ def test_del_face_attribute_in_view(mesh, face_key):
 
 
 # ==============================================================================
-# Tests - Edge Attributes
+# Edge Attributes
 # ==============================================================================
 
 
@@ -258,7 +305,7 @@ def test_del_edge_attribute_in_view(mesh, edge_key):
 
 
 # ==============================================================================
-# Tests - Halfedges Before/After
+# Halfedges Before/After
 # ==============================================================================
 
 
@@ -285,7 +332,7 @@ def test_halfedge_before_on_boundary(grid):
 
 
 # ==============================================================================
-# Tests - Loops & Strip
+# Loops & Strip
 # ==============================================================================
 
 

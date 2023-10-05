@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 try:
-    basestring
+    basestring  # type: ignore
 except NameError:
     basestring = str
 
@@ -31,11 +31,11 @@ class Color(Data):
     Parameters
     ----------
     red : float
-        The red component in the range of 0-1.
+        The red component in the range ``[0.0, 1.0]``.
     green : float
-        The green component in the range of 0-1.
+        The green component in the range of ``[0.0, 1.0]``.
     blue : float
-        The blue component in the range of 0-1.
+        The blue component in the range of ``[0.0, 1.0]``.
     alpha : float, optional
         Transparency setting.
         If ``alpha = 0.0``, the color is fully transparent.
@@ -44,7 +44,7 @@ class Color(Data):
     Other Parameters
     ----------------
     **kwargs : dict, optional
-        See :class:`Data` for more information.
+        See :class:`compas.data.Data` for more information.
 
     Attributes
     ----------
@@ -54,10 +54,16 @@ class Color(Data):
         Green component of the color in RGB1 color space.
     b : float
         Blue component of the color in RGB1 color space.
+    a : float
+        Transparency in RGB1 color space.
     rgb : tuple[float, float, float]
-        RGB1 color tuple, with components in the range 0-1.
+        RGB1 color tuple, with components in the range ``[0.0, 1.0]``.
+    rgba : tuple[float, float, float, float]
+        RGBA1 color tuple (including alpha), with components in the range ``[0.0, 1.0]``.
     rgb255 : tuple[int, int, int]
-        RGB255 color tuple, with components in the range 0-255.
+        RGB255 color tuple, with components in the range ``[0, 255]``.
+    rgba255 : tuple[int, int, int, int]
+        RGBA255 color tuple (including alpha), with components in the range ``[0, 255]``.
     hex : str
         Hexadecimal color string.
     hls : tuple[float, float, float]
@@ -72,37 +78,104 @@ class Color(Data):
         How well-lit the color appears to be.
         This is the "Value" in HSV.
         Making a color "brighter" is like shining a stronger light on it, or illuminating it better.
+    yuv : tuple[float, float, float]
+        Luma and chroma components, with chroma defined by the blue and red projections.
+    luma : float
+        The brightness of a yuv signal.
+    chroma : tuple[float, float]
+        The color of a yuv signal.
+        "How different from a grey of the same lightness the color appears to be."
+    luminance : float
+        The amount of light that passes through, is emitted from, or is reflected from a particular area.
+        Here, it expresses the preceived brightness of the color.
+        Note that this is not the same as the "Lightness" of HLS or the "Value/Brightness" of HSV.
+    saturation : float
+        The perceived freedom of whiteness.
     is_light : bool
         If True, the color is considered light.
 
     Examples
     --------
+    By default, this class will create a color with the RGB components in the range ``[0.0, 1.0]``.
+
     >>> Color(1, 0, 0)
     Color(1.0, 0.0, 0.0, 1.0)
-    >>> Color.red()
+
+    Attempting to create a color with components outside of the range ``[0.0, 1.0]`` will raise a ``ValueError``.
+
+    >>> Color(255, 0, 0)
+    Traceback (most recent call last):
+    ...
+    ValueError: Components of an RGBA color should be in the range 0-1.
+
+    To create a color with components in the range ``[0, 255]``, use the :meth:`from_rgb255` constructor.
+
+    >>> Color.from_rgb255(255, 0, 0)
     Color(1.0, 0.0, 0.0, 1.0)
-    >>> Color(1, 0, 0) == Color.red()
-    True
 
+    Similarly, other constructors are available to create colors from other color spaces.
+
+    >>> Color.from_hls(0.0, 0.5, 1.0)
+    >>> Color.from_hsv(0.0, 1.0, 1.0)
+    >>> Color.from_yiq(0.0, 0.0, 0.0)
+    >>> Color.from_yuv(0.0, 0.0, 0.0)
+
+    Or, to construct specific colors, for example, ...
+
+    >>> Color.red()
     >>> Color.magenta()
-    Color(1.0, 0.0, 1.0, 1.0)
     >>> Color.lime()
-    Color(0.5, 1.0, 0.0, 1.0)
     >>> Color.navy()
-    Color(0.0, 0.0, 0.5, 1.0)
     >>> Color.olive()
-    Color(0.5, 0.5, 0.0, 1.0)
 
-    >>> Color.lime().is_light
-    True
-    >>> Color.navy().is_light
-    False
+    Colors can be modified through inversion, saturation/desaturation, and lightening/darkening.
+
+    >>> color = Color.red()
+    >>> color.desaturated(25)
+    Color(0.875, 0.125, 0.125, alpha=1.0)
+    >>> color.desaturated(50)
+    Color(0.75, 0.25, 0.25, alpha=1.0)
+    >>> color.desaturated(75)
+    Color(0.625, 0.375, 0.375, alpha=1.0)
+    >>> color.desaturated(100)
+    Color(0.5, 0.5, 0.5, alpha=1.0)
 
     See Also
     --------
     :class:`compas.colors.ColorMap`
 
+    Notes
+    -----
+    The following methods are static methods:
+
+    * :meth:`is_hex` : Check if a string is a valid hexadecimal color string.
+    * :meth:`is_rgb1` : Check if a tuple is a valid RGB1 color tuple.
+    * :meth:`is_rgb255` : Check if a tuple is a valid RGB255 color tuple.
+    * :meth:`coerce` : Coerce any valid color specification to a :class:`compas.colors.Color` object.
+
+    >>> if Color.is_hex("#ff0000"):
+    ...     print("This is a valid hexadecimal color string.")
+
+    >>> if Color.is_rgb1((1.0, 0.0, 0.0)):
+    ...     print("This is a valid RGB1 color tuple.")
+
+    >>> if Color.is_rgb255((255, 0, 0)):
+    ...     print("This is a valid RGB255 color tuple.")
+
+    >>> color = Color.coerce((255, 0, 0))
+
     """
+
+    DATASCHEMA = {
+        "type": "object",
+        "properties": {
+            "red": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "green": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "blue": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "alpha": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        },
+        "required": ["red", "green", "blue", "alpha"],
+    }
 
     def __init__(self, red, green, blue, alpha=1.0, **kwargs):
         super(Color, self).__init__(**kwargs)
@@ -115,27 +188,37 @@ class Color(Data):
         self.b = blue
         self.a = alpha
 
+    def __repr__(self):
+        return "{0}({1}, {2}, {3}, alpha={4})".format(type(self).__name__, self.r, self.g, self.b, self.a)
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.r
+        if key == 1:
+            return self.g
+        if key == 2:
+            return self.b
+        raise KeyError
+
+    def __len__(self):
+        return 3
+
+    def __iter__(self):
+        return iter(self.rgb)
+
+    def __eq__(self, other):
+        return all(a == b for a, b in zip(self, other))
+
     # --------------------------------------------------------------------------
-    # data
+    # Data
     # --------------------------------------------------------------------------
 
     @property
     def data(self):
         return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
-    @data.setter
-    def data(self, data):
-        self.r = data["red"]
-        self.g = data["green"]
-        self.b = data["blue"]
-        self.a = data["alpha"]
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(data["red"], data["green"], data["blue"], data["alpha"])
-
     # --------------------------------------------------------------------------
-    # properties
+    # Properties
     # --------------------------------------------------------------------------
 
     @property
@@ -272,59 +355,7 @@ class Color(Data):
         return (maxval - minval) / maxval
 
     # --------------------------------------------------------------------------
-    # descriptor
-    # --------------------------------------------------------------------------
-
-    def __set_name__(self, owner, name):
-        self.public_name = name
-        self.private_name = "_" + name
-
-    def __get__(self, obj, otype=None):
-        return getattr(obj, self.private_name, None) or self
-
-    def __set__(self, obj, value):
-        if not obj:
-            return
-
-        if not value:
-            return
-
-        if Color.is_rgb255(value):
-            value = Color.from_rgb255(value[0], value[1], value[2])
-        elif Color.is_hex(value):
-            value = Color.from_hex(value)
-        else:
-            value = Color(value[0], value[1], value[2])
-
-        setattr(obj, self.private_name, value)
-
-    # --------------------------------------------------------------------------
-    # customization
-    # --------------------------------------------------------------------------
-
-    def __repr__(self):
-        return "Color({}, {}, {}, {})".format(self.r, self.g, self.b, self.a)
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.r
-        if key == 1:
-            return self.g
-        if key == 2:
-            return self.b
-        raise KeyError
-
-    def __len__(self):
-        return 3
-
-    def __iter__(self):
-        return iter(self.rgb)
-
-    def __eq__(self, other):
-        return all(a == b for a, b in zip(self, other))
-
-    # --------------------------------------------------------------------------
-    # constructors
+    # Constructors
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -529,7 +560,7 @@ class Color(Data):
         return cls.from_rgb255(*rgb255)
 
     # --------------------------------------------------------------------------
-    # presets
+    # Presets
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -698,7 +729,7 @@ class Color(Data):
         return cls(1.0, 0.0, 0.5)
 
     # --------------------------------------------------------------------------
-    # other presets
+    # Other presets
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -786,7 +817,7 @@ class Color(Data):
     # salmon
 
     # --------------------------------------------------------------------------
-    # methods
+    # Methods
     # --------------------------------------------------------------------------
 
     @staticmethod

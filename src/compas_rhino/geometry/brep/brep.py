@@ -4,10 +4,11 @@ from compas.geometry import BrepTrimmingError
 from compas.geometry import Plane
 
 from compas_rhino.conversions import box_to_rhino
-from compas_rhino.conversions import xform_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import mesh_to_rhino
 
 import Rhino
 
@@ -225,6 +226,23 @@ class RhinoBrep(Brep):
         rhino_cylinder = cylinder_to_rhino(cylinder)
         return cls.from_native(rhino_cylinder.ToBrep(True, True))
 
+    @classmethod
+    def from_mesh(cls, mesh):
+        """Create a RhinoBrep from a mesh.
+
+        Parameters
+        ----------
+        mesh : :class:`~compas.datastructures.Mesh`
+            The source mesh.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_mesh = mesh_to_rhino(mesh)
+        return cls.from_native(Rhino.Geometry.Brep.CreateFromMesh(rhino_mesh, True))
+
     # ==============================================================================
     # Methods
     # ==============================================================================
@@ -242,7 +260,7 @@ class RhinoBrep(Brep):
         None
 
         """
-        self._brep.Transform(xform_to_rhino(matrix))
+        self._brep.Transform(transformation_to_rhino(matrix))
 
     def trim(self, trimming_plane, tolerance=TOLERANCE):
         """Trim this brep by the given trimming plane

@@ -110,7 +110,7 @@ ENV/
 
 dist/docs
 
-generated
+generated/
 
 *.3dmbak
 *.rhl
@@ -143,3 +143,5 @@ src/compas_ghpython/components/**/*.ghuser
 dev
 
 NOTES
+
+src/compas_blender/conversions/__temp/

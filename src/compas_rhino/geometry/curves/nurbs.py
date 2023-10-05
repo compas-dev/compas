@@ -4,19 +4,15 @@ from __future__ import division
 
 from itertools import groupby
 from compas.geometry import Point
-
 from compas.geometry import NurbsCurve
 
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
-
-# from compas_rhino.conversions import circle_to_rhino
-# from compas_rhino.conversions import ellipse_to_rhino
 from compas_rhino.conversions import line_to_rhino
 
 from .curve import RhinoCurve
 
-import Rhino.Geometry
+import Rhino.Geometry  # type: ignore
 
 
 def rhino_curve_from_parameters(points, weights, knots, multiplicities, degree):
@@ -73,9 +69,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     """
 
-    def __init__(self, name=None):
-        super(RhinoNurbsCurve, self).__init__(name=name)
-        self.rhino_curve = None
+    # def __init__(self, name=None):
+    #     super(RhinoNurbsCurve, self).__init__(name=name)
+    #     self.rhino_curve = None
 
     # ==============================================================================
     # Data
@@ -86,11 +82,11 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         # add superfluous knots
         # for compatibility with all/most other NURBS implementations
         # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
-        multiplicities = self.multiplicities[:]
+        multiplicities = self.multiplicities[:]  # type: ignore
         multiplicities[0] += 1
         multiplicities[-1] += 1
         return {
-            "points": [point.data for point in self.points],
+            "points": [point.data for point in self.points],  # type: ignore
             "weights": self.weights,
             "knots": self.knots,
             "multiplicities": multiplicities,

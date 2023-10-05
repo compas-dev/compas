@@ -201,6 +201,8 @@ class Mesh(HalfEdge):
         vertices = obj.vertices
         faces = obj.faces
         edges = obj.lines
+        if not vertices:
+            return cls()
         if faces:
             return cls.from_vertices_and_faces(vertices, faces)
         if edges:
@@ -249,8 +251,8 @@ class Mesh(HalfEdge):
 
         """
         ply = PLY(filepath)
-        vertices = ply.parser.vertices
-        faces = ply.parser.faces
+        vertices = ply.parser.vertices  # type: ignore
+        faces = ply.parser.faces  # type: ignore
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -288,8 +290,8 @@ class Mesh(HalfEdge):
 
         """
         stl = STL(filepath, precision)
-        vertices = stl.parser.vertices
-        faces = stl.parser.faces
+        vertices = stl.parser.vertices  # type: ignore
+        faces = stl.parser.faces  # type: ignore
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -337,8 +339,8 @@ class Mesh(HalfEdge):
 
         """
         off = OFF(filepath)
-        vertices = off.reader.vertices
-        faces = off.reader.faces
+        vertices = off.reader.vertices  # type: ignore
+        faces = off.reader.faces  # type: ignore
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -792,7 +794,7 @@ class Mesh(HalfEdge):
         w = self.add_vertex(key=key, x=x, y=y, z=z)
         for u, v in self.face_halfedges(fkey):
             fkeys.append(self.add_face([u, v, w]))
-        del self.face[fkey]
+        self.delete_face(fkey)
         if return_fkeys:
             return w, fkeys
         return w
@@ -1420,7 +1422,7 @@ class Mesh(HalfEdge):
         """
         vertices = self.face_vertices(fkey)
         f = len(vertices)
-        points = self.vertices_attributes("xyz", keys=vertices)
+        points = self.vertices_attributes("xyz", keys=vertices) or []
         lengths = [distance_point_point(a, b) for a, b in pairwise(points + points[:1])]
         length = sum(lengths) / f
         d = distance_line_line((points[0], points[2]), (points[1], points[3]))
@@ -1475,8 +1477,8 @@ class Mesh(HalfEdge):
             angle = angle_points(o, a, b, deg=True)
             angles.append(angle)
         return max(
-            (max(angles) - ideal_angle) / (180 - ideal_angle),
-            (ideal_angle - min(angles)) / ideal_angle,
+            (max(angles) - ideal_angle) / (180 - ideal_angle),  # type: ignore
+            (ideal_angle - min(angles)) / ideal_angle,  # type: ignore
         )
 
     def face_curvature(self, fkey):

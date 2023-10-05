@@ -30,6 +30,15 @@ class Assembly(Datastructure):
 
     """
 
+    DATASCHEMA = {
+        "type": "object",
+        "properties": {
+            "attributes": {"type": "object"},
+            "graph": Graph.DATASCHEMA,
+        },
+        "required": ["graph"],
+    }
+
     def __init__(self, name=None, **kwargs):
         super(Assembly, self).__init__()
         self.attributes = {"name": name or "Assembly"}
@@ -37,41 +46,31 @@ class Assembly(Datastructure):
         self.graph = Graph()
         self._parts = {}
 
+    def __str__(self):
+        tpl = "<Assembly with {} parts and {} connections>"
+        return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
+
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
-
-    @property
-    def DATASCHEMA(self):
-        import schema
-
-        return schema.Schema(
-            {
-                "attributes": dict,
-                "graph": Graph,
-            }
-        )
-
-    @property
-    def JSONSCHEMANAME(self):
-        return "assembly"
 
     @property
     def data(self):
-        data = {
+        return {
             "attributes": self.attributes,
             "graph": self.graph.data,
         }
-        return data
 
-    @data.setter
-    def data(self, data):
-        self.attributes.update(data["attributes"] or {})
-        self.graph.data = data["graph"]
-        self._parts = {part.guid: part.key for part in self.parts()}
+    @classmethod
+    def from_data(cls, data):
+        assembly = cls()
+        assembly.attributes.update(data["attributes"] or {})
+        assembly.graph = Graph.from_data(data["graph"])
+        assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
+        return assembly
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -83,19 +82,11 @@ class Assembly(Datastructure):
         self.attributes["name"] = value
 
     # ==========================================================================
-    # customization
-    # ==========================================================================
-
-    def __str__(self):
-        tpl = "<Assembly with {} parts and {} connections>"
-        return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
-
-    # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     # ==========================================================================
-    # methods
+    # Methods
     # ==========================================================================
 
     def add_part(self, part, key=None, **kwargs):

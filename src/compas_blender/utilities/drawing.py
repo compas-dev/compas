@@ -1,10 +1,10 @@
-import bpy
-
 from typing import Dict
 from typing import List
 from typing import Union
 from typing import Tuple
 from typing import Text
+
+import bpy  # type: ignore
 
 from compas_blender.utilities import create_collection
 
@@ -757,7 +757,7 @@ def draw_surfaces(surfaces: List[Dict], collection: Union[Text, bpy.types.Collec
     _link_objects(objects, collection)
     for obj in objects:
         # select the control points
-        for s in obj.data.splines:
+        for s in obj.data.splines:  # type: ignore
             for p in s.points:
                 p.select = True
         # switch to edit mode

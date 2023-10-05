@@ -13,7 +13,7 @@ if not compas.IPY:
         yield
         # after each test, reset artists
         Artist.ITEM_ARTIST.clear()
-        Artist._Artist__ARTISTS_REGISTERED = False
+        Artist._Artist__ARTISTS_REGISTERED = False  # type: ignore
 
 
 def register_fake_context():
@@ -67,7 +67,7 @@ if not compas.IPY:
     def test_artist_auto_context_discovery(mocker):
         mocker.patch("compas.artists.Artist.register_artists")
         Artist.register_artists.side_effect = register_fake_context
-        Artist._Artist__ARTISTS_REGISTERED = False
+        Artist._Artist__ARTISTS_REGISTERED = False  # type: ignore
 
         item = FakeItem()
         artist = Artist(item)
@@ -77,15 +77,6 @@ if not compas.IPY:
     def test_artist_auto_context_discovery_viewer(mocker):
         mocker.patch("compas.artists.artist.is_viewer_open", return_value=True)
         Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeArtist}
-
-        item = FakeSubItem()
-        artist = Artist(item)
-
-        assert isinstance(artist, FakeArtist)
-
-    def test_artist_auto_context_discovery_plotter(mocker):
-        mocker.patch("compas.artists.artist.is_plotter_open", return_value=True)
-        Artist.ITEM_ARTIST["Plotter"] = {FakeItem: FakeArtist}
 
         item = FakeSubItem()
         artist = Artist(item)
@@ -109,26 +100,8 @@ if not compas.IPY:
 
         assert isinstance(artist, FakeViewerArtist)
 
-    def test_artist_auto_context_discovery_manual_override(mocker):
-        mocker.patch("compas.artists.artist.is_viewer_open", return_value=True)
-
-        class FakeViewerArtist(FakeArtist):
-            pass
-
-        class FakePlotterArtist(FakeArtist):
-            pass
-
-        Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeViewerArtist}
-        Artist.ITEM_ARTIST["Plotter"] = {FakeItem: FakePlotterArtist}
-
-        item = FakeSubItem()
-        artist = Artist(item, context="Plotter")
-
-        assert isinstance(artist, FakePlotterArtist)
-
     def test_artist_auto_context_discovery_no_context(mocker):
         mocker.patch("compas.artists.artist.is_viewer_open", return_value=False)
-        mocker.patch("compas.artists.artist.is_plotter_open", return_value=False)
         mocker.patch("compas.artists.artist.compas.is_grasshopper", return_value=False)
         mocker.patch("compas.artists.artist.compas.is_rhino", return_value=False)
 

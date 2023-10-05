@@ -1,88 +1,3 @@
-"""
-********************************************************************************
-artists
-********************************************************************************
-
-.. currentmodule:: compas_rhino.artists
-
-
-Primitive Artists
-=================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    CircleArtist
-    FrameArtist
-    LineArtist
-    PlaneArtist
-    PointArtist
-    PolygonArtist
-    PolylineArtist
-    VectorArtist
-    BrepArtist
-
-
-Shape Artists
-=============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BoxArtist
-    CapsuleArtist
-    ConeArtist
-    CylinderArtist
-    PolyhedronArtist
-    SphereArtist
-    TorusArtist
-
-
-Curve and Surface Artists
-=========================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    CurveArtist
-    SurfaceArtist
-
-
-Datastructure Artists
-=====================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    MeshArtist
-    NetworkArtist
-    VolMeshArtist
-
-
-Robot Artist
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    RobotModelArtist
-
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    RhinoArtist
-
-"""
 from __future__ import absolute_import
 
 from compas.plugins import plugin
@@ -113,7 +28,6 @@ from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
 
-from compas.robots import RobotModel
 import compas_rhino
 
 from .artist import RhinoArtist
@@ -135,13 +49,10 @@ from .torusartist import TorusArtist
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
-from .robotmodelartist import RobotModelArtist
 
 from .curveartist import CurveArtist
 from .surfaceartist import SurfaceArtist
 from .brepartist import BrepArtist
-
-BaseArtist = RhinoArtist
 
 
 @plugin(category="drawing-utils", pluggable_name="clear", requires=["Rhino"])
@@ -174,7 +85,6 @@ def register_artists():
     Artist.register(Mesh, MeshArtist, context="Rhino")
     Artist.register(Network, NetworkArtist, context="Rhino")
     Artist.register(VolMesh, VolMeshArtist, context="Rhino")
-    Artist.register(RobotModel, RobotModelArtist, context="Rhino")
     Artist.register(Curve, CurveArtist, context="Rhino")
     Artist.register(Surface, SurfaceArtist, context="Rhino")
     Artist.register(Brep, BrepArtist, context="Rhino")
@@ -182,7 +92,6 @@ def register_artists():
 
 
 __all__ = [
-    "BaseArtist",
     "RhinoArtist",
     "CircleArtist",
     "FrameArtist",
@@ -202,7 +111,6 @@ __all__ = [
     "MeshArtist",
     "NetworkArtist",
     "VolMeshArtist",
-    "RobotModelArtist",
     "CurveArtist",
     "SurfaceArtist",
     "BrepArtist",

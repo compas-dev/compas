@@ -9,41 +9,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+* Changed `Network.is_planar` to rely on `NetworkX` instead `planarity` for planarity checking.
+* Removed `planarity` from requirements.
+* Fixed argument order at `compas.geometry.cone.circle`.
+
+### Removed
+
+
+## [2.0.0-alpha.1] 2023-09-20
+
+### Added
+
 * Added `create_id` to `compas_ghpython.utilities`. (moved from `compas_fab`)
 * Added representation for features in `compas.datastructures.Part`.
-* Added  `split` and `split_by_length` to `compas.geometry.Polyline`.
+* Added `split` and `split_by_length` to `compas.geometry.Polyline`.
 * Added `compas.rpc.XFunc`.
-* Added `compas.data.Data.validate_jsonstring`.
-* Added `compas.data.Data.validate_jsondata`.
-* Added `compas.data.Data.JSONSCHEMA`.
-* Added `compas.data.json_validate`.
-* Added `compas.datastructures.Graph.JSONSCHEMA`.
+* Added attribute `compas.color.Color.DATASCHEMA`.
+* Added attribute `compas.data.Data.DATASCHEMA`.
+* Added attribute `compas.datastructures.Graph.DATASCHEMA`.
+* Added attribute `compas.datastructures.Halfedge.DATASCHEMA`.
+* Added attribute `compas.datastructures.Halfface.DATASCHEMA`.
+* Added attribute `compas.geometry.Arc.DATASCHEMA`.
+* Added attribute `compas.geometry.Bezier.DATASCHEMA`.
+* Added attribute `compas.geometry.Box.DATASCHEMA`.
+* Added attribute `compas.geometry.Capsule.DATASCHEMA`.
+* Added attribute `compas.geometry.Circle.DATASCHEMA`.
+* Added attribute `compas.geometry.Cone.DATASCHEMA`.
+* Added attribute `compas.geometry.Cylinder.DATASCHEMA`.
+* Added attribute `compas.geometry.Ellipse.DATASCHEMA`.
+* Added attribute `compas.geometry.Frame.DATASCHEMA`.
+* Added attribute `compas.geometry.Line.DATASCHEMA`.
+* Added attribute `compas.geometry.NurbsCurve.DATASCHEMA`.
+* Added attribute `compas.geometry.NurbsSurface.DATASCHEMA`.
+* Added attribute `compas.geometry.Plane.DATASCHEMA`.
+* Added attribute `compas.geometry.Point.DATASCHEMA`.
+* Added attribute `compas.geometry.Pointcloud.DATASCHEMA`.
+* Added attribute `compas.geometry.Polygon.DATASCHEMA`.
+* Added attribute `compas.geometry.Polyhedron.DATASCHEMA`.
+* Added attribute `compas.geometry.Polyline.DATASCHEMA`.
+* Added attribute `compas.geometry.Sphere.DATASCHEMA`.
+* Added attribute `compas.geometry.Torus.DATASCHEMA`.
+* Added attribute `compas.geometry.Quaternion.DATASCHEMA`.
+* Added attribute `compas.geometry.Vector.DATASCHEMA`.
+* Added implementation of property `compas.color.Color.data`.
+* Added `compas.data.Data.validate_data`.
+* Added `compas.data.Data.__jsondump__`.
+* Added `compas.data.Data.__jsonload__`.
+* Added `compas.data.schema.dataclass_dataschema`.
+* Added `compas.data.schema.dataclass_typeschema`.
+* Added `compas.data.schema.dataclass_jsonschema`.
+* Added `compas.data.schema.compas_jsonschema`.
+* Added `compas.data.schema.compas_dataclasses`.
 * Added `compas.datastructures.Graph.to_jsondata`.
 * Added `compas.datastructures.Graph.from_jsondata`.
-* Added `compas.datastructures.Halfedge.JSONSCHEMA`.
-* Added `compas.datastructures.Halfface.JSONSCHEMA`.
-* Added `compas.geometry.Arc.JSONSCHEMA`.
-* Added `compas.geometry.Bezier.JSONSCHEMA`.
-* Added `compas.geometry.Box.JSONSCHEMA`.
-* Added `compas.geometry.Capsule.JSONSCHEMA`.
-* Added `compas.geometry.Circle.JSONSCHEMA`.
-* Added `compas.geometry.Cone.JSONSCHEMA`.
-* Added `compas.geometry.Cylinder.JSONSCHEMA`.
-* Added `compas.geometry.Ellipse.JSONSCHEMA`.
-* Added `compas.geometry.Frame.JSONSCHEMA`.
-* Added `compas.geometry.Line.JSONSCHEMA`.
-* Added `compas.geometry.NurbsCurve.JSONSCHEMA`.
-* Added `compas.geometry.NurbsSurface.JSONSCHEMA`.
-* Added `compas.geometry.Plane.JSONSCHEMA`.
-* Added `compas.geometry.Point.JSONSCHEMA`.
-* Added `compas.geometry.Pointcloud.JSONSCHEMA`.
-* Added `compas.geometry.Polygon.JSONSCHEMA`.
-* Added `compas.geometry.Polyhedron.JSONSCHEMA`.
-* Added `compas.geometry.Polyline.JSONSCHEMA`.
-* Added `compas.geometry.Sphere.JSONSCHEMA`.
-* Added `compas.geometry.Torus.JSONSCHEMA`.
-* Added `compas.geometry.Quaternion.JSONSCHEMA`.
-* Added `compas.geometry.Vector.JSONSCHEMA`.
 * Added `compas.datastructures.Halfedge.halfedge_loop_vertices`.
 * Added `compas.datastructures.Halfedge.halfedge_strip_faces`.
 * Added `compas.datastructures.Mesh.vertex_point`.
@@ -59,10 +79,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Graph.node_index` and `compas.datastructures.Graph.index_node`.
 * Added `compas.datastructures.Graph.edge_index` and `compas.datastructures.Graph.index_edge`.
 * Added `compas.datastructures.Halfedge.vertex_index` and `compas.datastructures.Halfedge.index_vertex`.
+* Added `compas.geometry.Hyperbola`.
+* Added `compas.geometry.Parabola`.
+* Added `compas.geometry.PlanarSurface`.
+* Added `compas.geometry.CylindricalSurface`.
+* Added `compas.geometry.SphericalSurface`.
+* Added `compas.geometry.ConicalSurface`.
+* Added `compas.geometry.ToroidalSurface`.
 * Added `compas.geometry.trimesh_descent_numpy`.
 * Added `compas.geometry.trimesh_gradient_numpy`.
-* Added a deprecation warning when using `Artist` for `Plotter`.
-* Added `compas.datastructures.Tree` and `compas.datastructures.TreeNode` classes.
+* Added `compas.geometry.boolean_union_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_intersection_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_difference_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_symmetric_difference_polygon_polygon` pluggable.
+* Added `compas.geometry.boolean_union_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.boolean_intersection_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.boolean_difference_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.boolean_symmetric_difference_polygon_polygon` Shapely-based plugin.
+* Added `compas.geometry.Pointcloud.from_ply`.
+* Added `compas.geometry.Curve.to_points`.
+* Added `compas.geometry.Curve.to_polyline`.
+* Added `compas.geometry.Curve.to_polygon`.
+* Added `compas.geometry.Surface.to_vertices_and_faces`.
+* Added `compas.geometry.Surface.to_triangles`.
+* Added `compas.geometry.Surface.to_quads`.
+* Added `compas.geometry.Surface.to_mesh`.
+* Added `compas.geometry.Curve.point_at`.
+* Added `compas.geometry.Curve.tangent_at`.
+* Added `compas.geometry.Curve.normal_at`.
+* Added `compas.geometry.Surface.point_at`.
+* Added `compas.geometry.Surface.normal_at`.
+* Added `compas.geometry.Surface.frame_at`.
+* Added `mesh_to_rhino` to `compas_rhino.conversions`.
+* Added `vertices_and_faces_to_rhino` to `compas_rhino.conversions`.
+* Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
+* Added `from_mesh` plugin to `compas_rhino.geometry.RhinoBrep`.
+* Added `compas.geometry.Plane.worldYZ` and `compas.geometry.Plane.worldZX`.
+* Added `compas.datastructures.CellNetwork`.
+* Added `compas_rhino.conversions.brep_to_compas_box`.
+* Added `compas_rhino.conversions.brep_to_compas_cone`.
+* Added `compas_rhino.conversions.brep_to_compas_cylinder`.
+* Added `compas_rhino.conversions.brep_to_compas_sphere`.
+* Added `compas_rhino.conversions.brep_to_rhino`.
+* Added `compas_rhino.conversions.capsule_to_rhino_brep`.
+* Added `compas_rhino.conversions.cone_to_rhino_brep`.
+* Added `compas_rhino.conversions.curve_to_rhino`.
+* Added `compas_rhino.conversions.cylinder_to_rhino_brep`.
+* Added `compas_rhino.conversions.extrusion_to_compas_box`.
+* Added `compas_rhino.conversions.extrusion_to_rhino_cylinder`.
+* Added `compas_rhino.conversions.extrusion_to_rhino_torus`.
+* Added `compas_rhino.conversions.polyline_to_rhino_curve`.
+* Added `compas_rhino.conversions.surface_to_compas`.
+* Added `compas_rhino.conversions.surface_to_compas_mesh`.
+* Added `compas_rhino.conversions.surface_to_compas_quadmesh`.
+* Added `compas_rhino.conversions.surface_to_rhino`.
+* Added `compas_rhino.conversions.torus_to_rhino_brep`.
+* Added `compas_rhino.artists._helpers.attributes`.
+* Added `compas_rhino.artists._helpers.ngon`.
+* Added `compas.geometry.find_span`.
+* Added `compas.geometry.construct_knotvector`.
+* Added `compas.geometry.knotvector_to_knots_and_mults`.
+* Added `compas.geometry.knots_and_mults_to_knotvector`.
+* Added `compas.geometry.compute_basisfuncs`.
+* Added `compas.geometry.compute_basisfuncsderivs`.
+* Added `compas.geometry.DefaultNurbsCurve` as try-last, Python-only plugin for `compas.geometry.NurbsCurve`.
+* Added `compas.geometry.DefaultNurbsSurface` as try-last, Python-only plugin for `compas.geometry.NurbsSurface`.
+* Added color count to constructor functions of `compas.colors.ColorMap`.
 
 ### Changed
 
@@ -117,6 +199,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.data.DataEncoder` and `compas.data.DataDecoder` to support `to_jsondata` and `from_jsondata`.
 * Moved all API level docstrings from the `__init__.py` to the correspoding `.rst` file in the docs.
 * Fixed `AttributeError` in Plotter's `PolylineArtist` and `SegementArtist`.
+* Fixed wrong key type when de-serializing `Graph` with integer keys leading to node not found.
+* Changed base class for `compas.geometry.Transformation` to `compas.data.Data`.
+* Moved all core transformation functions to `compas.geometry._core`.
+* Changed base class of `compas.geometry.Arc` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Bezier` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Circle` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Ellipse` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Line` to `compas.geometry.Curve.`
+* Changed base class of `compas.geometry.Polyline` to `compas.geometry.Curve.`
+* Changed `compas.geometry.oriented_bounding_box_numpy` to minimize volume.
+* Fixed data interface `compas.datastructures.Assembly` and `compas.datastructures.Part`.
+* Changed data property of `compas.datastructures.Graph` to contain only JSON compatible data.
+* Changed data property of `compas.datastructures.Halfedge` to contain only JSON compatible data.
+* Changed data property of `compas.datastructures.Halfface` to contain only JSON compatible data.
+* Changed `__repr__` of `compas.geometry.Point` and `compas.geometry.Vector` to not use limited precision (`compas.PRECISION`) to ensure proper object reconstruction through `eval(repr(point))`.
+* Changed `compas.datastructures.Graph.delete_edge` to delete invalid (u, u) edges and not delete edges in opposite directions (v, u)
+* Fixed bug in `compas.datastructures.Mesh.insert_vertex`.
+* Fixed bug in `compas.geometry.angle_vectors_signed`.
+* Changed `compas.artists.MeshArtist` default colors.
+* Changed internal _plane storage of the `compas.datastructures.Halfface` from `_plane[u][v][w]` to `_plane[u][v][fkey]`
+* Fixed `SyntaxError` when importing COMPAS in GHPython.
 
 ### Removed
 
@@ -128,36 +231,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.datastructures.Halfedge.get_any_vertices`.
 * Removed `compas.datastructures.Halfedge.get_any_face`.
 * Removed "schemas" folder and all contained `.json` files from `compas.data`.
-* Removed `compas.data.Data.DATASCHEMA`.
-* Removed `compas.data.Data.JSONSCHEMANAME`.
 * Removed `compas.data.Data.jsondefinititions`.
 * Removed `compas.data.Data.jsonvalidator`.
-* Removed `compas.data.Data.validate_data`.
-* Removed `compas.datastructures.Graph.DATASCHEMA` and `compas.datastructures.Graph.JSONSCHEMANAME`.
-* Removed `compas.datastructures.Halfedge.DATASCHEMA` and `compas.datastructures.Halfedge.JSONSCHEMANAME`.
-* Removed `compas.datastructures.Halfface.DATASCHEMA` and `compas.datastructures.Halfface.JSONSCHEMANAME`.
-* Removed `compas.geometry.Arc.DATASCHEMA` and `compas.geometry.Arc.JSONSCHEMANAME`.
-* Removed `compas.geometry.Bezier.DATASCHEMA` and `compas.geometry.Bezier.JSONSCHEMANAME`.
-* Removed `compas.geometry.Box.DATASCHEMA` and `compas.geometry.Box.JSONSCHEMANAME`.
-* Removed `compas.geometry.Capsule.DATASCHEMA` and `compas.geometry.Capsule.JSONSCHEMANAME`.
-* Removed `compas.geometry.Circle.DATASCHEMA` and `compas.geometry.Circle.JSONSCHEMANAME`.
-* Removed `compas.geometry.Cone.DATASCHEMA` and `compas.geometry.Cone.JSONSCHEMANAME`.
-* Removed `compas.geometry.Cylinder.DATASCHEMA` and `compas.geometry.Cylinder.JSONSCHEMANAME`.
-* Removed `compas.geometry.Ellipse.DATASCHEMA` and `compas.geometry.Ellipse.JSONSCHEMANAME`.
-* Removed `compas.geometry.Frame.DATASCHEMA` and `compas.geometry.Frame.JSONSCHEMANAME`.
-* Removed `compas.geometry.Line.DATASCHEMA` and `compas.geometry.Line.JSONSCHEMANAME`.
-* Removed `compas.geometry.NurbsCurve.DATASCHEMA` and `compas.geometry.NurbsCurve.JSONSCHEMANAME`.
-* Removed `compas.geometry.NurbsSurface.DATASCHEMA` and `compas.geometry.NurbsSurface.JSONSCHEMANAME`.
-* Removed `compas.geometry.Plane.DATASCHEMA` and `compas.geometry.Plane.JSONSCHEMANAME`.
-* Removed `compas.geometry.Point.DATASCHEMA` and `compas.geometry.Point.JSONSCHEMANAME`.
-* Removed `compas.geometry.Pointcloud.DATASCHEMA` and `compas.geometry.Pointcloud.JSONSCHEMANAME`.
-* Removed `compas.geometry.Polygon.DATASCHEMA` and `compas.geometry.Polygon.JSONSCHEMANAME`.
-* Removed `compas.geometry.Polyhedron.DATASCHEMA` and `compas.geometry.Polyhedron.JSONSCHEMANAME`.
-* Removed `compas.geometry.Polyline.DATASCHEMA` and `compas.geometry.Polyline.JSONSCHEMANAME`.
-* Removed `compas.geometry.Sphere.DATASCHEMA` and `compas.geometry.Sphere.JSONSCHEMANAME`.
-* Removed `compas.geometry.Torus.DATASCHEMA` and `compas.geometry.Torus.JSONSCHEMANAME`.
-* Removed `compas.geometry.Quaternion.DATASCHEMA` and `compas.geometry.Quaternion.JSONSCHEMANAME`.
-* Removed `compas.geometry.Vector.DATASCHEMA` and `compas.geometry.Vector.JSONSCHEMANAME`.
+* Removed `compas.data.Data.validate_json`.
+* Removed `compas.data.Data.validate_jsondata`.
+* Removed `compas.data.Data.validate_jsonstring`.
+* Removed `compas.data.Data.__getstate__`.
+* Removed `compas.data.Data.__setstate__`.
+* Removed setter of property `compas.data.Data.data` and similar setters in all data classes.
+* Removed properties `compas.data.Data.DATASCHEMA` and `compas.data.Data.JSONSCHEMANAME`.
+* Removed properties `compas.datastructures.Graph.DATASCHEMA` and `compas.datastructures.Graph.JSONSCHEMANAME`.
+* Removed properties `compas.datastructures.Halfedge.DATASCHEMA` and `compas.datastructures.Halfedge.JSONSCHEMANAME`.
+* Removed properties `compas.datastructures.Halfface.DATASCHEMA` and `compas.datastructures.Halfface.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Arc.DATASCHEMA` and `compas.geometry.Arc.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Bezier.DATASCHEMA` and `compas.geometry.Bezier.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Box.DATASCHEMA` and `compas.geometry.Box.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Capsule.DATASCHEMA` and `compas.geometry.Capsule.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Circle.DATASCHEMA` and `compas.geometry.Circle.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Cone.DATASCHEMA` and `compas.geometry.Cone.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Cylinder.DATASCHEMA` and `compas.geometry.Cylinder.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Ellipse.DATASCHEMA` and `compas.geometry.Ellipse.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Frame.DATASCHEMA` and `compas.geometry.Frame.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Line.DATASCHEMA` and `compas.geometry.Line.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.NurbsCurve.DATASCHEMA` and `compas.geometry.NurbsCurve.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.NurbsSurface.DATASCHEMA` and `compas.geometry.NurbsSurface.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Plane.DATASCHEMA` and `compas.geometry.Plane.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Point.DATASCHEMA` and `compas.geometry.Point.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Pointcloud.DATASCHEMA` and `compas.geometry.Pointcloud.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Polygon.DATASCHEMA` and `compas.geometry.Polygon.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Polyhedron.DATASCHEMA` and `compas.geometry.Polyhedron.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Polyline.DATASCHEMA` and `compas.geometry.Polyline.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Sphere.DATASCHEMA` and `compas.geometry.Sphere.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Torus.DATASCHEMA` and `compas.geometry.Torus.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Quaternion.DATASCHEMA` and `compas.geometry.Quaternion.JSONSCHEMANAME`.
+* Removed properties `compas.geometry.Vector.DATASCHEMA` and `compas.geometry.Vector.JSONSCHEMANAME`.
 * Removed `compas.datastructures.Graph.key_index`and `compas.datastructures.Graph.index_key`.
 * Removed `compas.datastructures.Graph.uv_index`and `compas.datastructures.Graph.index_uv`.
 * Removed `compas.datastructures.Halfedge.key_index` and `compas.datastructures.Halfedge.index_key`.
@@ -169,6 +276,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.numerical.utilities`.
 * Removed class attribute `CONTEXT` from `compas.artists.Artist`.
 * Removed class attribute `AVAILABLE_CONTEXTS` form `compas.artists.Artist`.
+* Removed `compas.geometry.Primitive`.
+* Removed classmethod `compas.color.Color.from_data`.
+* Removed `validate_data` from `compas.data.validators`.
+* Removed `json_validate` from `compas.data.json`.
+* Removed `compas_rhino.conversions.Box`.
+* Removed `compas_rhino.conversions.Circle`.
+* Removed `compas_rhino.conversions.Cone`.
+* Removed `compas_rhino.conversions.Curve`.
+* Removed `compas_rhino.conversions.Cylinder`.
+* Removed `compas_rhino.conversions.Ellipse`.
+* Removed `compas_rhino.conversions.Line`.
+* Removed `compas_rhino.conversions.Mesh`.
+* Removed `compas_rhino.conversions.Plane`.
+* Removed `compas_rhino.conversions.Point`.
+* Removed `compas_rhino.conversions.Polyline`.
+* Removed `compas_rhino.conversions.Vector`.
+* Removed `compas_rhino.artists.NetworkArtist.draw_nodelabels`.
+* Removed `compas_rhino.artists.NetworkArtist.draw_edgelabels`.
+* Removed `compas_rhino.artists.MeshArtist.draw_vertexlabels`.
+* Removed `compas_rhino.artists.MeshArtist.draw_edgelabels`.
+* Removed `compas_rhino.artists.MeshArtist.draw_facelabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_vertexlabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_edgelabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_facelabels`.
+* Removed `compas_rhino.artists.VolMeshArtist.draw_celllabels`.
+* Removed `compas.robots`.
+* Removed `compas.artists.robotmodelartist`.
+* Removed `compas_blender.artists.robotmodelartist`.
+* Removed `compas_ghpython.artists.robotmodelartist`.
+* Removed `compas_rhino.artists.robotmodelartist`.
 
 ## [1.17.5] 2023-02-16
 

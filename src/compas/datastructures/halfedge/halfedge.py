@@ -50,7 +50,7 @@ class HalfEdge(Datastructure):
 
     """
 
-    JSONSCHEMA = {
+    DATASCHEMA = {
         "type": "object",
         "properties": {
             "attributes": {"type": "object"},
@@ -80,7 +80,7 @@ class HalfEdge(Datastructure):
             },
             "edgedata": {
                 "type": "object",
-                "patternProperties": {"^\\([0-9]+,[0-9]+\\)$": {"type": "object"}},
+                "patternProperties": {"^\\([0-9]+, [0-9]+\\)$": {"type": "object"}},
                 "additionalProperties": False,
             },
             "max_vertex": {"type": "integer", "minimum": -1},
@@ -107,7 +107,7 @@ class HalfEdge(Datastructure):
         default_edge_attributes=None,
         default_face_attributes=None,
     ):
-        super(HalfEdge, self).__init__()
+        super(HalfEdge, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex = {}
@@ -115,7 +115,6 @@ class HalfEdge(Datastructure):
         self.face = {}
         self.facedata = {}
         self.edgedata = {}
-        self.attributes = {"name": name or "HalfEdge"}
         self.default_vertex_attributes = {}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
@@ -131,78 +130,62 @@ class HalfEdge(Datastructure):
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
-    # descriptors
+    # Data
     # --------------------------------------------------------------------------
 
     @property
-    def name(self):
-        return self.attributes.get("name") or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes["name"] = value
-
-    @property
-    def adjacency(self):
-        return self.halfedge
-
-    @property
     def data(self):
-        """Returns a dictionary of structured data representing the data structure.
-
-        Note that some of the data stored internally is not included in the dictionary representation of the data structure.
-        This is the case for data that is considered private and/or redundant.
-        Specifially, the half-edge dictionary is not included in the dictionary representation of the data structure.
-        This is because the half-edge dictionary can be reconstructed from the face dictionary.
-        The face dictionary contains the same information as the half-edge dictionary, but in a more compact form.
-        Therefore, to keep the dictionary representation of the data structure as compact as possible, the half-edge dictionary is not included.
-
-        Returns
-        -------
-        dict
-            The data dictionary.
-
-        """
         return {
             "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
-            "vertex": self.vertex,
-            "face": self.face,
-            "facedata": self.facedata,
+            "vertex": {str(vertex): attr for vertex, attr in self.vertex.items()},
+            "face": {str(face): vertices for face, vertices in self.face.items()},
+            "facedata": {str(face): attr for face, attr in self.facedata.items()},
             "edgedata": self.edgedata,
             "max_vertex": self._max_vertex,
             "max_face": self._max_face,
         }
 
-    @data.setter
-    def data(self, data):
-        self.vertex = {}
-        self.halfedge = {}
-        self.face = {}
-        self.facedata = {}
-        self.edgedata = {}
-        self._max_vertex = -1
-        self._max_face = -1
-        self.attributes.update(data.get("attributes") or {})
-        self.default_vertex_attributes.update(data.get("dva") or {})
-        self.default_face_attributes.update(data.get("dfa") or {})
-        self.default_edge_attributes.update(data.get("dea") or {})
+    @classmethod
+    def from_data(cls, data):
+        dva = data.get("dva") or {}
+        dfa = data.get("dfa") or {}
+        dea = data.get("dea") or {}
+
+        halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea)
+        halfedge.attributes.update(data.get("attributes") or {})
+
         vertex = data.get("vertex") or {}
         face = data.get("face") or {}
         facedata = data.get("facedata") or {}
+        edgedata = data.get("edgedata") or {}
+
         for key, attr in iter(vertex.items()):
-            self.add_vertex(key=key, attr_dict=attr)
+            halfedge.add_vertex(key=key, attr_dict=attr)
+
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
-            self.add_face(vertices, fkey=fkey, attr_dict=attr)
-        self.edgedata.update(data.get("edgedata") or {})
-        self._max_vertex = data.get("max_vertex", self._max_vertex)
-        self._max_face = data.get("max_face", self._max_face)
+            halfedge.add_face(vertices, fkey=fkey, attr_dict=attr)
+
+        halfedge.edgedata = edgedata
+
+        halfedge._max_vertex = data.get("max_vertex", halfedge._max_vertex)
+        halfedge._max_face = data.get("max_face", halfedge._max_face)
+
+        return halfedge
 
     # --------------------------------------------------------------------------
-    # helpers
+    # Properties
+    # --------------------------------------------------------------------------
+
+    @property
+    def adjacency(self):
+        return self.halfedge
+
+    # --------------------------------------------------------------------------
+    # Helpers
     # --------------------------------------------------------------------------
 
     def clear(self):
@@ -319,7 +302,7 @@ class HalfEdge(Datastructure):
         return dict(enumerate(self.vertices()))
 
     # --------------------------------------------------------------------------
-    # builders
+    # Builders
     # --------------------------------------------------------------------------
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
@@ -439,7 +422,7 @@ class HalfEdge(Datastructure):
         return fkey
 
     # --------------------------------------------------------------------------
-    # modifiers
+    # Modifiers
     # --------------------------------------------------------------------------
 
     def delete_vertex(self, key):
@@ -517,13 +500,17 @@ class HalfEdge(Datastructure):
 
         """
         for u, v in self.face_halfedges(fkey):
-            self.halfedge[u][v] = None
-            if self.halfedge[v][u] is None:
-                del self.halfedge[u][v]
-                del self.halfedge[v][u]
-                edge = "-".join(map(str, sorted([u, v])))
-                if edge in self.edgedata:
-                    del self.edgedata[edge]
+            if self.halfedge[u][v] == fkey:
+                # if the halfedge still points to the face
+                # this might not be the case of the deletion is executed
+                # during the procedure of adding a new (replacement) face
+                self.halfedge[u][v] = None
+                if self.halfedge[v][u] is None:
+                    del self.halfedge[u][v]
+                    del self.halfedge[v][u]
+                    edge = "-".join(map(str, sorted([u, v])))
+                    if edge in self.edgedata:
+                        del self.edgedata[edge]
         del self.face[fkey]
         if fkey in self.facedata:
             del self.facedata[fkey]
@@ -551,7 +538,7 @@ class HalfEdge(Datastructure):
     cull_vertices = remove_unused_vertices
 
     # --------------------------------------------------------------------------
-    # accessors
+    # Accessors
     # --------------------------------------------------------------------------
 
     def vertices(self, data=False):
@@ -683,6 +670,7 @@ class HalfEdge(Datastructure):
 
         for key, attr in self.vertices(True):
             is_match = True
+            attr = attr or {}
 
             for name, value in conditions.items():
                 method = getattr(self, name, None)
@@ -796,7 +784,7 @@ class HalfEdge(Datastructure):
         for key in self.edges():
             is_match = True
 
-            attr = self.edge_attributes(key)
+            attr = self.edge_attributes(key) or {}
 
             for name, value in conditions.items():
                 method = getattr(self, name, None)
@@ -893,7 +881,7 @@ class HalfEdge(Datastructure):
         for fkey in self.faces():
             is_match = True
 
-            attr = self.face_attributes(fkey)
+            attr = self.face_attributes(fkey) or {}
 
             for name, value in conditions.items():
                 method = getattr(self, name, None)
@@ -958,7 +946,7 @@ class HalfEdge(Datastructure):
                     yield fkey
 
     # --------------------------------------------------------------------------
-    # attributes
+    # Attributes
     # --------------------------------------------------------------------------
 
     def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
@@ -1101,7 +1089,7 @@ class HalfEdge(Datastructure):
         """
         if key not in self.vertex:
             raise KeyError(key)
-        if values is not None:
+        if names and values is not None:
             # use it as a setter
             for name, value in zip(names, values):
                 self.vertex[key][name] = value
@@ -1343,7 +1331,7 @@ class HalfEdge(Datastructure):
         """
         if key not in self.face:
             raise KeyError(key)
-        if values is not None:
+        if names and values is not None:
             # use it as a setter
             for name, value in zip(names, values):
                 if key not in self.facedata:
@@ -1589,7 +1577,7 @@ class HalfEdge(Datastructure):
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
             raise KeyError(edge)
-        if values is not None:
+        if names and values is not None:
             # use it as a setter
             for name, value in zip(names, values):
                 self.edge_attribute(edge, name, value)
@@ -1687,7 +1675,7 @@ class HalfEdge(Datastructure):
         return [self.edge_attributes(edge, names) for edge in edges]
 
     # --------------------------------------------------------------------------
-    # mesh info
+    # Info
     # --------------------------------------------------------------------------
 
     def summary(self):
@@ -2008,34 +1996,8 @@ class HalfEdge(Datastructure):
         F = self.number_of_faces()
         return V - E + F
 
-    def genus(self):
-        """Calculate the genus.
-
-        Returns
-        -------
-        int
-            The genus.
-
-        See Also
-        --------
-        :meth:`euler`
-
-        References
-        ----------
-        .. [1] Wolfram MathWorld. *Genus*.
-               Available at: http://mathworld.wolfram.com/Genus.html.
-
-        """
-        X = self.euler()
-        # each boundary must be taken into account as if it was one face
-        B = len(self.boundaries())
-        if self.is_orientable():
-            return (2 - (X + B)) / 2
-        else:
-            return 2 - (X + B)
-
     # --------------------------------------------------------------------------
-    # vertex topology
+    # Vertex topology
     # --------------------------------------------------------------------------
 
     def has_vertex(self, key):
@@ -2251,7 +2213,7 @@ class HalfEdge(Datastructure):
         return [fkey for fkey in faces if fkey is not None]
 
     # --------------------------------------------------------------------------
-    # edge topology
+    # Edge topology
     # --------------------------------------------------------------------------
 
     def has_edge(self, key):
@@ -2353,7 +2315,7 @@ class HalfEdge(Datastructure):
         return self.halfedge[v][u] is None or self.halfedge[u][v] is None
 
     # --------------------------------------------------------------------------
-    # polyedge topology
+    # Polyedge topology
     # --------------------------------------------------------------------------
 
     def edge_loop(self, edge):
@@ -2511,7 +2473,7 @@ class HalfEdge(Datastructure):
         return edges
 
     # --------------------------------------------------------------------------
-    # face topology
+    # Face topology
     # --------------------------------------------------------------------------
 
     def has_face(self, fkey):

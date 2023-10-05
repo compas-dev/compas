@@ -3,18 +3,18 @@ import shutil
 import subprocess
 import compas
 
-from test_api_stability import get_names_in_module
+from donttest_api_stability import get_names_in_module
 
 
 def compas_api():
     modules = [
+        "compas.artists",
         "compas.data",
         "compas.datastructures",
         "compas.files",
         "compas.geometry",
         "compas.numerical",
         "compas.plugins",
-        "compas.robots",
         "compas.rpc",
         "compas.topology",
         "compas.utilities",
@@ -32,7 +32,7 @@ def compas_stubs():
     HOME = os.path.abspath(os.path.join(HERE, "../.."))
     TEMP = os.path.abspath(os.path.join(HOME, "temp/stubs"))
     DOCS = os.path.abspath(os.path.join(HOME, "docs"))
-    API = os.path.abspath(os.path.join(DOCS, "api"))
+    API = os.path.abspath(os.path.join(DOCS, "reference"))
 
     shutil.rmtree(TEMP, ignore_errors=True)
 
@@ -80,5 +80,5 @@ def check_compas_stubs(api, stubs):
 # Main
 # ==============================================================================
 
-if __name__ == "__main__":
-    check_compas_stubs(compas_api(), compas_stubs())
+# if __name__ == "__main__":
+#     check_compas_stubs(compas_api(), compas_stubs())

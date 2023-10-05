@@ -20,6 +20,10 @@ class PLY(object):
 
     Attributes
     ----------
+    filepath : str
+        The path to the file.
+    precision : str
+        A COMPAS precision specification.
     reader : :class:`PLYReader`
         A PLY file reader.
     parser : :class:`PLYParser`
@@ -96,20 +100,49 @@ class PLYReader(object):
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
 
-    Class Attributes
-    ----------------
-    keywords : list[str]
-        Reserved keywords in PLY format language.
-    property_types : dict[str, object]
-        Mapping between PLY property types and Python types.
-    binary_property_types : dict[str, str]
-        Mapping between PLY property types and binary type strings.
-    number_of_bytes_per_type : dict[str, int]
-        Mapping between PLY property types and number of bytes.
-    struct_format_per_type : dict[str, str]
-        Mapping between PLY property types and struct formats.
-    binary_byte_order : dict[str, str]
-        Mapping between endian type and endian symbol.
+    Attributes
+    ----------
+    filepath : str
+        The path to the file.
+    file : file
+        The file object.
+    format : str
+        The format of the file.
+    comments : list
+        The comments in the header.
+    header : list
+        The lines of the header.
+    start_header : int
+        The number o the line containing the start of the header.
+    end_header : int
+        The number o the line containing the end of the header.
+    number_of_vertices : int
+        The number of vertices in the file.
+    number_of_edges : int
+        The number of edges in the file.
+    number_of_faces : int
+        The number of faces in the file.
+    vertex_properties : list[tuple]
+        The vertex properties.
+        Each property is a tuple of the property name and the property type.
+    edge_properties : list[tuple]
+        The edge properties.
+        Each property is a tuple of the property name and the property type.
+    face_properties : list
+        The face properties.
+        Each property is a tuple of the property name and the property type.
+    sections : list
+        The sections in the file.
+        Possible sections are ``vertex``, ``edge`` and ``face``.
+    vertices : list
+        The vertices found in the file.
+        Each vertex is a dictionary of property names and property values.
+    edges : list
+        The edges found in the file.
+        Each edge is a dictionary of property names and property values.
+    faces : list
+        The faces found in the file.
+        Each face is a dictionary of property names and property values.
 
     """
 
@@ -183,9 +216,9 @@ class PLYReader(object):
         self.header = []
         self.start_header = None
         self.end_header = None
-        self.number_of_vertices = None
-        self.number_of_edges = None
-        self.number_of_faces = None
+        self.number_of_vertices = 0
+        self.number_of_edges = 0
+        self.number_of_faces = 0
         self.vertex_properties = []
         self.edge_properties = []
         self.face_properties = []
@@ -275,15 +308,15 @@ class PLYReader(object):
 
                 self.header.append(line)
 
-                if line.startswith("format"):
+                if line.startswith("format"):  # type: ignore
                     element_type = None
-                    self.format = line[len("format") + 1 :].split(" ")[0]
+                    self.format = line[len("format") + 1 :].split()[0]
 
-                elif line.startswith("comment"):
+                elif line.startswith("comment"):  # type: ignore
                     element_type = None
                     self.comments.append(line[len("comment") + 1 :])
 
-                elif line.startswith("element"):
+                elif line.startswith("element"):  # type: ignore
                     parts = line.split()
                     element_type = parts[1]
                     if element_type == "vertex":
@@ -299,7 +332,7 @@ class PLYReader(object):
                         element_type = None
                         raise Exception
 
-                elif line.startswith("property"):
+                elif line.startswith("property"):  # type: ignore
                     parts = line.split()
                     if element_type == "vertex":
                         property_type = parts[1]
