@@ -8,7 +8,6 @@ User Guide
    installation
    configuration
    tutorials
-   conventions
    releases
    citing
    license
