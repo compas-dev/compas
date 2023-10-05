@@ -74,6 +74,21 @@ class TreeNode(object):
     def tree(self):
         return self._tree
 
+    @property
+    def data(self):
+        return {
+            "name": self.name,
+            "attributes": self.attributes,
+            "children": [child.data for child in self.children],
+        }
+
+    @classmethod
+    def from_data(cls, data):
+        node = cls(data["name"], data["attributes"])
+        for child in data["children"]:
+            node.add(cls.from_data(child))
+        return node
+
     def add(self, node):
         """Add a child node to this node."""
         if not isinstance(node, TreeNode):
@@ -178,31 +193,18 @@ class Tree(Datastructure):
 
     @property
     def data(self):
-        def get_node_data(node):
-            return {
-                "name": node.name,
-                "attributes": node.attributes,
-                "children": [get_node_data(child) for child in node.children],
-            }
-
         return {
             "name": self.name,
-            "root": get_node_data(self.root),
+            "root": self.root.data,
             "attributes": self.attributes,
         }
 
-    @data.setter
-    def data(self, data):
-        self.name = data["name"]
-        self.attributes = data["attributes"]
-
-        def node_from_data(data):
-            node = TreeNode(data["name"], data["attributes"])
-            for child in data["children"]:
-                node.add(node_from_data(child))
-            return node
-
-        self.add_root(node_from_data(data["root"]))
+    @classmethod
+    def from_data(cls, data):
+        tree = cls(data["name"], data["attributes"])
+        root = TreeNode.from_data(data["root"])
+        tree.add_root(root)
+        return tree
 
     @property
     def root(self):
