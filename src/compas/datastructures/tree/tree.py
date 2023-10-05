@@ -10,32 +10,32 @@ class TreeNode(object):
 
     Parameters
     ----------
-    name: str, optional
+    name : str, optional
         The name of the tree ndoe.
-    attributes: dict[str, Any], optional
+    attributes : dict[str, Any], optional
         User-defined attributes of the datastructure.
 
     Attributes
     ----------
-    name: str
+    name : str
         The name of the datastructure.
     attributes : dict[str, Any]
         User-defined attributes of the datastructure.
-    parent: :class:`~compas.datastructures.TreeNode`
+    parent : :class:`~compas.datastructures.TreeNode`
         The parent node of the tree node.
-    children: set[:class:`~compas.datastructures.TreeNode`]
+    children : set[:class:`~compas.datastructures.TreeNode`]
         The children of the tree node.
-    tree: :class:`~compas.datastructures.Tree`
+    tree : :class:`~compas.datastructures.Tree`
         The tree the node belongs to.
-    is_root: bool
+    is_root : bool
         True if the node is the root node of the tree.
-    is_leaf: bool
+    is_leaf : bool
         True if the node is a leaf node of the tree.
-    is_branch: bool
+    is_branch : bool
         True if the node is a branch node of the tree.
-    acestors: generator[:class:`~compas.datastructures.TreeNode`]
+    acestors : generator[:class:`~compas.datastructures.TreeNode`]
         A generator of the acestors of the tree node.
-    descendants: generator[:class:`~compas.datastructures.TreeNode`]
+    descendants : generator[:class:`~compas.datastructures.TreeNode`]
         A generator of the descendants of the tree node.
 
     """
@@ -127,22 +127,22 @@ class Tree(Datastructure):
 
     Parameters
     ----------
-    name: str, optional
+    name : str, optional
         The name of the datastructure.
-    attributes: dict[str, Any], optional
+    attributes : dict[str, Any], optional
         User-defined attributes of the datastructure.
 
     Attributes
     ----------
-    name: str
+    name : str
         The name of the datastructure.
     attributes : dict[str, Any]
         User-defined attributes of the datastructure.
-    root: :class:`~compas.datastructures.TreeNode`
+    root : :class:`~compas.datastructures.TreeNode`
         The root node of the tree.
-    nodes: set[:class:`~compas.datastructures.TreeNode`]
+    nodes : set[:class:`~compas.datastructures.TreeNode`]
         The nodes of the tree.
-    leaves: generator[:class:`~compas.datastructures.TreeNode`]
+    leaves : generator[:class:`~compas.datastructures.TreeNode`]
         A generator of the leaves of the tree.
 
     Examples
