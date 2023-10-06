@@ -29,7 +29,7 @@ if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = "1.17.7"
+__version__ = "1.17.8"
 
 
 PURGE_ON_DELETE = True
