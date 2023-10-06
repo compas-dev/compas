@@ -26,8 +26,6 @@ class TreeNode(Data):
         The parent node of the tree node.
     children : set[:class:`~compas.datastructures.TreeNode`]
         The children of the tree node.
-    tree : :class:`~compas.datastructures.Tree`
-        The tree the node belongs to.
     is_root : bool
         True if the node is the root node of the tree.
     is_leaf : bool
@@ -41,12 +39,22 @@ class TreeNode(Data):
 
     """
 
+    DATASCHEMA = {
+        "type": "object",
+        "$recursiveAnchor": True,
+        "properties": {
+            "name": {"type": "string"},
+            "attributes": {"type": "object"},
+            "children": {"type": "array", "items": {"$recursiveRef": "#"}},
+        },
+        "required": ["name", "attributes", "children"],
+    }
+
     def __init__(self, name=None, attributes=None):
-        self.name = name
+        super(TreeNode, self).__init__(name=name)
         self.attributes = attributes or {}
         self._parent = None
         self._children = set()
-        self._tree = None
 
     def __repr__(self):
         return "<TreeNode {}>".format(self.name)
@@ -70,10 +78,6 @@ class TreeNode(Data):
     @property
     def children(self):
         return self._children
-
-    @property
-    def tree(self):
-        return self._tree
 
     @property
     def data(self):
@@ -113,9 +117,6 @@ class TreeNode(Data):
             raise TypeError("The node is not a TreeNode object.")
         self._children.add(node)
         node._parent = self
-        node._tree = self.tree
-        if self.tree:
-            self.tree.nodes.add(node)
 
     def remove(self, node):
         """
@@ -133,9 +134,6 @@ class TreeNode(Data):
         """
         self._children.remove(node)
         node._parent = None
-        node._tree = None
-        if self.tree:
-            self.tree.nodes.remove(node)
 
     @property
     def ancestors(self):
@@ -204,7 +202,7 @@ class Tree(Datastructure):
         User-defined attributes of the datastructure.
     root : :class:`~compas.datastructures.TreeNode`
         The root node of the tree.
-    nodes : set[:class:`~compas.datastructures.TreeNode`]
+    nodes : list[:class:`~compas.datastructures.TreeNode`]
         The nodes of the tree.
     leaves : generator[:class:`~compas.datastructures.TreeNode`]
         A generator of the leaves of the tree.
@@ -231,14 +229,21 @@ class Tree(Datastructure):
 
     """
 
-    JSONSCHEMA = {}
+    DATASCHEMA = {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string"},
+            "root": TreeNode.DATASCHEMA,
+            "attributes": {"type": "object"},
+        },
+        "required": ["name", "root", "attributes"],
+    }
 
     def __init__(self, name=None, attributes=None):
         super(Tree, self).__init__()
         self.name = name
         self.attributes = attributes or {}
         self._root = None
-        self._nodes = set()
 
     @property
     def data(self):
@@ -252,7 +257,7 @@ class Tree(Datastructure):
     def from_data(cls, data):
         tree = cls(data["name"], data["attributes"])
         root = TreeNode.from_data(data["root"])
-        tree.add_root(root)
+        tree.add(root)
         return tree
 
     @property
@@ -298,8 +303,6 @@ class Tree(Datastructure):
                 raise ValueError("The tree already has a root node, remove it first.")
 
             self._root = node
-            node._tree = self
-            self._nodes.add(node)
 
         else:
             # add the node as a child of the parent node
@@ -313,7 +316,11 @@ class Tree(Datastructure):
 
     @property
     def nodes(self):
-        return self._nodes
+        if self.root:
+            for node in self.root.traverse():
+                yield node
+        else:
+            yield iter([])
 
     def remove(self, node):
         """
@@ -330,8 +337,6 @@ class Tree(Datastructure):
 
         """
         if node == self.root:
-            self._root._tree = None
-            self.nodes.remove(self._root)
             self._root = None
         else:
             node.parent.remove(node)
@@ -343,7 +348,7 @@ class Tree(Datastructure):
                 yield node
 
     def __repr__(self):
-        return "<Tree with {} nodes>".format(len(self.nodes))
+        return "<Tree with {} nodes>".format(len(list(self.nodes)))
 
     def print(self):
         """Print the spatial hierarchy of the tree."""
