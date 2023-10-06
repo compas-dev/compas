@@ -26,6 +26,8 @@ class TreeNode(Data):
         The parent node of the tree node.
     children : set[:class:`~compas.datastructures.TreeNode`]
         The children of the tree node.
+    tree : :class:`~compas.datastructures.Tree`
+        The tree to which the node belongs.
     is_root : bool
         True if the node is the root node of the tree.
     is_leaf : bool
@@ -55,6 +57,7 @@ class TreeNode(Data):
         self.attributes = attributes or {}
         self._parent = None
         self._children = set()
+        self._tree = None
 
     def __repr__(self):
         return "<TreeNode {}>".format(self.name)
@@ -78,6 +81,13 @@ class TreeNode(Data):
     @property
     def children(self):
         return self._children
+
+    @property
+    def tree(self):
+        if self.is_root:
+            return self._tree
+        else:
+            return self.parent.tree
 
     @property
     def data(self):
@@ -303,6 +313,7 @@ class Tree(Datastructure):
                 raise ValueError("The tree already has a root node, remove it first.")
 
             self._root = node
+            node._tree = self
 
         else:
             # add the node as a child of the parent node
@@ -338,6 +349,7 @@ class Tree(Datastructure):
         """
         if node == self.root:
             self._root = None
+            node._tree = None
         else:
             node.parent.remove(node)
 
