@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Pinned `jsonschema` version to >=4.17, <4.18 to avoid Rust toolchain
+
 ### Removed
 
 
