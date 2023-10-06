@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
+
 ### Changed
 
 * Changed `Network.is_planar` to rely on `NetworkX` instead `planarity` for planarity checking.

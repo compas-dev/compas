@@ -3,9 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.datastructures import Datastructure
+from compas.data import Data
 
 
-class TreeNode(object):
+class TreeNode(Data):
     """A node of a tree data structure.
 
     Parameters
@@ -90,7 +91,24 @@ class TreeNode(object):
         return node
 
     def add(self, node):
-        """Add a child node to this node."""
+        """
+        Add a child node to this node.
+
+        Parameters
+        ----------
+        node : :class:`~compas.datastructures.TreeNode`
+            The node to add.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        TypeError
+            If the node is not a :class:`~compas.datastructures.TreeNode` object.
+
+        """
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
         self._children.add(node)
@@ -100,7 +118,19 @@ class TreeNode(object):
             self.tree.nodes.add(node)
 
     def remove(self, node):
-        """Remove a child node from this node."""
+        """
+        Remove a child node from this node.
+
+        Parameters
+        ----------
+        node : :class:`~compas.datastructures.TreeNode`
+            The node to remove.
+
+        Returns
+        -------
+        None
+
+        """
         self._children.remove(node)
         node._parent = None
         node._tree = None
@@ -122,7 +152,26 @@ class TreeNode(object):
                 yield descendant
 
     def traverse(self, strategy="preorder"):
-        """Traverse the tree from this node."""
+        """
+        Traverse the tree from this node.
+
+        Parameters
+        ----------
+        strategy : str, optional
+            The traversal strategy. Options are ``"preorder"`` and ``"postorder"``.
+            Default is ``"preorder"``.
+
+        Yields
+        ------
+        :class:`~compas.datastructures.TreeNode`
+            The next node in the traversal.
+
+        Raises
+        ------
+        ValueError
+            If the strategy is not ``"preorder"`` or ``"postorder"``.
+
+        """
         if strategy == "preorder":
             yield self
             for child in self.children:
@@ -168,7 +217,7 @@ class Tree(Datastructure):
     >>> branch = TreeNode('branch')
     >>> leaf1 = TreeNode('leaf1')
     >>> leaf2 = TreeNode('leaf2')
-    >>> tree.add_root(root)
+    >>> tree.add(root)
     >>> root.add(branch)
     >>> branch.add(leaf1)
     >>> branch.add(leaf2)
@@ -210,39 +259,80 @@ class Tree(Datastructure):
     def root(self):
         return self._root
 
-    def add_root(self, node):
-        """Add a root node to the tree."""
-        if not isinstance(node, TreeNode):
-            raise TypeError("The node is not a TreeNode object.")
-        if not node.is_root:
-            raise ValueError("The node is already part of another tree.")
-        self._root = node
-        node._tree = self
-        self._nodes.add(node)
+    def add(self, node, parent=None):
+        """
+        Add a node to the tree.
 
-    def add(self, node, parent):
-        """Add a node to the tree."""
+        Parameters
+        ----------
+        node : :class:`~compas.datastructures.TreeNode`
+            The node to add.
+        parent : :class:`~compas.datastructures.TreeNode`, optional
+            The parent node of the node to add.
+            Default is ``None``, in which case the node is added as a root node.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        TypeError
+            If the node is not a :class:`~compas.datastructures.TreeNode` object.
+            If the supplied parent node is not a :class:`~compas.datastructures.TreeNode` object.
+        ValueError
+            If the node is already part of another tree.
+            If the supplied parent node is not part of this tree.
+            If the tree already has a root node, when trying to add a root node.
+
+        """
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
-        if self.root is None:
-            raise ValueError("The tree has no root node, use add_root() first.")
+
+        if node.parent:
+            raise ValueError("The node is already part of another tree, remove it from that tree first.")
+
+        if parent is None:
+            # add the node as a root node
+            if self.root is not None:
+                raise ValueError("The tree already has a root node, remove it first.")
+
+            self._root = node
+            node._tree = self
+            self._nodes.add(node)
+
         else:
+            # add the node as a child of the parent node
+            if not isinstance(parent, TreeNode):
+                raise TypeError("The parent node is not a TreeNode object.")
+
+            if parent.tree is not self:
+                raise ValueError("The parent node is not part of this tree.")
+
             parent.add(node)
 
     @property
     def nodes(self):
         return self._nodes
 
-    def _remove_root(self):
-        """Remove the root node from the tree."""
-        self._root._tree = None
-        self.nodes.remove(self._root)
-        self._root = None
-
     def remove(self, node):
-        """Remove a node from the tree."""
+        """
+        Remove a node from the tree.
+
+        Parameters
+        ----------
+        node : :class:`~compas.datastructures.TreeNode`
+            The node to remove.
+
+        Returns
+        -------
+        None
+
+        """
         if node == self.root:
-            self._remove_root()
+            self._root._tree = None
+            self.nodes.remove(self._root)
+            self._root = None
         else:
             node.parent.remove(node)
 
