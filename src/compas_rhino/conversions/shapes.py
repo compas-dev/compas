@@ -216,9 +216,7 @@ def box_to_compas(box):
     ysize = box.Y.Length
     zsize = box.Z.Length
     frame = plane_to_compas_frame(box.Plane)
-    frame.point += frame.xaxis * 0.5 * xsize
-    frame.point += frame.yaxis * 0.5 * ysize
-    frame.point += frame.zaxis * 0.5 * zsize
+    frame.point = point_to_compas(box.Center)
     return Box(xsize, ysize, zsize, frame=frame)
 
 
