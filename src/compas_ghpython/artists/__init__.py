@@ -9,6 +9,7 @@ from compas.geometry import Circle
 from compas.geometry import Cone
 from compas.geometry import Curve
 from compas.geometry import Cylinder
+from compas.geometry import Ellipse
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
@@ -32,6 +33,7 @@ from .circleartist import CircleArtist
 from .coneartist import ConeArtist
 from .curveartist import CurveArtist
 from .cylinderartist import CylinderArtist
+from .ellipseartist import EllipseArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
 from .meshartist import MeshArtist
@@ -56,6 +58,7 @@ def register_artists():
     Artist.register(Cone, ConeArtist, context="Grasshopper")
     Artist.register(Curve, CurveArtist, context="Grasshopper")
     Artist.register(Cylinder, CylinderArtist, context="Grasshopper")
+    Artist.register(Ellipse, EllipseArtist, context="Grasshopper")
     Artist.register(Frame, FrameArtist, context="Grasshopper")
     Artist.register(Line, LineArtist, context="Grasshopper")
     Artist.register(Mesh, MeshArtist, context="Grasshopper")
@@ -81,6 +84,7 @@ __all__ = [
     "ConeArtist",
     "CurveArtist",
     "CylinderArtist",
+    "EllipseArtist",
     "FrameArtist",
     "LineArtist",
     "MeshArtist",
