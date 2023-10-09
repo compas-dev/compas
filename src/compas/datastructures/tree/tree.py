@@ -24,7 +24,7 @@ class TreeNode(Data):
         User-defined attributes of the datastructure.
     parent : :class:`~compas.datastructures.TreeNode`
         The parent node of the tree node.
-    children : set[:class:`~compas.datastructures.TreeNode`]
+    children : list[:class:`~compas.datastructures.TreeNode`]
         The children of the tree node.
     tree : :class:`~compas.datastructures.Tree`
         The tree to which the node belongs.
@@ -37,7 +37,7 @@ class TreeNode(Data):
     acestors : generator[:class:`~compas.datastructures.TreeNode`]
         A generator of the acestors of the tree node.
     descendants : generator[:class:`~compas.datastructures.TreeNode`]
-        A generator of the descendants of the tree node.
+        A generator of the descendants of the tree node, using a depth-first preorder traversal.
 
     """
 
@@ -56,7 +56,7 @@ class TreeNode(Data):
         super(TreeNode, self).__init__(name=name)
         self.attributes = attributes or {}
         self._parent = None
-        self._children = set()
+        self._children = []
         self._tree = None
 
     def __repr__(self):
@@ -125,7 +125,8 @@ class TreeNode(Data):
         """
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
-        self._children.add(node)
+        if not node in self._children:
+            self._children.append(node)
         node._parent = self
 
     def remove(self, node):
@@ -159,14 +160,18 @@ class TreeNode(Data):
             for descendant in child.descendants:
                 yield descendant
 
-    def traverse(self, strategy="preorder"):
+    def traverse(self, strategy="depthfirst", order="preorder"):
         """
         Traverse the tree from this node.
 
         Parameters
         ----------
-        strategy : str, optional
-            The traversal strategy. Options are ``"preorder"`` and ``"postorder"``.
+        strategy : {"depthfirst", "breadthfirst"}, optional
+            The traversal strategy.
+            Default is ``"depthfirst"``.
+
+        order : {"preorder", "postorder"}, optional
+            The traversal order. This parameter is only used for depth-first traversal.
             Default is ``"preorder"``.
 
         Yields
@@ -177,25 +182,35 @@ class TreeNode(Data):
         Raises
         ------
         ValueError
-            If the strategy is not ``"preorder"`` or ``"postorder"``.
+            If the strategy is not ``"depthfirst"`` or ``"breadthfirst"``.
+            If the order is not ``"preorder"`` or ``"postorder"``.
 
         """
-        if strategy == "preorder":
-            yield self
-            for child in self.children:
-                for node in child.traverse(strategy):
-                    yield node
-        elif strategy == "postorder":
-            for child in self.children:
-                for node in child.traverse(strategy):
-                    yield node
-            yield self
+        if strategy == "depthfirst":
+            if order == "preorder":
+                yield self
+                for child in self.children:
+                    for node in child.traverse(strategy, order):
+                        yield node
+            elif order == "postorder":
+                for child in self.children:
+                    for node in child.traverse(strategy, order):
+                        yield node
+                yield self
+            else:
+                raise ValueError("Unknown traversal order: {}".format(order))
+        elif strategy == "breadthfirst":
+            queue = [self]
+            while queue:
+                node = queue.pop(0)
+                yield node
+                queue.extend(node.children)
         else:
             raise ValueError("Unknown traversal strategy: {}".format(strategy))
 
 
 class Tree(Datastructure):
-    """A tree data structure.
+    """A hierarchical data structure that organizes elements into parent-child relationships. The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
 
     Parameters
     ----------
@@ -212,7 +227,7 @@ class Tree(Datastructure):
         User-defined attributes of the datastructure.
     root : :class:`~compas.datastructures.TreeNode`
         The root node of the tree.
-    nodes : list[:class:`~compas.datastructures.TreeNode`]
+    nodes : generator[:class:`~compas.datastructures.TreeNode`]
         The nodes of the tree.
     leaves : generator[:class:`~compas.datastructures.TreeNode`]
         A generator of the leaves of the tree.
@@ -250,9 +265,8 @@ class Tree(Datastructure):
     }
 
     def __init__(self, name=None, attributes=None):
-        super(Tree, self).__init__()
-        self.name = name
-        self.attributes = attributes or {}
+        super(Tree, self).__init__(name=name)
+        self.attributes.update(attributes or {})
         self._root = None
 
     @property
@@ -305,7 +319,7 @@ class Tree(Datastructure):
             raise TypeError("The node is not a TreeNode object.")
 
         if node.parent:
-            raise ValueError("The node is already part of another tree, remove it from that tree first.")
+            raise ValueError("The node already has a parent, remove it from that parent first.")
 
         if parent is None:
             # add the node as a root node
@@ -330,8 +344,6 @@ class Tree(Datastructure):
         if self.root:
             for node in self.root.traverse():
                 yield node
-        else:
-            yield iter([])
 
     def remove(self, node):
         """
@@ -358,6 +370,76 @@ class Tree(Datastructure):
         for node in self.nodes:
             if node.is_leaf:
                 yield node
+
+    def traverse(self, strategy="depthfirst", order="preorder"):
+        """
+        Traverse the tree from the root node.
+
+        Parameters
+        ----------
+        strategy : {"depthfirst", "breadthfirst"}, optional
+            The traversal strategy.
+            Default is ``"depthfirst"``.
+
+        order : {"preorder", "postorder"}, optional
+            The traversal order. This parameter is only used for depth-first traversal.
+            Default is ``"preorder"``.
+
+        Yields
+        ------
+        :class:`~compas.datastructures.TreeNode`
+            The next node in the traversal.
+
+        Raises
+        ------
+        ValueError
+            If the strategy is not ``"depthfirst"`` or ``"breadthfirst"``.
+            If the order is not ``"preorder"`` or ``"postorder"``.
+
+        """
+        if self.root:
+            for node in self.root.traverse(strategy=strategy, order=order):
+                yield node
+
+    def get_node_by_name(self, name):
+        """
+        Get a node by its name.
+
+        Parameters
+        ----------
+        name : str
+            The name of the node.
+
+        Returns
+        -------
+        :class:`~compas.datastructures.TreeNode`
+            The node.
+
+        """
+        for node in self.nodes:
+            if node.name == name:
+                return node
+
+    def get_nodes_by_name(self, name):
+        """
+        Get all nodes by their name.
+
+        Parameters
+        ----------
+        name : str
+            The name of the node.
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.TreeNode`]
+            The nodes.
+
+        """
+        nodes = []
+        for node in self.nodes:
+            if node.name == name:
+                nodes.append(node)
+        return nodes
 
     def __repr__(self):
         return "<Tree with {} nodes>".format(len(list(self.nodes)))

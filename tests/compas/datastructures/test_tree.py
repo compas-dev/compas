@@ -1,0 +1,170 @@
+import pytest
+
+from compas.datastructures import Tree, TreeNode
+from compas.data import json_dumps, json_loads
+import json
+
+# =============================================================================
+# Fixtures
+# =============================================================================
+
+
+@pytest.fixture
+def simple_tree():
+    # A basic fixture for a simple tree
+    root = TreeNode(name="root")
+    branch1 = TreeNode(name="branch1")
+    branch2 = TreeNode(name="branch2")
+    leaf1_1 = TreeNode(name="leaf1_1")
+    leaf1_2 = TreeNode(name="leaf1_2")
+    leaf2_1 = TreeNode(name="leaf2_1")
+    leaf2_2 = TreeNode(name="leaf2_2")
+
+    tree = Tree()
+    tree.add(root)
+    tree.add(branch1, parent=root)
+    tree.add(branch2, parent=root)
+    tree.add(leaf1_1, parent=branch1)
+    tree.add(leaf1_2, parent=branch1)
+    tree.add(leaf2_1, parent=branch2)
+    tree.add(leaf2_2, parent=branch2)
+    return tree
+
+
+# =============================================================================
+# Basics
+# =============================================================================
+
+
+def test_treenode_initialization():
+    node = TreeNode(name="test")
+    assert node.name == "test"
+    assert node.parent is None
+    assert node.tree is None
+    assert len(node.children) == 0
+
+
+def test_tree_initialization():
+    tree = Tree(name="test")
+    assert tree.name == "test"
+    assert tree.root is None
+
+
+# =============================================================================
+# TreeNode Properties
+# =============================================================================
+
+
+def test_treenode_properties(simple_tree):
+    root = simple_tree.root
+    branch1, branch2 = list(root.children)
+    leaf1_1, leaf1_2 = list(branch1.children)
+    leaf2_1, leaf2_2 = list(branch2.children)
+
+    assert root.is_root == True
+    assert root.is_leaf == False
+    assert root.is_branch == False
+
+    assert branch1.is_root == False
+    assert branch1.is_leaf == False
+    assert branch1.is_branch == True
+
+    assert branch2.is_root == False
+    assert branch2.is_leaf == False
+    assert branch2.is_branch == True
+
+    assert leaf1_1.is_root == False
+    assert leaf1_1.is_leaf == True
+    assert leaf1_1.is_branch == False
+
+    assert leaf1_2.is_root == False
+    assert leaf1_2.is_leaf == True
+    assert leaf1_2.is_branch == False
+
+    assert leaf2_1.is_root == False
+    assert leaf2_1.is_leaf == True
+    assert leaf2_1.is_branch == False
+
+    assert leaf2_2.is_root == False
+    assert leaf2_2.is_leaf == True
+    assert leaf2_2.is_branch == False
+
+
+# =============================================================================
+# Tree Properties
+# =============================================================================
+
+
+def test_tree_properties(simple_tree):
+    nodes = list(simple_tree.nodes)
+    leaves = list(simple_tree.leaves)
+
+    assert len(nodes) == 7
+    assert len(leaves) == 4
+
+
+# =============================================================================
+# Tree Traversal
+# =============================================================================
+
+
+def test_tree_traversal(simple_tree):
+    nodes = [node.name for node in simple_tree.traverse(strategy="depthfirst", order="preorder")]
+    assert nodes == ["root", "branch1", "leaf1_1", "leaf1_2", "branch2", "leaf2_1", "leaf2_2"]
+
+    nodes = [node.name for node in simple_tree.traverse(strategy="depthfirst", order="postorder")]
+    assert nodes == ["leaf1_1", "leaf1_2", "branch1", "leaf2_1", "leaf2_2", "branch2", "root"]
+
+    nodes = [node.name for node in simple_tree.traverse(strategy="breadthfirst")]
+    assert nodes == ["root", "branch1", "branch2", "leaf1_1", "leaf1_2", "leaf2_1", "leaf2_2"]
+
+
+# =============================================================================
+# Tree Manipulation
+# =============================================================================
+
+
+def test_tree_add_node(simple_tree):
+    branch2 = simple_tree.get_node_by_name("branch2")
+    branch2.add(TreeNode(name="test"))
+
+    assert len(list(branch2.children)) == 3
+    assert len(list(simple_tree.nodes)) == 8
+
+
+def test_tree_remove_node(simple_tree):
+    branch2 = simple_tree.get_node_by_name("branch2")
+    leaf2_1 = simple_tree.get_node_by_name("leaf2_1")
+    branch2.remove(leaf2_1)
+
+    assert len(list(branch2.children)) == 1
+    assert len(list(simple_tree.nodes)) == 6
+
+    root = simple_tree.root
+    branch1 = simple_tree.get_node_by_name("branch1")
+    root.remove(branch1)
+
+    assert len(list(root.children)) == 1
+    assert len(list(simple_tree.nodes)) == 3
+
+
+# =============================================================================
+# Tree Serialization
+# =============================================================================
+
+
+def test_tree_serialization(simple_tree):
+    serialized = json_dumps(simple_tree)
+    deserialized = json_loads(serialized)
+    assert simple_tree.data == deserialized.data
+
+    test_tree_properties(deserialized)
+    test_tree_traversal(deserialized)
+    test_tree_add_node(deserialized)
+    test_tree_remove_node(json_loads(serialized))
+
+
+def test_data_validation(simple_tree):
+    serialized = json_dumps(simple_tree)
+    data = json.loads(serialized)["data"]
+    assert Tree.validate_data(data)
