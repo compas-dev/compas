@@ -46,6 +46,8 @@ class Frame(Geometry):
         The local Y axis of the frame.
     zaxis : :class:`~compas.geometry.Vector`, read-only
         The Z axis of the frame.
+    axes : list of :class:`~compas.geometry.Vector`, read-only
+        The XYZ axes of the frame.
     normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the base plane of the frame.
     quaternion : :class:`~compas.geometry.Quaternion`, read-only
