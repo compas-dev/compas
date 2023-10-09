@@ -168,7 +168,6 @@ class TreeNode(Data):
         ----------
         strategy : {"depthfirst", "breadthfirst"}, optional
             The traversal strategy.
-
         order : {"preorder", "postorder"}, optional
             The traversal order. This parameter is only used for depth-first traversal.
 
@@ -377,7 +376,6 @@ class Tree(Datastructure):
         ----------
         strategy : {"depthfirst", "breadthfirst"}, optional
             The traversal strategy.
-
         order : {"preorder", "postorder"}, optional
             The traversal order. This parameter is only used for depth-first traversal.
 
