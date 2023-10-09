@@ -1,8 +1,9 @@
 import pytest
+import compas
+import json
 
 from compas.datastructures import Tree, TreeNode
 from compas.data import json_dumps, json_loads
-import json
 
 # =============================================================================
 # Fixtures
@@ -163,8 +164,6 @@ def test_tree_serialization(simple_tree):
     test_tree_add_node(deserialized)
     test_tree_remove_node(json_loads(serialized))
 
-
-def test_data_validation(simple_tree):
-    serialized = json_dumps(simple_tree)
-    data = json.loads(serialized)["data"]
-    assert Tree.validate_data(data)
+    if not compas.IPY:
+        data = json.loads(serialized)["data"]
+        assert Tree.validate_data(data)
