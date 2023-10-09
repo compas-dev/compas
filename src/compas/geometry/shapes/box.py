@@ -65,6 +65,8 @@ class Box(Shape):
         Diagonal of the box.
     dimensions : list[float], read-only
         The dimensions of the box in the local frame.
+    axes : list[:class:`~compas.geometry.Vector`], read-only
+        The XYZ axes of the box frame.
     area : float, read-only
         The surface area of the box.
     volume : float, read-only
@@ -262,6 +264,10 @@ class Box(Shape):
     @property
     def dimensions(self):
         return [self.xsize, self.ysize, self.zsize]
+
+    def axes(self):
+        """The XYZ axes of the box frame."""
+        return self.frame.axes
 
     @property
     def area(self):
