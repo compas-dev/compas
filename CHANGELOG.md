@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
+* Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
 
 ### Changed
 
 * Changed `Network.is_planar` to rely on `NetworkX` instead `planarity` for planarity checking.
 * Removed `planarity` from requirements.
 * Fixed argument order at `compas.geometry.cone.circle`.
+* Pinned `jsonschema` version to >=4.17, <4.18 to avoid Rust toolchain
+* Fixed `box_to_compas` in `compas_rhino.conversions` to correctly take in the center of the box as the center point of the frame.
 
 ### Removed
 

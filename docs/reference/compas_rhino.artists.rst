@@ -19,6 +19,7 @@ Classes
     ConeArtist
     CurveArtist
     CylinderArtist
+    EllipseArtist
     FrameArtist
     LineArtist
     MeshArtist
