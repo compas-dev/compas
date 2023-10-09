@@ -61,33 +61,33 @@ def test_treenode_properties(simple_tree):
     leaf1_1, leaf1_2 = list(branch1.children)
     leaf2_1, leaf2_2 = list(branch2.children)
 
-    assert root.is_root == True
-    assert root.is_leaf == False
-    assert root.is_branch == False
+    assert root.is_root is True
+    assert root.is_leaf is False
+    assert root.is_branch is False
 
-    assert branch1.is_root == False
-    assert branch1.is_leaf == False
-    assert branch1.is_branch == True
+    assert branch1.is_root is False
+    assert branch1.is_leaf is False
+    assert branch1.is_branch is True
 
-    assert branch2.is_root == False
-    assert branch2.is_leaf == False
-    assert branch2.is_branch == True
+    assert branch2.is_root is False
+    assert branch2.is_leaf is False
+    assert branch2.is_branch is True
 
-    assert leaf1_1.is_root == False
-    assert leaf1_1.is_leaf == True
-    assert leaf1_1.is_branch == False
+    assert leaf1_1.is_root is False
+    assert leaf1_1.is_leaf is True
+    assert leaf1_1.is_branch is False
 
-    assert leaf1_2.is_root == False
-    assert leaf1_2.is_leaf == True
-    assert leaf1_2.is_branch == False
+    assert leaf1_2.is_root is False
+    assert leaf1_2.is_leaf is True
+    assert leaf1_2.is_branch is False
 
-    assert leaf2_1.is_root == False
-    assert leaf2_1.is_leaf == True
-    assert leaf2_1.is_branch == False
+    assert leaf2_1.is_root is False
+    assert leaf2_1.is_leaf is True
+    assert leaf2_1.is_branch is False
 
-    assert leaf2_2.is_root == False
-    assert leaf2_2.is_leaf == True
-    assert leaf2_2.is_branch == False
+    assert leaf2_2.is_root is False
+    assert leaf2_2.is_leaf is True
+    assert leaf2_2.is_branch is False
 
 
 # =============================================================================

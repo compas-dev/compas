@@ -125,7 +125,7 @@ class TreeNode(Data):
         """
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
-        if not node in self._children:
+        if node not in self._children:
             self._children.append(node)
         node._parent = self
 
