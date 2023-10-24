@@ -61,7 +61,6 @@ Install COMPAS using ``pip`` from the Python Package Index.
 
 .. code-block:: bash
 
-    pip install cython --install-option="--no-cython-compile"
     pip install compas
 
 Install an editable version from local source.
