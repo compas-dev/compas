@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Pinned `jsonschema` version to >=4.17, <4.18 to avoid Rust toolchain
 * Fixed `box_to_compas` in `compas_rhino.conversions` to correctly take in the center of the box as the center point of the frame.
 * Removed `cython` from requirements.
+* Made X and Y axis optional in the constructor of `Frame`.
 
 ### Removed
 
