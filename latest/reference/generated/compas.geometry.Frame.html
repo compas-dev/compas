@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Frame.euler_angles" href="compas.geometry.Frame.euler_angles.html" />
+    <link rel="next" title="Frame.axes" href="compas.geometry.Frame.axes.html" />
     <link rel="prev" title="Ellipse.validate_data" href="compas.geometry.Ellipse.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1204,6 +1204,8 @@ vector as starting point.</p>
 </dd>
 <dt><strong>zaxis</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>, read-only</span></dt><dd><p>The Z axis of the frame.</p>
 </dd>
+<dt><a class="reference internal" href="compas.geometry.Frame.axes.html#compas.geometry.Frame.axes" title="compas.geometry.Frame.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a><span class="classifier">list of <a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>, read-only</span></dt><dd><p>The xyz axes of the frame.</p>
+</dd>
 <dt><strong>normal</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>, read-only</span></dt><dd><p>The normal of the base plane of the frame.</p>
 </dd>
 <dt><strong>quaternion</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Quaternion</span></code>, read-only</span></dt><dd><p>The quaternion from the rotation given by the frame.</p>
@@ -1220,55 +1222,58 @@ vector as starting point.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles" title="compas.geometry.Frame.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.axes.html#compas.geometry.Frame.axes" title="compas.geometry.Frame.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a></p></td>
+<td><p>The xyz axes of the frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles" title="compas.geometry.Frame.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a></p></td>
 <td><p>The Euler angles from the rotation given by the frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a></p></td>
 <td><p>Construct a frame from an axis-angle vector representing the rotation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles" title="compas.geometry.Frame.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles" title="compas.geometry.Frame.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a></p></td>
 <td><p>Construct a frame from a rotation represented by Euler angles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_list.html#compas.geometry.Frame.from_list" title="compas.geometry.Frame.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_list.html#compas.geometry.Frame.from_list" title="compas.geometry.Frame.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
 <td><p>Construct a frame from a list of 12 or 16 float values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_matrix.html#compas.geometry.Frame.from_matrix" title="compas.geometry.Frame.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_matrix.html#compas.geometry.Frame.from_matrix" title="compas.geometry.Frame.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
 <td><p>Construct a frame from a matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_plane.html#compas.geometry.Frame.from_plane" title="compas.geometry.Frame.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_plane.html#compas.geometry.Frame.from_plane" title="compas.geometry.Frame.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
 <td><p>Constructs a frame from a plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_points.html#compas.geometry.Frame.from_points" title="compas.geometry.Frame.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_points.html#compas.geometry.Frame.from_points" title="compas.geometry.Frame.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a></p></td>
 <td><p>Constructs a frame from 3 points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_quaternion.html#compas.geometry.Frame.from_quaternion" title="compas.geometry.Frame.from_quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_quaternion</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_quaternion.html#compas.geometry.Frame.from_quaternion" title="compas.geometry.Frame.from_quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_quaternion</span></code></a></p></td>
 <td><p>Construct a frame from a rotation represented by quaternion coefficients.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_rotation.html#compas.geometry.Frame.from_rotation" title="compas.geometry.Frame.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_rotation.html#compas.geometry.Frame.from_rotation" title="compas.geometry.Frame.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
 <td><p>Constructs a frame from a Rotation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation" title="compas.geometry.Frame.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation" title="compas.geometry.Frame.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a></p></td>
 <td><p>Constructs a frame from a Transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates" title="compas.geometry.Frame.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates" title="compas.geometry.Frame.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a></p></td>
 <td><p>Returns the object's coordinates in the local coordinate system of the frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_transformation.html#compas.geometry.Frame.to_transformation" title="compas.geometry.Frame.to_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_transformation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_transformation.html#compas.geometry.Frame.to_transformation" title="compas.geometry.Frame.to_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_transformation</span></code></a></p></td>
 <td><p>Convert the frame to a transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates" title="compas.geometry.Frame.to_world_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_world_coordinates</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates" title="compas.geometry.Frame.to_world_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_world_coordinates</span></code></a></p></td>
 <td><p>Returns the object's coordinates in the global coordinate frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.transform.html#compas.geometry.Frame.transform" title="compas.geometry.Frame.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.transform.html#compas.geometry.Frame.transform" title="compas.geometry.Frame.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the frame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY" title="compas.geometry.Frame.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY" title="compas.geometry.Frame.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a></p></td>
 <td><p>Construct the world XY frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.worldYZ.html#compas.geometry.Frame.worldYZ" title="compas.geometry.Frame.worldYZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldYZ</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.worldYZ.html#compas.geometry.Frame.worldYZ" title="compas.geometry.Frame.worldYZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldYZ</span></code></a></p></td>
 <td><p>Construct the world YZ frame.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.worldZX.html#compas.geometry.Frame.worldZX" title="compas.geometry.Frame.worldZX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldZX</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.worldZX.html#compas.geometry.Frame.worldZX" title="compas.geometry.Frame.worldZX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldZX</span></code></a></p></td>
 <td><p>Construct the world ZX frame.</p></td>
 </tr>
 </tbody>
@@ -1328,11 +1333,11 @@ vector as starting point.</p>
       </div>
     </a>
     <a class="right-next"
-       href="compas.geometry.Frame.euler_angles.html"
+       href="compas.geometry.Frame.axes.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Frame.euler_angles</p>
+        <p class="prev-next-title">Frame.axes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
