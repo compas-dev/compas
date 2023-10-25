@@ -23,8 +23,8 @@ this is the place to start.
    userguide/index
 
 
-Developer Guide
-===============
+Development
+===========
 
 If you want to contribute to COMPAS, this is the place to start.
 
@@ -35,8 +35,8 @@ If you want to contribute to COMPAS, this is the place to start.
    devguide/index
 
 
-Package Reference
-=================
+API Reference
+=============
 
 The reference documentation of the core package and the CAD packages.
 
@@ -45,16 +45,3 @@ The reference documentation of the core package and the CAD packages.
    :titlesonly:
 
    reference/index
-
-
-Extensions
-==========
-
-The core extensions to COMPAS and the AEC toolboxes manages by the compas-dev team are listed here.
-
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
-
-   extensions/index
-

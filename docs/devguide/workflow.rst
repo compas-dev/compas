@@ -12,7 +12,7 @@ To set up a developer environment
 
    .. code-block:: bash
 
-       conda create -n compas-dev python=3.8 cython --yes
+       conda create -n compas-dev python=3.11 --yes
        conda activate compas-dev
 
 3. Install development dependencies:

@@ -276,7 +276,7 @@ replace(html5.HTML5Translator)
 
 html_theme = "pydata_sphinx_theme"
 html_logo = "_static/images/compas_icon_white.png"  # relative to parent of conf.py
-html_title = "COMPAS docs"
+html_title = "compas"
 html_favicon = "_static/images/compas.ico"
 
 html_theme_options = {
