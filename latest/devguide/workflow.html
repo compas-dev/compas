@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Workflow &#8212; compas</title>
+    <title>Development Workflow &#8212; compas</title>
   
   
   
@@ -425,58 +425,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="workflow">
-<h1>Workflow</h1>
-<section id="setup">
-<h2>Setup</h2>
-<p>To set up a developer environment</p>
-<ol class="arabic">
-<li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork.</p></li>
-<li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>compas-dev<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11<span class="w"> </span>--yes
-conda<span class="w"> </span>activate<span class="w"> </span>compas-dev
-</pre></div>
-</div>
-</li>
-<li><p>Install development dependencies:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>path/to/compas
-pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
-</pre></div>
-</div>
-</li>
-<li><p>Make sure all tests pass and the code is free of lint:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>invoke<span class="w"> </span>lint
-invoke<span class="w"> </span><span class="nb">test</span>
-</pre></div>
-</div>
-</li>
-<li><p>Create a branch for your contributions.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">branch</span> <span class="n">title</span><span class="o">-</span><span class="n">proposed</span><span class="o">-</span><span class="n">changes</span>
-<span class="n">git</span> <span class="n">checkout</span> <span class="n">title</span><span class="o">-</span><span class="n">proposed</span><span class="o">-</span><span class="n">changes</span>
-</pre></div>
-</div>
-</li>
-<li><p>Start making changes!</p></li>
-</ol>
-</section>
-<section id="submitting-a-pr">
-<h2>Submitting a PR</h2>
-<p>Once you are done making changes, you have to submit your contribution through a pull request (PR).
-The procedure for submitting a PR is the following.</p>
-<ol class="arabic">
-<li><p>Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>invoke<span class="w"> </span>lint
-invoke<span class="w"> </span><span class="nb">test</span>
-invoke<span class="w"> </span>docs
-</pre></div>
-</div>
-</li>
-<li><p>Add yourself to <code class="docutils literal notranslate"><span class="pre">AUTHORS.md</span></code>.</p></li>
-<li><p>Summarize the changes you made in <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code>.</p></li>
-<li><p>Commit your changes and push your branch to GitHub.</p></li>
-<li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a>.</p></li>
-</ol>
-</section>
+  <section id="development-workflow">
+<h1>Development Workflow</h1>
 </section>
 
 
@@ -501,17 +451,6 @@ invoke<span class="w"> </span>docs
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-a-pr">Submitting a PR</a></li>
-</ul>
-  </nav></div>
 
   <div class="sidebar-secondary-item">
   
