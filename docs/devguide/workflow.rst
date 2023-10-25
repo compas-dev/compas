@@ -1,9 +1,8 @@
-********************
 Development Workflow
-********************
+====================
 
 Setup
-=====
+-----
 
 To set up a developer environment
 
@@ -32,7 +31,7 @@ To set up a developer environment
 
 
 Making changes
-==============
+--------------
 
 1. Create a branch for your contributions.
 
@@ -75,7 +74,7 @@ Making changes
 
 
 Submitting a PR
-===============
+---------------
 
 .. note::
 
