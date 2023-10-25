@@ -46,6 +46,8 @@ class Frame(Geometry):
         The local Y axis of the frame.
     zaxis : :class:`~compas.geometry.Vector`, read-only
         The Z axis of the frame.
+    axes : list of :class:`~compas.geometry.Vector`, read-only
+        The XYZ axes of the frame.
     normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the base plane of the frame.
     quaternion : :class:`~compas.geometry.Quaternion`, read-only
@@ -189,6 +191,10 @@ class Frame(Geometry):
         if not self._zaxis:
             self._zaxis = self.xaxis.cross(self.yaxis)
         return self._zaxis
+
+    def axes(self):
+        """The xyz axes of the frame."""
+        return [self.xaxis, self.yaxis, self.zaxis]
 
     @property
     def quaternion(self):
