@@ -157,6 +157,10 @@ from .assembly.exceptions import AssemblyError, FeatureError
 from .assembly.assembly import Assembly
 from .assembly.part import Feature, GeometricFeature, ParametricFeature, Part
 
+from .cell_network.cell_network import CellNetwork
+
+from .tree.tree import Tree, TreeNode
+
 BaseNetwork = Network
 BaseMesh = Mesh
 BaseVolMesh = VolMesh
@@ -167,6 +171,7 @@ __all__ = [
     "Graph",
     # Networks
     "BaseNetwork",
+    "CellNetwork",
     "Network",
     "network_complement",
     "network_count_crossings",
@@ -274,6 +279,9 @@ __all__ = [
     "Feature",
     "GeometricFeature",
     "ParametricFeature",
+    # Trees
+    "Tree",
+    "TreeNode",
 ]
 
 if not compas.IPY:

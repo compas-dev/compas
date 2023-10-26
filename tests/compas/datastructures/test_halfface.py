@@ -175,7 +175,7 @@ def test_edges_where_predicate():
 
 def test_faces_where():
     hf = HalfFace(default_face_attributes={"a": 1, "b": 2})
-    for vkey in range(4):
+    for vkey in range(5):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_halfface([i, i + 1, i + 2])
@@ -185,7 +185,7 @@ def test_faces_where():
 
 def test_faces_where_predicate():
     hf = HalfFace(default_face_attributes={"a": 1, "b": 2})
-    for vkey in range(4):
+    for vkey in range(5):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_halfface([i, i + 1, i + 2])
@@ -200,7 +200,7 @@ def test_faces_where_predicate():
 
 def test_cells_where():
     hf = HalfFace(default_cell_attributes={"a": 1, "b": 2})
-    for vkey in range(5):
+    for vkey in range(6):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_cell(
@@ -217,7 +217,7 @@ def test_cells_where():
 
 def test_cells_where_predicate():
     hf = HalfFace(default_cell_attributes={"a": 1, "b": 2})
-    for vkey in range(5):
+    for vkey in range(6):
         hf.add_vertex(vkey)
     for i in range(3):
         hf.add_cell(

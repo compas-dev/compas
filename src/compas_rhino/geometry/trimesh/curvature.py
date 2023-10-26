@@ -216,6 +216,7 @@ def trimesh_mean_curvature(M):
 @plugin(category="trimesh", requires=["Rhino"])
 def trimesh_principal_curvature(M):
     r"""Compute the principal curvature of a triangle mesh.
+
     Parameters
     ----------
     M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]

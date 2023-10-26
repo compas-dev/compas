@@ -1,86 +1,59 @@
 from typing import Any
 from typing import List
 from typing import Optional
-from typing import Union
 
-import bpy
-import compas_blender
+import bpy  # type: ignore
 from compas.geometry import Polyhedron
-from compas.artists import ShapeArtist
 from compas.colors import Color
+
+from compas.artists import GeometryArtist
 from .artist import BlenderArtist
 
+from compas_blender import conversions
 
-class PolyhedronArtist(BlenderArtist, ShapeArtist):
+
+class PolyhedronArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing polyhedron shapes in Blender.
 
     Parameters
     ----------
     polyhedron : :class:`~compas.geometry.Polyhedron`
         A COMPAS polyhedron.
-    collection : str | :blender:`bpy.types.Collection`
-        The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.ShapeArtist`.
-
-    Examples
-    --------
-    Use the Blender artist explicitly.
-
-    .. code-block:: python
-
-        from compas.geometry import Polyhedron
-        from compas_blender.artists import PolyhedronArtist
-
-        polyhedron = Polyhedron.from_platonicsolid(12)
-
-        artist = PolyhedronArtist(polyhedron)
-        artist.draw()
-
-    Or, use the artist through the plugin mechanism.
-
-    .. code-block:: python
-
-        from compas.geometry import Polyhedron
-        from compas.artists import Artist
-
-        polyhedron = Polyhedron.from_platonicsolid(12)
-
-        artist = Artist(polyhedron)
-        artist.draw()
 
     """
 
-    def __init__(
-        self, polyhedron: Polyhedron, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any
-    ):
+    def __init__(self, polyhedron: Polyhedron, **kwargs: Any):
+        super().__init__(geometry=polyhedron, **kwargs)
 
-        super().__init__(shape=polyhedron, collection=collection or polyhedron.name, **kwargs)
-
-    def draw(self, color: Optional[Color] = None) -> List[bpy.types.Object]:
+    def draw(
+        self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
+    ) -> List[bpy.types.Object]:
         """Draw the polyhedron associated with the artist.
 
         Parameters
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
             The RGB color of the polyhedron.
-            The default color is :attr:`compas.artists.ShapeArtist.color`.
+        collection : str, optional
+            The name of the Blender scene collection containing the created object(s).
+        show_wire : bool, optional
+            Display the wireframe of the polyhedron.
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
-            The objects created in Blender.
+        :blender:`bpy.types.Object`
+            The object created in Blender.
 
         """
+        name = self.geometry.name
         color = Color.coerce(color) or self.color
-        vertices, faces = self.shape.to_vertices_and_faces()
-        obj = compas_blender.draw_mesh(
-            vertices,
-            faces,
-            name=self.shape.name,
-            color=color,
-            collection=self.collection,
-        )
-        return [obj]
+
+        vertices, faces = self.geometry.to_vertices_and_faces()
+        mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
+
+        obj = self.create_object(mesh, name=name)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
+
+        return obj

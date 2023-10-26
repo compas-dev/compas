@@ -143,3 +143,5 @@ src/compas_ghpython/components/**/*.ghuser
 dev
 
 NOTES
+
+src/compas_blender/conversions/__temp/

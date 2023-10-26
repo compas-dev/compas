@@ -1,90 +1,70 @@
 from typing import Any
-from typing import List
 from typing import Optional
-from typing import Union
 
-import bpy
+import bpy  # type: ignore
 
-import compas_blender
 from compas.geometry import Cylinder
-from compas.artists import ShapeArtist
 from compas.colors import Color
+
+from compas_blender import conversions
+
+from compas.artists import GeometryArtist
 from .artist import BlenderArtist
 
 
-class CylinderArtist(BlenderArtist, ShapeArtist):
+class CylinderArtist(BlenderArtist, GeometryArtist):
     """Artist for drawing cylinder shapes in Blender.
 
     Parameters
     ----------
     cylinder : :class:`~compas.geometry.Cylinder`
         A COMPAS cylinder.
-    collection : str | :blender:`bpy.types.Collection`
-        The Blender scene collection the object(s) created by this artist belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
-        For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.ShapeArtist`.
-
-    Examples
-    --------
-    Use the Blender artist explicitly.
-
-    .. code-block:: python
-
-        from compas.geometry import Plane, Circle, Cylinder
-        from compas_blender.artists import CylinderArtist
-
-        cylinder = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), 0.3), 1.0)
-
-        artist = CylinderArtist(cylinder)
-        artist.draw()
-
-    Or, use the artist through the plugin mechanism.
-
-    .. code-block:: python
-
-        from compas.geometry import Plane, Circle, Cylinder
-        from compas.artists import Artist
-
-        cylinder = Cylinder(Circle(Plane([0, 0, 0], [0, 0, 1]), 0.3), 1.0)
-
-        artist = Artist(cylinder)
-        artist.draw()
 
     """
 
-    def __init__(
-        self, cylinder: Cylinder, collection: Optional[Union[str, bpy.types.Collection]] = None, **kwargs: Any
-    ):
+    def __init__(self, cylinder: Cylinder, **kwargs: Any):
+        super().__init__(geometry=cylinder, **kwargs)
 
-        super().__init__(shape=cylinder, collection=collection or cylinder.name, **kwargs)
-
-    def draw(self, color: Optional[Color] = None, u: int = None) -> List[bpy.types.Object]:
+    def draw(
+        self,
+        color: Optional[Color] = None,
+        collection: Optional[str] = None,
+        u: int = 16,
+        show_wire: bool = False,
+        shade_smooth: bool = True,
+    ) -> bpy.types.Object:
         """Draw the cylinder associated with the artist.
 
         Parameters
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
             The RGB color of the cylinder.
+        collection : str, optional
+            The name of the Blender scene collection containing the created object(s).
         u : int, optional
             Number of faces in the "u" direction.
-            Default is :attr:`~CylinderArtist.u`.
+        show_wire : bool, optional
+            Display the wireframe of the cylinder.
+        shade_smooth : bool, optional
+            Display smooth shading on the cylinder.
 
         Returns
         -------
-        list[:blender:`bpy.types.Object`]
+        :blender:`bpy.types.Object`
             The objects created in Blender.
 
         """
-        u = u or self.u
+        name = self.geometry.name
         color = Color.coerce(color) or self.color
-        vertices, faces = self.shape.to_vertices_and_faces(u=u)
-        obj = compas_blender.draw_mesh(
-            vertices,
-            faces,
-            name=self.shape.name,
-            color=color,
-            collection=self.collection,
-        )
-        return [obj]
+
+        vertices, faces = self.geometry.to_vertices_and_faces(u=u)
+        mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
+        if shade_smooth:
+            mesh.shade_smooth()
+
+        obj = self.create_object(mesh, name=name)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
+
+        return obj

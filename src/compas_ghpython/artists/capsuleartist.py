@@ -2,13 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_ghpython
-from compas.artists import ShapeArtist
-from compas.colors import Color
+from compas_rhino import conversions
+
+from compas.artists import GeometryArtist
 from .artist import GHArtist
 
 
-class CapsuleArtist(GHArtist, ShapeArtist):
+class CapsuleArtist(GHArtist, GeometryArtist):
     """Artist for drawing capsule shapes.
 
     Parameters
@@ -17,37 +17,25 @@ class CapsuleArtist(GHArtist, ShapeArtist):
         A COMPAS capsule.
     **kwargs : dict, optional
         Additional keyword arguments.
-        See :class:`~compas_ghpython.artists.GHArtist` and :class:`~compas.artists.ShapeArtist` for more info.
 
     """
 
     def __init__(self, capsule, **kwargs):
-        super(CapsuleArtist, self).__init__(shape=capsule, **kwargs)
+        super(CapsuleArtist, self).__init__(geometry=capsule, **kwargs)
 
-    def draw(self, color=None, u=None, v=None):
+    def draw(self):
         """Draw the capsule associated with the artist.
-
-        Parameters
-        ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
-            The RGB color of the capsule.
-            Default is :attr:`compas.artists.ShapeArtist.color`.
-        u : int, optional
-            Number of faces in the "u" direction.
-            Default is :attr:`CapsuleArtist.u`.
-        v : int, optional
-            Number of faces in the "v" direction.
-            Default is :attr:`CapsuleArtist.v`.
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Mesh`
+        list[:rhino:`Rhino.Geometry.Brep`]
 
         """
-        color = Color.coerce(color) or self.color
-        u = u or self.u
-        v = v or self.v
-        vertices, faces = self.shape.to_vertices_and_faces(u=u, v=v)
-        vertices = [list(vertex) for vertex in vertices]
-        mesh = compas_ghpython.draw_mesh(vertices, faces, color=color.rgb255)
-        return mesh
+        breps = conversions.capsule_to_rhino_brep(self.geometry)
+
+        if self.transformation:
+            transformation = conversions.transformation_to_rhino(self.transformation)
+            for geometry in breps:
+                geometry.Transform(transformation)
+
+        return breps

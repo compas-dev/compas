@@ -202,6 +202,32 @@ class Polyline(Curve):
     # Methods
     # ==========================================================================
 
+    def append(self, point):
+        """Append a point to the end of the polyline.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point to append.
+
+        """
+        self.points.append(Point(*point))
+        self._lines = None
+
+    def insert(self, i, point):
+        """Insert a point at the specified index.
+
+        Parameters
+        ----------
+        i : int
+            The index of the insertion point.
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point to insert.
+
+        """
+        self.points.insert(i, Point(*point))
+        self._lines = None
+
     def point_at(self, t, snap=False):
         """Point on the polyline at a specific normalized parameter.
 

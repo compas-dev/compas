@@ -144,21 +144,6 @@ class PLYReader(object):
         The faces found in the file.
         Each face is a dictionary of property names and property values.
 
-    Class Attributes
-    ----------------
-    keywords : list[str]
-        Reserved keywords in PLY format language.
-    property_types : dict[str, object]
-        Mapping between PLY property types and Python types.
-    binary_property_types : dict[str, str]
-        Mapping between PLY property types and binary type strings.
-    number_of_bytes_per_type : dict[str, int]
-        Mapping between PLY property types and number of bytes.
-    struct_format_per_type : dict[str, str]
-        Mapping between PLY property types and struct formats.
-    binary_byte_order : dict[str, str]
-        Mapping between endian type and endian symbol.
-
     """
 
     keywords = ["ply", "format", "comment", "element", "property", "end_header"]

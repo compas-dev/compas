@@ -202,7 +202,7 @@ class Sphere(Shape):
         phi = pi * 2 / u
         hpi = pi * 0.5
 
-        x, y, z = self.frame.point
+        x, y, z = 0, 0, 0
 
         vertices = []
         for i in range(1, v):

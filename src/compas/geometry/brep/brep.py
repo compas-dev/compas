@@ -168,15 +168,6 @@ class Brep(Geometry):
     is_surface : bool, read-only
         True if this brep is a surface, False otherwise.
 
-    Other Attributes
-    ----------------
-    native_brep
-        The underlying instance of the backend brep.
-    type : :class:`~compas.geometry.BrepType`, read-only
-        The type of Brep shape.
-    orientation : :class:`~compas.geometry.BrepOrientation`, read-obly
-        Orientation of the shape.
-
     """
 
     def __new__(cls, *args, **kwargs):
