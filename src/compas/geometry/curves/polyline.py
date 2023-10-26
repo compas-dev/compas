@@ -578,10 +578,12 @@ class Polyline(Curve):
         """
         try:
             start, end = length
-            self[0] = self[0] + self.lines[0].vector.unitized().scaled(-start)
+            self.points[0] = self.points[0] + self.lines[0].vector.unitized().scaled(-start)
+            self._lines = None
         except TypeError:
             start = end = length
-        self[-1] = self[-1] + self.lines[-1].vector.unitized().scaled(end)
+        self.points[-1] = self.points[-1] + self.lines[-1].vector.unitized().scaled(end)
+        self._lines = None
 
     def extended(self, length):
         """Returns a copy of this polyline extended by a given length.
