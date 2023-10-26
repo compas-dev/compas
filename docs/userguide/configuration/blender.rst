@@ -177,7 +177,7 @@ Alternatively, you can create a new environment and simply install entire COMPAS
 
 .. code-block:: bash
 
-    conda create -n blender python=3.9 cython planarity --yes
+    conda create -n blender python=3.9 --yes
     conda activate blender
     pip install compas
     python -m compas_blender.install

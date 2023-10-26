@@ -21,7 +21,7 @@ Create an environment named ``research`` and install COMPAS from the package cha
 
     conda create -n research -c conda-forge compas
 
-Activate the environment. 
+Activate the environment.
 
 .. code-block:: bash
 
@@ -61,7 +61,6 @@ Install COMPAS using ``pip`` from the Python Package Index.
 
 .. code-block:: bash
 
-    pip install cython --install-option="--no-cython-compile"
     pip install compas
 
 Install an editable version from local source.
@@ -70,17 +69,6 @@ Install an editable version from local source.
 
     cd path/to/compas
     pip install -e .
-
-By default, ``planarity`` is marked as an optional requirement for installation with ``pip`` on Windows.
-To include ``planarity``, add a conditional to the install command.
-
-.. code-block:: bash
-
-    pip install compas[planarity]
-
-.. code-block:: bash
-
-    pip install -e .[planarity]
 
 
 Update with conda
@@ -120,18 +108,6 @@ Known Issues
 
 If you encounter a problem that is not described here,
 please file an issue using the `Issue Tracker <https://github.com/compas-dev/compas/issues>`_.
-
-
-Installing Planarity
---------------------
-
-The installation process with ``pip`` can fail while installing ``planarity``, because ``cython`` is not installed.
-If this is the case, install ``cython`` using ``pip`` (or ``conda``), before installing COMPAS.
-
-.. code-block:: bash
-
-    pip install cython --install-option="--no-cython-compile"
-    pip install compas
 
 
 Microsoft Visual C++ Build Tools

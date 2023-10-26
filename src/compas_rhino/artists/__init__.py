@@ -4,6 +4,7 @@ from compas.plugins import plugin
 from compas.artists import Artist
 
 from compas.geometry import Circle
+from compas.geometry import Ellipse
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
@@ -32,6 +33,7 @@ import compas_rhino
 
 from .artist import RhinoArtist
 from .circleartist import CircleArtist
+from .ellipseartist import EllipseArtist
 from .frameartist import FrameArtist
 from .lineartist import LineArtist
 from .planeartist import PlaneArtist
@@ -39,6 +41,7 @@ from .pointartist import PointArtist
 from .polygonartist import PolygonArtist
 from .polylineartist import PolylineArtist
 from .vectorartist import VectorArtist
+
 from .boxartist import BoxArtist
 from .capsuleartist import CapsuleArtist
 from .coneartist import ConeArtist
@@ -46,6 +49,7 @@ from .cylinderartist import CylinderArtist
 from .polyhedronartist import PolyhedronArtist
 from .sphereartist import SphereArtist
 from .torusartist import TorusArtist
+
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist
@@ -68,6 +72,7 @@ def redraw_rhino():
 @plugin(category="factories", requires=["Rhino"])
 def register_artists():
     Artist.register(Circle, CircleArtist, context="Rhino")
+    Artist.register(Ellipse, EllipseArtist, context="Rhino")
     Artist.register(Frame, FrameArtist, context="Rhino")
     Artist.register(Line, LineArtist, context="Rhino")
     Artist.register(Plane, PlaneArtist, context="Rhino")
@@ -94,6 +99,7 @@ def register_artists():
 __all__ = [
     "RhinoArtist",
     "CircleArtist",
+    "EllipseArtist",
     "FrameArtist",
     "LineArtist",
     "PlaneArtist",

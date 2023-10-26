@@ -31,10 +31,10 @@ class Frame(Geometry):
     ----------
     point : [float, float, float] | :class:`~compas.geometry.Point`
         The origin of the frame.
-    xaxis : [float, float, float] | :class:`~compas.geometry.Vector`
-        The x-axis of the frame.
-    yaxis : [float, float, float] | :class:`~compas.geometry.Vector`
-        The y-axis of the frame.
+    xaxis : [float, float, float] | :class:`~compas.geometry.Vector`, optional
+        The x-axis of the frame. Defaults to the unit X vector.
+    yaxis : [float, float, float] | :class:`~compas.geometry.Vector`, optional
+        The y-axis of the frame. Defaults to the unit Y vector.
 
     Attributes
     ----------
@@ -46,6 +46,8 @@ class Frame(Geometry):
         The local Y axis of the frame.
     zaxis : :class:`~compas.geometry.Vector`, read-only
         The Z axis of the frame.
+    axes : list of :class:`~compas.geometry.Vector`, read-only
+        The XYZ axes of the frame.
     normal : :class:`~compas.geometry.Vector`, read-only
         The normal of the base plane of the frame.
     quaternion : :class:`~compas.geometry.Quaternion`, read-only
@@ -77,15 +79,15 @@ class Frame(Geometry):
         "required": ["point", "xaxis", "yaxis"],
     }
 
-    def __init__(self, point, xaxis, yaxis, **kwargs):
+    def __init__(self, point, xaxis=None, yaxis=None, **kwargs):
         super(Frame, self).__init__(**kwargs)
         self._point = None
         self._xaxis = None
         self._yaxis = None
         self._zaxis = None
         self.point = point
-        self.xaxis = xaxis
-        self.yaxis = yaxis
+        self.xaxis = xaxis or Vector(1, 0, 0)
+        self.yaxis = yaxis or Vector(0, 1, 0)
 
     def __repr__(self):
         return "{0}(point={1!r}, xaxis={2!r}, yaxis={3!r})".format(
@@ -189,6 +191,10 @@ class Frame(Geometry):
         if not self._zaxis:
             self._zaxis = self.xaxis.cross(self.yaxis)
         return self._zaxis
+
+    def axes(self):
+        """The xyz axes of the frame."""
+        return [self.xaxis, self.yaxis, self.zaxis]
 
     @property
     def quaternion(self):

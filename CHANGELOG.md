@@ -5,7 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0a0] 2023-09-20
+## Unreleased
+
+### Added
+* Added `Frame.axes`
+
+* Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
+* Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
+
+### Changed
+
+* Changed `Network.is_planar` to rely on `NetworkX` instead `planarity` for planarity checking.
+* Removed `planarity` from requirements.
+* Fixed argument order at `compas.geometry.cone.circle`.
+* Pinned `jsonschema` version to >=4.17, <4.18 to avoid Rust toolchain
+* Fixed `box_to_compas` in `compas_rhino.conversions` to correctly take in the center of the box as the center point of the frame.
+* Removed `cython` from requirements.
+* Made X and Y axis optional in the constructor of `Frame`.
+
+### Removed
+
+
+## [2.0.0-alpha.1] 2023-09-20
 
 ### Added
 
@@ -102,6 +123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
 * Added `from_mesh` plugin to `compas_rhino.geometry.RhinoBrep`.
 * Added `compas.geometry.Plane.worldYZ` and `compas.geometry.Plane.worldZX`.
+* Added `compas.datastructures.CellNetwork`.
 * Added `compas_rhino.conversions.brep_to_compas_box`.
 * Added `compas_rhino.conversions.brep_to_compas_cone`.
 * Added `compas_rhino.conversions.brep_to_compas_cylinder`.
@@ -205,6 +227,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.geometry.angle_vectors_signed`.
 * Changed `compas.artists.MeshArtist` default colors.
 * Fixed bug in `compas.geometry.curves.Polyline` shorten and extend methods.
+* Changed internal _plane storage of the `compas.datastructures.Halfface` from `_plane[u][v][w]` to `_plane[u][v][fkey]`
+* Fixed `SyntaxError` when importing COMPAS in GHPython.
 
 ### Removed
 
