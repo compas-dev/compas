@@ -10,7 +10,7 @@ from compas.geometry import is_point_on_line, is_point_on_polyline
 from compas.geometry import Point
 from compas.geometry import Line
 from compas.geometry import Frame
-from compas.geometry.curves.curve import Curve
+from .curve import Curve
 
 
 class Polyline(Curve):
