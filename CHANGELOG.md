@@ -118,6 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Surface.point_at`.
 * Added `compas.geometry.Surface.normal_at`.
 * Added `compas.geometry.Surface.frame_at`.
+* Added `compas.geometry.Polyline.parameter_at`.
+* Added `compas.geometry.Polyline.divide_at_corners`.
 * Added `mesh_to_rhino` to `compas_rhino.conversions`.
 * Added `vertices_and_faces_to_rhino` to `compas_rhino.conversions`.
 * Added `polyhedron_to_rhino` to `compas_rhino.conversions`.
@@ -225,6 +227,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.datastructures.Graph.delete_edge` to delete invalid (u, u) edges and not delete edges in opposite directions (v, u)
 * Fixed bug in `compas.datastructures.Mesh.insert_vertex`.
 * Fixed bug in `compas.geometry.angle_vectors_signed`.
+* Fixed bug in `compas.geometry.Polyline.split_at_corners` where angles were sometimes wrongly calculated.
 * Changed `compas.artists.MeshArtist` default colors.
 * Changed internal _plane storage of the `compas.datastructures.Halfface` from `_plane[u][v][w]` to `_plane[u][v][fkey]`
 * Fixed `SyntaxError` when importing COMPAS in GHPython.

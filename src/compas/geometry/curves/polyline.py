@@ -6,7 +6,7 @@ from compas.utilities import pairwise
 
 from compas.geometry import allclose
 from compas.geometry import transform_points
-from compas.geometry import is_point_on_line
+from compas.geometry import is_point_on_line, is_point_on_polyline
 from compas.geometry import Point
 from compas.geometry import Line
 from compas.geometry import Frame
@@ -277,6 +277,40 @@ class Polyline(Curve):
             x += dx
             i += 1
 
+    def parameter_at(self, point, tol=1e-6):
+        """Parameter of the polyline at a specific point.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`~compas.geometry.Point`
+            The point on the polyline.
+        tol : float, optional
+            A tolerance for membership verification.
+
+        Returns
+        -------
+        float
+            The parameter of the polyline.
+
+        Examples
+        --------
+        >>> from compas.geometry import Point
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+        >>> polyline.parameter_at(Point(0.1, 0.0, 0.0))
+        0.5
+
+        """
+        if not is_point_on_polyline(point, self, tol):
+            raise Exception("{} not found!".format(point))
+        dx = 0
+        for line in self.lines:
+            if not is_point_on_line(point, line, tol):
+                dx += line.length
+                continue
+            dx += line.start.distance_to_point(point)
+            break
+        return dx / self.length
+
     def tangent_at(self, t):
         """Tangent vector at a specific normalized parameter.
 
@@ -358,7 +392,7 @@ class Polyline(Curve):
             seg_ids.append(0)
 
         for seg1, seg2 in pairwise(seg_ids):
-            angle = self.lines[seg1].vector.angle(self.lines[seg2].vector)
+            angle = self.lines[seg2].vector.angle(-self.lines[seg1].vector)
             if angle >= angle_threshold:
                 corner_ids.append(seg1 + 1)
 
@@ -379,6 +413,30 @@ class Polyline(Curve):
             return [Polyline(self.points)]
 
         return split_polylines
+
+    def divide_at_corners(self, angle_threshold):
+        """Divides a polyline at corners larger than the given angle_threshold
+
+        Parameters
+        ----------
+        angle_threshold : float
+            In radians.
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Point`]
+
+        """
+        corner_ids = []
+        seg_ids = list(range(len(self.lines)))
+        if self.is_closed:
+            seg_ids.insert(0, seg_ids[-1])
+
+        for seg1, seg2 in pairwise(seg_ids):
+            angle = self.lines[seg2].vector.angle(-self.lines[seg1].vector)
+            if angle >= angle_threshold:
+                corner_ids.append(seg1 + 1)
+        return [self.points[i] for i in corner_ids]
 
     def divide(self, num_segments):
         """Divide a polyline in equal segments.

@@ -258,6 +258,24 @@ def test_polyline_split_at_corners(coords, input, expected):
 
 
 @pytest.mark.parametrize(
+    "input,expected",
+    [
+        (
+            math.radians(160),
+            [],
+        ),
+        (math.radians(100), [(1, 0, 0)]),
+        (math.radians(90), [(0, 0, 0), (1, 0, 0)]),
+        (math.radians(75), [(0, 0, 0), (1, 0, 0), (0, 1, 0)]),
+        (math.radians(44), [(0, 0, 0), (1, 0, 0), (1.86602540378444, 0.5, 0), (0, 1, 0)]),
+    ],
+)
+def test_polyline_divide_at_corners(input, expected):
+    polyline = Polyline(([0, 0, 0], [1, 0, 0], [1.86602540378444, 0.5, 0], [0, 1, 0], [0, 0, 0]))
+    assert expected == polyline.divide_at_corners(input)
+
+
+@pytest.mark.parametrize(
     "coords,segments_number,expected",
     [
         (
@@ -429,6 +447,16 @@ def test_polyline_split_by_length_strict2(coords, expected):
 )
 def test_polyline_tangent_at_point(coords, input, expected):
     assert expected == Polyline(coords).tangent_at_point(input)
+
+
+@pytest.mark.parametrize("input,expected", [((0, 0, 0), 0.0), ((1, 0, 0), 0.5), ((1, 1, 0), 1.0), ((2, 0, 0), None)])
+def test_polyline_parameter_at(input, expected):
+    polyline = Polyline(((0, 0, 0), (1, 0, 0), (1, 1, 0)))
+    if expected is not None:
+        assert expected == polyline.parameter_at(input)
+    else:
+        with pytest.raises(Exception):
+            polyline.parameter_at(input)
 
 
 @pytest.mark.parametrize(
