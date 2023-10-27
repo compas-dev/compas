@@ -64,6 +64,8 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Package Reference" href="../reference/index.html" />
+    <link rel="prev" title="Developer Guide" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -166,7 +168,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Developer Guide
                       </a>
@@ -289,7 +291,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -314,7 +316,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Developer Guide
                       </a>
@@ -402,6 +404,17 @@ document.write(`
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Development Workflow</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -427,6 +440,107 @@ document.write(`
                   
   <section id="development-workflow">
 <h1>Development Workflow</h1>
+<section id="setup">
+<h2>Setup</h2>
+<p>To set up a developer environment</p>
+<ol class="arabic">
+<li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork. See <a class="reference external" href="https://help.github.com/articles/fork-a-repo/">Fork a repo</a> for more information.</p></li>
+<li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>compas-dev<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9<span class="w"> </span>--yes
+conda<span class="w"> </span>activate<span class="w"> </span>compas-dev
+</pre></div>
+</div>
+</li>
+<li><p>Install development dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>path/to/compas
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+</pre></div>
+</div>
+</li>
+<li><p>Make sure all tests pass and the code is free of lint:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>invoke<span class="w"> </span>lint
+invoke<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="making-changes">
+<h2>Making changes</h2>
+<ol class="arabic">
+<li><p>Create a branch for your contributions.</p>
+<p>Prefix your branch name with the type of contribution you are making (e.g. <code class="docutils literal notranslate"><span class="pre">feature-</span></code>, <code class="docutils literal notranslate"><span class="pre">bugfix-</span></code>, <code class="docutils literal notranslate"><span class="pre">doc-</span></code>, etc), followed by a short title of the proposed changes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">branch</span> <span class="n">feature</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">method</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">feature</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">method</span>
+</pre></div>
+</div>
+</li>
+<li><p>Making and pushing changes.</p>
+<p>Go ahead and make a few changes to the project using your favorite text editor. When you’re ready to submit your changes, stage and commit your changes. Please use clear commit messages detailing the changes made.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;add functionality X to compas&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature-new-method
+</pre></div>
+</div>
+<p>You can continue to make more changes, and take more commit snapshots.</p>
+</li>
+<li><p>Keeping your branch up to date.</p>
+<p>If you are working on a branch for a longer period of time, it is a good idea to keep your branch up to date with the main branch. This way, you can avoid merge conflicts when you submit your changes through a pull request.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>main
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main
+git<span class="w"> </span>checkout<span class="w"> </span>feature-new-method
+git<span class="w"> </span>merge<span class="w"> </span>main
+</pre></div>
+</div>
+<p>If there are any conflicts, you will have to resolve them manually. Once you are done, you can push your changes to your fork.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature-new-method
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="submitting-a-pr">
+<h2>Submitting a PR</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The smaller the PR, the easier it is to review and merge. If you are working on a larger feature, consider splitting it up into multiple PRs. This will make it easier for us to review your changes and provide feedback. Alternatively, you can open a draft PR to get feedback on your work in progress.</p>
+</div>
+<p>Once you are done making changes, you have to submit your contribution through a pull request (PR).
+The procedure for submitting a PR is the following.</p>
+<ol class="arabic">
+<li><p>Please merge the <cite>main</cite> branch into your feature branch and resolve any conflicts (see above).</p></li>
+<li><p>Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>invoke<span class="w"> </span>lint
+invoke<span class="w"> </span><span class="nb">test</span>
+invoke<span class="w"> </span>docs
+</pre></div>
+</div>
+</li>
+<li><p>Add yourself to <code class="docutils literal notranslate"><span class="pre">AUTHORS.md</span></code>.</p></li>
+<li><p>Summarize the changes you made in <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code> in the <cite>Unreleased</cite> section under the most fitting heading (e.g. <cite>Added</cite>, <cite>Changed</cite>, <cite>Removed</cite>).</p></li>
+<li><p>Commit your changes and push your branch to GitHub.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;add functionality X to compas&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature-new-method
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="5">
+<li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a>.</p>
+<ul class="simple">
+<li><p>Give your PR a title and describe your change in a few sentences.</p></li>
+<li><p>If your PR fixes an issue, add <code class="docutils literal notranslate"><span class="pre">Fixes</span> <span class="pre">#123</span></code> to the description, where <code class="docutils literal notranslate"><span class="pre">123</span></code> is the issue number.</p></li>
+<li><p>If your PR adds a new feature, add <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">feature</span></code> to the description.</p></li>
+<li><p>If your PR fixes a bug, add <code class="docutils literal notranslate"><span class="pre">Bug</span> <span class="pre">fix</span></code> to the description.</p></li>
+<li><p>If your PR changes the API, add <code class="docutils literal notranslate"><span class="pre">Breaking</span> <span class="pre">change</span></code> to the description.</p></li>
+</ul>
+</li>
+<li><p>Wait for the tests to pass and for the code to be reviewed.</p>
+<p>We review pull requests as soon as we can, typically within a week. If you get no review comments within two weeks, feel free to ask for feedback by adding a comment on your PR (this will notify maintainers). Thank you!</p>
+</li>
+</ol>
+</section>
 </section>
 
 
@@ -440,6 +554,24 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Developer Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../reference/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Package Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div></div>
   
 </div>
@@ -451,6 +583,18 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-changes">Making changes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-a-pr">Submitting a PR</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   
