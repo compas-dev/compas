@@ -11,3 +11,10 @@ This guide is intended for developers who want to contribute to the code and/or 
 6. Developing a Plugin
 7. Developing a GH Component
 8. Implementing a New Data Type
+
+
+.. toctree::
+   :maxdepth: 1
+   :titlesonly:
+
+   workflow
