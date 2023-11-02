@@ -375,22 +375,6 @@ from .shapes.torus import Torus
 from .polygon import Polygon
 from .polyhedron import Polyhedron
 
-from .brep import (
-    BrepError,
-    BrepInvalidError,
-    BrepTrimmingError,
-)
-
-from .brep.brep import Brep
-from .brep.brep import BrepOrientation
-from .brep.brep import BrepType
-from .brep.edge import BrepEdge
-from .brep.loop import BrepLoop
-from .brep.face import BrepFace
-from .brep.vertex import BrepVertex
-from .brep.trim import BrepTrim
-from .brep.trim import BrepTrimIsoStatus
-
 
 __all__ = [
     "close",
@@ -717,18 +701,6 @@ __all__ = [
     "ConicalSurface",
     "PlanarSurface",
     "NurbsSurface",
-    "Brep",
-    "BrepLoop",
-    "BrepEdge",
-    "BrepVertex",
-    "BrepFace",
-    "BrepTrim",
-    "BrepTrimIsoStatus",
-    "BrepType",
-    "BrepOrientation",
-    "BrepError",
-    "BrepInvalidError",
-    "BrepTrimmingError",
 ]
 
 if not compas.IPY:
