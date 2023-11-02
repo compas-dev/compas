@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-* Added `Frame.axes`
 
+* Added `Frame.axes`
 * Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
 * Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
 
@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `box_to_compas` in `compas_rhino.conversions` to correctly take in the center of the box as the center point of the frame.
 * Removed `cython` from requirements.
 * Made X and Y axis optional in the constructor of `Frame`.
+* Moved `compas.geometry.brep` to `compas.brep`.
+* Changed `networkx` version to `>=3.0` to ensure support for `is_planar`.
 
 ### Removed
 
