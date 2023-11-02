@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
 * Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
+* Added optional param `cwd` to `compas.rpc.Proxy` to be able to start services defined in random locations.
+* Added `compas.rpc.services.special` as a minimal example of a "non-default" RPC service.
 
 ### Changed
 
@@ -22,6 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `box_to_compas` in `compas_rhino.conversions` to correctly take in the center of the box as the center point of the frame.
 * Removed `cython` from requirements.
 * Made X and Y axis optional in the constructor of `Frame`.
+* Moved `compas.geometry.brep` to `compas.brep`.
+* Changed `networkx` version to `>=3.0` to ensure support for `is_planar`.
+* Moved `compas.geometry.curves.nurbs_.py` and `compas.geometry.surfaces.nurbs_.py` to `compas_nurbs`.
+* Moved registration of `ping` and `remote_shutdown` of the RPC server to `compas.rpc.Server.__init__()`.
+* Moved `FileWatcherService` to `compas.rpc.services.watcher` so it can be reused.
 
 ### Removed
 
