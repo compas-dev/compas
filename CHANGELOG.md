@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Made X and Y axis optional in the constructor of `Frame`.
 * Moved `compas.geometry.brep` to `compas.brep`.
 * Changed `networkx` version to `>=3.0` to ensure support for `is_planar`.
+* Moved `compas.geometry.curves.nurbs_.py` and `compas.geometry.surfaces.nurbs_.py` to `compas_nurbs`.
 
 ### Removed
 
