@@ -1,7 +1,12 @@
-from compas.geometry import BrepFace
+import Rhino
+from Rhino.Geometry import Interval
+from Rhino.Geometry import RevSurface
+
+from compas.brep import BrepFace
 from compas.geometry import Sphere
 from compas.geometry import Cylinder
 from compas.geometry import Frame
+
 from compas_rhino.geometry import RhinoNurbsSurface
 from compas_rhino.geometry.surfaces import RhinoSurface
 from compas_rhino.conversions import plane_to_compas_frame
@@ -10,10 +15,6 @@ from compas_rhino.conversions import cylinder_to_compas
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
-
-import Rhino
-from Rhino.Geometry import Interval
-from Rhino.Geometry import RevSurface
 
 from .loop import RhinoBrepLoop
 
