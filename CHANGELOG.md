@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [2.0.0-alpha.2] 2023-11-07
+
+### Added
+
 * Added `Frame.axes`
 * Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
 * Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
