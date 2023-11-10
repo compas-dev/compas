@@ -192,12 +192,12 @@ def network_is_planar(network):
 
     """
     try:
-        import planarity
+        import networkx as nx
     except ImportError:
-        print("Planarity is not installed.")
+        print("NetworkX is not installed. Get NetworkX at https://networkx.github.io/.")
         raise
 
-    return planarity.is_planar(list(network.edges()))
+    return nx.is_planar(network.to_networkx())
 
 
 def network_is_planar_embedding(network):
