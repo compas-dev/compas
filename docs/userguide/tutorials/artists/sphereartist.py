@@ -1,11 +1,11 @@
 from compas.geometry import Sphere
-from compas.artists import Artist
+from compas.scene import SceneObject
 
-Artist.clear()
+SceneObject.clear()
 
 sphere = Sphere(radius=1.0)
 
-artist = Artist(sphere)
+artist = SceneObject(sphere)
 artist.draw(color=(1.0, 0.0, 0.0))
 
-Artist.redraw()
+SceneObject.redraw()

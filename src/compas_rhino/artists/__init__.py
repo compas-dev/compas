@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from compas.plugins import plugin
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 from compas.geometry import Circle
 from compas.geometry import Ellipse
@@ -71,28 +71,28 @@ def redraw_rhino():
 
 @plugin(category="factories", requires=["Rhino"])
 def register_artists():
-    Artist.register(Circle, CircleArtist, context="Rhino")
-    Artist.register(Ellipse, EllipseArtist, context="Rhino")
-    Artist.register(Frame, FrameArtist, context="Rhino")
-    Artist.register(Line, LineArtist, context="Rhino")
-    Artist.register(Plane, PlaneArtist, context="Rhino")
-    Artist.register(Point, PointArtist, context="Rhino")
-    Artist.register(Polygon, PolygonArtist, context="Rhino")
-    Artist.register(Polyline, PolylineArtist, context="Rhino")
-    Artist.register(Vector, VectorArtist, context="Rhino")
-    Artist.register(Box, BoxArtist, context="Rhino")
-    Artist.register(Capsule, CapsuleArtist, context="Rhino")
-    Artist.register(Cone, ConeArtist, context="Rhino")
-    Artist.register(Cylinder, CylinderArtist, context="Rhino")
-    Artist.register(Polyhedron, PolyhedronArtist, context="Rhino")
-    Artist.register(Sphere, SphereArtist, context="Rhino")
-    Artist.register(Torus, TorusArtist, context="Rhino")
-    Artist.register(Mesh, MeshArtist, context="Rhino")
-    Artist.register(Network, NetworkArtist, context="Rhino")
-    Artist.register(VolMesh, VolMeshArtist, context="Rhino")
-    Artist.register(Curve, CurveArtist, context="Rhino")
-    Artist.register(Surface, SurfaceArtist, context="Rhino")
-    Artist.register(Brep, BrepArtist, context="Rhino")
+    SceneObject.register(Circle, CircleArtist, context="Rhino")
+    SceneObject.register(Ellipse, EllipseArtist, context="Rhino")
+    SceneObject.register(Frame, FrameArtist, context="Rhino")
+    SceneObject.register(Line, LineArtist, context="Rhino")
+    SceneObject.register(Plane, PlaneArtist, context="Rhino")
+    SceneObject.register(Point, PointArtist, context="Rhino")
+    SceneObject.register(Polygon, PolygonArtist, context="Rhino")
+    SceneObject.register(Polyline, PolylineArtist, context="Rhino")
+    SceneObject.register(Vector, VectorArtist, context="Rhino")
+    SceneObject.register(Box, BoxArtist, context="Rhino")
+    SceneObject.register(Capsule, CapsuleArtist, context="Rhino")
+    SceneObject.register(Cone, ConeArtist, context="Rhino")
+    SceneObject.register(Cylinder, CylinderArtist, context="Rhino")
+    SceneObject.register(Polyhedron, PolyhedronArtist, context="Rhino")
+    SceneObject.register(Sphere, SphereArtist, context="Rhino")
+    SceneObject.register(Torus, TorusArtist, context="Rhino")
+    SceneObject.register(Mesh, MeshArtist, context="Rhino")
+    SceneObject.register(Network, NetworkArtist, context="Rhino")
+    SceneObject.register(VolMesh, VolMeshArtist, context="Rhino")
+    SceneObject.register(Curve, CurveArtist, context="Rhino")
+    SceneObject.register(Surface, SurfaceArtist, context="Rhino")
+    SceneObject.register(Brep, BrepArtist, context="Rhino")
     print("Rhino Artists registered.")
 
 

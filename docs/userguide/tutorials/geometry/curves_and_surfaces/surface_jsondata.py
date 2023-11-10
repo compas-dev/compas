@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.geometry import NurbsSurface
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
 points = [
@@ -29,17 +29,17 @@ other = NurbsSurface.from_jsonstring(string)
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
 u = surface.u_isocurve(0.5 * sum(surface.u_domain))
 v = surface.v_isocurve(0.5 * sum(surface.v_domain))
 
-Artist(Polyline(u.locus())).draw()
-Artist(Polyline(v.locus())).draw()
+SceneObject(Polyline(u.locus())).draw()
+SceneObject(Polyline(v.locus())).draw()
 
 # for curve in surface.boundary():
 #     Artist(Polyline(curve.locus())).draw()
 
-Artist(other).draw()
+SceneObject(other).draw()
 
-Artist.redraw()
+SceneObject.redraw()

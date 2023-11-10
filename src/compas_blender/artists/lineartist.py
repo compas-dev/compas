@@ -9,11 +9,11 @@ from compas.colors import Color
 
 from compas_blender import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from compas_blender.artists import BlenderArtist
 
 
-class LineArtist(BlenderArtist, GeometryArtist):
+class LineArtist(BlenderArtist, GeometryObject):
     """Artist for drawing lines in Blender.
 
     Parameters

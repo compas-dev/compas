@@ -6,13 +6,13 @@ from abc import abstractmethod
 
 from compas.colors import Color
 from compas.geometry import transform_points
-from .artist import Artist
+from .sceneobject import SceneObject
 from .descriptors.color import ColorAttribute
 from .descriptors.colordict import ColorDictAttribute
 
 
-class VolMeshArtist(Artist):
-    """Artist for drawing volmesh data structures.
+class VolMeshObject(SceneObject):
+    """Sceneobject for drawing volmesh data structures.
 
     Parameters
     ----------
@@ -22,7 +22,7 @@ class VolMeshArtist(Artist):
     Attributes
     ----------
     volmesh : :class:`~compas.datastructures.VolMesh`
-        The COMPAS volmesh associated with the artist.
+        The COMPAS volmesh associated with the sceneobject.
     vertex_xyz : dict[int, list[float]]
         The view coordinates of the vertices.
         By default, the actual vertex coordinates are used.
@@ -41,8 +41,8 @@ class VolMeshArtist(Artist):
 
     See Also
     --------
-    :class:`compas.artists.NetworkArtist`
-    :class:`compas.artists.MeshArtist`
+    :class:`compas.scene.NetworkObject`
+    :class:`compas.scene.MeshObject`
 
     """
 
@@ -54,7 +54,7 @@ class VolMeshArtist(Artist):
     cell_color = ColorDictAttribute(default=Color.grey())
 
     def __init__(self, volmesh, **kwargs):
-        super(VolMeshArtist, self).__init__(item=volmesh, **kwargs)
+        super(VolMeshObject, self).__init__(item=volmesh, **kwargs)
         self._volmesh = None
         self._vertex_xyz = None
         self.volmesh = volmesh

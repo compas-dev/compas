@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.utilities import meshgrid, flatten
 from compas.geometry import NurbsSurface
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
 points = [
@@ -24,11 +24,11 @@ frames = [surface.frame_at(u, v) for u, v in zip(flatten(U), flatten(V))]
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
-Artist(surface).draw()
+SceneObject(surface).draw()
 
 for frame in frames:
-    Artist(frame).draw()
+    SceneObject(frame).draw()
 
-Artist.redraw()
+SceneObject.redraw()

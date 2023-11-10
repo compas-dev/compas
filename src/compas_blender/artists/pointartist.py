@@ -6,11 +6,11 @@ import bpy  # type: ignore
 from compas.geometry import Point
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 
-class PointArtist(BlenderArtist, GeometryArtist):
+class PointArtist(BlenderArtist, GeometryObject):
     """Artist for drawing points in Blender.
 
     Parameters

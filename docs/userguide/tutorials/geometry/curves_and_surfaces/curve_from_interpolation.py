@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.geometry import Polyline, Bezier
 from compas.geometry import NurbsCurve
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
 
@@ -15,12 +15,12 @@ curve = NurbsCurve.from_interpolation(points)
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
-Artist(curve).draw(color=Color.green())
-Artist(Polyline(curve.points)).draw(show_points=True)
+SceneObject(curve).draw(color=Color.green())
+SceneObject(Polyline(curve.points)).draw(show_points=True)
 
 for point in points:
-    Artist(point).draw()
+    SceneObject(point).draw()
 
-Artist.redraw()
+SceneObject.redraw()

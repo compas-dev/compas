@@ -4,14 +4,14 @@ from __future__ import division
 
 import scriptcontext as sc  # type: ignore
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from .artist import RhinoArtist
 from ._helpers import attributes
 
 
-class PolyhedronArtist(RhinoArtist, GeometryArtist):
+class PolyhedronArtist(RhinoArtist, GeometryObject):
     """Artist for drawing polyhedron shapes.
 
     Parameters

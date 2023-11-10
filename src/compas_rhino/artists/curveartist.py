@@ -4,7 +4,7 @@ from __future__ import division
 
 import scriptcontext as sc  # type: ignore
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
@@ -12,7 +12,7 @@ from .artist import RhinoArtist
 from ._helpers import attributes
 
 
-class CurveArtist(RhinoArtist, GeometryArtist):
+class CurveArtist(RhinoArtist, GeometryObject):
     """Artist for drawing curves.
 
     Parameters

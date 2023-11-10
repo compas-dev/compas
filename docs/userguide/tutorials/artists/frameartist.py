@@ -1,10 +1,10 @@
 from compas.geometry import Frame
-from compas.artists import Artist
+from compas.scene import SceneObject
 
-Artist.clear()
+SceneObject.clear()
 
 frame = Frame.worldXY()
-artist = Artist(frame)
+artist = SceneObject(frame)
 artist.draw()
 
-Artist.redraw()
+SceneObject.redraw()

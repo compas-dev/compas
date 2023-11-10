@@ -4,11 +4,11 @@ from __future__ import division
 
 from compas_rhino import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import GHArtist
 
 
-class LineArtist(GHArtist, GeometryArtist):
+class LineArtist(GHArtist, GeometryObject):
     """Artist for drawing lines.
 
     Parameters

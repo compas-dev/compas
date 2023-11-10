@@ -2,11 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import RhinoArtist
 
 
-class PlaneArtist(RhinoArtist, GeometryArtist):
+class PlaneArtist(RhinoArtist, GeometryObject):
     """Artist for drawing planes.
 
     Parameters

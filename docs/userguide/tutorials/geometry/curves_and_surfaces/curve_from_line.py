@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.geometry import Line
 from compas.geometry import NurbsCurve
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
 
@@ -12,11 +12,11 @@ curve = NurbsCurve.from_line(line)
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
-Artist(curve).draw(color=Color.green())
+SceneObject(curve).draw(color=Color.green())
 
 for point in curve.points:
-    Artist(point).draw()
+    SceneObject(point).draw()
 
-Artist.redraw()
+SceneObject.redraw()

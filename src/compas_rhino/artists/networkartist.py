@@ -9,7 +9,7 @@ import compas_rhino
 from compas.geometry import Line
 from compas.geometry import Cylinder
 from compas.geometry import Sphere
-from compas.artists import NetworkArtist as BaseArtist
+from compas.scene import NetworkObject as BaseArtist
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import sphere_to_rhino

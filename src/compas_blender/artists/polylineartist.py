@@ -6,13 +6,13 @@ import bpy  # type: ignore
 from compas.geometry import Polyline
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class PolylineArtist(BlenderArtist, GeometryArtist):
+class PolylineArtist(BlenderArtist, GeometryObject):
     """Artist for drawing polylines in Blender.
 
     Parameters

@@ -2,7 +2,7 @@ import random
 from compas.geometry import Box, Sphere, Cylinder, Cone, Capsule, Torus, Polyhedron
 from compas.geometry import Plane, Circle, Pointcloud
 from compas.geometry import Translation
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
 shapes = [
@@ -17,11 +17,11 @@ shapes = [
 
 cloud = Pointcloud.from_bounds(8, 5, 3, len(shapes))
 
-Artist.clear()
+SceneObject.clear()
 
 for point, shape in zip(cloud, shapes):
     shape.transform(Translation.from_vector(point))
-    artist = Artist(shape)
+    artist = SceneObject(shape)
     artist.draw(color=Color.from_i(random.random()))
 
-Artist.redraw()
+SceneObject.redraw()

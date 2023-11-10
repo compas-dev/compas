@@ -1,6 +1,6 @@
 from compas.geometry import Point
 from compas.geometry import NurbsCurve
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
 
@@ -17,11 +17,11 @@ print(curve.point_at(t) == closest_point)
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
-Artist(curve, color=Color.from_hex("#0092D2")).draw()
+SceneObject(curve, color=Color.from_hex("#0092D2")).draw()
 
-Artist(projection_point).draw()
-Artist(closest_point).draw()
+SceneObject(projection_point).draw()
+SceneObject(closest_point).draw()
 
-Artist.redraw()
+SceneObject.redraw()

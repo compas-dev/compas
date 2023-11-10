@@ -1,8 +1,8 @@
 import pytest  # noqa: F401
 
 import compas
-from compas.artists import Artist
-from compas.artists.artist import NoArtistContextError
+from compas.scene import SceneObject
+from compas.scene.sceneobject import NoArtistContextError
 
 
 if not compas.IPY:
@@ -12,20 +12,20 @@ if not compas.IPY:
         # before each test
         yield
         # after each test, reset artists
-        Artist.ITEM_ARTIST.clear()
-        Artist._Artist__ARTISTS_REGISTERED = False  # type: ignore
+        SceneObject.ITEM_ARTIST.clear()
+        SceneObject._Artist__ARTISTS_REGISTERED = False  # type: ignore
 
 
 def register_fake_context():
-    Artist.register(FakeItem, FakeArtist, context="fake")
+    SceneObject.register(FakeItem, FakeArtist, context="fake")
 
 
-class FakeArtist(Artist):
+class FakeArtist(SceneObject):
     def draw(self):
         pass
 
 
-class FakeSubArtist(Artist):
+class FakeSubArtist(SceneObject):
     def draw(self):
         pass
 
@@ -39,26 +39,26 @@ class FakeSubItem(FakeItem):
 
 
 def test_get_artist_cls_with_orderly_registration():
-    Artist.register(FakeItem, FakeArtist, context="fake")
-    Artist.register(FakeSubItem, FakeSubArtist, context="fake")
+    SceneObject.register(FakeItem, FakeArtist, context="fake")
+    SceneObject.register(FakeSubItem, FakeSubArtist, context="fake")
     item = FakeItem()
-    artist = Artist(item, context="fake")
+    artist = SceneObject(item, context="fake")
     assert isinstance(artist, FakeArtist)
 
     item = FakeSubItem()
-    artist = Artist(item, context="fake")
+    artist = SceneObject(item, context="fake")
     assert isinstance(artist, FakeSubArtist)
 
 
 def test_get_artist_cls_with_out_of_order_registration():
-    Artist.register(FakeSubItem, FakeSubArtist, context="fake")
-    Artist.register(FakeItem, FakeArtist, context="fake")
+    SceneObject.register(FakeSubItem, FakeSubArtist, context="fake")
+    SceneObject.register(FakeItem, FakeArtist, context="fake")
     item = FakeItem()
-    artist = Artist(item, context="fake")
+    artist = SceneObject(item, context="fake")
     assert isinstance(artist, FakeArtist)
 
     item = FakeSubItem()
-    artist = Artist(item, context="fake")
+    artist = SceneObject(item, context="fake")
     assert isinstance(artist, FakeSubArtist)
 
 
@@ -66,20 +66,20 @@ if not compas.IPY:
 
     def test_artist_auto_context_discovery(mocker):
         mocker.patch("compas.artists.Artist.register_artists")
-        Artist.register_artists.side_effect = register_fake_context
-        Artist._Artist__ARTISTS_REGISTERED = False  # type: ignore
+        SceneObject.register_artists.side_effect = register_fake_context
+        SceneObject._Artist__ARTISTS_REGISTERED = False  # type: ignore
 
         item = FakeItem()
-        artist = Artist(item)
+        artist = SceneObject(item)
 
         assert isinstance(artist, FakeArtist)
 
     def test_artist_auto_context_discovery_viewer(mocker):
         mocker.patch("compas.artists.artist.is_viewer_open", return_value=True)
-        Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeArtist}
+        SceneObject.ITEM_ARTIST["Viewer"] = {FakeItem: FakeArtist}
 
         item = FakeSubItem()
-        artist = Artist(item)
+        artist = SceneObject(item)
 
         assert isinstance(artist, FakeArtist)
 
@@ -92,11 +92,11 @@ if not compas.IPY:
         class FakePlotterArtist(FakeArtist):
             pass
 
-        Artist.ITEM_ARTIST["Viewer"] = {FakeItem: FakeViewerArtist}
-        Artist.ITEM_ARTIST["Plotter"] = {FakeItem: FakePlotterArtist}
+        SceneObject.ITEM_ARTIST["Viewer"] = {FakeItem: FakeViewerArtist}
+        SceneObject.ITEM_ARTIST["Plotter"] = {FakeItem: FakePlotterArtist}
 
         item = FakeSubItem()
-        artist = Artist(item)
+        artist = SceneObject(item)
 
         assert isinstance(artist, FakeViewerArtist)
 
@@ -107,4 +107,4 @@ if not compas.IPY:
 
         with pytest.raises(NoArtistContextError):
             item = FakeSubItem()
-            _ = Artist(item)
+            _ = SceneObject(item)

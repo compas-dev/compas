@@ -2,10 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
-class GHArtist(Artist):
+class GHArtist(SceneObject):
     """Base class for all GH artists."""
 
     def __init__(self, **kwargs):

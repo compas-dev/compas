@@ -6,13 +6,13 @@ import bpy  # type: ignore
 from compas.geometry import Surface
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from compas_blender.artists import BlenderArtist
 
 from compas_blender import conversions
 
 
-class SurfaceArtist(BlenderArtist, GeometryArtist):
+class SurfaceArtist(BlenderArtist, GeometryObject):
     """Artist for drawing surfaces in Blender.
 
     Parameters

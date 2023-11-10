@@ -17,7 +17,7 @@ from compas.geometry import centroid_points
 from compas.geometry import scale_vector
 from compas.colors import Color
 
-from compas.artists import MeshArtist as BaseArtist
+from compas.scene import MeshObject as BaseArtist
 from .artist import BlenderArtist
 
 from compas_blender import conversions

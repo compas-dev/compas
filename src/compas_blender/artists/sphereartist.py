@@ -7,13 +7,13 @@ import bpy  # type: ignore
 from compas.geometry import Sphere
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class SphereArtist(BlenderArtist, GeometryArtist):
+class SphereArtist(BlenderArtist, GeometryObject):
     """Artist for drawing sphere shapes in Blender.
 
     Parameters

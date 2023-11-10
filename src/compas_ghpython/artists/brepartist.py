@@ -4,11 +4,11 @@ from __future__ import print_function
 
 from compas_rhino import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import GHArtist
 
 
-class BrepArtist(GHArtist, GeometryArtist):
+class BrepArtist(GHArtist, GeometryObject):
     """An artist for drawing a brep in Grasshopper.
 
     Parameters

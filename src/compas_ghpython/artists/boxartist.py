@@ -4,11 +4,11 @@ from __future__ import division
 
 from compas_rhino import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import GHArtist
 
 
-class BoxArtist(GHArtist, GeometryArtist):
+class BoxArtist(GHArtist, GeometryObject):
     """Artist for drawing box shapes.
 
     Parameters

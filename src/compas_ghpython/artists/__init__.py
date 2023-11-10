@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from compas.plugins import plugin
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 from compas.geometry import Box
 from compas.geometry import Capsule
@@ -52,27 +52,27 @@ from .brepartist import BrepArtist
 
 @plugin(category="factories", requires=["Rhino"])
 def register_artists():
-    Artist.register(Box, BoxArtist, context="Grasshopper")
-    Artist.register(Capsule, CapsuleArtist, context="Grasshopper")
-    Artist.register(Circle, CircleArtist, context="Grasshopper")
-    Artist.register(Cone, ConeArtist, context="Grasshopper")
-    Artist.register(Curve, CurveArtist, context="Grasshopper")
-    Artist.register(Cylinder, CylinderArtist, context="Grasshopper")
-    Artist.register(Ellipse, EllipseArtist, context="Grasshopper")
-    Artist.register(Frame, FrameArtist, context="Grasshopper")
-    Artist.register(Line, LineArtist, context="Grasshopper")
-    Artist.register(Mesh, MeshArtist, context="Grasshopper")
-    Artist.register(Network, NetworkArtist, context="Grasshopper")
-    Artist.register(Point, PointArtist, context="Grasshopper")
-    Artist.register(Polygon, PolygonArtist, context="Grasshopper")
-    Artist.register(Polyhedron, PolyhedronArtist, context="Grasshopper")
-    Artist.register(Polyline, PolylineArtist, context="Grasshopper")
-    Artist.register(Sphere, SphereArtist, context="Grasshopper")
-    Artist.register(Surface, SurfaceArtist, context="Grasshopper")
-    Artist.register(Torus, TorusArtist, context="Grasshopper")
-    Artist.register(Vector, VectorArtist, context="Grasshopper")
-    Artist.register(VolMesh, VolMeshArtist, context="Grasshopper")
-    Artist.register(Brep, BrepArtist, context="Grasshopper")
+    SceneObject.register(Box, BoxArtist, context="Grasshopper")
+    SceneObject.register(Capsule, CapsuleArtist, context="Grasshopper")
+    SceneObject.register(Circle, CircleArtist, context="Grasshopper")
+    SceneObject.register(Cone, ConeArtist, context="Grasshopper")
+    SceneObject.register(Curve, CurveArtist, context="Grasshopper")
+    SceneObject.register(Cylinder, CylinderArtist, context="Grasshopper")
+    SceneObject.register(Ellipse, EllipseArtist, context="Grasshopper")
+    SceneObject.register(Frame, FrameArtist, context="Grasshopper")
+    SceneObject.register(Line, LineArtist, context="Grasshopper")
+    SceneObject.register(Mesh, MeshArtist, context="Grasshopper")
+    SceneObject.register(Network, NetworkArtist, context="Grasshopper")
+    SceneObject.register(Point, PointArtist, context="Grasshopper")
+    SceneObject.register(Polygon, PolygonArtist, context="Grasshopper")
+    SceneObject.register(Polyhedron, PolyhedronArtist, context="Grasshopper")
+    SceneObject.register(Polyline, PolylineArtist, context="Grasshopper")
+    SceneObject.register(Sphere, SphereArtist, context="Grasshopper")
+    SceneObject.register(Surface, SurfaceArtist, context="Grasshopper")
+    SceneObject.register(Torus, TorusArtist, context="Grasshopper")
+    SceneObject.register(Vector, VectorArtist, context="Grasshopper")
+    SceneObject.register(VolMesh, VolMeshArtist, context="Grasshopper")
+    SceneObject.register(Brep, BrepArtist, context="Grasshopper")
     print("GH Artists registered.")
 
 

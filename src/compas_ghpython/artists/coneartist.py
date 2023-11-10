@@ -4,11 +4,11 @@ from __future__ import division
 
 from compas_rhino import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import GHArtist
 
 
-class ConeArtist(GHArtist, GeometryArtist):
+class ConeArtist(GHArtist, GeometryObject):
     """Artist for drawing cone shapes.
 
     Parameters

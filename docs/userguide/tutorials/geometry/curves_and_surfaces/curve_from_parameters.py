@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.geometry import NurbsCurve
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
 
@@ -19,9 +19,9 @@ curve = NurbsCurve.from_parameters(
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
-Artist(curve).draw(color=Color.green())
-Artist(Polyline(curve.points)).draw(show_points=True)
+SceneObject(curve).draw(color=Color.green())
+SceneObject(Polyline(curve.points)).draw(show_points=True)
 
-Artist.redraw()
+SceneObject.redraw()

@@ -5,11 +5,11 @@ from __future__ import print_function
 from compas_rhino import conversions
 
 from compas.geometry import Point
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import GHArtist
 
 
-class VectorArtist(GHArtist, GeometryArtist):
+class VectorArtist(GHArtist, GeometryObject):
     """Artist for drawing vectors.
 
     Parameters

@@ -6,13 +6,13 @@ import bpy  # type: ignore
 import compas_blender
 
 from compas.colors import Color
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.geometry import Transformation
 
 from compas_blender import conversions
 
 
-class BlenderArtist(Artist):
+class BlenderArtist(SceneObject):
     """Base class for all Blender artists.
 
     Parameters

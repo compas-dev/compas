@@ -8,11 +8,11 @@ from compas.colors import Color
 
 from compas_blender import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 
-class CylinderArtist(BlenderArtist, GeometryArtist):
+class CylinderArtist(BlenderArtist, GeometryObject):
     """Artist for drawing cylinder shapes in Blender.
 
     Parameters

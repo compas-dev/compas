@@ -1,7 +1,7 @@
 import compas_blender
 
 from compas.plugins import plugin
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 from compas.geometry import Box
 from compas.geometry import Capsule
@@ -59,26 +59,26 @@ def redraw_blender():
 
 @plugin(category="factories", requires=["bpy"])
 def register_artists():
-    Artist.register(Box, BoxArtist, context="Blender")
-    Artist.register(Capsule, CapsuleArtist, context="Blender")
-    Artist.register(Circle, CircleArtist, context="Blender")
-    Artist.register(Cone, ConeArtist, context="Blender")
-    Artist.register(Curve, CurveArtist, context="Blender")
-    Artist.register(Cylinder, CylinderArtist, context="Blender")
-    Artist.register(Frame, FrameArtist, context="Blender")
-    Artist.register(Line, LineArtist, context="Blender")
-    Artist.register(Mesh, MeshArtist, context="Blender")
-    Artist.register(Network, NetworkArtist, context="Blender")
-    Artist.register(Point, PointArtist, context="Blender")
-    Artist.register(Pointcloud, PointcloudArtist, context="Blender")
-    Artist.register(Polygon, PolygonArtist, context="Blender")
-    Artist.register(Polyhedron, PolyhedronArtist, context="Blender")
-    Artist.register(Polyline, PolylineArtist, context="Blender")
-    Artist.register(Sphere, SphereArtist, context="Blender")
-    Artist.register(Surface, SurfaceArtist, context="Blender")
-    Artist.register(Torus, TorusArtist, context="Blender")
-    Artist.register(Vector, VectorArtist, context="Blender")
-    Artist.register(VolMesh, VolMeshArtist, context="Blender")
+    SceneObject.register(Box, BoxArtist, context="Blender")
+    SceneObject.register(Capsule, CapsuleArtist, context="Blender")
+    SceneObject.register(Circle, CircleArtist, context="Blender")
+    SceneObject.register(Cone, ConeArtist, context="Blender")
+    SceneObject.register(Curve, CurveArtist, context="Blender")
+    SceneObject.register(Cylinder, CylinderArtist, context="Blender")
+    SceneObject.register(Frame, FrameArtist, context="Blender")
+    SceneObject.register(Line, LineArtist, context="Blender")
+    SceneObject.register(Mesh, MeshArtist, context="Blender")
+    SceneObject.register(Network, NetworkArtist, context="Blender")
+    SceneObject.register(Point, PointArtist, context="Blender")
+    SceneObject.register(Pointcloud, PointcloudArtist, context="Blender")
+    SceneObject.register(Polygon, PolygonArtist, context="Blender")
+    SceneObject.register(Polyhedron, PolyhedronArtist, context="Blender")
+    SceneObject.register(Polyline, PolylineArtist, context="Blender")
+    SceneObject.register(Sphere, SphereArtist, context="Blender")
+    SceneObject.register(Surface, SurfaceArtist, context="Blender")
+    SceneObject.register(Torus, TorusArtist, context="Blender")
+    SceneObject.register(Vector, VectorArtist, context="Blender")
+    SceneObject.register(VolMesh, VolMeshArtist, context="Blender")
     print("Blender Artists registered.")
 
 

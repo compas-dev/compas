@@ -6,11 +6,11 @@ from compas.colors import Color
 
 from compas_rhino import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import GHArtist
 
 
-class PolygonArtist(GHArtist, GeometryArtist):
+class PolygonArtist(GHArtist, GeometryObject):
     """Artist for drawing polygons.
 
     Parameters

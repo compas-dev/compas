@@ -1,10 +1,10 @@
 from compas.geometry import Polyhedron
-from compas.artists import Artist
+from compas.scene import SceneObject
 
-Artist.clear()
+SceneObject.clear()
 
 polyhedron = Polyhedron.from_platonicsolid(f=8)
-artist = Artist(polyhedron)
+artist = SceneObject(polyhedron)
 artist.draw()
 
-Artist.redraw()
+SceneObject.redraw()

@@ -4,7 +4,7 @@ from __future__ import division
 
 from compas_rhino import conversions
 
-from compas.artists import NetworkArtist as BaseArtist
+from compas.scene import NetworkObject as BaseArtist
 from .artist import GHArtist
 
 

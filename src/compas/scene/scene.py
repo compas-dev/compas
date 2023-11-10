@@ -1,7 +1,7 @@
 from compas.data import Data
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 class Scene(Data):
     def __init__(self, name=None):
@@ -19,7 +19,7 @@ class Scene(Data):
         return [node.attributes['sceneobject'] for node in self.tree.nodes if 'sceneobject' in node.attributes]
 
     def add(self, item, parent=None, **kwargs):
-        sceneobject = Artist(item, **kwargs)
+        sceneobject = SceneObject(item, **kwargs)
         name = item.name or item.__class__.__name__
         node = TreeNode(name, attributes={'sceneobject': sceneobject})
 

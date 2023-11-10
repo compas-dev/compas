@@ -1,11 +1,11 @@
 from compas.geometry import Box
-from compas.artists import Artist
+from compas.scene import SceneObject
 
-Artist.clear()
+SceneObject.clear()
 
 box = Box.from_corner_corner_height([0, 0, 0], [1, 1, 0], 3)
 
-artist = Artist(box, layer='Test::Child')
+artist = SceneObject(box, layer='Test::Child')
 artist.draw(color=(0.0, 1.0, 0.0))
 
-Artist.redraw()
+SceneObject.redraw()

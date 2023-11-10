@@ -15,7 +15,7 @@ from compas.geometry import centroid_points
 from compas.geometry import Line
 from compas.colors import Color
 
-from compas.artists import VolMeshArtist as BaseArtist
+from compas.scene import VolMeshObject as BaseArtist
 from .artist import BlenderArtist
 
 from compas_blender import conversions

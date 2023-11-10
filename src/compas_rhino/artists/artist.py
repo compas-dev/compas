@@ -5,10 +5,10 @@ from __future__ import division
 import scriptcontext as sc  # type: ignore
 
 import compas_rhino
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
-class RhinoArtist(Artist):
+class RhinoArtist(SceneObject):
     """Base class for all Rhino artists.
 
     Parameters

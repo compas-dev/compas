@@ -1,13 +1,13 @@
 import compas_rhino
 
 from compas.geometry import Point
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
 compas_rhino.clear()
 
 point = Point(0, 0, 0)
-artist = Artist(point)
+artist = SceneObject(point)
 # artist.color = (0.0, 1.0, 0.0)
 
 for i in range(11):

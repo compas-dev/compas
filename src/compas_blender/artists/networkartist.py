@@ -12,7 +12,7 @@ from compas.datastructures import Network
 from compas.colors import Color
 from compas.geometry import Line
 
-from compas.artists import NetworkArtist as BaseArtist
+from compas.scene import NetworkObject as BaseArtist
 from .artist import BlenderArtist
 
 from compas_blender import conversions

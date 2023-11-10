@@ -4,7 +4,7 @@ from __future__ import division
 
 import scriptcontext as sc  # type: ignore
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
@@ -12,7 +12,7 @@ from .artist import RhinoArtist
 from ._helpers import attributes
 
 
-class BoxArtist(RhinoArtist, GeometryArtist):
+class BoxArtist(RhinoArtist, GeometryObject):
     """Artist for drawing box shapes.
 
     Parameters

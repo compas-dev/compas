@@ -2,11 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from .artist import Artist
+from .sceneobject import SceneObject
 from .descriptors.color import ColorAttribute
 
 
-class GeometryArtist(Artist):
+class GeometryObject(SceneObject):
     """Base class for artists for geometry objects.
 
     Parameters
@@ -26,5 +26,5 @@ class GeometryArtist(Artist):
     color = ColorAttribute(default=None)
 
     def __init__(self, geometry, **kwargs):
-        super(GeometryArtist, self).__init__(item=geometry, **kwargs)
+        super(GeometryObject, self).__init__(item=geometry, **kwargs)
         self.geometry = geometry

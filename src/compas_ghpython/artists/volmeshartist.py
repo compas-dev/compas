@@ -5,7 +5,7 @@ from __future__ import division
 from compas_rhino import conversions
 from compas_rhino.artists._helpers import ngon
 
-from compas.artists import VolMeshArtist as BaseArtist
+from compas.scene import VolMeshObject as BaseArtist
 from .artist import GHArtist
 
 

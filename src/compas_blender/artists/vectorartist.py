@@ -8,13 +8,13 @@ from compas.geometry import Vector
 from compas.geometry import Line
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class VectorArtist(BlenderArtist, GeometryArtist):
+class VectorArtist(BlenderArtist, GeometryObject):
     """Artist for drawing vectors in Blender.
 
     Parameters

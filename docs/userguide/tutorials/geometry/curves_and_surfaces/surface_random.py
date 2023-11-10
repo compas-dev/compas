@@ -1,7 +1,7 @@
 import random
 from compas.geometry import Polyline
 from compas.geometry import NurbsSurface
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
 U = 10
@@ -23,14 +23,14 @@ for u in range(1, U):
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
 for row in surface.points:
-    Artist(Polyline(row)).draw()
+    SceneObject(Polyline(row)).draw()
 
 for col in zip(*list(surface.points)):
-    Artist(Polyline(col)).draw()
+    SceneObject(Polyline(col)).draw()
 
-Artist(surface).draw()
+SceneObject(surface).draw()
 
-Artist.redraw()
+SceneObject.redraw()

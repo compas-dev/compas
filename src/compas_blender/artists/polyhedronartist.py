@@ -6,13 +6,13 @@ import bpy  # type: ignore
 from compas.geometry import Polyhedron
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class PolyhedronArtist(BlenderArtist, GeometryArtist):
+class PolyhedronArtist(BlenderArtist, GeometryObject):
     """Artist for drawing polyhedron shapes in Blender.
 
     Parameters

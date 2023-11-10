@@ -4,7 +4,7 @@ from __future__ import division
 
 import scriptcontext as sc  # type: ignore
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import cone_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
@@ -12,7 +12,7 @@ from .artist import RhinoArtist
 from ._helpers import attributes
 
 
-class ConeArtist(RhinoArtist, GeometryArtist):
+class ConeArtist(RhinoArtist, GeometryObject):
     """Artist for drawing cone shapes.
 
     Parameters

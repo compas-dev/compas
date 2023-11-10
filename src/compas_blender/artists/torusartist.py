@@ -6,13 +6,13 @@ import bpy  # type: ignore
 from compas.geometry import Torus
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class TorusArtist(BlenderArtist, GeometryArtist):
+class TorusArtist(BlenderArtist, GeometryObject):
     """Artist for drawing torus shapes in Blender.
 
     Parameters

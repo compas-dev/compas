@@ -6,12 +6,12 @@ from abc import abstractmethod
 
 from compas.colors import Color
 from compas.geometry import transform_points
-from .artist import Artist
+from .sceneobject import SceneObject
 from .descriptors.colordict import ColorDictAttribute
 
 
-class NetworkArtist(Artist):
-    """Artist for drawing network data structures.
+class NetworkObject(SceneObject):
+    """Sceneobject for drawing network data structures.
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ class NetworkArtist(Artist):
     Attributes
     ----------
     network : :class:`~compas.datastructures.Network`
-        The COMPAS network associated with the artist.
+        The COMPAS network associated with the sceneobject.
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.
@@ -32,8 +32,8 @@ class NetworkArtist(Artist):
 
     See Also
     --------
-    :class:`compas.artists.MeshArtist`
-    :class:`compas.artists.VolMeshArtist`
+    :class:`compas.scene.MeshObject`
+    :class:`compas.scene.VolMeshObject`
 
     """
 
@@ -41,7 +41,7 @@ class NetworkArtist(Artist):
     edge_color = ColorDictAttribute(default=Color.black())
 
     def __init__(self, network, **kwargs):
-        super(NetworkArtist, self).__init__(**kwargs)
+        super(NetworkObject, self).__init__(**kwargs)
         self._network = None
         self._node_xyz = None
         self.network = network

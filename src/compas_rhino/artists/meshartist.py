@@ -12,7 +12,7 @@ from compas.geometry import Cylinder
 from compas.geometry import Sphere
 
 import compas_rhino
-from compas.artists import MeshArtist as BaseArtist
+from compas.scene import MeshObject as BaseArtist
 from compas.colors import Color
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas_rhino.conversions import mesh_to_rhino

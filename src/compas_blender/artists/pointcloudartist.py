@@ -6,13 +6,13 @@ import bpy  # type: ignore
 from compas.geometry import Point
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class PointcloudArtist(BlenderArtist, GeometryArtist):
+class PointcloudArtist(BlenderArtist, GeometryObject):
     """Artist for drawing pointclouds in Blender.
 
     Parameters

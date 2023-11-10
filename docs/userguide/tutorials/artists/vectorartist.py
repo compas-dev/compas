@@ -1,13 +1,13 @@
 from math import pi
 from compas.geometry import Vector
 from compas.geometry import Rotation
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
-Artist.clear()
+SceneObject.clear()
 
 vector = Vector(1, 0, 0)
-artist = Artist(vector)
+artist = SceneObject(vector)
 # artist.color = (0.0, 1.0, 0.0)
 
 # for i in range(11):
@@ -25,4 +25,4 @@ for i in range(11):
     rotation = Rotation.from_axis_and_angle([0, 0, 1], angle=step)
     vector.transform(rotation)
 
-Artist.redraw()
+SceneObject.redraw()

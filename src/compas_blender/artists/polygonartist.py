@@ -9,11 +9,11 @@ from compas.colors import Color
 
 from compas_blender import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 
-class PolygonArtist(BlenderArtist, GeometryArtist):
+class PolygonArtist(BlenderArtist, GeometryObject):
     """Artist for drawing polygons in Blender.
 
     Parameters

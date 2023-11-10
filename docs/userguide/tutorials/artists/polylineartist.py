@@ -1,9 +1,9 @@
 from random import randrange
 from compas.geometry import Polyline
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
-Artist.clear()
+SceneObject.clear()
 
 polyline = Polyline([[0, 0, 0]])
 
@@ -13,8 +13,8 @@ for i, r in enumerate([randrange(1, 20) for _ in range(10)]):
     else:
         polyline.append([polyline.points[-1].x, r, 0])
 
-artist = Artist(polyline)
+artist = SceneObject(polyline)
 artist.color = (0.0, 0.0, 1.0)
 artist.draw()
 
-Artist.redraw()
+SceneObject.redraw()

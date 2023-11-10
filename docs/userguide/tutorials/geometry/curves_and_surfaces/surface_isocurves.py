@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.geometry import NurbsSurface
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
 points = [
@@ -29,12 +29,12 @@ for v in surface.v_space():
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
 for curve in u_curves:
-    Artist(Polyline(curve.locus())).draw()
+    SceneObject(Polyline(curve.locus())).draw()
 
 for curve in v_curves:
-    Artist(Polyline(curve.locus())).draw()
+    SceneObject(Polyline(curve.locus())).draw()
 
-Artist.redraw()
+SceneObject.redraw()

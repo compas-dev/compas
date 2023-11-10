@@ -4,11 +4,11 @@ from __future__ import division
 
 from compas_rhino import conversions
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import GHArtist
 
 
-class CylinderArtist(GHArtist, GeometryArtist):
+class CylinderArtist(GHArtist, GeometryObject):
     """Artist for drawing cylinder shapes.
 
     Parameters

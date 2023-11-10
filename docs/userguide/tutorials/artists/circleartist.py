@@ -1,11 +1,11 @@
 from compas.geometry import Circle
-from compas.artists import Artist
+from compas.scene import SceneObject
 
-Artist.clear()
+SceneObject.clear()
 
 circle = Circle(radius=3.0)
 
-artist = Artist(circle)
+artist = SceneObject(circle)
 artist.draw(color=(0.0, 0.0, 1.0), show_point=True, show_normal=True)
 
-Artist.redraw()
+SceneObject.redraw()

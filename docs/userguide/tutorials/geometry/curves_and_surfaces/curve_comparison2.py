@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.geometry import Polyline, Bezier
 from compas.geometry import NurbsCurve
-from compas.artists import Artist
+from compas.scene import SceneObject
 from compas.colors import Color
 
 
@@ -62,20 +62,20 @@ curve5 = NurbsCurve.from_parameters(
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
-Artist(Polyline(bezier.points)).draw()
-Artist(Polyline(bezier.locus())).draw()
+SceneObject(Polyline(bezier.points)).draw()
+SceneObject(Polyline(bezier.locus())).draw()
 
-Artist(Polyline(curve1.points)).draw(show_points=True)
+SceneObject(Polyline(curve1.points)).draw(show_points=True)
 
 color = Color.red()
 
-Artist(curve1).draw(color=color)
-Artist(curve2).draw(color=color.lightened(factor=20))
-Artist(curve3).draw(color=color.lightened(factor=40))
-Artist(curve4).draw(color=color.lightened(factor=60))
-Artist(curve5).draw(color=color.lightened(factor=80))
+SceneObject(curve1).draw(color=color)
+SceneObject(curve2).draw(color=color.lightened(factor=20))
+SceneObject(curve3).draw(color=color.lightened(factor=40))
+SceneObject(curve4).draw(color=color.lightened(factor=60))
+SceneObject(curve5).draw(color=color.lightened(factor=80))
 # Artist(curve6).draw(color=color.lightened(factor=50))
 
-Artist.redraw()
+SceneObject.redraw()

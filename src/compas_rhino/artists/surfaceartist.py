@@ -4,14 +4,14 @@ from __future__ import division
 
 import scriptcontext as sc  # type: ignore
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import surface_to_rhino
 from .artist import RhinoArtist
 from ._helpers import attributes
 
 
-class SurfaceArtist(RhinoArtist, GeometryArtist):
+class SurfaceArtist(RhinoArtist, GeometryObject):
     """Artist for drawing surfaces.
 
     Parameters

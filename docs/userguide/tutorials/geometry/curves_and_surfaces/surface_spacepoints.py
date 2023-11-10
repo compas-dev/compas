@@ -1,7 +1,7 @@
 from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.geometry import NurbsSurface
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
 points = [
@@ -23,17 +23,17 @@ spacepoints = surface.xyz(nu=50, nv=10)
 # Visualisation
 # ==============================================================================
 
-Artist.clear()
+SceneObject.clear()
 
 for row in surface.points:
-    Artist(Polyline(row)).draw()
+    SceneObject(Polyline(row)).draw()
 
 for col in zip(*list(surface.points)):
-    Artist(Polyline(col)).draw()
+    SceneObject(Polyline(col)).draw()
 
-Artist(surface).draw()
+SceneObject(surface).draw()
 
 for point in spacepoints:
-    Artist(point).draw()
+    SceneObject(point).draw()
 
-Artist.redraw()
+SceneObject.redraw()

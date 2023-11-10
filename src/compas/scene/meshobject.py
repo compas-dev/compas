@@ -5,13 +5,13 @@ from __future__ import division
 from abc import abstractmethod
 
 from compas.geometry import transform_points
-from .artist import Artist
+from .sceneobject import SceneObject
 from .descriptors.color import ColorAttribute
 from .descriptors.colordict import ColorDictAttribute
 
 
-class MeshArtist(Artist):
-    """Base class for all mesh artists.
+class MeshObject(SceneObject):
+    """Base class for all mesh sceneobjects.
 
     Parameters
     ----------
@@ -36,8 +36,8 @@ class MeshArtist(Artist):
 
     See Also
     --------
-    :class:`compas.artists.NetworkArtist`
-    :class:`compas.artists.VolMeshArtist`
+    :class:`compas.scene.NetworkObject`
+    :class:`compas.scene.VolMeshObject`
 
     """
 
@@ -48,7 +48,7 @@ class MeshArtist(Artist):
     face_color = ColorDictAttribute(default=None)
 
     def __init__(self, mesh, **kwargs):
-        super(MeshArtist, self).__init__(item=mesh, **kwargs)
+        super(MeshObject, self).__init__(item=mesh, **kwargs)
         self._mesh = None
         self._vertex_xyz = None
         self.mesh = mesh
@@ -164,7 +164,7 @@ class MeshArtist(Artist):
         """Draw the mesh of the mesh.
 
         .. deprecated:: 1.14.1
-            Use :meth:`~MeshArtist.draw` instead.
+            Use :meth:`~MeshObject.draw` instead.
 
         Returns
         -------

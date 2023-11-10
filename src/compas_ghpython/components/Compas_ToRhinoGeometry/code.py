@@ -3,7 +3,7 @@ Draws COMPAS geometry in Grasshopper.
 """
 from ghpythonlib.componentbase import executingcomponent as component
 
-from compas.artists import Artist
+from compas.scene import SceneObject
 
 
 class CompasToRhinoGeometry(component):
@@ -11,4 +11,4 @@ class CompasToRhinoGeometry(component):
         if not cg:
             return None
 
-        return Artist(cg).draw()
+        return SceneObject(cg).draw()

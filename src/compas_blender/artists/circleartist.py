@@ -6,11 +6,11 @@ import bpy  # type: ignore
 from compas.geometry import Circle
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 
-class CircleArtist(BlenderArtist, GeometryArtist):
+class CircleArtist(BlenderArtist, GeometryObject):
     """Artist for drawing circles in Blender.
 
     Parameters

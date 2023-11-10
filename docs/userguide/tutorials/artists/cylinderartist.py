@@ -1,11 +1,11 @@
 from compas.geometry import Cylinder
-from compas.artists import Artist
+from compas.scene import SceneObject
 
-Artist.clear()
+SceneObject.clear()
 
 cylinder = Cylinder(radius=1.0, height=7.0)
 
-artist = Artist(cylinder)
+artist = SceneObject(cylinder)
 artist.draw(color=(1.0, 0.0, 0.0))
 
-Artist.redraw()
+SceneObject.redraw()

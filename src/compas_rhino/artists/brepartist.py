@@ -7,12 +7,12 @@ import scriptcontext as sc  # type: ignore
 from compas.colors import Color
 from compas_rhino.conversions import brep_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import RhinoArtist
 from ._helpers import attributes
 
 
-class BrepArtist(RhinoArtist, GeometryArtist):
+class BrepArtist(RhinoArtist, GeometryObject):
     """An artist for drawing a RhinoBrep.
 
     Parameters

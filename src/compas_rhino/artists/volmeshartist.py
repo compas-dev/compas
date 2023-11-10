@@ -8,7 +8,7 @@ import scriptcontext as sc  # type: ignore
 import compas_rhino
 from compas.geometry import centroid_points
 from compas.geometry import Line
-from compas.artists import VolMeshArtist as BaseArtist
+from compas.scene import VolMeshObject as BaseArtist
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino

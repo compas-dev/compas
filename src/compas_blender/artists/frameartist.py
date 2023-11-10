@@ -7,11 +7,11 @@ import bpy  # type: ignore
 from compas.geometry import Frame
 from compas.colors import Color
 
-from compas.artists import GeometryArtist
+from compas.scene import GeometryObject
 from .artist import BlenderArtist
 
 
-class FrameArtist(BlenderArtist, GeometryArtist):
+class FrameArtist(BlenderArtist, GeometryObject):
     """Artist for drawing frames in Blender.
 
     Parameters
