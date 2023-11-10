@@ -54,7 +54,7 @@
         <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            1.17.7
+            1.17.8
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -122,8 +122,8 @@ If you don’t have an environment yet with Python 3.9 and COMPAS you can create
 </div>
 <p>Configuring Blender to use the newly installed environment is slightly different per OS.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="82858535-43cc-460c-b3a5-f6ff8971feca" name="5eae9c99-9fe9-4246-88d9-806fc7828fdf" type="radio">
-</input><label class="compas-tab-item-label" for="82858535-43cc-460c-b3a5-f6ff8971feca">
+<input checked="checked" id="86a99fab-9589-4323-b375-4fafb1b3fcf8" name="8a23e4bc-f668-4dbc-a035-1a735699e3c4" type="radio">
+</input><label class="compas-tab-item-label" for="86a99fab-9589-4323-b375-4fafb1b3fcf8">
 Windows</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
 python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>.93
@@ -132,8 +132,8 @@ python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<s
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\\Blender</span> <span class="pre">Foundation\\Blender</span> <span class="pre">2.93\\2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="5284a9bc-4179-4cc4-b9a8-213f8b4ab0cd" name="5eae9c99-9fe9-4246-88d9-806fc7828fdf" type="radio">
-</input><label class="compas-tab-item-label" for="5284a9bc-4179-4cc4-b9a8-213f8b4ab0cd">
+<input id="22eccfae-3593-415c-a561-4a2b73b1525e" name="8a23e4bc-f668-4dbc-a035-1a735699e3c4" type="radio">
+</input><label class="compas-tab-item-label" for="22eccfae-3593-415c-a561-4a2b73b1525e">
 OSX</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
 python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>/Applications/blender.app/Contents/Resources/2.93
@@ -142,8 +142,8 @@ python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<s
 <p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.93</span></code> might be different on your system.
 Check your Blender installation and change the path accordingly.</p>
 </div>
-<input id="e9ca382c-e640-4411-8df7-61dbfca4e8fb" name="5eae9c99-9fe9-4246-88d9-806fc7828fdf" type="radio">
-</input><label class="compas-tab-item-label" for="e9ca382c-e640-4411-8df7-61dbfca4e8fb">
+<input id="909593bf-cc36-4f1f-b6a2-219b1d025595" name="8a23e4bc-f668-4dbc-a035-1a735699e3c4" type="radio">
+</input><label class="compas-tab-item-label" for="909593bf-cc36-4f1f-b6a2-219b1d025595">
 Linux</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span>conda<span class="w"> </span>activate<span class="w"> </span>blender
 python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>~/Blender/2.93
@@ -207,15 +207,15 @@ On Mac or Linux, you should start Blender from the command line.</p>
 <p>By adding the Blender executable to the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable this is really simple.
 Just add the following to your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>.</p>
 <div class="compas-tabs docutils">
-<input checked="checked" id="c8097ba2-b72d-4928-8402-a4d2f8fc5549" name="f1a41e09-078e-40bb-b3c5-3e66219f1e6d" type="radio">
-</input><label class="compas-tab-item-label" for="c8097ba2-b72d-4928-8402-a4d2f8fc5549">
+<input checked="checked" id="65934b93-2220-490d-a769-94e9dc80fb40" name="b606d7ff-64f1-4902-96d1-717db3a8e594" type="radio">
+</input><label class="compas-tab-item-label" for="65934b93-2220-490d-a769-94e9dc80fb40">
 OSX</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/Applications/blender.app/Contents/MacOS:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 </div>
 </div>
-<input id="d48063f4-1604-4cfd-8672-3a7b1507121a" name="f1a41e09-078e-40bb-b3c5-3e66219f1e6d" type="radio">
-</input><label class="compas-tab-item-label" for="d48063f4-1604-4cfd-8672-3a7b1507121a">
+<input id="6570a63f-cf77-4b94-aa08-503899b6a448" name="b606d7ff-64f1-4902-96d1-717db3a8e594" type="radio">
+</input><label class="compas-tab-item-label" for="6570a63f-cf77-4b94-aa08-503899b6a448">
 Linux</label><div class="compas-tab-item-content docutils">
 <div class="language-bash notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;~/Blender/2.83:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 
@@ -402,7 +402,7 @@ if that version can be found in the default installation location.</p>
   <!-- <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
       URL_ROOT: '',
-      VERSION: '1.17.7',
+      VERSION: '1.17.8',
       COLLAPSE_INDEX: false,
       FILE_SUFFIX: '.html',
       HAS_SOURCE: 'false',
