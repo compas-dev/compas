@@ -4,12 +4,12 @@ from __future__ import division
 
 from compas_rhino import conversions
 
-from compas.scene import NetworkObject as BaseArtist
-from .artist import GHArtist
+from compas.scene import NetworkObject as BaseNetworkObject
+from .sceneobject import GHSceneObject
 
 
-class NetworkArtist(GHArtist, BaseArtist):
-    """Artist for drawing network data structures.
+class NetworkObject(GHSceneObject, BaseNetworkObject):
+    """Sceneobject for drawing network data structures.
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ class NetworkArtist(GHArtist, BaseArtist):
     """
 
     def __init__(self, network, **kwargs):
-        super(NetworkArtist, self).__init__(network=network, **kwargs)
+        super(NetworkObject, self).__init__(network=network, **kwargs)
 
     def draw(self):
         """Draw the entire network with default color settings.

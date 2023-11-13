@@ -3,14 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas_rhino import conversions
-from compas_rhino.artists._helpers import ngon
+from compas_rhino.scene._helpers import ngon
 
-from compas.scene import VolMeshObject as BaseArtist
-from .artist import GHArtist
+from compas.scene import VolMeshObject as BaseVolMeshObject
+from .sceneobject import GHSceneObject
 
 
-class VolMeshArtist(GHArtist, BaseArtist):
-    """Artist for drawing volmesh data structures.
+class VolMeshObject(GHSceneObject, BaseVolMeshObject):
+    """Sceneobject for drawing volmesh data structures.
 
     Parameters
     ----------
@@ -22,7 +22,7 @@ class VolMeshArtist(GHArtist, BaseArtist):
     """
 
     def __init__(self, volmesh, **kwargs):
-        super(VolMeshArtist, self).__init__(volmesh=volmesh, **kwargs)
+        super(VolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
 
     def draw(self, cells=None, color=None):
         """Draw a selection of cells.
@@ -34,7 +34,7 @@ class VolMeshArtist(GHArtist, BaseArtist):
             The default is None, in which case all cells are drawn.
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the cells.
-            The default color is :attr:`VolMeshArtist.default_cellcolor`.
+            The default color is :attr:`VolMeshObject.default_cellcolor`.
 
         Returns
         -------
@@ -97,7 +97,7 @@ class VolMeshArtist(GHArtist, BaseArtist):
             The default is None, in which case all faces are drawn.
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color specification for the faces.
-            The default color is :attr:`VolMeshArtist.default_facecolor`.
+            The default color is :attr:`VolMeshObject.default_facecolor`.
 
         Returns
         -------

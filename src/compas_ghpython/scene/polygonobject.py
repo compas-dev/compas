@@ -7,31 +7,31 @@ from compas.colors import Color
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class PolyhedronArtist(GHArtist, GeometryObject):
-    """Artist for drawing polyhedron shapes.
+class PolygonObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing polygons.
 
     Parameters
     ----------
-    polyhedron : :class:`~compas.geometry.Polyhedron`
-        A COMPAS polyhedron.
+    polygon : :class:`~compas.geometry.Polygon`
+        A COMPAS polygon.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, polyhedron, **kwargs):
-        super(PolyhedronArtist, self).__init__(geometry=polyhedron, **kwargs)
+    def __init__(self, polygon, **kwargs):
+        super(PolygonObject, self).__init__(geometry=polygon, **kwargs)
 
-    def draw(self, color=None):
-        """Draw the polyhedron associated with the artist.
+    def draw(self, color=None, show_vertices=False, show_edges=False):
+        """Draw the polygon.
 
         Parameters
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
-            The RGB color of the line.
+            The RGB color of the polygon.
 
         Returns
         -------
@@ -39,7 +39,8 @@ class PolyhedronArtist(GHArtist, GeometryObject):
 
         """
         color = Color.coerce(color) or self.color
-        vertices, faces = self.geometry.to_vertices_and_faces()
+        vertices = self.geometry.vertices
+        faces = self.geometry.faces
 
         geometry = conversions.vertices_and_faces_to_rhino(vertices, faces, color=color)
 

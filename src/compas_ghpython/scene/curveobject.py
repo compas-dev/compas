@@ -5,11 +5,11 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class CurveArtist(GHArtist, GeometryObject):
-    """Artist for drawing curves.
+class CurveObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing curves.
 
     Parameters
     ----------
@@ -24,7 +24,7 @@ class CurveArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, curve, **kwargs):
-        super(CurveArtist, self).__init__(geometry=curve, **kwargs)
+        super(CurveObject, self).__init__(geometry=curve, **kwargs)
 
     def draw(self):
         """Draw the curve.

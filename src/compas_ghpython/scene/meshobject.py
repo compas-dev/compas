@@ -2,15 +2,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.scene import MeshObject as BaseArtist
+from compas.scene import MeshObject as BaseMeshObject
 from compas.colors import Color
 from compas_rhino import conversions
-from compas_rhino.artists._helpers import ngon
-from .artist import GHArtist
+from compas_rhino.scene._helpers import ngon
+from .sceneobject import GHSceneObject
 
 
-class MeshArtist(GHArtist, BaseArtist):
-    """Artist for drawing mesh data structures.
+class MeshObject(GHSceneObject, BaseMeshObject):
+    """Sceneobject for drawing mesh data structures.
 
     Parameters
     ----------
@@ -22,7 +22,7 @@ class MeshArtist(GHArtist, BaseArtist):
     """
 
     def __init__(self, mesh, **kwargs):
-        super(MeshArtist, self).__init__(mesh=mesh, **kwargs)
+        super(MeshObject, self).__init__(mesh=mesh, **kwargs)
 
     def draw(self, color=None, vertexcolors=None, facecolors=None, disjoint=False):
         """Draw the mesh.
@@ -37,7 +37,7 @@ class MeshArtist(GHArtist, BaseArtist):
         :rhino:`Rhino.Geometry.Mesh`
 
         """
-        # the rhino artist can set an overal color and component colors simultaneously
+        # the rhino sceneobject can set an overal color and component colors simultaneously
         # because it can set an overall color on the mesh object attributes
         # this is not possible in GH (since there is no such object)
         # either we set an overall color or we set component colors

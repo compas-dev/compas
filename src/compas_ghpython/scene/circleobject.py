@@ -5,11 +5,11 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class CircleArtist(GHArtist, GeometryObject):
-    """Artist for drawing circles.
+class CircleObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing circles.
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ class CircleArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, circle, **kwargs):
-        super(CircleArtist, self).__init__(geometry=circle, **kwargs)
+        super(CircleObject, self).__init__(geometry=circle, **kwargs)
 
     def draw(self):
         """Draw the circle.

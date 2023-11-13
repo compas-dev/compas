@@ -12,13 +12,13 @@ from compas.datastructures import Network
 from compas.colors import Color
 from compas.geometry import Line
 
-from compas.scene import NetworkObject as BaseArtist
+from compas.scene import NetworkObject as BaseSceneObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class NetworkArtist(BlenderArtist, BaseArtist):
+class NetworkArtist(BlenderArtist, BaseSceneObject):
     """Artist for drawing network data structures in Blender.
 
     Parameters

@@ -5,11 +5,11 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class BoxArtist(GHArtist, GeometryObject):
-    """Artist for drawing box shapes.
+class BoxObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing box shapes.
 
     Parameters
     ----------
@@ -21,10 +21,10 @@ class BoxArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, box, **kwargs):
-        super(BoxArtist, self).__init__(geometry=box, **kwargs)
+        super(BoxObject, self).__init__(geometry=box, **kwargs)
 
     def draw(self):
-        """Draw the box associated with the artist.
+        """Draw the box associated with the sceneobject.
 
         Returns
         -------

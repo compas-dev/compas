@@ -5,33 +5,33 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class TorusArtist(GHArtist, GeometryObject):
-    """Artist for drawing torus shapes.
+class PointObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing points.
 
     Parameters
     ----------
-    torus : :class:`~compas.geometry.Torus`
-        A COMPAS torus.
+    point : :class:`~compas.geometry.Point`
+        A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, torus, **kwargs):
-        super(TorusArtist, self).__init__(geometry=torus, **kwargs)
+    def __init__(self, point, **kwargs):
+        super(PointObject, self).__init__(geometry=point, **kwargs)
 
     def draw(self):
-        """Draw the torus associated with the artist.
+        """Draw the point.
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Torus`
+        :rhino:`Rhino.Geometry.Point3d`
 
         """
-        geometry = conversions.torus_to_rhino(self.geometry)
+        geometry = conversions.point_to_rhino(self.geometry)
 
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))

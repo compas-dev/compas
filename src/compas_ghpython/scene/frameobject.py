@@ -5,11 +5,11 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class FrameArtist(GHArtist, GeometryObject):
-    """Artist for drawing frames.
+class FrameObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing frames.
 
     Parameters
     ----------
@@ -36,7 +36,7 @@ class FrameArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, frame, scale=1.0, **kwargs):
-        super(FrameArtist, self).__init__(geometry=frame, **kwargs)
+        super(FrameObject, self).__init__(geometry=frame, **kwargs)
         self.scale = scale
 
     def draw(self):

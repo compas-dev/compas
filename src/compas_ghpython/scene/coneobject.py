@@ -5,11 +5,11 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class ConeArtist(GHArtist, GeometryObject):
-    """Artist for drawing cone shapes.
+class ConeObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing cone shapes.
 
     Parameters
     ----------
@@ -21,21 +21,20 @@ class ConeArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, cone, **kwargs):
-        super(ConeArtist, self).__init__(geometry=cone, **kwargs)
+        super(ConeObject, self).__init__(geometry=cone, **kwargs)
 
     def draw(self):
-        """Draw the cone associated with the artist.
+        """Draw the cone associated with the sceneobject.
 
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Brep`]
 
         """
-        breps = conversions.cone_to_rhino_brep(self.geometry)
+        brep = conversions.cone_to_rhino_brep(self.geometry)
 
         if self.transformation:
             transformation = conversions.transformation_to_rhino(self.transformation)
-            for geometry in breps:
-                geometry.Transform(transformation)
+            brep.Transform(transformation)
 
-        return breps
+        return brep

@@ -17,13 +17,13 @@ from compas.geometry import centroid_points
 from compas.geometry import scale_vector
 from compas.colors import Color
 
-from compas.scene import MeshObject as BaseArtist
+from compas.scene import MeshObject as BaseMeshObject
 from .artist import BlenderArtist
 
 from compas_blender import conversions
 
 
-class MeshArtist(BlenderArtist, BaseArtist):
+class MeshArtist(BlenderArtist, BaseMeshObject):
     """Artist for drawing mesh data structures in Blender.
 
     Parameters

@@ -45,11 +45,15 @@ class Scene(Data):
 
     def redraw(self):
         sceneobject = None
+
+        drawn_objects = []
         for sceneobject in self.sceneobjects:
-            sceneobject.draw()
+            drawn_objects.append(sceneobject.draw())
 
         if sceneobject:
             sceneobject.redraw()
+        
+        return drawn_objects
 
     def print_hierarchy(self):
         self.tree.print_hierarchy()

@@ -5,36 +5,33 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class SurfaceArtist(GHArtist, GeometryObject):
-    """Artist for drawing surfaces.
+class PolylineObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing polylines.
 
     Parameters
     ----------
-    surface : :class:`~compas.geometry.Surface`
-        A COMPAS surface.
-
-    Other Parameters
-    ----------------
+    polyline : :class:`~compas.geometry.Polyline`
+        A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, surface, **kwargs):
-        super(SurfaceArtist, self).__init__(geometry=surface, **kwargs)
+    def __init__(self, polyline, **kwargs):
+        super(PolylineObject, self).__init__(geometry=polyline, **kwargs)
 
     def draw(self):
-        """Draw the surface.
+        """Draw the polyline.
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Surface`
+        :rhino:`Rhino.Geometry.PolylineCurve`.
 
         """
-        geometry = conversions.surface_to_rhino(self.geometry)
+        geometry = conversions.polyline_to_rhino_curve(self.geometry)
 
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))

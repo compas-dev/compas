@@ -5,33 +5,33 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class LineArtist(GHArtist, GeometryObject):
-    """Artist for drawing lines.
+class SphereObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing sphere shapes.
 
     Parameters
     ----------
-    line : :class:`~compas.geometry.Line`
-        A COMPAS line.
+    sphere : :class:`~compas.geometry.Sphere`
+        A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, line, **kwargs):
-        super(LineArtist, self).__init__(geometry=line, **kwargs)
+    def __init__(self, sphere, **kwargs):
+        super(SphereObject, self).__init__(geometry=sphere, **kwargs)
 
     def draw(self):
-        """Draw the line.
+        """Draw the sphere associated with the sceneobject.
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Line`
+        :rhino:`Rhino.Geometry.Sphere`
 
         """
-        geometry = conversions.line_to_rhino(self.geometry)
+        geometry = conversions.sphere_to_rhino(self.geometry)
 
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))

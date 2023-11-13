@@ -5,11 +5,11 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class CapsuleArtist(GHArtist, GeometryObject):
-    """Artist for drawing capsule shapes.
+class CapsuleObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing capsule shapes.
 
     Parameters
     ----------
@@ -21,10 +21,10 @@ class CapsuleArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, capsule, **kwargs):
-        super(CapsuleArtist, self).__init__(geometry=capsule, **kwargs)
+        super(CapsuleObject, self).__init__(geometry=capsule, **kwargs)
 
     def draw(self):
-        """Draw the capsule associated with the artist.
+        """Draw the capsule associated with the sceneobject.
 
         Returns
         -------

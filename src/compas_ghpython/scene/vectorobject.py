@@ -6,11 +6,11 @@ from compas_rhino import conversions
 
 from compas.geometry import Point
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class VectorArtist(GHArtist, GeometryObject):
-    """Artist for drawing vectors.
+class VectorObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing vectors.
 
     Parameters
     ----------
@@ -22,7 +22,7 @@ class VectorArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, vector, **kwargs):
-        super(VectorArtist, self).__init__(geometry=vector, **kwargs)
+        super(VectorObject, self).__init__(geometry=vector, **kwargs)
 
     def draw(self, point=None, show_point=False):
         """Draw the vector.

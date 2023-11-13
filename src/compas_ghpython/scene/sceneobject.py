@@ -5,11 +5,11 @@ from __future__ import division
 from compas.scene import SceneObject
 
 
-class GHArtist(SceneObject):
+class GHSceneObject(SceneObject):
     """Base class for all GH artists."""
 
     def __init__(self, **kwargs):
-        super(GHArtist, self).__init__(**kwargs)
+        super(GHSceneObject, self).__init__(**kwargs)
 
     def clear(self):
         raise NotImplementedError

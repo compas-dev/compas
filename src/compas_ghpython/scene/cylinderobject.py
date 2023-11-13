@@ -5,11 +5,11 @@ from __future__ import division
 from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .artist import GHArtist
+from .sceneobject import GHSceneObject
 
 
-class CylinderArtist(GHArtist, GeometryObject):
-    """Artist for drawing cylinder shapes.
+class CylinderObject(GHSceneObject, GeometryObject):
+    """Sceneobject for drawing cylinder shapes.
 
     Parameters
     ----------
@@ -21,10 +21,10 @@ class CylinderArtist(GHArtist, GeometryObject):
     """
 
     def __init__(self, cylinder, **kwargs):
-        super(CylinderArtist, self).__init__(geometry=cylinder, **kwargs)
+        super(CylinderObject, self).__init__(geometry=cylinder, **kwargs)
 
     def draw(self, color=None, u=16):
-        """Draw the cylinder associated with the artist.
+        """Draw the cylinder associated with the sceneobject.
 
         Parameters
         ----------
