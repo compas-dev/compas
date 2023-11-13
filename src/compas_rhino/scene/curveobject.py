@@ -6,33 +6,34 @@ import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
 from compas.colors import Color
-from compas_rhino.conversions import line_to_rhino
-from .artist import RhinoArtist
+from compas_rhino.conversions import curve_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class LineArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing lines.
+class CurveObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing curves.
 
     Parameters
     ----------
-    line : :class:`~compas.geometry.Line`
-        A COMPAS line.
+    curve : :class:`~compas.geometry.Curve`
+        A COMPAS curve.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, line, **kwargs):
-        super(LineArtist, self).__init__(geometry=line, **kwargs)
+    def __init__(self, curve, **kwargs):
+        super(CurveObject, self).__init__(geometry=curve, **kwargs)
 
     def draw(self, color=None):
-        """Draw the line.
+        """Draw the curve.
 
         Parameters
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
-            The RGB color of the line.
+            The RGB color of the curve.
 
         Returns
         -------
@@ -43,6 +44,9 @@ class LineArtist(RhinoArtist, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        geometry = line_to_rhino(self.geometry)
+        geometry = curve_to_rhino(self.geometry)
 
-        return sc.doc.Objects.AddLine(geometry, attr)
+        if self.transformation:
+            geometry.Transform(transformation_to_rhino(self.transformation))
+
+        return sc.doc.Objects.AddCurve(geometry, attr)

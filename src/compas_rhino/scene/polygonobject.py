@@ -9,12 +9,12 @@ from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class PolygonArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing polygons.
+class PolygonObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing polygons.
 
     Parameters
     ----------
@@ -26,7 +26,7 @@ class PolygonArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, polygon, **kwargs):
-        super(PolygonArtist, self).__init__(geometry=polygon, **kwargs)
+        super(PolygonObject, self).__init__(geometry=polygon, **kwargs)
 
     def draw(self, color=None):
         """Draw the polygon.

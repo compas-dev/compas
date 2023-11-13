@@ -7,12 +7,12 @@ import scriptcontext as sc  # type: ignore
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class FrameArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing frames.
+class FrameObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing frames.
 
     Parameters
     ----------
@@ -40,7 +40,7 @@ class FrameArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, frame, scale=1.0, **kwargs):
-        super(FrameArtist, self).__init__(geometry=frame, **kwargs)
+        super(FrameObject, self).__init__(geometry=frame, **kwargs)
         self.scale = scale or 1.0
         self.color_origin = Color.black()
         self.color_xaxis = Color.red()

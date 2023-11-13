@@ -3,11 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.scene import GeometryObject
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 
 
-class PlaneArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing planes.
+class PlaneObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing planes.
 
     Parameters
     ----------
@@ -19,7 +19,7 @@ class PlaneArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, plane, **kwargs):
-        super(PlaneArtist, self).__init__(geometry=plane, **kwargs)
+        super(PlaneObject, self).__init__(geometry=plane, **kwargs)
 
     def draw(self):
         """Draw the plane.

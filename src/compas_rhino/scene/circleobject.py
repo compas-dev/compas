@@ -6,35 +6,36 @@ import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
 from compas.colors import Color
-from compas_rhino.conversions import ellipse_to_rhino
+from compas_rhino.conversions import circle_to_rhino
 
+# from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class EllipseArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing ellipses.
+class CircleObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing circles.
 
     Parameters
     ----------
-    ellipse : :class:`~compas.geometry.Ellipse`
-        A COMPAS ellipse.
+    circle : :class:`~compas.geometry.Circle`
+        A COMPAS circle.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, ellipse, **kwargs):
-        super(EllipseArtist, self).__init__(geometry=ellipse, **kwargs)
+    def __init__(self, circle, **kwargs):
+        super(CircleObject, self).__init__(geometry=circle, **kwargs)
 
     def draw(self, color=None):
-        """Draw the ellipse.
+        """Draw the circle.
 
         Parameters
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
-            The RGB color of the ellipse.
+            The RGB color of the circle.
 
         Returns
         -------
@@ -45,9 +46,9 @@ class EllipseArtist(RhinoArtist, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        geometry = ellipse_to_rhino(self.geometry)
+        geometry = circle_to_rhino(self.geometry)
 
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddEllipse(geometry, attr)
+        return sc.doc.Objects.AddCircle(geometry, attr)

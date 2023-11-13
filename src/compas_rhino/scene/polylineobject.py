@@ -8,12 +8,12 @@ from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class PolylineArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing polylines.
+class PolylineObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing polylines.
 
     Parameters
     ----------
@@ -25,7 +25,7 @@ class PolylineArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, polyline, **kwargs):
-        super(PolylineArtist, self).__init__(geometry=polyline, **kwargs)
+        super(PolylineObject, self).__init__(geometry=polyline, **kwargs)
 
     def draw(self, color=None):
         """Draw the polyline.

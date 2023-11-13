@@ -8,12 +8,12 @@ from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import cone_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class ConeArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing cone shapes.
+class ConeObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing cone shapes.
 
     Parameters
     ----------
@@ -25,10 +25,10 @@ class ConeArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, cone, **kwargs):
-        super(ConeArtist, self).__init__(geometry=cone, **kwargs)
+        super(ConeObject, self).__init__(geometry=cone, **kwargs)
 
     def draw(self, color=None):
-        """Draw the cone associated with the artist.
+        """Draw the cone associated with the sceneobject.
 
         Parameters
         ----------

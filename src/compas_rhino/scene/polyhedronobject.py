@@ -6,33 +6,33 @@ import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
 from compas.colors import Color
-from compas_rhino.conversions import torus_to_rhino_brep
-from .artist import RhinoArtist
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class TorusArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing torus shapes.
+class PolyhedronObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing polyhedron shapes.
 
     Parameters
     ----------
-    torus : :class:`~compas.geometry.Torus`
-        A COMPAS torus.
+    polyhedron : :class:`~compas.geometry.Polyhedron`
+        A COMPAS polyhedron.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, torus, **kwargs):
-        super(TorusArtist, self).__init__(geometry=torus, **kwargs)
+    def __init__(self, polyhedron, **kwargs):
+        super(PolyhedronObject, self).__init__(geometry=polyhedron, **kwargs)
 
     def draw(self, color=None):
-        """Draw the torus associated with the artist.
+        """Draw the polyhedron associated with the sceneobject.
 
         Parameters
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
-            The RGB color of the torus.
+            The RGB color of the polyhedron.
 
         Returns
         -------
@@ -42,5 +42,8 @@ class TorusArtist(RhinoArtist, GeometryObject):
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        brep = torus_to_rhino_brep(self.geometry)
-        return sc.doc.Objects.AddBrep(brep, attr)
+
+        vertices = [list(vertex) for vertex in self.geometry.vertices]
+        faces = self.geometry.faces
+
+        return sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces), attr)

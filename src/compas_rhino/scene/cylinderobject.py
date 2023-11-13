@@ -8,12 +8,12 @@ from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import cylinder_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class CylinderArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing cylinder shapes.
+class CylinderObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing cylinder shapes.
 
     Parameters
     ----------
@@ -25,10 +25,10 @@ class CylinderArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, cylinder, **kwargs):
-        super(CylinderArtist, self).__init__(geometry=cylinder, **kwargs)
+        super(CylinderObject, self).__init__(geometry=cylinder, **kwargs)
 
     def draw(self, color=None):
-        """Draw the cylinder associated with the artist.
+        """Draw the cylinder associated with the sceneobject.
 
         Parameters
         ----------

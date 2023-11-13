@@ -8,17 +8,17 @@ import scriptcontext as sc  # type: ignore
 import compas_rhino
 from compas.geometry import centroid_points
 from compas.geometry import Line
-from compas.scene import VolMeshObject as BaseArtist
+from compas.scene import VolMeshObject as BaseVolMeshObject
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 from ._helpers import ngon
 
 
-class VolMeshArtist(RhinoArtist, BaseArtist):
-    """Artist for drawing volmesh data structures.
+class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
+    """Sceneobject for drawing volmesh data structures.
 
     Parameters
     ----------
@@ -30,14 +30,14 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
     """
 
     def __init__(self, volmesh, **kwargs):
-        super(VolMeshArtist, self).__init__(volmesh=volmesh, **kwargs)
+        super(VolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
 
     # ==========================================================================
     # clear
     # ==========================================================================
 
     def clear(self):
-        """Delete all objects drawn by this artist.
+        """Delete all objects drawn by this sceneobject.
 
         Returns
         -------
@@ -48,7 +48,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertices(self):
-        """Delete all vertices drawn by this artist.
+        """Delete all vertices drawn by this sceneobject.
 
         Returns
         -------
@@ -59,7 +59,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
-        """Delete all edges drawn by this artist.
+        """Delete all edges drawn by this sceneobject.
 
         Returns
         -------
@@ -70,7 +70,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_faces(self):
-        """Delete all faces drawn by this artist.
+        """Delete all faces drawn by this sceneobject.
 
         Returns
         -------
@@ -81,7 +81,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_cells(self):
-        """Delete all cells drawn by this artist.
+        """Delete all cells drawn by this sceneobject.
 
         Returns
         -------
@@ -92,7 +92,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexlabels(self):
-        """Delete all vertex labels drawn by this artist.
+        """Delete all vertex labels drawn by this sceneobject.
 
         Returns
         -------
@@ -103,7 +103,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
-        """Delete all edge labels drawn by this artist.
+        """Delete all edge labels drawn by this sceneobject.
 
         Returns
         -------
@@ -114,7 +114,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
-        """Delete all face labels drawn by this artist.
+        """Delete all face labels drawn by this sceneobject.
 
         Returns
         -------
@@ -138,7 +138,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
             The default is None, in which case all cells are drawn.
         color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
             The color of the cells.
-            The default color is :attr:`VolMeshArtist.default_cellcolor`.
+            The default color is :attr:`VolMeshObject.default_cellcolor`.
 
         Returns
         -------

@@ -7,12 +7,12 @@ import scriptcontext as sc  # type: ignore
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class PointArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing points.
+class PointObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing points.
 
     Parameters
     ----------
@@ -24,7 +24,7 @@ class PointArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, point, **kwargs):
-        super(PointArtist, self).__init__(geometry=point, **kwargs)
+        super(PointObject, self).__init__(geometry=point, **kwargs)
 
     def draw(self, color=None):
         """Draw the point.

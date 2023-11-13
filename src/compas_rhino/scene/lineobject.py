@@ -6,36 +6,33 @@ import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
 from compas.colors import Color
-from compas_rhino.conversions import circle_to_rhino
-
-# from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import transformation_to_rhino
-from .artist import RhinoArtist
+from compas_rhino.conversions import line_to_rhino
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class CircleArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing circles.
+class LineObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing lines.
 
     Parameters
     ----------
-    circle : :class:`~compas.geometry.Circle`
-        A COMPAS circle.
+    line : :class:`~compas.geometry.Line`
+        A COMPAS line.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, circle, **kwargs):
-        super(CircleArtist, self).__init__(geometry=circle, **kwargs)
+    def __init__(self, line, **kwargs):
+        super(LineObject, self).__init__(geometry=line, **kwargs)
 
     def draw(self, color=None):
-        """Draw the circle.
+        """Draw the line.
 
         Parameters
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
-            The RGB color of the circle.
+            The RGB color of the line.
 
         Returns
         -------
@@ -46,9 +43,6 @@ class CircleArtist(RhinoArtist, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        geometry = circle_to_rhino(self.geometry)
+        geometry = line_to_rhino(self.geometry)
 
-        if self.transformation:
-            geometry.Transform(transformation_to_rhino(self.transformation))
-
-        return sc.doc.Objects.AddCircle(geometry, attr)
+        return sc.doc.Objects.AddLine(geometry, attr)

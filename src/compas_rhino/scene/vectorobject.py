@@ -8,12 +8,12 @@ from compas.geometry import Point
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class VectorArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing vectors.
+class VectorObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing vectors.
 
     Parameters
     ----------
@@ -25,7 +25,7 @@ class VectorArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, vector, **kwargs):
-        super(VectorArtist, self).__init__(geometry=vector, **kwargs)
+        super(VectorObject, self).__init__(geometry=vector, **kwargs)
 
     def draw(self, color=None, point=None):
         """Draw the vector.

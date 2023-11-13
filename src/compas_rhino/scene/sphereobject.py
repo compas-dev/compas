@@ -6,41 +6,40 @@ import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
 from compas.colors import Color
-from compas_rhino.conversions import surface_to_rhino
-from .artist import RhinoArtist
+from compas_rhino.conversions import sphere_to_rhino
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class SurfaceArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing surfaces.
+class SphereObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing sphere shapes.
 
     Parameters
     ----------
-    surface : :class:`~compas.geometry.Geometry`
-        A COMPAS surface.
+    sphere : :class:`~compas.geometry.Sphere`
+        A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, surface, **kwargs):
-        super(SurfaceArtist, self).__init__(geometry=surface, **kwargs)
+    def __init__(self, sphere, **kwargs):
+        super(SphereObject, self).__init__(geometry=sphere, **kwargs)
 
     def draw(self, color=None):
-        """Draw the surface.
+        """Draw the sphere associated with the sceneobject.
 
         Parameters
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
-            The RGB color of the surface.
+            The RGB color of the sphere.
 
         Returns
         -------
         System.Guid
-            The GUID of the created Rhino object.
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        surface = surface_to_rhino(self.geometry)
-        return sc.doc.Objects.AddSurface(surface, attr)
+        return sc.doc.Objects.AddSphere(sphere_to_rhino(self.geometry), attr)

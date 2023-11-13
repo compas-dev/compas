@@ -12,7 +12,7 @@ from compas.geometry import Cylinder
 from compas.geometry import Sphere
 
 import compas_rhino
-from compas.scene import MeshObject as BaseArtist
+from compas.scene import MeshObject as BaseMeshObject
 from compas.colors import Color
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas_rhino.conversions import mesh_to_rhino
@@ -21,13 +21,13 @@ from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino_brep
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 from ._helpers import ngon
 
 
-class MeshArtist(RhinoArtist, BaseArtist):
-    """Artists for drawing mesh data structures.
+class MeshObject(RhinoSceneObject, BaseMeshObject):
+    """Sceneobject for drawing mesh data structures.
 
     Parameters
     ----------
@@ -39,14 +39,14 @@ class MeshArtist(RhinoArtist, BaseArtist):
     """
 
     def __init__(self, mesh, **kwargs):
-        super(MeshArtist, self).__init__(mesh=mesh, **kwargs)
+        super(MeshObject, self).__init__(mesh=mesh, **kwargs)
 
     # ==========================================================================
     # clear
     # ==========================================================================
 
     def clear(self):
-        """Delete all objects drawn by this artist.
+        """Delete all objects drawn by this sceneobject.
 
         Returns
         -------
@@ -57,7 +57,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertices(self):
-        """Delete all vertices drawn by this artist.
+        """Delete all vertices drawn by this sceneobject.
 
         Returns
         -------
@@ -68,7 +68,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
-        """Delete all edges drawn by this artist.
+        """Delete all edges drawn by this sceneobject.
 
         Returns
         -------
@@ -79,7 +79,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_faces(self):
-        """Delete all faces drawn by this artist.
+        """Delete all faces drawn by this sceneobject.
 
         Returns
         -------
@@ -90,7 +90,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexnormals(self):
-        """Delete all vertex normals drawn by this artist.
+        """Delete all vertex normals drawn by this sceneobject.
 
         Returns
         -------
@@ -101,7 +101,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facenormals(self):
-        """Delete all face normals drawn by this artist.
+        """Delete all face normals drawn by this sceneobject.
 
         Returns
         -------
@@ -112,7 +112,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexlabels(self):
-        """Delete all vertex labels drawn by this artist.
+        """Delete all vertex labels drawn by this sceneobject.
 
         Returns
         -------
@@ -123,7 +123,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
-        """Delete all edge labels drawn by this artist.
+        """Delete all edge labels drawn by this sceneobject.
 
         Returns
         -------
@@ -134,7 +134,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
-        """Delete all face labels drawn by this artist.
+        """Delete all face labels drawn by this sceneobject.
 
         Returns
         -------
@@ -155,7 +155,7 @@ class MeshArtist(RhinoArtist, BaseArtist):
         ----------
         color : tuple[int, int, int], optional
             The color of the mesh.
-            Default is the value of :attr:`MeshArtist.default_color`.
+            Default is the value of :attr:`MeshObject.default_color`.
         disjoint : bool, optional
             If True, draw the faces of the mesh with disjoint vertices.
 

@@ -8,8 +8,8 @@ import compas_rhino
 from compas.scene import SceneObject
 
 
-class RhinoArtist(SceneObject):
-    """Base class for all Rhino artists.
+class RhinoSceneObject(SceneObject):
+    """Base class for all Rhino sceneobjects.
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ class RhinoArtist(SceneObject):
     """
 
     def __init__(self, layer=None, **kwargs):
-        super(RhinoArtist, self).__init__(**kwargs)
+        super(RhinoSceneObject, self).__init__(**kwargs)
         self.layer = layer
 
     def get_group(self, name):

@@ -6,47 +6,48 @@ import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
 from compas.colors import Color
-from compas_rhino.conversions import curve_to_rhino
+from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class CurveArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing curves.
+class BoxObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing box shapes.
 
     Parameters
     ----------
-    curve : :class:`~compas.geometry.Curve`
-        A COMPAS curve.
+    box : :class:`~compas.geometry.Box`
+        A COMPAS box.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, curve, **kwargs):
-        super(CurveArtist, self).__init__(geometry=curve, **kwargs)
+    def __init__(self, box, **kwargs):
+        super(BoxObject, self).__init__(geometry=box, **kwargs)
 
     def draw(self, color=None):
-        """Draw the curve.
+        """Draw the box associated with the sceneobject.
 
         Parameters
         ----------
         color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
-            The RGB color of the curve.
+            The RGB color of the box.
 
         Returns
         -------
         System.Guid
-            The GUID of the created Rhino object.
+            The GUID of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        geometry = curve_to_rhino(self.geometry)
+        geometry = box_to_rhino(self.geometry)
 
         if self.transformation:
-            geometry.Transform(transformation_to_rhino(self.transformation))
+            transformation = transformation_to_rhino(self.transformation)
+            geometry.Transform(transformation)
 
-        return sc.doc.Objects.AddCurve(geometry, attr)
+        return sc.doc.Objects.AddBox(geometry, attr)

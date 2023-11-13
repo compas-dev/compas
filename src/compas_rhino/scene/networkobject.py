@@ -9,17 +9,17 @@ import compas_rhino
 from compas.geometry import Line
 from compas.geometry import Cylinder
 from compas.geometry import Sphere
-from compas.scene import NetworkObject as BaseArtist
+from compas.scene import NetworkObject as BaseNetworkObject
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino_brep
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class NetworkArtist(RhinoArtist, BaseArtist):
-    """Artist for drawing network data structures.
+class NetworkObject(RhinoSceneObject, BaseNetworkObject):
+    """Sceneobject for drawing network data structures.
 
     Parameters
     ----------
@@ -31,14 +31,14 @@ class NetworkArtist(RhinoArtist, BaseArtist):
     """
 
     def __init__(self, network, **kwargs):
-        super(NetworkArtist, self).__init__(network=network, **kwargs)
+        super(NetworkObject, self).__init__(network=network, **kwargs)
 
     # ==========================================================================
     # clear
     # ==========================================================================
 
     def clear(self):
-        """Delete all objects drawn by this artist.
+        """Delete all objects drawn by this sceneobject.
 
         Returns
         -------
@@ -49,7 +49,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_nodes(self):
-        """Delete all nodes drawn by this artist.
+        """Delete all nodes drawn by this sceneobject.
 
         Returns
         -------
@@ -60,7 +60,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
-        """Delete all edges drawn by this artist.
+        """Delete all edges drawn by this sceneobject.
 
         Returns
         -------

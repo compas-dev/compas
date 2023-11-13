@@ -8,12 +8,12 @@ from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import capsule_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
-from .artist import RhinoArtist
+from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class CapsuleArtist(RhinoArtist, GeometryObject):
-    """Artist for drawing capsule shapes.
+class CapsuleObject(RhinoSceneObject, GeometryObject):
+    """Sceneobject for drawing capsule shapes.
 
     Parameters
     ----------
@@ -25,10 +25,10 @@ class CapsuleArtist(RhinoArtist, GeometryObject):
     """
 
     def __init__(self, capsule, **kwargs):
-        super(CapsuleArtist, self).__init__(geometry=capsule, **kwargs)
+        super(CapsuleObject, self).__init__(geometry=capsule, **kwargs)
 
     def draw(self, color=None):
-        """Draw the capsule associated with the artist.
+        """Draw the capsule associated with the sceneobject.
 
         Parameters
         ----------

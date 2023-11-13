@@ -12,7 +12,7 @@ from .volmeshobject import VolMeshObject
 
 from .sceneobject import clear  # noqa: F401
 from .sceneobject import redraw  # noqa: F401
-from .sceneobject import register_artists  # noqa: F401
+from .sceneobject import register_sceneobjects  # noqa: F401
 
 
 __all__ = [
