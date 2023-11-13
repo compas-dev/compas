@@ -9,6 +9,7 @@ from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -48,6 +49,8 @@ class PolygonObject(RhinoSceneObject, GeometryObject):
         vertices = self.geometry.points
         faces = self.geometry.faces
         mesh = vertices_and_faces_to_rhino(vertices, faces)
+        if self.transformation:
+            mesh.Transform(transformation_to_rhino(self.transformation))
 
         return sc.doc.Objects.AddMesh(mesh, attr)
 

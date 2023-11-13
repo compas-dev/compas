@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -87,5 +88,13 @@ class FrameObject(RhinoSceneObject, GeometryObject):
         guids.append(guid)
 
         self.add_to_group("Frame.{}".format(self.geometry.name), guids)
+
+        if self.transformation:
+            transformation = transformation_to_rhino(self.transformation)
+            for guid in guids:
+                obj = sc.doc.Objects.Find(guid)
+                if obj:
+                    obj.Geometry.Transform(transformation)
+                    obj.CommitChanges()
 
         return guids

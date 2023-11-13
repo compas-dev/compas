@@ -45,9 +45,10 @@ class EllipseObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
-        geometry = ellipse_to_rhino(self.geometry)
+        ellipse = ellipse_to_rhino(self.geometry)
+        ellipse = ellipse.ToNurbsCurve()
 
         if self.transformation:
-            geometry.Transform(transformation_to_rhino(self.transformation))
+            ellipse.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddEllipse(geometry, attr)
+        return sc.doc.Objects.AddCurve(ellipse, attr)

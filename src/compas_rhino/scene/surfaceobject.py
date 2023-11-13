@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import surface_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -43,4 +44,6 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         surface = surface_to_rhino(self.geometry)
+        if self.transformation:
+            surface.Transform(transformation_to_rhino(self.transformation))
         return sc.doc.Objects.AddSurface(surface, attr)

@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -42,4 +43,8 @@ class SphereObject(RhinoSceneObject, GeometryObject):
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-        return sc.doc.Objects.AddSphere(sphere_to_rhino(self.geometry), attr)
+        geometry = sphere_to_rhino(self.geometry)
+        if self.transformation:
+            geometry.Transform(transformation_to_rhino(self.transformation))
+
+        return sc.doc.Objects.AddSphere(geometry, attr)

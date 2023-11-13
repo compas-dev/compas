@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import torus_to_rhino_brep
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -43,4 +44,7 @@ class TorusObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         brep = torus_to_rhino_brep(self.geometry)
+        if self.transformation:
+            brep.Transform(transformation_to_rhino(self.transformation))
+
         return sc.doc.Objects.AddBrep(brep, attr)

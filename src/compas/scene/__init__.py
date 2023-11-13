@@ -14,6 +14,7 @@ from .sceneobject import clear  # noqa: F401
 from .sceneobject import redraw  # noqa: F401
 from .sceneobject import register_sceneobjects  # noqa: F401
 
+from .scene import Scene
 
 __all__ = [
     "SceneObjectNotRegistered",
@@ -23,4 +24,5 @@ __all__ = [
     "NetworkObject",
     "GeometryObject",
     "VolMeshObject",
+    "Scene",
 ]

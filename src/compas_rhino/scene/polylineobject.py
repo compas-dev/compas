@@ -8,6 +8,7 @@ from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -43,8 +44,11 @@ class PolylineObject(RhinoSceneObject, GeometryObject):
         """
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        geometry = polyline_to_rhino(self.geometry)
+        if self.transformation:
+            geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddPolyline(polyline_to_rhino(self.geometry), attr)
+        return sc.doc.Objects.AddPolyline(geometry, attr)
 
     def draw_points(self, color=None):
         """Draw the polyline points.

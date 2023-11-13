@@ -8,6 +8,7 @@ from compas.geometry import Point
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -50,5 +51,11 @@ class VectorObject(RhinoSceneObject, GeometryObject):
         point = point or [0, 0, 0]
         start = Point(*point)
         end = start + self.geometry
+        start_geometry = point_to_rhino(start)
+        end_geometry = point_to_rhino(end)
+        if self.transformation:
+            transformation = transformation_to_rhino(self.transformation)
+            start_geometry.Transform(transformation)
+            end_geometry.Transform(transformation)
 
-        return sc.doc.Objects.AddLine(point_to_rhino(start), point_to_rhino(end), attr)
+        return sc.doc.Objects.AddLine(start_geometry, end_geometry, attr)

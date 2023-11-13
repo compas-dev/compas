@@ -8,7 +8,7 @@ compas_rhino
 .. toctree::
     :maxdepth: 1
 
-    compas_rhino.artists
+    compas_rhino.scene
     compas_rhino.conduits
     compas_rhino.conversions
     compas_rhino.forms
@@ -62,7 +62,7 @@ __all_plugins__ = [
     "compas_rhino.geometry.trimesh",
     "compas_rhino.install",
     "compas_rhino.uninstall",
-    "compas_rhino.artists",
+    "compas_rhino.scene",
     "compas_rhino.geometry.curves",
     "compas_rhino.geometry.surfaces",
     "compas_rhino.geometry.brep",

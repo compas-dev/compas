@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 from compas.scene import GeometryObject
 from compas.colors import Color
 from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
@@ -45,5 +46,8 @@ class PolyhedronObject(RhinoSceneObject, GeometryObject):
 
         vertices = [list(vertex) for vertex in self.geometry.vertices]
         faces = self.geometry.faces
+        geometry = vertices_and_faces_to_rhino(vertices, faces)
+        if self.transformation:
+            geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces), attr)
+        return sc.doc.Objects.AddMesh(geometry, attr)
