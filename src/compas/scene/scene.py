@@ -52,7 +52,7 @@ class Scene(Data):
 
         if sceneobject:
             sceneobject.redraw()
-        
+
         return drawn_objects
 
     def print_hierarchy(self):

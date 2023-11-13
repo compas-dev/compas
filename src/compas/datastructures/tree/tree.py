@@ -443,10 +443,10 @@ class Tree(Datastructure):
     def print_hierarchy(self):
         """Print the spatial hierarchy of the tree."""
 
-        def _print(node, prefix='', last=True):
-            connector = '└── ' if last else '├── '
+        def _print(node, prefix="", last=True):
+            connector = "└── " if last else "├── "
             print("{}{}{}".format(prefix, connector, node))
-            prefix += '    ' if last else '│   '
+            prefix += "    " if last else "│   "
             for i, child in enumerate(node.children):
                 _print(child, prefix, i == len(node.children) - 1)
 

@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Frame.axes`
 * Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
 * Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
+* Added `compas.scene.Scene`.
 
 ### Changed
 
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `compas.geometry.brep` to `compas.brep`.
 * Changed `networkx` version to `>=3.0` to ensure support for `is_planar`.
 * Moved `compas.geometry.curves.nurbs_.py` and `compas.geometry.surfaces.nurbs_.py` to `compas_nurbs`.
+* ARTISTS ARE NOW SCENEOBJECTS (TO BE FURTHER DETAILED BEFORE MERGE).
 
 ### Removed
 
