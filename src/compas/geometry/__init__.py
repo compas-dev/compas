@@ -239,15 +239,6 @@ from ._core.predicates_3 import (
     is_intersection_plane_plane,
 )
 
-from ._core.nurbsutils import (
-    construct_knotvector,
-    find_span,
-    compute_basisfuncs,
-    compute_basisfuncsderivs,
-    knots_and_mults_to_knotvector,
-    knotvector_to_knots_and_mults,
-)
-
 # =============================================================================
 # Algorithms
 # =============================================================================
@@ -374,22 +365,6 @@ from .shapes.torus import Torus
 
 from .polygon import Polygon
 from .polyhedron import Polyhedron
-
-from .brep import (
-    BrepError,
-    BrepInvalidError,
-    BrepTrimmingError,
-)
-
-from .brep.brep import Brep
-from .brep.brep import BrepOrientation
-from .brep.brep import BrepType
-from .brep.edge import BrepEdge
-from .brep.loop import BrepLoop
-from .brep.face import BrepFace
-from .brep.vertex import BrepVertex
-from .brep.trim import BrepTrim
-from .brep.trim import BrepTrimIsoStatus
 
 
 __all__ = [
@@ -670,12 +645,6 @@ __all__ = [
     "trimesh_remesh_constrained",
     "trimesh_remesh_along_isoline",
     "trimesh_slice",
-    "find_span",
-    "compute_basisfuncs",
-    "compute_basisfuncsderivs",
-    "construct_knotvector",
-    "knots_and_mults_to_knotvector",
-    "knotvector_to_knots_and_mults",
     "Geometry",
     "Bezier",
     "Arc",
@@ -717,18 +686,6 @@ __all__ = [
     "ConicalSurface",
     "PlanarSurface",
     "NurbsSurface",
-    "Brep",
-    "BrepLoop",
-    "BrepEdge",
-    "BrepVertex",
-    "BrepFace",
-    "BrepTrim",
-    "BrepTrimIsoStatus",
-    "BrepType",
-    "BrepOrientation",
-    "BrepError",
-    "BrepInvalidError",
-    "BrepTrimmingError",
 ]
 
 if not compas.IPY:
