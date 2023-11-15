@@ -255,18 +255,21 @@ def mesh_to_compas(rhinomesh, cls=None):
     mesh.default_vertex_attributes.update(normal=None, color=None)
     mesh.default_face_attributes.update(normal=None)
 
-    for vertex, normal, color in zip(rhinomesh.Vertices, rhinomesh.Normals, rhinomesh.VertexColors):
+    vertexcolors = rhinomesh.VertexColors
+    if not vertexcolors:
+        vertexcolors = [None] * rhinomesh.Vertices.Count
+
+    for vertex, normal, color in zip(rhinomesh.Vertices, rhinomesh.Normals, vertexcolors):
         mesh.add_vertex(
             x=vertex.X,
             y=vertex.Y,
             z=vertex.Z,
             normal=vector_to_compas(normal),
-            color=Color(
-                color.R,
-                color.G,
-                color.B,
-            ),
+            color=Color(color.R, color.G, color.B) if color else None,
         )
+
+    if not rhinomesh.FaceNormals:
+        rhinomesh.FaceNormals.ComputeFaceNormals()
 
     for face, normal in zip(rhinomesh.Faces, rhinomesh.FaceNormals):
         if face.IsTriangle:

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `box_to_compas` in `compas_rhino.conversions` to correctly take in the center of the box as the center point of the frame.
 * Removed `cython` from requirements.
 * Made X and Y axis optional in the constructor of `Frame`.
+* Fixed `mesh_to_compas` returning an empty `Mesh` when colors and/or face normals are missing.
 
 ### Removed
 
