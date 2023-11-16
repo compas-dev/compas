@@ -1,9 +1,15 @@
-from compas.geometry import BrepEdge
+from Rhino.Geometry import ArcCurve
+from Rhino.Geometry import NurbsCurve
+from Rhino.Geometry import LineCurve
+from Rhino.Geometry import Interval
+
+from compas.brep import BrepEdge
 from compas.geometry import Line
 from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas.geometry import Frame
 from compas.geometry import Arc
+
 from compas_rhino.geometry import RhinoNurbsCurve
 from compas_rhino.conversions import curve_to_compas_line
 from compas_rhino.conversions import plane_to_compas_frame
@@ -15,11 +21,6 @@ from compas_rhino.conversions import frame_to_rhino_plane
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import arc_to_compas
 from compas_rhino.conversions import arc_to_rhino
-
-from Rhino.Geometry import ArcCurve
-from Rhino.Geometry import NurbsCurve
-from Rhino.Geometry import LineCurve
-from Rhino.Geometry import Interval
 
 from .vertex import RhinoBrepVertex
 

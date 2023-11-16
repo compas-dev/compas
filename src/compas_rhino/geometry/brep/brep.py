@@ -1,6 +1,8 @@
+import Rhino
+
 from compas.geometry import Frame
-from compas.geometry import Brep
-from compas.geometry import BrepTrimmingError
+from compas.brep import Brep
+from compas.brep import BrepTrimmingError
 from compas.geometry import Plane
 
 from compas_rhino.conversions import box_to_rhino
@@ -9,8 +11,6 @@ from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import mesh_to_rhino
-
-import Rhino
 
 from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace

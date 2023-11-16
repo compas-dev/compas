@@ -1,5 +1,5 @@
 from compas.geometry import Point
-from compas.geometry import BrepVertex
+from compas.brep import BrepVertex
 from compas_rhino.conversions import point_to_compas
 
 

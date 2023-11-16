@@ -330,7 +330,7 @@ class Polygon(Geometry):
             A boundary representation of the polygon.
 
         """
-        from compas.geometry import Brep
+        from compas.brep import Brep
 
         return Brep.from_polygons([self])
 

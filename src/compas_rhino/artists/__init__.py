@@ -23,7 +23,7 @@ from compas.geometry import Torus
 
 from compas.geometry import Curve
 from compas.geometry import Surface
-from compas.geometry import Brep
+from compas.brep import Brep
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network

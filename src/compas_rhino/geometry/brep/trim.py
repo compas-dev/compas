@@ -1,8 +1,7 @@
-from compas.geometry import BrepTrim
-from compas_rhino.geometry import RhinoNurbsCurve
-
-
 import Rhino
+
+from compas.brep import BrepTrim
+from compas_rhino.geometry import RhinoNurbsCurve
 
 
 class RhinoBrepTrim(BrepTrim):
@@ -20,7 +19,6 @@ class RhinoBrepTrim(BrepTrim):
     """
 
     def __init__(self, rhino_trim=None, builder=None):
-
         super(RhinoBrepTrim, self).__init__()
         self._builder = builder
         self._trim = None
