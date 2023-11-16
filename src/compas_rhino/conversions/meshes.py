@@ -268,15 +268,16 @@ def mesh_to_compas(rhinomesh, cls=None):
             color=Color(color.R, color.G, color.B) if color else None,
         )
 
-    if not rhinomesh.FaceNormals:
-        rhinomesh.FaceNormals.ComputeFaceNormals()
+    facenormals = rhinomesh.FaceNormals
+    if not facenormals:
+        facenormals = [None] * rhinomesh.Faces.Count
 
-    for face, normal in zip(rhinomesh.Faces, rhinomesh.FaceNormals):
+    for face, normal in zip(rhinomesh.Faces, facenormals):
         if face.IsTriangle:
             vertices = [face.A, face.B, face.C]
         else:
             vertices = [face.A, face.B, face.C, face.D]
-        mesh.add_face(vertices, normal=vector_to_compas(normal))
+        mesh.add_face(vertices, normal=vector_to_compas(normal) if normal else None)
 
     for key in rhinomesh.UserDictionary:
         mesh.attributes[key] = rhinomesh.UserDictionary[key]
