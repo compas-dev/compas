@@ -1241,6 +1241,12 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.intersections_with_plane.html#compas.geometry.SphericalSurface.intersections_with_plane" title="compas.geometry.SphericalSurface.intersections_with_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersections_with_plane</span></code></a></p></td>
 <td><p>Compute the intersections with a plane.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.isocurve_u.html#compas.geometry.SphericalSurface.isocurve_u" title="compas.geometry.SphericalSurface.isocurve_u"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isocurve_u</span></code></a></p></td>
+<td><p>Compute the isoparametric curve at parameter u.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.isocurve_v.html#compas.geometry.SphericalSurface.isocurve_v" title="compas.geometry.SphericalSurface.isocurve_v"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isocurve_v</span></code></a></p></td>
+<td><p>Compute the isoparametric curve at parameter v.</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.obb.html#compas.geometry.SphericalSurface.obb" title="compas.geometry.SphericalSurface.obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb</span></code></a></p></td>
 <td><p>Compute the oriented bounding box of the surface.</p></td>
 </tr>
@@ -1249,6 +1255,12 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.sha256.html#compas.geometry.SphericalSurface.sha256" title="compas.geometry.SphericalSurface.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.space_u.html#compas.geometry.SphericalSurface.space_u" title="compas.geometry.SphericalSurface.space_u"><code class="xref py py-obj docutils literal notranslate"><span class="pre">space_u</span></code></a></p></td>
+<td><p>Compute evenly spaced parameters over the surface domain in the U direction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.space_v.html#compas.geometry.SphericalSurface.space_v" title="compas.geometry.SphericalSurface.space_v"><code class="xref py py-obj docutils literal notranslate"><span class="pre">space_v</span></code></a></p></td>
+<td><p>Compute evenly spaced parameters over the surface domain in the V direction.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_brep.html#compas.geometry.SphericalSurface.to_brep" title="compas.geometry.SphericalSurface.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Convert the surface to a BREP representation.</p></td>
@@ -1282,18 +1294,6 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transformed.html#compas.geometry.SphericalSurface.transformed" title="compas.geometry.SphericalSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.u_isocurve.html#compas.geometry.SphericalSurface.u_isocurve" title="compas.geometry.SphericalSurface.u_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_isocurve</span></code></a></p></td>
-<td><p>Compute the isoparametric curve at parameter u.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.u_space.html#compas.geometry.SphericalSurface.u_space" title="compas.geometry.SphericalSurface.u_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">u_space</span></code></a></p></td>
-<td><p>Compute evenly spaced parameters over the surface domain in the U direction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.v_isocurve.html#compas.geometry.SphericalSurface.v_isocurve" title="compas.geometry.SphericalSurface.v_isocurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_isocurve</span></code></a></p></td>
-<td><p>Compute the isoparametric curve at parameter v.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.v_space.html#compas.geometry.SphericalSurface.v_space" title="compas.geometry.SphericalSurface.v_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_space</span></code></a></p></td>
-<td><p>Compute evenly spaced parameters over the surface domain in the V direction.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.validate_data.html#compas.geometry.SphericalSurface.validate_data" title="compas.geometry.SphericalSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>

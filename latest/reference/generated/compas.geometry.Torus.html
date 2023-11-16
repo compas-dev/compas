@@ -1154,12 +1154,12 @@ document.write(`
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>, optional</span></dt><dd><p>The local coordinate system of the torus.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the torus is constructed in the</p>
-</dd>
 <dt><strong>radius_axis: float, optional</strong></dt><dd><p>The radius of the axis.</p>
 </dd>
 <dt><strong>radius_pipe: float, optional</strong></dt><dd><p>The radius of the pipe.</p>
+</dd>
+<dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a>, optional</span></dt><dd><p>The local coordinate system of the torus.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the torus is constructed in the world XY plane.</p>
 </dd>
 </dl>
 </dd>
@@ -1214,10 +1214,13 @@ The center of the circle is at the origin of the local coordinate system.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.from_plane_and_radii.html#compas.geometry.Torus.from_plane_and_radii" title="compas.geometry.Torus.from_plane_and_radii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radii</span></code></a></p></td>
 <td><p>Construct a torus from a plane and two radii.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.to_vertices_and_faces.html#compas.geometry.Torus.to_vertices_and_faces" title="compas.geometry.Torus.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.to_brep.html#compas.geometry.Torus.to_brep" title="compas.geometry.Torus.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
+<td><p>Returns a BRep representation of the torus.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.to_vertices_and_faces.html#compas.geometry.Torus.to_vertices_and_faces" title="compas.geometry.Torus.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Returns a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.transform.html#compas.geometry.Torus.transform" title="compas.geometry.Torus.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.transform.html#compas.geometry.Torus.transform" title="compas.geometry.Torus.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the torus.</p></td>
 </tr>
 </tbody>
@@ -1250,22 +1253,19 @@ The center of the circle is at the origin of the local coordinate system.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.sha256.html#compas.geometry.Torus.sha256" title="compas.geometry.Torus.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.to_brep.html#compas.geometry.Torus.to_brep" title="compas.geometry.Torus.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
-<td><p>Convert the shape to a Brep.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.to_data.html#compas.geometry.Torus.to_data" title="compas.geometry.Torus.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.to_data.html#compas.geometry.Torus.to_data" title="compas.geometry.Torus.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.to_polyhedron.html#compas.geometry.Torus.to_polyhedron" title="compas.geometry.Torus.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.to_polyhedron.html#compas.geometry.Torus.to_polyhedron" title="compas.geometry.Torus.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.transformed.html#compas.geometry.Torus.transformed" title="compas.geometry.Torus.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.transformed.html#compas.geometry.Torus.transformed" title="compas.geometry.Torus.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.translate.html#compas.geometry.Torus.translate" title="compas.geometry.Torus.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.translate.html#compas.geometry.Torus.translate" title="compas.geometry.Torus.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Torus.validate_data.html#compas.geometry.Torus.validate_data" title="compas.geometry.Torus.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Torus.validate_data.html#compas.geometry.Torus.validate_data" title="compas.geometry.Torus.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
