@@ -290,6 +290,18 @@ class Cone(Shape):
 
         return vertices, faces
 
+    def to_brep(self):
+        """Returns a BRep representation of the cone.
+
+        Returns
+        -------
+        :class:`compas.brep.Brep`
+
+        """
+        from compas.brep import Brep
+
+        return Brep.from_cone(self)
+
     # ==========================================================================
     # Transformations
     # ==========================================================================

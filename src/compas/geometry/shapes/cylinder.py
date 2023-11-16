@@ -24,14 +24,14 @@ class Cylinder(Shape):
 
     Parameters
     ----------
+    radius : float
+        The radius of the cylinder.
+    height : float
+        The height of the cylinder along the z-axis of the frame.
+        Half of the cylinder is above the XY plane of the frame, the other half below.
     frame : :class:`~compas.geometry.Frame`, optional
         The local coordinate system, or "frame", of the cylinder.
         Default is ``None``, in which case the world coordinate system is used.
-    radius : float, optional
-        The radius of the cylinder.
-    height : float, optional
-        The height of the cylinder along the z-axis of the frame.
-        Half of the cylinder is above the XY plane of the frame, the other half below.
 
     Attributes
     ----------
@@ -292,6 +292,18 @@ class Cylinder(Shape):
         vertices = transform_points(vertices, self.transformation)
 
         return vertices, faces
+
+    def to_brep(self):
+        """Returns a BRep representation of the cylinder.
+
+        Returns
+        -------
+        :class:`compas.brep.Brep`
+
+        """
+        from compas.brep import Brep
+
+        return Brep.from_cylinder(self)
 
     # =============================================================================
     # Transformations

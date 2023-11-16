@@ -19,13 +19,13 @@ class Torus(Shape):
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`, optional
-        The local coordinate system of the torus.
-        Default is ``None``, in which case the torus is constructed in the
     radius_axis: float, optional
         The radius of the axis.
     radius_pipe: float, optional
         The radius of the pipe.
+    frame : :class:`~compas.geometry.Frame`, optional
+        The local coordinate system of the torus.
+        Default is ``None``, in which case the torus is constructed in the world XY plane.
 
     Attributes
     ----------
@@ -81,7 +81,7 @@ class Torus(Shape):
         self.radius_pipe = radius_pipe
 
     # ==========================================================================
-    # data
+    # Data
     # ==========================================================================
 
     @property
@@ -101,7 +101,7 @@ class Torus(Shape):
         )
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -145,7 +145,7 @@ class Torus(Shape):
         return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
 
     # ==========================================================================
-    # customisation
+    # Customisation
     # ==========================================================================
 
     def __repr__(self):
@@ -180,7 +180,7 @@ class Torus(Shape):
         return iter([self.frame, self.radius_axis, self.radius_pipe])
 
     # ==========================================================================
-    # constructors
+    # Constructors
     # ==========================================================================
 
     @classmethod
@@ -212,7 +212,7 @@ class Torus(Shape):
         return cls(plane=plane, radius_axis=radius_axis, radius_pipe=radius_pipe)
 
     # ==========================================================================
-    # methods
+    # Conversions
     # ==========================================================================
 
     def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
@@ -280,6 +280,22 @@ class Torus(Shape):
         vertices = transform_points(vertices, self.transformation)
 
         return vertices, faces
+
+    def to_brep(self):
+        """Returns a BRep representation of the torus.
+
+        Returns
+        -------
+        :class:`compas.brep.Brep`
+
+        """
+        from compas.brep import Brep
+
+        return Brep.from_torus(self)
+
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
 
     def transform(self, transformation):
         """Transform the torus.

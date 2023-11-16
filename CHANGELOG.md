@@ -9,7 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.geometry.Box.to_brep()`.
+* Added `compas.geometry.Cone.to_brep()`.
+* Added `compas.geometry.Cylinder.to_brep()`.
+* Added `compas.geometry.Sphere.to_brep()`.
+* Added `compas.geometry.Torus.to_brep()`.
+* Added `compas.brep.Brep.from_iges()`.
+* Added `compas.brep.Brep.to_iges()`.
+
 ### Changed
+
+* Changed `compas.geometry.NurbsSurface.u_space` to `space_u`.
+* Changed `compas.geometry.NurbsSurface.v_space` to `space_v`.
+* Changed `compas.geometry.NurbsSurface.u_isocurve` to `isocurve_u`.
+* Changed `compas.geometry.NurbsSurface.v_isocurve` to `isocurve_v`.
+* Changed `compas.brep.Brep.from_step_file` to `from_step`.
 
 ### Removed
 

@@ -247,7 +247,10 @@ class Surface(Geometry):
 
         vertices = [
             self.point_at(i, j)
-            for i, j in product(linspace(domain_u[0], domain_u[1], nu + 1), linspace(domain_v[0], domain_v[1], nv + 1))
+            for i, j in product(
+                linspace(domain_u[0], domain_u[1], nu + 1),
+                linspace(domain_v[0], domain_v[1], nv + 1),
+            )
         ]
         faces = [
             [
@@ -431,7 +434,7 @@ class Surface(Geometry):
     # Methods
     # ==============================================================================
 
-    def u_space(self, n=10):
+    def space_u(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the U direction.
 
         Parameters
@@ -447,7 +450,7 @@ class Surface(Geometry):
         umin, umax = self.domain_u
         return linspace(umin, umax, n)
 
-    def v_space(self, n=10):
+    def space_v(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the V direction.
 
         Parameters
@@ -463,7 +466,7 @@ class Surface(Geometry):
         vmin, vmax = self.domain_v
         return linspace(vmin, vmax, n)
 
-    def u_isocurve(self, u):
+    def isocurve_u(self, u):
         """Compute the isoparametric curve at parameter u.
 
         Parameters
@@ -477,7 +480,7 @@ class Surface(Geometry):
         """
         raise NotImplementedError
 
-    def v_isocurve(self, v):
+    def isocurve_v(self, v):
         """Compute the isoparametric curve at parameter v.
 
         Parameters
@@ -512,7 +515,7 @@ class Surface(Geometry):
             The size of the grid in the V direction.
 
         """
-        return [self.point_at(i, j) for i, j in product(self.u_space(nu), self.v_space(nv))]
+        return [self.point_at(i, j) for i, j in product(self.space_u(nu), self.space_v(nv))]
 
     def point_at(self, u, v):
         """Compute a point on the surface.

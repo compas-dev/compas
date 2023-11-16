@@ -18,11 +18,14 @@ class Sphere(Shape):
 
     Parameters
     ----------
+    radius: float
+        The radius of the sphere.
     frame: :class:`~compas.geometry.Frame`, optional
         The local coordinates system, or "frame", of the sphere.
         Default is ``None``, in which case the sphere is constructed in world coordinates.
-    radius: float, optional
-        The radius of the sphere.
+    point: :class:`~compas.geometry.Point`, optional
+        The center of the sphere.
+        When provided, this point overwrites the location of the origin of the local coordinate system.
 
     Attributes
     ----------
@@ -69,7 +72,7 @@ class Sphere(Shape):
         "required": ["radius", "frame"],
     }
 
-    def __init__(self, radius, point=None, frame=None, **kwargs):
+    def __init__(self, radius, frame=None, point=None, **kwargs):
         super(Sphere, self).__init__(frame=frame, **kwargs)
         self._radius = 1.0
         self.radius = radius
@@ -252,6 +255,18 @@ class Sphere(Shape):
         vertices = transform_points(vertices, self.transformation)
 
         return vertices, faces
+
+    def to_brep(self):
+        """Returns a BRep representation of the sphere.
+
+        Returns
+        -------
+        :class:`compas.brep.Brep`
+
+        """
+        from compas.brep import Brep
+
+        return Brep.from_sphere(self)
 
     # =============================================================================
     # Transformations

@@ -83,7 +83,8 @@ def meshes_join(meshes, cls=None):
     faces = []
 
     for mesh in meshes:
-        key_index = {key: len(vertices) + i for i, key in enumerate(mesh.vertices())}
+        offset = len(vertices)
+        key_index = {key: offset + i for i, key in enumerate(mesh.vertices())}
         vertices += [mesh.vertex_coordinates(key) for key in mesh.vertices()]
         faces += [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 

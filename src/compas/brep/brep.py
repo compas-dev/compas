@@ -12,12 +12,17 @@ def new_brep(*args, **kwargs):
 
 
 @pluggable(category="factories")
-def from_native(*args, **kwargs):
+def from_boolean_difference(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def from_mesh(*args, **kwargs):
+def from_boolean_intersection(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_boolean_union(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
@@ -27,12 +32,7 @@ def from_box(*args, **kwargs):
 
 
 @pluggable(category="factories")
-def from_cylinder(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_sphere(*args, **kwargs):
+def from_brepfaces(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
@@ -42,22 +42,42 @@ def from_cone(*args, **kwargs):
 
 
 @pluggable(category="factories")
-def from_surface(*args, **kwargs):
+def from_curves(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def from_torus(*args, **kwargs):
+def from_cylinder(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def from_sweep(*args, **kwargs):
+def from_extrusion(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
 @pluggable(category="factories")
-def from_step_file(*args, **kwargs):
+def from_iges(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_loft(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_mesh(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_native(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_pipe(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
@@ -67,7 +87,27 @@ def from_polygons(*args, **kwargs):
 
 
 @pluggable(category="factories")
-def from_curves(*args, **kwargs):
+def from_sphere(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_step(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_surface(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_sweep(*args, **kwargs):
+    raise PluginNotInstalledError()
+
+
+@pluggable(category="factories")
+def from_torus(*args, **kwargs):
     raise PluginNotInstalledError()
 
 
@@ -342,66 +382,6 @@ class Brep(Geometry):
     # ==============================================================================
 
     @classmethod
-    def from_native(cls, native_brep):
-        """Creates a Brep from an instance of a native backend Brep type.
-
-        Parameters
-        ----------
-        brep : an instance of a Brep from a supported Brep backend
-            e.g. Rhino.Geometry.Brep
-
-        Returns
-        -------
-        :class:`~compas.geometry.Brep`
-        """
-        return from_native(native_brep)
-
-    @classmethod
-    def from_step_file(cls, filename):
-        """Conctruct a Brep from the data contained in a STEP file.
-
-        Parameters
-        ----------
-        filename : str
-
-        Returns
-        -------
-        :class:`~compas.geometry.Brep`
-
-        """
-        return from_step_file(filename)
-
-    @classmethod
-    def from_polygons(cls, polygons):
-        """Construct a Brep from a set of polygons.
-
-        Parameters
-        ----------
-        polygons : list[:class:`~compas.geometry.Polygon`]
-
-        Returns
-        -------
-        :class:`~compas.geometry.Brep`
-
-        """
-        return from_polygons(polygons)
-
-    @classmethod
-    def from_curves(cls, curves):
-        """Construct a Brep from a set of curves.
-
-        Parameters
-        ----------
-        curves : list[:class:`~compas.geometry.NurbsCurve`]
-
-        Returns
-        -------
-        :class:`~compas.geometry.Brep`
-
-        """
-        return from_curves(curves)
-
-    @classmethod
     def from_box(cls, box):
         """Construct a Brep from a COMPAS box.
 
@@ -417,34 +397,19 @@ class Brep(Geometry):
         return from_box(box)
 
     @classmethod
-    def from_sphere(cls, sphere):
-        """Construct a Brep from a COMPAS sphere.
+    def from_brepfaces(cls, faces):
+        """Make a Brep from a list of Brep faces forming an open or closed shell.
 
         Parameters
         ----------
-        sphere : :class:`~compas.geometry.Sphere`
+        faces : list[:class:`~compas.geometry.BrepFace`]
 
         Returns
         -------
         :class:`~compas.geometry.Brep`
 
         """
-        return from_sphere(sphere)
-
-    @classmethod
-    def from_cylinder(cls, cylinder):
-        """Construct a Brep from a COMPAS cylinder.
-
-        Parameters
-        ----------
-        cylinder : :class:`~compas.geometry.Cylinder`
-
-        Returns
-        -------
-        :class:`~compas.geometry.Brep`
-
-        """
-        return from_cylinder(cylinder)
+        return from_brepfaces(faces)
 
     @classmethod
     def from_cone(cls, cone):
@@ -462,49 +427,34 @@ class Brep(Geometry):
         return from_cone(cone)
 
     @classmethod
-    def from_torus(cls, torus):
-        """Construct a Brep from a COMPAS torus.
+    def from_curves(cls, curves):
+        """Construct a Brep from a set of curves.
 
         Parameters
         ----------
-        torus : :class:`~compas.geometry.Torus`
-
-        Returns
-        -------
-        :class:`~compas.geometry.BRep`
-
-        """
-        return from_torus(torus)
-
-    @classmethod
-    def from_mesh(cls, mesh):
-        """Construct a Brep from a COMPAS mesh.
-
-        Parameters
-        ----------
-        mesh : :class:`~compas.datastructures.Mesh`
+        curves : list[:class:`~compas.geometry.NurbsCurve`]
 
         Returns
         -------
         :class:`~compas.geometry.Brep`
 
         """
-        return from_mesh(mesh)
+        return from_curves(curves)
 
     @classmethod
-    def from_brepfaces(cls, faces):
-        """Make a Brep from a list of Brep faces forming an open or closed shell.
+    def from_cylinder(cls, cylinder):
+        """Construct a Brep from a COMPAS cylinder.
 
         Parameters
         ----------
-        faces : list[:class:`~compas.geometry.BrepFace`]
+        cylinder : :class:`~compas.geometry.Cylinder`
 
         Returns
         -------
         :class:`~compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_cylinder(cylinder)
 
     @classmethod
     def from_extrusion(cls, curve, vector):
@@ -522,7 +472,133 @@ class Brep(Geometry):
         :class:`~compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_extrusion(curve, vector)
+
+    @classmethod
+    def from_iges(cls, filename):
+        """Construct a Brep from the data contained in an IGES file.
+
+        Parameters
+        ----------
+        filename : str
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        return from_iges(filename)
+
+    @classmethod
+    def from_loft(cls, curves):
+        """Construct a Brep by lofting a set of curves.
+
+        Parameters
+        ----------
+        curves : list[:class:`~compas.geometry.Curve`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        return from_loft(curves)
+
+    @classmethod
+    def from_mesh(cls, mesh):
+        """Construct a Brep from a COMPAS mesh.
+
+        Parameters
+        ----------
+        mesh : :class:`~compas.datastructures.Mesh`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        return from_mesh(mesh)
+
+    @classmethod
+    def from_native(cls, native_brep):
+        """Creates a Brep from an instance of a native backend Brep type.
+
+        Parameters
+        ----------
+        brep : an instance of a Brep from a supported Brep backend
+            e.g. Rhino.Geometry.Brep
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+        """
+        return from_native(native_brep)
+
+    @classmethod
+    def from_pipe(cls, curve, radius, thickness=None):
+        """Construct a Brep by extruding a closed curve along a path curve.
+
+        Parameters
+        ----------
+        curve : :class:`~compas.geometry.Curve`
+            The curve to extrude
+        radius : float
+            The radius of the pipe.
+        thickness : float, optional
+            The thickness of the pipe.
+            The thickness should be smaller than the radius.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        return from_pipe(curve, radius, thickness=thickness)
+
+    @classmethod
+    def from_polygons(cls, polygons):
+        """Construct a Brep from a set of polygons.
+
+        Parameters
+        ----------
+        polygons : list[:class:`~compas.geometry.Polygon`]
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        return from_polygons(polygons)
+
+    @classmethod
+    def from_sphere(cls, sphere):
+        """Construct a Brep from a COMPAS sphere.
+
+        Parameters
+        ----------
+        sphere : :class:`~compas.geometry.Sphere`
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        return from_sphere(sphere)
+
+    @classmethod
+    def from_step(cls, filename):
+        """Conctruct a Brep from the data contained in a STEP file.
+
+        Parameters
+        ----------
+        filename : str
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
+
+        """
+        return from_step(filename)
 
     @classmethod
     def from_sweep(cls, profile, path):
@@ -540,7 +616,22 @@ class Brep(Geometry):
         :class:`~compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_sweep(profile, path)
+
+    @classmethod
+    def from_torus(cls, torus):
+        """Construct a Brep from a COMPAS torus.
+
+        Parameters
+        ----------
+        torus : :class:`~compas.geometry.Torus`
+
+        Returns
+        -------
+        :class:`~compas.geometry.BRep`
+
+        """
+        return from_torus(torus)
 
     # ==============================================================================
     # Boolean Constructors
@@ -560,7 +651,7 @@ class Brep(Geometry):
         :class:`~compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_boolean_difference(brep_a, brep_b)
 
     @classmethod
     def from_boolean_intersection(cls, brep_a, brep_b):
@@ -576,7 +667,7 @@ class Brep(Geometry):
         :class:`~compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_boolean_intersection(brep_a, brep_b)
 
     @classmethod
     def from_boolean_union(cls, brep_a, brep_b):
@@ -592,7 +683,7 @@ class Brep(Geometry):
         :class:`~compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_boolean_union(brep_a, brep_b)
 
     def __sub__(self, other):
         """Compute the boolean difference using the "-" operator of this shape and another.
@@ -837,7 +928,7 @@ class Brep(Geometry):
         None
 
         """
-        NotImplementedError
+        raise NotImplementedError
 
     def cull_unused_edges(self):
         """Remove all unused edges.
@@ -847,7 +938,7 @@ class Brep(Geometry):
         None
 
         """
-        NotImplementedError
+        raise NotImplementedError
 
     def cull_unused_loops(self):
         """Remove all unused loops.
@@ -857,7 +948,7 @@ class Brep(Geometry):
         None
 
         """
-        NotImplementedError
+        raise NotImplementedError
 
     def cull_unused_faces(self):
         """Remove all unused faces.
@@ -867,7 +958,7 @@ class Brep(Geometry):
         None
 
         """
-        NotImplementedError
+        raise NotImplementedError
 
     def contours(self, planes):
         """Generate contour lines by slicing the Brep shape with a series of planes.

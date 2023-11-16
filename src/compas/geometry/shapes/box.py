@@ -26,12 +26,15 @@ class Box(Shape):
     ----------
     xsize : float
         The size of the box in the box frame's x direction.
-    ysize : float
+    ysize : float, optional
         The size of the box in the box frame's y direction.
-    zsize : float
+        Defaults to the value of ``xsize``.
+    zsize : float, optional
         The size of the box in the box frame's z direction.
-    frame : :class:`~compas.geometry.Frame`
+        Defaults to the value of ``xsize``.
+    frame : :class:`~compas.geometry.Frame`, optional
         The frame of the box.
+        Defaults to ``Frame.worldXY()``.
 
     Attributes
     ----------
@@ -511,6 +514,46 @@ class Box(Shape):
     #     """
 
     # ==========================================================================
+    # Conversions
+    # ==========================================================================
+
+    def to_vertices_and_faces(self, triangulated=False):
+        """Returns a list of vertices and faces.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            If True, triangulate the faces.
+
+        Returns
+        -------
+        list[list[float]], list[list[int]]
+            A list of vertex locations, and a list of faces,
+            with each face defined as a list of indices into the list of vertices.
+
+        """
+        if triangulated:
+            faces = []
+            for a, b, c, d in self.faces:
+                faces.append([a, b, c])
+                faces.append([a, c, d])
+        else:
+            faces = self.faces
+        return self.vertices, faces
+
+    def to_brep(self):
+        """Returns a BREP representation of the box.
+
+        Returns
+        -------
+        :class:`compas.brep.Brep`
+
+        """
+        from compas.brep import Brep
+
+        return Brep.from_box(self)
+
+    # ==========================================================================
     # Transformations
     # ==========================================================================
 
@@ -564,30 +607,6 @@ class Box(Shape):
     # ==========================================================================
     # Methods
     # ==========================================================================
-
-    def to_vertices_and_faces(self, triangulated=False):
-        """Returns a list of vertices and faces.
-
-        Parameters
-        ----------
-        triangulated: bool, optional
-            If True, triangulate the faces.
-
-        Returns
-        -------
-        list[list[float]], list[list[int]]
-            A list of vertex locations, and a list of faces,
-            with each face defined as a list of indices into the list of vertices.
-
-        """
-        if triangulated:
-            faces = []
-            for a, b, c, d in self.faces:
-                faces.append([a, b, c])
-                faces.append([a, c, d])
-        else:
-            faces = self.faces
-        return self.vertices, faces
 
     def contains_point(self, point, tol=1e-6):
         """Verify if the box contains a given point.
