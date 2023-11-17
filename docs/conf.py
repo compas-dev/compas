@@ -333,7 +333,7 @@ html_theme_options = {
     # "icon_links_label": "Quick Links",
     "use_edit_page_button": True,
     # user interface
-    "announcement": "This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.17.6 is available <a href='https://compas.dev/compas/1.17.6/'>here</a>.",
+    "announcement": "This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
     "switcher": {
         "json_url": "https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json",
         "version_match": version,
