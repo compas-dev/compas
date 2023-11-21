@@ -4,12 +4,15 @@ from __future__ import division
 
 from random import uniform
 
+from compas.precision import Precision
+
+from compas.geometry import KDTree
+from compas.geometry import Geometry
+from compas.geometry import Point
 from compas.geometry import transform_points
 from compas.geometry import centroid_points
 from compas.geometry import bounding_box
 from compas.geometry import closest_point_in_cloud
-from compas.geometry import Geometry
-from compas.geometry import Point
 
 
 class Pointcloud(Geometry):
@@ -44,6 +47,7 @@ class Pointcloud(Geometry):
     def __init__(self, points, **kwargs):
         super(Pointcloud, self).__init__(**kwargs)
         self._points = None
+        self._tree = None
         self.points = points
 
     def __repr__(self):
@@ -93,6 +97,13 @@ class Pointcloud(Geometry):
     @points.setter
     def points(self, points):
         self._points = [Point(*point) for point in points]
+        self._tree = None
+
+    @property
+    def tree(self):
+        if not self._tree:
+            self._tree = KDTree(self.points)
+        return self._tree
 
     @property
     def centroid(self):
@@ -290,3 +301,117 @@ class Pointcloud(Geometry):
         """
         distance, point, index = closest_point_in_cloud(point, self.points)
         return point
+
+    def closest_points(self, point, k=1):
+        """Compute the closest point on the pointcloud to a given point.
+
+        Parameters
+        ----------
+        point : :class:`~compas.geometry.Point`
+            The point.
+        k : int, optional
+            The number of closest points to find.
+
+        Returns
+        -------
+        list of :class:`~compas.geometry.Point`
+            The closest points on the pointcloud.
+
+        """
+        tree = self.tree
+        return [self.points[nbr[1]] for nbr in tree.nearest_neighbors(point, k, True)]
+
+    def add(self, other, precision=None):
+        """Add another pointcloud to this pointcloud.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Pointcloud`
+            The other pointcloud.
+        precision : float, optional
+            The precision to use for the comparison.
+
+        Returns
+        -------
+        None
+            The pointcloud is modified in place.
+
+        Notes
+        -----
+        Duplicate points are not added.
+
+        """
+        if precision is None:
+            precision = Precision().confusion
+
+        tree = self.tree
+        self.points += [point for point in other if tree.nearest_neighbor(point)[2] > precision]
+
+    def union(self, other, precision=None):
+        """Compute the union with another pointcloud.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Pointcloud`
+            The other pointcloud.
+        precision : float, optional
+            The precision to use for the comparison.
+            Default is ``None``, in which case ``compas.precision.Precision().confusion`` is used.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Pointcloud`
+            The union pointcloud.
+
+        """
+        if precision is None:
+            precision = Precision().confusion
+
+        tree = self.tree
+        return Pointcloud(self.points + [point for point in other if tree.nearest_neighbor(point)[2] > precision])
+
+    def subtract(self, other, precision=None):  # type: (Pointcloud, ...) -> None
+        """Subtract another pointcloud from this pointcloud.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Pointcloud`
+            The other pointcloud.
+        precision : float, optional
+            The precision to use for the comparison.
+            Default is ``None``, in which case ``compas.precision.Precision().confusion`` is used.
+
+        Returns
+        -------
+        None
+            The pointcloud is modified in place.
+
+        """
+        if precision is None:
+            precision = Precision().confusion
+
+        tree = KDTree(other)
+        self.points = [point for point in self.points if tree.nearest_neighbor(point)[2] > precision]
+
+    def difference(self, other, precision=None):  # type: (Pointcloud, ...) -> Pointcloud
+        """Compute the difference with another pointcloud.
+
+        Parameters
+        ----------
+        other : :class:`~compas.geometry.Pointcloud`
+            The other pointcloud.
+        precision : float, optional
+            The precision to use for the comparison.
+            Default is ``None``, in which case ``compas.precision.Precision().confusion`` is used.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Pointcloud`
+            The difference pointcloud.
+
+        """
+        if precision is None:
+            precision = Precision().confusion
+
+        tree = KDTree(other)
+        return Pointcloud([point for point in self.points if tree.nearest_neighbor(point)[2] > precision])
