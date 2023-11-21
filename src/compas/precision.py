@@ -105,11 +105,20 @@ class Precision(Data):
     def data(self):
         return {
             "unit": self.unit,
-            "angular": self.angular,
-            "approximation": self.approximation,
-            "confusion": self.confusion,
-            "intersection": self.intersection,
+            "angular": self._angular,
+            "approximation": self._approximation,
+            "confusion": self._confusion,
+            "intersection": self._intersection,
         }
+
+    @classmethod
+    def from_data(cls, data):
+        precision = cls(data["unit"])
+        precision.angular = data["angular"]
+        precision.approximation = data["approximation"]
+        precision.confusion = data["confusion"]
+        precision.intersection = data["intersection"]
+        return precision
 
     def reset(self):
         """Reset all precision settings to their default values."""
