@@ -7,7 +7,46 @@ from compas.data import Data
 
 
 class Tolerance(Data):
-    """Tolerance settings for geometric operations."""
+    """Tolerance settings for geometric operations.
+
+    Parameters
+    ----------
+    unit : {"M", "MM"}, optional
+        The unit of the tolerance settings.
+
+    Attributes
+    ----------
+    unit : {"M", "MM"}
+        The unit of the tolerance settings.
+    absolute : float
+        The absolute tolerance.
+    relative : float
+        The relative tolerance.
+    angle : float
+        The angle tolerance.
+
+    Examples
+    --------
+    >>> tol = Tolerance()
+
+    >>> tol.absolute
+    1e-06
+    >>> tol.relative
+    0.001
+
+    >>> tol.close(1, 1.000001)
+    True
+    >>> tol.close(1, 1.001)
+    True
+    >>> tol.close(1, 1.01)
+    False
+
+    >>> tol.zero(1e-07)
+    True
+    >>> tol.zero(1e-05)
+    False
+
+    """
 
     ABSOLUTE_TOLERANCE = 1e-6
     """float: Determines when a number is small enough to be considered zero.
@@ -54,7 +93,6 @@ class Tolerance(Data):
 
     @property
     def absolute(self):
-        """float: The absolute tolerance."""
         if not self._absolute:
             return self.ABSOLUTE_TOLERANCE
         return self._absolute
@@ -65,7 +103,6 @@ class Tolerance(Data):
 
     @property
     def relative(self):
-        """float: The relative tolerance."""
         if not self._relative:
             return self.RELATIVE_TOLERANCE
         return self._relative
@@ -76,7 +113,6 @@ class Tolerance(Data):
 
     @property
     def angle(self):
-        """float: The angle tolerance."""
         if not self._angle:
             return self.ANGLE_TOLERANCE
         return self._angle
