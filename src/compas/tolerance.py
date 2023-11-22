@@ -128,6 +128,27 @@ class Tolerance(Data):
         """
         return abs(a - b) <= self.tolerance(b, rtol, atol)
 
+    def zero(self, a, tol=None):
+        """Check if a value is close enough to zero to be considered zero.
+
+        Parameters
+        ----------
+        a : float
+            The value.
+        tol : float, optional
+            The absolute tolerance.
+            Default is ``None``, in which case ``self.absolute`` is used.
+
+        Returns
+        -------
+        bool
+            ``True`` if the value is small enough to be considered zero.
+            ``False`` otherwise.
+
+        """
+        tol = tol or self.absolute
+        return abs(a) <= tol
+
     def close(self, a, b, rtol=None, atol=None):
         """Check if two values are close enough to be considered equal.
 
