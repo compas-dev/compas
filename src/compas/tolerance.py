@@ -139,7 +139,7 @@ class Tolerance(Data):
             The tolerance.
 
         """
-        return rtol * truevalue + atol
+        return rtol * abs(truevalue) + atol
 
     def compare(self, a, b, rtol, atol):
         """Compare two values.
