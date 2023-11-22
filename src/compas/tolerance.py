@@ -69,11 +69,21 @@ class Tolerance(Data):
 
     @property
     def data(self):
-        pass
+        return {
+            "unit": self.unit,
+            "absolute": self.absolute,
+            "relative": self.relative,
+            "angle": self.angle,
+        }
 
     @classmethod
     def from_data(cls, data):
-        pass
+        tol = cls()
+        tol.unit = data["unit"]
+        tol.absolute = data["absolute"]
+        tol.relative = data["relative"]
+        tol.angle = data["angle"]
+        return tol
 
     def reset(self):
         """Reset all precision settings to their default values."""
