@@ -240,4 +240,4 @@ class Tolerance(Data):
         return all(self.compare(a, b, rtol, atol) for a, b in zip(A, B))
 
 
-tol = Tolerance()
+TOL = Tolerance()

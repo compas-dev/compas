@@ -4,7 +4,7 @@ from __future__ import division
 
 from random import uniform
 
-from compas.precision import Precision
+from compas.tolerance import TOL
 
 from compas.geometry import KDTree
 from compas.geometry import Geometry
@@ -321,15 +321,16 @@ class Pointcloud(Geometry):
         tree = self.tree
         return [self.points[nbr[1]] for nbr in tree.nearest_neighbors(point, k, True)]
 
-    def add(self, other, precision=None):
+    def add(self, other, tol=None):
         """Add another pointcloud to this pointcloud.
 
         Parameters
         ----------
         other : :class:`~compas.geometry.Pointcloud`
             The other pointcloud.
-        precision : float, optional
-            The precision to use for the comparison.
+        tol : float, optional
+            The absolute tolerance for comparing the distance between points to zero.
+            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
 
         Returns
         -------
@@ -341,22 +342,21 @@ class Pointcloud(Geometry):
         Duplicate points are not added.
 
         """
-        if precision is None:
-            precision = Precision().confusion
+        tol = tol or TOL.absolute
 
         tree = self.tree
-        self.points += [point for point in other if tree.nearest_neighbor(point)[2] > precision]
+        self.points += [point for point in other if tree.nearest_neighbor(point)[2] > tol]
 
-    def union(self, other, precision=None):
+    def union(self, other, tol=None):
         """Compute the union with another pointcloud.
 
         Parameters
         ----------
         other : :class:`~compas.geometry.Pointcloud`
             The other pointcloud.
-        precision : float, optional
-            The precision to use for the comparison.
-            Default is ``None``, in which case ``compas.precision.Precision().confusion`` is used.
+        tol : float, optional
+            The absolute tolerance for comparing the distance between points to zero.
+            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
 
         Returns
         -------
@@ -364,22 +364,21 @@ class Pointcloud(Geometry):
             The union pointcloud.
 
         """
-        if precision is None:
-            precision = Precision().confusion
+        tol = tol or TOL.absolute
 
         tree = self.tree
-        return Pointcloud(self.points + [point for point in other if tree.nearest_neighbor(point)[2] > precision])
+        return Pointcloud(self.points + [point for point in other if tree.nearest_neighbor(point)[2] > tol])
 
-    def subtract(self, other, precision=None):  # type: (Pointcloud, ...) -> None
+    def subtract(self, other, tol=None):  # type: (Pointcloud, ...) -> None
         """Subtract another pointcloud from this pointcloud.
 
         Parameters
         ----------
         other : :class:`~compas.geometry.Pointcloud`
             The other pointcloud.
-        precision : float, optional
-            The precision to use for the comparison.
-            Default is ``None``, in which case ``compas.precision.Precision().confusion`` is used.
+        tol : float, optional
+            The absolute tolerance for comparing the distance between points to zero.
+            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
 
         Returns
         -------
@@ -387,22 +386,21 @@ class Pointcloud(Geometry):
             The pointcloud is modified in place.
 
         """
-        if precision is None:
-            precision = Precision().confusion
+        tol = tol or TOL.absolute
 
         tree = KDTree(other)
-        self.points = [point for point in self.points if tree.nearest_neighbor(point)[2] > precision]
+        self.points = [point for point in self.points if tree.nearest_neighbor(point)[2] > tol]
 
-    def difference(self, other, precision=None):  # type: (Pointcloud, ...) -> Pointcloud
+    def difference(self, other, tol=None):  # type: (Pointcloud, ...) -> Pointcloud
         """Compute the difference with another pointcloud.
 
         Parameters
         ----------
         other : :class:`~compas.geometry.Pointcloud`
             The other pointcloud.
-        precision : float, optional
-            The precision to use for the comparison.
-            Default is ``None``, in which case ``compas.precision.Precision().confusion`` is used.
+        tol : float, optional
+            The absolute tolerance for comparing the distance between points to zero.
+            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
 
         Returns
         -------
@@ -410,8 +408,7 @@ class Pointcloud(Geometry):
             The difference pointcloud.
 
         """
-        if precision is None:
-            precision = Precision().confusion
+        tol = tol or TOL.absolute
 
         tree = KDTree(other)
-        return Pointcloud([point for point in self.points if tree.nearest_neighbor(point)[2] > precision])
+        return Pointcloud([point for point in self.points if tree.nearest_neighbor(point)[2] > tol])
