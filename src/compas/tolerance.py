@@ -202,3 +202,6 @@ class Tolerance(Data):
         rtol = rtol or self.relative
         atol = atol or self.absolute
         return all(self.compare(a, b, rtol, atol) for a, b in zip(A, B))
+
+
+tol = Tolerance()
