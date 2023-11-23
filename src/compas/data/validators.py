@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 try:
-    basestring
+    basestring  # type: ignore
 except NameError:
     basestring = str
 

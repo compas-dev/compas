@@ -50,7 +50,7 @@ class ColorMap(object):
     >>> cmap = ColorMap.from_mpl('viridis')
     >>> n = 100
     >>> for i in range(n):
-    ...     color = cmap(i, 0, n - 1)
+    ...     color = cmap(i, minval=0, maxval=n - 1)
     ...
 
     See Also
