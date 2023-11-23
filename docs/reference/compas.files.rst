@@ -17,38 +17,41 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    DXF
-    DXFParser
-    DXFReader
     GLTF
+    OBJ
+    OFF
+    PLY
+    STL
+    URDF
+    XML
+
+
+Helper Classes
+==============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     GLTFContent
     GLTFExporter
     GLTFMesh
     GLTFParser
     GLTFReader
-    LAS
-    LASParser
-    LASReader
-    OBJ
     OBJParser
     OBJReader
     OBJWriter
-    OFF
     OFFReader
     OFFWriter
-    PLY
     PLYParser
     PLYReader
     PLYWriter
-    STL
     STLParser
     STLReader
     STLWriter
-    URDF
     URDFElement
     URDFGenericElement
     URDFParser
-    XML
     XMLElement
     XMLReader
     XMLWriter
