@@ -239,6 +239,15 @@ from ._core.predicates_3 import (
     is_intersection_plane_plane,
 )
 
+from ._core.nurbs import (
+    construct_knotvector,
+    find_span,
+    compute_basisfuncs,
+    compute_basisfuncsderivs,
+    knots_and_mults_to_knotvector,
+    knotvector_to_knots_and_mults,
+)
+
 # =============================================================================
 # Algorithms
 # =============================================================================
@@ -564,6 +573,12 @@ __all__ = [
     "is_intersection_line_plane",
     "is_intersection_segment_plane",
     "is_intersection_plane_plane",
+    "construct_knotvector",
+    "find_span",
+    "compute_basisfuncs",
+    "compute_basisfuncsderivs",
+    "knots_and_mults_to_knotvector",
+    "knotvector_to_knots_and_mults",
     "quadmesh_planarize",
     "is_matrix_square",
     "matrix_determinant",

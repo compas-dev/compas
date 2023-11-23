@@ -42,8 +42,6 @@ Linalg
     pivots
     nonpivots
     rref
-    rref_sympy
-    rref_matlab
     chofactor
     lufactorized
     uvw_lengths
