@@ -23,14 +23,14 @@ class Plane(Geometry):
 
     Attributes
     ----------
-    point : :class:`~compas.geometry.Plane`
-        The base point of the plane.
-    normal : :class:`~compas.geometry.Vector`
-        The normal vector of the plane.
-    d : float, read-only
-        The *d* parameter of the linear equation describing the plane.
     abcd : list[float], read-only
         The coefficients of the plane equation.
+    d : float, read-only
+        The *d* parameter of the linear equation describing the plane.
+    normal : :class:`~compas.geometry.Vector`
+        The normal vector of the plane.
+    point : :class:`~compas.geometry.Plane`
+        The base point of the plane.
 
     Examples
     --------
@@ -143,7 +143,7 @@ class Plane(Geometry):
     # ==========================================================================
 
     @classmethod
-    def from_three_points(cls, a, b, c):
+    def from_three_points(cls, a, b, c):  # type: (...) -> Plane
         """Construct a plane from three points in three-dimensional space.
 
         Parameters
@@ -177,7 +177,7 @@ class Plane(Geometry):
         return cls(a, normal)
 
     @classmethod
-    def from_point_and_two_vectors(cls, point, u, v):
+    def from_point_and_two_vectors(cls, point, u, v):  # type: (...) -> Plane
         """Construct a plane from a base point and two vectors.
 
         Parameters
@@ -208,7 +208,7 @@ class Plane(Geometry):
         return cls(point, normal)
 
     @classmethod
-    def from_abcd(cls, abcd):
+    def from_abcd(cls, abcd):  # type: (...) -> Plane
         """Construct a plane from the plane equation coefficients.
 
         Parameters
@@ -228,7 +228,7 @@ class Plane(Geometry):
         return cls(point, normal)
 
     @classmethod
-    def worldXY(cls):
+    def worldXY(cls):  # type: (...) -> Plane
         """Construct the world XY plane.
 
         Returns
@@ -240,7 +240,7 @@ class Plane(Geometry):
         return cls([0, 0, 0], [0, 0, 1])
 
     @classmethod
-    def worldYZ(cls):
+    def worldYZ(cls):  # type: (...) -> Plane
         """Construct the world YZ plane.
 
         Returns
@@ -252,7 +252,7 @@ class Plane(Geometry):
         return cls([0, 0, 0], [1, 0, 0])
 
     @classmethod
-    def worldZX(cls):
+    def worldZX(cls):  # type: (...) -> Plane
         """Construct the world ZX plane.
 
         Returns
@@ -264,7 +264,7 @@ class Plane(Geometry):
         return cls([0, 0, 0], [0, 1, 0])
 
     @classmethod
-    def from_frame(cls, frame):
+    def from_frame(cls, frame):  # type: (...) -> Plane
         """Construct a plane from a frame.
 
         Returns
@@ -283,7 +283,7 @@ class Plane(Geometry):
         return cls(frame.point, frame.normal)
 
     @classmethod
-    def from_points(cls, points):
+    def from_points(cls, points):  # type: (...) -> Plane
         """Construct a plane from a list of points.
 
         If the list contains more than three points, a plane is constructed that minimizes the distance to all points.
@@ -403,6 +403,8 @@ class Plane(Geometry):
         """
         return abs(self.normal.dot(other.normal)) < tol
 
+    # move to Point.is_on_plane?
+    # if point.is_on_plane(plane): ...
     def contains_point(self, point, tol=1e-06):
         """Verify if a given point lies in the plane.
 
@@ -429,6 +431,8 @@ class Plane(Geometry):
         vector = self.point - point
         return abs(self.normal.dot(vector)) < tol
 
+    # move to Point.distance_to_plane?
+    # point.distance_to_plane(plane)
     def distance_to_point(self, point):
         """Compute the distance from a given point to the plane.
 
@@ -452,6 +456,9 @@ class Plane(Geometry):
         vector = self.point - point
         return abs(self.normal.dot(vector))
 
+    # move to Point.closest_on_plane?
+    # point.closest_on_plane(plane)
+    # remove entirely?
     def closest_point(self, point):
         """Compute the closest point on the plane to a given point.
 
@@ -476,6 +483,9 @@ class Plane(Geometry):
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(distance)
 
+    # move to Point.proejcted_on_plane?
+    # point.projected_on_plane(plane)
+    # point.project_on_plane(plane)
     def projected_point(self, point, direction=None):
         """Returns the projection of a given point onto the plane.
 
@@ -505,6 +515,9 @@ class Plane(Geometry):
         intersection = self.intersection_with_line(line)
         return intersection
 
+    # move to Point.mirrored_by_plane?
+    # point.mirrored_by_plane(plane)
+    # point.mirror_by_plane(plane)
     def mirrored_point(self, point):
         """Returns the mirror image of a given point.
 
