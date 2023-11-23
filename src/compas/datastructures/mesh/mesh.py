@@ -169,7 +169,7 @@ class Mesh(HalfEdge):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_obj(cls, filepath, precision=None):
+    def from_obj(cls, filepath, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in an OBJ file.
 
         Parameters
@@ -208,6 +208,7 @@ class Mesh(HalfEdge):
         if edges:
             lines = [(vertices[u], vertices[v], 0) for u, v in edges]
             return cls.from_lines(lines)
+        return cls()
 
     def to_obj(self, filepath, precision=None, unweld=False, **kwargs):
         """Write the mesh to an OBJ file.
@@ -236,7 +237,7 @@ class Mesh(HalfEdge):
         obj.write(self, unweld=unweld, **kwargs)
 
     @classmethod
-    def from_ply(cls, filepath, precision=None):
+    def from_ply(cls, filepath, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in a PLY file.
 
         Parameters
@@ -273,7 +274,7 @@ class Mesh(HalfEdge):
         ply.write(self, **kwargs)
 
     @classmethod
-    def from_stl(cls, filepath, precision=None):
+    def from_stl(cls, filepath, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in a STL file.
 
         Parameters
@@ -324,7 +325,7 @@ class Mesh(HalfEdge):
         stl.write(self, binary=binary, **kwargs)
 
     @classmethod
-    def from_off(cls, filepath):
+    def from_off(cls, filepath):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in a OFF file.
 
         Parameters
@@ -361,7 +362,7 @@ class Mesh(HalfEdge):
         off.write(self, **kwargs)
 
     @classmethod
-    def from_lines(cls, lines, delete_boundary_face=False, precision=None):
+    def from_lines(cls, lines, delete_boundary_face=False, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from a list of lines described by start and end point coordinates.
 
         Parameters
@@ -406,7 +407,7 @@ class Mesh(HalfEdge):
         return [self.edge_coordinates(edge) for edge in self.edges()]
 
     @classmethod
-    def from_polylines(cls, boundary_polylines, other_polylines):
+    def from_polylines(cls, boundary_polylines, other_polylines):  # type: (...) -> Mesh
         """Construct mesh from polylines.
 
         Based on construction from_lines,
@@ -474,7 +475,7 @@ class Mesh(HalfEdge):
         raise NotImplementedError
 
     @classmethod
-    def from_vertices_and_faces(cls, vertices, faces):
+    def from_vertices_and_faces(cls, vertices, faces):  # type: (...) -> Mesh
         """Construct a mesh object from a list of vertices and faces.
 
         Parameters
@@ -556,7 +557,7 @@ class Mesh(HalfEdge):
         return vertices, faces
 
     @classmethod
-    def from_polyhedron(cls, f):
+    def from_polyhedron(cls, f):  # type: (...) -> Mesh
         """Construct a mesh from a platonic solid.
 
         Parameters
@@ -574,7 +575,7 @@ class Mesh(HalfEdge):
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
-    def from_shape(cls, shape, **kwargs):
+    def from_shape(cls, shape, **kwargs):  # type: (...) -> Mesh
         """Construct a mesh from a primitive shape.
 
         Parameters
@@ -596,7 +597,7 @@ class Mesh(HalfEdge):
         return mesh
 
     @classmethod
-    def from_points(cls, points, boundary=None, holes=None):
+    def from_points(cls, points, boundary=None, holes=None):  # type: (...) -> Mesh
         """Construct a mesh from a delaunay triangulation of a set of points.
 
         Parameters
@@ -628,7 +629,7 @@ class Mesh(HalfEdge):
         raise NotImplementedError
 
     @classmethod
-    def from_polygons(cls, polygons, precision=None):
+    def from_polygons(cls, polygons, precision=None):  # type: (...) -> Mesh
         """Construct a mesh from a series of polygons.
 
         Parameters
@@ -672,7 +673,7 @@ class Mesh(HalfEdge):
         return [self.face_coordinates(fkey) for fkey in self.faces()]
 
     @classmethod
-    def from_meshgrid(cls, dx, nx, dy=None, ny=None):
+    def from_meshgrid(cls, dx, nx, dy=None, ny=None):  # type: (...) -> Mesh
         """Create a mesh from faces and vertices on a regular grid.
 
         Parameters
