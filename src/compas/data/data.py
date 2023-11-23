@@ -2,6 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+try:
+    from typing import TypeVar  # noqa: F401
+
+    D = TypeVar("D", bound="Data")
+except ImportError:
+    pass
+
 import hashlib
 from uuid import uuid4
 from uuid import UUID
@@ -38,8 +45,6 @@ class Data(object):
     data : dict
         The representation of the object as a dictionary containing only built-in Python data types.
         The structure of the dict is described by the data schema.
-    jsonstring : str, read-only
-        The object's data dict in JSON string format.
     guid : str, read-only
         The globally unique identifier of the object.
         The guid is generated with ``uuid.uuid4()``.
@@ -62,44 +67,6 @@ class Data(object):
     * :func:`compas.data.json_dumps`
     * :func:`compas.data.json_load`
     * :func:`compas.data.json_loads`
-
-    To implement this data class,
-    it is sufficient for the deriving class to define the "getter" and "setter"
-    of the data property: :attr:`compas.data.Data.data`.
-
-    Examples
-    --------
-    >>> from compas.data import Data
-    >>> class Point(Data):
-    ...     def __init__(self, x, y, z):
-    ...         super().__init__()
-    ...         self.x = x
-    ...         self.y = y
-    ...         self.z = z
-    ...     @property
-    ...     def data(self):
-    ...         return {'x': self.x, 'y': self.y, 'z': self.z}
-    ...     @data.setter
-    ...     def data(self, data):
-    ...         self.x = data['x']
-    ...         self.y = data['y']
-    ...         self.z = data['z']
-    ...
-    >>> a = Point(1.0, 0.0, 0.0)
-    >>> a.guid                 # doctest: +SKIP
-    UUID('1ddad2fe-6716-4e30-a5ae-8ed7cad892c4')
-    >>> a.name
-    'Point'
-    >>> a.data
-    {'x': 1.0, 'y': 0.0, 'z': 0.0}
-
-    >>> from compas.data import json_dumps, json_loads
-    >>> s = json_dumps(a)
-    >>> b = json_loads(s)                                     # doctest: +SKIP
-    >>> a is b                                                # doctest: +SKIP
-    False
-    >>> a == b                                                # doctest: +SKIP
-    True
 
     """
 
@@ -203,7 +170,7 @@ class Data(object):
         self._name = name
 
     @classmethod
-    def from_data(cls, data):
+    def from_data(cls, data):  # type: (dict) -> Data
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -230,7 +197,38 @@ class Data(object):
         """
         return self.data
 
-    def copy(self, cls=None):
+    @classmethod
+    def from_json(cls, filepath):  # type: (...) -> Data
+        """Construct an object of this type from a JSON file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the JSON file.
+
+        Returns
+        -------
+        :class:`~compas.data.Data`
+            An instance of this object type if the data contained in the file has the correct schema.
+
+        """
+        return compas.json_load(filepath)
+
+    def to_json(self, filepath, pretty=False):
+        """Convert an object to its native data representation and save it to a JSON file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the JSON file.
+        pretty : bool, optional
+            If True, the JSON file will be pretty printed.
+            Defaults to False.
+
+        """
+        compas.json_dump(self, filepath, pretty=pretty)
+
+    def copy(self, cls=None):  # type: (...) -> D
         """Make an independent copy of the data object.
 
         Parameters
@@ -247,7 +245,7 @@ class Data(object):
         """
         if not cls:
             cls = type(self)
-        return cls.from_data(deepcopy(self.data))
+        return cls.from_data(deepcopy(self.data))  # type: ignore
 
     def sha256(self, as_string=False):
         """Compute a hash of the data for comparison during version control using the sha256 algorithm.
