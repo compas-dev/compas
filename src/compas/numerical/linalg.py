@@ -1,4 +1,3 @@
-from subprocess import Popen
 import sys
 
 from functools import wraps
@@ -19,12 +18,8 @@ from scipy.linalg import cho_solve  # type: ignore
 from scipy.linalg import lstsq  # type: ignore
 from scipy.linalg import qr  # type: ignore
 from scipy.linalg import svd  # type: ignore
-from scipy.io import loadmat  # type: ignore
-from scipy.io import savemat  # type: ignore
 from scipy.sparse.linalg import factorized  # type: ignore
 from scipy.sparse.linalg import spsolve  # type: ignore
-
-import compas
 
 
 # ==============================================================================
@@ -256,7 +251,7 @@ def rref(A, tol=None):
     # to have non-decreasing absolute values on the diagonal of R
     # column pivoting ensures that the largest absolute value is used
     # as leading element
-    _, U = qr(A)
+    _, U = qr(A)  # type: ignore
     lead_pos = 0
     num_rows, num_cols = U.shape
     for r in range(num_rows):
@@ -284,86 +279,6 @@ def rref(A, tol=None):
         # go to the next column
         lead_pos += 1
     return U
-
-
-def rref_sympy(A, tol=None):
-    r"""Reduced row-echelon form of matrix A.
-
-    Parameters
-    ----------
-    A : array-like
-        Matrix A represented as an array or list.
-    tol : float
-        Tolerance.
-
-    Returns
-    -------
-    array
-        RREF of A.
-
-    Notes
-    -----
-    A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
-    result is independent of the method/algorithm used.
-
-    Examples
-    --------
-    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref_sympy(A)
-    >>> array(n)
-    array([[1, 0, 1.00000000000000, 3.00000000000000],
-           [0, 1, 0.666666666666667, 0.333333333333333],
-           [0, 0, 0, 0]], dtype=object)
-
-    """
-    import sympy
-
-    A = atleast_2d(asarray(A, dtype=float))
-    return sympy.Matrix(A).rref()[0].tolist()
-
-
-def rref_matlab(A, ifile, ofile, tol=None):
-    r"""Reduced row-echelon form of matrix A.
-
-    Parameters
-    ----------
-    A : array-like
-        Matrix A represented as an array or list.
-    tol : float
-        Tolerance.
-
-    Returns
-    -------
-    array
-        RREF of A.
-
-    Notes
-    -----
-    A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
-    result is independent of the method/algorithm used.
-
-    Examples
-    --------
-    >>>
-
-    """
-    A = atleast_2d(asarray(A, dtype=float))
-
-    idict = {"A": A}
-    savemat(ifile, idict)
-
-    matlab = ["matlab"]
-    if compas.is_windows():
-        options = ["-nosplash", "-wait", "-r"]
-    else:
-        options = ["-nosplash", "-r"]
-    command = ["load('{0}');[R, jb]=rref(A);save('{1}');exit;".format(ifile, ofile)]
-
-    p = Popen(matlab + options + command)
-    stdout, stderr = p.communicate()
-
-    odict = loadmat(ofile)
-    return odict["R"]
 
 
 # ==============================================================================
