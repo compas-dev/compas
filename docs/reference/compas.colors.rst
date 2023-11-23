@@ -20,3 +20,11 @@ Classes
     Color
     ColorDict
     ColorMap
+
+
+HTML Colors
+===========
+
+.. toctree::
+    
+    compas.colors.html_colors
