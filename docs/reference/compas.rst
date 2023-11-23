@@ -19,6 +19,7 @@ Modules
     :titlesonly:
 
     compas.artists
+    compas.brep
     compas.colors
     compas.data
     compas.datastructures
