@@ -29,13 +29,6 @@ Functions
     :toctree: generated/
     :nosignatures:
 
-    is_float3
-    is_float4x4
-    is_int3
-    is_item_iterable
-    is_sequence_of_float
-    is_sequence_of_int
-    is_sequence_of_uint
     json_load
     json_loads
     json_dump
