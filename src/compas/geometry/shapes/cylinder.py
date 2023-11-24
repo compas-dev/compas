@@ -301,7 +301,7 @@ class Cylinder(Shape):
         :class:`compas.brep.Brep`
 
         """
-        from compas.brep import Brep
+        from compas.geometry import Brep
 
         return Brep.from_cylinder(self)
 

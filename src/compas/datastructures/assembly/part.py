@@ -4,7 +4,7 @@ from __future__ import division
 
 from compas.geometry import Frame
 from compas.geometry import Polyhedron
-from compas.brep import Brep
+from compas.geometry import Brep
 from compas.datastructures import Datastructure
 from compas.data import Data
 

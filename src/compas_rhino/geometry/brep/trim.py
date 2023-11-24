@@ -1,6 +1,6 @@
 import Rhino
 
-from compas.brep import BrepTrim
+from compas.geometry import BrepTrim
 from compas_rhino.geometry import RhinoNurbsCurve
 
 

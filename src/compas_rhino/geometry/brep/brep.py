@@ -1,8 +1,8 @@
 import Rhino
 
 from compas.geometry import Frame
-from compas.brep import Brep
-from compas.brep import BrepTrimmingError
+from compas.geometry import Brep
+from compas.geometry import BrepTrimmingError
 from compas.geometry import Plane
 
 from compas_rhino.conversions import box_to_rhino

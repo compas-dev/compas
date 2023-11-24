@@ -1,6 +1,6 @@
 import Rhino
 
-from compas.brep import BrepLoop
+from compas.geometry import BrepLoop
 
 from .trim import RhinoBrepTrim
 

@@ -3,7 +3,7 @@ from Rhino.Geometry import NurbsCurve
 from Rhino.Geometry import LineCurve
 from Rhino.Geometry import Interval
 
-from compas.brep import BrepEdge
+from compas.geometry import BrepEdge
 from compas.geometry import Line
 from compas.geometry import Circle
 from compas.geometry import Ellipse

@@ -34,6 +34,11 @@ Classes
     Arc
     Bezier
     Box
+    Brep
+    BrepLoop
+    BrepEdge
+    BrepVertex
+    BrepFace
     Capsule
     Circle
     Cone

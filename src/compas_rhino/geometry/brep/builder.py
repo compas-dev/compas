@@ -1,6 +1,6 @@
 import Rhino
 
-from compas.brep import BrepInvalidError
+from compas.geometry import BrepInvalidError
 from compas_rhino.conversions import point_to_rhino
 
 TOLERANCE = 1e-6

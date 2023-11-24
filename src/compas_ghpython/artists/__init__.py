@@ -20,7 +20,7 @@ from compas.geometry import Sphere
 from compas.geometry import Surface
 from compas.geometry import Torus
 from compas.geometry import Vector
-from compas.brep import Brep
+from compas.geometry import Brep
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
