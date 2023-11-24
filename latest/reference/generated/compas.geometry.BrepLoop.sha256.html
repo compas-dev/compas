@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="BrepLoop.to_data" href="compas.geometry.BrepLoop.to_data.html" />
-    <link rel="prev" title="BrepLoop.from_data" href="compas.geometry.BrepLoop.from_data.html" />
+    <link rel="prev" title="BrepLoop.from_json" href="compas.geometry.BrepLoop.from_json.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -112,7 +112,7 @@
 
 
   <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.17.6 is available <a href='https://compas.dev/compas/1.17.6/'>here</a>.</div>
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
   </div>
 
   
@@ -424,19 +424,13 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.colors.Color.html">Color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.colors.ColorDict.html">ColorDict</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.colors.ColorMap.html">ColorMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../compas.colors.html_colors.html">HTML Colors</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.data.html">compas.data</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.Data.html">Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DataEncoder.html">DataEncoder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.DataDecoder.html">DataDecoder</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_float3.html">is_float3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_float4x4.html">is_float4x4</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_int3.html">is_int3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_item_iterable.html">is_item_iterable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_float.html">is_sequence_of_float</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_int.html">is_sequence_of_int</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.data.is_sequence_of_uint.html">is_sequence_of_uint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.json_load.html">json_load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.json_loads.html">json_loads</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.data.json_dump.html">json_dump</a></li>
@@ -573,38 +567,32 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../compas.files.html">compas.files</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.DXF.html">DXF</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.DXFParser.html">DXFParser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.DXFReader.html">DXFReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTF.html">GLTF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.OBJ.html">OBJ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.OFF.html">OFF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.PLY.html">PLY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.STL.html">STL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.URDF.html">URDF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.files.XML.html">XML</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFContent.html">GLTFContent</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFExporter.html">GLTFExporter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFMesh.html">GLTFMesh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFParser.html">GLTFParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.GLTFReader.html">GLTFReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.LAS.html">LAS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.LASParser.html">LASParser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.LASReader.html">LASReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.OBJ.html">OBJ</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OBJParser.html">OBJParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OBJReader.html">OBJReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OBJWriter.html">OBJWriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.OFF.html">OFF</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OFFReader.html">OFFReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.OFFWriter.html">OFFWriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.PLY.html">PLY</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.PLYParser.html">PLYParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.PLYReader.html">PLYReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.PLYWriter.html">PLYWriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.STL.html">STL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.STLParser.html">STLParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.STLReader.html">STLReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.STLWriter.html">STLWriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.URDF.html">URDF</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.URDFElement.html">URDFElement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.URDFGenericElement.html">URDFGenericElement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.URDFParser.html">URDFParser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.files.XML.html">XML</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.XMLElement.html">XMLElement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.XMLReader.html">XMLReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.files.XMLWriter.html">XMLWriter</a></li>
@@ -620,10 +608,10 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Bezier.html">Bezier</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Box.html">Box</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Brep.html">Brep</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepEdge.html">BrepEdge</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepFace.html">BrepFace</a></li>
 <li class="toctree-l3 current active"><a class="reference internal" href="compas.geometry.BrepLoop.html">BrepLoop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepEdge.html">BrepEdge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepVertex.html">BrepVertex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.BrepFace.html">BrepFace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Capsule.html">Capsule</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Circle.html">Circle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.Cone.html">Cone</a></li>
@@ -875,8 +863,6 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.numerical.pivots.html">pivots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.numerical.nonpivots.html">nonpivots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.numerical.rref.html">rref</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.numerical.rref_sympy.html">rref_sympy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="compas.numerical.rref_matlab.html">rref_matlab</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.numerical.chofactor.html">chofactor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.numerical.lufactorized.html">lufactorized</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.numerical.uvw_lengths.html">uvw_lengths</a></li>
@@ -1212,12 +1198,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="compas.geometry.BrepLoop.from_data.html"
+       href="compas.geometry.BrepLoop.from_json.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">BrepLoop.from_data</p>
+        <p class="prev-next-title">BrepLoop.from_json</p>
       </div>
     </a>
     <a class="right-next"
