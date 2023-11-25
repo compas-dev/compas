@@ -244,6 +244,11 @@ class Polygon(Geometry):
         :class:`~compas.geometry.Polygon`
             The constructed polygon.
 
+        Raises
+        ------
+        ValueError
+            If the number of sides is smaller than 3.
+
         Notes
         -----
         The first point of the polygon aligns with the Y-axis.
@@ -265,7 +270,9 @@ class Polygon(Geometry):
         True
 
         """
-        assert n >= 3, "Supplied number of sides must be at least 3!"
+        if n < 3:
+            raise ValueError("Supplied number of sides must be at least 3!")
+
         points = []
         side = math.pi * 2 / n
         for i in range(n):

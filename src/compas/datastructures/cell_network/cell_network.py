@@ -203,11 +203,20 @@ class CellNetwork(HalfFace):
         tuple[hashable, hashable]
             The identifier of the edge.
 
+        Raises
+        ------
+        ValueError
+            If either of the nodes of the edge does not exist.
+
         """
+        if u not in self._vertex:
+            raise ValueError("Cannot add edge {}, {} has no vertex {}".format((u, v), self.name, u))
+        if v not in self._vertex:
+            raise ValueError("Cannot add edge {}, {} has no vertex {}".format((u, v), self.name, u))
+
         attr = attr_dict or {}
         attr.update(kwattr)
-        assert u in self._vertex, "Cannot add edge {}, {} has no vertex {}".format((u, v), self.name, u)
-        assert v in self._vertex, "Cannot add edge {}, {} has no vertex {}".format((u, v), self.name, u)
+
         data = self._edge[u].get(v, {})
         data.update(attr)
         self._edge[u][v] = data
@@ -302,6 +311,36 @@ class CellNetwork(HalfFace):
         u, v = edge
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
 
+    def edge_start(self, edge):
+        """Return the start point of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The start point.
+        """
+        return self.vertex_point(edge[0])
+
+    def edge_end(self, edge):
+        """Return the end point of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[int, int]
+            The edge identifier.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The end point.
+        """
+        return self.vertex_point(edge[1])
+
     def edge_vector(self, edge):
         """Return the vector of an edge.
 
@@ -346,7 +385,7 @@ class CellNetwork(HalfFace):
         :class:`compas.geometry.Line`
             The line.
         """
-        return Line(self.edge_start(edge), self.edge_end(edge))
+        return Line(*self.edge_coordinates(edge))
 
     def edge_length(self, edge):
         """Return the length of an edge.
@@ -714,6 +753,7 @@ class CellNetwork(HalfFace):
         -------
         list[int]
             The identifiers of the neighboring faces.
+
         """
         nbrs = set()
         for edge in self.face_edges(fkey):
@@ -732,6 +772,7 @@ class CellNetwork(HalfFace):
         -------
         dict
             A dictionary dict[edge] = face key
+
         """
         faces = faces or self.faces()
         adjacency = {}
@@ -756,7 +797,9 @@ class CellNetwork(HalfFace):
         -------
         dict
             A face adjacency dictionary.
+
         """
+        faces = faces or self.faces()
         faces_vertices = [self.face_vertices(face) for face in faces]
         vertices = list({v: None for face in faces_vertices for v in face}.keys())  # unique, but keep order
         return face_adjacency(vertices, faces)
@@ -773,6 +816,7 @@ class CellNetwork(HalfFace):
         -------
         list[int]
             The identifiers of the cells connected to the face.
+
         """
         cells = {cell for cell in [self.halfface_cell(fkey), self.halfface_opposite_cell(fkey)] if cell is not None}
         return list(cells)
@@ -802,6 +846,7 @@ class CellNetwork(HalfFace):
         bool
             True if the face is on the boundary.
             False otherwise.
+
         """
         u, v = self._halfface[halfface][:2]
         cu = 0 if self._plane[v][u][halfface] is None else 1
@@ -819,7 +864,8 @@ class CellNetwork(HalfFace):
         Parameters
         ----------
         faces : list of int, optional
-            The faces for which to compute the adjacency, defaults to all faces in the datastructure
+            The faces for which to compute the adjacency, defaults to all faces in the datastructure.
+
         """
         faces = faces or self.faces()
         adjacency = {}

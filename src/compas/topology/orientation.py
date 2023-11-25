@@ -28,7 +28,7 @@ def unify_cycles(vertices, faces, root=0):
 
     Raises
     ------
-    AssertionError
+    Exception
         If not all faces were visited.
 
     Notes
@@ -62,7 +62,10 @@ def unify_cycles(vertices, faces, root=0):
 
     adj = face_adjacency(vertices, faces)
     visited = breadth_first_traverse(adj, root, unify)
-    assert len(list(visited)) == len(faces), "Not all faces were visited"
+
+    if len(list(visited)) != len(faces):
+        raise Exception("Not all faces were visited")
+
     return faces
 
 

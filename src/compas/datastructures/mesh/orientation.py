@@ -16,36 +16,37 @@ def _mesh_face_adjacency(mesh, nmax=10, radius=10.0):
         from scipy.spatial import cKDTree
 
         tree = cKDTree(points)
-        _, closest = tree.query(points, k=k, n_jobs=-1)
+        _, closest = tree.query(points, k=k, workers=-1)
 
     except Exception:
-        # try:
-        #     from Rhino.Geometry import RTree
-        #     from Rhino.Geometry import Sphere
-        #     from Rhino.Geometry import Point3d
+        try:
+            from Rhino.Geometry import RTree  # type: ignore
+            from Rhino.Geometry import Sphere  # type: ignore
+            from Rhino.Geometry import Point3d  # type: ignore
 
-        # except Exception:
-        from compas.geometry import KDTree
+        except Exception:
+            from compas.geometry import KDTree
 
-        tree = KDTree(points)
-        closest = [tree.nearest_neighbors(point, k) for point in points]
-        closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
+            tree = KDTree(points)
+            closest = [tree.nearest_neighbors(point, k) for point in points]
+            closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
 
-        # else:
-        #     tree = RTree()
-        #     for i, point in enumerate(points):
-        #         tree.Insert(Point3d(* point), i)
+        else:
+            tree = RTree()
 
-        #     def callback(sender, e):
-        #         data = e.Tag
-        #         data.append(e.Id)
+            for i, point in enumerate(points):
+                tree.Insert(Point3d(*point), i)
 
-        #     closest = []
-        #     for i, point in enumerate(points):
-        #         sphere = Sphere(Point3d(* point), radius)
-        #         data = []
-        #         tree.Search(sphere, callback, data)
-        #         closest.append(data)
+            def callback(sender, e):
+                data = e.Tag
+                data.append(e.Id)
+
+            closest = []
+            for i, point in enumerate(points):
+                sphere = Sphere(Point3d(*point), radius)
+                data = []
+                tree.Search(sphere, callback, data)
+                closest.append(data)
 
     adjacency = {}
 
@@ -112,13 +113,6 @@ def mesh_face_adjacency(mesh):
     faces = list(mesh.faces())
 
     for fkey in mesh.faces():
-        # faces = []
-        # for key in mesh.face_vertices(fkey):
-        #     for nbr in mesh.halfedge[key]:
-        #         fnbr = mesh.halfedge[key][nbr]
-        #         if fnbr is not None:
-        #             faces.append(fnbr)
-
         nbrs = []
         found = set()
 
@@ -166,7 +160,7 @@ def mesh_unify_cycles(mesh, root=None):
 
     Raises
     ------
-    AssertionError
+    Exception
         If no all faces are included in the unnification process.
 
     """
@@ -192,7 +186,8 @@ def mesh_unify_cycles(mesh, root=None):
 
     visited = breadth_first_traverse(adj, root, unify)
 
-    assert len(list(visited)) == mesh.number_of_faces(), "Not all faces were visited"
+    if len(list(visited)) != mesh.number_of_faces():
+        raise Exception("Not all faces were visited.")
 
     mesh.halfedge = {key: {} for key in mesh.vertices()}
     for fkey in mesh.faces():

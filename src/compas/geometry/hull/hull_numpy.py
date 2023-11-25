@@ -23,7 +23,7 @@ def convex_hull_numpy(points):
 
     Raises
     ------
-    AssertionError
+    ValueError
         If the input data is not 3D.
 
     Notes
@@ -33,15 +33,12 @@ def convex_hull_numpy(points):
     a mesh from the returned vertices, this function should be used in combination
     with :func:`compas.topology.unify_cycles`.
 
-    Examples
-    --------
-    >>>
-
     """
     points = asarray(points)
     n, dim = points.shape
 
-    assert 2 < dim, "The point coordinates should be at least 3D: %i" % dim
+    if dim < 3:
+        raise ValueError("The point coordinates should be at least 3D: %i" % dim)
 
     points = points[:, :3]
     hull = ConvexHull(points)
@@ -66,7 +63,7 @@ def convex_hull_xy_numpy(points):
 
     Raises
     ------
-    AssertionError
+    ValueError
         If the input data is not at least 2D.
 
     Examples
@@ -77,7 +74,8 @@ def convex_hull_xy_numpy(points):
     points = asarray(points)
     n, dim = points.shape
 
-    assert 1 < dim, "The point coordinates should be at least 2D: %i" % dim
+    if dim < 2:
+        raise ValueError("The point coordinates should be at least 2D: %i" % dim)
 
     points = points[:, :2]
     hull = ConvexHull(points)

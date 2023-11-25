@@ -34,7 +34,7 @@ def oriented_bounding_box_numpy(points, tol=1e-12):
 
     Raises
     ------
-    AssertionError
+    ValueError
         If the input data is not 3D.
 
     See Also
@@ -76,7 +76,8 @@ def oriented_bounding_box_numpy(points, tol=1e-12):
     points = asarray(points)
     n, dim = points.shape
 
-    assert dim == 3, "The point coordinates should be 3D: %i" % dim
+    if dim != 3:
+        raise ValueError("The point coordinates should be 3D: %i" % dim)
 
     points = points[:, :3]
 
@@ -141,7 +142,7 @@ def oriented_bounding_box_xy_numpy(points):
 
     Raises
     ------
-    AssertionError
+    ValueError
         If the input data is not at least 2D.
 
     See Also
@@ -153,7 +154,8 @@ def oriented_bounding_box_xy_numpy(points):
     points = asarray(points)
     n, dim = points.shape
 
-    assert dim >= 2, "The point coordinates should be at least 2D: %i" % dim
+    if dim < 2:
+        raise ValueError("The point coordinates should be at least 2D: %i" % dim)
 
     if dim == 2:
         temp = zeros((n, 3))

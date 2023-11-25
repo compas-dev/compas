@@ -188,6 +188,21 @@ def centroid_polygon(polygon):
     [float, float, float]
         The XYZ coordinates of the centroid.
 
+    Raises
+    ------
+    ValueError
+        If the polygon has less than three points.
+
+    Warnings
+    --------
+    The polygon need not be convex.
+
+    The polygon need not be flat. However, it is unclear what the meaning of the
+    centroid is in that case.
+
+    The polygon may be self-intersecting. However, it is unclear what the meaning
+    of the centroid is in that case.
+
     Notes
     -----
     The centroid is the centre of gravity of the polygon surface if mass would be
@@ -204,25 +219,17 @@ def centroid_polygon(polygon):
         c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
         c_z = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{z,i}
 
-    Warnings
-    --------
-    The polygon need not be convex.
-
-    The polygon need not be flat. However, it is unclear what the meaning of the
-    centroid is in that case.
-
-    The polygon may be self-intersecting. However, it is unclear what the meaning
-    of the centroid is in that case.
-
     Examples
     --------
     >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
     >>> centroid_polygon(polygon)
     [0.5, 0.5, 0.0]
+
     """
     p = len(polygon)
 
-    assert p > 2, "At least three points required"
+    if p < 3:
+        raise ValueError("At least three points required.")
 
     if p == 3:
         return centroid_points(polygon)
@@ -282,6 +289,18 @@ def centroid_polygon_xy(polygon):
     [float, float, 0.0]
         The XYZ coordinates of the centroid in the XY plane.
 
+    Raises
+    ------
+    ValueError
+        If the polygon has less than three points.
+
+    Warnings
+    --------
+    The polygon need not be convex.
+
+    The polygon may be self-intersecting. However, it is unclear what the meaning
+    of the centroid is in that case.
+
     Notes
     -----
     The centroid is the centre of gravity of the polygon surface if mass would be
@@ -298,22 +317,17 @@ def centroid_polygon_xy(polygon):
         c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
         c_z = 0
 
-    Warnings
-    --------
-    The polygon need not be convex.
-
-    The polygon may be self-intersecting. However, it is unclear what the meaning
-    of the centroid is in that case.
-
     Examples
     --------
     >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
     >>> centroid_polygon_xy(polygon)
     [0.5, 0.5, 0.0]
+
     """
     p = len(polygon)
 
-    assert p > 2, "At least three points required"
+    if p < 3:
+        raise ValueError("At least three points required")
 
     if p == 3:
         return centroid_points_xy(polygon)
@@ -366,6 +380,7 @@ def centroid_polygon_vertices(polygon):
     -------
     [float, float, float]
         The XYZ coordinates of the centroid.
+
     """
     return centroid_points(polygon)
 
