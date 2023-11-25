@@ -10,6 +10,13 @@ This is the documentation of the core infratructure of COMPAS,
 an open source framework for computational research and collaboration
 in Architecture, Engineering, Fabrication, and Construction.
 
+.. info::
+   
+   This is the documentation of the core Python package of COMPAS.
+   If you are looking for the COMPAS Framework website,
+   please go to https://compas.dev.
+
+
 User Guide
 ==========
 
@@ -21,6 +28,18 @@ this is the place to start.
    :titlesonly:
 
    userguide/index
+
+
+API Reference
+=============
+
+The reference documentation of the core package and the CAD packages.
+
+.. toctree::
+   :maxdepth: 2
+   :titlesonly:
+
+   reference/index
 
 
 Development
@@ -35,13 +54,9 @@ If you want to contribute to COMPAS, this is the place to start.
    devguide/index
 
 
-API Reference
-=============
+Indices and tables
+==================
 
-The reference documentation of the core package and the CAD packages.
-
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
-
-   reference/index
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
