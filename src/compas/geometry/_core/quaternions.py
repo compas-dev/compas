@@ -1,52 +1,3 @@
-"""
-This module contains functions that operate on and/or return quaternions.
-
-Notes
------
-The default convention to represent a quaternion :math:`q` in this module is by four real values **w**, **x**, **y**, **z**.
-The first value **w** is the scalar (real) part, and **x**, **y**, **z** form the vector (complex, imaginary) part [1]_, so that:
-
-:math:`q = w + xi + yj + zk`
-
-where :math:`i, j, k` are basis components with following multiplication rules [2]_:
-
-:math:`ii = jj = kk = ijk = -1`
-
-:math:`ij = k,\\qquad ji = -k`
-
-:math:`jk = i,\\qquad kj = -i`
-
-:math:`ki = j,\\qquad ik = -j`
-
-Quaternions are associative but not commutative.
-
-**Quaternion as rotation.**
-A rotation through an angle :math:`\\theta` around an axis defined by a euclidean unit vector :math:`u = u_{x}i + u_{y}j + u_{z}k`
-can be represented as a quaternion:
-
-:math:`q = cos(\\frac{\\theta}{2}) + sin(\\frac{\\theta}{2})  [u_{x}i + u_{y}j + u_{z}k]`
-
-i.e.:
-
-:math:`w = cos(\\frac{\\theta}{2})`
-
-:math:`x = sin(\\frac{\\theta}{2})  u_{x}`
-
-:math:`y = sin(\\frac{\\theta}{2})  u_{y}`
-
-:math:`z = sin(\\frac{\\theta}{2})  u_{z}`
-
-For a quaternion to represent a rotation or orientation, it must be unit-length.
-A quaternion representing a rotation :math:`p` resulting from applying a rotation :math:`r` to a rotation :math:`q`, i.e.:
-:math:`p = rq`,
-is also unit-length.
-
-References
-----------
-.. [1] http://mathworld.wolfram.com/Quaternion.html
-.. [2] http://mathworld.wolfram.com/HamiltonsRules.html
-.. [3] https://github.com/matthew-brett/transforms3d/blob/master/transforms3d/quaternions.py
-"""
 import math
 
 from ._algebra import allclose
@@ -68,6 +19,14 @@ def quaternion_norm(q):
     float
         The length (euclidean norm) of a quaternion.
 
+    See Also
+    --------
+    quaternion_is_unit
+    quaternion_unitize
+    quaternion_multiply
+    quaternion_canonize
+    quaternion_conjugate
+
     References
     ----------
     * Quaternion Norm: http://mathworld.wolfram.com/QuaternionNorm.html
@@ -88,6 +47,15 @@ def quaternion_unitize(q):
     -------
     [float, float, float, float]
         Quaternion of length 1 as a list of four real values ``[nw, nx, ny, nz]``.
+
+    See Also
+    --------
+    quaternion_is_unit
+    quaternion_norm
+    quaternion_multiply
+    quaternion_canonize
+    quaternion_conjugate
+
     """
     n = quaternion_norm(q)
     if allclose([n], [0.0], ATOL):
@@ -111,6 +79,15 @@ def quaternion_is_unit(q, tol=ATOL):
     bool
         True if the quaternion is unit-length,
         and False if otherwise.
+
+    See Also
+    --------
+    quaternion_unitize
+    quaternion_norm
+    quaternion_multiply
+    quaternion_canonize
+    quaternion_conjugate
+
     """
     n = quaternion_norm(q)
     return allclose([n], [1.0], tol)
@@ -130,6 +107,14 @@ def quaternion_multiply(r, q):
     -------
     [float, float, float, float]
         Quaternion :math:`p = rq` as a list of four real values ``[pw, px, py, pz]``.
+
+    See Also
+    --------
+    quaternion_is_unit
+    quaternion_norm
+    quaternion_unitize
+    quaternion_canonize
+    quaternion_conjugate
 
     Notes
     -----
@@ -165,6 +150,14 @@ def quaternion_canonize(q):
     [float, float, float, float]
         Quaternion in a canonic form as a list of four real values ``[cw, cx, cy, cz]``.
 
+    See Also
+    --------
+    quaternion_is_unit
+    quaternion_norm
+    quaternion_unitize
+    quaternion_multiply
+    quaternion_conjugate
+
     Notes
     -----
     Canonic form means the scalar component is a non-negative number.
@@ -187,6 +180,14 @@ def quaternion_conjugate(q):
     -------
     [float, float, float, float]
         Conjugate quaternion as a list of four real values ``[cw, cx, cy, cz]``.
+
+    See Also
+    --------
+    quaternion_is_unit
+    quaternion_norm
+    quaternion_unitize
+    quaternion_multiply
+    quaternion_canonize
 
     References
     ----------
