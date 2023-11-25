@@ -20,6 +20,52 @@ from .normals import normal_triangle
 from .normals import normal_triangle_xy
 
 
+def area_triangle(triangle):
+    """Compute the area of a triangle defined by three points.
+
+    Parameters
+    ----------
+    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
+        XYZ coordinates of the corners of the triangle.
+
+    Returns
+    -------
+    float
+        The area of the triangle.
+
+    See Also
+    --------
+    area_triangle_xy
+    area_polygon
+    area_polygon_xy
+
+    """
+    return 0.5 * length_vector(normal_triangle(triangle, False))
+
+
+def area_triangle_xy(triangle):
+    """Compute the area of a triangle defined by three points lying in the XY-plane.
+
+    Parameters
+    ----------
+    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
+        XY(Z) coordinates of the corners of the triangle.
+
+    Returns
+    -------
+    float
+        The area of the triangle.
+
+    See Also
+    --------
+    area_triangle
+    area_polygon
+    area_polygon_xy
+
+    """
+    return 0.5 * length_vector(normal_triangle_xy(triangle, False))
+
+
 def area_polygon(polygon):
     """Compute the area of a polygon.
 
@@ -36,9 +82,11 @@ def area_polygon(polygon):
     float
         The area of the polygon.
 
-    Examples
+    See Also
     --------
-    >>>
+    area_polygon_xy
+    area_triangle
+
     """
     o = centroid_points(polygon)
     a = polygon[-1]
@@ -75,6 +123,11 @@ def area_polygon_xy(polygon):
     float
         The area of the polygon.
 
+    See Also
+    --------
+    area_polygon
+    area_triangle_xy
+
     """
     o = centroid_points_xy(polygon)
     u = subtract_vectors_xy(polygon[-1], o)
@@ -85,40 +138,6 @@ def area_polygon_xy(polygon):
         v = subtract_vectors_xy(polygon[i + 1], o)
         a += 0.5 * cross_vectors_xy(u, v)[2]
     return fabs(a)
-
-
-def area_triangle(triangle):
-    """Compute the area of a triangle defined by three points.
-
-    Parameters
-    ----------
-    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
-        XYZ coordinates of the corners of the triangle.
-
-    Returns
-    -------
-    float
-        The area of the triangle.
-
-    """
-    return 0.5 * length_vector(normal_triangle(triangle, False))
-
-
-def area_triangle_xy(triangle):
-    """Compute the area of a triangle defined by three points lying in the XY-plane.
-
-    Parameters
-    ----------
-    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
-        XY(Z) coordinates of the corners of the triangle.
-
-    Returns
-    -------
-    float
-        The area of the triangle.
-
-    """
-    return 0.5 * length_vector(normal_triangle_xy(triangle, False))
 
 
 def volume_polyhedron(polyhedron):
@@ -133,6 +152,11 @@ def volume_polyhedron(polyhedron):
     -------
     float
         The volume of the polyhedron.
+
+    Warnings
+    --------
+    The volume computed by this funtion is only correct if the polyhedron is convex,
+    has planar faces, and is positively oriented (all face normals point outwards).
 
     Notes
     -----
@@ -150,11 +174,6 @@ def volume_polyhedron(polyhedron):
               &= \frac{1}{3} \sum_{i=0}^{N-1} \int{A_{i}} a_{i} \cdot n_{i} \\
               &= \frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}
         \end{align}
-
-    Warnings
-    --------
-    The volume computed by this funtion is only correct if the polyhedron is convex,
-    has planar faces, and is positively oriented (all face normals point outwards).
 
     References
     ----------

@@ -5,7 +5,6 @@ from __future__ import division
 from math import pi
 from math import degrees
 from math import acos
-
 from ._algebra import subtract_vectors
 from ._algebra import subtract_vectors_xy
 from ._algebra import dot_vectors
@@ -46,10 +45,30 @@ def angle_vectors(u, v, deg=False, tol=0.0):
         return 0
     a = dot_vectors(u, v) / L
     a = max(min(a, 1), -1)
+    angle = acos(a)
+
+    # a = length_vector(u)
+    # b = length_vector(v)
+    # if a < tol or b < tol:
+    #     return 0
+    # c = length_vector(subtract_vectors(u, v))
+    # if c < tol:
+    #     return 0
+    # if b >= c and c >= 0:
+    #     mu = c - (a - b)
+    # elif c > b and b >= 0:
+    #     mu = b - (a - c)
+    # else:
+    #     raise Exception("Invalid input vectors.")
+    # angle = 2 * atan(sqrt(((a - b) + c) * mu / ((a + (b + c)) * ((a - c) + b))))
+
+    # a = normalize_vector(u)
+    # b = normalize_vector(v)
+    # angle = 2 * atan2(length_vector(subtract_vectors(a, b)), length_vector(add_vectors(a, b)))
 
     if deg:
-        return degrees(acos(a))
-    return acos(a)
+        return degrees(angle)
+    return angle
 
 
 def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):

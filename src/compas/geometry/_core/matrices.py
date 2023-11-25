@@ -67,6 +67,10 @@ def is_matrix_square(M):
         True if the length of every row is equal to the number of rows.
         False otherwise.
 
+    See Also
+    --------
+    is_matrix_symmetric
+
     Examples
     --------
     >>> M = identity_matrix(4)
@@ -98,6 +102,11 @@ def matrix_minor(M, i, j):
     list[list[float]]
         The minor.
 
+    See Also
+    --------
+    matrix_determinant
+    matrix_inverse
+
     """
     return [row[:j] + row[j + 1 :] for row in (M[:i] + M[i + 1 :])]
 
@@ -121,6 +130,11 @@ def matrix_determinant(M, check=True):
     -------
     float
         The determinant.
+
+    See Also
+    --------
+    matrix_minor
+    matrix_inverse
 
     Examples
     --------
@@ -165,6 +179,11 @@ def matrix_inverse(M):
         If the matrix is singular.
     ValueError
         If the matrix is not invertible.
+
+    See Also
+    --------
+    matrix_minor
+    matrix_determinant
 
     Examples
     --------
@@ -233,6 +252,10 @@ def decompose_matrix(M):
         The 3 values of translation.
     perspective : [float, float, float, float]
         The 4 perspective entries of the matrix.
+
+    See Also
+    --------
+    compose_matrix
 
     Examples
     --------
@@ -381,6 +404,10 @@ def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspe
     list[list[float]]
         The 4x4 matrix that combines the provided transformation components.
 
+    See Also
+    --------
+    decompose_matrix
+
     Examples
     --------
     >>> trans1 = [1, 2, 3]
@@ -432,6 +459,18 @@ def identity_matrix(dim):
         A list of `dim` lists, with each list containing `dim` elements.
         The items on the "diagonal" are one.
         All other items are zero.
+
+    See Also
+    --------
+    matrix_from_frame
+    matrix_from_frame_to_frame
+    matrix_from_euler_angles
+    matrix_from_axis_and_angle
+    matrix_from_basis_vectors
+    matrix_from_translation
+    matrix_from_scale_factors
+    matrix_from_shear_entries
+    matrix_from_perspective_entries
 
     Examples
     --------

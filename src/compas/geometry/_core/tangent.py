@@ -30,6 +30,7 @@ def tangent_points_to_circle_xy(circle, point):
     True
     >>> allclose(t2, [0.972, -0.236, 0.000], 1e-3)
     True
+
     """
     plane, R = circle
     center, _ = plane
