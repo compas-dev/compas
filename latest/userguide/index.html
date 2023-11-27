@@ -430,7 +430,8 @@ document.write(`
         <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="configuration.html">Configuration</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="configuration/vscode.html">Visual Studio Code</a></li>
@@ -440,28 +441,31 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="configuration/rhino5.html">Rhino 5 on Windows</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/data.html">Data</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="tutorials/geometry/index.html">Geometry</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/geometry/intro.html">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/geometry/frames_and_transformations.html">Working with Frames and Transformations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/geometry/curves.html">Working with Curves</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/geometry/surfaces.html">Working with Surfaces</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/geometry/breps.html">Boundary Representation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tutorials/data.html">Data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/geometry/index.html">Geometry</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/frames_and_transformations.html">Working with Frames and Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/curves.html">Working with Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/surfaces.html">Working with Surfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/breps.html">Boundary Representation</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="tutorials/datastructures/index.html">Data Structures</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/datastructures/intro.html">Intoduction to Data Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/datastructures/networks.html">Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/datastructures/meshes.html">Meshes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/datastructures/volmeshes.html">Vol(umetric) Meshes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/datastructures/assemblies.html">Assemblies</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/datastructures/index.html">Data Structures</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/intro.html">Intoduction to Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/networks.html">Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/meshes.html">Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/volmeshes.html">Vol(umetric) Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/assemblies.html">Assemblies</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/rpc.html">Remote Procedure Calls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/colors.html">Colors and Color Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rpc.html">Remote Procedure Calls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/colors.html">Colors and Color Maps</a></li>
 </ul>
-</li>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -521,7 +525,10 @@ document.write(`
                   
   <section id="user-guide">
 <h1>User Guide</h1>
+<section id="getting-started">
+<h2>Getting Started</h2>
 <div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
@@ -532,19 +539,47 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="configuration/rhino5.html">Rhino 5 on Windows</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/data.html">Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/index.html">Geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/index.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/rpc.html">Remote Procedure Calls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/colors.html">Colors and Color Maps</a></li>
+</ul>
+</div>
+</section>
+<section id="tutorials">
+<h2>Tutorials</h2>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/geometry/index.html">Geometry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/frames_and_transformations.html">Working with Frames and Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/curves.html">Working with Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/surfaces.html">Working with Surfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/geometry/breps.html">Boundary Representation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/datastructures/index.html">Data Structures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/intro.html">Intoduction to Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/networks.html">Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/meshes.html">Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/volmeshes.html">Vol(umetric) Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/datastructures/assemblies.html">Assemblies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rpc.html">Remote Procedure Calls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/colors.html">Colors and Color Maps</a></li>
+</ul>
+</div>
+</section>
+<section id="miscellaneous">
+<h2>Miscellaneous</h2>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 </div>
+</section>
 </section>
 
 
@@ -587,6 +622,18 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials">Tutorials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   
