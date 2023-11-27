@@ -15,7 +15,7 @@ class PolygonObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    polygon : :class:`~compas.geometry.Polygon`
+    polygon : :class:`compas.geometry.Polygon`
         A COMPAS polygon.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -30,7 +30,7 @@ class PolygonObject(GHSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the polygon.
 
         Returns

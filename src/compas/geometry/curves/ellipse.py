@@ -28,13 +28,13 @@ class Ellipse(Conic):
         The major of the ellipse.
     minor : float
         The minor of the ellipse.
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the ellipse.
         The default value is ``None``, in which case the ellipse is constructed in the XY plane of the world coordinate system.
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
         The coordinate frame of the ellipse.
     transformation : :class:`Transformation`, read-only
         The transformation from the local coordinate system of the ellipse (:attr:`frame`) to the world coordinate system.
@@ -42,7 +42,7 @@ class Ellipse(Conic):
         The major of the ellipse.
     minor : float
         The minor of the ellipse.
-    plane : :class:`~compas.geometry.Plane`, read-only
+    plane : :class:`compas.geometry.Plane`, read-only
         The plane of the ellipse.
     area : float, read-only
         The area of the ellipse.
@@ -56,15 +56,15 @@ class Ellipse(Conic):
     eccentricity : float, read-only
         The eccentricity of the ellipse.
         This is the ratio between the semifocal length to the length of the semi-major axis.
-    focus1 : :class:`~compas.geometry.Point`, read-only
+    focus1 : :class:`compas.geometry.Point`, read-only
         The first focus point of the ellipse.
-    focus2 : :class:`~compas.geometry.Point`, read-only
+    focus2 : :class:`compas.geometry.Point`, read-only
         The second focus point of the ellipse.
-    directix1 : :class:`~compas.geometry.Line`, read-only
+    directix1 : :class:`compas.geometry.Line`, read-only
         The first directix of the ellipse.
         The directix is perpendicular to the major axis
         and passes through a point at a distance ``major **2 / semifocal`` along the positive xaxis from the center of the ellipse.
-    directix2 : :class:`~compas.geometry.Line`, read-only
+    directix2 : :class:`compas.geometry.Line`, read-only
         The second directix of the ellipse.
         The directix is perpendicular to the major axis
         and passes through a point at a distance ``major **2 / semifocal`` along the negative xaxis from the center of the ellipse.

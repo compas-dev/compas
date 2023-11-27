@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas_blender.artists
 ********************************************************************************
@@ -6,18 +7,21 @@ compas_blender.artists
 
 .. rst-class:: lead
 
-Artists for visualizing (painting) COMPAS geometry and data structures in Blender.
-The artists in this package provide plugins for the pluggable methods of the base artists defined in :mod:`compas.artists`.
-They can be used directly from here (:mod:`compas_blender.artists`), or through the base artist :class:`~compas.artists.Artist`.
+
+This package provides artist plugins for visualising COMPAS objects in Blender.
+When working in Blender, :class:`compas.artists.Artist` will automatically use the corresponding Blender artist for each COMPAS object type.
 
 
 Classes
 =======
 
+
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    BlenderArtist
     BoxArtist
     CapsuleArtist
     CircleArtist
@@ -40,11 +44,4 @@ Classes
     VolMeshArtist
 
 
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-
-    BlenderArtist
 

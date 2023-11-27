@@ -26,7 +26,7 @@ def mesh_adjacency_matrix(mesh, rtype="array"):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
@@ -57,7 +57,7 @@ def mesh_connectivity_matrix(mesh, rtype="array"):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
@@ -92,7 +92,7 @@ def mesh_degree_matrix(mesh, rtype="array"):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
@@ -127,7 +127,7 @@ def mesh_face_matrix(mesh, rtype="array"):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
@@ -184,7 +184,7 @@ def mesh_laplacian_matrix(mesh, rtype="csr"):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
         Format of the result.
@@ -269,7 +269,7 @@ def trimesh_edge_cotangent(mesh, edge):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     edge : tuple[int, int]
         The identifier of the halfedge.
@@ -298,7 +298,7 @@ def trimesh_edge_cotangents(mesh, edge):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     edge : tuple[int, int]
         The identifier of the edge.
@@ -320,7 +320,7 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype="csr"):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
 
     Returns
@@ -409,7 +409,7 @@ def trimesh_vertexarea_matrix(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         The triangle mesh data structure.
 
     Returns

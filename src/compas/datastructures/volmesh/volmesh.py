@@ -131,7 +131,7 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        :class:`~compas.datastructures.VolMesh`
+        :class:`compas.datastructures.VolMesh`
 
         See Also
         --------
@@ -184,7 +184,7 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        :class:`~compas.datastructures.VolMesh`
+        :class:`compas.datastructures.VolMesh`
             A volmesh object.
 
         See Also
@@ -254,7 +254,7 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        :class:`~compas.datastructures.VolMesh`
+        :class:`compas.datastructures.VolMesh`
             A volmesh object.
 
         See Also
@@ -305,7 +305,7 @@ class VolMesh(HalfFace):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         See Also

@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas_ghpython.artists
 ********************************************************************************
@@ -6,20 +7,21 @@ compas_ghpython.artists
 
 .. rst-class:: lead
 
-Artists for visualizing (painting) COMPAS geometry and data structures in Grasshopper using the GH Python component.
-The artists in this package provide plugins for the pluggable methods of the base artists in :mod:`compas.artists`.
-Therefore, they can be used directly, from here, or through the base artists :class:`~compas.artists.Artist`.
+
+This package provides artist plugins for visualising COMPAS objects in Grasshopper.
+When working in GH Python components, :class:`compas.artists.Artist` will automatically use the corresponding GHPython artist for each COMPAS object type.
 
 
 Classes
 =======
+
+
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     BoxArtist
-    BrepArtist
     CapsuleArtist
     CircleArtist
     ConeArtist
@@ -27,6 +29,7 @@ Classes
     CylinderArtist
     EllipseArtist
     FrameArtist
+    GHArtist
     LineArtist
     MeshArtist
     NetworkArtist
@@ -41,11 +44,4 @@ Classes
     VolMeshArtist
 
 
-Base Classes
-============
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    GHArtist

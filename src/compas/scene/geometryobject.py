@@ -11,14 +11,14 @@ class GeometryObject(SceneObject):
 
     Parameters
     ----------
-    geometry : :class:`~compas.geometry.Geometry`
+    geometry : :class:`compas.geometry.Geometry`
         The geometry of the geometry.
 
     Attributes
     ----------
-    geometry : :class:`~compas.geometry.Geometry`
+    geometry : :class:`compas.geometry.Geometry`
         The geometry object associated with the artist.
-    color : :class:`~compas.colors.Color`
+    color : :class:`compas.colors.Color`
         The color of the object.
 
     """

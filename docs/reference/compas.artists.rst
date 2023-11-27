@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas.artists
 ********************************************************************************
@@ -6,10 +7,10 @@ compas.artists
 
 .. rst-class:: lead
 
-For visualization of geometry objects and data structures, COMPAS provides "artists".
+
+This package defines artists for visualising COMPAS objects.
 Every object type is paired with a corresponding artist type that is capable of visualizing the data of the object.
-This package provides base artist classes with pluggable methods
-that receive an implementation from plugins defined by various visualization contexts.
+The artists are implemented as pluggables, and automatically switch between plugins depending on the contexct in which they are used.
 
 
 Classes
@@ -20,18 +21,26 @@ Classes
     :nosignatures:
 
     Artist
+    DataArtistNotRegisteredError
     GeometryArtist
     MeshArtist
     NetworkArtist
+    NoArtistContextError
     VolMeshArtist
 
 
-Exceptions
+Pluggables
 ==========
+
+Pluggables are functions that don't have an actual implementation, but receive an implementation from a plugin.
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    DataArtistNotRegistered
-    NoArtistContextError
+    clear
+    redraw
+    register_artists
+
+
+

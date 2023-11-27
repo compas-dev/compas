@@ -17,7 +17,7 @@ class PointObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    point : :class:`~compas.geometry.Point`
+    point : :class:`compas.geometry.Point`
         A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class PointObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the point.
 
         Returns

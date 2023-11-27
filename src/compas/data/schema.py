@@ -6,12 +6,12 @@ import os
 import json
 
 
-def dataclass_dataschema(cls):
+def dataclass_dataschema(cls):  # type: (...) -> dict
     """Generate a JSON schema for a COMPAS object class.
 
     Parameters
     ----------
-    cls : :class:`~compas.data.Data`
+    cls : :class:`compas.data.Data`
         The COMPAS object class.
 
     Returns
@@ -23,12 +23,12 @@ def dataclass_dataschema(cls):
     return cls.DATASCHEMA
 
 
-def dataclass_typeschema(cls):
+def dataclass_typeschema(cls):  # type: (...) -> dict
     """Generate a JSON schema for the data type of a COMPAS object class.
 
     Parameters
     ----------
-    cls : :class:`~compas.data.Data`
+    cls : :class:`compas.data.Data`
         The COMPAS object class.
 
     Returns
@@ -43,12 +43,12 @@ def dataclass_typeschema(cls):
     }
 
 
-def dataclass_jsonschema(cls, filepath=None, draft=None):
+def dataclass_jsonschema(cls, filepath=None, draft=None):  # type: (...) -> dict
     """Generate a JSON schema for a COMPAS object class.
 
     Parameters
     ----------
-    cls : :class:`~compas.data.Data`
+    cls : :class:`compas.data.Data`
         The COMPAS object class.
     filepath : str, optional
         The path to the file where the schema should be saved.
@@ -85,7 +85,7 @@ def dataclass_jsonschema(cls, filepath=None, draft=None):
     return schema
 
 
-def compas_jsonschema(dirname=None):
+def compas_jsonschema(dirname=None):  # type: (...) -> list
     """Generate a JSON schema for the COMPAS data model.
 
     Parameters
@@ -110,7 +110,7 @@ def compas_jsonschema(dirname=None):
     return schemas
 
 
-def compas_dataclasses():
+def compas_dataclasses():  # type: (...) -> list
     """Find all classes in the COMPAS data model.
 
     Returns
@@ -134,161 +134,3 @@ def compas_dataclasses():
             tovisit.append(subcls)
 
     return dataclasses
-
-
-# def validate_json(filepath, schema):
-#     """Validates a JSON document with respect to a schema and return the JSON object instance if it is valid.
-
-#     Parameters
-#     ----------
-#     filepath : path string | file-like object | URL string
-#         The filepath of the JSON document.
-#     schema : string
-#         The JSON schema.
-
-#     Raises
-#     ------
-#     jsonschema.exceptions.SchemaError
-#         If the schema itself is invalid.
-#     jsonschema.exceptions.ValidationError
-#         If the document is invalid with respect to the schema.
-
-#     Returns
-#     -------
-#     object
-#         The JSON object contained in the document.
-
-#     Examples
-#     --------
-#     >>> import compas
-#     >>> from compas.geometry import Point
-#     >>> compas.json_validate("data.json", Point)
-#     {'dtype': 'compas.geometry.Point', 'data': {'x': 0.0, 'y': 0.0, 'z': 0.0}, 'guid': '00000000-0000-0000-0000-000000000000'}
-
-#     """
-#     import jsonschema
-#     import jsonschema.exceptions
-
-#     data = json_load(filepath)
-
-#     try:
-#         jsonschema.validate(data, schema)
-#     except jsonschema.exceptions.SchemaError as e:
-#         print("The provided schema is invalid:\n\n{}\n\n".format(schema))
-#         raise e
-#     except jsonschema.exceptions.ValidationError as e:
-#         print(
-#             "The provided JSON document is invalid compared to the provided schema:\n\n{}\n\n{}\n\n".format(
-#                 schema, data
-#             )
-#         )
-#         raise e
-
-#     return data
-
-
-# def validate_jsonstring(jsonstring, schema):
-#     """Validate the data contained in the JSON string against the JSON data schema.
-
-#     Parameters
-#     ----------
-#     jsonstring : str
-#         The JSON string for validation.
-#     schema : string
-#         The JSON schema.
-
-#     Raises
-#     ------
-#     jsonschema.exceptions.SchemaError
-#         If the schema itself is invalid.
-#     jsonschema.exceptions.ValidationError
-#         If the document is invalid with respect to the schema.
-
-#     Returns
-#     -------
-#     object
-#         The JSON object contained in the string.
-
-#     """
-#     from jsonschema import Draft202012Validator
-
-#     validator = Draft202012Validator(schema)  # type: ignore
-#     jsondata = json.loads(jsonstring)
-#     validator.validate(jsondata)
-#     return jsondata
-
-
-# def validate_jsondata(jsondata, schema):
-#     """Validate the JSON data against the JSON data schema.
-
-#     Parameters
-#     ----------
-#     jsondata : Any
-#         The JSON data for validation.
-#     schema : string
-#         The JSON schema.
-
-#     Raises
-#     ------
-#     jsonschema.exceptions.SchemaError
-#         If the schema itself is invalid.
-#     jsonschema.exceptions.ValidationError
-#         If the document is invalid with respect to the schema.
-
-#     Returns
-#     -------
-#     object
-#         The JSON object contained in the data.
-
-#     """
-#     from jsonschema import Draft202012Validator
-
-#     validator = Draft202012Validator(schema)  # type: ignore
-#     validator.validate(jsondata)
-#     return jsondata
-
-
-# def validate_data(data, cls):
-#     """Validate data against the data and json schemas of an object class.
-
-#     Parameters
-#     ----------
-#     data : dict
-#         The data representation of an object.
-#     cls : Type[:class:`~compas.data.Data`]
-#         The data object class.
-
-#     Returns
-#     -------
-#     dict
-#         The validated data dict.
-
-#     Raises
-#     ------
-#     jsonschema.exceptions.ValidationError
-
-#     """
-#     from jsonschema import RefResolver, Draft7Validator
-#     from jsonschema.exceptions import ValidationError
-
-#     here = os.path.dirname(__file__)
-
-#     schema_name = "{}.json".format(cls.__name__.lower())
-#     schema_path = os.path.join(here, "schemas", schema_name)
-#     with open(schema_path, "r") as fp:
-#         schema = json.load(fp)
-
-#     definitions_path = os.path.join(here, "schemas", "compas.json")
-#     with open(definitions_path, "r") as fp:
-#         definitions = json.load(fp)
-
-#     resolver = RefResolver.from_schema(definitions)
-#     validator = Draft7Validator(schema, resolver=resolver)
-
-#     try:
-#         validator.validate(data)
-#     except ValidationError as e:
-#         print("Validation against the JSON schema of this object failed.")
-#         raise e
-
-#     return json.loads(json.dumps(data, cls=DataEncoder), cls=DataDecoder)

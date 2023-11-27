@@ -40,7 +40,7 @@ class Hyperbola(Conic):
         The major of the hyperbola.
     minor : float
         The minor of the hyperbola.
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the hyperbola.
         The default value is ``None``, in which case the hyperbola is constructed in the XY plane of the world coordinate system.
 

@@ -17,7 +17,7 @@ class CapsuleArtist(BlenderArtist, GeometryObject):
 
     Parameters
     ----------
-    capsule : :class:`~compas.geometry.Capsule`
+    capsule : :class:`compas.geometry.Capsule`
         A COMPAS capsule.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -40,7 +40,7 @@ class CapsuleArtist(BlenderArtist, GeometryObject):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the capsule.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

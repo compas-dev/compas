@@ -17,7 +17,7 @@ class SphereObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    sphere : :class:`~compas.geometry.Sphere`
+    sphere : :class:`compas.geometry.Sphere`
         A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class SphereObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the sphere.
 
         Returns

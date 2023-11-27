@@ -23,7 +23,7 @@ class NetworkArtist(BlenderArtist, BaseSceneObject):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A COMPAS network.
 
     """
@@ -98,9 +98,9 @@ class NetworkArtist(BlenderArtist, BaseSceneObject):
         edges : list[tuple[hashable, hashable]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        nodecolor : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
+        nodecolor : :class:`compas.colors.Color` | dict[hashable, :class:`compas.colors.Color`], optional
             The color specification for the nodes.
-        edgecolor : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+        edgecolor : :class:`compas.colors.Color` | dict[tuple[hashable, hashable], :class:`compas.colors.Color`], optional
             The color specification for the edges.
 
         Returns
@@ -128,7 +128,7 @@ class NetworkArtist(BlenderArtist, BaseSceneObject):
         nodes : list[hashable], optional
             A list of node identifiers.
             Default is None, in which case all nodes are drawn.
-        color : :class:`~compas.colors.Color` | dict[hashable, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[hashable, :class:`compas.colors.Color`], optional
             The color specification for the nodes.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -169,7 +169,7 @@ class NetworkArtist(BlenderArtist, BaseSceneObject):
         edges : list[tuple[hashable, hashable]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[hashable, hashable], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[hashable, hashable], :class:`compas.colors.Color`], optional
             The color specification for the edges.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

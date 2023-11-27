@@ -15,23 +15,23 @@ class MeshObject(SceneObject):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
 
     Attributes
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh data structure.
     vertex_xyz : dict[int, list[float]]
         View coordinates of the vertices.
         Defaults to the real coordinates.
-    color : :class:`~compas.colors.Color`
+    color : :class:`compas.colors.Color`
         The base RGB color of the mesh.
-    vertex_color : :class:`~compas.colors.ColorDict`]
+    vertex_color : :class:`compas.colors.ColorDict`]
         Vertex colors.
-    edge_color : :class:`~compas.colors.ColorDict`
+    edge_color : :class:`compas.colors.ColorDict`
         Edge colors.
-    face_color : :class:`~compas.colors.ColorDict`
+    face_color : :class:`compas.colors.ColorDict`
         Face colors.
 
     See Also
@@ -94,7 +94,7 @@ class MeshObject(SceneObject):
         vertices : list[int], optional
             The vertices to include in the drawing.
             Default is all vertices.
-        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
+        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`compas.colors.Color`], optional
             The color of the vertices,
             as either a single color to be applied to all vertices,
             or a color dict, mapping specific vertices to specific colors.
@@ -119,7 +119,7 @@ class MeshObject(SceneObject):
         edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`~compas.colors.Color`], optional
+        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`compas.colors.Color`], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.
@@ -144,7 +144,7 @@ class MeshObject(SceneObject):
         faces : list[int], optional
             The faces to include in the drawing.
             Default is all faces.
-        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
+        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`compas.colors.Color`], optional
             The color of the faces,
             as either a single color to be applied to all faces,
             or a color dict, mapping specific faces to specific colors.

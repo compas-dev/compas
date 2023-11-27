@@ -17,7 +17,7 @@ class PolylineArtist(BlenderArtist, GeometryObject):
 
     Parameters
     ----------
-    polyline : :class:`~compas.geometry.Polyline`
+    polyline : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class PolylineArtist(BlenderArtist, GeometryObject):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             The RGB color of the polyline.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

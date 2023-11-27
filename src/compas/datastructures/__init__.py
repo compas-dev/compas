@@ -1,3 +1,8 @@
+"""
+This package defines the core data structures of the COMPAS framework.
+The data structures provide a structured way of storing and accessing data on individual components of both topological and geometrical objects.
+"""
+
 from __future__ import absolute_import
 
 import compas

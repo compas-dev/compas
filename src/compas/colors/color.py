@@ -99,7 +99,7 @@ class Color(Data):
     By default, this class will create a color with the RGB components in the range ``[0.0, 1.0]``.
 
     >>> Color(1, 0, 0)
-    Color(1.0, 0.0, 0.0, 1.0)
+    Color(1.0, 0.0, 0.0, alpha=1.0)
 
     Attempting to create a color with components outside of the range ``[0.0, 1.0]`` will raise a ``ValueError``.
 
@@ -111,22 +111,22 @@ class Color(Data):
     To create a color with components in the range ``[0, 255]``, use the :meth:`from_rgb255` constructor.
 
     >>> Color.from_rgb255(255, 0, 0)
-    Color(1.0, 0.0, 0.0, 1.0)
+    Color(1.0, 0.0, 0.0, alpha=1.0)
 
     Similarly, other constructors are available to create colors from other color spaces.
 
-    >>> Color.from_hls(0.0, 0.5, 1.0)
-    >>> Color.from_hsv(0.0, 1.0, 1.0)
-    >>> Color.from_yiq(0.0, 0.0, 0.0)
-    >>> Color.from_yuv(0.0, 0.0, 0.0)
+    >>> color = Color.from_hls(0.0, 0.5, 1.0)
+    >>> color = Color.from_hsv(0.0, 1.0, 1.0)
+    >>> color = Color.from_yiq(0.0, 0.0, 0.0)
+    >>> color = Color.from_yuv(0.0, 0.0, 0.0)
 
     Or, to construct specific colors, for example, ...
 
-    >>> Color.red()
-    >>> Color.magenta()
-    >>> Color.lime()
-    >>> Color.navy()
-    >>> Color.olive()
+    >>> color = Color.red()
+    >>> color = Color.magenta()
+    >>> color = Color.lime()
+    >>> color = Color.navy()
+    >>> color = Color.olive()
 
     Colors can be modified through inversion, saturation/desaturation, and lightening/darkening.
 
@@ -153,14 +153,14 @@ class Color(Data):
     * :meth:`is_rgb255` : Check if a tuple is a valid RGB255 color tuple.
     * :meth:`coerce` : Coerce any valid color specification to a :class:`compas.colors.Color` object.
 
-    >>> if Color.is_hex("#ff0000"):
-    ...     print("This is a valid hexadecimal color string.")
+    >>> Color.is_hex("#ff0000")
+    True
 
-    >>> if Color.is_rgb1((1.0, 0.0, 0.0)):
-    ...     print("This is a valid RGB1 color tuple.")
+    >>> Color.is_rgb1((1.0, 0.0, 0.0))
+    True
 
-    >>> if Color.is_rgb255((255, 0, 0)):
-    ...     print("This is a valid RGB255 color tuple.")
+    >>> Color.is_rgb255((255, 0, 0))
+    True
 
     >>> color = Color.coerce((255, 0, 0))
 
@@ -229,7 +229,7 @@ class Color(Data):
     def r(self, red):
         if red > 1.0 or red < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._r = float(red)
+        self._r = red
 
     @property
     def g(self):
@@ -239,7 +239,7 @@ class Color(Data):
     def g(self, green):
         if green > 1.0 or green < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._g = float(green)
+        self._g = green
 
     @property
     def b(self):
@@ -249,7 +249,7 @@ class Color(Data):
     def b(self, blue):
         if blue > 1.0 or blue < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._b = float(blue)
+        self._b = blue
 
     @property
     def a(self):
@@ -259,7 +259,7 @@ class Color(Data):
     def a(self, alpha):
         if alpha > 1.0 or alpha < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
-        self._a = float(alpha)
+        self._a = alpha
 
     @property
     def rgb(self):
@@ -313,26 +313,16 @@ class Color(Data):
 
     @property
     def yuv(self):
-        """tuple[float, float, float] :
-        Luma and chroma components, with chroma defined by the blue and red projections.
-        """
         y = self.luma
         u, v = self.chroma
         return y, u, v
 
     @property
     def luma(self):
-        """float :
-        The brightness of a yuv signal.
-        """
         return 0.299 * self.r + 0.587 * self.g + 0.114 * self.b
 
     @property
     def chroma(self):
-        """tuple[float, float] :
-        The color of a yuv signal.
-        "How different from a grey of the same lightness the color appears to be."
-        """
         y = self.luma
         u = 0.492 * (self.b - y)
         v = 0.877 * (self.r - y)
@@ -340,16 +330,10 @@ class Color(Data):
 
     @property
     def luminance(self):
-        """float :
-        The amount of light that passes through, is emitted from, or is reflected from a particular area.
-        Here, it expresses the preceived brightness of the color.
-        Note that this is not the same as the "Lightness" of HLS or the "Value/Brightness" of HSV.
-        """
         return 0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b
 
     @property
     def saturation(self):
-        """float : The perceived freedom of whiteness."""
         maxval = max(self.r, self.g, self.b)
         minval = min(self.r, self.g, self.b)
         return (maxval - minval) / maxval
@@ -359,7 +343,7 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_rgb255(cls, r, g, b):
+    def from_rgb255(cls, r, g, b):  # type: (int, int, int) -> Color
         """Construct a color from RGB255 components.
 
         Parameters
@@ -373,38 +357,38 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(r / 255, g / 255, b / 255)
 
     @classmethod
-    def from_hls(cls, h, l, s):  # noqa: E741
+    def from_hls(cls, hue, luminance, saturation):  # type: (float, float, float) -> Color
         """Construct a color from Hue, Luminance, and Saturation.
 
         Parameters
         ----------
-        h : float
+        hue : float
             Hue.
-        l : float
+        luminance : float
             Luminance.
-        s : float
+        saturation : float
             Saturation.
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         References
         ----------
         https://en.wikipedia.org/wiki/HSL_and_HSV
 
         """
-        r, g, b = colorsys.hls_to_rgb(h, l, s)
+        r, g, b = colorsys.hls_to_rgb(hue, luminance, saturation)
         return cls(r, g, b)
 
     @classmethod
-    def from_hsv(cls, h, s, v):
+    def from_hsv(cls, h, s, v):  # type: (float, float, float) -> Color
         """Construct a color from Hue, Saturation, and Value.
 
         Parameters
@@ -418,7 +402,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         References
         ----------
@@ -429,7 +413,7 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_yiq(cls, y, i, q):
+    def from_yiq(cls, y, i, q):  # type: (float, float, float) -> Color
         """Construct a color from components in the YIQ color space.
 
         Parameters
@@ -443,7 +427,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         References
         ----------
@@ -454,7 +438,7 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_yuv(cls, y, u, v):
+    def from_yuv(cls, y, u, v):  # type: (float, float, float) -> Color
         """Construct a color from components in the YUV color space.
 
         Parameters
@@ -468,7 +452,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         References
         ----------
@@ -481,7 +465,7 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_i(cls, i):
+    def from_i(cls, i):  # type: (float) -> Color
         """Construct a color from a single number in the range 0-1.
 
         Parameters
@@ -491,7 +475,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         if i == 0.0:
@@ -517,7 +501,7 @@ class Color(Data):
         return cls(r / 255.0, g / 255.0, b / 255.0)
 
     @classmethod
-    def from_hex(cls, value):
+    def from_hex(cls, value):  # type: (str) -> Color
         """Construct a color from a hexadecimal color value.
 
         Parameters
@@ -527,7 +511,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         value = value.lstrip("#").lower()
@@ -537,7 +521,7 @@ class Color(Data):
         return cls(r / 255.0, g / 255.0, b / 255.0)
 
     @classmethod
-    def from_name(cls, name):
+    def from_name(cls, name):  # type: (str) -> Color
         """Construct a color from a name in the extended color table of HTML/CSS/SVG.
 
         Parameters
@@ -547,7 +531,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         References
         ----------
@@ -569,7 +553,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(1.0, 1.0, 1.0)
@@ -580,7 +564,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 0.0, 0.0)
@@ -591,7 +575,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.5, 0.5, 0.5)
@@ -602,7 +586,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(1.0, 0.0, 0.0)
@@ -613,7 +597,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(1.0, 0.5, 0.0)
@@ -624,7 +608,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(1.0, 1.0, 0.0)
@@ -635,7 +619,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.5, 1.0, 0.0)
@@ -646,7 +630,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 1.0, 0.0)
@@ -657,7 +641,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 1.0, 0.5)
@@ -668,7 +652,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 1.0, 1.0)
@@ -679,7 +663,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 0.5, 1.0)
@@ -690,7 +674,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 0.0, 1.0)
@@ -701,7 +685,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.5, 0.0, 1.0)
@@ -712,7 +696,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(1.0, 0.0, 1.0)
@@ -723,7 +707,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(1.0, 0.0, 0.5)
@@ -737,7 +721,7 @@ class Color(Data):
         """Construct the color maroon.
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.5, 0.0, 0.0)
@@ -748,7 +732,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.5, 0.25, 0.0)
@@ -759,7 +743,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.5, 0.5, 0.0)
@@ -770,7 +754,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 0.5, 0.5)
@@ -781,7 +765,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.0, 0.0, 0.5)
@@ -792,7 +776,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.5, 0.0, 0.5)
@@ -803,7 +787,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         return cls(0.75, 0.75, 0.75)
@@ -826,12 +810,12 @@ class Color(Data):
 
         Parameters
         ----------
-        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`
+        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
             The color input.
 
         Returns
         -------
-        :class:`~compas.colors.Color` | None
+        :class:`compas.colors.Color` | None
 
         Raises
         ------
@@ -925,7 +909,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         Raises
         ------
@@ -976,7 +960,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         Raises
         ------
@@ -1005,7 +989,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         color = self.copy()
@@ -1051,7 +1035,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         Raises
         ------
@@ -1102,7 +1086,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         Raises
         ------

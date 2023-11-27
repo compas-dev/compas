@@ -6,7 +6,6 @@ from compas.geometry import Geometry
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.geometry import Rotation
-from compas.geometry import Plane
 
 
 class Shape(Geometry):
@@ -33,16 +32,12 @@ class Shape(Geometry):
 
     Attributes
     ----------
+    area : float, read-only
+        The surface area of the shape.
     frame : :class:`compas.geometry.Frame`
         The local coordinate system of the shape.
     transformation : :class:`compas.geometry.Transformation`, read-only
         The transformation of the shape to global coordinates.
-    normal : :class:`compas.geometry.Vector`, read-only
-        The normal of the shape.
-    plane : :class:`compas.geometry.Plane`, read-only
-        The plane of the shape.
-    area : float, read-only
-        The surface area of the shape.
     volume : float, read-only
         The volume of the shape.
 
@@ -81,18 +76,6 @@ class Shape(Geometry):
         if not self._transformation:
             self._transformation = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
         return self._transformation
-
-    @property
-    def point(self):
-        return self.frame.point
-
-    @point.setter
-    def point(self, point):
-        self.frame.point = point
-
-    @property
-    def plane(self):
-        return Plane(self.frame.point, self.frame.zaxis)
 
     @property
     def area(self):
@@ -200,6 +183,12 @@ class Shape(Geometry):
         -------
         None
 
+        See Also
+        --------
+        translate
+        rotate
+        scale
+
         """
         self.frame.transform(transformation)
 
@@ -215,6 +204,12 @@ class Shape(Geometry):
         -------
         None
 
+        See Also
+        --------
+        rotate
+        scale
+        transform
+
         """
         self.frame.point += vector
 
@@ -229,6 +224,12 @@ class Shape(Geometry):
         Returns
         -------
         None
+
+        See Also
+        --------
+        translate
+        scale
+        transform
 
         """
         point = point or [0, 0, 0]
@@ -250,6 +251,12 @@ class Shape(Geometry):
         -------
         None
 
+        See Also
+        --------
+        translate
+        rotate
+        transform
+
         """
         raise NotImplementedError
 
@@ -262,7 +269,7 @@ class Shape(Geometry):
 
         Parameters
         ----------
-        point : :class:`Point`
+        point : :class:`compas.geometry.Point`
             The point to test.
 
         Returns
@@ -279,7 +286,7 @@ class Shape(Geometry):
 
         Parameters
         ----------
-        points : list of :class:`Point`
+        points : list of :class:`compas.geometry.Point`
             The points to test.
 
         Returns

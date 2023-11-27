@@ -13,7 +13,7 @@ class PolylineObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    polyline : :class:`~compas.geometry.Polyline`
+    polyline : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.

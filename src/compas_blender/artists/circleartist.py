@@ -15,7 +15,7 @@ class CircleArtist(BlenderArtist, GeometryObject):
 
     Parameters
     ----------
-    circle : :class:`~compas.geometry.Circle`
+    circle : :class:`compas.geometry.Circle`
         A COMPAS circle.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -30,7 +30,7 @@ class CircleArtist(BlenderArtist, GeometryObject):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the capsule.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

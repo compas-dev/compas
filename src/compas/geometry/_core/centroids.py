@@ -23,9 +23,9 @@ def midpoint_point_point(a, b):
 
     Parameters
     ----------
-    a : [float, float, float] | :class:`~compas.geometry.Point`
+    a : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the first point.
-    b : [float, float, float] | :class:`~compas.geometry.Point`
+    b : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the second point.
 
     Returns
@@ -42,9 +42,9 @@ def midpoint_point_point_xy(a, b):
 
     Parameters
     ----------
-    a : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
+    a : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the first 2D or 3D point (Z will be ignored).
-    b : [float, float] or [float, float, float] | :class:`~compas.geometry.Point`
+    b : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of the second 2D or 3D point (Z will be ignored).
 
     Returns
@@ -60,7 +60,7 @@ def midpoint_line(line):
 
     Parameters
     ----------
-    line : [point, point] | :class:`~compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         XYZ coordinates of the first point, and XYZ coordinates of the second point.
 
     Returns
@@ -81,7 +81,7 @@ def midpoint_line_xy(line):
 
     Parameters
     ----------
-    line : [point, point] | :class:`~compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         XYZ coordinates of the first point, and XYZ coordinates of the second point.
 
     Returns
@@ -102,7 +102,7 @@ def centroid_points(points):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A sequence of XYZ coordinates.
 
     Returns
@@ -131,7 +131,7 @@ def centroid_points_weighted(points, weights):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of point coordinates.
     weights : sequence[float]
         A list of weight floats.
@@ -151,7 +151,7 @@ def centroid_points_xy(points):
 
     Parameters
     ----------
-    points : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
+    points : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Point`]
         A sequence of points represented by their XY(Z) coordinates.
 
     Returns
@@ -180,13 +180,28 @@ def centroid_polygon(polygon):
 
     Parameters
     ----------
-    polygon : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    polygon : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
     -------
     [float, float, float]
         The XYZ coordinates of the centroid.
+
+    Raises
+    ------
+    ValueError
+        If the polygon has less than three points.
+
+    Warnings
+    --------
+    The polygon need not be convex.
+
+    The polygon need not be flat. However, it is unclear what the meaning of the
+    centroid is in that case.
+
+    The polygon may be self-intersecting. However, it is unclear what the meaning
+    of the centroid is in that case.
 
     Notes
     -----
@@ -204,25 +219,17 @@ def centroid_polygon(polygon):
         c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
         c_z = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{z,i}
 
-    Warnings
-    --------
-    The polygon need not be convex.
-
-    The polygon need not be flat. However, it is unclear what the meaning of the
-    centroid is in that case.
-
-    The polygon may be self-intersecting. However, it is unclear what the meaning
-    of the centroid is in that case.
-
     Examples
     --------
     >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
     >>> centroid_polygon(polygon)
     [0.5, 0.5, 0.0]
+
     """
     p = len(polygon)
 
-    assert p > 2, "At least three points required"
+    if p < 3:
+        raise ValueError("At least three points required.")
 
     if p == 3:
         return centroid_points(polygon)
@@ -273,7 +280,7 @@ def centroid_polygon_xy(polygon):
 
     Parameters
     ----------
-    polygon : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
+    polygon : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Point`]
         A sequence of polygon point XY(Z) coordinates.
         The Z coordinates are ignored.
 
@@ -281,6 +288,18 @@ def centroid_polygon_xy(polygon):
     -------
     [float, float, 0.0]
         The XYZ coordinates of the centroid in the XY plane.
+
+    Raises
+    ------
+    ValueError
+        If the polygon has less than three points.
+
+    Warnings
+    --------
+    The polygon need not be convex.
+
+    The polygon may be self-intersecting. However, it is unclear what the meaning
+    of the centroid is in that case.
 
     Notes
     -----
@@ -298,22 +317,17 @@ def centroid_polygon_xy(polygon):
         c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
         c_z = 0
 
-    Warnings
-    --------
-    The polygon need not be convex.
-
-    The polygon may be self-intersecting. However, it is unclear what the meaning
-    of the centroid is in that case.
-
     Examples
     --------
     >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
     >>> centroid_polygon_xy(polygon)
     [0.5, 0.5, 0.0]
+
     """
     p = len(polygon)
 
-    assert p > 2, "At least three points required"
+    if p < 3:
+        raise ValueError("At least three points required")
 
     if p == 3:
         return centroid_points_xy(polygon)
@@ -359,13 +373,14 @@ def centroid_polygon_vertices(polygon):
 
     Parameters
     ----------
-    polygon : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    polygon : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
     -------
     [float, float, float]
         The XYZ coordinates of the centroid.
+
     """
     return centroid_points(polygon)
 
@@ -375,7 +390,7 @@ def centroid_polygon_vertices_xy(polygon):
 
     Parameters
     ----------
-    polygon : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
+    polygon : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
         The Z coordinates will be ignored.
 
@@ -393,7 +408,7 @@ def centroid_polygon_edges(polygon):
 
     Parameters
     ----------
-    polygon : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    polygon : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
 
     Returns
@@ -428,7 +443,7 @@ def centroid_polygon_edges_xy(polygon):
 
     Parameters
     ----------
-    polygon : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Point`]
+    polygon : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Point`]
         A sequence of polygon point coordinates.
         The Z coordinates will be ignored.
 
@@ -462,7 +477,7 @@ def centroid_polyhedron(polyhedron):
 
     Parameters
     ----------
-    polyhedron : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[sequence[int]]]
+    polyhedron : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[sequence[int]]]
         The coordinates of the vertices,
         and the indices of the vertices forming the faces.
 

@@ -13,7 +13,7 @@ class CurveObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    curve : :class:`~compas.geometry.Curve`
+    curve : :class:`compas.geometry.Curve`
         A COMPAS curve.
 
     Other Parameters

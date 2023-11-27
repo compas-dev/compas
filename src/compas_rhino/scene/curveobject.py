@@ -17,7 +17,7 @@ class CurveObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    curve : :class:`~compas.geometry.Curve`
+    curve : :class:`compas.geometry.Curve`
         A COMPAS curve.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class CurveObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the curve.
 
         Returns

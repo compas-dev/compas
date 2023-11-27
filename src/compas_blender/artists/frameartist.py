@@ -16,23 +16,23 @@ class FrameArtist(BlenderArtist, GeometryObject):
 
     Parameters
     ----------
-    frame: :class:`~compas.geometry.Frame`
+    frame: :class:`compas.geometry.Frame`
         A COMPAS frame.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.GeometryArtist`.
 
     Attributes
     ----------
-    color_origin : :class:`~compas.colors.Color`
+    color_origin : :class:`compas.colors.Color`
         Color for the point at the frame origin.
         Default is ``Color.black()``.
-    color_xaxis : :class:`~compas.colors.Color`
+    color_xaxis : :class:`compas.colors.Color`
         Default is ``Color.red()``.
-    color_yaxis : :class:`~compas.colors.Color`
+    color_yaxis : :class:`compas.colors.Color`
         Default is ``Color.green()``.
-    color_zaxis : :class:`~compas.colors.Color`
+    color_zaxis : :class:`compas.colors.Color`
         Default is ``Color.blue()``.
 
     """

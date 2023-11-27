@@ -1,8 +1,11 @@
+
 ********************************************************************************
 compas_rhino.forms
 ********************************************************************************
 
 .. currentmodule:: compas_rhino.forms
+
+.. rst-class:: lead
 
 
 Classes
@@ -12,18 +15,11 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    BaseForm
     BrowserForm
     ChartForm
     ImageForm
+    PropertyListForm
+    SettingsForm
     SliderForm
     TextForm
-
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseForm

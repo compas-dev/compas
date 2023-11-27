@@ -11,17 +11,17 @@ def mesh_weld(mesh, precision=None, cls=None):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh.
     precision: str, optional
         Tolerance distance for welding.
-    cls : Type[:class:`~compas.datastructures.Mesh`], optional
+    cls : Type[:class:`compas.datastructures.Mesh`], optional
         Type of the welded mesh.
         This defaults to the type of the first mesh in the list.
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The welded mesh.
 
     """
@@ -49,15 +49,15 @@ def meshes_join(meshes, cls=None):
 
     Parameters
     ----------
-    meshes : list[:class:`~compas.datastructures.Mesh`]
+    meshes : list[:class:`compas.datastructures.Mesh`]
         A list of meshes.
-    cls : Type[:class:`~compas.datastructures.Mesh`], optional
+    cls : Type[:class:`compas.datastructures.Mesh`], optional
         The type of the joined mesh.
         This defaults to the type of the first mesh in the list.
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The joined mesh.
 
     Examples
@@ -83,7 +83,8 @@ def meshes_join(meshes, cls=None):
     faces = []
 
     for mesh in meshes:
-        key_index = {key: len(vertices) + i for i, key in enumerate(mesh.vertices())}
+        offset = len(vertices)
+        key_index = {key: offset + i for i, key in enumerate(mesh.vertices())}
         vertices += [mesh.vertex_coordinates(key) for key in mesh.vertices()]
         faces += [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
@@ -95,18 +96,18 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
 
     Parameters
     ----------
-    meshes : list[:class:`~compas.datastructures.Mesh`]
+    meshes : list[:class:`compas.datastructures.Mesh`]
         A list of meshes.
     precision: str, optional
         Precision for point comparison in the form of a string formatting specifier.
         For example, floating point precision (``'3f'``), or decimal integer (``'d'``).
         Default is :attr:`compas.PRECISION`.
-    cls : Type[:class:`~compas.datastructures.Mesh`], optional
+    cls : Type[:class:`compas.datastructures.Mesh`], optional
         The type of return mesh.
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The joined and welded mesh.
 
     """

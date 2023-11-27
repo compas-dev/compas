@@ -18,7 +18,7 @@ class PolylineObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    polyline : :class:`~compas.geometry.Polyline`
+    polyline : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -33,7 +33,7 @@ class PolylineObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polyline.
 
         Returns
@@ -55,7 +55,7 @@ class PolylineObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polyline points.
 
         Returns

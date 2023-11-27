@@ -1,3 +1,6 @@
+"""
+This package provides functions to convert between COMPAS data/objects and Blender data/objects.
+"""
 from __future__ import absolute_import
 
 from .exceptions import ConversionError

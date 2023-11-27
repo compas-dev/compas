@@ -14,7 +14,7 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -29,7 +29,7 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The color of the mesh.
 
         Returns
@@ -114,7 +114,7 @@ class MeshObject(GHSceneObject, BaseMeshObject):
         faces : list[int], optional
             A selection of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color specification for the faces.
 
         Returns

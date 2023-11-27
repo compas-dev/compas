@@ -13,7 +13,7 @@ class TorusObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    torus : :class:`~compas.geometry.Torus`
+    torus : :class:`compas.geometry.Torus`
         A COMPAS torus.
     **kwargs : dict, optional
         Additional keyword arguments.

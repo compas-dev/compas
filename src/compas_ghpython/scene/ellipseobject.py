@@ -13,7 +13,7 @@ class EllipseObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    ellipse : :class:`~compas.geometry.Ellipse`
+    ellipse : :class:`compas.geometry.Ellipse`
         A COMPAS ellipse.
     **kwargs : dict, optional
         Additional keyword arguments.

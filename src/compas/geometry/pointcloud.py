@@ -24,7 +24,7 @@ class Pointcloud(Geometry):
 
     Attributes
     ----------
-    points : list[:class:`~compas.geometry.Point`]
+    points : list[:class:`compas.geometry.Point`]
         The points of the cloud.
 
     Examples
@@ -126,7 +126,7 @@ class Pointcloud(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Pointcloud`
+        :class:`compas.geometry.Pointcloud`
 
         """
         from compas.files import PLY
@@ -149,7 +149,7 @@ class Pointcloud(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Pointcloud`
+        :class:`compas.geometry.Pointcloud`
 
         """
         pass
@@ -177,7 +177,7 @@ class Pointcloud(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Pointcloud`
+        :class:`compas.geometry.Pointcloud`
 
         Notes
         -----
@@ -221,14 +221,14 @@ class Pointcloud(Geometry):
 
         Parameters
         ----------
-        box: :class:`~compas.geometry.Box`
+        box: :class:`compas.geometry.Box`
             The axis aligned bounding box of the cloud.
         n: int
             The number of points in the cloud.
 
         Returns
         -------
-        :class:`~compas.geometry.Pointcloud`
+        :class:`compas.geometry.Pointcloud`
 
         Examples
         --------
@@ -257,7 +257,7 @@ class Pointcloud(Geometry):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation`
+        T : :class:`compas.geometry.Transformation`
             The transformation.
 
         Returns
@@ -279,12 +279,12 @@ class Pointcloud(Geometry):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The point.
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The closest point on the pointcloud.
 
         """

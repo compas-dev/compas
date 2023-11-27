@@ -13,7 +13,7 @@ class CircleObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    circle : :class:`~compas.geometry.Circle`
+    circle : :class:`compas.geometry.Circle`
         A COMPAS circle.
     **kwargs : dict, optional
         Additional keyword arguments.

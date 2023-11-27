@@ -1,5 +1,5 @@
 from compas.geometry import Point
-from compas.brep import BrepVertex
+from compas.geometry import BrepVertex
 from compas_rhino.conversions import point_to_compas
 
 
@@ -8,7 +8,7 @@ class RhinoBrepVertex(BrepVertex):
 
     Attributes
     ----------
-    point : :class:`~compas.geometry.Point`, read-only
+    point : :class:`compas.geometry.Point`, read-only
         The geometry of this vertex as a point in 3D space.
 
     """
@@ -48,12 +48,12 @@ class RhinoBrepVertex(BrepVertex):
         ----------
         data : dict
             The data dictionary.
-        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+        builder : :class:`compas_rhino.geometry.BrepBuilder`
             The object reconstructing the current Brep.
 
         Returns
         -------
-        :class:`~compas.data.Data`
+        :class:`compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """

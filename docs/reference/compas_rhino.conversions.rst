@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas_rhino.conversions
 ********************************************************************************
@@ -6,10 +7,14 @@ compas_rhino.conversions
 
 .. rst-class:: lead
 
-Conversions between Rhino geometry objects (:mod:`Rhino.Geometry`) and COMPAS geometry objects (:mod:`compas.geometry`).
 
-Exceptions
-==========
+This package provides functions to convert between COMPAS data/objects and Blender data/objects.
+
+
+Classes
+=======
+
+
 
 .. autosummary::
     :toctree: generated/
@@ -20,6 +25,8 @@ Exceptions
 
 Functions
 =========
+
+
 
 .. autosummary::
     :toctree: generated/
@@ -49,6 +56,7 @@ Functions
     cylinder_to_compas
     cylinder_to_rhino
     cylinder_to_rhino_brep
+    data_to_rhino_surface
     ellipse_to_compas
     ellipse_to_rhino
     ellipse_to_rhino_curve
@@ -82,8 +90,11 @@ Functions
     surface_to_rhino
     torus_to_rhino
     torus_to_rhino_brep
-    transformation_to_rhino
     transformation_matrix_to_rhino
+    transformation_to_rhino
     vector_to_compas
     vector_to_rhino
     vertices_and_faces_to_rhino
+
+
+

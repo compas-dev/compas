@@ -14,7 +14,7 @@ def unify_cycles_numpy(vertices, faces, root=0):
 
     Parameters
     ----------
-    vertices : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    vertices : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of vertex coordinates.
     faces : sequence[sequence[int]]
         A list of faces with each face defined by a list of indices into the list of vertices.
@@ -28,7 +28,7 @@ def unify_cycles_numpy(vertices, faces, root=0):
 
     Raises
     ------
-    AssertionError
+    Exception
         If not all faces were visited.
 
     Notes
@@ -62,7 +62,10 @@ def unify_cycles_numpy(vertices, faces, root=0):
 
     adj = face_adjacency_numpy(vertices, faces)
     visited = breadth_first_traverse(adj, root, unify)
-    assert len(list(visited)) == len(faces), "Not all faces were visited"
+
+    if len(list(visited)) != len(faces):
+        raise Exception("Not all faces were visited.")
+
     return faces
 
 
@@ -71,7 +74,7 @@ def face_adjacency_numpy(xyz, faces):
 
     Parameters
     ----------
-    xyz : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    xyz : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         The coordinates of the face vertices.
     faces : sequence[sequence[int]]
         A list of faces with each face defined by a list of indices into the list of xyz coordinates.
@@ -126,7 +129,7 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
     points = [centroid_points([xyz[index] for index in face]) for face in faces]
     k = min(len(faces), nmax)
     tree = cKDTree(points)
-    _, closest = tree.query(points, k=k, n_jobs=-1)
+    _, closest = tree.query(points, k=k, workers=-1)
     adjacency = {}
     for face, vertices in enumerate(faces):
         nbrs = []

@@ -31,7 +31,7 @@ class ColorMap(object):
 
     Attributes
     ----------
-    colors : list[:class:`~compas.colors.Color`]
+    colors : list[:class:`compas.colors.Color`]
         The colors of the map.
 
     Raises
@@ -50,7 +50,7 @@ class ColorMap(object):
     >>> cmap = ColorMap.from_mpl('viridis')
     >>> n = 100
     >>> for i in range(n):
-    ...     color = cmap(i, 0, n - 1)
+    ...     color = cmap(i, minval=0, maxval=n - 1)
     ...
 
     See Also
@@ -95,7 +95,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         Raises
         ------
@@ -124,7 +124,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`~compas.colors.ColorMap`
+        :class:`compas.colors.ColorMap`
             A color map with 256 colors.
 
         Raises
@@ -165,7 +165,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`~compas.colors.ColorMap`
+        :class:`compas.colors.ColorMap`
             A color map with 256 colors.
 
         Raises
@@ -189,7 +189,7 @@ class ColorMap(object):
 
         Parameters
         ----------
-        color : :class:`~compas.colors.Color`
+        color : :class:`compas.colors.Color`
             The base color.
         rangetype : Literal['full', 'light', 'dark'], optional
             If ``'full'``, use the full luminance range (0.0 - 1.0).
@@ -198,7 +198,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
             A color map with 256 colors.
 
         """
@@ -228,16 +228,16 @@ class ColorMap(object):
 
         Parameters
         ----------
-        c1 : :class:`~compas.colors.Color`
+        c1 : :class:`compas.colors.Color`
             The first color.
-        c2 : :class:`~compas.colors.Color`
+        c2 : :class:`compas.colors.Color`
             The second color.
         diverging : bool, optional
             If True, use white as transition color in the middle.
 
         Returns
         -------
-        :class:`~compas.colors.ColorMap`
+        :class:`compas.colors.ColorMap`
             A color map with 256 colors.
 
         """
@@ -267,16 +267,16 @@ class ColorMap(object):
 
         Parameters
         ----------
-        c1 : :class:`~compas.colors.Color`
+        c1 : :class:`compas.colors.Color`
             The first color.
-        c2 : :class:`~compas.colors.Color`
+        c2 : :class:`compas.colors.Color`
             The second color.
-        c3 : :class:`~compas.colors.Color`
+        c3 : :class:`compas.colors.Color`
             The third color.
 
         Returns
         -------
-        :class:`~compas.colors.ColorMap`
+        :class:`compas.colors.ColorMap`
             A color map with 256 colors.
 
         """
@@ -299,7 +299,7 @@ class ColorMap(object):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
 
         """
         colors = []

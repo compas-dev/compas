@@ -17,7 +17,7 @@ class BrepObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    brep : :class:`~compas_rhino.geometry.RhinoBrep`
+    brep : :class:`compas_rhino.geometry.RhinoBrep`
         The Brep to draw.
 
     """
@@ -30,7 +30,7 @@ class BrepObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the Brep.
 
         Returns

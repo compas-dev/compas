@@ -1,6 +1,6 @@
 import Rhino
 
-from compas.brep import BrepInvalidError
+from compas.geometry import BrepInvalidError
 from compas_rhino.conversions import point_to_rhino
 
 TOLERANCE = 1e-6
@@ -132,7 +132,7 @@ class _RhinoBrepBuilder(object):
     def add_vertex(self, point):
         """Add vertext to a new Brep
 
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
 
         Returns
         -------
@@ -144,7 +144,7 @@ class _RhinoBrepBuilder(object):
     def add_edge(self, edge_curve, start_vertex, end_vertex):
         """Add edge to the new Brep
 
-        edge_curve : :class:`~compas_rhino.geometry.RhinoNurbsCurve`
+        edge_curve : :class:`compas_rhino.geometry.RhinoNurbsCurve`
         start_vertex: int
             index of the vertex at the start of this edge
         end_vertex: int

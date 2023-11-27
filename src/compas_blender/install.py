@@ -155,7 +155,6 @@ def install(blender_path, version=None):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     import argparse
 
     parser = argparse.ArgumentParser()

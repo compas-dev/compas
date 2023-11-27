@@ -3,7 +3,7 @@ from Rhino.Geometry import NurbsCurve
 from Rhino.Geometry import LineCurve
 from Rhino.Geometry import Interval
 
-from compas.brep import BrepEdge
+from compas.geometry import BrepEdge
 from compas.geometry import Line
 from compas.geometry import Circle
 from compas.geometry import Ellipse
@@ -36,11 +36,11 @@ class RhinoBrepEdge(BrepEdge):
     ----------
     curve : :class:`Rhino.Geometry.Curve3D`
         The underlying geometry of this edge.
-    start_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
+    start_vertex : :class:`compas_rhino.geometry.RhinoBrepVertex`, read-only
         The start vertex of this edge (taken from BrepTrim).
-    end_vertex : :class:`~compas_rhino.geometry.RhinoBrepVertex`, read-only
+    end_vertex : :class:`compas_rhino.geometry.RhinoBrepVertex`, read-only
         The end vertex of this edge (taken from BrepTrim).
-    vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
+    vertices : list[:class:`compas_rhino.geometry.RhinoBrepVertex`], read-only
         The list of vertices which comprise this edge (start and end)
     is_circle : bool, read-only
         True if the geometry of this edge is a circle, False otherwise.
@@ -96,12 +96,12 @@ class RhinoBrepEdge(BrepEdge):
         ----------
         data : dict
             The data dictionary.
-        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+        builder : :class:`compas_rhino.geometry.BrepBuilder`
             The object reconstructing the current Brep.
 
         Returns
         -------
-        :class:`~compas.data.Data`
+        :class:`compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """

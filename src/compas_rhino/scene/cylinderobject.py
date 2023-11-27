@@ -17,7 +17,7 @@ class CylinderObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    cylinder : :class:`~compas.geometry.Cylinder`
+    cylinder : :class:`compas.geometry.Cylinder`
         A COMPAS cylinder.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class CylinderObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the cylinder.
 
         Returns

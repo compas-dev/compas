@@ -17,7 +17,7 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    surface : :class:`~compas.geometry.Geometry`
+    surface : :class:`compas.geometry.Geometry`
         A COMPAS surface.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the surface.
 
         Returns

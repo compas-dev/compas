@@ -17,7 +17,7 @@ class PointcloudArtist(BlenderArtist, GeometryObject):
 
     Parameters
     ----------
-    pointcloud : :class:`~compas.geometry.Pointcloud`
+    pointcloud : :class:`compas.geometry.Pointcloud`
         A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -39,7 +39,7 @@ class PointcloudArtist(BlenderArtist, GeometryObject):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             Color of the point object.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

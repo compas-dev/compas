@@ -8,12 +8,12 @@ def mesh_conway_dual(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The dual mesh.
 
     References
@@ -54,12 +54,12 @@ def mesh_conway_join(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The join mesh.
 
     References
@@ -111,12 +111,12 @@ def mesh_conway_ambo(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The ambo mesh.
 
     References
@@ -149,12 +149,12 @@ def mesh_conway_kis(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The kis mesh.
 
     References
@@ -198,12 +198,12 @@ def mesh_conway_needle(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The needle mesh.
 
     References
@@ -236,12 +236,12 @@ def mesh_conway_zip(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The zip mesh.
 
     References
@@ -274,12 +274,12 @@ def mesh_conway_truncate(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The truncate mesh.
 
     References
@@ -313,12 +313,12 @@ def mesh_conway_ortho(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The ortho mesh.
 
     References
@@ -351,12 +351,12 @@ def mesh_conway_expand(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The expand mesh.
 
     References
@@ -389,12 +389,12 @@ def mesh_conway_gyro(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The gyro mesh.
 
     References
@@ -450,12 +450,12 @@ def mesh_conway_snub(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The gyro mesh.
 
     References
@@ -488,12 +488,12 @@ def mesh_conway_meta(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The meta mesh.
 
     References
@@ -526,12 +526,12 @@ def mesh_conway_bevel(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A seed mesh
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The bevel mesh.
 
     References

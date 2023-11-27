@@ -17,7 +17,7 @@ class FrameObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    frame: :class:`~compas.geometry.Frame`
+    frame: :class:`compas.geometry.Frame`
         A COMPAS frame.
     scale: float, optional
         Scale factor that controls the length of the axes.
@@ -29,13 +29,13 @@ class FrameObject(RhinoSceneObject, GeometryObject):
     scale : float
         Scale factor that controls the length of the axes.
         Default is ``1.0``.
-    color_origin : :class:`~compas.colors.Color`
+    color_origin : :class:`compas.colors.Color`
         Default is ``Color.black()``.
-    color_xaxis : :class:`~compas.colors.Color`
+    color_xaxis : :class:`compas.colors.Color`
         Default is ``Color.red()``.
-    color_yaxis : :class:`~compas.colors.Color`
+    color_yaxis : :class:`compas.colors.Color`
         Default is ``Color.green()``.
-    color_zaxis : :class:`~compas.colors.Color`
+    color_zaxis : :class:`compas.colors.Color`
         Default is ``Color.blue()``.
 
     """

@@ -31,7 +31,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -200,7 +200,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         vertices : list[int], optional
             A selection of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the vertices.
         group : str, optional
             The name of a group to join the created Rhino objects in.
@@ -238,7 +238,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         edges : list[tuple[int, int]], optional
             A selection of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the edges.
         text : dict[tuple[int, int], str], optional
             A dictionary of edge labels as edge-text pairs.
@@ -280,7 +280,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         faces : list[int], optional
             A selection of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the faces.
         text : dict[int, str], optional
             A dictionary of face labels as face-text pairs.
@@ -327,7 +327,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         ----------
         text : dict[int, str]
             A dictionary of vertex labels as vertex-text pairs.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the vertex labels.
         group : str, optional
             The name of a group to join the created Rhino objects in.
@@ -372,7 +372,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         ----------
         text : dict[tuple[int, int], str]
             A dictionary of edge labels as edge-text pairs.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the edge labels.
         group : str, optional
             The name of a group to join the created Rhino objects in.
@@ -418,7 +418,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         ----------
         text : dict[int, str]
             A dictionary of face labels as face-text pairs.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the face labels.
         group : str, optional
             The name of a group to join the created Rhino objects in.
@@ -467,7 +467,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         vertices : list[int], optional
             A selection of vertex normals to draw.
             Default is to draw all vertex normals.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the vertex normals.
@@ -507,7 +507,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         faces : list[int], optional
             A selection of face normals to draw.
             Default is to draw all face normals.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the face normals.
@@ -550,7 +550,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         ----------
         radius : dict[int, float], optional
             The radius of the spheres.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the spheres.
         group : str, optional
             The name of a group to join the created Rhino objects in.
@@ -588,7 +588,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         ----------
         radius : dict[tuple[int, int], float]
             The radius per edge.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the pipes.
         group : str, optional
             The name of a group to join the created Rhino objects in.

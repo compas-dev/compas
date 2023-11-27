@@ -9,7 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.geometry.Box.to_brep()`.
+* Added `compas.geometry.Cone.to_brep()`.
+* Added `compas.geometry.Cylinder.to_brep()`.
+* Added `compas.geometry.Sphere.to_brep()`.
+* Added `compas.geometry.Torus.to_brep()`.
+* Added `compas.brep.Brep.from_iges()`.
+* Added `compas.brep.Brep.to_iges()`.
+
 ### Changed
+
+* Changed `compas.geometry.NurbsSurface.u_space` to `space_u`.
+* Changed `compas.geometry.NurbsSurface.v_space` to `space_v`.
+* Changed `compas.geometry.NurbsSurface.u_isocurve` to `isocurve_u`.
+* Changed `compas.geometry.NurbsSurface.v_isocurve` to `isocurve_v`.
+* Changed `compas.brep.Brep.from_step_file` to `from_step`.
+* * Moved `compas.brep` to `compas.geometry.brep`.
+
 
 ### Removed
 
@@ -35,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `compas.geometry.brep` to `compas.brep`.
 * Changed `networkx` version to `>=3.0` to ensure support for `is_planar`.
 * Moved `compas.geometry.curves.nurbs_.py` and `compas.geometry.surfaces.nurbs_.py` to `compas_nurbs`.
+* Fixed `mesh_to_compas` returning an empty `Mesh` when colors and/or face normals are missing.
 * ARTISTS ARE NOW SCENEOBJECTS (TO BE FURTHER DETAILED BEFORE MERGE).
 
 ### Removed

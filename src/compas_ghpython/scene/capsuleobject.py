@@ -13,7 +13,7 @@ class CapsuleObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    capsule : :class:`~compas.geometry.Capsule`
+    capsule : :class:`compas.geometry.Capsule`
         A COMPAS capsule.
     **kwargs : dict, optional
         Additional keyword arguments.

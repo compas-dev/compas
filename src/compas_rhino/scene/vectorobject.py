@@ -18,7 +18,7 @@ class VectorObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    vector : :class:`~compas.geometry.Vector`
+    vector : :class:`compas.geometry.Vector`
         A COMPAS vector.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -33,9 +33,9 @@ class VectorObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the vector.
-        point : [float, float, float] | :class:`~compas.geometry.Point`, optional
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
 

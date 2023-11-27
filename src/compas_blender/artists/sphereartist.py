@@ -18,7 +18,7 @@ class SphereArtist(BlenderArtist, GeometryObject):
 
     Parameters
     ----------
-    sphere : :class:`~compas.geometry.Sphere`
+    sphere : :class:`compas.geometry.Sphere`
         A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -41,7 +41,7 @@ class SphereArtist(BlenderArtist, GeometryObject):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             The RGB color of the sphere.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

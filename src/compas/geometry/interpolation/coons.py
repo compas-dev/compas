@@ -16,13 +16,13 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
     Parameters
     ----------
-    ab : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    ab : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the first polyline.
-    bc : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    bc : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the second polyline.
-    dc : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    dc : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the third polyline.
-    ad : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    ad : list[[float, float, float] | :class:`compas.geometry.Point`]
         The XYZ coordinates of the vertices of the fourth polyline.
 
     Returns
@@ -88,7 +88,7 @@ def discrete_coons_patch(ab, bc, dc, ad):
             d = scale_vector(ad[-1], (1 - ki) * kj)
             lin_interp_a_b_c_d = sum_vectors([a, b, c, d])
             # coons patch = first + second - third functions
-            array[i][j] = subtract_vectors(add_vectors(lin_interp_ab_dc, lin_interp_bc_ad), lin_interp_a_b_c_d)
+            array[i][j] = subtract_vectors(add_vectors(lin_interp_ab_dc, lin_interp_bc_ad), lin_interp_a_b_c_d)  # type: ignore
 
     # create vertex list
     vertices = []

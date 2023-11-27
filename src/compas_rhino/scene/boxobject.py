@@ -17,7 +17,7 @@ class BoxObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    box : :class:`~compas.geometry.Box`
+    box : :class:`compas.geometry.Box`
         A COMPAS box.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class BoxObject(RhinoSceneObject, GeometryObject):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the box.
 
         Returns

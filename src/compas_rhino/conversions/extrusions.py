@@ -29,7 +29,7 @@ def extrusion_to_compas_box(extrusion):
 
     Returns
     -------
-    :class:`~compas.geometry.Box`
+    :class:`compas.geometry.Box`
 
     """
     plane = extrusion.GetPathPlane(0)
@@ -50,7 +50,7 @@ def extrusion_to_compas_cylinder(extrusion, tol=None):
 
     Returns
     -------
-    :class:`~compas.geometry.Cylinder`
+    :class:`compas.geometry.Cylinder`
 
     """
     tol = tol or sc.doc.ModelAbsoluteTolerance
@@ -72,7 +72,7 @@ def extrusion_to_compas_torus(extrusion, tol=None):
 
     Returns
     -------
-    :class:`~compas.geometry.Torus`
+    :class:`compas.geometry.Torus`
 
     """
     tol = tol or sc.doc.ModelAbsoluteTolerance
