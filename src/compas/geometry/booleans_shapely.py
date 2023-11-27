@@ -23,6 +23,12 @@ def boolean_union_polygon_polygon(A, B):
     list[point]
         The vertices of the boolean union.
 
+    See Also
+    --------
+    boolean_difference_polygon_polygon
+    boolean_symmetric_difference_polygon_polygon
+    boolean_intersection_polygon_polygon
+
     """
     a = Polygon([point[:2] for point in A.points])
     b = Polygon([point[:2] for point in B.points])
@@ -52,6 +58,12 @@ def boolean_difference_polygon_polygon(A, B):
     -------
     list[point]
         The vertices of the boolean difference.
+
+    See Also
+    --------
+    boolean_union_polygon_polygon
+    boolean_symmetric_difference_polygon_polygon
+    boolean_intersection_polygon_polygon
 
     """
     a = Polygon([point[:2] for point in A.points])
@@ -83,6 +95,12 @@ def boolean_symmetric_difference_polygon_polygon(A, B):
     list[list[point]]
         The lists of vertices of the boolean symmetric difference.
 
+    See Also
+    --------
+    boolean_union_polygon_polygon
+    boolean_difference_polygon_polygon
+    boolean_intersection_polygon_polygon
+
     """
     a = Polygon([point[:2] for point in A.points])
     b = Polygon([point[:2] for point in B.points])
@@ -112,6 +130,12 @@ def boolean_intersection_polygon_polygon(A, B):
     -------
     list[point]
         The vertices of the boolean difference.
+
+    See Also
+    --------
+    boolean_union_polygon_polygon
+    boolean_difference_polygon_polygon
+    boolean_symmetric_difference_polygon_polygon
 
     """
     a = Polygon([point[:2] for point in A.points])

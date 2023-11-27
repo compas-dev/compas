@@ -24,8 +24,8 @@ def boolean_union_mesh_mesh(A, B):
 
     See Also
     --------
-    :func:`compas.geometry.boolean_difference_mesh_mesh`
-    :func:`compas.geometry.boolean_intersection_mesh_mesh`
+    boolean_difference_mesh_mesh
+    boolean_intersection_mesh_mesh
 
     Notes
     -----
@@ -62,6 +62,9 @@ def boolean_union_mesh_mesh(A, B):
     )
 
 
+boolean_union_mesh_mesh.__pluggable__ = True
+
+
 @pluggable(category="booleans")
 def boolean_difference_mesh_mesh(A, B):
     """Compute the boolean difference of two triangle meshes.
@@ -80,8 +83,8 @@ def boolean_difference_mesh_mesh(A, B):
 
     See Also
     --------
-    :func:`compas.geometry.boolean_union_mesh_mesh`
-    :func:`compas.geometry.boolean_intersection_mesh_mesh`
+    boolean_union_mesh_mesh
+    boolean_intersection_mesh_mesh
 
     Notes
     -----
@@ -94,6 +97,9 @@ def boolean_difference_mesh_mesh(A, B):
     raise PluginNotInstalledError(
         "No plugin was found for the boolean_difference_mesh_mesh pluggable. A plugin is available in compas_cgal..."
     )
+
+
+boolean_difference_mesh_mesh.__pluggable__ = True
 
 
 @pluggable(category="booleans")
@@ -114,8 +120,8 @@ def boolean_intersection_mesh_mesh(A, B):
 
     See Also
     --------
-    :func:`compas.geometry.boolean_union_mesh_mesh`
-    :func:`compas.geometry.boolean_difference_mesh_mesh`
+    boolean_union_mesh_mesh
+    boolean_difference_mesh_mesh
 
     Notes
     -----
@@ -128,6 +134,9 @@ def boolean_intersection_mesh_mesh(A, B):
     raise PluginNotInstalledError(
         "No plugin was found for the boolean_intersection_mesh_mesh pluggable. A plugin is available in compas_cgal..."
     )
+
+
+boolean_intersection_mesh_mesh.__pluggable__ = True
 
 
 @pluggable(category="booleans")
@@ -153,9 +162,9 @@ def boolean_union_polygon_polygon(A, B):
 
     See Also
     --------
-    :func:`compas.geometry.boolean_difference_polygon_polygon`
-    :func:`compas.geometry.boolean_intersection_polygon_polygon`
-    :func:`compas.geometry.boolean_symmetric_difference_polygon_polygon`
+    boolean_difference_polygon_polygon
+    boolean_intersection_polygon_polygon
+    boolean_symmetric_difference_polygon_polygon
 
     Notes
     -----
@@ -168,6 +177,9 @@ def boolean_union_polygon_polygon(A, B):
     raise PluginNotInstalledError(
         "No plugin was found for the boolean_union_polygon_polygon pluggable. Installing Shapely should solve the problem."
     )
+
+
+boolean_union_polygon_polygon.__pluggable__ = True
 
 
 @pluggable(category="booleans")
@@ -193,9 +205,9 @@ def boolean_difference_polygon_polygon(A, B):
 
     See Also
     --------
-    :func:`compas.geometry.boolean_union_polygon_polygon`
-    :func:`compas.geometry.boolean_intersection_polygon_polygon`
-    :func:`compas.geometry.boolean_symmetric_difference_polygon_polygon`
+    boolean_union_polygon_polygon
+    boolean_intersection_polygon_polygon
+    boolean_symmetric_difference_polygon_polygon
 
     Notes
     -----
@@ -208,6 +220,9 @@ def boolean_difference_polygon_polygon(A, B):
     raise PluginNotInstalledError(
         "No plugin was found for the boolean_difference_polygon_polygon pluggable. Installing Shapely should solve the problem."
     )
+
+
+boolean_difference_polygon_polygon.__pluggable__ = True
 
 
 @pluggable(category="booleans")
@@ -233,9 +248,9 @@ def boolean_symmetric_difference_polygon_polygon(A, B):
 
     See Also
     --------
-    :func:`compas.geometry.boolean_union_polygon_polygon`
-    :func:`compas.geometry.boolean_intersection_polygon_polygon`
-    :func:`compas.geometry.boolean_difference_polygon_polygon`
+    boolean_union_polygon_polygon
+    boolean_intersection_polygon_polygon
+    boolean_difference_polygon_polygon
 
     Notes
     -----
@@ -248,6 +263,9 @@ def boolean_symmetric_difference_polygon_polygon(A, B):
     raise PluginNotInstalledError(
         "No plugin was found for the boolean_symmetric_difference_polygon_polygon pluggable. Installing Shapely should solve the problem."
     )
+
+
+boolean_symmetric_difference_polygon_polygon.__pluggable__ = True
 
 
 @pluggable(category="booleans")
@@ -273,9 +291,9 @@ def boolean_intersection_polygon_polygon(A, B):
 
     See Also
     --------
-    :func:`compas.geometry.boolean_union_polygon_polygon`
-    :func:`compas.geometry.boolean_difference_polygon_polygon`
-    :func:`compas.geometry.boolean_symmetric_difference_polygon_polygon`
+    boolean_union_polygon_polygon
+    boolean_difference_polygon_polygon
+    boolean_symmetric_difference_polygon_polygon
 
     Notes
     -----
@@ -288,3 +306,6 @@ def boolean_intersection_polygon_polygon(A, B):
     raise PluginNotInstalledError(
         "No plugin was found for the boolean_intersection_polygon_polygon pluggable. Installing Shapely should solve the problem."
     )
+
+
+boolean_intersection_polygon_polygon.__pluggable__ = True

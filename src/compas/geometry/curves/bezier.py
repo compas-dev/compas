@@ -129,11 +129,11 @@ class Bezier(Curve):
 
     Attributes
     ----------
-    points : list[:class:`~compas.geometry.Point`]
+    points : list[:class:`compas.geometry.Point`]
         The control points.
     degree : int, read-only
         The degree of the curve.
-    frame : :class:`~compas.geometry.Frame`, read-only
+    frame : :class:`compas.geometry.Frame`, read-only
         The frame of the curve.
         This is always the world coordinate system.
 
@@ -231,7 +231,7 @@ class Bezier(Curve):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation`
+        T : :class:`compas.geometry.Transformation`
             The transformation.
 
         Returns
@@ -257,7 +257,7 @@ class Bezier(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             the corresponding point on the curve.
 
         See Also
@@ -290,7 +290,7 @@ class Bezier(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The corresponding tangent vector.
 
         See Also
@@ -321,7 +321,7 @@ class Bezier(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The corresponding normal vector.
 
         See Also

@@ -26,6 +26,10 @@ def convex_hull_numpy(points):
     ValueError
         If the input data is not 3D.
 
+    See Also
+    --------
+    convex_hull_xy_numpy
+
     Notes
     -----
     The faces of the hull returned by this function do not necessarily have consistent
@@ -66,9 +70,9 @@ def convex_hull_xy_numpy(points):
     ValueError
         If the input data is not at least 2D.
 
-    Examples
+    See Also
     --------
-    >>>
+    convex_hull_numpy
 
     """
     points = asarray(points)

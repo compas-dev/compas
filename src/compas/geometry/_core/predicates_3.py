@@ -39,11 +39,11 @@ def is_colinear(a, b, c, tol=1e-6):
 
     Parameters
     ----------
-    a : [float, float, float] | :class:`~compas.geometry.Point`
+    a : [float, float, float] | :class:`compas.geometry.Point`
         Point 1.
-    b : [float, float, float] | :class:`~compas.geometry.Point`
+    b : [float, float, float] | :class:`compas.geometry.Point`
         Point 2.
-    c : [float, float, float] | :class:`~compas.geometry.Point`
+    c : [float, float, float] | :class:`compas.geometry.Point`
         Point 3.
     tol : float, optional
         Tolerance for comparing the area of the triangle defined by the three points with zero.
@@ -68,9 +68,9 @@ def is_colinear_line_line(line1, line2, tol=1e-6):
 
     Parameters
     ----------
-    line1 : [point, point] | :class:`~compas.geometry.Line`
+    line1 : [point, point] | :class:`compas.geometry.Line`
         Line 1.
-    line2 : [point, point] | :class:`~compas.geometry.Line`
+    line2 : [point, point] | :class:`compas.geometry.Line`
         Line 2.
     tol : float, optional
         A tolerance for colinearity verification.
@@ -163,9 +163,9 @@ def is_parallel_vector_vector(u, v, tol=1e-6):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         Vector 1.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         Vector 2.
     tol : float, optional
         A tolerance for comparing the length of the cross product to zero.
@@ -201,9 +201,9 @@ def is_parallel_line_line(line1, line2, tol=1e-6):
 
     Parameters
     ----------
-    line1 : [point, point] | :class:`~compas.geometry.Line`
+    line1 : [point, point] | :class:`compas.geometry.Line`
         Line 1.
-    line2 : [point, point] | :class:`~compas.geometry.Line`
+    line2 : [point, point] | :class:`compas.geometry.Line`
         Line 2.
     tol : float, optional
         A tolerance for verifying parallelity of the line direction vectors.
@@ -234,9 +234,9 @@ def is_parallel_plane_plane(plane1, plane2, tol=1e-6):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`~compas.geometry.Plane`
+    plane1 : [point, vector] | :class:`compas.geometry.Plane`
         Plane 1.
-    plane2 : [point, vector] | :class:`~compas.geometry.Plane`
+    plane2 : [point, vector] | :class:`compas.geometry.Plane`
         Plane 2.
     tol : float, optional
         A tolerance for verifying parallelity of the plane normals.
@@ -262,9 +262,9 @@ def is_perpendicular_vector_vector(u, v, tol=1e-6):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         Vector 1.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         Vector 2.
     tol : float, optional
         A tolerance for comparing the dot product of the two vectors to zero.
@@ -290,9 +290,9 @@ def is_perpendicular_line_line(line1, line2, tol=1e-6):
 
     Parameters
     ----------
-    line1 : [point, point] | :class:`~compas.geometry.Line`
+    line1 : [point, point] | :class:`compas.geometry.Line`
         Line 1.
-    line2 : [point, point] | :class:`~compas.geometry.Line`
+    line2 : [point, point] | :class:`compas.geometry.Line`
         Line 2.
     tol : float, optional
         A tolerance for verifying perpendicularity of the line direction vectors.
@@ -322,9 +322,9 @@ def is_perpendicular_plane_plane(plane1, plane2, tol=1e-6):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`~compas.geometry.Plane`
+    plane1 : [point, vector] | :class:`compas.geometry.Plane`
         Plane 1.
-    plane2 : [point, vector] | :class:`~compas.geometry.Plane`
+    plane2 : [point, vector] | :class:`compas.geometry.Plane`
         Plane 2.
     tol : float, optional
         A tolerance for verifying perpendicularity of the plane normals.
@@ -367,7 +367,7 @@ def is_polygon_convex(polygon):
 
     Parameters
     ----------
-    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         A polygon.
 
     Returns
@@ -414,7 +414,7 @@ def is_polyhedron_convex(polyhedron):
 
     Parameters
     ----------
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`~compas.geometry.Polyhedron`
+    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`
         A polyhedron defined by a sequence of points
         and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
 
@@ -467,9 +467,9 @@ def is_point_on_plane(point, plane, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point, vector] | :class:`~compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -506,9 +506,9 @@ def is_point_on_line(point, line, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    line : [point, point] | :class:`~compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         A line.
     tol : float, optional
         A tolerance for membership verification.
@@ -528,9 +528,9 @@ def is_point_on_segment(point, segment, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    segment : [point, point] | :class:`~compas.geometry.Line`
+    segment : [point, point] | :class:`compas.geometry.Line`
         A line segment.
     tol : float, optional
         A tolerance for membership verification.
@@ -564,9 +564,9 @@ def is_point_on_polyline(point, polyline, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    polyline : sequence[point] | :class:`~compas.geometry.Polyline`
+    polyline : sequence[point] | :class:`compas.geometry.Polyline`
         A polyline.
     tol : float, optional
         The tolerance for membership verification.
@@ -594,7 +594,7 @@ def is_point_on_circle(point, circle, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
     circle : [plane, float]
         A circle.
@@ -653,7 +653,7 @@ def is_point_in_circle(point, circle, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
     circle : [plane, float]
         A circle.
@@ -676,7 +676,7 @@ def is_point_in_triangle(point, triangle, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
     triangle : [point, point, point]
         A triangle.
@@ -720,9 +720,9 @@ def is_point_in_polygon(point, polygon, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         A polygon.
 
     Returns
@@ -757,7 +757,7 @@ def is_point_in_sphere(point, sphere, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
     sphere : [point, float]
         A sphere.
@@ -778,9 +778,9 @@ def is_point_in_aab(point, box, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    box : [[float, float, float], [float, float, float]] | [:class:`~compas.geometry.Point`, :class:`~compas.geometry.Point``]
+    box : [[float, float, float], [float, float, float]] | [:class:`compas.geometry.Point`, :class:`compas.geometry.Point``]
         An axis-aligned box defined by the min/max corners.
 
     Returns
@@ -799,9 +799,9 @@ def is_point_in_polyhedron(point, polyhedron):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         The test point.
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`~compas.geometry.Polyhedron`.
+    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`.
         The polyhedron defined by a sequence of points
         and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
 
@@ -823,9 +823,9 @@ def is_point_infront_plane(point, plane, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point, vector] | :class:`~compas.geometry.Plane`
+    plane : [point, vector] | :class:`compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -845,9 +845,9 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point,  normal] | :class:`~compas.geometry.Plane`
+    plane : [point,  normal] | :class:`compas.geometry.Plane`
         A plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -884,9 +884,9 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
 #     Parameters
 #     ----------
-#     l1 : [point, point] | :class:`~compas.geometry.Line`
+#     l1 : [point, point] | :class:`compas.geometry.Line`
 #         A line.
-#     l2 : [point, point] | :class:`~compas.geometry.Line`
+#     l2 : [point, point] | :class:`compas.geometry.Line`
 #         A line.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -919,9 +919,9 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
 #     Parameters
 #     ----------
-#     s1 : [point, point] | :class:`~compas.geometry.Line`
+#     s1 : [point, point] | :class:`compas.geometry.Line`
 #         A line segment.
-#     s2 : [point, point] | :class:`~compas.geometry.Line`
+#     s2 : [point, point] | :class:`compas.geometry.Line`
 #         A line segment.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -941,7 +941,7 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
 #     Parameters
 #     ----------
-#     line : [point, point] | :class:`~compas.geometry.Line`
+#     line : [point, point] | :class:`compas.geometry.Line`
 #         A line.
 #     triangle : [point, point, point]
 #         A triangle.
@@ -1012,9 +1012,9 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
 #     Parameters
 #     ----------
-#     line : [point, point] | :class:`~compas.geometry.Line`
+#     line : [point, point] | :class:`compas.geometry.Line`
 #         A line.
-#     plane : [point, vector] | :class:`~compas.geometry.Plane`
+#     plane : [point, vector] | :class:`compas.geometry.Plane`
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -1043,9 +1043,9 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
 #     Parameters
 #     ----------
-#     segment : [point, point] | :class:`~compas.geometry.Line`
+#     segment : [point, point] | :class:`compas.geometry.Line`
 #         A line segment.
-#     plane : [point, vector] | :class:`~compas.geometry.Plane`
+#     plane : [point, vector] | :class:`compas.geometry.Plane`
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -1080,9 +1080,9 @@ def is_point_behind_plane(point, plane, tol=1e-6):
 
 #     Parameters
 #     ----------
-#     plane1 : [point, vector] | :class:`~compas.geometry.Plane`
+#     plane1 : [point, vector] | :class:`compas.geometry.Plane`
 #         A plane.
-#     plane2 : [point, vector] | :class:`~compas.geometry.Plane`
+#     plane2 : [point, vector] | :class:`compas.geometry.Plane`
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.

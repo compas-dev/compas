@@ -36,10 +36,6 @@ def bestfit_line_numpy(points):
     :func:`compas.geometry.bestfit_plane_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
     :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
 
-    Examples
-    --------
-    >>>
-
     """
     o, uvw, _ = pca_numpy(points)
     return o, uvw[0]
@@ -72,10 +68,6 @@ def bestfit_plane_numpy(points):
     :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_frame_numpy`
     :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
     :func:`compas.geometry.bestfit_plane`
-
-    Examples
-    --------
-    >>>
 
     """
     o, uvw, _ = pca_numpy(points)
@@ -110,10 +102,6 @@ def bestfit_frame_numpy(points):
     --------
     :func:`compas.geometry.bestfit_line_numpy`, :func:`compas.geometry.bestfit_plane_numpy`
     :func:`compas.geometry.bestfit_circle_numpy`, :func:`compas.geometry.bestfit_sphere_numpy`
-
-    Examples
-    --------
-    >>>
 
     """
     o, uvw, _ = pca_numpy(points)
@@ -165,10 +153,6 @@ def bestfit_circle_numpy(points):
     ----------
     .. [1] Scipy. *Least squares circle*.
            Available at: http://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html.
-
-    Examples
-    --------
-    >>>
 
     """
     o, uvw, _ = pca_numpy(points)

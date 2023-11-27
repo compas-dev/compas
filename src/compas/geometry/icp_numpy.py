@@ -74,10 +74,6 @@ def icp_numpy(source, target, tol=1e-3):
 
     The algorithm terminates when the alignment error is below a specified tolerance.
 
-    Examples
-    --------
-    >>>
-
     """
     from compas.geometry import Transformation
     from compas.geometry import Frame

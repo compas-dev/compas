@@ -11,7 +11,7 @@ def trimesh_harmonic(M):
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
@@ -33,7 +33,7 @@ def trimesh_lscm(M):
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns

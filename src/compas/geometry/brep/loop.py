@@ -8,9 +8,9 @@ class BrepLoop(Data):
     ----------
     is_valid : bool, read-only
         Returns True if this loop is valid, False otherwise.
-    vertices : list[:class:`~compas.geometry.BrepVertex`], read-only
+    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
         Returns the list of vertices associated with this loop.
-    edges : list[:class:`~compas.geometry.BrepEdge`], read-only
+    edges : list[:class:`compas.geometry.BrepEdge`], read-only
         Returns the list of deges associated with this loop.
 
     """
@@ -41,11 +41,11 @@ class BrepLoop(Data):
 
         Parameters
         ----------
-        edges : list[:class:`~compas.geometry.BrepEdge`]
+        edges : list[:class:`compas.geometry.BrepEdge`]
 
         Returns
         -------
-        :class:`~compas.geometry.BrepLoop`
+        :class:`compas.geometry.BrepLoop`
 
         """
         raise NotImplementedError
@@ -56,11 +56,11 @@ class BrepLoop(Data):
 
         Parameters
         ----------
-        polyline : :class:`~compas.geometry.Polyline`
+        polyline : :class:`compas.geometry.Polyline`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepLoop`
+        :class:`compas.geometry.BrepLoop`
 
         """
         raise NotImplementedError
@@ -71,11 +71,11 @@ class BrepLoop(Data):
 
         Parameters
         ----------
-        polygon : :class:`~compas.geometry.Polygon`
+        polygon : :class:`compas.geometry.Polygon`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepLoop`
+        :class:`compas.geometry.BrepLoop`
 
         """
         raise NotImplementedError

@@ -6,7 +6,7 @@ class BrepVertex(Data):
 
     Attributes
     ----------
-    point : :class:`~compas.geometry.Point`, read_only
+    point : :class:`compas.geometry.Point`, read_only
         Returns the geometry of this vertex as a 3D point
 
     """
@@ -29,12 +29,12 @@ class BrepVertex(Data):
 
         Parameters
         ----------
-        point: :class:`~compas.geometry.Point`
+        point: :class:`compas.geometry.Point`
             The point to create a vertex from
 
         Returns
         -------
-        :class:`~compas.geometry.BrepVertex`
+        :class:`compas.geometry.BrepVertex`
             The created vertex
         """
         raise NotImplementedError

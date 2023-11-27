@@ -153,7 +153,7 @@ class Polyhedron(Geometry):
 
     Parameters
     ----------
-    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    vertices : list[[float, float, float] | :class:`compas.geometry.Point`]
         The point locations of the vertices of the polyhedron.
     faces : list[list[int]]
         The faces as a list of index lists.
@@ -359,7 +359,7 @@ class Polyhedron(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyhedron`
+        :class:`compas.geometry.Polyhedron`
             The constructed polyhedron.
 
         References
@@ -396,7 +396,7 @@ class Polyhedron(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyhedron`
+        :class:`compas.geometry.Polyhedron`
 
         Examples
         --------
@@ -445,11 +445,11 @@ class Polyhedron(Geometry):
 
         Parameters
         ----------
-        planes : list[[point, normal] | :class:`~compas.geometry.Plane`]
+        planes : list[[point, normal] | :class:`compas.geometry.Plane`]
 
         Returns
         -------
-        :class:`~compas.geometry.Polyhedron`
+        :class:`compas.geometry.Polyhedron`
 
         Examples
         --------
@@ -481,7 +481,7 @@ class Polyhedron(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyhedron`
+        :class:`compas.geometry.Polyhedron`
 
         Examples
         --------
@@ -532,7 +532,7 @@ class Polyhedron(Geometry):
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
+        transformation : :class:`compas.geometry.Transformation`
 
         Returns
         -------
@@ -563,12 +563,12 @@ class Polyhedron(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Polyhedron`
+        other : :class:`compas.geometry.Polyhedron`
             The polyhedron to add.
 
         Returns
         -------
-        :class:`~compas.geometry.Polyhedron`
+        :class:`compas.geometry.Polyhedron`
             The resulting polyhedron.
 
         Examples
@@ -592,12 +592,12 @@ class Polyhedron(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Polyhedron`
+        other : :class:`compas.geometry.Polyhedron`
             The polyhedron to subtract.
 
         Returns
         -------
-        :class:`~compas.geometry.Polyhedron`
+        :class:`compas.geometry.Polyhedron`
             The resulting polyhedron.
 
         Examples
@@ -621,12 +621,12 @@ class Polyhedron(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Polyhedron`
+        other : :class:`compas.geometry.Polyhedron`
             The polyhedron to intersect with.
 
         Returns
         -------
-        :class:`~compas.geometry.Polyhedron`
+        :class:`compas.geometry.Polyhedron`
             The resulting polyhedron.
 
         Examples

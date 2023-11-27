@@ -5,23 +5,38 @@ import compas
 # Core
 # =============================================================================
 
-from ._core._algebra import add_vectors, add_vectors_xy, allclose, argmax, argmin
-from ._core._algebra import close, cross_vectors, cross_vectors_xy
-from ._core._algebra import dehomogenize_vectors, divide_vectors, divide_vectors_xy, dot_vectors, dot_vectors_xy
-from ._core._algebra import homogenize_vectors
-from ._core._algebra import length_vector, length_vector_sqrd, length_vector_sqrd_xy, length_vector_xy
-from ._core._algebra import multiply_matrices, multiply_matrix_vector, multiply_vectors, multiply_vectors_xy
 from ._core._algebra import (
+    add_vectors,
+    add_vectors_xy,
+    allclose,
+    argmax,
+    argmin,
+    close,
+    cross_vectors,
+    cross_vectors_xy,
+    dehomogenize_vectors,
+    divide_vectors,
+    divide_vectors_xy,
+    dot_vectors,
+    dot_vectors_xy,
+    homogenize_vectors,
+    length_vector,
+    length_vector_sqrd,
+    length_vector_sqrd_xy,
+    length_vector_xy,
+    multiply_matrices,
+    multiply_matrix_vector,
+    multiply_vectors,
+    multiply_vectors_xy,
     norm_vector,
     norm_vectors,
     normalize_vector,
     normalize_vector_xy,
     normalize_vectors,
     normalize_vectors_xy,
-)
-from ._core._algebra import orthonormalize_vectors
-from ._core._algebra import power_vector, power_vectors
-from ._core._algebra import (
+    orthonormalize_vectors,
+    power_vector,
+    power_vectors,
     scale_vector,
     scale_vector_xy,
     scale_vectors,
@@ -31,9 +46,7 @@ from ._core._algebra import (
     subtract_vectors,
     subtract_vectors_xy,
     sum_vectors,
-)
-from ._core._algebra import transpose_matrix
-from ._core._algebra import (
+    transpose_matrix,
     vector_average,
     vector_component,
     vector_component_xy,
@@ -104,7 +117,11 @@ from ._core.distance import (
     sort_points,
     sort_points_xy,
 )
-from ._core.normals import normal_polygon, normal_triangle, normal_triangle_xy
+from ._core.normals import (
+    normal_polygon,
+    normal_triangle,
+    normal_triangle_xy,
+)
 from ._core.quaternions import (
     quaternion_canonize,
     quaternion_conjugate,
@@ -113,11 +130,15 @@ from ._core.quaternions import (
     quaternion_norm,
     quaternion_unitize,
 )
-from ._core.size import area_polygon, area_polygon_xy, area_triangle, area_triangle_xy, volume_polyhedron
+from ._core.size import (
+    area_polygon,
+    area_polygon_xy,
+    area_triangle,
+    area_triangle_xy,
+    volume_polyhedron,
+)
 from ._core.tangent import tangent_points_to_circle_xy
-
 from ._core.kdtree import KDTree
-
 from ._core.matrices import (
     axis_and_angle_from_matrix,
     axis_angle_from_quaternion,
@@ -153,51 +174,49 @@ from ._core.matrices import (
     quaternion_from_matrix,
     translation_from_matrix,
 )
-
-from ._core.transformations import local_axes, local_to_world_coordinates
 from ._core.transformations import (
-    # mirror_point_line,
-    # mirror_point_line_xy,
+    local_axes,
+    local_to_world_coordinates,
     mirror_point_plane,
-    # mirror_point_point,
-    # mirror_point_point_xy,
     mirror_points_line,
     mirror_points_line_xy,
     mirror_points_point,
     mirror_points_plane,
     mirror_points_point_xy,
     mirror_vector_vector,
-)
-from ._core.transformations import orient_points, orthonormalize_axes
-from ._core.transformations import (
+    orient_points,
+    orthonormalize_axes,
     project_point_line,
     project_point_line_xy,
     project_point_plane,
     project_points_line,
     project_points_line_xy,
     project_points_plane,
-)
-from ._core.transformations import reflect_line_plane, reflect_line_triangle, rotate_points, rotate_points_xy
-from ._core.transformations import scale_points, scale_points_xy
-from ._core.transformations import (
+    reflect_line_plane,
+    reflect_line_triangle,
+    rotate_points,
+    rotate_points_xy,
+    scale_points,
+    scale_points_xy,
     transform_frames,
     transform_points,
     transform_vectors,
     translate_points_xy,
     translate_points,
+    world_to_local_coordinates,
 )
-from ._core.transformations import world_to_local_coordinates
 
 if not compas.IPY:
-    from ._core.transformations_numpy import dehomogenize_and_unflatten_frames_numpy, dehomogenize_numpy
-    from ._core.transformations_numpy import homogenize_and_flatten_frames_numpy, homogenize_numpy
-    from ._core.transformations_numpy import local_to_world_coordinates_numpy
     from ._core.transformations_numpy import (
-        # transform_frames_numpy,
+        dehomogenize_and_unflatten_frames_numpy,
+        dehomogenize_numpy,
+        homogenize_and_flatten_frames_numpy,
+        homogenize_numpy,
+        local_to_world_coordinates_numpy,
         transform_points_numpy,
         transform_vectors_numpy,
+        world_to_local_coordinates_numpy,
     )
-    from ._core.transformations_numpy import world_to_local_coordinates_numpy
 
 from ._core.predicates_2 import (
     is_ccw_xy,
@@ -211,8 +230,6 @@ from ._core.predicates_2 import (
     is_point_in_convex_polygon_xy,
     is_point_in_circle_xy,
     is_polygon_in_polygon_xy,
-    is_intersection_line_line_xy,
-    is_intersection_segment_segment_xy,
 )
 from ._core.predicates_3 import (
     is_colinear,
@@ -220,23 +237,15 @@ from ._core.predicates_3 import (
     is_coplanar,
     is_parallel_line_line,
     is_polygon_convex,
-    # is_point_in_box,
     is_point_on_plane,
     is_point_infront_plane,
     is_point_behind_plane,
-    # is_point_in_halfspace,
     is_point_on_line,
     is_point_on_segment,
     is_point_on_polyline,
     is_point_in_triangle,
     is_point_in_circle,
     is_point_in_polyhedron,
-    # is_intersection_line_line,
-    # is_intersection_segment_segment,
-    # is_intersection_line_triangle,
-    # is_intersection_line_plane,
-    # is_intersection_segment_plane,
-    # is_intersection_plane_plane,
 )
 
 from ._core.nurbs import (
@@ -252,8 +261,8 @@ from ._core.nurbs import (
 # Algorithms
 # =============================================================================
 
-from .bbox.bbox import bounding_box, bounding_box_xy
-from .bestfit.bestfit import bestfit_plane
+from .bbox import bounding_box, bounding_box_xy
+from .bestfit import bestfit_plane
 from .booleans import (
     boolean_union_mesh_mesh,
     boolean_difference_mesh_mesh,
@@ -263,7 +272,7 @@ from .booleans import (
     boolean_symmetric_difference_polygon_polygon,
     boolean_intersection_polygon_polygon,
 )
-from .hull.hull import convex_hull, convex_hull_xy
+from .hull import convex_hull, convex_hull_xy
 from .interpolation.barycentric import barycentric_coordinates
 from .interpolation.coons import discrete_coons_patch
 from .interpolation.tweening import tween_points, tween_points_distance
@@ -291,36 +300,51 @@ from .intersections.intersections import (
     intersection_sphere_line,
     intersection_sphere_sphere,
 )
-from .offset.offset import offset_line, offset_polyline, offset_polygon
-from .quadmesh.planarization import quadmesh_planarize
+from .offset import (
+    offset_line,
+    offset_polyline,
+    offset_polygon,
+)
+from .quadmesh_planarize import quadmesh_planarize
 from .triangulation import conforming_delaunay_triangulation, constrained_delaunay_triangulation, delaunay_triangulation
 from .triangulation.delaunay import delaunay_from_points
 from .triangulation.earclip import earclip_polygon
-from .trimesh.curvature import trimesh_mean_curvature, trimesh_gaussian_curvature, trimesh_principal_curvature
-from .trimesh.geodistance import trimesh_geodistance
-from .trimesh.isolines import trimesh_isolines
-from .trimesh.matrices import trimesh_massmatrix
-from .trimesh.parametrisation import trimesh_harmonic, trimesh_lscm
-from .trimesh.remesh import trimesh_remesh, trimesh_remesh_along_isoline, trimesh_remesh_constrained
-from .trimesh.slicing import trimesh_slice
+from .trimesh_curvature import (
+    trimesh_mean_curvature,
+    trimesh_gaussian_curvature,
+    trimesh_principal_curvature,
+)
+from .trimesh_geodistance import trimesh_geodistance
+from .trimesh_isolines import trimesh_isolines
+from .trimesh_matrices import trimesh_massmatrix
+from .trimesh_parametrisation import (
+    trimesh_harmonic,
+    trimesh_lscm,
+)
+from .trimesh_remeshing import (
+    trimesh_remesh,
+    trimesh_remesh_along_isoline,
+    trimesh_remesh_constrained,
+)
+from .trimesh_slicing import trimesh_slice
 
 if not compas.IPY:
-    from .bbox.bbox_numpy import (
+    from .bbox_numpy import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
     )
-    from .bestfit.bestfit_numpy import (
+    from .bestfit_numpy import (
         bestfit_line_numpy,
         bestfit_plane_numpy,
         bestfit_frame_numpy,
         bestfit_circle_numpy,
         bestfit_sphere_numpy,
     )
-    from .hull.hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
-    from .icp.icp_numpy import icp_numpy
+    from .hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
+    from .icp_numpy import icp_numpy
     from .triangulation.delaunay_numpy import delaunay_from_points_numpy, voronoi_from_points_numpy
-    from .trimesh.gradient_numpy import trimesh_gradient_numpy
-    from .trimesh.descent_numpy import trimesh_descent_numpy
+    from .trimesh_gradient_numpy import trimesh_gradient_numpy
+    from .trimesh_descent_numpy import trimesh_descent_numpy
 
 # =============================================================================
 # Class APIs
@@ -381,15 +405,16 @@ from .brep.errors import (
     BrepTrimmingError,
 )
 
-from .brep.brep import Brep
-from .brep.brep import BrepOrientation
-from .brep.brep import BrepType
+from .brep.brep import (
+    Brep,
+    BrepOrientation,
+    BrepType,
+)
 from .brep.edge import BrepEdge
 from .brep.loop import BrepLoop
 from .brep.face import BrepFace
 from .brep.vertex import BrepVertex
-from .brep.trim import BrepTrim
-from .brep.trim import BrepTrimIsoStatus
+from .brep.trim import BrepTrim, BrepTrimIsoStatus
 
 
 __all__ = [
@@ -458,8 +483,6 @@ __all__ = [
     "angles_points",
     "angles_points_xy",
     "angles_vectors",
-    "angles_vectors",
-    "angles_vectors_xy",
     "angles_vectors_xy",
     "archimedean_spiral_evaluate",
     "area_polygon",
@@ -575,8 +598,6 @@ __all__ = [
     "is_colinear_line_line",
     "is_colinear_xy",
     "is_coplanar",
-    "is_intersection_line_line_xy",
-    "is_intersection_segment_segment_xy",
     "is_matrix_square",
     "is_parallel_line_line",
     "is_point_behind_plane",

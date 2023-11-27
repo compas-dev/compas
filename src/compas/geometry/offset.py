@@ -56,13 +56,13 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
 
     Parameters
     ----------
-    line : [point, point] | :class:`~compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         A line defined by two points.
     distances : float or list[float]
         The offset distance as float.
         A single value determines a constant offset.
         A list of two offset values can be used to a create variable offset at the start and end.
-    normal : [float, float, float] | :class:`~compas.geometry.Vector`, optional
+    normal : [float, float, float] | :class:`compas.geometry.Vector`, optional
         The normal of the offset plane.
 
     Returns
@@ -70,15 +70,16 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
     tuple[[float, float, float], [float, float, float]]
         Two points defining the offset line.
 
+    See Also
+    --------
+    offset_polyline
+    offset_polygon
+
     Notes
     -----
     The offset direction is chosen such that if the line were along the positve
     X axis and the normal of the offset plane is along the positive Z axis, the
     offset line is in the direction of the postive Y axis.
-
-    Examples
-    --------
-    >>>
 
     """
 
@@ -102,7 +103,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
 
     Parameters
     ----------
-    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         The XYZ coordinates of the corners of the polygon.
         The first and last coordinates must not be identical.
     distance : float | list[tuple[float, float]]
@@ -117,6 +118,11 @@ def offset_polygon(polygon, distance, tol=1e-6):
     list[[float, float, float]]
         The XYZ coordinates of the corners of the offset polygon.
         The first and last coordinates are identical.
+
+    See Also
+    --------
+    offset_polyline
+    offset_line
 
     Notes
     -----
@@ -158,13 +164,13 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
 
     Parameters
     ----------
-    polyline : sequence[point] | :class:`~compas.geometry.Polyline`
+    polyline : sequence[point] | :class:`compas.geometry.Polyline`
         The XYZ coordinates of the vertices of a polyline.
     distance : float | list[tuple[float, float]]
         The offset distance as float.
         A single value determines a constant offset globally.
         Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
-    normal : [float, float, float] | :class:`~compas.geometry.Vector`, optional
+    normal : [float, float, float] | :class:`compas.geometry.Vector`, optional
         The normal of the offset plane.
     tol : float, optional
         A tolerance value for intersection calculations.
@@ -174,16 +180,17 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
     list[[float, float, float]]
         The XYZ coordinates of the resulting polyline.
 
+    See Also
+    --------
+    offset_polygon
+    offset_line
+
     Notes
     -----
     The offset direction is determined by the provided normal vector.
     If the polyline is in the XY plane and the normal is along the positive Z axis,
     positive offset distances will result in counterclockwise offsets,
     and negative values in clockwise direction.
-
-    Examples
-    --------
-    >>>
 
     """
 

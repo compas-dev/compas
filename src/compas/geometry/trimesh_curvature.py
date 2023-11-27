@@ -11,7 +11,7 @@ def trimesh_gaussian_curvature(M):
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
@@ -33,7 +33,7 @@ def trimesh_principal_curvature(M):
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
@@ -55,7 +55,7 @@ def trimesh_mean_curvature(M):
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns

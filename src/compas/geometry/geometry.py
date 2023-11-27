@@ -30,12 +30,19 @@ class Geometry(Data):
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the geometry.
 
         Returns
         -------
         None
+
+        See Also
+        --------
+        transformed
+        translate
+        rotate
+        scale
 
         """
         raise NotImplementedError
@@ -45,13 +52,20 @@ class Geometry(Data):
 
         Parameters
         ----------
-        transformation : :class:`~compas.geometry.Transformation`
+        transformation : :class:`compas.geometry.Transformation`
             The transformation used to transform the geometry.
 
         Returns
         -------
         :class:`Geometry`
             The transformed geometry.
+
+        See Also
+        --------
+        transform
+        translated
+        rotated
+        scaled
 
         """
         geometry = self.copy()  # type: Geometry
@@ -75,6 +89,13 @@ class Geometry(Data):
         Returns
         -------
         None
+
+        See Also
+        --------
+        scaled
+        translate
+        rotate
+        transform
 
         """
         from compas.geometry import Scale
@@ -106,6 +127,13 @@ class Geometry(Data):
         :class:`Geometry`
             The scaled geometry.
 
+        See Also
+        --------
+        scale
+        translated
+        rotated
+        transformed
+
         """
         from compas.geometry import Scale
 
@@ -129,6 +157,13 @@ class Geometry(Data):
         -------
         None
 
+        See Also
+        --------
+        translated
+        rotate
+        scale
+        transform
+
         """
         from compas.geometry import Translation
 
@@ -146,6 +181,13 @@ class Geometry(Data):
         -------
         :class:`Geometry`
             The translated geometry.
+
+        See Also
+        --------
+        translate
+        rotated
+        scaled
+        transformed
 
         """
         from compas.geometry import Translation
@@ -169,6 +211,13 @@ class Geometry(Data):
         Returns
         -------
         None
+
+        See Also
+        --------
+        rotated
+        translate
+        scale
+        transform
 
         """
         from compas.geometry import Rotation
@@ -196,6 +245,13 @@ class Geometry(Data):
         -------
         :class:`Geometry`
             The rotated geometry.
+
+        See Also
+        --------
+        rotate
+        translated
+        scaled
+        transformed
 
         """
         from compas.geometry import Rotation

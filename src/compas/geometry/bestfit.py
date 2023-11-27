@@ -40,10 +40,6 @@ def bestfit_plane(points):
     .. [ernerfeldt2015] Ernerfeldt, E. *Fitting a plane to many points in 3D*.
                         Available at: http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
 
-    Examples
-    --------
-    >>>
-
     """
     centroid = centroid_points(points)
 

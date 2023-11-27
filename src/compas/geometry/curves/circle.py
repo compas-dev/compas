@@ -27,17 +27,17 @@ class Circle(Conic):
     ----------
     radius : float
         The radius of the circle.
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The coordinate frame of the circle.
         The default value is ``None``, in which case the world coordinate system is used.
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
         The coordinate frame of the circle.
     transformation : :class:`Transformation`, read-only
         The transformation from the local coordinate system of the circle (:attr:`frame`) to the world coordinate system.
-    center : :class:`~compas.geometry.Point`
+    center : :class:`compas.geometry.Point`
         The center of the circle.
     radius : float
         The radius of the circle.
@@ -184,14 +184,14 @@ class Circle(Conic):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The center of the circle.
         radius : float
             The radius of the circle.
 
         Returns
         -------
-        :class:`~compas.geometry.Circle`
+        :class:`compas.geometry.Circle`
             The constructed circle.
 
         See Also
@@ -208,14 +208,14 @@ class Circle(Conic):
 
         Parameters
         ----------
-        plane : :class:`~compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane`
             The plane of the circle.
         radius : float
             The radius of the circle.
 
         Returns
         -------
-        :class:`~compas.geometry.Circle`
+        :class:`compas.geometry.Circle`
             The constructed circle.
 
         See Also
@@ -239,16 +239,16 @@ class Circle(Conic):
 
         Parameters
         ----------
-        a : :class:`~compas.geometry.Point`
+        a : :class:`compas.geometry.Point`
             The first point.
-        b : :class:`~compas.geometry.Point`
+        b : :class:`compas.geometry.Point`
             The second point.
-        c : :class:`~compas.geometry.Point`
+        c : :class:`compas.geometry.Point`
             The third point.
 
         Returns
         -------
-        :class:`~compas.geometry.Circle`
+        :class:`compas.geometry.Circle`
             The constructed circle.
 
         See Also
@@ -269,12 +269,12 @@ class Circle(Conic):
 
         Parameters
         ----------
-        points : list of :class:`~compas.geometry.Point`
+        points : list of :class:`compas.geometry.Point`
             A list of three points defining the circle.
 
         Returns
         -------
-        :class:`~compas.geometry.Circle`
+        :class:`compas.geometry.Circle`
             The constructed circle.
 
         Raises
@@ -324,7 +324,7 @@ class Circle(Conic):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The point on the circle at the specified parameter.
 
         See Also
@@ -358,7 +358,7 @@ class Circle(Conic):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The normal on the circle at the specified parameter.
 
         See Also
@@ -391,7 +391,7 @@ class Circle(Conic):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The tangent on the circle at the specified parameter.
 
         See Also
@@ -417,14 +417,14 @@ class Circle(Conic):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             A point.
         return_parameter : bool, optional
             Return the parameter of the closest point as well.
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The closest point on the circle.
 
         Notes
@@ -449,7 +449,7 @@ class Circle(Conic):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The point.
         tol : float, optional
             The tolerance for the verification.

@@ -23,9 +23,11 @@ def quadmesh_planarize(M, kmax=500, maxdev=0.005):
     list
         The coordinates of the new vertices.
 
-    Examples
-    --------
-    >>>
-
     """
     raise NotImplementedError
+
+
+quadmesh_planarize.__pluggable__ = True
+quadmesh_planarize.__plugins__ = {
+    "libigl": "compas_libigl.planarize.quadmesh_planarize",
+}

@@ -24,13 +24,13 @@ class BrepEdge(Data):
         Returns True if this edge is of another shape, False otherwise.
     is_valid : bool, read-only
         Returns True if this edge is valid, False otherwise.
-    vertices : list[:class:`~compas.geometry.BrepVertex`], read-only
+    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
         Gets the list of vertices which compound this edge.
-    first_vertex : :class:`~compas.geometry.BrepVertex`
+    first_vertex : :class:`compas.geometry.BrepVertex`
         Returns the first vertex of this edge.
-    last_vertex : :class:`~compas.geometry.BrepVertex`
+    last_vertex : :class:`compas.geometry.BrepVertex`
         Returns the last vertex of this edge.
-    curve : :class:`~compas.geometry.Curve`
+    curve : :class:`compas.geometry.Curve`
         Returns the curve geometry of this edge.
 
     """
@@ -101,11 +101,11 @@ class BrepEdge(Data):
 
         Parameters
         ----------
-        vertices : list[:class:`~compas.geometry.BrepVertex`]
+        vertices : list[:class:`compas.geometry.BrepVertex`]
 
         Returns
         -------
-        :class:`~compas.geometry.BrepVertex`
+        :class:`compas.geometry.BrepVertex`
 
         """
         raise NotImplementedError
@@ -116,11 +116,11 @@ class BrepEdge(Data):
 
         Parameters
         ----------
-        points : list[:class:`~compas.geometry.Point`]
+        points : list[:class:`compas.geometry.Point`]
 
         Returns
         -------
-        :class:`~compas.geometry.BrepVertex`
+        :class:`compas.geometry.BrepVertex`
 
         """
         raise NotImplementedError
@@ -131,11 +131,11 @@ class BrepEdge(Data):
 
         Parameters
         ----------
-        line : :class:`~compas.geometry.Line`
+        line : :class:`compas.geometry.Line`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepEdge`
+        :class:`compas.geometry.BrepEdge`
 
         """
         raise NotImplementedError
@@ -146,11 +146,11 @@ class BrepEdge(Data):
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepEdge`
+        :class:`compas.geometry.BrepEdge`
 
         """
         raise NotImplementedError
@@ -161,11 +161,11 @@ class BrepEdge(Data):
 
         Parameters
         ----------
-        ellipse : :class:`~compas.geometry.Ellipse`
+        ellipse : :class:`compas.geometry.Ellipse`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepEdge`
+        :class:`compas.geometry.BrepEdge`
 
         """
         raise NotImplementedError
@@ -176,11 +176,11 @@ class BrepEdge(Data):
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`compas.geometry.Curve`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepEdge`
+        :class:`compas.geometry.BrepEdge`
 
         """
         raise NotImplementedError
@@ -194,7 +194,7 @@ class BrepEdge(Data):
 
         Returns
         -------
-        :class:`~compas.geometry.Line`
+        :class:`compas.geometry.Line`
 
         """
         raise NotImplementedError
@@ -204,7 +204,7 @@ class BrepEdge(Data):
 
         Returns
         -------
-        :class:`~compas.geometry.Circle`
+        :class:`compas.geometry.Circle`
 
         """
         raise NotImplementedError
@@ -214,7 +214,7 @@ class BrepEdge(Data):
 
         Returns
         -------
-        :class:`~compas.geometry.Ellipse`
+        :class:`compas.geometry.Ellipse`
 
         """
         raise NotImplementedError
@@ -244,7 +244,7 @@ class BrepEdge(Data):
 
         Returns
         -------
-        :class:`~compas.geometry.Bezier`
+        :class:`compas.geometry.Bezier`
 
         """
         raise NotImplementedError
@@ -264,7 +264,7 @@ class BrepEdge(Data):
 
         Returns
         -------
-        :class:`~compas.geometry.Curve`
+        :class:`compas.geometry.Curve`
 
         """
         raise NotImplementedError

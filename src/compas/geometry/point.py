@@ -254,7 +254,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The other point.
 
         Returns
@@ -277,7 +277,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        line : [point, point] | :class:`~compas.geometry.Line`
+        line : [point, point] | :class:`compas.geometry.Line`
             The line.
 
         Returns
@@ -301,7 +301,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        plane : [point, vector] | :class:`~compas.geometry.Plane`
+        plane : [point, vector] | :class:`compas.geometry.Plane`
             The plane.
 
         Returns
@@ -337,7 +337,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+        polygon : sequence[point] | :class:`compas.geometry.Polygon`
             The polygon.
 
         Returns
@@ -374,7 +374,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+        polygon : sequence[point] | :class:`compas.geometry.Polygon`
             The polygon.
 
         Returns
@@ -407,7 +407,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        line : [point, point] | :class:`~compas.geometry.Line`
+        line : [point, point] | :class:`compas.geometry.Line`
             The line.
         tol : float, optional
             A tolerance value for the distance between the point and the line.
@@ -434,7 +434,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        segment : [point, point] | :class:`~compas.geometry.Line`
+        segment : [point, point] | :class:`compas.geometry.Line`
             The segment.
         tol : float, optional
             A tolerance value for the distance between the point and the segment.
@@ -461,7 +461,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polyline : sequence[point] | :class:`~compas.geometry.Polyline`
+        polyline : sequence[point] | :class:`compas.geometry.Polyline`
             The polyline.
 
         Returns
@@ -486,7 +486,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        plane : :class:`~compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane`
             The plane.
         tol : float, optional
             A tolerance value for the distance between the point and the plane.
@@ -514,7 +514,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
             The circle.
         tol : float, optional
             A tolerance value for the distance between the point and the circle.
@@ -535,7 +535,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`compas.geometry.Curve`
             The curve.
         tol : float, optional
             A tolerance value for the distance between the point and the curve.
@@ -554,7 +554,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
+        triangle : [point, point, point] | :class:`compas.geometry.Polygon`
             The triangle.
 
         Returns
@@ -579,7 +579,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
             The circle.
 
         Returns
@@ -610,7 +610,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polyhedron : [vertices, faces] | :class:`~compas.geometry.Polyhedron`
+        polyhedron : [vertices, faces] | :class:`compas.geometry.Polyhedron`
             The polyhedron.
 
         Returns
@@ -634,7 +634,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation matrix.
 
         Examples

@@ -22,6 +22,10 @@ def convex_hull(points):
         The triangular faces of the convex hull as lists of vertex indices
         referring to the original point coordinates.
 
+    See Also
+    --------
+    convex_hull_xy
+
     Notes
     -----
     This algorithm is based on [1]_. Note that is not optimized and relatively
@@ -34,10 +38,6 @@ def convex_hull(points):
            Available at: https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543
     .. [2] Thomas Diewald. *Convex Hull 3D - Quickhull Algorithm*.
            Available at: https://web.archive.org/web/20180106161310/http://thomasdiewald.com/blog/?p=1888
-
-    Examples
-    --------
-    >>>
 
     """
 
@@ -90,6 +90,10 @@ def convex_hull_xy(points, strict=False):
         XY(Z) coordinates of vertices of the convex hull in counter-clockwise order,
         starting from the vertex with the lexicographically smallest coordinates.
 
+    See Also
+    --------
+    convex_hull
+
     Notes
     -----
     Implements Andrew's monotone chain algorithm [1]_.
@@ -99,10 +103,6 @@ def convex_hull_xy(points, strict=False):
     ----------
     .. [1] Wiki Books. *Algorithm Implementation/Geometry/Convex hull/Monotone chain*.
            Available at: https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain.
-
-    Examples
-    --------
-    >>>
 
     """
 

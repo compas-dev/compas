@@ -20,37 +20,37 @@ class Sphere(Shape):
     ----------
     radius: float
         The radius of the sphere.
-    frame: :class:`~compas.geometry.Frame`, optional
+    frame: :class:`compas.geometry.Frame`, optional
         The local coordinates system, or "frame", of the sphere.
         Default is ``None``, in which case the sphere is constructed in world coordinates.
-    point: :class:`~compas.geometry.Point`, optional
+    point: :class:`compas.geometry.Point`, optional
         The center of the sphere.
         When provided, this point overwrites the location of the origin of the local coordinate system.
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
-        The coordinate system of the sphere.
-    transformation : :class:`~compas.geometry.Transformation`
-        The transformation of the sphere to global coordinates.
-    radius : float
-        The radius of the sphere.
-    axis : :class:`~compas.geometry.Line`, read-only
+    area : float, read-only
+        The surface area of the sphere.
+    axis : :class:`compas.geometry.Line`, read-only
         The central axis of the sphere.
-    base : :class:`~compas.geometry.Point`, read-only
+    base : :class:`compas.geometry.Point`, read-only
         The base point of the sphere.
         The base point is at the origin of the local coordinate system.
-    plane : :class:`~compas.geometry.Plane`, read-only
-        The plane of the sphere.
-        The base point of the plane is at the origin of the local coordinate system.
-        The normal of the plane is in the direction of the z-axis of the local coordinate system.
-    circle : :class:`~compas.geometry.Circle`, read-only
+    circle : :class:`compas.geometry.Circle`, read-only
         The base circle of the sphere.
         The center of the circle is at the origin of the local coordinate system.
     diameter : float, read-only
         The diameter of the sphere.
-    area : float, read-only
-        The surface area of the sphere.
+    frame : :class:`compas.geometry.Frame`
+        The coordinate system of the sphere.
+    plane : :class:`compas.geometry.Plane`, read-only
+        The plane of the sphere.
+        The base point of the plane is at the origin of the local coordinate system.
+        The normal of the plane is in the direction of the z-axis of the local coordinate system.
+    radius : float
+        The radius of the sphere.
+    transformation : :class:`compas.geometry.Transformation`
+        The transformation of the sphere to global coordinates.
     volume : float, read-only
         The volume of the sphere.
 
@@ -149,19 +149,19 @@ class Sphere(Shape):
     # ==========================================================================
 
     @classmethod
-    def from_point_and_radius(cls, point, radius):
+    def from_point_and_radius(cls, point, radius):  # type: (...) -> Sphere
         """Construct a sphere from a point and a radius.
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The center of the sphere.
         radius : float
             The radius of the sphere.
 
         Returns
         -------
-        :class:`~compas.geometry.Sphere`
+        :class:`compas.geometry.Sphere`
             The constructed sphere.
 
         """
@@ -277,7 +277,7 @@ class Sphere(Shape):
 
     #     Parameters
     #     ----------
-    #     transformation : :class:`~compas.geometry.Transformation`
+    #     transformation : :class:`compas.geometry.Transformation`
     #         The transformation used to transform the Sphere.
     #         Note that non-similarity preserving transformations will not change
     #         the sphere into an ellipsoid. In such case, the radius of the sphere
@@ -326,7 +326,7 @@ class Sphere(Shape):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The point to test.
         tol : float, optional
             The tolerance for the test.
@@ -345,7 +345,7 @@ class Sphere(Shape):
 
         Parameters
         ----------
-        points : list of :class:`~compas.geometry.Point`
+        points : list of :class:`compas.geometry.Point`
             The points to test.
         tol : float, optional
             The tolerance for the test.

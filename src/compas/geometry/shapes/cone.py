@@ -26,7 +26,7 @@ class Cone(Shape):
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the cone.
         Default is ``None``, in which case the world coordinate system is used.
     radius : float, optional
@@ -38,31 +38,31 @@ class Cone(Shape):
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
-        The local coordinate system of the cone.
-        The cone is oriented along the local z-axis.
-    transformation : :class:`~compas.geometry.Transformation`
-        The transformation of the cone to global coordinates.
-    radius : float
-        The radius of the base circle of the cone.
-    height : float
-        The height of the cone.
-    axis : :class:`~compas.geometry.Line`, read-only
+    area : float, read-only
+        The surface area of the cone.
+    axis : :class:`compas.geometry.Line`, read-only
         The central axis of the cone.
-    base : :class:`~compas.geometry.Point`, read-only
+    base : :class:`compas.geometry.Point`, read-only
         The base point of the cone.
         The base point is at the origin of the local coordinate system.
-    plane : :class:`~compas.geometry.Plane`, read-only
-        The plane of the cone.
-        The base point of the plane is at the origin of the local coordinate system.
-        The normal of the plane is in the direction of the z-axis of the local coordinate system.
-    circle : :class:`~compas.geometry.Circle`, read-only
+    circle : :class:`compas.geometry.Circle`, read-only
         The base circle of the cone.
         The center of the circle is at the origin of the local coordinate system.
     diameter : float, read-only
         The diameter of the base circle of the cone.
-    area : float, read-only
-        The surface area of the cone.
+    frame : :class:`compas.geometry.Frame`
+        The local coordinate system of the cone.
+        The cone is oriented along the local z-axis.
+    height : float
+        The height of the cone.
+    plane : :class:`compas.geometry.Plane`, read-only
+        The plane of the cone.
+        The base point of the plane is at the origin of the local coordinate system.
+        The normal of the plane is in the direction of the z-axis of the local coordinate system.
+    radius : float
+        The radius of the base circle of the cone.
+    transformation : :class:`compas.geometry.Transformation`
+        The transformation of the cone to global coordinates.
     volume : float, read-only
         The volume of the cone.
 
@@ -177,19 +177,19 @@ class Cone(Shape):
     # ==========================================================================
 
     @classmethod
-    def from_line_and_radius(cls, line, radius):
+    def from_line_and_radius(cls, line, radius):  # type: (...) -> Cone
         """Construct a cone from a line and a radius.
 
         Parameters
         ----------
-        line : :class:`~compas.geometry.Line`
+        line : :class:`compas.geometry.Line`
             The axis of the cone.
         radius : float
             The radius of the base circle of the cone.
 
         Returns
         -------
-        :class:`~compas.geometry.Cone`
+        :class:`compas.geometry.Cone`
             The cone.
 
         See Also
@@ -206,19 +206,19 @@ class Cone(Shape):
         return cls(frame=frame, radius=radius, height=line.length)
 
     @classmethod
-    def from_circle_and_height(cls, circle, height):
+    def from_circle_and_height(cls, circle, height):  # type: (...) -> Cone
         """Construct a cone from a circle and a height.
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
             The base circle of the cone.
         height : float
             The height of the cone.
 
         Returns
         -------
-        :class:`~compas.geometry.Cone`
+        :class:`compas.geometry.Cone`
             The cone.
 
         See Also

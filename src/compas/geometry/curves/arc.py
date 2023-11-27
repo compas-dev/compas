@@ -35,13 +35,13 @@ class Arc(Curve):
         The angle in radians of the start of this Arc.
     end_angle : float
         The angle in radians of the end of this Arc.
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         Local coordinate system of the arc.
         Defaults to the world XY plane.
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
         The coordinate frame of the arc.
     transformation : :class:`Transformation`, read-only
         The transformation from the local coordinate system of the arc (:attr:`frame`) to the world coordinate system.
@@ -51,9 +51,9 @@ class Arc(Curve):
         The start angle of the arc.
     end_angle : float
         The end angle of the arc.
-    circle : :class:`~compas.geometry.Circle`, read-only
+    circle : :class:`compas.geometry.Circle`, read-only
         The underlying circle.
-    plane : :class:`~compas.geometry.Plane`, read-only
+    plane : :class:`compas.geometry.Plane`, read-only
         The plane of the arc.
     diameter : float, read-only
         The diameter of the underlying circle.
@@ -272,7 +272,7 @@ class Arc(Curve):
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
             The frame and radius of this circle will be used to create an Arc.
         start_angle : float
             The start angle in radians.
@@ -281,7 +281,7 @@ class Arc(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Arc`
+        :class:`compas.geometry.Arc`
 
         """
         return cls(
@@ -358,7 +358,7 @@ class Arc(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
 
         Raises
         ------
@@ -399,7 +399,7 @@ class Arc(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The tangent on the circle at the specified parameter.
 
         Raises
