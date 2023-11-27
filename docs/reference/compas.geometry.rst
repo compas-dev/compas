@@ -7,9 +7,9 @@ compas.geometry
 
 .. rst-class:: lead
 
-
-This package provides a wide range of geometry objects and geometric algorithms
-independent from the geometry kernels of CAD software.
+This package defines all functionality for working with geometry in COMPAS.
+It provides classes representing geometric primitives, transformations, (NURBS) curves and surfaces,
+shapes, general polygons and polyhedrons, boundary representations (B-reps), and a number of geometry processing algorithms.
 
 
 Classes
@@ -93,8 +93,6 @@ Functions
     angles_points
     angles_points_xy
     angles_vectors
-    angles_vectors
-    angles_vectors_xy
     angles_vectors_xy
     archimedean_spiral_evaluate
     area_polygon
@@ -347,8 +345,10 @@ Functions
     world_to_local_coordinates
 
 
-Functions using NumPy
+Functions using Numpy
 =====================
+
+In environments where numpy is not available, these functions can still be accessed through RPC.
 
 .. autosummary::
     :toctree: generated/
@@ -382,6 +382,8 @@ Functions using NumPy
 Pluggables
 ==========
 
+Pluggables are functions that don't have an actual implementation, but receive an implementation from a plugin.
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -394,5 +396,6 @@ Pluggables
     boolean_union_mesh_mesh
     boolean_union_polygon_polygon
     quadmesh_planarize
+
 
 

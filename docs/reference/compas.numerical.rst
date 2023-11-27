@@ -7,10 +7,16 @@ compas.numerical
 
 .. rst-class:: lead
 
-None
+
+This package defines a number of numerical utilities.
+In future versions, this package will disappear,
+and its functionality will be integrated into the geometry and datastructure packages directly.
+
 
 Functions using Numpy
 =====================
+
+In environments where numpy is not available, these functions can still be accessed through RPC.
 
 .. autosummary::
     :toctree: generated/
@@ -44,11 +50,10 @@ Functions using Numpy
 Pluggables
 ==========
 
+Pluggables are functions that don't have an actual implementation, but receive an implementation from a plugin.
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     scalarfield_contours
-
-
-

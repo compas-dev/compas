@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-class DataArtistNotRegistered(Exception):
+class DataArtistNotRegisteredError(Exception):
     """Exception that is raised when no artist is registered for a given data type."""
 
 

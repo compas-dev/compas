@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas.files
 ********************************************************************************
@@ -6,8 +7,7 @@ compas.files
 
 .. rst-class:: lead
 
-This package provides classes for working with selected file formats that are capable
-of storing information about 2D and 3D geometry, robots, pointclouds, ...
+This package defines a number of file formats and provides functionality for reading and writing data in these formats.
 
 
 Classes
@@ -26,32 +26,14 @@ Classes
     XML
 
 
-Helper Classes
-==============
+Functions
+=========
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    GLTFContent
-    GLTFExporter
-    GLTFMesh
-    GLTFParser
-    GLTFReader
-    OBJParser
-    OBJReader
-    OBJWriter
-    OFFReader
-    OFFWriter
-    PLYParser
-    PLYReader
-    PLYWriter
-    STLParser
-    STLReader
-    STLWriter
-    URDFElement
-    URDFGenericElement
-    URDFParser
-    XMLElement
-    XMLReader
-    XMLWriter
+    prettify_string
+
+
+

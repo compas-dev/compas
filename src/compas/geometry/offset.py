@@ -12,7 +12,7 @@ from compas.geometry import intersection_line_line
 from compas.geometry import normal_polygon
 from compas.geometry import is_colinear
 
-from compas.data import is_item_iterable
+from compas.data.validators import is_item_iterable
 
 from compas.utilities import iterable_like
 from compas.utilities import pairwise

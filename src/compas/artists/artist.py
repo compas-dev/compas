@@ -7,7 +7,7 @@ from abc import abstractmethod
 from collections import defaultdict
 
 import compas
-from compas.artists.exceptions import DataArtistNotRegistered
+from compas.artists.exceptions import DataArtistNotRegisteredError
 from compas.artists.exceptions import NoArtistContextError
 from compas.plugins import PluginValidator
 from compas.plugins import pluggable
@@ -20,15 +20,24 @@ def clear():
     raise NotImplementedError
 
 
+clear.__pluggable__ = True
+
+
 @pluggable(category="drawing-utils")
 def redraw():
     raise NotImplementedError
+
+
+redraw.__pluggable__ = True
 
 
 @pluggable(category="factories", selector="collect_all")
 def register_artists():
     """Registers artists available in the current context."""
     raise NotImplementedError
+
+
+register_artists.__pluggable__ = True
 
 
 def is_viewer_open():
@@ -95,7 +104,7 @@ def _get_artist_cls(data, **kwargs):
                 break
 
     if cls is None:
-        raise DataArtistNotRegistered(
+        raise DataArtistNotRegisteredError(
             "No artist is registered for this data type: {} in this context: {}".format(dtype, context_name)
         )
 

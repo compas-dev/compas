@@ -1,3 +1,8 @@
+"""
+This package defines a number of numerical utilities.
+In future versions, this package will disappear,
+and its functionality will be integrated into the geometry and datastructure packages directly.
+"""
 from __future__ import absolute_import
 
 import compas
