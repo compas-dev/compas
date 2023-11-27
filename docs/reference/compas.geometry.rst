@@ -109,13 +109,6 @@ Functions
     barycentric_coordinates
     basis_vectors_from_matrix
     bestfit_plane
-    boolean_difference_mesh_mesh
-    boolean_difference_polygon_polygon
-    boolean_intersection_mesh_mesh
-    boolean_intersection_polygon_polygon
-    boolean_symmetric_difference_polygon_polygon
-    boolean_union_mesh_mesh
-    boolean_union_polygon_polygon
     bounding_box
     bounding_box_xy
     centroid_points
@@ -210,8 +203,6 @@ Functions
     is_colinear_line_line
     is_colinear_xy
     is_coplanar
-    is_intersection_line_line_xy
-    is_intersection_segment_segment_xy
     is_matrix_square
     is_parallel_line_line
     is_point_behind_plane
@@ -299,7 +290,6 @@ Functions
     project_points_line
     project_points_line_xy
     project_points_plane
-    quadmesh_planarize
     quaternion_canonize
     quaternion_conjugate
     quaternion_from_axis_angle
@@ -396,5 +386,13 @@ Pluggables
     :toctree: generated/
     :nosignatures:
 
+    boolean_difference_mesh_mesh
+    boolean_difference_polygon_polygon
+    boolean_intersection_mesh_mesh
+    boolean_intersection_polygon_polygon
+    boolean_symmetric_difference_polygon_polygon
+    boolean_union_mesh_mesh
+    boolean_union_polygon_polygon
+    quadmesh_planarize
 
 

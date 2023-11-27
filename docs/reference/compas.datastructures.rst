@@ -15,19 +15,16 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    Datastructure
+    Assembly
     CellNetwork
+    Datastructure
     Graph
     HalfEdge
     HalfFace
     Mesh
     Network
+    Tree
     VolMesh
-    Assembly
-    Part
-    Feature
-    GeometricFeature
-    ParametricFeature
 
 
 Exceptions

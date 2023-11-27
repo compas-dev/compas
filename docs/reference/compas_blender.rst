@@ -1,23 +1,14 @@
-********************************************************************************
 compas_blender
-********************************************************************************
-
-.. currentmodule:: compas_blender
-
-.. rst-class:: lead
+==============
 
 This package provides functionality for reading and writing Blender geometry, for visualising
 COMPAS geometry and data structures in Blender, and for basic user inter interaction.
 
-Modules
-=======
-
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
     :titlesonly:
+    :caption: compas_blender
 
     compas_blender.artists
     compas_blender.conversions
     compas_blender.geometry
-
-

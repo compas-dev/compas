@@ -1,9 +1,9 @@
 
 ********************************************************************************
-compas_blender.geometry
+compas_ghpython.components
 ********************************************************************************
 
-.. currentmodule:: compas_blender.geometry
+.. currentmodule:: compas_ghpython.components
 
 .. rst-class:: lead
 
@@ -12,24 +12,15 @@ This package provides a wide range of geometry objects and geometric algorithms
 independent from the geometry kernels of CAD software.
 
 
-Classes
-=======
+Functions
+=========
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    BlenderCurve
-    BlenderNurbsCurve
+    install_userobjects
+    uninstall_userobjects
 
 
-Plugins
-=======
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    boolean_difference_mesh_mesh
-    boolean_intersection_mesh_mesh
-    boolean_union_mesh_mesh

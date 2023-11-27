@@ -1,8 +1,14 @@
+
 ********************************************************************************
 compas_rhino.artists
 ********************************************************************************
 
 .. currentmodule:: compas_rhino.artists
+
+.. rst-class:: lead
+
+
+This package defines the artist plugins for visualising COMPAS objects in Rhino.
 
 
 Classes
@@ -29,6 +35,7 @@ Classes
     PolygonArtist
     PolyhedronArtist
     PolylineArtist
+    RhinoArtist
     SphereArtist
     SurfaceArtist
     TorusArtist
@@ -36,11 +43,4 @@ Classes
     VolMeshArtist
 
 
-Base Classes
-============
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    RhinoArtist

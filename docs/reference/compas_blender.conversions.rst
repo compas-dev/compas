@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas_blender.conversions
 ********************************************************************************
@@ -6,7 +7,10 @@ compas_blender.conversions
 
 .. rst-class:: lead
 
-This package provides classes for converting between COMPAS geometry and Blender geometry.
+
+This package provides a wide range of geometry objects and geometric algorithms
+independent from the geometry kernels of CAD software.
+
 
 
 Functions
@@ -23,6 +27,7 @@ Functions
     line_to_blender_curve
     mesh_to_blender
     mesh_to_compas
+    meshobj_to_compas
     monkey_to_compas
     nurbscurve_to_blender_curve
     nurbssurface_to_blender_surface
@@ -33,3 +38,6 @@ Functions
     transformation_to_blender
     transformation_to_compas
     vertices_and_faces_to_blender_mesh
+
+
+
