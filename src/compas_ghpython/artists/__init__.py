@@ -1,3 +1,7 @@
+"""
+This package provides artist plugins for visualising COMPAS objects in Grasshopper.
+When working in GH Python components, :class:`compas.artists.Artist` will automatically use the corresponding GHPython artist for each COMPAS object type.
+"""
 from __future__ import absolute_import
 
 from compas.plugins import plugin

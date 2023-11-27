@@ -1,5 +1,5 @@
 """
-This package defines various geometry plugin implementations using Rhino as a backend.
+This package provides plugins for various geometry pluggables using Rhino as the backend.
 """
 from __future__ import absolute_import
 
