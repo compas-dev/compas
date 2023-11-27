@@ -1,5 +1,5 @@
 import compas
-from compas import geometry
+from compas_blender import conversions as module
 
 functions = []
 classes = []
@@ -7,14 +7,16 @@ errors = []
 numpy = []
 
 __newall__ = {
-    "functions": [],
     "classes": [],
     "errors": [],
+    "functions": [],
     "numpy": [],
+    "pluggables": [],
+    "plugins": [],
 }
 
-for name in geometry.__all__:
-    obj = getattr(geometry, name)
+for name in module.__all__:
+    obj = getattr(module, name)
 
     if name.endswith("_numpy"):
         numpy.append(name)
@@ -35,4 +37,4 @@ for name in sorted(numpy):
     __newall__["numpy"].append(name)
 
 
-compas.json_dump(__newall__, "docs/geometry__all__.json", pretty=True)
+compas.json_dump(__newall__, f"docs/{module.__name__}__all__.json", pretty=True)

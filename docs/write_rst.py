@@ -1,5 +1,5 @@
-from pathlib import Path
-from compas import geometry
+# from pathlib import Path
+from compas import numerical as module
 
 TPL = """
 ********************************************************************************
@@ -11,43 +11,19 @@ TPL = """
 .. rst-class:: lead
 
 {lead}
+{sections}
 
-Classes
-=======
+"""
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-{classes}
-
-Functions
-=========
+SECTION = """
+{title}
+{line}
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-{functions}
-
-Functions using NumPy
-=====================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-{numpy}
-
-Pluggables
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-{pluggables}
-
+{items}
 """
 
 __newall__ = {
@@ -55,13 +31,23 @@ __newall__ = {
     "classes": [],
     "errors": [],
     "numpy": [],
+    "pluggables": [],
+    "plugins": [],
 }
 
-for name in geometry.__all__:
-    obj = getattr(geometry, name)
+for name in module.__all__:
+    obj = getattr(module, name)
 
     if name.endswith("_numpy"):
         __newall__["numpy"].append(name)
+        continue
+
+    if hasattr(obj, "__pluggable__"):
+        __newall__["pluggables"].append(name)
+        continue
+
+    if hasattr(obj, "__plugin__"):
+        __newall__["plugins"].append(name)
         continue
 
     if isinstance(obj, type):
@@ -70,49 +56,74 @@ for name in geometry.__all__:
         __newall__["functions"].append(name)
 
 
-currentmodule = "compas.geometry"
+currentmodule = module.__name__
 
-lead = """
-This package provides a wide range of geometry objects and geometric algorithms
-independent from the geometry kernels of CAD software.
-"""
+lead = module.__doc__
 
 classes = ""
 for name in sorted(__newall__["classes"]):
-    classes += f"    {name}\n"
+    classes += "    {name}\n".format(name=name)
+
+if classes:
+    classes = SECTION.format(
+        title="Classes",
+        line="=" * len("Classes"),
+        items=classes,
+    )
 
 functions = ""
 for name in sorted(__newall__["functions"]):
-    functions += f"    {name}\n"
+    functions += "    {name}\n".format(name=name)
+
+if functions:
+    functions = SECTION.format(
+        title="Functions",
+        line="=" * len("Functions"),
+        items=functions,
+    )
 
 numpy = ""
 for name in sorted(__newall__["numpy"]):
-    numpy += f"    {name}\n"
+    numpy += "    {name}\n".format(name=name)
+
+if numpy:
+    numpy = SECTION.format(
+        title="Numpy",
+        line="=" * len("Numpy"),
+        items=numpy,
+    )
 
 pluggables = ""
-# for name in sorted(__newall__["pluggables"]):
-#     pluggables += f"    {name}\n"
+for name in sorted(__newall__["pluggables"]):
+    pluggables += "    {name}\n".format(name=name)
 
-# print(
-#     TPL.format(
-#         currentmodule=currentmodule,
-#         lead=lead,
-#         classes=classes,
-#         functions=functions,
-#         numpy="",
-#     )
-# )
+if pluggables:
+    pluggables = SECTION.format(
+        title="Pluggables",
+        line="=" * len("Pluggables"),
+        items=pluggables,
+    )
 
-docs = Path(__file__).parent
+plugins = ""
+for name in sorted(__newall__["plugins"]):
+    plugins += "    {name}\n".format(name=name)
 
-with open(docs / "reference/compas.geometry.rst", "w") as f:
+if plugins:
+    plugins = SECTION.format(
+        title="Plugins",
+        line="=" * len("Plugins"),
+        items=plugins,
+    )
+
+sections = "".join([classes, functions, numpy, pluggables, plugins])
+
+# docs = Path(__file__).parent
+
+with open("/Users/vanmelet/Code/compas/docs/reference/{name}.rst".format(name=module.__name__), "w") as f:
     f.write(
         TPL.format(
             currentmodule=currentmodule,
             lead=lead,
-            classes=classes,
-            functions=functions,
-            numpy=numpy,
-            pluggables=pluggables,
+            sections=sections,
         )
     )
