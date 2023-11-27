@@ -7,7 +7,7 @@ from abc import abstractmethod
 from collections import defaultdict
 
 import compas
-from compas.scene.exceptions import SceneObjectNotRegistered
+from compas.scene.exceptions import SceneObjectNotRegisteredError
 from compas.scene.exceptions import NoSceneObjectContextError
 from compas.plugins import PluginValidator
 from compas.plugins import pluggable
@@ -20,15 +20,25 @@ def clear():
     raise NotImplementedError
 
 
+clear.__pluggable__ = True
+
+
 @pluggable(category="drawing-utils")
 def redraw():
     raise NotImplementedError
+
+
+redraw.__pluggable__ = True
 
 
 @pluggable(category="factories", selector="collect_all")
 def register_sceneobjects():
     """Registers sceneobjects available in the current context."""
     raise NotImplementedError
+
+
+register_sceneobjects.__pluggable__ = True
+
 
 
 def is_viewer_open():
@@ -95,7 +105,7 @@ def _get_sceneobject_cls(data, **kwargs):
                 break
 
     if cls is None:
-        raise SceneObjectNotRegistered(
+        raise SceneObjectNotRegisteredError(
             "No sceneobject is registered for this data type: {} in this context: {}".format(dtype, context_name)
         )
 

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-class SceneObjectNotRegistered(Exception):
+class SceneObjectNotRegisteredError(Exception):
     """Exception that is raised when no artist is registered for a given data type."""
 
 
