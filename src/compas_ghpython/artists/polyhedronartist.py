@@ -15,7 +15,7 @@ class PolyhedronArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    polyhedron : :class:`~compas.geometry.Polyhedron`
+    polyhedron : :class:`compas.geometry.Polyhedron`
         A COMPAS polyhedron.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -30,7 +30,7 @@ class PolyhedronArtist(GHArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the line.
 
         Returns

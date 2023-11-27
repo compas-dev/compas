@@ -14,7 +14,7 @@ class VolMeshArtist(GHArtist, BaseArtist):
 
     Parameters
     ----------
-    volmesh : :class:`~compas.datastructures.VolMesh`
+    volmesh : :class:`compas.datastructures.VolMesh`
         A COMPAS volmesh.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class VolMeshArtist(GHArtist, BaseArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
             The default color is :attr:`VolMeshArtist.default_cellcolor`.
 
@@ -95,7 +95,7 @@ class VolMeshArtist(GHArtist, BaseArtist):
         faces : list[list[int]], optional
             A list of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color specification for the faces.
             The default color is :attr:`VolMeshArtist.default_facecolor`.
 
@@ -127,7 +127,7 @@ class VolMeshArtist(GHArtist, BaseArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
 
         Returns

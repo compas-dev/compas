@@ -115,8 +115,36 @@ class Artist(object):
 
     Attributes
     ----------
-    ITEM_ARTIST : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.artists.Artist`]]]
+    ITEM_ARTIST : dict[str, dict[Type[:class:`compas.data.Data`], Type[:class:`compas.artists.Artist`]]]
         Dictionary mapping data types to the corresponding artists types per visualization context.
+
+    See Also
+    --------
+    :class:`compas.artists.GeometryArtist`
+    :class:`compas.artists.MeshArtist`
+    :class:`compas.artists.NetworkArtist`
+    :class:`compas.artists.VolMeshArtist`
+
+    Examples
+    --------
+    >>> from compas.artists import Artist
+    >>> from compas.geometry import Point
+    >>> point = Point(1, 2, 3)
+    >>> artist = Artist(point)
+    >>> artist.draw()
+
+    >>> from compas.artists import Artist
+    >>> from compas.geometry import Box
+    >>> box = Box(1)
+    >>> artist = Artist(box)
+    >>> artist.draw()
+
+    >>> from compas.artists import Artist
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj(compas.get('tubemesh.obj'))
+    >>> artist = Artist(mesh)
+    >>> artist.draw()
+
 
     """
 
@@ -173,7 +201,7 @@ class Artist(object):
 
         Returns
         -------
-        :class:`~compas.artists.Artist`
+        :class:`compas.artists.Artist`
             An artist of the type matching the provided item according to the item-artist map :attr:`~Artist.ITEM_ARTIST`.
             The map is created by registering item-artist type pairs using :meth:`~Artist.register`.
 
@@ -188,14 +216,14 @@ class Artist(object):
 
         Parameters
         ----------
-        artist_type : :class:`~compas.artists.Artist`
+        artist_type : :class:`compas.artists.Artist`
         **kwargs : dict[str, Any], optional
             The keyword arguments (kwargs) collected in a dict.
             For relevant options, see the parameter lists of the matching artist type.
 
         Returns
         -------
-        :class:`~compas.artists.Artist`
+        :class:`compas.artists.Artist`
             An artist of the given type.
 
         """
@@ -242,9 +270,9 @@ class Artist(object):
 
         Parameters
         ----------
-        item_type : :class:`~compas.data.Data`
+        item_type : :class:`compas.data.Data`
             The type of data item.
-        artist_type : :class:`~compas.artists.Artist`
+        artist_type : :class:`compas.artists.Artist`
             The type of the corresponding/compatible artist.
         context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
             The visualization context in which the pair should be registered.

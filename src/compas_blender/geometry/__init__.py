@@ -1,27 +1,15 @@
-"""
-********************************************************************************
-geometry
-********************************************************************************
+from .curves.curve import BlenderCurve
+from .curves.nurbs import BlenderNurbsCurve
 
-.. currentmodule:: compas_blender.geometry
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+from .booleans import boolean_difference_mesh_mesh
+from .booleans import boolean_intersection_mesh_mesh
+from .booleans import boolean_union_mesh_mesh
 
 
-Plugins
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    booleans.boolean_difference_mesh_mesh
-    booleans.boolean_intersection_mesh_mesh
-    booleans.boolean_union_mesh_mesh
-
-"""
+__all__ = [
+    "BlenderCurve",
+    "BlenderNurbsCurve",
+    "boolean_difference_mesh_mesh",
+    "boolean_intersection_mesh_mesh",
+    "boolean_union_mesh_mesh",
+]

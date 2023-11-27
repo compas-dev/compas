@@ -22,7 +22,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
 
     Parameters
     ----------
-    volmesh : :class:`~compas.datastructures.VolMesh`
+    volmesh : :class:`compas.datastructures.VolMesh`
         A COMPAS volmesh.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -136,7 +136,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
             The default color is :attr:`VolMeshArtist.default_cellcolor`.
 
@@ -157,7 +157,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         vertices : list[int], optional
             A list of vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the vertices.
         group : str, optional
             The name of the group in which the vertices are combined.
@@ -192,7 +192,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the edges.
         group : str, optional
             The name of the group in which the edges are combined.
@@ -230,7 +230,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         faces : list[int], optional
             A list of faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the faces.
         group : str, optional
             The name of the group in which the faces are combined.
@@ -270,7 +270,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
         group : str, optional
             The name of the group in which the cells are combined.
@@ -313,7 +313,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         ----------
         text : dict[int, str]
             A dictionary of vertex labels as vertex-text pairs.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the vertices.
         group : str, optional
             The name of the group in which the labels are combined.
@@ -358,7 +358,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         ----------
         text : dict[tuple[int, int], str], optional
             A dictionary of edge labels as edge-text pairs.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the edges.
         group : str, optional
             The name of the group in which the labels are combined.
@@ -404,7 +404,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         ----------
         text : dict[int, str]
             A dictionary of face labels as face-text pairs.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the faces.
         group : str, optional
             The name of the group in which the labels are combined.
@@ -450,7 +450,7 @@ class VolMeshArtist(RhinoArtist, BaseArtist):
         ----------
         text : dict[int, str], optional
             A dictionary of face labels as cell-text pairs.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
         group : str, optional
             The name of the group in which the labels are combined.

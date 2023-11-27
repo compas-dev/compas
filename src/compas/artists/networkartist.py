@@ -15,19 +15,19 @@ class NetworkArtist(Artist):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A COMPAS network.
 
     Attributes
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         The COMPAS network associated with the artist.
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.
-    node_color : :class:`~compas.colors.ColorDict`
+    node_color : :class:`compas.colors.ColorDict`
         Mapping between nodes and RGB color values.
-    edge_color : :class:`~compas.colors.ColorDict`
+    edge_color : :class:`compas.colors.ColorDict`
         Mapping between edges and colors.
 
     See Also
@@ -87,7 +87,7 @@ class NetworkArtist(Artist):
         nodes : list[int], optional
             The nodes to include in the drawing.
             Default is all nodes.
-        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`~compas.colors.Color`], optional
+        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`compas.colors.Color`], optional
             The color of the nodes,
             as either a single color to be applied to all nodes,
             or a color dict, mapping specific nodes to specific colors.
@@ -112,7 +112,7 @@ class NetworkArtist(Artist):
         edges : list[tuple[int, int]], optional
             The edges to include in the drawing.
             Default is all edges.
-        color : tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`~compas.colors.Color`], optional
+        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`compas.colors.Color`], optional
             The color of the edges,
             as either a single color to be applied to all edges,
             or a color dict, mapping specific edges to specific colors.

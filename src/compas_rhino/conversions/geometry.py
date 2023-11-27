@@ -23,7 +23,7 @@ def point_to_rhino(point):
 
     Parameters
     ----------
-    point : :class:`~compas.geometry.Point`
+    point : :class:`compas.geometry.Point`
 
     Returns
     -------
@@ -38,7 +38,7 @@ def vector_to_rhino(vector):
 
     Parameters
     ----------
-    vector : :class:`~compas.geometry.Vector`
+    vector : :class:`compas.geometry.Vector`
 
     Returns
     -------
@@ -53,7 +53,7 @@ def plane_to_rhino(plane):
 
     Parameters
     ----------
-    plane : :class:`~compas.geometry.Plane`
+    plane : :class:`compas.geometry.Plane`
 
     Returns
     -------
@@ -68,7 +68,7 @@ def frame_to_rhino_plane(frame):
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
 
     Returns
     -------
@@ -83,7 +83,7 @@ def frame_to_rhino(frame):
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
 
     Returns
     -------
@@ -98,7 +98,7 @@ def polygon_to_rhino(polygon):
 
     Parameters
     ----------
-    polygon : :class:`~compas.geometry.Polygon`
+    polygon : :class:`compas.geometry.Polygon`
 
     Returns
     -------
@@ -122,7 +122,7 @@ def point_to_compas(point):
 
     Returns
     -------
-    :class:`~compas.geometry.Point`
+    :class:`compas.geometry.Point`
 
     """
     return Point(point.X, point.Y, point.Z)
@@ -137,7 +137,7 @@ def vector_to_compas(vector):
 
     Returns
     -------
-    :class:`~compas.geometry.Vector`
+    :class:`compas.geometry.Vector`
 
     """
     return Vector(vector.X, vector.Y, vector.Z)
@@ -152,7 +152,7 @@ def plane_to_compas(plane):
 
     Returns
     -------
-    :class:`~compas.geometry.Plane`
+    :class:`compas.geometry.Plane`
 
     """
     return Plane(point_to_compas(plane.Origin), vector_to_compas(plane.Normal))
@@ -167,7 +167,7 @@ def plane_to_compas_frame(plane):
 
     Returns
     -------
-    :class:`~compas.geometry.Frame`
+    :class:`compas.geometry.Frame`
 
     """
     return Frame(
@@ -186,7 +186,7 @@ def polygon_to_compas(polygon):
 
     Returns
     -------
-    :class:`~compas.geometry.Polygon`
+    :class:`compas.geometry.Polygon`
 
     """
     return Polygon([point_to_compas(point) for point in polygon])

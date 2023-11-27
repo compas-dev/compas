@@ -106,7 +106,7 @@ def json_dumps(data, pretty=False, compact=False, minimal=False):  # type: (...)
     return json.dumps(data, cls=DataEncoder, **kwargs)
 
 
-def json_load(fp):  # type: (...) -> Data
+def json_load(fp):  # type: (...) -> dict
     """Read COMPAS object data from a JSON file.
 
     Parameters
@@ -140,7 +140,7 @@ def json_load(fp):  # type: (...) -> Data
         return json.load(f, cls=DataDecoder)
 
 
-def json_loads(s):  # type: (...) -> Data
+def json_loads(s):  # type: (...) -> dict
     """Read COMPAS object data from a JSON string.
 
     Parameters

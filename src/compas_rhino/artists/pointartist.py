@@ -16,7 +16,7 @@ class PointArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    point : :class:`~compas.geometry.Point`
+    point : :class:`compas.geometry.Point`
         A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -31,7 +31,7 @@ class PointArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the point.
 
         Returns

@@ -72,7 +72,7 @@ class ColorDictAttribute(object):
         ----------
         obj : object
             The owner of the descriptor.
-        value : dict[Any, :class:`~compas.colors.Color`] | :class:`~compas.colors.Color`
+        value : dict[Any, :class:`compas.colors.Color`] | :class:`compas.colors.Color`
             The new value for the descriptor.
             This value is stored in the corresponding private attribute in the form of a defaultdict.
 

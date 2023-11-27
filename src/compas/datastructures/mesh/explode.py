@@ -10,7 +10,7 @@ def mesh_disconnected_vertices(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh.
 
     Returns
@@ -27,7 +27,7 @@ def mesh_disconnected_faces(mesh):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh.
 
     Returns
@@ -45,14 +45,14 @@ def mesh_explode(mesh, cls=None):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh.
-    cls : Type[:class:`~compas.datastructures.Mesh`], optional
+    cls : Type[:class:`compas.datastructures.Mesh`], optional
         The type of the return mesh.
 
     Returns
     -------
-    list[:class:`~compas.datastructures.Mesh`]
+    list[:class:`compas.datastructures.Mesh`]
         The list of the meshes from the exploded mesh parts.
 
     """

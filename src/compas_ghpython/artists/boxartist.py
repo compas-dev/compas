@@ -13,7 +13,7 @@ class BoxArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    box : :class:`~compas.geometry.Box`
+    box : :class:`compas.geometry.Box`
         A COMPAS box.
     **kwargs : dict, optional
         Additional keyword arguments.

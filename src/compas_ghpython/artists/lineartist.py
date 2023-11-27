@@ -13,7 +13,7 @@ class LineArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    line : :class:`~compas.geometry.Line`
+    line : :class:`compas.geometry.Line`
         A COMPAS line.
     **kwargs : dict, optional
         Additional keyword arguments.

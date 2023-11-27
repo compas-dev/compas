@@ -9,7 +9,7 @@ class RhinoBrepTrim(BrepTrim):
 
     Attributes
     ----------
-    curve : :class:`~compas.geometry.NurbsCurve`, read_only
+    curve : :class:`compas.geometry.NurbsCurve`, read_only
         Returns the geometry for this trim as a 2d curve.
     iso_status : literal(NONE|X|Y|West|South|East|North)
         The isoparametric curve direction on the surface.
@@ -60,12 +60,12 @@ class RhinoBrepTrim(BrepTrim):
         ----------
         data : dict
             The data dictionary.
-        builder : :class:`~compas_rhino.geometry.BrepLoopBuilder`
+        builder : :class:`compas_rhino.geometry.BrepLoopBuilder`
             The object reconstructing the current BrepLoop.
 
         Returns
         -------
-        :class:`~compas.data.Data`
+        :class:`compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """

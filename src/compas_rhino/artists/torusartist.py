@@ -16,7 +16,7 @@ class TorusArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    torus : :class:`~compas.geometry.Torus`
+    torus : :class:`compas.geometry.Torus`
         A COMPAS torus.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -31,7 +31,7 @@ class TorusArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the torus.
 
         Returns

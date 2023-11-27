@@ -22,11 +22,11 @@ class TreeNode(Data):
         The name of the datastructure.
     attributes : dict[str, Any]
         User-defined attributes of the datastructure.
-    parent : :class:`~compas.datastructures.TreeNode`
+    parent : :class:`compas.datastructures.TreeNode`
         The parent node of the tree node.
-    children : list[:class:`~compas.datastructures.TreeNode`]
+    children : list[:class:`compas.datastructures.TreeNode`]
         The children of the tree node.
-    tree : :class:`~compas.datastructures.Tree`
+    tree : :class:`compas.datastructures.Tree`
         The tree to which the node belongs.
     is_root : bool
         True if the node is the root node of the tree.
@@ -34,9 +34,9 @@ class TreeNode(Data):
         True if the node is a leaf node of the tree.
     is_branch : bool
         True if the node is a branch node of the tree.
-    acestors : generator[:class:`~compas.datastructures.TreeNode`]
+    acestors : generator[:class:`compas.datastructures.TreeNode`]
         A generator of the acestors of the tree node.
-    descendants : generator[:class:`~compas.datastructures.TreeNode`]
+    descendants : generator[:class:`compas.datastructures.TreeNode`]
         A generator of the descendants of the tree node, using a depth-first preorder traversal.
 
     """
@@ -110,7 +110,7 @@ class TreeNode(Data):
 
         Parameters
         ----------
-        node : :class:`~compas.datastructures.TreeNode`
+        node : :class:`compas.datastructures.TreeNode`
             The node to add.
 
         Returns
@@ -120,7 +120,7 @@ class TreeNode(Data):
         Raises
         ------
         TypeError
-            If the node is not a :class:`~compas.datastructures.TreeNode` object.
+            If the node is not a :class:`compas.datastructures.TreeNode` object.
 
         """
         if not isinstance(node, TreeNode):
@@ -135,7 +135,7 @@ class TreeNode(Data):
 
         Parameters
         ----------
-        node : :class:`~compas.datastructures.TreeNode`
+        node : :class:`compas.datastructures.TreeNode`
             The node to remove.
 
         Returns
@@ -173,7 +173,7 @@ class TreeNode(Data):
 
         Yields
         ------
-        :class:`~compas.datastructures.TreeNode`
+        :class:`compas.datastructures.TreeNode`
             The next node in the traversal.
 
         Raises
@@ -222,11 +222,11 @@ class Tree(Datastructure):
         The name of the datastructure.
     attributes : dict[str, Any]
         User-defined attributes of the datastructure.
-    root : :class:`~compas.datastructures.TreeNode`
+    root : :class:`compas.datastructures.TreeNode`
         The root node of the tree.
-    nodes : generator[:class:`~compas.datastructures.TreeNode`]
+    nodes : generator[:class:`compas.datastructures.TreeNode`]
         The nodes of the tree.
-    leaves : generator[:class:`~compas.datastructures.TreeNode`]
+    leaves : generator[:class:`compas.datastructures.TreeNode`]
         A generator of the leaves of the tree.
 
     Examples
@@ -291,9 +291,9 @@ class Tree(Datastructure):
 
         Parameters
         ----------
-        node : :class:`~compas.datastructures.TreeNode`
+        node : :class:`compas.datastructures.TreeNode`
             The node to add.
-        parent : :class:`~compas.datastructures.TreeNode`, optional
+        parent : :class:`compas.datastructures.TreeNode`, optional
             The parent node of the node to add.
             Default is ``None``, in which case the node is added as a root node.
 
@@ -304,8 +304,8 @@ class Tree(Datastructure):
         Raises
         ------
         TypeError
-            If the node is not a :class:`~compas.datastructures.TreeNode` object.
-            If the supplied parent node is not a :class:`~compas.datastructures.TreeNode` object.
+            If the node is not a :class:`compas.datastructures.TreeNode` object.
+            If the supplied parent node is not a :class:`compas.datastructures.TreeNode` object.
         ValueError
             If the node is already part of another tree.
             If the supplied parent node is not part of this tree.
@@ -348,7 +348,7 @@ class Tree(Datastructure):
 
         Parameters
         ----------
-        node : :class:`~compas.datastructures.TreeNode`
+        node : :class:`compas.datastructures.TreeNode`
             The node to remove.
 
         Returns
@@ -381,7 +381,7 @@ class Tree(Datastructure):
 
         Yields
         ------
-        :class:`~compas.datastructures.TreeNode`
+        :class:`compas.datastructures.TreeNode`
             The next node in the traversal.
 
         Raises
@@ -406,7 +406,7 @@ class Tree(Datastructure):
 
         Returns
         -------
-        :class:`~compas.datastructures.TreeNode`
+        :class:`compas.datastructures.TreeNode`
             The node.
 
         """
@@ -425,7 +425,7 @@ class Tree(Datastructure):
 
         Returns
         -------
-        list[:class:`~compas.datastructures.TreeNode`]
+        list[:class:`compas.datastructures.TreeNode`]
             The nodes.
 
         """

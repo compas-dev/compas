@@ -43,7 +43,7 @@ def i_to_rgb(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to an equivalent RGB tuple.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -102,7 +102,11 @@ def i_to_rgb(i, normalize=False):
     elif i == 0.75:
         r, g, b = 255, 255, 0
     elif 0.75 < i < 1.0:
-        r, g, b, = (
+        (
+            r,
+            g,
+            b,
+        ) = (
             255,
             int(255 - 255 * 4 * (i - 0.75)),
             0,
@@ -120,7 +124,7 @@ def i_to_red(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of red.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -157,7 +161,7 @@ def i_to_green(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of green.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -194,7 +198,7 @@ def i_to_blue(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of blue.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -231,7 +235,7 @@ def i_to_white(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of white.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -269,7 +273,7 @@ def i_to_black(i, normalize=False):
     """Convert a number between 0.0 and 1.0 to a shade of black.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -307,7 +311,7 @@ class Colormap(object):
     """Convenience class for converting a data range into a corresponding RGB color range.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.ColorMap` instead.
+        Use :class:`compas.colors.ColorMap` instead.
 
     Parameters
     ----------
@@ -366,7 +370,7 @@ def is_color_rgb(color):
     """Is a color in a valid RGB format.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -413,7 +417,7 @@ def is_color_hex(color):
     """Is a color in a valid HEX format.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -450,7 +454,7 @@ def rgb_to_rgb(rgb, g=None, b=None):
     """Convert an RGB color specification to an integer-based RGB color specification.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -502,7 +506,7 @@ def rgb_to_hex(rgb, g=None, b=None):
     """Convert an RGB color specification to HEX.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -540,7 +544,7 @@ def hex_to_rgb(value, normalize=False):
     """Convert a HEX color to the corresponding RGB format.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -576,7 +580,7 @@ def color_to_rgb(color, normalize=False):
     """Convert a HEX or RGB color to RGB.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -624,7 +628,7 @@ def color_to_colordict(color, keys, default=None, colorformat="rgb", normalize=F
     """Convert a color specification to a dict of colors.
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------
@@ -701,7 +705,7 @@ def is_color_light(color):
     r"""Is a color "light".
 
     .. deprecated:: 1.14
-        Use :class:`~compas.colors.Color` instead.
+        Use :class:`compas.colors.Color` instead.
 
     Parameters
     ----------

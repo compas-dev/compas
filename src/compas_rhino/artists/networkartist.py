@@ -23,7 +23,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A COMPAS network.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -91,9 +91,9 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        nodecolor : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        nodecolor : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the nodes.
-        edgecolor : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        edgecolor : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the edges.
 
         Returns
@@ -115,7 +115,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         nodes : list[int], optional
             A list of nodes to draw.
             Default is None, in which case all nodes are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             Color of the nodes.
 
         Returns
@@ -150,7 +150,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         edges : list[tuple[int, int]], optional
             A list of edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             Color of the edges.
         group : str, optional
             The name of a group to add the edges to.
@@ -196,7 +196,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         ----------
         text : dict[int, str]
             A dictionary of node labels as node-text pairs.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             Color of the labels.
         group : str, optional
             The name of a group to add the labels to.
@@ -240,7 +240,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         ----------
         text : dict[tuple[int, int], str]
             A dictionary of edge labels as edge-text pairs.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             Color of the labels.
         group : str, optional
             The name of a group to add the labels to.
@@ -292,7 +292,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         ----------
         radius : dict[int, float], optional
             The radius of the spheres.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the spheres.
         group : str, optional
             The name of a group to join the created Rhino objects in.
@@ -330,7 +330,7 @@ class NetworkArtist(RhinoArtist, BaseArtist):
         ----------
         radius : dict[tuple[int, int], float]
             The radius per edge.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the pipes.
         group : str, optional
             The name of a group to join the created Rhino objects in.

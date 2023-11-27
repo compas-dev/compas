@@ -166,7 +166,6 @@ def install_windows(blender_path, version=None, packages=None, force_reinstall=F
 # ==============================================================================
 
 if __name__ == "__main__":
-
     import argparse
 
     parser = argparse.ArgumentParser()

@@ -17,7 +17,7 @@ class ConeArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    cone : :class:`~compas.geometry.Cone`
+    cone : :class:`compas.geometry.Cone`
         A COMPAS cone.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -39,7 +39,7 @@ class ConeArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the cone.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

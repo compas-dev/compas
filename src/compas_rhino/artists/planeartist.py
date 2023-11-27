@@ -11,7 +11,7 @@ class PlaneArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    plane : :class:`~compas.geometry.Plane`
+    plane : :class:`compas.geometry.Plane`
         A COMPAS plane.
     **kwargs : dict, optional
         Additional keyword arguments.

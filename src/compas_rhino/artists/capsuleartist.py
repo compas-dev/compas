@@ -17,7 +17,7 @@ class CapsuleArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    capsule : :class:`~compas.geometry.Capsule`
+    capsule : :class:`compas.geometry.Capsule`
         A COMPAS capsule.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class CapsuleArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the capsule.
 
         Returns

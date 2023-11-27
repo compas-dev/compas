@@ -18,12 +18,12 @@ class LineArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    line : :class:`~compas.geometry.Line`
+    line : :class:`compas.geometry.Line`
         A COMPAS line.
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`~compas_blender.artists.BlenderArtist` and :class:`~compas.artists.GeometryArtist`.
+        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.GeometryArtist`.
 
     """
 
@@ -39,7 +39,7 @@ class LineArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the box.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

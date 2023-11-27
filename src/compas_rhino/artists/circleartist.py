@@ -19,7 +19,7 @@ class CircleArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    circle : :class:`~compas.geometry.Circle`
+    circle : :class:`compas.geometry.Circle`
         A COMPAS circle.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -34,7 +34,7 @@ class CircleArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the circle.
 
         Returns

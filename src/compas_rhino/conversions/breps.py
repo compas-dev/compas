@@ -21,7 +21,7 @@ def brep_to_rhino(brep):
 
     Parameters
     ----------
-    brep : :class:`~compas.geometry.Brep`
+    brep : :class:`compas.geometry.Brep`
 
     Returns
     -------
@@ -45,7 +45,7 @@ def brep_to_compas_box(brep):
 
     Returns
     -------
-    :class:`~compas.geometry.Box`
+    :class:`compas.geometry.Box`
 
     """
     raise NotImplementedError
@@ -60,7 +60,7 @@ def brep_to_compas_cone(brep):
 
     Returns
     -------
-    :class:`~compas.geometry.Cone`
+    :class:`compas.geometry.Cone`
 
     """
     if brep.Faces.Count > 2:
@@ -82,7 +82,7 @@ def brep_to_compas_cylinder(brep, tol=None):
 
     Returns
     -------
-    :class:`~compas.geometry.Cylinder`
+    :class:`compas.geometry.Cylinder`
 
     """
     tol = tol or sc.doc.ModelAbsoluteTolerance
@@ -109,7 +109,7 @@ def brep_to_compas_sphere(brep):
 
     Returns
     -------
-    :class:`~compas.geometry.Sphere`
+    :class:`compas.geometry.Sphere`
 
     """
     if brep.Faces.Count != 1:

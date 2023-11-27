@@ -17,7 +17,7 @@ class TorusArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    torus : :class:`~compas.geometry.Torus`
+    torus : :class:`compas.geometry.Torus`
         A COMPAS torus.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -40,7 +40,7 @@ class TorusArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             The RGB color of the torus.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

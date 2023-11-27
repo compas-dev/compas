@@ -13,7 +13,7 @@ class CylinderArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    cylinder : :class:`~compas.geometry.Cylinder`
+    cylinder : :class:`compas.geometry.Cylinder`
         A COMPAS cylinder.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -28,7 +28,7 @@ class CylinderArtist(GHArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the box.
         u : int, optional
             Number of faces in the "u" direction.

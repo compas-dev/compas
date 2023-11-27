@@ -18,7 +18,7 @@ def native_curve_from_parameters(points, weights, knots, multiplicities, degree,
 
     Parameters
     ----------
-    points : list[:class:`~compas.geometry.Point`]
+    points : list[:class:`compas.geometry.Point`]
         The control points.
     weights : list[float]
         The control point weights.
@@ -71,7 +71,7 @@ class BlenderNurbsCurve(NurbsCurve, BlenderCurve):
 
     Attributes
     ----------
-    points : list[:class:`~compas.geometry.Point`], read-only
+    points : list[:class:`compas.geometry.Point`], read-only
         The control points of the curve.
     weights : list[float], read-only
         The weights of the control points.
@@ -183,7 +183,7 @@ class BlenderNurbsCurve(NurbsCurve, BlenderCurve):
 
         Parameters
         ----------
-        points : list[:class:`~compas.geometry.Point`]
+        points : list[:class:`compas.geometry.Point`]
             The control points.
         weights : list[float]
             The control point weights.
@@ -199,7 +199,7 @@ class BlenderNurbsCurve(NurbsCurve, BlenderCurve):
 
         Returns
         -------
-        :class:`~compas_blender.geometry.BlenderNurbsCurve`
+        :class:`compas_blender.geometry.BlenderNurbsCurve`
 
         """
         curve = cls()
@@ -212,7 +212,7 @@ class BlenderNurbsCurve(NurbsCurve, BlenderCurve):
 
         Parameters
         ----------
-        points : list[:class:`~compas.geometry.Point`]
+        points : list[:class:`compas.geometry.Point`]
             The control points.
         degree : int, optional
             The degree of the curve.
@@ -221,7 +221,7 @@ class BlenderNurbsCurve(NurbsCurve, BlenderCurve):
 
         Returns
         -------
-        :class:`~compas_blender.geometry.BlenderNurbsCurve`
+        :class:`compas_blender.geometry.BlenderNurbsCurve`
 
         """
         weights = [1.0 for point in points]

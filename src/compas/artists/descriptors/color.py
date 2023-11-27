@@ -6,7 +6,7 @@ class ColorAttribute(object):
 
     Parameters
     ----------
-    default : :class:`~compas.colors.Color`, optional
+    default : :class:`compas.colors.Color`, optional
         The default value of the attribute.
         Default is ``None``.
 
@@ -52,7 +52,7 @@ class ColorAttribute(object):
 
         Returns
         -------
-        :class:`~compas.colors.Color`
+        :class:`compas.colors.Color`
             The color stored in the private attribute corresponding to the public attribute name of the descriptor.
             If the private attribute does not exist, the default value of the descriptor is returned.
 
@@ -75,7 +75,7 @@ class ColorAttribute(object):
         ----------
         obj : object
             The owner of the descriptor.
-        value : :class:`~compas.colors.Color`
+        value : :class:`compas.colors.Color`
             The new value for the descriptor.
             This value is stored in the corresponding private attribute.
 

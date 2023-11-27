@@ -13,7 +13,7 @@ class NetworkArtist(GHArtist, BaseArtist):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A COMPAS network.
     **kwargs : dict, optional
         Additional keyword arguments.

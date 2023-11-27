@@ -16,7 +16,7 @@ class CurveArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    curve : :class:`~compas.geometry.Curve`
+    curve : :class:`compas.geometry.Curve`
         A COMPAS curve.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -35,7 +35,7 @@ class CurveArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the curve.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

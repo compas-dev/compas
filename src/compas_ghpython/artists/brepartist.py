@@ -13,7 +13,7 @@ class BrepArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    brep : :class:`~compas_rhino.geometry.RhinoBrep`
+    brep : :class:`compas_rhino.geometry.RhinoBrep`
         The brep to draw.
     **kwargs : dict, optional
         Additional keyword arguments.

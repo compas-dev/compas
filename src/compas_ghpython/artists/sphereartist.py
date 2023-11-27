@@ -13,7 +13,7 @@ class SphereArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    sphere : :class:`~compas.geometry.Sphere`
+    sphere : :class:`compas.geometry.Sphere`
         A COMPAS sphere.
     **kwargs : dict, optional
         Additional keyword arguments.

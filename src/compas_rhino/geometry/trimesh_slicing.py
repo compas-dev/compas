@@ -15,9 +15,9 @@ def trimesh_slice(mesh, planes):
 
     Parameters
     ----------
-    mesh : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    mesh : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         The mesh to slice.
-    planes : sequence[[point, vector] | :class:`~compas.geometry.Plane`]
+    planes : sequence[[point, vector] | :class:`compas.geometry.Plane`]
         The slicing planes.
 
     Returns
@@ -62,3 +62,6 @@ def trimesh_slice(mesh, planes):
         polyline_pts.append(pts)
 
     return polyline_pts
+
+
+trimesh_slice.__plugin__ = True

@@ -28,7 +28,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
 
     """
@@ -87,7 +87,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
 
         Parameters
         ----------
-        color : :class:`~compas.colors.Color`, optional
+        color : :class:`compas.colors.Color`, optional
             The color of the mesh.
         collection : str, optional
             The name of the collection that should contain the mesh.
@@ -124,7 +124,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         vertices : list[int], optional
             A list of vertex keys identifying which vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color specification for the vertices.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -174,7 +174,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color specification for the edges.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -213,7 +213,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         faces : list[int], optional
             A list of face keys identifying which faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color specification for the faces.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -259,7 +259,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         vertices : list[int], optional
             A selection of vertex normals to draw.
             Default is to draw all vertex normals.
-        color : :class:`~compas.colors.Color`, optional
+        color : :class:`compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the vertex normals.
@@ -305,7 +305,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         faces : list[int], optional
             A selection of face normals to draw.
             Default is to draw all face normals.
-        color : :class:`~compas.colors.Color`, optional
+        color : :class:`compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the face normals.
@@ -439,7 +439,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         ----------
         radius : dict[int, float], optional
             The radius of the spheres.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the spheres.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -479,7 +479,7 @@ class MeshArtist(BlenderArtist, BaseArtist):
         ----------
         radius : dict[tuple[int, int], float]
             The radius per edge.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color of the pipes.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

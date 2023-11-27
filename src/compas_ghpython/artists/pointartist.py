@@ -13,7 +13,7 @@ class PointArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    point : :class:`~compas.geometry.Point`
+    point : :class:`compas.geometry.Point`
         A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.

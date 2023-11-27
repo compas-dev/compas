@@ -18,7 +18,7 @@ class EllipseArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    ellipse : :class:`~compas.geometry.Ellipse`
+    ellipse : :class:`compas.geometry.Ellipse`
         A COMPAS ellipse.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -33,7 +33,7 @@ class EllipseArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the ellipse.
 
         Returns

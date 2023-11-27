@@ -26,7 +26,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
 
     Parameters
     ----------
-    volmesh : :class:`~compas.datastructures.VolMesh`
+    volmesh : :class:`compas.datastructures.VolMesh`
         The volmesh data structure.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -101,7 +101,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
             The default color is :attr:`VolMeshArtist.default_cellcolor`.
         collection : str, optional
@@ -130,7 +130,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         vertices : list[int], optional
             A list of vertex keys identifying which vertices to draw.
             Default is None, in which case all vertices are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color specification for the vertices.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -177,7 +177,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         edges : list[tuple[int, int]], optional
             A list of edge keys (as uv pairs) identifying which edges to draw.
             The default is None, in which case all edges are drawn.
-        color : :class:`~compas.colors.Color` | dict[tuple[int, int], :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
             The color specification for the edges.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -216,7 +216,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         faces : list[int], optional
             A list of face keys identifying which faces to draw.
             The default is None, in which case all faces are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color specification for the faces.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -258,7 +258,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         cells : list[int], optional
             A list of cells to draw.
             The default is None, in which case all cells are drawn.
-        color : :class:`~compas.colors.Color` | dict[int, :class:`~compas.colors.Color`], optional
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
@@ -312,7 +312,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         vertices : list[int], optional
             A selection of vertex normals to draw.
             Default is to draw all vertex normals.
-        color : :class:`~compas.colors.Color`, optional
+        color : :class:`compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the vertex normals.
@@ -358,7 +358,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
         faces : list[int], optional
             A selection of face normals to draw.
             Default is to draw all face normals.
-        color : :class:`~compas.colors.Color`, optional
+        color : :class:`compas.colors.Color`, optional
             The color specification of the normal vectors.
         scale : float, optional
             Scale factor for the face normals.

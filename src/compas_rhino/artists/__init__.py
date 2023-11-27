@@ -1,3 +1,6 @@
+"""
+This package defines the artist plugins for visualising COMPAS objects in Rhino.
+"""
 from __future__ import absolute_import
 
 from compas.plugins import plugin

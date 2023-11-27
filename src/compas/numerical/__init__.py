@@ -30,8 +30,8 @@ if not compas.IPY:
         equilibrium_matrix,
     )
 
-    from .pca.pca_numpy import pca_numpy
-    from .isolines.isolines_numpy import scalarfield_contours_numpy
+    from .pca_numpy import pca_numpy
+    from .contours import scalarfield_contours
 
 
 __all__ = []
@@ -61,5 +61,5 @@ if not compas.IPY:
         "stiffness_matrix",
         "equilibrium_matrix",
         "pca_numpy",
-        "scalarfield_contours_numpy",
+        "scalarfield_contours",
     ]

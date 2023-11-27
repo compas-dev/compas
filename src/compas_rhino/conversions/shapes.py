@@ -44,7 +44,7 @@ def box_to_rhino(box):
 
     Parameters
     ----------
-    box : :class:`~compas.geometry.Box`
+    box : :class:`compas.geometry.Box`
 
     Returns
     -------
@@ -64,7 +64,7 @@ def sphere_to_rhino(sphere):
 
     Parameters
     ----------
-    sphere : :class:`~compas.geometry.Sphere`
+    sphere : :class:`compas.geometry.Sphere`
 
     Returns
     -------
@@ -79,7 +79,7 @@ def cone_to_rhino(cone):
 
     Parameters
     ----------
-    cone : :class:`~compas.geometry.Cone`
+    cone : :class:`compas.geometry.Cone`
 
     Returns
     -------
@@ -96,7 +96,7 @@ def cone_to_rhino_brep(cone):
 
     Parameters
     ----------
-    cone : :class:`~compas.geometry.Cone`
+    cone : :class:`compas.geometry.Cone`
         A COMPAS cone.
 
     Returns
@@ -112,7 +112,7 @@ def cylinder_to_rhino(cylinder):
 
     Parameters
     ----------
-    cylinder : :class:`~compas.geometry.Cylinder`
+    cylinder : :class:`compas.geometry.Cylinder`
 
     Returns
     -------
@@ -129,7 +129,7 @@ def cylinder_to_rhino_brep(cylinder):
 
     Parameters
     ----------
-    cylinder : :class:`~compas.geometry.Cylinder`
+    cylinder : :class:`compas.geometry.Cylinder`
         A COMPAS cylinder.
 
     Returns
@@ -145,7 +145,7 @@ def capsule_to_rhino_brep(capsule):
 
     Parameters
     ----------
-    capsule : :class:`~compas.geometry.Capsule`
+    capsule : :class:`compas.geometry.Capsule`
         A COMPAS capsule.
 
     Returns
@@ -168,7 +168,7 @@ def torus_to_rhino(torus):
 
     Parameters
     ----------
-    torus : :class:`~compas.geometry.Torus`
+    torus : :class:`compas.geometry.Torus`
 
     Returns
     -------
@@ -183,7 +183,7 @@ def torus_to_rhino_brep(torus):
 
     Parameters
     ----------
-    torus : :class:`~compas.geometry.Torus`
+    torus : :class:`compas.geometry.Torus`
         A COMPAS torus.
 
     Returns
@@ -209,7 +209,7 @@ def box_to_compas(box):
 
     Returns
     -------
-    :class:`~compas.geometry.Box`
+    :class:`compas.geometry.Box`
 
     """
     xsize = box.X.Length
@@ -229,7 +229,7 @@ def sphere_to_compas(sphere):
 
     Returns
     -------
-    :class:`~compas.geometry.Sphere`
+    :class:`compas.geometry.Sphere`
 
     """
     return Sphere(point_to_compas(sphere.Center), sphere.Radius)
@@ -244,7 +244,7 @@ def cone_to_compas(cone):
 
     Returns
     -------
-    :class:`~compas.geometry.Cone`
+    :class:`compas.geometry.Cone`
 
     """
     plane = Plane(cone.BasePoint, vector_to_compas(cone.Plane.Normal).inverted())
@@ -260,7 +260,7 @@ def cylinder_to_compas(cylinder):
 
     Returns
     -------
-    :class:`~compas.geometry.Cylinder`
+    :class:`compas.geometry.Cylinder`
 
     """
     plane = plane_to_compas(cylinder.BasePlane)
@@ -278,7 +278,7 @@ def torus_to_compas(torus):
 
     Returns
     -------
-    :class:`~compas.geometry.Torus`
+    :class:`compas.geometry.Torus`
 
     """
     frame = plane_to_compas_frame(torus.Plane)

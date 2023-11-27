@@ -17,7 +17,7 @@ class ConeArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    shape : :class:`~compas.geometry.Cone`
+    shape : :class:`compas.geometry.Cone`
         A COMPAS cone.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class ConeArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the cone.
 
         Returns

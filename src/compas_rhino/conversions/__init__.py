@@ -1,3 +1,6 @@
+"""
+This package defines the conversion functions for converting COMPAS objects to Rhino geometry and vice versa.
+"""
 from __future__ import absolute_import
 
 from .exceptions import ConversionError

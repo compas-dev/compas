@@ -13,7 +13,7 @@ class SurfaceArtist(GHArtist, GeometryArtist):
 
     Parameters
     ----------
-    surface : :class:`~compas.geometry.Surface`
+    surface : :class:`compas.geometry.Surface`
         A COMPAS surface.
 
     Other Parameters

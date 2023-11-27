@@ -17,7 +17,7 @@ class PolylineArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    polyline : :class:`~compas.geometry.Polyline`
+    polyline : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class PolylineArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polyline.
 
         Returns
@@ -51,7 +51,7 @@ class PolylineArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polyline points.
 
         Returns

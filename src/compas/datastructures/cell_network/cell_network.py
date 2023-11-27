@@ -1101,7 +1101,7 @@ class CellNetwork(HalfFace):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         See Also

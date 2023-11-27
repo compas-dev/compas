@@ -17,7 +17,7 @@ class PolyhedronArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    polyhedron : :class:`~compas.geometry.Polyhedron`
+    polyhedron : :class:`compas.geometry.Polyhedron`
         A COMPAS polyhedron.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -34,7 +34,7 @@ class PolyhedronArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             The RGB color of the polyhedron.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

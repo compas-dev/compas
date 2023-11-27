@@ -16,7 +16,7 @@ class PolyhedronArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    polyhedron : :class:`~compas.geometry.Polyhedron`
+    polyhedron : :class:`compas.geometry.Polyhedron`
         A COMPAS polyhedron.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -31,7 +31,7 @@ class PolyhedronArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polyhedron.
 
         Returns

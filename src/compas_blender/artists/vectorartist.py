@@ -19,7 +19,7 @@ class VectorArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    primitive : :class:`~compas.geometry.Vector`
+    primitive : :class:`compas.geometry.Vector`
         A COMPAS vector.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -39,11 +39,11 @@ class VectorArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             The RGB color of the vector.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
-        point : [float, float, float] | :class:`~compas.geometry.Point`, optional
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
             Point of application of the vector.
             Default is ``Point(0, 0, 0)``.
 

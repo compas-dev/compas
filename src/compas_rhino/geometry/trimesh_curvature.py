@@ -23,7 +23,7 @@ def trimesh_gaussian_curvature(M):
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
@@ -108,13 +108,16 @@ def trimesh_gaussian_curvature(M):
     return K
 
 
+trimesh_gaussian_curvature.__plugin__ = True
+
+
 @plugin(category="trimesh", requires=["Rhino"])
 def trimesh_mean_curvature(M):
     r"""Compute the discrete mean curvature of a triangle mesh.
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
@@ -213,13 +216,16 @@ def trimesh_mean_curvature(M):
     return H
 
 
+trimesh_mean_curvature.__plugin__ = True
+
+
 @plugin(category="trimesh", requires=["Rhino"])
 def trimesh_principal_curvature(M):
     r"""Compute the principal curvature of a triangle mesh.
 
     Parameters
     ----------
-    M : tuple[sequence[[float, float, float] | :class:`~compas.geometry.Point`], sequence[[int, int, int]]]
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
         A mesh represented by a list of vertices and a list of faces.
 
     Returns
@@ -298,6 +304,9 @@ def trimesh_principal_curvature(M):
 
     # (4) Output
     return k1, k2
+
+
+trimesh_principal_curvature.__plugin__ = True
 
 
 def trimesh_barycentric_area(mesh):

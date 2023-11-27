@@ -15,7 +15,7 @@ class PointArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    point : :class:`~compas.geometry.Point`
+    point : :class:`compas.geometry.Point`
         A COMPAS point.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -37,7 +37,7 @@ class PointArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             Color of the point object.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).

@@ -18,7 +18,7 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
 
     Parameters
     ----------
-    polygon : :class:`~compas.geometry.Polygon`
+    polygon : :class:`compas.geometry.Polygon`
         A COMPAS polygon.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -33,7 +33,7 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polygon.
 
         Returns
@@ -56,7 +56,7 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polygon vertices.
 
         Returns
@@ -81,7 +81,7 @@ class PolygonArtist(RhinoArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : rgb1 | rgb255 | :class:`~compas.colors.Color`, optional
+        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
             The RGB color of the polygon edges.
 
         Returns

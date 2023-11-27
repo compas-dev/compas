@@ -18,7 +18,7 @@ class BoxArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    box : :class:`~compas.geometry.Box`
+    box : :class:`compas.geometry.Box`
         A COMPAS box.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -38,7 +38,7 @@ class BoxArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`~compas.colors.Color`, optional
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
             The RGB color of the box.
         collection : str | :blender:`bpy.types.Collection`, optional
             The name of the Blender scene collection containing the created object(s).

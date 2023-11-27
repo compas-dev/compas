@@ -17,7 +17,7 @@ class SurfaceArtist(BlenderArtist, GeometryArtist):
 
     Parameters
     ----------
-    surface : :class:`~compas.geometry.Surface`
+    surface : :class:`compas.geometry.Surface`
         A COMPAS surface.
     **kwargs : dict, optional
         Additional keyword arguments.
@@ -32,7 +32,7 @@ class SurfaceArtist(BlenderArtist, GeometryArtist):
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`~compas.colors.Color`, optional
+        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
             The RGB color of the surface.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
