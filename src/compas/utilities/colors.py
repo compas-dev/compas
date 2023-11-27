@@ -102,11 +102,7 @@ def i_to_rgb(i, normalize=False):
     elif i == 0.75:
         r, g, b = 255, 255, 0
     elif 0.75 < i < 1.0:
-        (
-            r,
-            g,
-            b,
-        ) = (
+        (r, g, b,) = (
             255,
             int(255 - 255 * 4 * (i - 0.75)),
             0,
