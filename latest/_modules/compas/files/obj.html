@@ -646,7 +646,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">groups</span></div>
 
 
-<div class="viewcode-block" id="OBJReader"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJReader.html#compas.files.OBJReader">[docs]</a><span class="k">class</span> <span class="nc">OBJReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">OBJReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for reading raw geometric data from OBJ files.</span>
 
 <span class="sd">    Parameters</span>
@@ -704,7 +704,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="OBJReader.open"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJReader.open.html#compas.files.OBJReader.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Open the file and read its contents.</span>
 
 <span class="sd">        Returns</span>
@@ -713,9 +713,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">_iotools</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
-<div class="viewcode-block" id="OBJReader.pre"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJReader.pre.html#compas.files.OBJReader.pre">[docs]</a>    <span class="k">def</span> <span class="nf">pre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">pre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pre-process the contents.</span>
 
 <span class="sd">        Returns</span>
@@ -744,9 +744,9 @@ document.write(`
                 <span class="n">is_continuation</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">is_continuation</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-<div class="viewcode-block" id="OBJReader.post"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJReader.post.html#compas.files.OBJReader.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Post-process the contents.</span>
 
 <span class="sd">        Returns</span>
@@ -754,9 +754,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">pass</span>
 
-<div class="viewcode-block" id="OBJReader.read"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJReader.read.html#compas.files.OBJReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the contents of the file, line by line.</span>
 
 <span class="sd">        Every line is split into a *head* and a *tail*.</span>
@@ -819,7 +819,7 @@ document.write(`
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">head</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;mg&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_read_grouping</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">)</span>
-                <span class="k">continue</span></div>
+                <span class="k">continue</span>
 
     <span class="k">def</span> <span class="nf">_read_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a comment.</span>
@@ -930,10 +930,10 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">))</span>
-            <span class="k">return</span></div>
+            <span class="k">return</span>
 
 
-<div class="viewcode-block" id="OBJParser"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJParser.html#compas.files.OBJParser">[docs]</a><span class="k">class</span> <span class="nc">OBJParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">OBJParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for parsing data from a OBJ file.</span>
 
 <span class="sd">    The parser converts the raw geometric data of the file</span>
@@ -985,7 +985,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="OBJParser.parse"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJParser.parse.html#compas.files.OBJParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the the data found by the reader.</span>
 
 <span class="sd">        Returns</span>
@@ -1020,10 +1020,10 @@ document.write(`
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">face</span><span class="p">:</span>
                     <span class="n">vertices</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
 
 
-<div class="viewcode-block" id="OBJWriter"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJWriter.html#compas.files.OBJWriter">[docs]</a><span class="k">class</span> <span class="nc">OBJWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">OBJWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for writing geometric data to a OBJ file.</span>
 
 <span class="sd">    Parameters</span>
@@ -1071,7 +1071,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_v</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="OBJWriter.write"><a class="viewcode-back" href="../../../reference/generated/compas.files.OBJWriter.write.html#compas.files.OBJWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the meshes to the file.</span>
 
 <span class="sd">        Returns</span>
@@ -1081,7 +1081,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">_iotools</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_header</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write_meshes</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_meshes</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_write_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# OBJ</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1133,7 +1133,7 @@ document.write(`
                 <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_v</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">indices_str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;f </span><span class="si">{0}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">indices_str</span><span class="p">))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;f </span><span class="si">{0}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">indices_str</span><span class="p">))</span>
 </pre></div>
 
                 </article>

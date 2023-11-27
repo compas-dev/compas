@@ -480,7 +480,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">Data</span>
 
 
-<span class="k">class</span> <span class="nc">TreeNode</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+<div class="viewcode-block" id="TreeNode"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.TreeNode.html#compas.datastructures.TreeNode">[docs]</a><span class="k">class</span> <span class="nc">TreeNode</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A node of a tree data structure.</span>
 
 <span class="sd">    Parameters</span>
@@ -571,14 +571,14 @@ document.write(`
             <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">],</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TreeNode.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.TreeNode.from_data.html#compas.datastructures.TreeNode.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]:</span>
             <span class="n">node</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">child</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">node</span>
+        <span class="k">return</span> <span class="n">node</span></div>
 
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<div class="viewcode-block" id="TreeNode.add"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.TreeNode.add.html#compas.datastructures.TreeNode.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a child node to this node.</span>
 
@@ -601,9 +601,9 @@ document.write(`
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;The node is not a TreeNode object.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-        <span class="n">node</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<div class="viewcode-block" id="TreeNode.remove"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.TreeNode.remove.html#compas.datastructures.TreeNode.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a child node from this node.</span>
 
@@ -618,7 +618,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-        <span class="n">node</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ancestors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -634,7 +634,7 @@ document.write(`
             <span class="k">for</span> <span class="n">descendant</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">descendants</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">descendant</span>
 
-    <span class="k">def</span> <span class="nf">traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;depthfirst&quot;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;preorder&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="TreeNode.traverse"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.TreeNode.traverse.html#compas.datastructures.TreeNode.traverse">[docs]</a>    <span class="k">def</span> <span class="nf">traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;depthfirst&quot;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;preorder&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Traverse the tree from this node.</span>
 
@@ -677,7 +677,7 @@ document.write(`
                 <span class="k">yield</span> <span class="n">node</span>
                 <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown traversal strategy: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown traversal strategy: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="Tree"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Tree.html#compas.datastructures.Tree">[docs]</a><span class="k">class</span> <span class="nc">Tree</span><span class="p">(</span><span class="n">Datastructure</span><span class="p">):</span>

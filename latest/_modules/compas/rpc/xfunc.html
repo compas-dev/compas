@@ -1,0 +1,988 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>compas.rpc.xfunc &#8212; compas</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../../../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/compas/rpc/xfunc';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../../../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">compas.rpc.xfunc</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for compas.rpc.xfunc</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">import</span> <span class="nn">compas._os</span>
+
+<span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">DataEncoder</span>
+<span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">DataDecoder</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cPickle</span> <span class="k">as</span> <span class="nn">pickle</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span>
+    <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">PIPE</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">System.Diagnostics</span> <span class="kn">import</span> <span class="n">Process</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+
+
+<span class="n">WRAPPER</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">import os</span>
+<span class="s2">import sys</span>
+<span class="s2">import importlib</span>
+
+<span class="s2">import json</span>
+
+<span class="s2">try:</span>
+<span class="s2">    import cPickle as pickle</span>
+<span class="s2">except Exception:</span>
+<span class="s2">    import pickle</span>
+
+<span class="s2">try:</span>
+<span class="s2">    from cStringIO import StringIO</span>
+<span class="s2">except Exception:</span>
+<span class="s2">    from io import StringIO</span>
+
+<span class="s2">import cProfile</span>
+<span class="s2">import pstats</span>
+<span class="s2">import traceback</span>
+
+<span class="s2">from compas.data import DataEncoder</span>
+<span class="s2">from compas.data import DataDecoder</span>
+
+<span class="s2">basedir    = sys.argv[1]</span>
+<span class="s2">funcname   = sys.argv[2]</span>
+<span class="s2">ipath      = sys.argv[3]</span>
+<span class="s2">opath      = sys.argv[4]</span>
+<span class="s2">serializer = sys.argv[5]</span>
+
+<span class="s2">if serializer == &#39;json&#39;:</span>
+<span class="s2">    with open(ipath, &#39;r&#39;) as fo:</span>
+<span class="s2">        idict = json.load(fo, cls=DataDecoder)</span>
+<span class="s2">else:</span>
+<span class="s2">    with open(ipath, &#39;rb&#39;) as fo:</span>
+<span class="s2">        idict = pickle.load(fo)</span>
+
+<span class="s2">try:</span>
+<span class="s2">    args   = idict[&#39;args&#39;]</span>
+<span class="s2">    kwargs = idict[&#39;kwargs&#39;]</span>
+
+<span class="s2">    profile = cProfile.Profile()</span>
+<span class="s2">    profile.enable()</span>
+
+<span class="s2">    sys.path.insert(0, basedir)</span>
+<span class="s2">    parts = funcname.split(&#39;.&#39;)</span>
+
+<span class="s2">    if len(parts) &gt; 1:</span>
+<span class="s2">        mname = &#39;.&#39;.join(parts[:-1])</span>
+<span class="s2">        fname = parts[-1]</span>
+<span class="s2">        m = importlib.import_module(mname)</span>
+<span class="s2">        f = getattr(m, fname)</span>
+<span class="s2">    else:</span>
+<span class="s2">        raise Exception(&#39;Cannot import the function because no module name is specified.&#39;)</span>
+
+<span class="s2">    r = f(*args, **kwargs)</span>
+
+<span class="s2">    profile.disable()</span>
+
+<span class="s2">    stream = StringIO()</span>
+<span class="s2">    stats  = pstats.Stats(profile, stream=stream)</span>
+<span class="s2">    # stats.strip_dirs()</span>
+<span class="s2">    stats.sort_stats(1)</span>
+<span class="s2">    stats.print_stats(20)</span>
+
+<span class="s2">except Exception:</span>
+<span class="s2">    odict = </span><span class="si">{}</span>
+<span class="s2">    odict[&#39;error&#39;]      = traceback.format_exc()</span>
+<span class="s2">    odict[&#39;data&#39;]       = None</span>
+<span class="s2">    odict[&#39;profile&#39;]    = None</span>
+
+<span class="s2">else:</span>
+<span class="s2">    odict = </span><span class="si">{}</span>
+<span class="s2">    odict[&#39;error&#39;]      = None</span>
+<span class="s2">    odict[&#39;data&#39;]       = r</span>
+<span class="s2">    odict[&#39;profile&#39;]    = stream.getvalue()</span>
+
+<span class="s2">if serializer == &#39;json&#39;:</span>
+<span class="s2">    with open(opath, &#39;w+&#39;) as fo:</span>
+<span class="s2">        json.dump(odict, fo, cls=DataEncoder)</span>
+<span class="s2">else:</span>
+<span class="s2">    with open(opath, &#39;wb+&#39;) as fo:</span>
+<span class="s2">        # pickle.dump(odict, fo, protocol=pickle.HIGHEST_PROTOCOL)</span>
+<span class="s2">        pickle.dump(odict, fo, protocol=2)</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="XFunc"><a class="viewcode-back" href="../../../reference/generated/compas.rpc.XFunc.html#compas.rpc.XFunc">[docs]</a><span class="k">class</span> <span class="nc">XFunc</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for functions that turns them into externally run processes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    funcname : str</span>
+<span class="sd">        The full name of the function.</span>
+<span class="sd">    basedir : str, optional</span>
+<span class="sd">        A directory that should be added to the PYTHONPATH such that the function can be found.</span>
+<span class="sd">        Default is the curent directory.</span>
+<span class="sd">    tmpdir : str, optional</span>
+<span class="sd">        A directory that should be used for storing the IO files.</span>
+<span class="sd">        Default is the current directory.</span>
+<span class="sd">    delete_files : bool, optional</span>
+<span class="sd">        If True, the IO files will be deleted afterwards.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, information about the process will be displayed to the user.</span>
+<span class="sd">    callback : callable, optional</span>
+<span class="sd">        A function to be called eveytime the wrapped function prints output.</span>
+<span class="sd">        The first parameter passed to this function is the line printed by the</span>
+<span class="sd">        wrapped function. Additional parameters can be defined using `callback_args`.</span>
+<span class="sd">    callback_args : tuple, optional</span>
+<span class="sd">        Additional parameter for the callback function.</span>
+<span class="sd">    python : str, optional</span>
+<span class="sd">        The Python executable.</span>
+<span class="sd">        This can be a path to a specific executable (e.g. ``&#39;/opt/local/bin/python&#39;``)</span>
+<span class="sd">        or the name of an executable registered on the system `PATH` (e.g. ``&#39;pythonw&#39;``).</span>
+<span class="sd">    paths : list, optional</span>
+<span class="sd">        A list of paths to be added to the `PYTHONPATH` by the subprocess.</span>
+<span class="sd">    serializer : {&#39;json&#39;, &#39;pickle&#39;}, optional</span>
+<span class="sd">        The serialization mechnanism to be used to pass data between the caller and the subprocess.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : object</span>
+<span class="sd">        The object returned by the wrapped function.</span>
+<span class="sd">    profile : str</span>
+<span class="sd">        A profile of the call to the wrapped function.</span>
+<span class="sd">    error : str</span>
+<span class="sd">        A traceback of the exception raised during the wrapped function call.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    __call__(*args, **kwargs)</span>
+<span class="sd">        Call the wrapped function with the apropriate/related arguments and keyword arguments.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    To use the Python executable of a virtual environment, simply assign the path</span>
+<span class="sd">    to that executable to the `python` parameter. For example</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        fd_numpy = XFunc(&#39;compas.numerical.fd_numpy&#39;, python=&#39;/Users/brg/environments/py2/python&#39;)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    :mod:`compas.numerical` provides an implementation of the Force Density Method that</span>
+<span class="sd">    is based on Numpy and Scipy. This implementation is not directly available in</span>
+<span class="sd">    Rhino because Numpy and Scipy are not available for IronPython.</span>
+
+<span class="sd">    With :class:`compas.utilities.XFunc`, :func:`compas.numerical.fd_numpy` can be easily</span>
+<span class="sd">    wrapped in an external process and called as if it would be directly available.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import compas</span>
+<span class="sd">        import compas_rhino</span>
+
+<span class="sd">        from compas_rhino.artists import MeshArtist</span>
+<span class="sd">        from compas.datastructures import Mesh</span>
+<span class="sd">        from compas.utilities import XFunc</span>
+
+<span class="sd">        # make the function available as a wrapped function with the same call signature and return value as the original.</span>
+<span class="sd">        fd_numpy = XFunc(&#39;compas.numerical.fd_numpy&#39;)</span>
+
+<span class="sd">        mesh = Mesh.from_obj(compas.get(&#39;faces.obj&#39;))</span>
+
+<span class="sd">        mesh.update_default_vertex_attributes({&#39;is_fixed&#39;: False, &#39;px&#39;: 0.0, &#39;py&#39;: 0.0, &#39;pz&#39;: 0.0})</span>
+<span class="sd">        mesh.update_default_edge_attributes({&#39;q&#39;: 1.0})</span>
+
+<span class="sd">        for key, attr in mesh.vertices(True):</span>
+<span class="sd">            attr[&#39;is_fixed&#39;] = mesh.vertex_degree(key) == 2</span>
+
+<span class="sd">        vertex_index = mesh.vertex_index()</span>
+<span class="sd">        vertices     = mesh.vertices_attributes(&#39;xyz&#39;)</span>
+<span class="sd">        edges        = [(vertex_index[u], vertex_index[v]) for u, v in mesh.edges()]</span>
+<span class="sd">        fixed        = [vertex_index[vertex] for vertex in mesh.vertices_where({&#39;is_fixed&#39;: True})]</span>
+<span class="sd">        q            = mesh.edges_attribute(&#39;q&#39;)</span>
+<span class="sd">        loads        = mesh.vertices_attributes((&#39;px&#39;, &#39;py&#39;, &#39;pz&#39;))</span>
+
+<span class="sd">        xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)</span>
+
+<span class="sd">        for vertex, attr in mesh.vertices(True):</span>
+<span class="sd">            attr[&#39;x&#39;] = xyz[vertex][0]</span>
+<span class="sd">            attr[&#39;y&#39;] = xyz[vertex][1]</span>
+<span class="sd">            attr[&#39;z&#39;] = xyz[vertex][2]</span>
+
+<span class="sd">        artist = MeshArtist(mesh)</span>
+<span class="sd">        artist.draw_vertices()</span>
+<span class="sd">        artist.draw_edges()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">funcname</span><span class="p">,</span>
+        <span class="n">basedir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+        <span class="n">tmpdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delete_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">python</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">serializer</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+        <span class="n">argtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">kwargtypes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">restypes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_basedir</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdir</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_python</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_serializer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span> <span class="o">=</span> <span class="n">funcname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">basedir</span> <span class="o">=</span> <span class="n">basedir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmpdir</span> <span class="o">=</span> <span class="n">tmpdir</span> <span class="ow">or</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="s2">&quot;compas_xfunc&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_files</span> <span class="o">=</span> <span class="n">delete_files</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span> <span class="o">=</span> <span class="n">callback_args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">python</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">_os</span><span class="o">.</span><span class="n">select_python</span><span class="p">(</span><span class="n">python</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="n">paths</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serializer</span> <span class="o">=</span> <span class="n">serializer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="n">argtypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargtypes</span> <span class="o">=</span> <span class="n">kwargtypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restypes</span> <span class="o">=</span> <span class="n">restypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">basedir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_basedir</span>
+
+    <span class="nd">@basedir</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">basedir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basedir</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">basedir</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;basedir is not a directory: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">basedir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_basedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tmpdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdir</span>
+
+    <span class="nd">@tmpdir</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">tmpdir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tmpdir</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;tmpdir is not a directory: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tmpdir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s2">&quot;You do not have write access to &#39;tmpdir&#39;. Please set the &#39;tmpdir&#39; attribute to a different directory.&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tmpdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span>
+
+    <span class="nd">@callback</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+                <span class="n">callback</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">callback</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_python</span>
+
+    <span class="nd">@python</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_python</span> <span class="o">=</span> <span class="n">python</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">serializer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;{&#39;json&#39;, &#39;pickle&#39;}: Which serialization mechanism to use.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serializer</span>
+
+    <span class="nd">@serializer</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">serializer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serializer</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">serializer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;pickle&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;*serializer* should be one of {&#39;json&#39;, &#39;pickle&#39;}.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_serializer</span> <span class="o">=</span> <span class="n">serializer</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ipath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.in&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.out&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a call to the wrapped function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        **args : list</span>
+<span class="sd">            Positional arguments to be passed to the wrapped function.</span>
+<span class="sd">        **kwargs : dict, optional</span>
+<span class="sd">            Named arguments to be passed to the wrapped function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object or None</span>
+<span class="sd">            The data returned by the wrapped call.</span>
+<span class="sd">            The type of the return value depends on the implementation of the wrapped function.</span>
+<span class="sd">            If something went wrong the value is ``None``.</span>
+<span class="sd">            In this case, check the :attr:`XFunc.error` for more information.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if self.argtypes:</span>
+        <span class="c1">#     args = [arg for arg in args]</span>
+
+        <span class="c1"># if self.kwargtypes:</span>
+        <span class="c1">#     kwargs = {name: value for name, value in kwargs.items()}</span>
+
+        <span class="n">idict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span>
+            <span class="s2">&quot;kwargs&quot;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">,</span>
+            <span class="c1"># &#39;argtypes&#39;: self.argtypes,</span>
+            <span class="c1"># &#39;kwargtypes&#39;: self.kwargtypes,</span>
+            <span class="c1"># &#39;restypes&#39;: self.restypes</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ipath</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">idict</span><span class="p">,</span> <span class="n">fo</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DataEncoder</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ipath</span><span class="p">,</span> <span class="s2">&quot;wb+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">idict</span><span class="p">,</span> <span class="n">fo</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opath</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">env</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">_os</span><span class="o">.</span><span class="n">prepare_environment</span><span class="p">()</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">WRAPPER</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">funcname</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ipath</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opath</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">serializer</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Popen</span>
+
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+            <span class="n">process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">EnvironmentVariables</span><span class="o">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+                    <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">EnvironmentVariables</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">EnvironmentVariables</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">env</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+            <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">UseShellExecute</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">RedirectStandardOutput</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">RedirectStandardError</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">FileName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">python</span>
+            <span class="n">process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="s1">&#39;-u -c &quot;</span><span class="si">{0}</span><span class="s1">&quot; </span><span class="si">{1}</span><span class="s1"> </span><span class="si">{2}</span><span class="s1"> </span><span class="si">{3}</span><span class="s1"> </span><span class="si">{4}</span><span class="s1"> </span><span class="si">{5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">process</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
+            <span class="n">process</span><span class="o">.</span><span class="n">WaitForExit</span><span class="p">()</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">StandardOutput</span><span class="o">.</span><span class="n">ReadLine</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="c1"># stderr = p.StandardError.ReadToEnd()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">process_args</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">python</span><span class="p">,</span> <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">args</span>
+
+            <span class="n">process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">process_args</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+
+            <span class="k">while</span> <span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_args</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+                <span class="n">odict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fo</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DataDecoder</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+                <span class="n">odict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">odict</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="n">odict</span><span class="p">[</span><span class="s2">&quot;profile&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">odict</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_files</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ipath</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opath</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

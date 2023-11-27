@@ -553,7 +553,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="OFFReader"><a class="viewcode-back" href="../../../reference/generated/compas.files.OFFReader.html#compas.files.OFFReader">[docs]</a><span class="k">class</span> <span class="nc">OFFReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">OFFReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for reading raw geometric data from OFF files.</span>
 
 <span class="sd">    Parameters</span>
@@ -583,7 +583,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="OFFReader.open"><a class="viewcode-back" href="../../../reference/generated/compas.files.OFFReader.open.html#compas.files.OFFReader.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Open the file and read its contents.</span>
 
 <span class="sd">        Returns</span>
@@ -592,9 +592,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">_iotools</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
-<div class="viewcode-block" id="OFFReader.pre"><a class="viewcode-back" href="../../../reference/generated/compas.files.OFFReader.pre.html#compas.files.OFFReader.pre">[docs]</a>    <span class="k">def</span> <span class="nf">pre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">pre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pre-process the contents.</span>
 
 <span class="sd">        Returns</span>
@@ -623,9 +623,9 @@ document.write(`
                 <span class="n">is_continuation</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">is_continuation</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-<div class="viewcode-block" id="OFFReader.post"><a class="viewcode-back" href="../../../reference/generated/compas.files.OFFReader.post.html#compas.files.OFFReader.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Post-process the contents.</span>
 
 <span class="sd">        Returns</span>
@@ -633,9 +633,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">pass</span>
 
-<div class="viewcode-block" id="OFFReader.read"><a class="viewcode-back" href="../../../reference/generated/compas.files.OFFReader.read.html#compas.files.OFFReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the contents of the file, line by line.</span>
 
 <span class="sd">        OFF</span>
@@ -698,10 +698,10 @@ document.write(`
                 <span class="c1">#             break</span>
                 <span class="c1">#         face += [int(index) for index in parts]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="o">==</span> <span class="n">f</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div></div>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="OFFWriter"><a class="viewcode-back" href="../../../reference/generated/compas.files.OFFWriter.html#compas.files.OFFWriter">[docs]</a><span class="k">class</span> <span class="nc">OFFWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">OFFWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for writing geometric data to a OBJ file.</span>
 
 <span class="sd">    Parameters</span>
@@ -736,7 +736,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="OFFWriter.write"><a class="viewcode-back" href="../../../reference/generated/compas.files.OFFWriter.write.html#compas.files.OFFWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the meshes to the file.</span>
 
 <span class="sd">        Returns</span>
@@ -747,7 +747,7 @@ document.write(`
         <span class="k">with</span> <span class="n">_iotools</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_header</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_vertices</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write_faces</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_faces</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_write_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;OFF</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -769,7 +769,7 @@ document.write(`
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
             <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])))</span>
 </pre></div>
 
                 </article>

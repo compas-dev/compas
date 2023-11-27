@@ -559,7 +559,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="STLReader"><a class="viewcode-back" href="../../../reference/generated/compas.files.STLReader.html#compas.files.STLReader">[docs]</a><span class="k">class</span> <span class="nc">STLReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">STLReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for reading raw geometric data from STL files.</span>
 
 <span class="sd">    Parameters</span>
@@ -580,7 +580,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">facets</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<div class="viewcode-block" id="STLReader.read"><a class="viewcode-back" href="../../../reference/generated/compas.files.STLReader.read.html#compas.files.STLReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the data.</span>
 
 <span class="sd">        Returns</span>
@@ -606,7 +606,7 @@ document.write(`
                 <span class="k">raise</span>
             <span class="c1"># else, ascii parsing failed, try binary</span>
             <span class="n">is_binary</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_read_binary</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_binary</span><span class="p">()</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># ascii</span>
@@ -738,10 +738,10 @@ document.write(`
         <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_number_of_facets_binary</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_facet_binary</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">facets</span></div>
+        <span class="k">return</span> <span class="n">facets</span>
 
 
-<div class="viewcode-block" id="STLParser"><a class="viewcode-back" href="../../../reference/generated/compas.files.STLParser.html#compas.files.STLParser">[docs]</a><span class="k">class</span> <span class="nc">STLParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">STLParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for parsing data from a STL file.</span>
 
 <span class="sd">    The parser converts the raw geometric data of the file</span>
@@ -770,7 +770,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 
-<div class="viewcode-block" id="STLParser.parse"><a class="viewcode-back" href="../../../reference/generated/compas.files.STLParser.parse.html#compas.files.STLParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the the data found by the reader.</span>
 
 <span class="sd">        Returns</span>
@@ -796,10 +796,10 @@ document.write(`
                 <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gkey_index</span><span class="p">[</span><span class="n">gkey</span><span class="p">])</span>
             <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span>
 
 
-<div class="viewcode-block" id="STLWriter"><a class="viewcode-back" href="../../../reference/generated/compas.files.STLWriter.html#compas.files.STLWriter">[docs]</a><span class="k">class</span> <span class="nc">STLWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">STLWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for writing geometric data to a PLY file.</span>
 
 <span class="sd">    Parameters</span>
@@ -837,7 +837,7 @@ document.write(`
             <span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s2">&quot;xyz&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
-<div class="viewcode-block" id="STLWriter.write"><a class="viewcode-back" href="../../../reference/generated/compas.files.STLWriter.write.html#compas.files.STLWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the data to a file.</span>
 
 <span class="sd">        Returns</span>
@@ -857,7 +857,7 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_write_binary_header</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_write_binary_num_faces</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_write_binary_faces</span><span class="p">()</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_write_binary_faces</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_write_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;solid </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solid_name</span><span class="p">))</span>
@@ -892,7 +892,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;3f&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">normal</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;3f&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\0\0</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\0\0</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
                 </article>

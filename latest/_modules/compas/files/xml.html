@@ -648,7 +648,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="XMLReader"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLReader.html#compas.files.XMLReader">[docs]</a><span class="k">class</span> <span class="nc">XMLReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">XMLReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads XML files and strings.</span>
 
 <span class="sd">    Parameters</span>
@@ -661,7 +661,7 @@ document.write(`
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
 
-<div class="viewcode-block" id="XMLReader.from_file"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLReader.from_file.html#compas.files.XMLReader.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">tree_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a reader from a source file.</span>
 
@@ -677,9 +677,9 @@ document.write(`
 <span class="sd">        :class:`compas.files.XMLReader`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xml_impl</span><span class="o">.</span><span class="n">xml_from_file</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xml_impl</span><span class="o">.</span><span class="n">xml_from_file</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">))</span>
 
-<div class="viewcode-block" id="XMLReader.from_string"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLReader.from_string.html#compas.files.XMLReader.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tree_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a reader from a source text.</span>
 
@@ -695,10 +695,10 @@ document.write(`
 <span class="sd">        :class:`compas.files.XMLReader`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xml_impl</span><span class="o">.</span><span class="n">xml_from_string</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xml_impl</span><span class="o">.</span><span class="n">xml_from_string</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="XMLWriter"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLWriter.html#compas.files.XMLWriter">[docs]</a><span class="k">class</span> <span class="nc">XMLWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">XMLWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes an XML file from XML object.</span>
 
 <span class="sd">    Parameters</span>
@@ -711,7 +711,7 @@ document.write(`
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xml</span> <span class="o">=</span> <span class="n">xml</span>
 
-<div class="viewcode-block" id="XMLWriter.write"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLWriter.write.html#compas.files.XMLWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the meshes to the file.</span>
 
 <span class="sd">        Parameters</span>
@@ -726,9 +726,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 
-<div class="viewcode-block" id="XMLWriter.to_string"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLWriter.to_string.html#compas.files.XMLWriter.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the XML element tree to a string.</span>
 
 <span class="sd">        Parameters</span>
@@ -746,10 +746,10 @@ document.write(`
         <span class="n">rough_string</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">prettify</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">rough_string</span>
-        <span class="k">return</span> <span class="n">xml_impl</span><span class="o">.</span><span class="n">prettify_string</span><span class="p">(</span><span class="n">rough_string</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">xml_impl</span><span class="o">.</span><span class="n">prettify_string</span><span class="p">(</span><span class="n">rough_string</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="XMLElement"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLElement.html#compas.files.XMLElement">[docs]</a><span class="k">class</span> <span class="nc">XMLElement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">XMLElement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representing an XML element in the tree.</span>
 
 <span class="sd">    Parameters</span>
@@ -771,7 +771,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span> <span class="ow">or</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
 
-<div class="viewcode-block" id="XMLElement.get_root"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLElement.get_root.html#compas.files.XMLElement.get_root">[docs]</a>    <span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the root element.</span>
 
 <span class="sd">        Returns</span>
@@ -781,9 +781,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
         <span class="n">root</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
-        <span class="k">return</span> <span class="n">root</span></div>
+        <span class="k">return</span> <span class="n">root</span>
 
-<div class="viewcode-block" id="XMLElement.add_children"><a class="viewcode-back" href="../../../reference/generated/compas.files.XMLElement.add_children.html#compas.files.XMLElement.add_children">[docs]</a>    <span class="k">def</span> <span class="nf">add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add children to an element.</span>
 
 <span class="sd">        Parameters</span>
@@ -799,7 +799,7 @@ document.write(`
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
             <span class="n">subelement</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
             <span class="n">subelement</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span>
-            <span class="n">child</span><span class="o">.</span><span class="n">add_children</span><span class="p">(</span><span class="n">subelement</span><span class="p">)</span></div></div>
+            <span class="n">child</span><span class="o">.</span><span class="n">add_children</span><span class="p">(</span><span class="n">subelement</span><span class="p">)</span>
 </pre></div>
 
                 </article>

@@ -472,7 +472,11 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for compas.plugins</h1><div class="highlight"><pre>
-<span></span><span class="c1"># The COMPAS plugin system owes a lot to pluggy, the pytest plugin framework</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">COMPAS has an extensible architecture based on plugins that allows to</span>
+<span class="sd">customize and extend the functionality of the core framework.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># The COMPAS plugin system owes a lot to pluggy, the pytest plugin framework</span>
 <span class="c1"># There are portions of code loosely based on pluggy&#39;s</span>
 <span class="c1"># and while it is not strictly derivative work, we include</span>
 <span class="c1"># their license and copyright notice to give credit where credit is due.</span>
@@ -884,19 +888,19 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">PluginValidator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginValidator"><a class="viewcode-back" href="../../reference/generated/compas.plugins.PluginValidator.html#compas.plugins.PluginValidator">[docs]</a><span class="k">class</span> <span class="nc">PluginValidator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plugin Validator handles validation of plugins.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="n">manager</span>
 
-    <span class="k">def</span> <span class="nf">verify_requirement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requirement</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginValidator.verify_requirement"><a class="viewcode-back" href="../../reference/generated/compas.plugins.PluginValidator.verify_requirement.html#compas.plugins.PluginValidator.verify_requirement">[docs]</a>    <span class="k">def</span> <span class="nf">verify_requirement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">requirement</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">requirement</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">requirement</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">importer</span><span class="o">.</span><span class="n">check_importable</span><span class="p">(</span><span class="n">requirement</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">importer</span><span class="o">.</span><span class="n">check_importable</span><span class="p">(</span><span class="n">requirement</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">is_plugin_selectable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginValidator.is_plugin_selectable"><a class="viewcode-back" href="../../reference/generated/compas.plugins.PluginValidator.is_plugin_selectable.html#compas.plugins.PluginValidator.is_plugin_selectable">[docs]</a>    <span class="k">def</span> <span class="nf">is_plugin_selectable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;requires&quot;</span><span class="p">]:</span>
             <span class="n">importable_requirements</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verify_requirement</span><span class="p">(</span><span class="n">requirement</span><span class="p">)</span> <span class="k">for</span> <span class="n">requirement</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;requires&quot;</span><span class="p">])</span>
 
@@ -905,9 +909,9 @@ document.write(`
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Requirements not satisfied. Plugin will not be used: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">select_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension_point_url</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginValidator.select_plugin"><a class="viewcode-back" href="../../reference/generated/compas.plugins.PluginValidator.select_plugin.html#compas.plugins.PluginValidator.select_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">select_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension_point_url</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extension Point URL </span><span class="si">{}</span><span class="s2"> invoked. Will select a matching plugin&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
 
@@ -917,21 +921,21 @@ document.write(`
                 <span class="k">return</span> <span class="n">plugin</span>
 
         <span class="c1"># Nothing found, raise</span>
-        <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">(</span><span class="s2">&quot;Plugin not found for extension point URL: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">(</span><span class="s2">&quot;Plugin not found for extension point URL: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">collect_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension_point_url</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginValidator.collect_plugins"><a class="viewcode-back" href="../../reference/generated/compas.plugins.PluginValidator.collect_plugins.html#compas.plugins.PluginValidator.collect_plugins">[docs]</a>    <span class="k">def</span> <span class="nf">collect_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension_point_url</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extension Point URL </span><span class="si">{}</span><span class="s2"> invoked. Will select a matching plugin&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
 
         <span class="n">plugins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">plugin</span> <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_plugin_selectable</span><span class="p">(</span><span class="n">plugin</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">plugin</span> <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_plugin_selectable</span><span class="p">(</span><span class="n">plugin</span><span class="p">)]</span></div>
 
-    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="PluginValidator.ensure_implementations"><a class="viewcode-back" href="../../reference/generated/compas.plugins.PluginValidator.ensure_implementations.html#compas.plugins.PluginValidator.ensure_implementations">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">ensure_implementations</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;__isabstractmethod__&quot;</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">IncompletePluginImplError</span><span class="p">(</span><span class="s2">&quot;Abstract method not implemented: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="n">IncompletePluginImplError</span><span class="p">(</span><span class="s2">&quot;Abstract method not implemented: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div></div>
 
 
 <span class="n">plugin_manager</span> <span class="o">=</span> <span class="n">PluginManager</span><span class="p">()</span>

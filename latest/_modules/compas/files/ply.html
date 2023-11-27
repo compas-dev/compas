@@ -566,7 +566,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="PLYReader"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYReader.html#compas.files.PLYReader">[docs]</a><span class="k">class</span> <span class="nc">PLYReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PLYReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for reading raw geometric data from PLY files.</span>
 
 <span class="sd">    Parameters</span>
@@ -702,7 +702,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PLYReader.is_valid"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYReader.is_valid.html#compas.files.PLYReader.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that the file is valid by reading the header.</span>
 
 <span class="sd">        Returns</span>
@@ -713,9 +713,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_header</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_header</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_header</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="PLYReader.is_binary"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYReader.is_binary.html#compas.files.PLYReader.is_binary">[docs]</a>    <span class="k">def</span> <span class="nf">is_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that the file is in binary format.</span>
 
 <span class="sd">        Returns</span>
@@ -727,9 +727,9 @@ document.write(`
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;binary_little_endian&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="PLYReader.is_ascii"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYReader.is_ascii.html#compas.files.PLYReader.is_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">is_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that the file is in ASCII format.</span>
 
 <span class="sd">        Returns</span>
@@ -739,9 +739,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;ascii&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="PLYReader.read"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYReader.read.html#compas.files.PLYReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the contents of the file.</span>
 
 <span class="sd">        Returns</span>
@@ -753,7 +753,7 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;ascii&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_read_data</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_read_data_binary</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_data_binary</span><span class="p">()</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># read the header</span>
@@ -1048,10 +1048,10 @@ document.write(`
                     <span class="n">face</span><span class="p">[</span><span class="n">pname</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">pass</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PLYParser"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYParser.html#compas.files.PLYParser">[docs]</a><span class="k">class</span> <span class="nc">PLYParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PLYParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for parsing data from a OBJ file.</span>
 
 <span class="sd">    The parser converts the raw geometric data of the file</span>
@@ -1083,7 +1083,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PLYParser.parse"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYParser.parse.html#compas.files.PLYParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the contents found by a PLY file reader.</span>
 
 <span class="sd">        Returns</span>
@@ -1092,10 +1092,10 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vertex</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">vertex</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">vertex</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="s2">&quot;vertex_indices&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">faces</span><span class="p">]</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="s2">&quot;vertex_indices&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">faces</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="PLYWriter"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYWriter.html#compas.files.PLYWriter">[docs]</a><span class="k">class</span> <span class="nc">PLYWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PLYWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for writing geometric data to a PLY file.</span>
 
 <span class="sd">    Parameters</span>
@@ -1130,7 +1130,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="PLYWriter.write"><a class="viewcode-back" href="../../../reference/generated/compas.files.PLYWriter.write.html#compas.files.PLYWriter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the data to a file.</span>
 
 <span class="sd">        Returns</span>
@@ -1141,7 +1141,7 @@ document.write(`
         <span class="k">with</span> <span class="n">_iotools</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_header</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_vertices</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write_faces</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_faces</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_write_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;PLY</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1170,7 +1170,7 @@ document.write(`
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
             <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])))</span>
 </pre></div>
 
                 </article>
