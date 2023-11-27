@@ -33,4 +33,3 @@ Functions
 
     pluggable
     plugin
-    plugin_manager
