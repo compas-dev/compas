@@ -1,3 +1,7 @@
+"""
+This package provides sceneobject plugins for visualising COMPAS objects in Rhino.
+When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino sceneobject for each COMPAS object type.
+"""
 from __future__ import absolute_import
 
 from compas.plugins import plugin
@@ -23,7 +27,7 @@ from compas.geometry import Torus
 
 from compas.geometry import Curve
 from compas.geometry import Surface
-from compas.brep import Brep
+from compas.geometry import Brep
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
