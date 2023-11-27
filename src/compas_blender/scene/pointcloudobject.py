@@ -7,13 +7,13 @@ from compas.geometry import Point
 from compas.colors import Color
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
 
-class PointcloudArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing pointclouds in Blender.
+class PointcloudObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing pointclouds in Blender.
 
     Parameters
     ----------

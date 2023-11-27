@@ -10,11 +10,11 @@ from compas.colors import Color
 from compas_blender import conversions
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 
-class BoxArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing box shapes in Blender.
+class BoxObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing box shapes in Blender.
 
     Parameters
     ----------
@@ -34,7 +34,7 @@ class BoxArtist(BlenderArtist, GeometryObject):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         show_wire: bool = True,
     ) -> bpy.types.Object:
-        """Draw the box associated with the artist.
+        """Draw the box associated with the sceneobject.
 
         Parameters
         ----------

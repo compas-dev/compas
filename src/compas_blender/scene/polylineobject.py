@@ -7,13 +7,13 @@ from compas.geometry import Polyline
 from compas.colors import Color
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
 
-class PolylineArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing polylines in Blender.
+class PolylineObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing polylines in Blender.
 
     Parameters
     ----------

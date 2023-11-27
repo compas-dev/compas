@@ -18,13 +18,13 @@ from compas.geometry import scale_vector
 from compas.colors import Color
 
 from compas.scene import MeshObject as BaseMeshObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
 
-class MeshArtist(BlenderArtist, BaseMeshObject):
-    """Artist for drawing mesh data structures in Blender.
+class MeshObject(BlenderSceneObject, BaseMeshObject):
+    """Sceneobject for drawing mesh data structures in Blender.
 
     Parameters
     ----------

@@ -1,42 +1,46 @@
 from typing import Any
+from typing import List
 from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Curve
+from compas.geometry import Line
 from compas.colors import Color
+
 from compas_blender import conversions
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 
-class CurveArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing curves in Blender.
+class LineObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing lines in Blender.
 
     Parameters
     ----------
-    curve : :class:`compas.geometry.Curve`
-        A COMPAS curve.
+    line : :class:`compas.geometry.Line`
+        A COMPAS line.
     **kwargs : dict, optional
         Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.scene.BlenderSceneObject` and :class:`compas.scene.GeometryObject`.
 
     """
 
-    def __init__(self, curve: Curve, **kwargs: Any):
-        super().__init__(geometry=curve, **kwargs)
+    def __init__(self, line: Line, **kwargs: Any):
+        super().__init__(geometry=line, **kwargs)
 
     def draw(
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-    ) -> bpy.types.Object:
-        """Draw the curve.
+    ) -> List[bpy.types.Object]:
+        """Draw the line.
 
         Parameters
         ----------
         color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
-            The RGB color of the curve.
+            The RGB color of the box.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
 
@@ -47,9 +51,10 @@ class CurveArtist(BlenderArtist, GeometryObject):
         """
         name = self.geometry.name
         color = Color.coerce(color) or self.color
-        curve = conversions.nurbscurve_to_blender_curve(self.geometry)
+
+        curve = conversions.line_to_blender_curve(self.geometry)
 
         obj = self.create_object(curve, name=name)
-        self.update_object(obj, color=color, collection=collection)
+        self.update_object(obj, color=color, collection=collection, show_wire=True)
 
         return obj

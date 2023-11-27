@@ -15,14 +15,14 @@ from compas.geometry import centroid_points
 from compas.geometry import Line
 from compas.colors import Color
 
-from compas.scene import VolMeshObject as BaseArtist
-from .artist import BlenderArtist
+from compas.scene import VolMeshObject as BaseVolMeshObject
+from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
 
-class VolMeshArtist(BlenderArtist, BaseArtist):
-    """An artist for drawing volumetric mesh data structures in Blender.
+class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
+    """An sceneobject for drawing volumetric mesh data structures in Blender.
 
     Parameters
     ----------
@@ -103,7 +103,7 @@ class VolMeshArtist(BlenderArtist, BaseArtist):
             The default is None, in which case all cells are drawn.
         color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
             The color of the cells.
-            The default color is :attr:`VolMeshArtist.default_cellcolor`.
+            The default color is :attr:`VolMeshObject.default_cellcolor`.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
 

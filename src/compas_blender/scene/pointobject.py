@@ -7,11 +7,11 @@ from compas.geometry import Point
 from compas.colors import Color
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 
-class PointArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing points in Blender.
+class PointObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing points in Blender.
 
     Parameters
     ----------

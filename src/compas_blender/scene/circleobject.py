@@ -7,11 +7,11 @@ from compas.geometry import Circle
 from compas.colors import Color
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 
-class CircleArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing circles in Blender.
+class CircleObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing circles in Blender.
 
     Parameters
     ----------

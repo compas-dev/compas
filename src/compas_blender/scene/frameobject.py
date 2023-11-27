@@ -8,11 +8,11 @@ from compas.geometry import Frame
 from compas.colors import Color
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 
-class FrameArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing frames in Blender.
+class FrameObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing frames in Blender.
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ class FrameArtist(BlenderArtist, GeometryObject):
     **kwargs : dict, optional
         Additional keyword arguments.
         For more info,
-        see :class:`compas_blender.artists.BlenderArtist` and :class:`compas.artists.GeometryArtist`.
+        see :class:`compas_blender.scene.BlenderSceneObject` and :class:`compas.scene.GeometryObject`.
 
     Attributes
     ----------

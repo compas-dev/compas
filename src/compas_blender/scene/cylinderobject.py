@@ -1,67 +1,65 @@
-from typing import Optional
 from typing import Any
+from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Torus
+from compas.geometry import Cylinder
 from compas.colors import Color
-
-from compas.scene import GeometryObject
-from .artist import BlenderArtist
 
 from compas_blender import conversions
 
+from compas.scene import GeometryObject
+from .sceneobject import BlenderSceneObject
 
-class TorusArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing torus shapes in Blender.
+
+class CylinderObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing cylinder shapes in Blender.
 
     Parameters
     ----------
-    torus : :class:`compas.geometry.Torus`
-        A COMPAS torus.
+    cylinder : :class:`compas.geometry.Cylinder`
+        A COMPAS cylinder.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, torus: Torus, **kwargs: Any):
-        super().__init__(geometry=torus, **kwargs)
+    def __init__(self, cylinder: Cylinder, **kwargs: Any):
+        super().__init__(geometry=cylinder, **kwargs)
 
     def draw(
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-        u: Optional[int] = 16,
-        v: Optional[int] = 16,
+        u: int = 16,
         show_wire: bool = False,
         shade_smooth: bool = True,
     ) -> bpy.types.Object:
-        """Draw the torus associated with the artist.
+        """Draw the cylinder associated with the sceneobject.
 
         Parameters
         ----------
-        color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
-            The RGB color of the torus.
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
+            The RGB color of the cylinder.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
         u : int, optional
             Number of faces in the "u" direction.
-        v : int, optional
-            Number of faces in the "v" direction.
         show_wire : bool, optional
-            Display the wireframe of the torus.
+            Display the wireframe of the cylinder.
         shade_smooth : bool, optional
-            Display smooth shading on the torus.
+            Display smooth shading on the cylinder.
 
         Returns
         -------
-        :blender:`bpy.types.Curve`
+        :blender:`bpy.types.Object`
+            The objects created in Blender.
 
         """
         name = self.geometry.name
         color = Color.coerce(color) or self.color
 
-        vertices, faces = self.geometry.to_vertices_and_faces(u=u, v=v)
+        vertices, faces = self.geometry.to_vertices_and_faces(u=u)
         mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
         if shade_smooth:
             mesh.shade_smooth()

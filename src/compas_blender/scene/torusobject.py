@@ -1,48 +1,47 @@
 from typing import Optional
 from typing import Any
-from typing import List
 
 import bpy  # type: ignore
 
-from compas.geometry import Sphere
+from compas.geometry import Torus
 from compas.colors import Color
 
 from compas.scene import GeometryObject
-from .artist import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
 
-class SphereArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing sphere shapes in Blender.
+class TorusObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing torus shapes in Blender.
 
     Parameters
     ----------
-    sphere : :class:`compas.geometry.Sphere`
-        A COMPAS sphere.
+    torus : :class:`compas.geometry.Torus`
+        A COMPAS torus.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, sphere: Sphere, **kwargs: Any):
-        super().__init__(geometry=sphere, **kwargs)
+    def __init__(self, torus: Torus, **kwargs: Any):
+        super().__init__(geometry=torus, **kwargs)
 
     def draw(
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-        u: int = 16,
-        v: int = 16,
+        u: Optional[int] = 16,
+        v: Optional[int] = 16,
         show_wire: bool = False,
         shade_smooth: bool = True,
-    ) -> List[bpy.types.Object]:
-        """Draw the sphere associated with the artist.
+    ) -> bpy.types.Object:
+        """Draw the torus associated with the sceneobject.
 
         Parameters
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
-            The RGB color of the sphere.
+            The RGB color of the torus.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
         u : int, optional
@@ -50,14 +49,14 @@ class SphereArtist(BlenderArtist, GeometryObject):
         v : int, optional
             Number of faces in the "v" direction.
         show_wire : bool, optional
-            Display the wireframe of the sphere.
+            Display the wireframe of the torus.
         shade_smooth : bool, optional
-            Display smooth shading on the sphere.
+            Display smooth shading on the torus.
 
         Returns
         -------
-        list
-            The objects created in Blender.
+        :blender:`bpy.types.Curve`
+
         """
         name = self.geometry.name
         color = Color.coerce(color) or self.color

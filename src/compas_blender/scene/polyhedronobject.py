@@ -3,48 +3,48 @@ from typing import List
 from typing import Optional
 
 import bpy  # type: ignore
-
-from compas.geometry import Polygon
+from compas.geometry import Polyhedron
 from compas.colors import Color
+
+from compas.scene import GeometryObject
+from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
-from compas.scene import GeometryObject
-from .artist import BlenderArtist
 
-
-class PolygonArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing polygons in Blender.
+class PolyhedronObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing polyhedron shapes in Blender.
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon`
-        A COMPAS polygon.
+    polyhedron : :class:`compas.geometry.Polyhedron`
+        A COMPAS polyhedron.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, polygon: Polygon, **kwargs: Any):
-        super().__init__(geometry=polygon, **kwargs)
+    def __init__(self, polyhedron: Polyhedron, **kwargs: Any):
+        super().__init__(geometry=polyhedron, **kwargs)
 
     def draw(
-        self,
-        color: Optional[Color] = None,
-        collection: Optional[str] = None,
+        self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
     ) -> List[bpy.types.Object]:
-        """Draw the polygon.
+        """Draw the polyhedron associated with the sceneobject.
 
         Parameters
         ----------
         color : tuple[float, float, float] | tuple[int, int, int] | :class:`compas.colors.Color`, optional
-            The RGB color of the polygon.
+            The RGB color of the polyhedron.
         collection : str, optional
             The name of the Blender scene collection containing the created object(s).
+        show_wire : bool, optional
+            Display the wireframe of the polyhedron.
 
         Returns
         -------
         :blender:`bpy.types.Object`
+            The object created in Blender.
 
         """
         name = self.geometry.name
@@ -52,7 +52,8 @@ class PolygonArtist(BlenderArtist, GeometryObject):
 
         vertices, faces = self.geometry.to_vertices_and_faces()
         mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
+
         obj = self.create_object(mesh, name=name)
-        self.update_object(obj, color=color, collection=collection)
+        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
         return obj

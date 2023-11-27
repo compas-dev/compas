@@ -7,13 +7,13 @@ from compas.geometry import Surface
 from compas.colors import Color
 
 from compas.scene import GeometryObject
-from compas_blender.artists import BlenderArtist
+from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
 
-class SurfaceArtist(BlenderArtist, GeometryObject):
-    """Artist for drawing surfaces in Blender.
+class SurfaceObject(BlenderSceneObject, GeometryObject):
+    """Sceneobject for drawing surfaces in Blender.
 
     Parameters
     ----------

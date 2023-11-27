@@ -6,7 +6,7 @@ from compas.scene import SceneObject
 
 
 class GHSceneObject(SceneObject):
-    """Base class for all GH artists."""
+    """Base class for all GH sceneobjects."""
 
     def __init__(self, **kwargs):
         super(GHSceneObject, self).__init__(**kwargs)

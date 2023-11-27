@@ -64,7 +64,7 @@ class RhinoSceneObject(SceneObject):
             sc.doc.Groups.AddToGroup(group.Index, guids)
 
     def clear_layer(self):
-        """Clear the layer of the artist.
+        """Clear the layer of the sceneobject.
 
         Returns
         -------

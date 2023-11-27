@@ -12,20 +12,20 @@ from compas.geometry import Transformation
 from compas_blender import conversions
 
 
-class BlenderArtist(SceneObject):
-    """Base class for all Blender artists.
+class BlenderSceneObject(SceneObject):
+    """Base class for all Blender sceneobjects.
 
     Parameters
     ----------
     collection : str | :blender:`bpy.types.Collection`, optional
-        The Blender scene collection the object(s) created by the artist belong to.
+        The Blender scene collection the object(s) created by the sceneobject belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     Attributes
     ----------
     objects : list[:blender:`bpy.types.Object`]
-        The Blender objects created by the artist.
+        The Blender objects created by the sceneobject.
 
     """
 

@@ -193,7 +193,7 @@ class Part(Datastructure):
         """
         Returns a transformed copy of the part's geometry.
 
-        The returned type can be drawn with an Artist.
+        The returned type can be drawn with an sceneobject.
 
         Parameters
         ----------
