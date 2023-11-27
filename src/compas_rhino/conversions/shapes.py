@@ -71,7 +71,7 @@ def sphere_to_rhino(sphere):
     :rhino:`Rhino.Geometry.Sphere`
 
     """
-    return RhinoSphere(point_to_rhino(sphere.point), sphere.radius)
+    return RhinoSphere(point_to_rhino(sphere.frame.point), sphere.radius)
 
 
 def cone_to_rhino(cone):
