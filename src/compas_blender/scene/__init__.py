@@ -88,7 +88,7 @@ def register_sceneobjects():
 
 
 __all__ = [
-    "BlenderObject",
+    "BlenderSceneObject",
     "BoxObject",
     "CapsuleObject",
     "CircleObject",

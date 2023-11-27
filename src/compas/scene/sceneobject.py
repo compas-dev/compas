@@ -40,7 +40,6 @@ def register_sceneobjects():
 register_sceneobjects.__pluggable__ = True
 
 
-
 def is_viewer_open():
     """Returns True if an instance of the compas_view2 App is available.
 
