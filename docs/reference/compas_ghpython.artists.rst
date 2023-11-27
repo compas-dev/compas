@@ -7,10 +7,15 @@ compas_ghpython.artists
 
 .. rst-class:: lead
 
-None
+
+This package provides artist plugins for visualising COMPAS objects in Grasshopper.
+When working in GH Python components, :class:`compas.artists.Artist` will automatically use the corresponding GHPython artist for each COMPAS object type.
+
 
 Classes
 =======
+
+
 
 .. autosummary::
     :toctree: generated/

@@ -8,13 +8,13 @@ compas_blender.conversions
 .. rst-class:: lead
 
 
-This package provides a wide range of geometry objects and geometric algorithms
-independent from the geometry kernels of CAD software.
-
+This package provides functions to convert between COMPAS data/objects and Blender data/objects.
 
 
 Functions
 =========
+
+
 
 .. autosummary::
     :toctree: generated/

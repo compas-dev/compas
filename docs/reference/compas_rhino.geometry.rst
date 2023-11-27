@@ -8,11 +8,13 @@ compas_rhino.geometry
 .. rst-class:: lead
 
 
-This package defines various geometry plugin implementations using Rhino as a backend.
+This package provides plugins for various geometry pluggables using Rhino as the backend.
 
 
 Classes
 =======
+
+
 
 .. autosummary::
     :toctree: generated/
@@ -30,6 +32,8 @@ Classes
 
 Plugins
 =======
+
+Plugins provide implementations for pluggables. You can use the plugin directly, or through the pluggable.
 
 .. autosummary::
     :toctree: generated/

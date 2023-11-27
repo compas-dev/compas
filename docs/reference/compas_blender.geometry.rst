@@ -8,23 +8,13 @@ compas_blender.geometry
 .. rst-class:: lead
 
 
-This package provides a wide range of geometry objects and geometric algorithms
-independent from the geometry kernels of CAD software.
-
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BlenderCurve
-    BlenderNurbsCurve
+This package provides plugins for various geometry pluggables using Blender as the backend.
 
 
 Plugins
 =======
+
+Plugins provide implementations for pluggables. You can use the plugin directly, or through the pluggable.
 
 .. autosummary::
     :toctree: generated/
@@ -33,3 +23,6 @@ Plugins
     boolean_difference_mesh_mesh
     boolean_intersection_mesh_mesh
     boolean_union_mesh_mesh
+
+
+

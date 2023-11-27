@@ -8,12 +8,13 @@ compas_ghpython.components
 .. rst-class:: lead
 
 
-This package provides a wide range of geometry objects and geometric algorithms
-independent from the geometry kernels of CAD software.
+This package provides a small set of functions to easily install and uninstall user-defined GH Components.
 
 
 Functions
 =========
+
+
 
 .. autosummary::
     :toctree: generated/

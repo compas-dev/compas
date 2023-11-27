@@ -1,5 +1,5 @@
 # from pathlib import Path
-from compas import topology as module
+from compas_rhino import geometry as module
 
 TPL = """
 ********************************************************************************
