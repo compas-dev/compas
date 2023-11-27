@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overview: module code &#8212; compas</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Overview: module code</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="compas/artists/artist.html">compas.artists.artist</a></li>
+<li><a href="compas/artists/exceptions.html">compas.artists.exceptions</a></li>
+<li><a href="compas/artists/geometryartist.html">compas.artists.geometryartist</a></li>
+<li><a href="compas/artists/meshartist.html">compas.artists.meshartist</a></li>
+<li><a href="compas/artists/networkartist.html">compas.artists.networkartist</a></li>
+<li><a href="compas/artists/volmeshartist.html">compas.artists.volmeshartist</a></li>
+<li><a href="compas/colors/color.html">compas.colors.color</a></li>
+<li><a href="compas/colors/colordict.html">compas.colors.colordict</a></li>
+<li><a href="compas/colors/colormap.html">compas.colors.colormap</a></li>
+<li><a href="compas/data/data.html">compas.data.data</a></li>
+<li><a href="compas/data/encoders.html">compas.data.encoders</a></li>
+<li><a href="compas/data/exceptions.html">compas.data.exceptions</a></li>
+<li><a href="compas/data/json.html">compas.data.json</a></li>
+<li><a href="compas/datastructures/assembly/assembly.html">compas.datastructures.assembly.assembly</a></li>
+<li><a href="compas/datastructures/assembly/exceptions.html">compas.datastructures.assembly.exceptions</a></li>
+<li><a href="compas/datastructures/cell_network/cell_network.html">compas.datastructures.cell_network.cell_network</a></li>
+<li><a href="compas/datastructures/datastructure.html">compas.datastructures.datastructure</a></li>
+<li><a href="compas/datastructures/graph/graph.html">compas.datastructures.graph.graph</a></li>
+<li><a href="compas/datastructures/halfedge/halfedge.html">compas.datastructures.halfedge.halfedge</a></li>
+<li><a href="compas/datastructures/halfface/halfface.html">compas.datastructures.halfface.halfface</a></li>
+<li><a href="compas/datastructures/mesh/bbox.html">compas.datastructures.mesh.bbox</a></li>
+<li><a href="compas/datastructures/mesh/bbox_numpy.html">compas.datastructures.mesh.bbox_numpy</a></li>
+<li><a href="compas/datastructures/mesh/clean.html">compas.datastructures.mesh.clean</a></li>
+<li><a href="compas/datastructures/mesh/combinatorics.html">compas.datastructures.mesh.combinatorics</a></li>
+<li><a href="compas/datastructures/mesh/contours_numpy.html">compas.datastructures.mesh.contours_numpy</a></li>
+<li><a href="compas/datastructures/mesh/conway.html">compas.datastructures.mesh.conway</a></li>
+<li><a href="compas/datastructures/mesh/curvature.html">compas.datastructures.mesh.curvature</a></li>
+<li><a href="compas/datastructures/mesh/descent_numpy.html">compas.datastructures.mesh.descent_numpy</a></li>
+<li><a href="compas/datastructures/mesh/duality.html">compas.datastructures.mesh.duality</a></li>
+<li><a href="compas/datastructures/mesh/explode.html">compas.datastructures.mesh.explode</a></li>
+<li><a href="compas/datastructures/mesh/geodesics_numpy.html">compas.datastructures.mesh.geodesics_numpy</a></li>
+<li><a href="compas/datastructures/mesh/geometry.html">compas.datastructures.mesh.geometry</a></li>
+<li><a href="compas/datastructures/mesh/join.html">compas.datastructures.mesh.join</a></li>
+<li><a href="compas/datastructures/mesh/matrices.html">compas.datastructures.mesh.matrices</a></li>
+<li><a href="compas/datastructures/mesh/mesh.html">compas.datastructures.mesh.mesh</a></li>
+<li><a href="compas/datastructures/mesh/offset.html">compas.datastructures.mesh.offset</a></li>
+<li><a href="compas/datastructures/mesh/operations/collapse.html">compas.datastructures.mesh.operations.collapse</a></li>
+<li><a href="compas/datastructures/mesh/operations/insert.html">compas.datastructures.mesh.operations.insert</a></li>
+<li><a href="compas/datastructures/mesh/operations/merge.html">compas.datastructures.mesh.operations.merge</a></li>
+<li><a href="compas/datastructures/mesh/operations/split.html">compas.datastructures.mesh.operations.split</a></li>
+<li><a href="compas/datastructures/mesh/operations/substitute.html">compas.datastructures.mesh.operations.substitute</a></li>
+<li><a href="compas/datastructures/mesh/operations/swap.html">compas.datastructures.mesh.operations.swap</a></li>
+<li><a href="compas/datastructures/mesh/operations/weld.html">compas.datastructures.mesh.operations.weld</a></li>
+<li><a href="compas/datastructures/mesh/orientation.html">compas.datastructures.mesh.orientation</a></li>
+<li><a href="compas/datastructures/mesh/planarisation.html">compas.datastructures.mesh.planarisation</a></li>
+<li><a href="compas/datastructures/mesh/pull_numpy.html">compas.datastructures.mesh.pull_numpy</a></li>
+<li><a href="compas/datastructures/mesh/remesh.html">compas.datastructures.mesh.remesh</a></li>
+<li><a href="compas/datastructures/mesh/slice.html">compas.datastructures.mesh.slice</a></li>
+<li><a href="compas/datastructures/mesh/smoothing.html">compas.datastructures.mesh.smoothing</a></li>
+<li><a href="compas/datastructures/mesh/smoothing_numpy.html">compas.datastructures.mesh.smoothing_numpy</a></li>
+<li><a href="compas/datastructures/mesh/subdivision.html">compas.datastructures.mesh.subdivision</a></li>
+<li><a href="compas/datastructures/mesh/transformations.html">compas.datastructures.mesh.transformations</a></li>
+<li><a href="compas/datastructures/mesh/transformations_numpy.html">compas.datastructures.mesh.transformations_numpy</a></li>
+<li><a href="compas/datastructures/mesh/triangulation.html">compas.datastructures.mesh.triangulation</a></li>
+<li><a href="compas/datastructures/mesh/trimesh_samplepoints_numpy.html">compas.datastructures.mesh.trimesh_samplepoints_numpy</a></li>
+<li><a href="compas/datastructures/network/combinatorics.html">compas.datastructures.network.combinatorics</a></li>
+<li><a href="compas/datastructures/network/complementarity.html">compas.datastructures.network.complementarity</a></li>
+<li><a href="compas/datastructures/network/duality.html">compas.datastructures.network.duality</a></li>
+<li><a href="compas/datastructures/network/explode.html">compas.datastructures.network.explode</a></li>
+<li><a href="compas/datastructures/network/matrices.html">compas.datastructures.network.matrices</a></li>
+<li><a href="compas/datastructures/network/network.html">compas.datastructures.network.network</a></li>
+<li><a href="compas/datastructures/network/operations/join.html">compas.datastructures.network.operations.join</a></li>
+<li><a href="compas/datastructures/network/operations/split.html">compas.datastructures.network.operations.split</a></li>
+<li><a href="compas/datastructures/network/planarity.html">compas.datastructures.network.planarity</a></li>
+<li><a href="compas/datastructures/network/smoothing.html">compas.datastructures.network.smoothing</a></li>
+<li><a href="compas/datastructures/network/transformations.html">compas.datastructures.network.transformations</a></li>
+<li><a href="compas/datastructures/network/traversal.html">compas.datastructures.network.traversal</a></li>
+<li><a href="compas/datastructures/tree/tree.html">compas.datastructures.tree.tree</a></li>
+<li><a href="compas/datastructures/volmesh/bbox.html">compas.datastructures.volmesh.bbox</a></li>
+<li><a href="compas/datastructures/volmesh/transformations.html">compas.datastructures.volmesh.transformations</a></li>
+<li><a href="compas/datastructures/volmesh/volmesh.html">compas.datastructures.volmesh.volmesh</a></li>
+<li><a href="compas/files/gltf/gltf.html">compas.files.gltf.gltf</a></li>
+<li><a href="compas/files/gltf/gltf_content.html">compas.files.gltf.gltf_content</a></li>
+<li><a href="compas/files/gltf/gltf_exporter.html">compas.files.gltf.gltf_exporter</a></li>
+<li><a href="compas/files/gltf/gltf_mesh.html">compas.files.gltf.gltf_mesh</a></li>
+<li><a href="compas/files/gltf/gltf_parser.html">compas.files.gltf.gltf_parser</a></li>
+<li><a href="compas/files/gltf/gltf_reader.html">compas.files.gltf.gltf_reader</a></li>
+<li><a href="compas/files/obj.html">compas.files.obj</a></li>
+<li><a href="compas/files/off.html">compas.files.off</a></li>
+<li><a href="compas/files/ply.html">compas.files.ply</a></li>
+<li><a href="compas/files/stl.html">compas.files.stl</a></li>
+<li><a href="compas/files/urdf.html">compas.files.urdf</a></li>
+<li><a href="compas/files/xml.html">compas.files.xml</a></li>
+<li><a href="compas/geometry/_core/_algebra.html">compas.geometry._core._algebra</a></li>
+<li><a href="compas/geometry/_core/analytical.html">compas.geometry._core.analytical</a></li>
+<li><a href="compas/geometry/_core/angles.html">compas.geometry._core.angles</a></li>
+<li><a href="compas/geometry/_core/centroids.html">compas.geometry._core.centroids</a></li>
+<li><a href="compas/geometry/_core/constructors.html">compas.geometry._core.constructors</a></li>
+<li><a href="compas/geometry/_core/distance.html">compas.geometry._core.distance</a></li>
+<li><a href="compas/geometry/_core/kdtree.html">compas.geometry._core.kdtree</a></li>
+<li><a href="compas/geometry/_core/matrices.html">compas.geometry._core.matrices</a></li>
+<li><a href="compas/geometry/_core/normals.html">compas.geometry._core.normals</a></li>
+<li><a href="compas/geometry/_core/nurbs.html">compas.geometry._core.nurbs</a></li>
+<li><a href="compas/geometry/_core/predicates_2.html">compas.geometry._core.predicates_2</a></li>
+<li><a href="compas/geometry/_core/predicates_3.html">compas.geometry._core.predicates_3</a></li>
+<li><a href="compas/geometry/_core/quaternions.html">compas.geometry._core.quaternions</a></li>
+<li><a href="compas/geometry/_core/size.html">compas.geometry._core.size</a></li>
+<li><a href="compas/geometry/_core/tangent.html">compas.geometry._core.tangent</a></li>
+<li><a href="compas/geometry/_core/transformations.html">compas.geometry._core.transformations</a></li>
+<li><a href="compas/geometry/_core/transformations_numpy.html">compas.geometry._core.transformations_numpy</a></li>
+<li><a href="compas/geometry/bbox.html">compas.geometry.bbox</a></li>
+<li><a href="compas/geometry/bbox_numpy.html">compas.geometry.bbox_numpy</a></li>
+<li><a href="compas/geometry/bestfit.html">compas.geometry.bestfit</a></li>
+<li><a href="compas/geometry/bestfit_numpy.html">compas.geometry.bestfit_numpy</a></li>
+<li><a href="compas/geometry/booleans.html">compas.geometry.booleans</a></li>
+<li><a href="compas/geometry/brep/brep.html">compas.geometry.brep.brep</a></li>
+<li><a href="compas/geometry/brep/edge.html">compas.geometry.brep.edge</a></li>
+<li><a href="compas/geometry/brep/errors.html">compas.geometry.brep.errors</a></li>
+<li><a href="compas/geometry/brep/face.html">compas.geometry.brep.face</a></li>
+<li><a href="compas/geometry/brep/loop.html">compas.geometry.brep.loop</a></li>
+<li><a href="compas/geometry/brep/trim.html">compas.geometry.brep.trim</a></li>
+<li><a href="compas/geometry/brep/vertex.html">compas.geometry.brep.vertex</a></li>
+<li><a href="compas/geometry/curves/arc.html">compas.geometry.curves.arc</a></li>
+<li><a href="compas/geometry/curves/bezier.html">compas.geometry.curves.bezier</a></li>
+<li><a href="compas/geometry/curves/circle.html">compas.geometry.curves.circle</a></li>
+<li><a href="compas/geometry/curves/curve.html">compas.geometry.curves.curve</a></li>
+<li><a href="compas/geometry/curves/ellipse.html">compas.geometry.curves.ellipse</a></li>
+<li><a href="compas/geometry/curves/hyperbola.html">compas.geometry.curves.hyperbola</a></li>
+<li><a href="compas/geometry/curves/line.html">compas.geometry.curves.line</a></li>
+<li><a href="compas/geometry/curves/nurbs.html">compas.geometry.curves.nurbs</a></li>
+<li><a href="compas/geometry/curves/parabola.html">compas.geometry.curves.parabola</a></li>
+<li><a href="compas/geometry/curves/polyline.html">compas.geometry.curves.polyline</a></li>
+<li><a href="compas/geometry/frame.html">compas.geometry.frame</a></li>
+<li><a href="compas/geometry/geometry.html">compas.geometry.geometry</a></li>
+<li><a href="compas/geometry/hull.html">compas.geometry.hull</a></li>
+<li><a href="compas/geometry/hull_numpy.html">compas.geometry.hull_numpy</a></li>
+<li><a href="compas/geometry/icp_numpy.html">compas.geometry.icp_numpy</a></li>
+<li><a href="compas/geometry/interpolation/barycentric.html">compas.geometry.interpolation.barycentric</a></li>
+<li><a href="compas/geometry/interpolation/coons.html">compas.geometry.interpolation.coons</a></li>
+<li><a href="compas/geometry/interpolation/tweening.html">compas.geometry.interpolation.tweening</a></li>
+<li><a href="compas/geometry/intersections.html">compas.geometry.intersections</a></li>
+<ul><li><a href="compas/geometry/intersections/intersections.html">compas.geometry.intersections.intersections</a></li>
+</ul><li><a href="compas/geometry/offset.html">compas.geometry.offset</a></li>
+<li><a href="compas/geometry/plane.html">compas.geometry.plane</a></li>
+<li><a href="compas/geometry/point.html">compas.geometry.point</a></li>
+<li><a href="compas/geometry/pointcloud.html">compas.geometry.pointcloud</a></li>
+<li><a href="compas/geometry/polygon.html">compas.geometry.polygon</a></li>
+<li><a href="compas/geometry/polyhedron.html">compas.geometry.polyhedron</a></li>
+<li><a href="compas/geometry/projection.html">compas.geometry.projection</a></li>
+<li><a href="compas/geometry/quadmesh_planarize.html">compas.geometry.quadmesh_planarize</a></li>
+<li><a href="compas/geometry/quaternion.html">compas.geometry.quaternion</a></li>
+<li><a href="compas/geometry/reflection.html">compas.geometry.reflection</a></li>
+<li><a href="compas/geometry/rotation.html">compas.geometry.rotation</a></li>
+<li><a href="compas/geometry/scale.html">compas.geometry.scale</a></li>
+<li><a href="compas/geometry/shapes/box.html">compas.geometry.shapes.box</a></li>
+<li><a href="compas/geometry/shapes/capsule.html">compas.geometry.shapes.capsule</a></li>
+<li><a href="compas/geometry/shapes/cone.html">compas.geometry.shapes.cone</a></li>
+<li><a href="compas/geometry/shapes/cylinder.html">compas.geometry.shapes.cylinder</a></li>
+<li><a href="compas/geometry/shapes/shape.html">compas.geometry.shapes.shape</a></li>
+<li><a href="compas/geometry/shapes/sphere.html">compas.geometry.shapes.sphere</a></li>
+<li><a href="compas/geometry/shapes/torus.html">compas.geometry.shapes.torus</a></li>
+<li><a href="compas/geometry/shear.html">compas.geometry.shear</a></li>
+<li><a href="compas/geometry/surfaces/conical.html">compas.geometry.surfaces.conical</a></li>
+<li><a href="compas/geometry/surfaces/cylindrical.html">compas.geometry.surfaces.cylindrical</a></li>
+<li><a href="compas/geometry/surfaces/nurbs.html">compas.geometry.surfaces.nurbs</a></li>
+<li><a href="compas/geometry/surfaces/planar.html">compas.geometry.surfaces.planar</a></li>
+<li><a href="compas/geometry/surfaces/spherical.html">compas.geometry.surfaces.spherical</a></li>
+<li><a href="compas/geometry/surfaces/surface.html">compas.geometry.surfaces.surface</a></li>
+<li><a href="compas/geometry/surfaces/toroidal.html">compas.geometry.surfaces.toroidal</a></li>
+<li><a href="compas/geometry/transformation.html">compas.geometry.transformation</a></li>
+<li><a href="compas/geometry/translation.html">compas.geometry.translation</a></li>
+<li><a href="compas/geometry/triangulation.html">compas.geometry.triangulation</a></li>
+<ul><li><a href="compas/geometry/triangulation/delaunay.html">compas.geometry.triangulation.delaunay</a></li>
+<li><a href="compas/geometry/triangulation/delaunay_numpy.html">compas.geometry.triangulation.delaunay_numpy</a></li>
+<li><a href="compas/geometry/triangulation/earclip.html">compas.geometry.triangulation.earclip</a></li>
+</ul><li><a href="compas/geometry/trimesh_curvature.html">compas.geometry.trimesh_curvature</a></li>
+<li><a href="compas/geometry/trimesh_descent_numpy.html">compas.geometry.trimesh_descent_numpy</a></li>
+<li><a href="compas/geometry/trimesh_geodistance.html">compas.geometry.trimesh_geodistance</a></li>
+<li><a href="compas/geometry/trimesh_gradient_numpy.html">compas.geometry.trimesh_gradient_numpy</a></li>
+<li><a href="compas/geometry/trimesh_isolines.html">compas.geometry.trimesh_isolines</a></li>
+<li><a href="compas/geometry/trimesh_matrices.html">compas.geometry.trimesh_matrices</a></li>
+<li><a href="compas/geometry/trimesh_parametrisation.html">compas.geometry.trimesh_parametrisation</a></li>
+<li><a href="compas/geometry/trimesh_remeshing.html">compas.geometry.trimesh_remeshing</a></li>
+<li><a href="compas/geometry/trimesh_slicing.html">compas.geometry.trimesh_slicing</a></li>
+<li><a href="compas/geometry/vector.html">compas.geometry.vector</a></li>
+<li><a href="compas/numerical/contours.html">compas.numerical.contours</a></li>
+<li><a href="compas/numerical/linalg.html">compas.numerical.linalg</a></li>
+<li><a href="compas/numerical/matrices.html">compas.numerical.matrices</a></li>
+<li><a href="compas/numerical/pca_numpy.html">compas.numerical.pca_numpy</a></li>
+<li><a href="compas/plugins.html">compas.plugins</a></li>
+<li><a href="compas/rpc/dispatcher.html">compas.rpc.dispatcher</a></li>
+<li><a href="compas/rpc/errors.html">compas.rpc.errors</a></li>
+<li><a href="compas/rpc/proxy.html">compas.rpc.proxy</a></li>
+<li><a href="compas/rpc/server.html">compas.rpc.server</a></li>
+<li><a href="compas/topology/combinatorics.html">compas.topology.combinatorics</a></li>
+<li><a href="compas/topology/connectivity.html">compas.topology.connectivity</a></li>
+<li><a href="compas/topology/orientation.html">compas.topology.orientation</a></li>
+<li><a href="compas/topology/orientation_numpy.html">compas.topology.orientation_numpy</a></li>
+<li><a href="compas/topology/traversal.html">compas.topology.traversal</a></li>
+<li><a href="compas_blender/artists/artist.html">compas_blender.artists.artist</a></li>
+<li><a href="compas_blender/artists/boxartist.html">compas_blender.artists.boxartist</a></li>
+<li><a href="compas_blender/artists/capsuleartist.html">compas_blender.artists.capsuleartist</a></li>
+<li><a href="compas_blender/artists/circleartist.html">compas_blender.artists.circleartist</a></li>
+<li><a href="compas_blender/artists/coneartist.html">compas_blender.artists.coneartist</a></li>
+<li><a href="compas_blender/artists/curveartist.html">compas_blender.artists.curveartist</a></li>
+<li><a href="compas_blender/artists/cylinderartist.html">compas_blender.artists.cylinderartist</a></li>
+<li><a href="compas_blender/artists/frameartist.html">compas_blender.artists.frameartist</a></li>
+<li><a href="compas_blender/artists/lineartist.html">compas_blender.artists.lineartist</a></li>
+<li><a href="compas_blender/artists/meshartist.html">compas_blender.artists.meshartist</a></li>
+<li><a href="compas_blender/artists/networkartist.html">compas_blender.artists.networkartist</a></li>
+<li><a href="compas_blender/artists/pointartist.html">compas_blender.artists.pointartist</a></li>
+<li><a href="compas_blender/artists/pointcloudartist.html">compas_blender.artists.pointcloudartist</a></li>
+<li><a href="compas_blender/artists/polygonartist.html">compas_blender.artists.polygonartist</a></li>
+<li><a href="compas_blender/artists/polyhedronartist.html">compas_blender.artists.polyhedronartist</a></li>
+<li><a href="compas_blender/artists/polylineartist.html">compas_blender.artists.polylineartist</a></li>
+<li><a href="compas_blender/artists/sphereartist.html">compas_blender.artists.sphereartist</a></li>
+<li><a href="compas_blender/artists/surfaceartist.html">compas_blender.artists.surfaceartist</a></li>
+<li><a href="compas_blender/artists/torusartist.html">compas_blender.artists.torusartist</a></li>
+<li><a href="compas_blender/artists/vectorartist.html">compas_blender.artists.vectorartist</a></li>
+<li><a href="compas_blender/artists/volmeshartist.html">compas_blender.artists.volmeshartist</a></li>
+<li><a href="compas_blender/conversions/colors.html">compas_blender.conversions.colors</a></li>
+<li><a href="compas_blender/conversions/curves.html">compas_blender.conversions.curves</a></li>
+<li><a href="compas_blender/conversions/geometry.html">compas_blender.conversions.geometry</a></li>
+<li><a href="compas_blender/conversions/meshes.html">compas_blender.conversions.meshes</a></li>
+<li><a href="compas_blender/conversions/surfaces.html">compas_blender.conversions.surfaces</a></li>
+<li><a href="compas_blender/conversions/transformations.html">compas_blender.conversions.transformations</a></li>
+<li><a href="compas_blender/geometry/booleans.html">compas_blender.geometry.booleans</a></li>
+<li><a href="compas_blender/geometry/curves/curve.html">compas_blender.geometry.curves.curve</a></li>
+<li><a href="compas_blender/geometry/curves/nurbs.html">compas_blender.geometry.curves.nurbs</a></li>
+<li><a href="compas_ghpython/artists/artist.html">compas_ghpython.artists.artist</a></li>
+<li><a href="compas_ghpython/artists/boxartist.html">compas_ghpython.artists.boxartist</a></li>
+<li><a href="compas_ghpython/artists/capsuleartist.html">compas_ghpython.artists.capsuleartist</a></li>
+<li><a href="compas_ghpython/artists/circleartist.html">compas_ghpython.artists.circleartist</a></li>
+<li><a href="compas_ghpython/artists/coneartist.html">compas_ghpython.artists.coneartist</a></li>
+<li><a href="compas_ghpython/artists/curveartist.html">compas_ghpython.artists.curveartist</a></li>
+<li><a href="compas_ghpython/artists/cylinderartist.html">compas_ghpython.artists.cylinderartist</a></li>
+<li><a href="compas_ghpython/artists/ellipseartist.html">compas_ghpython.artists.ellipseartist</a></li>
+<li><a href="compas_ghpython/artists/frameartist.html">compas_ghpython.artists.frameartist</a></li>
+<li><a href="compas_ghpython/artists/lineartist.html">compas_ghpython.artists.lineartist</a></li>
+<li><a href="compas_ghpython/artists/meshartist.html">compas_ghpython.artists.meshartist</a></li>
+<li><a href="compas_ghpython/artists/networkartist.html">compas_ghpython.artists.networkartist</a></li>
+<li><a href="compas_ghpython/artists/pointartist.html">compas_ghpython.artists.pointartist</a></li>
+<li><a href="compas_ghpython/artists/polygonartist.html">compas_ghpython.artists.polygonartist</a></li>
+<li><a href="compas_ghpython/artists/polyhedronartist.html">compas_ghpython.artists.polyhedronartist</a></li>
+<li><a href="compas_ghpython/artists/polylineartist.html">compas_ghpython.artists.polylineartist</a></li>
+<li><a href="compas_ghpython/artists/sphereartist.html">compas_ghpython.artists.sphereartist</a></li>
+<li><a href="compas_ghpython/artists/surfaceartist.html">compas_ghpython.artists.surfaceartist</a></li>
+<li><a href="compas_ghpython/artists/torusartist.html">compas_ghpython.artists.torusartist</a></li>
+<li><a href="compas_ghpython/artists/vectorartist.html">compas_ghpython.artists.vectorartist</a></li>
+<li><a href="compas_ghpython/artists/volmeshartist.html">compas_ghpython.artists.volmeshartist</a></li>
+<li><a href="compas_ghpython/components.html">compas_ghpython.components</a></li>
+<li><a href="compas_rhino/artists/artist.html">compas_rhino.artists.artist</a></li>
+<li><a href="compas_rhino/artists/boxartist.html">compas_rhino.artists.boxartist</a></li>
+<li><a href="compas_rhino/artists/brepartist.html">compas_rhino.artists.brepartist</a></li>
+<li><a href="compas_rhino/artists/capsuleartist.html">compas_rhino.artists.capsuleartist</a></li>
+<li><a href="compas_rhino/artists/circleartist.html">compas_rhino.artists.circleartist</a></li>
+<li><a href="compas_rhino/artists/coneartist.html">compas_rhino.artists.coneartist</a></li>
+<li><a href="compas_rhino/artists/curveartist.html">compas_rhino.artists.curveartist</a></li>
+<li><a href="compas_rhino/artists/cylinderartist.html">compas_rhino.artists.cylinderartist</a></li>
+<li><a href="compas_rhino/artists/ellipseartist.html">compas_rhino.artists.ellipseartist</a></li>
+<li><a href="compas_rhino/artists/frameartist.html">compas_rhino.artists.frameartist</a></li>
+<li><a href="compas_rhino/artists/lineartist.html">compas_rhino.artists.lineartist</a></li>
+<li><a href="compas_rhino/artists/meshartist.html">compas_rhino.artists.meshartist</a></li>
+<li><a href="compas_rhino/artists/networkartist.html">compas_rhino.artists.networkartist</a></li>
+<li><a href="compas_rhino/artists/planeartist.html">compas_rhino.artists.planeartist</a></li>
+<li><a href="compas_rhino/artists/pointartist.html">compas_rhino.artists.pointartist</a></li>
+<li><a href="compas_rhino/artists/polygonartist.html">compas_rhino.artists.polygonartist</a></li>
+<li><a href="compas_rhino/artists/polyhedronartist.html">compas_rhino.artists.polyhedronartist</a></li>
+<li><a href="compas_rhino/artists/polylineartist.html">compas_rhino.artists.polylineartist</a></li>
+<li><a href="compas_rhino/artists/sphereartist.html">compas_rhino.artists.sphereartist</a></li>
+<li><a href="compas_rhino/artists/surfaceartist.html">compas_rhino.artists.surfaceartist</a></li>
+<li><a href="compas_rhino/artists/torusartist.html">compas_rhino.artists.torusartist</a></li>
+<li><a href="compas_rhino/artists/vectorartist.html">compas_rhino.artists.vectorartist</a></li>
+<li><a href="compas_rhino/artists/volmeshartist.html">compas_rhino.artists.volmeshartist</a></li>
+<li><a href="compas_rhino/conversions/breps.html">compas_rhino.conversions.breps</a></li>
+<li><a href="compas_rhino/conversions/curves.html">compas_rhino.conversions.curves</a></li>
+<li><a href="compas_rhino/conversions/exceptions.html">compas_rhino.conversions.exceptions</a></li>
+<li><a href="compas_rhino/conversions/extrusions.html">compas_rhino.conversions.extrusions</a></li>
+<li><a href="compas_rhino/conversions/geometry.html">compas_rhino.conversions.geometry</a></li>
+<li><a href="compas_rhino/conversions/meshes.html">compas_rhino.conversions.meshes</a></li>
+<li><a href="compas_rhino/conversions/shapes.html">compas_rhino.conversions.shapes</a></li>
+<li><a href="compas_rhino/conversions/surfaces.html">compas_rhino.conversions.surfaces</a></li>
+<li><a href="compas_rhino/conversions/transformations.html">compas_rhino.conversions.transformations</a></li>
+<li><a href="compas_rhino/forms/base.html">compas_rhino.forms.base</a></li>
+<li><a href="compas_rhino/forms/browser.html">compas_rhino.forms.browser</a></li>
+<li><a href="compas_rhino/forms/chart.html">compas_rhino.forms.chart</a></li>
+<li><a href="compas_rhino/forms/etoforms/image.html">compas_rhino.forms.etoforms.image</a></li>
+<li><a href="compas_rhino/forms/etoforms/propertylist.html">compas_rhino.forms.etoforms.propertylist</a></li>
+<li><a href="compas_rhino/forms/etoforms/settings.html">compas_rhino.forms.etoforms.settings</a></li>
+<li><a href="compas_rhino/forms/etoforms/text.html">compas_rhino.forms.etoforms.text</a></li>
+<li><a href="compas_rhino/forms/slider.html">compas_rhino.forms.slider</a></li>
+<li><a href="compas_rhino/geometry/booleans.html">compas_rhino.geometry.booleans</a></li>
+<li><a href="compas_rhino/geometry/brep/brep.html">compas_rhino.geometry.brep.brep</a></li>
+<li><a href="compas_rhino/geometry/brep/edge.html">compas_rhino.geometry.brep.edge</a></li>
+<li><a href="compas_rhino/geometry/brep/face.html">compas_rhino.geometry.brep.face</a></li>
+<li><a href="compas_rhino/geometry/brep/loop.html">compas_rhino.geometry.brep.loop</a></li>
+<li><a href="compas_rhino/geometry/brep/trim.html">compas_rhino.geometry.brep.trim</a></li>
+<li><a href="compas_rhino/geometry/brep/vertex.html">compas_rhino.geometry.brep.vertex</a></li>
+<li><a href="compas_rhino/geometry/curves/nurbs.html">compas_rhino.geometry.curves.nurbs</a></li>
+<li><a href="compas_rhino/geometry/surfaces/nurbs.html">compas_rhino.geometry.surfaces.nurbs</a></li>
+<li><a href="compas_rhino/geometry/trimesh_curvature.html">compas_rhino.geometry.trimesh_curvature</a></li>
+<li><a href="compas_rhino/geometry/trimesh_slicing.html">compas_rhino.geometry.trimesh_slicing</a></li>
+</ul>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

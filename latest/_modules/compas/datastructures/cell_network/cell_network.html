@@ -1,0 +1,1791 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>compas.datastructures.cell_network.cell_network &#8212; compas</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/compas/datastructures/cell_network/cell_network';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">compas.datastructures.cell_network.cell_network</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for compas.datastructures.cell_network.cell_network</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">HalfFace</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polyhedron</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_polyhedron</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normal_polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">volume_polyhedron</span>
+<span class="kn">from</span> <span class="nn">compas.topology</span> <span class="kn">import</span> <span class="n">face_adjacency</span>
+
+
+<div class="viewcode-block" id="CellNetwork"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.html#compas.datastructures.CellNetwork">[docs]</a><span class="k">class</span> <span class="nc">CellNetwork</span><span class="p">(</span><span class="n">HalfFace</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Geometric implementation of a data structure for a collection of mixed topologic entities such as cells, faces, edges and nodes.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.datastructures import CellNetwork</span>
+<span class="sd">    &gt;&gt;&gt; cell_network = CellNetwork()</span>
+<span class="sd">    &gt;&gt;&gt; vertices = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; faces = [[0, 1, 2, 3], [0, 3, 5, 4],[3, 2, 6, 5], [2, 1, 7, 6],[1, 0, 4, 7],[4, 5, 6, 7]]</span>
+<span class="sd">    &gt;&gt;&gt; cells = [[0, 1, 2, 3, 4, 5]]</span>
+<span class="sd">    &gt;&gt;&gt; [network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]</span>
+<span class="sd">    &gt;&gt;&gt; [cell_network.add_face(fverts) for fverts in faces]</span>
+<span class="sd">    &gt;&gt;&gt; [cell_network.add_cell(fkeys) for fkeys in cells]</span>
+<span class="sd">    &gt;&gt;&gt; cell_network</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name: str, optional</span>
+<span class="sd">        The name of the data structure.</span>
+<span class="sd">    default_vertex_attributes: dict, optional</span>
+<span class="sd">        Default values for vertex attributes.</span>
+<span class="sd">    default_edge_attributes: dict, optional</span>
+<span class="sd">        Default values for edge attributes.</span>
+<span class="sd">    default_face_attributes: dict, optional</span>
+<span class="sd">        Default values for face attributes.</span>
+<span class="sd">    default_cell_attributes: dict, optional</span>
+<span class="sd">        Default values for cell attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">default_vertex_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">default_edge_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">default_face_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">default_cell_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">_default_vertex_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+        <span class="n">_default_edge_attributes</span> <span class="o">=</span> <span class="n">default_edge_attributes</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">_default_face_attributes</span> <span class="o">=</span> <span class="n">default_face_attributes</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">_default_cell_attributes</span> <span class="o">=</span> <span class="n">default_cell_attributes</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">default_vertex_attributes</span><span class="p">:</span>
+            <span class="n">_default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_vertex_attributes</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CellNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;CellNetwork&quot;</span><span class="p">,</span>
+            <span class="n">default_vertex_attributes</span><span class="o">=</span><span class="n">_default_vertex_attributes</span><span class="p">,</span>
+            <span class="n">default_edge_attributes</span><span class="o">=</span><span class="n">_default_edge_attributes</span><span class="p">,</span>
+            <span class="n">default_face_attributes</span><span class="o">=</span><span class="n">_default_face_attributes</span><span class="p">,</span>
+            <span class="n">default_cell_attributes</span><span class="o">=</span><span class="n">_default_cell_attributes</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;&lt;CellNetwork with </span><span class="si">{}</span><span class="s2"> vertices, </span><span class="si">{}</span><span class="s2"> faces, </span><span class="si">{}</span><span class="s2"> cells, </span><span class="si">{}</span><span class="s2"> edges&gt;&quot;</span>
+        <span class="k">return</span> <span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">number_of_cells</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># vertex</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.add_vertex"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_vertex.html#compas.datastructures.CellNetwork.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a vertex and specify its attributes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key : hashable, optional</span>
+<span class="sd">            The identifier of the vertex.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        attr_dict : dict, optional</span>
+<span class="sd">            A dictionary of vertex attributes.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        **kwattr : dict, optional</span>
+<span class="sd">            A dictionary of additional attributes compiled of remaining named arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hashable</span>
+<span class="sd">            The identifier of the vertex.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CellNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">key</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># vertex geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.vertex_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertex_coordinates.html#compas.datastructures.CellNetwork.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinates of a vertex.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            The axes alon which to take the coordinates.</span>
+<span class="sd">            Should be a combination of x, y, and z.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[float]</span>
+<span class="sd">            Coordinates of the vertex.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CellNetwork.vertices_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertices_coordinates.html#compas.datastructures.CellNetwork.vertices_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinates of multiple vertices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertices : list of int</span>
+<span class="sd">            The vertex identifiers.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            The axes alon which to take the coordinates.</span>
+<span class="sd">            Should be a combination of x, y, and z.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of list[float]</span>
+<span class="sd">            Coordinates of the vertices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CellNetwork.vertex_point"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertex_point.html#compas.datastructures.CellNetwork.vertex_point">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the point representation of a vertex.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.vertices_points"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertices_points.html#compas.datastructures.CellNetwork.vertices_points">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the point representation of multiple vertices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">         vertices : list of int</span>
+<span class="sd">            The vertex identifiers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of :class:`compas.geometry.Point`</span>
+<span class="sd">            The points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># edge</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.add_edge"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_edge.html#compas.datastructures.CellNetwork.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an edge and specify its attributes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : hashable</span>
+<span class="sd">            The identifier of the first node of the edge.</span>
+<span class="sd">        v : hashable</span>
+<span class="sd">            The identifier of the second node of the edge.</span>
+<span class="sd">        attr_dict : dict[str, Any], optional</span>
+<span class="sd">            A dictionary of edge attributes.</span>
+<span class="sd">        **kwattr : dict[str, Any], optional</span>
+<span class="sd">            A dictionary of additional attributes compiled of remaining named arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple[hashable, hashable]</span>
+<span class="sd">            The identifier of the edge.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If either of the nodes of the edge does not exist.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot add edge </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2"> has no vertex </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot add edge </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2"> has no vertex </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+
+        <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_attribute.html#compas.datastructures.CellNetwork.edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the attribute.</span>
+<span class="sd">        value : object, optional</span>
+<span class="sd">            The value of the attribute.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object | None</span>
+<span class="sd">            The value of the attribute, or None when the function is used as a &quot;setter&quot;.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If the edge does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edges.html#compas.datastructures.CellNetwork.edges">[docs]</a>    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the edges of the cell network.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : bool, optional</span>
+<span class="sd">            If True, yield the edge attributes in addition to the edge identifiers.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]</span>
+<span class="sd">            If `data` is False, the next edge identifier (u, v).</span>
+<span class="sd">            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">seen</span> <span class="ow">or</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">attr</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># edge geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.edge_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_coordinates.html#compas.datastructures.CellNetwork.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinates of the start and end point of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            The axes along which the coordinates should be included.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple[list[float], list[float]]</span>
+<span class="sd">            The coordinates of the start point.</span>
+<span class="sd">            The coordinates of the end point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_start"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_start.html#compas.datastructures.CellNetwork.edge_start">[docs]</a>    <span class="k">def</span> <span class="nf">edge_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the start point of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The start point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_end"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_end.html#compas.datastructures.CellNetwork.edge_end">[docs]</a>    <span class="k">def</span> <span class="nf">edge_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the end point of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The end point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_vector"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_vector.html#compas.datastructures.CellNetwork.edge_vector">[docs]</a>    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vector of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Vector`</span>
+<span class="sd">            The vector from start to end.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="o">.</span><span class="n">from_start_end</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_direction"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_direction.html#compas.datastructures.CellNetwork.edge_direction">[docs]</a>    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the direction vector of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Vector`</span>
+<span class="sd">            The direction vector of the edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">edge</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_line"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_line.html#compas.datastructures.CellNetwork.edge_line">[docs]</a>    <span class="k">def</span> <span class="nf">edge_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the line representation of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Line`</span>
+<span class="sd">            The line.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Line</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_length"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_length.html#compas.datastructures.CellNetwork.edge_length">[docs]</a>    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the length of an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The length of the edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># edge topology</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.edge_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_faces.html#compas.datastructures.CellNetwork.edge_faces">[docs]</a>    <span class="k">def</span> <span class="nf">edge_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the faces adjacent to an edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : tuple[int, int]</span>
+<span class="sd">            The edge identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            The identifiers of the adjacent faces.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="n">faces</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+            <span class="n">faces</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edges_no_face"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edges_no_face.html#compas.datastructures.CellNetwork.edges_no_face">[docs]</a>    <span class="k">def</span> <span class="nf">edges_no_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the edges that are not part of a face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            The edges without face.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">{</span><span class="n">edge</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_faces</span><span class="p">(</span><span class="n">edge</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.non_manifold_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.non_manifold_edges.html#compas.datastructures.CellNetwork.non_manifold_edges">[docs]</a>    <span class="k">def</span> <span class="nf">non_manifold_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the edges that belong to more than two faces.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            The edges without face.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">{</span><span class="n">edge</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_faces</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># faces</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.add_face"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_face.html#compas.datastructures.CellNetwork.add_face">[docs]</a>    <span class="k">def</span> <span class="nf">add_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a face to the cell network.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertices : list[int]</span>
+<span class="sd">            A list of ordered vertex keys representing the face.</span>
+<span class="sd">            For every vertex that does not yet exist, a new vertex is created.</span>
+<span class="sd">        fkey : int, optional</span>
+<span class="sd">            The face identifier.</span>
+<span class="sd">        attr_dict : dict[str, Any], optional</span>
+<span class="sd">            dictionary of halfface attributes.</span>
+<span class="sd">        **kwattr : dict[str, Any], optional</span>
+<span class="sd">            A dictionary of additional attributes compiled of remaining named arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The key of the face.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`add_vertex`, :meth:`add_cell`, :meth:`add_edge`</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        If no key is provided for the face, one is generated</span>
+<span class="sd">        automatically. An automatically generated key is an integer that increments</span>
+<span class="sd">        the highest integer value of any key used so far by 1.</span>
+
+<span class="sd">        If a key with an integer value is provided that is higher than the current</span>
+<span class="sd">        highest integer key value, then the highest integer value is updated accordingly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_halfface</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="n">fkey</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_edges</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fkey</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_attribute.html#compas.datastructures.CellNetwork.face_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The face identifier.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the attribute.</span>
+<span class="sd">        value : object, optional</span>
+<span class="sd">            The value of the attribute.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object | None</span>
+<span class="sd">            The value of the attribute, or None when the function is used as a &quot;setter&quot;.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If the face does not exist.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`unset_face_attribute`</span>
+<span class="sd">        :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`</span>
+<span class="sd">        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`cell_attribute`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">face</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">face</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># face geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.face_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_vertices.html#compas.datastructures.CellNetwork.face_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The vertices of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            Ordered vertex identifiers.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_coordinates.html#compas.datastructures.CellNetwork.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            The axes alon which to take the coordinates.</span>
+<span class="sd">            Should be a combination of x, y, and z.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[list[float]]</span>
+<span class="sd">            The coordinates of the vertices of the face.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`</span>
+<span class="sd">        :meth:`face_area`, :meth:`face_flatness`, :meth:`face_aspect_ratio`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_points"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_points.html#compas.datastructures.CellNetwork.face_points">[docs]</a>    <span class="k">def</span> <span class="nf">face_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the points of the vertices of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[:class:`compas.geometry.Point`]</span>
+<span class="sd">            The points of the vertices of the face.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_polygon"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_polygon.html#compas.datastructures.CellNetwork.face_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">face_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the polygon of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Polygon`</span>
+<span class="sd">            The polygon of the face.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`face_points`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_points</span><span class="p">(</span><span class="n">face</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_normal"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_normal.html#compas.datastructures.CellNetwork.face_normal">[docs]</a>    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the oriented normal of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+<span class="sd">        unitized : bool, optional</span>
+<span class="sd">            If True, unitize the normal vector.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Vector`</span>
+<span class="sd">            The normal vector.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_centroid`, :meth:`face_center`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_centroid"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_centroid.html#compas.datastructures.CellNetwork.face_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the centroid of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The coordinates of the centroid.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_center`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_center"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_center.html#compas.datastructures.CellNetwork.face_center">[docs]</a>    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the center of mass of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The coordinates of the center of mass.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_area"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_area.html#compas.datastructures.CellNetwork.face_area">[docs]</a>    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the oriented area of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The non-oriented area of the face.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`face_flatness`, :meth:`face_aspect_ratio`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span></div>
+
+    <span class="n">halfface_area</span> <span class="o">=</span> <span class="n">face_area</span>
+    <span class="n">halfface_centroid</span> <span class="o">=</span> <span class="n">face_centroid</span>
+    <span class="n">halfface_center</span> <span class="o">=</span> <span class="n">face_center</span>
+    <span class="n">halfface_coordinates</span> <span class="o">=</span> <span class="n">face_coordinates</span>
+    <span class="n">halfface_normal</span> <span class="o">=</span> <span class="n">face_normal</span>
+
+<div class="viewcode-block" id="CellNetwork.mesh_from_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.mesh_from_faces.html#compas.datastructures.CellNetwork.mesh_from_faces">[docs]</a>    <span class="k">def</span> <span class="nf">mesh_from_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a mesh from a list of faces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        faces : list</span>
+<span class="sd">            A list of face identifiers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.datastructures.Mesh`</span>
+<span class="sd">            A mesh.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faces_vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">faces_vertices</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">mesh</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="n">fkey</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mesh</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># face topology</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.face_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_edges.html#compas.datastructures.CellNetwork.face_edges">[docs]</a>    <span class="k">def</span> <span class="nf">face_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_neighbors.html#compas.datastructures.CellNetwork.face_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">face_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the neighbors of a face across its edges.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fkey : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            The identifiers of the neighboring faces.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_edges</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
+            <span class="n">nbrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_faces</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="p">{</span><span class="n">fkey</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="CellNetwork.edge_face_adjacency"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_face_adjacency.html#compas.datastructures.CellNetwork.edge_face_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">edge_face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an adjacency where adjacency[edge] = {face1, face2}.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        faces : list of int, optional</span>
+<span class="sd">            The faces for which to compute the adjacency, defaults to all faces in the datastructure</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary dict[edge] = face key</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
+        <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_edges</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="n">v</span> <span class="k">else</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">:</span>
+                    <span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">adjacency</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_adjacency"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_adjacency.html#compas.datastructures.CellNetwork.face_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a face adjacency dictionary from a list of faces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        faces : list</span>
+<span class="sd">            A list of faces.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A face adjacency dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
+        <span class="n">faces_vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({</span><span class="n">v</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces_vertices</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">face</span><span class="p">}</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1"># unique, but keep order</span>
+        <span class="k">return</span> <span class="n">face_adjacency</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_cells"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_cells.html#compas.datastructures.CellNetwork.face_cells">[docs]</a>    <span class="k">def</span> <span class="nf">face_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the cells connected to a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fkey : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            The identifiers of the cells connected to the face.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="p">{</span><span class="n">cell</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_opposite_cell</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span> <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.faces_no_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.faces_no_cell.html#compas.datastructures.CellNetwork.faces_no_cell">[docs]</a>    <span class="k">def</span> <span class="nf">faces_no_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the faces that are not part of a cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            The faces without cell.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_cells</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.is_halfface_on_boundary"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.is_halfface_on_boundary.html#compas.datastructures.CellNetwork.is_halfface_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">is_halfface_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that a face is on the boundary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the face is on the boundary.</span>
+<span class="sd">            False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">cu</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">cv</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">cu</span> <span class="o">+</span> <span class="n">cv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># only one of them</span></div>
+
+    <span class="n">is_face_on_boundary</span> <span class="o">=</span> <span class="n">is_halfface_on_boundary</span>
+
+<div class="viewcode-block" id="CellNetwork.faces_on_boundaries"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.faces_on_boundaries.html#compas.datastructures.CellNetwork.faces_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">faces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halffaces_on_boundaries</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CellNetwork.face_cell_adjacency"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_cell_adjacency.html#compas.datastructures.CellNetwork.face_cell_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">face_cell_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an adjacency where adjacency[face] = [cell1, cell2].</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        faces : list of int, optional</span>
+<span class="sd">            The faces for which to compute the adjacency, defaults to all faces in the datastructure.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
+        <span class="n">adjacency</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_cells</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">):</span>
+                <span class="n">adjacency</span><span class="p">[</span><span class="n">face</span><span class="p">]</span> <span class="o">=</span> <span class="n">cells</span>
+        <span class="k">return</span> <span class="n">adjacency</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># cell</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.add_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_cell.html#compas.datastructures.CellNetwork.add_cell">[docs]</a>    <span class="k">def</span> <span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">ckey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a cell to the cell network object.</span>
+
+<span class="sd">        In order to add a valid cell to the network, the faces must form a closed mesh.</span>
+<span class="sd">        If the faces do not form a closed mesh, the cell is not added to the network.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        faces : list[int]</span>
+<span class="sd">            The face keys of the cell.</span>
+<span class="sd">        ckey : int, optional</span>
+<span class="sd">            The cell identifier.</span>
+<span class="sd">        attr_dict : dict[str, Any], optional</span>
+<span class="sd">            A dictionary of cell attributes.</span>
+<span class="sd">        **kwattr : dict[str, Any], optional</span>
+<span class="sd">            A dictionary of additional attributes compiled of remaining named arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            The key of the cell.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the provided cell key is of an unhashable type.</span>
+
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        If no key is provided for the cell, one is generated</span>
+<span class="sd">        automatically. An automatically generated key is an integer that increments</span>
+<span class="sd">        the highest integer value of any key used so far by 1.</span>
+
+<span class="sd">        If a key with an integer value is provided that is higher than the current</span>
+<span class="sd">        highest integer key value, then the highest integer value is updated accordingly.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">faces</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+
+        <span class="c1"># 1. Check if the faces form a closed cell</span>
+        <span class="c1">#    Note: We cannot use mesh.is_closed() here because it only works if the faces are unified</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edge_faces</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">edge_faces</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_face_adjacency</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot add cell, faces </span><span class="si">{}</span><span class="s2"> do not form a closed cell.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="c1"># 2. Check if the faces can be unified</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh_from_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">unify_cycles</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot add cell, faces </span><span class="si">{}</span><span class="s2"> can not be unified.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+            <span class="k">return</span>
+
+        <span class="c1"># 3. Check if the faces are oriented correctly</span>
+        <span class="c1">#    If the volume of the polyhedron is negative, we need to flip the faces</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">()</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="n">volume_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">volume</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">flip_cycles</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">ckey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ckey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">ckey</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ckey</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="n">ckey</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">ckey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cell_attribute</span><span class="p">(</span><span class="n">ckey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">ckey</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">ckey</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ckey</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">ckey</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkey</span>
+        <span class="k">return</span> <span class="n">ckey</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># cell geometry</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.cell_points"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_points.html#compas.datastructures.CellNetwork.cell_points">[docs]</a>    <span class="k">def</span> <span class="nf">cell_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the points of the vertices of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            The identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[:class:`compas.geometry.Point`]</span>
+<span class="sd">            The points of the vertices of the cell.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`cell_polygon`, :meth:`cell_centroid`, :meth:`cell_center`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="CellNetwork.cell_centroid"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_centroid.html#compas.datastructures.CellNetwork.cell_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">cell_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the centroid of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            The identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The coordinates of the centroid.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`cell_center`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.cell_center"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_center.html#compas.datastructures.CellNetwork.cell_center">[docs]</a>    <span class="k">def</span> <span class="nf">cell_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the center of mass of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            The identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The coordinates of the center of mass.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`cell_centroid`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.cell_vertex_normal"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_vertex_normal.html#compas.datastructures.CellNetwork.cell_vertex_normal">[docs]</a>    <span class="k">def</span> <span class="nf">cell_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the normal vector at the vertex of a boundary cell as the weighted average of the</span>
+<span class="sd">        normals of the neighboring faces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            The identifier of the vertex of the cell.</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Vector`</span>
+<span class="sd">            The components of the normal vector.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cell_faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_halffaces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">if</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">cell_faces</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CellNetwork.cell_polyhedron"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_polyhedron.html#compas.datastructures.CellNetwork.cell_polyhedron">[docs]</a>    <span class="k">def</span> <span class="nf">cell_polyhedron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a polyhedron from the vertices and faces of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            The identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Polyhedron`</span>
+<span class="sd">            The polyhedron.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CellNetwork.cell_to_vertices_and_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_to_vertices_and_faces.html#compas.datastructures.CellNetwork.cell_to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">cell_to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vertices and faces of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            Identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[list[float]]</span>
+<span class="sd">            A list of vertices, represented by their XYZ coordinates,</span>
+<span class="sd">        list[list[int]]</span>
+<span class="sd">            A list of faces, with each face a list of vertex indices.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`cell_to_mesh`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vertex_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">)}</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
+
+<div class="viewcode-block" id="CellNetwork.cell_to_mesh"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_to_mesh.html#compas.datastructures.CellNetwork.cell_to_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">cell_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a mesh object from from a cell of a cell network.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : int</span>
+<span class="sd">            Identifier of the cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.datastructures.Mesh`</span>
+<span class="sd">            A mesh object.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`cell_to_vertices_and_faces`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># cell topology</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.cells_on_boundaries"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cells_on_boundaries.html#compas.datastructures.CellNetwork.cells_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">cells_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the cells on the boundary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+<span class="sd">            The cells of the boundary.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`vertices_on_boundaries`, :meth:`faces_on_boundaries`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces_on_boundaries</span><span class="p">():</span>
+            <span class="n">cells</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_cells</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># data</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of structured data representing the cell network data object.</span>
+
+<span class="sd">        Note that some of the data stored internally in the data structure object is not included in the dictionary representation of the object.</span>
+<span class="sd">        This is the case for data that is considered private and/or redundant.</span>
+<span class="sd">        Specifically, the plane dictionary are not included.</span>
+<span class="sd">        This is because the information in these dictionaries can be reconstructed from the other data.</span>
+<span class="sd">        Therefore, to keep the dictionary representation as compact as possible, these dictionaries are not included.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            The structured data representing the cell network.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">:</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">c</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">]:</span>
+                    <span class="n">faces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>
+            <span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+            <span class="s2">&quot;dva&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">,</span>
+            <span class="s2">&quot;dea&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">,</span>
+            <span class="s2">&quot;dfa&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">,</span>
+            <span class="s2">&quot;dca&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="p">,</span>
+            <span class="s2">&quot;vertex&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">,</span>
+            <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="n">cell</span><span class="p">,</span>
+            <span class="s2">&quot;face&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">,</span>
+            <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">,</span>
+            <span class="s2">&quot;face_data&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">,</span>
+            <span class="s2">&quot;cell_data&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">,</span>
+            <span class="s2">&quot;max_vertex&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span><span class="p">,</span>
+            <span class="s2">&quot;max_face&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span><span class="p">,</span>
+            <span class="s2">&quot;max_cell&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="CellNetwork.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.from_data.html#compas.datastructures.CellNetwork.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">cell_network</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">cell_network</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">cell_network</span></div>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">vertex</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;vertex&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cell&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">face</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;face&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">edge</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dva&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dea&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dfa&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dca&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">edge</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">face_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;face_data&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">face_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_halfface</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">cell_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cell_data&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">ckey</span><span class="p">,</span> <span class="n">faces</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">cell_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">ckey</span><span class="o">=</span><span class="n">ckey</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_vertex&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_face&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_cell&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># extraction</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="CellNetwork.to_network"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.to_network.html#compas.datastructures.CellNetwork.to_network">[docs]</a>    <span class="k">def</span> <span class="nf">to_network</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the cell network to a network.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.datastructures.Network`</span>
+<span class="sd">            A network object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">vertex</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">network</span></div></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

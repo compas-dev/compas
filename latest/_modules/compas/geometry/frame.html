@@ -1,0 +1,1259 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>compas.geometry.frame &#8212; compas</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../../../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/compas/geometry/frame';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../../../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">compas.geometry.frame</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for compas.geometry.frame</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">argmax</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">axis_angle_vector_from_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">basis_vectors_from_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">decompose_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">euler_angles_from_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">matrix_from_axis_angle_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">matrix_from_basis_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">matrix_from_euler_angles</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">matrix_from_quaternion</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">quaternion_from_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Transformation</span>
+
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">.quaternion</span> <span class="kn">import</span> <span class="n">Quaternion</span>
+
+
+<div class="viewcode-block" id="Frame"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.html#compas.geometry.Frame">[docs]</a><span class="k">class</span> <span class="nc">Frame</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A frame is defined by a base point and two orthonormal base vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : [float, float, float] | :class:`compas.geometry.Point`</span>
+<span class="sd">        The origin of the frame.</span>
+<span class="sd">    xaxis : [float, float, float] | :class:`compas.geometry.Vector`, optional</span>
+<span class="sd">        The x-axis of the frame. Defaults to the unit X vector.</span>
+<span class="sd">    yaxis : [float, float, float] | :class:`compas.geometry.Vector`, optional</span>
+<span class="sd">        The y-axis of the frame. Defaults to the unit Y vector.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    axes : list of :class:`compas.geometry.Vector`, read-only</span>
+<span class="sd">        The XYZ axes of the frame.</span>
+<span class="sd">    axis_angle_vector : :class:`compas.geometry.Vector`, read-only</span>
+<span class="sd">        The axis-angle vector representing the rotation of the frame.</span>
+<span class="sd">    normal : :class:`compas.geometry.Vector`, read-only</span>
+<span class="sd">        The normal of the base plane of the frame.</span>
+<span class="sd">    point : :class:`compas.geometry.Point`</span>
+<span class="sd">        The base point of the frame.</span>
+<span class="sd">    quaternion : :class:`compas.geometry.Quaternion`, read-only</span>
+<span class="sd">        The quaternion from the rotation given by the frame.</span>
+<span class="sd">    xaxis : :class:`compas.geometry.Vector`</span>
+<span class="sd">        The local X axis of the frame.</span>
+<span class="sd">    yaxis : :class:`compas.geometry.Vector`</span>
+<span class="sd">        The local Y axis of the frame.</span>
+<span class="sd">    zaxis : :class:`compas.geometry.Vector`, read-only</span>
+<span class="sd">        The Z axis of the frame.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    All input vectors are orthonormalized when creating a frame, with the first</span>
+<span class="sd">    vector as starting point.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Point</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Vector</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame([0, 0, 0])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DATASCHEMA</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="n">Point</span><span class="o">.</span><span class="n">DATASCHEMA</span><span class="p">,</span>
+            <span class="s2">&quot;xaxis&quot;</span><span class="p">:</span> <span class="n">Vector</span><span class="o">.</span><span class="n">DATASCHEMA</span><span class="p">,</span>
+            <span class="s2">&quot;yaxis&quot;</span><span class="p">:</span> <span class="n">Vector</span><span class="o">.</span><span class="n">DATASCHEMA</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;xaxis&quot;</span><span class="p">,</span> <span class="s2">&quot;yaxis&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Frame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_yaxis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">xaxis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">xaxis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">yaxis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">yaxis</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(point=</span><span class="si">{1!r}</span><span class="s2">, xaxis=</span><span class="si">{2!r}</span><span class="s2">, yaxis=</span><span class="si">{3!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">3</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Data</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="s2">&quot;xaxis&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="s2">&quot;yaxis&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Properties</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The frame has no origin.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point</span>
+
+    <span class="nd">@point</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xaxis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The frame has no x-axis.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis</span>
+
+    <span class="nd">@xaxis</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">xaxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">vector</span><span class="p">)</span>
+        <span class="n">xaxis</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis</span> <span class="o">=</span> <span class="n">xaxis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">yaxis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yaxis</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The frame has no y-axis.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yaxis</span>
+
+    <span class="nd">@yaxis</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">yaxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">vector</span><span class="p">)</span>
+        <span class="n">yaxis</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
+        <span class="n">zaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">yaxis</span><span class="p">)</span>
+        <span class="n">zaxis</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_yaxis</span> <span class="o">=</span> <span class="n">zaxis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">zaxis</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">zaxis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span>
+
+<div class="viewcode-block" id="Frame.axes"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.axes.html#compas.geometry.Frame.axes">[docs]</a>    <span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zaxis</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">quaternion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_basis_vectors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">axis_angle_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_basis_vectors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">axis_angle_vector_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Constructors</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Frame.worldXY"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">worldXY</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: () -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world XY frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The world XY frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame.worldXY()</span>
+<span class="sd">        &gt;&gt;&gt; frame.point</span>
+<span class="sd">        Point(0.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.xaxis</span>
+<span class="sd">        Vector(1.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.yaxis</span>
+<span class="sd">        Vector(0.000, 1.000, 0.000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Frame.worldZX"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.worldZX.html#compas.geometry.Frame.worldZX">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">worldZX</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: () -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world ZX frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The world ZX frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame.worldZX()</span>
+<span class="sd">        &gt;&gt;&gt; frame.point</span>
+<span class="sd">        Point(0.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.xaxis</span>
+<span class="sd">        Vector(0.000, 0.000, 1.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.yaxis</span>
+<span class="sd">        Vector(1.000, 0.000, 0.000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Frame.worldYZ"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.worldYZ.html#compas.geometry.Frame.worldYZ">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">worldYZ</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: () -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world YZ frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The world YZ frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame.worldYZ()</span>
+<span class="sd">        &gt;&gt;&gt; frame.point</span>
+<span class="sd">        Point(0.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.xaxis</span>
+<span class="sd">        Vector(0.000, 1.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.yaxis</span>
+<span class="sd">        Vector(0.000, 0.000, 1.000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Frame.from_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_points.html#compas.geometry.Frame.from_points">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">point_xaxis</span><span class="p">,</span> <span class="n">point_xyplane</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from 3 points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : [float, float, float] | :class:`compas.geometry.Point`</span>
+<span class="sd">            The origin of the frame.</span>
+<span class="sd">        point_xaxis : [float, float, float] | :class:`compas.geometry.Point`</span>
+<span class="sd">            A point on the x-axis of the frame.</span>
+<span class="sd">        point_xyplane : [float, float, float] | :class:`compas.geometry.Point`</span>
+<span class="sd">            A point within the xy-plane of the frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame.from_points([0, 0, 0], [1, 0, 0], [0, 1, 0])</span>
+<span class="sd">        &gt;&gt;&gt; frame.point</span>
+<span class="sd">        Point(0.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.xaxis</span>
+<span class="sd">        Vector(1.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.yaxis</span>
+<span class="sd">        Vector(0.000, 1.000, 0.000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point_xaxis</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="n">xyvec</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point_xyplane</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">xyvec</span><span class="p">),</span> <span class="n">xaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_rotation"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_rotation.html#compas.geometry.Frame.from_rotation">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_rotation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from a Rotation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        rotation : :class:`compas.geometry.Rotation`</span>
+<span class="sd">            The rotation defines the orientation of the frame.</span>
+<span class="sd">        point : [float, float, float] | :class:`compas.geometry.Point`, optional</span>
+<span class="sd">            The origin of the frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Rotation</span>
+<span class="sd">        &gt;&gt;&gt; f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">        &gt;&gt;&gt; R = Rotation.from_frame(f1)</span>
+<span class="sd">        &gt;&gt;&gt; f2 = Frame.from_rotation(R, point=f1.point)</span>
+<span class="sd">        &gt;&gt;&gt; f1 == f2</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">.</span><span class="n">basis_vectors</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_transformation"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_transformation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from a Transformation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        transformation : :class:`compas.geometry.Transformation`</span>
+<span class="sd">            The transformation defines the orientation of the frame through the</span>
+<span class="sd">            rotation and the origin through the translation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Transformation</span>
+<span class="sd">        &gt;&gt;&gt; f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(f1)</span>
+<span class="sd">        &gt;&gt;&gt; f2 = Frame.from_transformation(T)</span>
+<span class="sd">        &gt;&gt;&gt; f1 == f2</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">basis_vectors</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">translation_vector</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_matrix.html#compas.geometry.Frame.from_matrix">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        matrix : list[list[float]]</span>
+<span class="sd">            The 4x4 transformation matrix in row-major order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import matrix_from_euler_angles</span>
+<span class="sd">        &gt;&gt;&gt; ea1 = [0.5, 0.4, 0.8]</span>
+<span class="sd">        &gt;&gt;&gt; M = matrix_from_euler_angles(ea1)</span>
+<span class="sd">        &gt;&gt;&gt; f = Frame.from_matrix(M)</span>
+<span class="sd">        &gt;&gt;&gt; ea2 = f.euler_angles()</span>
+<span class="sd">        &gt;&gt;&gt; allclose(ea1, ea2)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">)</span>
+        <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_list"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_list.html#compas.geometry.Frame.from_list">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a list of 12 or 16 float values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : list[float]</span>
+<span class="sd">            The list of 12 or 16 values representing a 4x4 matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the length of the list is neither 12 nor 16.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Since the transformation matrix follows the row-major order, the</span>
+<span class="sd">        translational components must be at the list&#39;s indices 3, 7, 11.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; l = [-1.0,  0.0,  0.0, 8110, 0.0,  0.0, -1.0, 7020, 0.0, -1.0,  0.0, 1810]</span>
+<span class="sd">        &gt;&gt;&gt; f = Frame.from_list(l)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">16</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expected 12 or 16 floats but got </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+
+        <span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">j</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_quaternion"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_quaternion.html#compas.geometry.Frame.from_quaternion">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_quaternion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a rotation represented by quaternion coefficients.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        quaternion : [float, float, float, float] | :class:`compas.geometry.Quaternion`</span>
+<span class="sd">            Four numbers that represent the four coefficient values of a quaternion.</span>
+<span class="sd">        point : [float, float, float] | :class:`compas.geometry.Point`, optional</span>
+<span class="sd">            The point of the frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; q1 = [0.945, -0.021, -0.125, 0.303]</span>
+<span class="sd">        &gt;&gt;&gt; f = Frame.from_quaternion(q1, point=[1., 1., 1.])</span>
+<span class="sd">        &gt;&gt;&gt; q2 = f.quaternion</span>
+<span class="sd">        &gt;&gt;&gt; allclose(q1, q2, tol=1e-03)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_quaternion</span><span class="p">(</span><span class="n">quaternion</span><span class="p">)</span>
+        <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_axis_angle_vector"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_axis_angle_vector</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">axis_angle_vector</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from an axis-angle vector representing the rotation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis_angle_vector : [float, float, float]</span>
+<span class="sd">            Three numbers that represent the axis of rotation and angle of</span>
+<span class="sd">            rotation by its magnitude.</span>
+<span class="sd">        point : [float, float, float] | :class:`compas.geometry.Point`, optional</span>
+<span class="sd">            The point of the frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; aav1 = [-0.043, -0.254, 0.617]</span>
+<span class="sd">        &gt;&gt;&gt; f = Frame.from_axis_angle_vector(aav1, point=[0, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; aav2 = f.axis_angle_vector</span>
+<span class="sd">        &gt;&gt;&gt; allclose(aav1, aav2)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_axis_angle_vector</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">)</span>
+        <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_euler_angles"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_euler_angles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a rotation represented by Euler angles.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        euler_angles : [float, float, float]</span>
+<span class="sd">            Three numbers that represent the angles of rotations about the defined axes.</span>
+<span class="sd">        static : bool, optional</span>
+<span class="sd">            If True, the rotations are applied to a static frame.</span>
+<span class="sd">            If False, to a rotational.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            A 3 character string specifying the order of the axes.</span>
+<span class="sd">        point : [float, float, float] | :class:`compas.geometry.Point`, optional</span>
+<span class="sd">            The point of the frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; ea1 = 1.4, 0.5, 2.3</span>
+<span class="sd">        &gt;&gt;&gt; f = Frame.from_euler_angles(ea1, static=True, axes=&#39;xyz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; ea2 = f.euler_angles(static=True, axes=&#39;xyz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; allclose(ea1, ea2)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+        <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.from_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_plane.html#compas.geometry.Frame.from_plane">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from a plane.</span>
+
+<span class="sd">        Xaxis and yaxis are arbitrarily selected based on the plane&#39;s normal.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plane : [point, vector] | :class:`compas.geometry.Plane`</span>
+<span class="sd">            A plane.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Plane</span>
+<span class="sd">        &gt;&gt;&gt; plane = Plane([0,0,0], [0,0,1])</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame.from_plane(plane)</span>
+<span class="sd">        &gt;&gt;&gt; allclose(frame.normal, plane.normal)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">plane</span>
+        <span class="c1"># To construct a frame we need to find a vector v that is perpendicular</span>
+        <span class="c1"># to the plane&#39;s normal. This means that the dot-product of v with the</span>
+        <span class="c1"># normal must be equal to 0, which is true for the following vectors:</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Vector</span><span class="p">(</span><span class="o">-</span><span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">normal</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">Vector</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">normal</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">]</span>
+        <span class="c1"># But if we are unlucky, one of these vectors is (0, 0, 0), so we</span>
+        <span class="c1"># choose the vector with the longest length as xaxis.</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">argmax</span><span class="p">([</span><span class="n">v</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">])</span>
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Conversions</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Frame.to_transformation"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.to_transformation.html#compas.geometry.Frame.to_transformation">[docs]</a>    <span class="k">def</span> <span class="nf">to_transformation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the frame to a transformation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Transformation`</span>
+<span class="sd">            The transformation.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Methods</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Frame.euler_angles"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles">[docs]</a>    <span class="k">def</span> <span class="nf">euler_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The Euler angles from the rotation given by the frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        static : bool, optional</span>
+<span class="sd">            If True the rotations are applied to a static frame.</span>
+<span class="sd">            If False, to a rotational.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            A 3 character string specifying the order of the axes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[float]</span>
+<span class="sd">            Three numbers that represent the angles of rotations about the defined axes.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; ea1 = 1.4, 0.5, 2.3</span>
+<span class="sd">        &gt;&gt;&gt; f = Frame.from_euler_angles(ea1, static=True, axes=&#39;xyz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; ea2 = f.euler_angles(static=True, axes=&#39;xyz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; allclose(ea1, ea2)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_basis_vectors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">euler_angles_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.to_local_coordinates"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">to_local_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_in_wcf</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the object&#39;s coordinates in the local coordinate system of the frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj_in_wcf : [float, float, float] | :class:`compas.geometry.Geometry`</span>
+<span class="sd">            An object in the world coordinate frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Geometry`</span>
+<span class="sd">            The object in the local coordinate system of the frame.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        If you pass a list of floats, it is assumed to represent a point.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Point</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">        &gt;&gt;&gt; pw = Point(2, 2, 2) # point in wcf</span>
+<span class="sd">        &gt;&gt;&gt; pl = frame.to_local_coordinates(pw) # point in frame</span>
+<span class="sd">        &gt;&gt;&gt; frame.to_world_coordinates(pl)</span>
+<span class="sd">        Point(2.000, 2.000, 2.000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj_in_wcf</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">obj_in_wcf</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_in_wcf</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.to_world_coordinates"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">to_world_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_in_lcf</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the object&#39;s coordinates in the global coordinate frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj_in_lcf : [float, float, float] | :class:`compas.geometry.Geometry`</span>
+<span class="sd">            An object in local coordinate system of the frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Geometry`</span>
+<span class="sd">            The object in the world coordinate frame.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        If you pass a list of floats, it is assumed to represent a point.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Point</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">        &gt;&gt;&gt; pl = Point(1.632, -0.090, 0.573) # point in frame</span>
+<span class="sd">        &gt;&gt;&gt; pw = frame.to_world_coordinates(pl) # point in wcf</span>
+<span class="sd">        &gt;&gt;&gt; frame.to_local_coordinates(pw)</span>
+<span class="sd">        Point(1.632, -0.090, 0.573)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj_in_lcf</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">obj_in_lcf</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_in_lcf</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Frame.transform"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.transform.html#compas.geometry.Frame.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        T : :class:`compas.geometry.Transformation`</span>
+<span class="sd">            The transformation.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Transformation</span>
+<span class="sd">        &gt;&gt;&gt; f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(f1)</span>
+<span class="sd">        &gt;&gt;&gt; f2 = Frame.worldXY()</span>
+<span class="sd">        &gt;&gt;&gt; f2.transform(T)</span>
+<span class="sd">        &gt;&gt;&gt; f1 == f2</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">T</span> <span class="o">*</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">translation_vector</span>
+        <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">basis_vectors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">xaxis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">yaxis</span></div></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

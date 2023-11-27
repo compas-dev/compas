@@ -1,0 +1,1293 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>compas.geometry.shapes.box &#8212; compas</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/compas/geometry/shapes/box';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">compas.geometry.shapes.box</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for compas.geometry.shapes.box</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">transform_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Transformation</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Line</span>
+
+<span class="kn">from</span> <span class="nn">.shape</span> <span class="kn">import</span> <span class="n">Shape</span>
+
+
+<div class="viewcode-block" id="Box"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.html#compas.geometry.Box">[docs]</a><span class="k">class</span> <span class="nc">Box</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A box is defined by a frame and its dimensions along the frame&#39;s x-, y- and z-axes.</span>
+
+<span class="sd">    The center of the box is positioned at the origin of the</span>
+<span class="sd">    coordinate system defined by the frame. The box is axis-aligned to the frame.</span>
+
+<span class="sd">    A box is a three-dimensional geometric shape with 8 vertices, 12 edges and 6</span>
+<span class="sd">    faces. The edges of a box meet at its vertices at 90 degree angles. The</span>
+<span class="sd">    faces of a box are planar. Faces which do not share an edge are parallel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xsize : float</span>
+<span class="sd">        The size of the box in the box frame&#39;s x direction.</span>
+<span class="sd">    ysize : float, optional</span>
+<span class="sd">        The size of the box in the box frame&#39;s y direction.</span>
+<span class="sd">        Defaults to the value of ``xsize``.</span>
+<span class="sd">    zsize : float, optional</span>
+<span class="sd">        The size of the box in the box frame&#39;s z direction.</span>
+<span class="sd">        Defaults to the value of ``xsize``.</span>
+<span class="sd">    frame : :class:`compas.geometry.Frame`, optional</span>
+<span class="sd">        The frame of the box.</span>
+<span class="sd">        Defaults to ``Frame.worldXY()``.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    area : float, read-only</span>
+<span class="sd">        The surface area of the box.</span>
+<span class="sd">    depth : float, read-only</span>
+<span class="sd">        The depth of the box in Y direction.</span>
+<span class="sd">    diagonal : :class:`compas.geometry.Line`, read-only</span>
+<span class="sd">        Diagonal of the box.</span>
+<span class="sd">    dimensions : list[float], read-only</span>
+<span class="sd">        The dimensions of the box in the local frame.</span>
+<span class="sd">    frame : :class:`compas.geometry.Frame`</span>
+<span class="sd">        The box&#39;s frame.</span>
+<span class="sd">    height : float, read-only</span>
+<span class="sd">        The height of the box in Z direction.</span>
+<span class="sd">    volume : float, read-only</span>
+<span class="sd">        The volume of the box.</span>
+<span class="sd">    width : float, read-only</span>
+<span class="sd">        The width of the box in X direction.</span>
+<span class="sd">    xmin : float, read-only</span>
+<span class="sd">        Minimum value along local X axis.</span>
+<span class="sd">    xmax : float, read-only</span>
+<span class="sd">        Maximum value along local X axis.</span>
+<span class="sd">    xsize : float</span>
+<span class="sd">        The size of the box in the box frame&#39;s x direction.</span>
+<span class="sd">    ymin : float, read-only</span>
+<span class="sd">        Minimum value along local Y axis.</span>
+<span class="sd">    ymax : float, read-only</span>
+<span class="sd">        Maximum value along local Y axis.</span>
+<span class="sd">    ysize : float</span>
+<span class="sd">        The size of the box in the box frame&#39;s y direction.</span>
+<span class="sd">    zmin : float, read-only</span>
+<span class="sd">        Minimum value along local Z axis.</span>
+<span class="sd">    zmax : float, read-only</span>
+<span class="sd">        Maximum value along local Z axis.</span>
+<span class="sd">    zsize : float</span>
+<span class="sd">        The size of the box in the box frame&#39;s z direction.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; box = Box(1)</span>
+<span class="sd">    &gt;&gt;&gt; box.xsize</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; box.ysize</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; box.zsize</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; box.volume</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; box.area</span>
+<span class="sd">    6.0</span>
+
+<span class="sd">    &gt;&gt;&gt; box = Box(1, 2, 3)</span>
+<span class="sd">    &gt;&gt;&gt; box.xsize</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; box.ysize</span>
+<span class="sd">    2.0</span>
+<span class="sd">    &gt;&gt;&gt; box.zsize</span>
+<span class="sd">    3.0</span>
+<span class="sd">    &gt;&gt;&gt; box.volume</span>
+<span class="sd">    6.0</span>
+<span class="sd">    &gt;&gt;&gt; box.area</span>
+<span class="sd">    22.0</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DATASCHEMA</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;xsize&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+            <span class="s2">&quot;ysize&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+            <span class="s2">&quot;zsize&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+            <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="n">Frame</span><span class="o">.</span><span class="n">DATASCHEMA</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;additionalProperties&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;minProperties&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xsize</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ysize</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zsize</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">=</span> <span class="n">xsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">xsize</span> <span class="k">if</span> <span class="n">ysize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ysize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">=</span> <span class="n">xsize</span> <span class="k">if</span> <span class="n">zsize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">zsize</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(xsize=</span><span class="si">{1}</span><span class="s2">, ysize=</span><span class="si">{2}</span><span class="s2">, zsize=</span><span class="si">{3}</span><span class="s2">, frame=</span><span class="si">{4!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">4</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">])</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Data</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;xsize&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span>
+            <span class="s2">&quot;ysize&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span>
+            <span class="s2">&quot;zsize&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">,</span>
+            <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="Box.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_data.html#compas.geometry.Box.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">xsize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;xsize&quot;</span><span class="p">],</span>
+            <span class="n">ysize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;ysize&quot;</span><span class="p">],</span>
+            <span class="n">zsize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;zsize&quot;</span><span class="p">],</span>
+            <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Properties</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xsize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xsize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The size of the box along the local X axis is not set.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xsize</span>
+
+    <span class="nd">@xsize</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">xsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsize</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">xsize</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The minimum value of the size of the box along the local X axis is zero.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xsize</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">xsize</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ysize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ysize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The size of the box along the local Y axis is not set.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ysize</span>
+
+    <span class="nd">@ysize</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ysize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ysize</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ysize</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The minimum value of the size of the box along the local Y axis is zero.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ysize</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ysize</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">zsize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zsize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The size of the box along the local Z axis is not set.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zsize</span>
+
+    <span class="nd">@zsize</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">zsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zsize</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">zsize</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The minimum value of the size of the box along the local Z axis is zero.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zsize</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">zsize</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xmin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ymin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ymax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">zmin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">zmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">diagonal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+        <span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Line</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">front</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">back</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Constructors</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Box.from_width_height_depth"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_width_height_depth.html#compas.geometry.Box.from_width_height_depth">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_width_height_depth</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from its width, height and depth.</span>
+
+<span class="sd">        Note that width is along the X-axis, height along Z-axis, and depth along the Y-axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : float</span>
+<span class="sd">            Width of the box.</span>
+<span class="sd">        height : float</span>
+<span class="sd">            Height of the box.</span>
+<span class="sd">        depth : float</span>
+<span class="sd">            Depth of the box.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Box`</span>
+<span class="sd">            The resulting box.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The box is axis-aligned to the world coordinate system and centered at the origin.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; box = Box.from_width_height_depth(1.0, 2.0, 3.0)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+        <span class="n">depth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Box.from_bounding_box"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_bounding_box.html#compas.geometry.Box.from_bounding_box">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_bounding_box</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bbox</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from the result of a bounding box calculation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bbox : list[[float, float, float] | :class:`compas.geometry.Point`]</span>
+<span class="sd">            A list of 8 point locations, representing the corners of the bounding box.</span>
+<span class="sd">            Positions 0, 1, 2, 3 are the bottom corners.</span>
+<span class="sd">            Positions 4, 5, 6, 7 are the top corners.</span>
+<span class="sd">            Both the top and bottom face are oriented in CCW direction, starting at the bottom, left-most point.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Box`</span>
+<span class="sd">            The box shape.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import bounding_box</span>
+<span class="sd">        &gt;&gt;&gt; bbox = bounding_box([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]])</span>
+<span class="sd">        &gt;&gt;&gt; box = Box.from_bounding_box(bbox)</span>
+<span class="sd">        &gt;&gt;&gt; box.width</span>
+<span class="sd">        1.0</span>
+<span class="sd">        &gt;&gt;&gt; box.height</span>
+<span class="sd">        1.0</span>
+<span class="sd">        &gt;&gt;&gt; box.depth</span>
+<span class="sd">        1.0</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">from_start_end</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">from_start_end</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">zaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">from_start_end</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">xsize</span> <span class="o">=</span> <span class="n">xaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">ysize</span> <span class="o">=</span> <span class="n">yaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">zsize</span> <span class="o">=</span> <span class="n">zaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">bbox</span><span class="p">),</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="o">=</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="n">ysize</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="n">zsize</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Box.from_corner_corner_height"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_corner_corner_height.html#compas.geometry.Box.from_corner_corner_height">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_corner_corner_height</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">corner1</span><span class="p">,</span> <span class="n">corner2</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from the opposite corners of its base and its height.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        corner1 : [float, float, float] | :class:`compas.geometry.Point`</span>
+<span class="sd">            The XYZ coordinates of the bottom left corner of the base of the box.</span>
+<span class="sd">        corner2 : [float, float, float] | :class:`compas.geometry.Point`</span>
+<span class="sd">            The XYZ coordinates of the top right corner of the base of the box.</span>
+<span class="sd">        height : float</span>
+<span class="sd">            The height of the box.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Box`</span>
+<span class="sd">            The resulting box.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">height</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The box should have a height.&quot;</span><span class="p">)</span>
+
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">corner1</span>
+        <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">corner2</span>
+
+        <span class="k">if</span> <span class="n">z1</span> <span class="o">!=</span> <span class="n">z2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Corners should be in the same horizontal plane.&quot;</span><span class="p">)</span>
+
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">xaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">depth</span> <span class="o">=</span> <span class="n">yaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span><span class="p">),</span> <span class="n">z1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">]</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Box.from_diagonal"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_diagonal.html#compas.geometry.Box.from_diagonal">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_diagonal</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">diagonal</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from its main diagonal.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        diagonal : [point, point] | :class:`compas.geometry.Line`</span>
+<span class="sd">            The diagonal of the box, represented by a pair of points in space.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Box`</span>
+<span class="sd">            The resulting box.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; diagonal = [0.0, 0.0, 0.0], [1.0, 1.0, 1.0]</span>
+<span class="sd">        &gt;&gt;&gt; box = Box.from_diagonal(diagonal)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">diagonal</span>
+
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">d1</span>
+        <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">d2</span>
+
+        <span class="k">if</span> <span class="n">z1</span> <span class="o">==</span> <span class="n">z2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The box has no height.&quot;</span><span class="p">)</span>
+
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">zaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z2</span> <span class="o">-</span> <span class="n">z1</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">xaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">depth</span> <span class="o">=</span> <span class="n">yaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">zaxis</span><span class="o">.</span><span class="n">length</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span><span class="p">),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">z1</span> <span class="o">+</span> <span class="n">z2</span><span class="p">)]</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Box.from_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_points.html#compas.geometry.Box.from_points">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from a set of points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        points : list[:class:`compas.geometry.Point`]</span>
+<span class="sd">            A list of points.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Box`</span>
+<span class="sd">            The resulting box.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">bounding_box</span>
+
+        <span class="n">bbox</span> <span class="o">=</span> <span class="n">bounding_box</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_bounding_box</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Conversions</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Box.to_vertices_and_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangulated</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        triangulated: bool, optional</span>
+<span class="sd">            If True, triangulate the faces.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[list[float]], list[list[int]]</span>
+<span class="sd">            A list of vertex locations, and a list of faces,</span>
+<span class="sd">            with each face defined as a list of indices into the list of vertices.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span>
+        <span class="n">zaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+        <span class="n">dz</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">]</span>
+        <span class="n">_faces</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">front</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">back</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">triangulated</span><span class="p">:</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">_faces</span><span class="p">:</span>
+                <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+                <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="n">_faces</span>
+
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
+
+<div class="viewcode-block" id="Box.to_brep"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.to_brep.html#compas.geometry.Box.to_brep">[docs]</a>    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a BREP representation of the box.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.brep.Brep`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
+
+        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_box</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Transformations</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="c1"># def transform(self, transformation):</span>
+    <span class="c1">#     &quot;&quot;&quot;Transform the box.</span>
+
+    <span class="c1">#     Parameters</span>
+    <span class="c1">#     ----------</span>
+    <span class="c1">#     transformation : :class:`Transformation`</span>
+    <span class="c1">#         The transformation used to transform the Box.</span>
+
+    <span class="c1">#     Returns</span>
+    <span class="c1">#     -------</span>
+    <span class="c1">#     None</span>
+
+    <span class="c1">#     Examples</span>
+    <span class="c1">#     --------</span>
+    <span class="c1">#     &gt;&gt;&gt; box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)</span>
+    <span class="c1">#     &gt;&gt;&gt; frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+    <span class="c1">#     &gt;&gt;&gt; T = Transformation.from_frame(frame)</span>
+    <span class="c1">#     &gt;&gt;&gt; box.transform(T)</span>
+
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     self.frame.transform(transformation)</span>
+    <span class="c1">#     # Always local scaling, non-uniform scaling based on frame not yet considered.</span>
+    <span class="c1">#     Sc, _, _, _, _ = transformation.decomposed()</span>
+    <span class="c1">#     scalex = Sc[0, 0]</span>
+    <span class="c1">#     scaley = Sc[1, 1]</span>
+    <span class="c1">#     scalez = Sc[2, 2]</span>
+    <span class="c1">#     self.xsize *= scalex</span>
+    <span class="c1">#     self.ysize *= scaley</span>
+    <span class="c1">#     self.zsize *= scalez</span>
+
+<div class="viewcode-block" id="Box.scale"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.scale.html#compas.geometry.Box.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Scale the box.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        factor : float</span>
+<span class="sd">            The scaling factor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">*=</span> <span class="n">factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">*=</span> <span class="n">factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">*=</span> <span class="n">factor</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># Methods</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Box.corner"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.corner.html#compas.geometry.Box.corner">[docs]</a>    <span class="k">def</span> <span class="nf">corner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return one of the eight corners of the box.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        index : int</span>
+<span class="sd">            The index of the corner.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Point`</span>
+<span class="sd">            The corner point.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the index is not between 0 and 7.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Index should be between 0 and 7.&quot;</span><span class="p">)</span>
+
+        <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span>
+        <span class="n">zaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span>
+        <span class="n">dz</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dz</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dz</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dz</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dz</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dz</span></div>
+
+<div class="viewcode-block" id="Box.contains_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.contains_point.html#compas.geometry.Box.contains_point">[docs]</a>    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if the box contains a given point.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : [float, float, float] | :class:`compas.geometry.Point`</span>
+<span class="sd">            The point to test.</span>
+<span class="sd">        tol : float, optional</span>
+<span class="sd">            The tolerance for the point containment check.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        contains_points</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">transform_points</span><span class="p">([</span><span class="n">point</span><span class="p">],</span> <span class="n">T</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">+</span> <span class="n">tol</span>
+
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">dx</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">+</span><span class="n">dx</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">dy</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">+</span> <span class="n">tol</span>
+
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">dy</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="o">+</span><span class="n">dy</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">dz</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">+</span> <span class="n">tol</span>
+
+        <span class="k">if</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">dz</span> <span class="ow">or</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="o">+</span><span class="n">dz</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Box.contains_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.contains_points.html#compas.geometry.Box.contains_points">[docs]</a>    <span class="k">def</span> <span class="nf">contains_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if the box contains the given points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        points : list[[float, float, float]] | list[:class:`compas.geometry.Point`]</span>
+<span class="sd">            A list of points.</span>
+<span class="sd">        tol : float, optional</span>
+<span class="sd">            The tolerance for the point containment check.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[bool]</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        contains_point</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Point, Box</span>
+<span class="sd">        &gt;&gt;&gt; box = Box(Frame.worldXY(), 2.0, 2.0, 2.0)</span>
+<span class="sd">        &gt;&gt;&gt; points = [Point(0.0, 0.0, 0.0), Point(1.0, 1.0, 1.0)]</span>
+<span class="sd">        &gt;&gt;&gt; results = box.contains_points(points)</span>
+<span class="sd">        &gt;&gt;&gt; all(results)</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">+</span> <span class="n">tol</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">+</span> <span class="n">tol</span>
+        <span class="n">dz</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">+</span> <span class="n">tol</span>
+
+        <span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">transform_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">dx</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">+</span><span class="n">dx</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">dy</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="o">+</span><span class="n">dy</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">dz</span> <span class="ow">or</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="o">+</span><span class="n">dz</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">results</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">results</span></div></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

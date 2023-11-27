@@ -167,7 +167,7 @@
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="reference/index.html">
-                        Package Reference
+                        API Reference
                       </a>
                     </li>
                 
@@ -217,6 +217,17 @@ document.write(`
     <!-- dropdown will be populated by javascript on page load -->
     </div>
   </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
 `);
 </script></div>
       
@@ -311,7 +322,7 @@ document.write(`
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="reference/index.html">
-                        Package Reference
+                        API Reference
                       </a>
                     </li>
                 
@@ -350,6 +361,17 @@ document.write(`
     <!-- dropdown will be populated by javascript on page load -->
     </div>
   </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
 `);
 </script></div>
         
@@ -490,12 +512,16 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.aabb.html#compas.geometry.ToroidalSurface.aabb">(compas.geometry.ToroidalSurface method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.aabb.html#compas_blender.geometry.BlenderCurve.aabb">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.aabb.html#compas_blender.geometry.BlenderNurbsCurve.aabb">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.aabb.html#compas_rhino.geometry.RhinoNurbsCurve.aabb">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsSurface.aabb.html#compas_rhino.geometry.RhinoNurbsSurface.aabb">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/generated/compas.datastructures.ParametricFeature.accumulate.html#compas.datastructures.ParametricFeature.accumulate">accumulate() (compas.datastructures.ParametricFeature method)</a>
+      <li><a href="reference/generated/compas.datastructures.Tree.add.html#compas.datastructures.Tree.add">add() (compas.datastructures.Tree method)</a>
 </li>
       <li><a href="reference/generated/compas.datastructures.CellNetwork.add_cell.html#compas.datastructures.CellNetwork.add_cell">add_cell() (compas.datastructures.CellNetwork method)</a>
 
@@ -531,8 +557,6 @@ document.write(`
         <li><a href="reference/generated/compas.datastructures.Mesh.add_face.html#compas.datastructures.Mesh.add_face">(compas.datastructures.Mesh method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/generated/compas.datastructures.Part.add_feature.html#compas.datastructures.Part.add_feature">add_feature() (compas.datastructures.Part method)</a>
-</li>
       <li><a href="reference/generated/compas.datastructures.CellNetwork.add_halfface.html#compas.datastructures.CellNetwork.add_halfface">add_halfface() (compas.datastructures.CellNetwork method)</a>
 
       <ul>
@@ -719,14 +743,6 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.geometry.Polyline.append.html#compas.geometry.Polyline.append">append() (compas.geometry.Polyline method)</a>
 </li>
-      <li><a href="reference/generated/compas.datastructures.Feature.apply.html#compas.datastructures.Feature.apply">apply() (compas.datastructures.Feature method)</a>
-
-      <ul>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.apply.html#compas.datastructures.GeometricFeature.apply">(compas.datastructures.GeometricFeature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.apply.html#compas.datastructures.ParametricFeature.apply">(compas.datastructures.ParametricFeature method)</a>
-</li>
-      </ul></li>
       <li><a href="reference/generated/compas.geometry.Arc.html#compas.geometry.Arc">Arc (class in compas.geometry)</a>
 </li>
       <li><a href="reference/generated/compas_rhino.conversions.arc_to_compas.html#compas_rhino.conversions.arc_to_compas">arc_to_compas() (in module compas_rhino.conversions)</a>
@@ -799,6 +815,10 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas_blender.artists.BlenderArtist.html#compas_blender.artists.BlenderArtist">BlenderArtist (class in compas_blender.artists)</a>
 </li>
+      <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.html#compas_blender.geometry.BlenderCurve">BlenderCurve (class in compas_blender.geometry)</a>
+</li>
+      <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.html#compas_blender.geometry.BlenderNurbsCurve">BlenderNurbsCurve (class in compas_blender.geometry)</a>
+</li>
       <li><a href="reference/generated/compas.colors.Color.blue.html#compas.colors.Color.blue">blue() (compas.colors.Color class method)</a>
 </li>
       <li><a href="reference/generated/compas_blender.conversions.bmesh_to_compas.html#compas_blender.conversions.bmesh_to_compas">bmesh_to_compas() (in module compas_blender.conversions)</a>
@@ -812,7 +832,9 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.boolean_difference_mesh_mesh.html#compas.geometry.boolean_difference_mesh_mesh">boolean_difference_mesh_mesh() (in module compas.geometry)</a>
 
       <ul>
-        <li><a href="reference/generated/compas_rhino.geometry.booleans.boolean_difference_mesh_mesh.html#compas_rhino.geometry.booleans.boolean_difference_mesh_mesh">(in module compas_rhino.geometry.booleans)</a>
+        <li><a href="reference/generated/compas_blender.geometry.boolean_difference_mesh_mesh.html#compas_blender.geometry.boolean_difference_mesh_mesh">(in module compas_blender.geometry)</a>
+</li>
+        <li><a href="reference/generated/compas_rhino.geometry.boolean_difference_mesh_mesh.html#compas_rhino.geometry.boolean_difference_mesh_mesh">(in module compas_rhino.geometry)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.geometry.boolean_difference_polygon_polygon.html#compas.geometry.boolean_difference_polygon_polygon">boolean_difference_polygon_polygon() (in module compas.geometry)</a>
@@ -826,7 +848,9 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.boolean_intersection_mesh_mesh.html#compas.geometry.boolean_intersection_mesh_mesh">boolean_intersection_mesh_mesh() (in module compas.geometry)</a>
 
       <ul>
-        <li><a href="reference/generated/compas_rhino.geometry.booleans.boolean_intersection_mesh_mesh.html#compas_rhino.geometry.booleans.boolean_intersection_mesh_mesh">(in module compas_rhino.geometry.booleans)</a>
+        <li><a href="reference/generated/compas_blender.geometry.boolean_intersection_mesh_mesh.html#compas_blender.geometry.boolean_intersection_mesh_mesh">(in module compas_blender.geometry)</a>
+</li>
+        <li><a href="reference/generated/compas_rhino.geometry.boolean_intersection_mesh_mesh.html#compas_rhino.geometry.boolean_intersection_mesh_mesh">(in module compas_rhino.geometry)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.geometry.boolean_intersection_polygon_polygon.html#compas.geometry.boolean_intersection_polygon_polygon">boolean_intersection_polygon_polygon() (in module compas.geometry)</a>
@@ -844,7 +868,9 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.boolean_union_mesh_mesh.html#compas.geometry.boolean_union_mesh_mesh">boolean_union_mesh_mesh() (in module compas.geometry)</a>
 
       <ul>
-        <li><a href="reference/generated/compas_rhino.geometry.booleans.boolean_union_mesh_mesh.html#compas_rhino.geometry.booleans.boolean_union_mesh_mesh">(in module compas_rhino.geometry.booleans)</a>
+        <li><a href="reference/generated/compas_blender.geometry.boolean_union_mesh_mesh.html#compas_blender.geometry.boolean_union_mesh_mesh">(in module compas_blender.geometry)</a>
+</li>
+        <li><a href="reference/generated/compas_rhino.geometry.boolean_union_mesh_mesh.html#compas_rhino.geometry.boolean_union_mesh_mesh">(in module compas_rhino.geometry)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.geometry.boolean_union_polygon_polygon.html#compas.geometry.boolean_union_polygon_polygon">boolean_union_polygon_polygon() (in module compas.geometry)</a>
@@ -913,12 +939,8 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas_rhino.conversions.brep_to_rhino.html#compas_rhino.conversions.brep_to_rhino">brep_to_rhino() (in module compas_rhino.conversions)</a>
 </li>
-      <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.html#compas_ghpython.artists.BrepArtist">BrepArtist (class in compas_ghpython.artists)</a>
-
-      <ul>
-        <li><a href="reference/generated/compas_rhino.artists.BrepArtist.html#compas_rhino.artists.BrepArtist">(class in compas_rhino.artists)</a>
+      <li><a href="reference/generated/compas_rhino.artists.BrepArtist.html#compas_rhino.artists.BrepArtist">BrepArtist (class in compas_rhino.artists)</a>
 </li>
-      </ul></li>
       <li><a href="reference/generated/compas.geometry.BrepEdge.html#compas.geometry.BrepEdge">BrepEdge (class in compas.geometry)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.BrepError.html#compas.geometry.BrepError">BrepError</a>
@@ -1001,8 +1023,6 @@ document.write(`
         <li><a href="reference/generated/compas_blender.artists.VolMeshArtist.build.html#compas_blender.artists.VolMeshArtist.build">(compas_blender.artists.VolMeshArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.build.html#compas_ghpython.artists.BoxArtist.build">(compas_ghpython.artists.BoxArtist static method)</a>
-</li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.build.html#compas_ghpython.artists.BrepArtist.build">(compas_ghpython.artists.BrepArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.build.html#compas_ghpython.artists.CapsuleArtist.build">(compas_ghpython.artists.CapsuleArtist static method)</a>
 </li>
@@ -1147,8 +1167,6 @@ document.write(`
         <li><a href="reference/generated/compas_blender.artists.VolMeshArtist.build_as.html#compas_blender.artists.VolMeshArtist.build_as">(compas_blender.artists.VolMeshArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.build_as.html#compas_ghpython.artists.BoxArtist.build_as">(compas_ghpython.artists.BoxArtist static method)</a>
-</li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.build_as.html#compas_ghpython.artists.BrepArtist.build_as">(compas_ghpython.artists.BrepArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.build_as.html#compas_ghpython.artists.CapsuleArtist.build_as">(compas_ghpython.artists.CapsuleArtist static method)</a>
 </li>
@@ -1584,8 +1602,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.clear.html#compas_ghpython.artists.BoxArtist.clear">(compas_ghpython.artists.BoxArtist method)</a>
 </li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.clear.html#compas_ghpython.artists.BrepArtist.clear">(compas_ghpython.artists.BrepArtist method)</a>
-</li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.clear.html#compas_ghpython.artists.CapsuleArtist.clear">(compas_ghpython.artists.CapsuleArtist method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CircleArtist.clear.html#compas_ghpython.artists.CircleArtist.clear">(compas_ghpython.artists.CircleArtist method)</a>
@@ -1785,8 +1801,6 @@ document.write(`
         <li><a href="reference/generated/compas_rhino.artists.VolMeshArtist.clear_faces.html#compas_rhino.artists.VolMeshArtist.clear_faces">(compas_rhino.artists.VolMeshArtist method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/generated/compas.datastructures.Part.clear_features.html#compas.datastructures.Part.clear_features">clear_features() (compas.datastructures.Part method)</a>
-</li>
       <li><a href="reference/generated/compas_rhino.artists.BoxArtist.clear_layer.html#compas_rhino.artists.BoxArtist.clear_layer">clear_layer() (compas_rhino.artists.BoxArtist method)</a>
 
       <ul>
@@ -1871,12 +1885,12 @@ document.write(`
         <li><a href="reference/generated/compas_rhino.artists.VolMeshArtist.clear_vertices.html#compas_rhino.artists.VolMeshArtist.clear_vertices">(compas_rhino.artists.VolMeshArtist method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.geometry.close.html#compas.geometry.close">close() (in module compas.geometry)</a>
 </li>
       <li><a href="reference/generated/compas.rpc.Server.close_request.html#compas.rpc.Server.close_request">close_request() (compas.rpc.Server method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.geometry.closest_line_to_point.html#compas.geometry.closest_line_to_point">closest_line_to_point() (in module compas.geometry)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.Arc.closest_point.html#compas.geometry.Arc.closest_point">closest_point() (compas.geometry.Arc method)</a>
@@ -1917,6 +1931,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Surface.closest_point.html#compas.geometry.Surface.closest_point">(compas.geometry.Surface method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.closest_point.html#compas.geometry.ToroidalSurface.closest_point">(compas.geometry.ToroidalSurface method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.closest_point.html#compas_blender.geometry.BlenderCurve.closest_point">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.closest_point.html#compas_blender.geometry.BlenderNurbsCurve.closest_point">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.closest_point.html#compas_rhino.geometry.RhinoNurbsCurve.closest_point">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -2110,10 +2128,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.copy.html#compas.datastructures.Datastructure.copy">(compas.datastructures.Datastructure method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.copy.html#compas.datastructures.Feature.copy">(compas.datastructures.Feature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.copy.html#compas.datastructures.GeometricFeature.copy">(compas.datastructures.GeometricFeature method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.copy.html#compas.datastructures.Graph.copy">(compas.datastructures.Graph method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.copy.html#compas.datastructures.HalfEdge.copy">(compas.datastructures.HalfEdge method)</a>
@@ -2124,9 +2138,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.copy.html#compas.datastructures.Network.copy">(compas.datastructures.Network method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.copy.html#compas.datastructures.ParametricFeature.copy">(compas.datastructures.ParametricFeature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.copy.html#compas.datastructures.Part.copy">(compas.datastructures.Part method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.copy.html#compas.datastructures.Tree.copy">(compas.datastructures.Tree method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.copy.html#compas.datastructures.VolMesh.copy">(compas.datastructures.VolMesh method)</a>
 </li>
@@ -2224,6 +2236,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.copy.html#compas.geometry.Vector.copy">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.copy.html#compas_blender.geometry.BlenderCurve.copy">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.copy.html#compas_blender.geometry.BlenderNurbsCurve.copy">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.copy.html#compas_rhino.geometry.RhinoBrep.copy">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.copy.html#compas_rhino.geometry.RhinoBrepEdge.copy">(compas_rhino.geometry.RhinoBrepEdge method)</a>
@@ -2241,6 +2257,8 @@ document.write(`
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsSurface.copy.html#compas_rhino.geometry.RhinoNurbsSurface.copy">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/generated/compas.geometry.Box.corner.html#compas.geometry.Box.corner">corner() (compas.geometry.Box method)</a>
+</li>
       <li><a href="reference/generated/compas.datastructures.Network.count_crossings.html#compas.datastructures.Network.count_crossings">count_crossings() (compas.datastructures.Network method)</a>
 </li>
       <li><a href="reference/generated/compas_blender.artists.BlenderArtist.create_collection.html#compas_blender.artists.BlenderArtist.create_collection">create_collection() (compas_blender.artists.BlenderArtist method)</a>
@@ -2412,6 +2430,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.curvature_at.html#compas.geometry.ToroidalSurface.curvature_at">(compas.geometry.ToroidalSurface method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.curvature_at.html#compas_blender.geometry.BlenderCurve.curvature_at">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.curvature_at.html#compas_blender.geometry.BlenderNurbsCurve.curvature_at">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.curvature_at.html#compas_rhino.geometry.RhinoNurbsCurve.curvature_at">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsSurface.curvature_at.html#compas_rhino.geometry.RhinoNurbsSurface.curvature_at">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
@@ -2470,6 +2492,8 @@ document.write(`
       <li><a href="reference/generated/compas.colors.Color.darkened.html#compas.colors.Color.darkened">darkened() (compas.colors.Color method)</a>
 </li>
       <li><a href="reference/generated/compas.data.Data.html#compas.data.Data">Data (class in compas.data)</a>
+</li>
+      <li><a href="reference/generated/compas_rhino.conversions.data_to_rhino_surface.html#compas_rhino.conversions.data_to_rhino_surface">data_to_rhino_surface() (in module compas_rhino.conversions)</a>
 </li>
       <li><a href="reference/generated/compas.artists.DataArtistNotRegistered.html#compas.artists.DataArtistNotRegistered">DataArtistNotRegistered</a>
 </li>
@@ -2692,6 +2716,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.divide_by_count.html#compas.geometry.Polyline.divide_by_count">(compas.geometry.Polyline method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.divide_by_count.html#compas_blender.geometry.BlenderCurve.divide_by_count">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.divide_by_count.html#compas_blender.geometry.BlenderNurbsCurve.divide_by_count">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.divide_by_count.html#compas_rhino.geometry.RhinoNurbsCurve.divide_by_count">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -2715,6 +2743,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Parabola.divide_by_length.html#compas.geometry.Parabola.divide_by_length">(compas.geometry.Parabola method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.divide_by_length.html#compas.geometry.Polyline.divide_by_length">(compas.geometry.Polyline method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.divide_by_length.html#compas_blender.geometry.BlenderCurve.divide_by_length">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.divide_by_length.html#compas_blender.geometry.BlenderNurbsCurve.divide_by_length">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.divide_by_length.html#compas_rhino.geometry.RhinoNurbsCurve.divide_by_length">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -2789,8 +2821,6 @@ document.write(`
         <li><a href="reference/generated/compas_blender.artists.VolMeshArtist.draw.html#compas_blender.artists.VolMeshArtist.draw">(compas_blender.artists.VolMeshArtist method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.draw.html#compas_ghpython.artists.BoxArtist.draw">(compas_ghpython.artists.BoxArtist method)</a>
-</li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.draw.html#compas_ghpython.artists.BrepArtist.draw">(compas_ghpython.artists.BrepArtist method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.draw.html#compas_ghpython.artists.CapsuleArtist.draw">(compas_ghpython.artists.CapsuleArtist method)</a>
 </li>
@@ -2947,8 +2977,6 @@ document.write(`
         <li><a href="reference/generated/compas_blender.artists.VolMeshArtist.draw_collection.html#compas_blender.artists.VolMeshArtist.draw_collection">(compas_blender.artists.VolMeshArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.draw_collection.html#compas_ghpython.artists.BoxArtist.draw_collection">(compas_ghpython.artists.BoxArtist static method)</a>
-</li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.draw_collection.html#compas_ghpython.artists.BrepArtist.draw_collection">(compas_ghpython.artists.BrepArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.draw_collection.html#compas_ghpython.artists.CapsuleArtist.draw_collection">(compas_ghpython.artists.CapsuleArtist static method)</a>
 </li>
@@ -3458,6 +3486,8 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.NurbsCurve.elevate_degree.html#compas.geometry.NurbsCurve.elevate_degree">elevate_degree() (compas.geometry.NurbsCurve method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.elevate_degree.html#compas_blender.geometry.BlenderNurbsCurve.elevate_degree">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.elevate_degree.html#compas_rhino.geometry.RhinoNurbsCurve.elevate_degree">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -3834,11 +3864,13 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.fair.html#compas.geometry.Polyline.fair">(compas.geometry.Polyline method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.fair.html#compas_blender.geometry.BlenderCurve.fair">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.fair.html#compas_blender.geometry.BlenderNurbsCurve.fair">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.fair.html#compas_rhino.geometry.RhinoNurbsCurve.fair">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/generated/compas.datastructures.Feature.html#compas.datastructures.Feature">Feature (class in compas.datastructures)</a>
-</li>
       <li><a href="reference/generated/compas.datastructures.FeatureError.html#compas.datastructures.FeatureError">FeatureError</a>
 </li>
       <li><a href="reference/generated/compas.rpc.Server.fileno.html#compas.rpc.Server.fileno">fileno() (compas.rpc.Server method)</a>
@@ -3902,6 +3934,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.frame_at.html#compas.geometry.ToroidalSurface.frame_at">(compas.geometry.ToroidalSurface method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.frame_at.html#compas_blender.geometry.BlenderCurve.frame_at">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.frame_at.html#compas_blender.geometry.BlenderNurbsCurve.frame_at">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.frame_at.html#compas_rhino.geometry.RhinoNurbsCurve.frame_at">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsSurface.frame_at.html#compas_rhino.geometry.RhinoNurbsSurface.frame_at">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
@@ -3926,6 +3962,8 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.NurbsCurve.from_arc.html#compas.geometry.NurbsCurve.from_arc">from_arc() (compas.geometry.NurbsCurve class method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_arc.html#compas_blender.geometry.BlenderNurbsCurve.from_arc">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.from_arc.html#compas_rhino.geometry.RhinoNurbsCurve.from_arc">(compas_rhino.geometry.RhinoNurbsCurve class method)</a>
 </li>
       </ul></li>
@@ -3998,6 +4036,8 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.NurbsCurve.from_circle.html#compas.geometry.NurbsCurve.from_circle">(compas.geometry.NurbsCurve class method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_circle.html#compas_blender.geometry.BlenderNurbsCurve.from_circle">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.from_circle.html#compas_rhino.geometry.RhinoBrepEdge.from_circle">(compas_rhino.geometry.RhinoBrepEdge class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.from_circle.html#compas_rhino.geometry.RhinoNurbsCurve.from_circle">(compas_rhino.geometry.RhinoNurbsCurve class method)</a>
@@ -4066,10 +4106,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.from_data.html#compas.datastructures.Datastructure.from_data">(compas.datastructures.Datastructure class method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.from_data.html#compas.datastructures.Feature.from_data">(compas.datastructures.Feature class method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.from_data.html#compas.datastructures.GeometricFeature.from_data">(compas.datastructures.GeometricFeature class method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.from_data.html#compas.datastructures.Graph.from_data">(compas.datastructures.Graph class method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.from_data.html#compas.datastructures.HalfEdge.from_data">(compas.datastructures.HalfEdge class method)</a>
@@ -4080,9 +4116,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.from_data.html#compas.datastructures.Network.from_data">(compas.datastructures.Network class method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.from_data.html#compas.datastructures.ParametricFeature.from_data">(compas.datastructures.ParametricFeature class method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.from_data.html#compas.datastructures.Part.from_data">(compas.datastructures.Part class method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.from_data.html#compas.datastructures.Tree.from_data">(compas.datastructures.Tree class method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.from_data.html#compas.datastructures.VolMesh.from_data">(compas.datastructures.VolMesh class method)</a>
 </li>
@@ -4182,6 +4216,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.from_data.html#compas.geometry.Vector.from_data">(compas.geometry.Vector class method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.from_data.html#compas_blender.geometry.BlenderCurve.from_data">(compas_blender.geometry.BlenderCurve class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_data.html#compas_blender.geometry.BlenderNurbsCurve.from_data">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.from_data.html#compas_rhino.geometry.RhinoBrep.from_data">(compas_rhino.geometry.RhinoBrep class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.from_data.html#compas_rhino.geometry.RhinoBrepEdge.from_data">(compas_rhino.geometry.RhinoBrepEdge class method)</a>
@@ -4216,6 +4254,8 @@ document.write(`
       <ul>
         <li><a href="reference/generated/compas.geometry.NurbsCurve.from_ellipse.html#compas.geometry.NurbsCurve.from_ellipse">(compas.geometry.NurbsCurve class method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_ellipse.html#compas_blender.geometry.BlenderNurbsCurve.from_ellipse">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.from_ellipse.html#compas_rhino.geometry.RhinoBrepEdge.from_ellipse">(compas_rhino.geometry.RhinoBrepEdge class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.from_ellipse.html#compas_rhino.geometry.RhinoNurbsCurve.from_ellipse">(compas_rhino.geometry.RhinoNurbsCurve class method)</a>
@@ -4245,14 +4285,14 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Translation.from_euler_angles.html#compas.geometry.Translation.from_euler_angles">(compas.geometry.Translation class method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.geometry.Brep.from_extrusion.html#compas.geometry.Brep.from_extrusion">from_extrusion() (compas.geometry.Brep class method)</a>
 
       <ul>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.from_extrusion.html#compas_rhino.geometry.RhinoBrep.from_extrusion">(compas_rhino.geometry.RhinoBrep class method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.geometry.Scale.from_factors.html#compas.geometry.Scale.from_factors">from_factors() (compas.geometry.Scale class method)</a>
 </li>
       <li><a href="reference/generated/compas.files.URDF.from_file.html#compas.files.URDF.from_file">from_file() (compas.files.URDF class method)</a>
@@ -4328,6 +4368,8 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.NurbsCurve.from_interpolation.html#compas.geometry.NurbsCurve.from_interpolation">from_interpolation() (compas.geometry.NurbsCurve class method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_interpolation.html#compas_blender.geometry.BlenderNurbsCurve.from_interpolation">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.from_interpolation.html#compas_rhino.geometry.RhinoNurbsCurve.from_interpolation">(compas_rhino.geometry.RhinoNurbsCurve class method)</a>
 </li>
       </ul></li>
@@ -4344,10 +4386,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.from_json.html#compas.datastructures.Datastructure.from_json">(compas.datastructures.Datastructure class method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.from_json.html#compas.datastructures.Feature.from_json">(compas.datastructures.Feature class method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.from_json.html#compas.datastructures.GeometricFeature.from_json">(compas.datastructures.GeometricFeature class method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.from_json.html#compas.datastructures.Graph.from_json">(compas.datastructures.Graph class method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.from_json.html#compas.datastructures.HalfEdge.from_json">(compas.datastructures.HalfEdge class method)</a>
@@ -4358,9 +4396,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.from_json.html#compas.datastructures.Network.from_json">(compas.datastructures.Network class method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.from_json.html#compas.datastructures.ParametricFeature.from_json">(compas.datastructures.ParametricFeature class method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.from_json.html#compas.datastructures.Part.from_json">(compas.datastructures.Part class method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.from_json.html#compas.datastructures.Tree.from_json">(compas.datastructures.Tree class method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.from_json.html#compas.datastructures.VolMesh.from_json">(compas.datastructures.VolMesh class method)</a>
 </li>
@@ -4458,6 +4494,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.from_json.html#compas.geometry.Vector.from_json">(compas.geometry.Vector class method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.from_json.html#compas_blender.geometry.BlenderCurve.from_json">(compas_blender.geometry.BlenderCurve class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_json.html#compas_blender.geometry.BlenderNurbsCurve.from_json">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.from_json.html#compas_rhino.geometry.RhinoBrep.from_json">(compas_rhino.geometry.RhinoBrep class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.from_json.html#compas_rhino.geometry.RhinoBrepEdge.from_json">(compas_rhino.geometry.RhinoBrepEdge class method)</a>
@@ -4479,6 +4519,8 @@ document.write(`
 
       <ul>
         <li><a href="reference/generated/compas.geometry.NurbsCurve.from_line.html#compas.geometry.NurbsCurve.from_line">(compas.geometry.NurbsCurve class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_line.html#compas_blender.geometry.BlenderNurbsCurve.from_line">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.from_line.html#compas_rhino.geometry.RhinoBrepEdge.from_line">(compas_rhino.geometry.RhinoBrepEdge class method)</a>
 </li>
@@ -4568,6 +4610,10 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.Brep.from_native.html#compas.geometry.Brep.from_native">from_native() (compas.geometry.Brep class method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.from_native.html#compas_blender.geometry.BlenderCurve.from_native">(compas_blender.geometry.BlenderCurve class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_native.html#compas_blender.geometry.BlenderNurbsCurve.from_native">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.from_native.html#compas_rhino.geometry.RhinoBrep.from_native">(compas_rhino.geometry.RhinoBrep class method)</a>
 </li>
       </ul></li>
@@ -4620,6 +4666,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.from_obj.html#compas.geometry.ToroidalSurface.from_obj">(compas.geometry.ToroidalSurface class method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.from_obj.html#compas_blender.geometry.BlenderCurve.from_obj">(compas_blender.geometry.BlenderCurve class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_obj.html#compas_blender.geometry.BlenderNurbsCurve.from_obj">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.from_obj.html#compas_rhino.geometry.RhinoNurbsCurve.from_obj">(compas_rhino.geometry.RhinoNurbsCurve class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsSurface.from_obj.html#compas_rhino.geometry.RhinoNurbsSurface.from_obj">(compas_rhino.geometry.RhinoNurbsSurface class method)</a>
@@ -4633,6 +4683,8 @@ document.write(`
 
       <ul>
         <li><a href="reference/generated/compas.geometry.NurbsSurface.from_parameters.html#compas.geometry.NurbsSurface.from_parameters">(compas.geometry.NurbsSurface class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_parameters.html#compas_blender.geometry.BlenderNurbsCurve.from_parameters">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.from_parameters.html#compas_rhino.geometry.RhinoNurbsCurve.from_parameters">(compas_rhino.geometry.RhinoNurbsCurve class method)</a>
 </li>
@@ -4730,6 +4782,8 @@ document.write(`
       <li><a href="reference/generated/compas.datastructures.Mesh.from_points.html#compas.datastructures.Mesh.from_points">from_points() (compas.datastructures.Mesh class method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas.geometry.Box.from_points.html#compas.geometry.Box.from_points">(compas.geometry.Box class method)</a>
+</li>
         <li><a href="reference/generated/compas.geometry.BrepEdge.from_points.html#compas.geometry.BrepEdge.from_points">(compas.geometry.BrepEdge class method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Circle.from_points.html#compas.geometry.Circle.from_points">(compas.geometry.Circle class method)</a>
@@ -4743,6 +4797,8 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Plane.from_points.html#compas.geometry.Plane.from_points">(compas.geometry.Plane class method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.SphericalSurface.from_points.html#compas.geometry.SphericalSurface.from_points">(compas.geometry.SphericalSurface class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_points.html#compas_blender.geometry.BlenderNurbsCurve.from_points">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.from_points.html#compas_rhino.geometry.RhinoBrepEdge.from_points">(compas_rhino.geometry.RhinoBrepEdge class method)</a>
 </li>
@@ -4856,6 +4912,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.from_step.html#compas.geometry.ToroidalSurface.from_step">(compas.geometry.ToroidalSurface class method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.from_step.html#compas_blender.geometry.BlenderCurve.from_step">(compas_blender.geometry.BlenderCurve class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.from_step.html#compas_blender.geometry.BlenderNurbsCurve.from_step">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.from_step.html#compas_rhino.geometry.RhinoBrep.from_step">(compas_rhino.geometry.RhinoBrep class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.from_step.html#compas_rhino.geometry.RhinoNurbsCurve.from_step">(compas_rhino.geometry.RhinoNurbsCurve class method)</a>
@@ -4943,8 +5003,6 @@ document.write(`
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/generated/compas.datastructures.GeometricFeature.html#compas.datastructures.GeometricFeature">GeometricFeature (class in compas.datastructures)</a>
-</li>
       <li><a href="reference/generated/compas.geometry.Geometry.html#compas.geometry.Geometry">Geometry (class in compas.geometry)</a>
 </li>
       <li><a href="reference/generated/compas.artists.GeometryArtist.html#compas.artists.GeometryArtist">GeometryArtist (class in compas.artists)</a>
@@ -4962,8 +5020,6 @@ document.write(`
       <li><a href="reference/generated/compas.files.GLTFReader.get_generic_data.html#compas.files.GLTFReader.get_generic_data">get_generic_data() (compas.files.GLTFReader method)</a>
 </li>
       <li><a href="reference/generated/compas.files.GLTFParser.get_generic_indices.html#compas.files.GLTFParser.get_generic_indices">get_generic_indices() (compas.files.GLTFParser method)</a>
-</li>
-      <li><a href="reference/generated/compas.datastructures.Part.get_geometry.html#compas.datastructures.Part.get_geometry">get_geometry() (compas.datastructures.Part method)</a>
 </li>
       <li><a href="reference/generated/compas_rhino.artists.BoxArtist.get_group.html#compas_rhino.artists.BoxArtist.get_group">get_group() (compas_rhino.artists.BoxArtist method)</a>
 
@@ -5019,11 +5075,17 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.files.GLTFReader.get_mime_type.html#compas.files.GLTFReader.get_mime_type">get_mime_type() (compas.files.GLTFReader method)</a>
 </li>
-      <li><a href="reference/generated/compas.files.GLTFContent.get_node_by_name.html#compas.files.GLTFContent.get_node_by_name">get_node_by_name() (compas.files.GLTFContent method)</a>
+      <li><a href="reference/generated/compas.datastructures.Tree.get_node_by_name.html#compas.datastructures.Tree.get_node_by_name">get_node_by_name() (compas.datastructures.Tree method)</a>
+
+      <ul>
+        <li><a href="reference/generated/compas.files.GLTFContent.get_node_by_name.html#compas.files.GLTFContent.get_node_by_name">(compas.files.GLTFContent method)</a>
 </li>
+      </ul></li>
       <li><a href="reference/generated/compas.files.GLTFContent.get_node_faces.html#compas.files.GLTFContent.get_node_faces">get_node_faces() (compas.files.GLTFContent method)</a>
 </li>
       <li><a href="reference/generated/compas.files.GLTFContent.get_node_vertices.html#compas.files.GLTFContent.get_node_vertices">get_node_vertices() (compas.files.GLTFContent method)</a>
+</li>
+      <li><a href="reference/generated/compas.datastructures.Tree.get_nodes_by_name.html#compas.datastructures.Tree.get_nodes_by_name">get_nodes_by_name() (compas.datastructures.Tree method)</a>
 </li>
       <li><a href="reference/generated/compas.files.GLTFContent.get_nodes_from_scene.html#compas.files.GLTFContent.get_nodes_from_scene">get_nodes_from_scene() (compas.files.GLTFContent method)</a>
 </li>
@@ -5392,12 +5454,16 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.NurbsCurve.insert_knot.html#compas.geometry.NurbsCurve.insert_knot">insert_knot() (compas.geometry.NurbsCurve method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.insert_knot.html#compas_blender.geometry.BlenderNurbsCurve.insert_knot">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.insert_knot.html#compas_rhino.geometry.RhinoNurbsCurve.insert_knot">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.datastructures.Mesh.insert_vertex.html#compas.datastructures.Mesh.insert_vertex">insert_vertex() (compas.datastructures.Mesh method)</a>
 </li>
       <li><a href="reference/generated/compas.files.URDFParser.install_parser.html#compas.files.URDFParser.install_parser">install_parser() (compas.files.URDFParser class method)</a>
+</li>
+      <li><a href="reference/generated/compas_ghpython.components.install_userobjects.html#compas_ghpython.components.install_userobjects">install_userobjects() (in module compas_ghpython.components)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.intersection_circle_circle_xy.html#compas.geometry.intersection_circle_circle_xy">intersection_circle_circle_xy() (in module compas.geometry)</a>
 </li>
@@ -5563,10 +5629,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Vector.inverted.html#compas.geometry.Vector.inverted">(compas.geometry.Vector method)</a>
 </li>
       </ul></li>
-      <li><a href="reference/generated/compas.files.PLYReader.is_ascii.html#compas.files.PLYReader.is_ascii">is_ascii() (compas.files.PLYReader method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/compas.files.PLYReader.is_ascii.html#compas.files.PLYReader.is_ascii">is_ascii() (compas.files.PLYReader method)</a>
+</li>
       <li><a href="reference/generated/compas.files.PLYReader.is_binary.html#compas.files.PLYReader.is_binary">is_binary() (compas.files.PLYReader method)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.is_ccw_xy.html#compas.geometry.is_ccw_xy">is_ccw_xy() (in module compas.geometry)</a>
@@ -5640,10 +5706,6 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.colors.Color.is_hex.html#compas.colors.Color.is_hex">is_hex() (compas.colors.Color static method)</a>
-</li>
-      <li><a href="reference/generated/compas.geometry.is_intersection_line_line_xy.html#compas.geometry.is_intersection_line_line_xy">is_intersection_line_line_xy() (in module compas.geometry)</a>
-</li>
-      <li><a href="reference/generated/compas.geometry.is_intersection_segment_segment_xy.html#compas.geometry.is_intersection_segment_segment_xy">is_intersection_segment_segment_xy() (in module compas.geometry)</a>
 </li>
       <li><a href="reference/generated/compas.datastructures.Graph.is_leaf.html#compas.datastructures.Graph.is_leaf">is_leaf() (compas.datastructures.Graph method)</a>
 
@@ -5888,6 +5950,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Parabola.length.html#compas.geometry.Parabola.length">(compas.geometry.Parabola method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.length.html#compas_blender.geometry.BlenderCurve.length">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.length.html#compas_blender.geometry.BlenderNurbsCurve.length">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.length.html#compas_rhino.geometry.RhinoNurbsCurve.length">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -5899,10 +5965,10 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.geometry.length_vector_xy.html#compas.geometry.length_vector_xy">length_vector_xy() (in module compas.geometry)</a>
 </li>
-      <li><a href="reference/generated/compas.geometry.Vector.length_vectors.html#compas.geometry.Vector.length_vectors">length_vectors() (compas.geometry.Vector static method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/generated/compas.geometry.Vector.length_vectors.html#compas.geometry.Vector.length_vectors">length_vectors() (compas.geometry.Vector static method)</a>
+</li>
       <li><a href="reference/generated/compas.colors.Color.lighten.html#compas.colors.Color.lighten">lighten() (compas.colors.Color method)</a>
 </li>
       <li><a href="reference/generated/compas.colors.Color.lightened.html#compas.colors.Color.lightened">lightened() (compas.colors.Color method)</a>
@@ -6071,10 +6137,10 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.datastructures.mesh_is_connected.html#compas.datastructures.mesh_is_connected">mesh_is_connected() (in module compas.datastructures)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.datastructures.mesh_isolines_numpy.html#compas.datastructures.mesh_isolines_numpy">mesh_isolines_numpy() (in module compas.datastructures)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.datastructures.mesh_laplacian_matrix.html#compas.datastructures.mesh_laplacian_matrix">mesh_laplacian_matrix() (in module compas.datastructures)</a>
 </li>
       <li><a href="reference/generated/compas.datastructures.mesh_merge_faces.html#compas.datastructures.mesh_merge_faces">mesh_merge_faces() (in module compas.datastructures)</a>
@@ -6168,6 +6234,8 @@ document.write(`
       <li><a href="reference/generated/compas.datastructures.meshes_join.html#compas.datastructures.meshes_join">meshes_join() (in module compas.datastructures)</a>
 </li>
       <li><a href="reference/generated/compas.datastructures.meshes_join_and_weld.html#compas.datastructures.meshes_join_and_weld">meshes_join_and_weld() (in module compas.datastructures)</a>
+</li>
+      <li><a href="reference/generated/compas_blender.conversions.meshobj_to_compas.html#compas_blender.conversions.meshobj_to_compas">meshobj_to_compas() (in module compas_blender.conversions)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.midpoint_line.html#compas.geometry.midpoint_line">midpoint_line() (in module compas.geometry)</a>
 </li>
@@ -6331,18 +6399,6 @@ document.write(`
         <li><a href="reference/generated/compas_rhino.artists.NetworkArtist.html#compas_rhino.artists.NetworkArtist">(class in compas_rhino.artists)</a>
 </li>
       </ul></li>
-      <li><a href="reference/generated/compas_rhino.geometry.curves.new_curve.html#compas_rhino.geometry.curves.new_curve">new_curve() (in module compas_rhino.geometry.curves)</a>
-</li>
-      <li><a href="reference/generated/compas_rhino.geometry.curves.new_nurbscurve.html#compas_rhino.geometry.curves.new_nurbscurve">new_nurbscurve() (in module compas_rhino.geometry.curves)</a>
-</li>
-      <li><a href="reference/generated/compas_rhino.geometry.curves.new_nurbscurve_from_interpolation.html#compas_rhino.geometry.curves.new_nurbscurve_from_interpolation">new_nurbscurve_from_interpolation() (in module compas_rhino.geometry.curves)</a>
-</li>
-      <li><a href="reference/generated/compas_rhino.geometry.curves.new_nurbscurve_from_parameters.html#compas_rhino.geometry.curves.new_nurbscurve_from_parameters">new_nurbscurve_from_parameters() (in module compas_rhino.geometry.curves)</a>
-</li>
-      <li><a href="reference/generated/compas_rhino.geometry.curves.new_nurbscurve_from_points.html#compas_rhino.geometry.curves.new_nurbscurve_from_points">new_nurbscurve_from_points() (in module compas_rhino.geometry.curves)</a>
-</li>
-      <li><a href="reference/generated/compas_rhino.geometry.curves.new_nurbscurve_from_step.html#compas_rhino.geometry.curves.new_nurbscurve_from_step">new_nurbscurve_from_step() (in module compas_rhino.geometry.curves)</a>
-</li>
       <li><a href="reference/generated/compas.artists.NoArtistContextError.html#compas.artists.NoArtistContextError">NoArtistContextError</a>
 </li>
       <li><a href="reference/generated/compas.datastructures.Graph.node_attribute.html#compas.datastructures.Graph.node_attribute">node_attribute() (compas.datastructures.Graph method)</a>
@@ -6385,8 +6441,6 @@ document.write(`
         <li><a href="reference/generated/compas.datastructures.Network.nodes.html#compas.datastructures.Network.nodes">(compas.datastructures.Network method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.datastructures.Graph.nodes_attribute.html#compas.datastructures.Graph.nodes_attribute">nodes_attribute() (compas.datastructures.Graph method)</a>
 
       <ul>
@@ -6399,6 +6453,8 @@ document.write(`
         <li><a href="reference/generated/compas.datastructures.Network.nodes_attributes.html#compas.datastructures.Network.nodes_attributes">(compas.datastructures.Network method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.datastructures.Graph.nodes_where.html#compas.datastructures.Graph.nodes_where">nodes_where() (compas.datastructures.Graph method)</a>
 
       <ul>
@@ -6455,6 +6511,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Surface.normal_at.html#compas.geometry.Surface.normal_at">(compas.geometry.Surface method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.normal_at.html#compas.geometry.ToroidalSurface.normal_at">(compas.geometry.ToroidalSurface method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.normal_at.html#compas_blender.geometry.BlenderCurve.normal_at">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.normal_at.html#compas_blender.geometry.BlenderNurbsCurve.normal_at">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.normal_at.html#compas_rhino.geometry.RhinoNurbsCurve.normal_at">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -6608,6 +6668,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.offset.html#compas.geometry.Polyline.offset">(compas.geometry.Polyline method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.offset.html#compas_blender.geometry.BlenderCurve.offset">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.offset.html#compas_blender.geometry.BlenderNurbsCurve.offset">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.offset.html#compas_rhino.geometry.RhinoNurbsCurve.offset">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -6615,10 +6679,10 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.geometry.offset_polygon.html#compas.geometry.offset_polygon">offset_polygon() (in module compas.geometry)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.geometry.offset_polyline.html#compas.geometry.offset_polyline">offset_polyline() (in module compas.geometry)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.files.OFFWriter.html#compas.files.OFFWriter">OFFWriter (class in compas.files)</a>
 </li>
       <li><a href="reference/generated/compas.colors.Color.olive.html#compas.colors.Color.olive">olive() (compas.colors.Color class method)</a>
@@ -6626,6 +6690,10 @@ document.write(`
       <li><a href="reference/generated/compas_rhino.forms.ImageForm.on_cancel.html#compas_rhino.forms.ImageForm.on_cancel">on_cancel() (compas_rhino.forms.ImageForm method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_rhino.forms.PropertyListForm.on_cancel.html#compas_rhino.forms.PropertyListForm.on_cancel">(compas_rhino.forms.PropertyListForm method)</a>
+</li>
+        <li><a href="reference/generated/compas_rhino.forms.SettingsForm.on_cancel.html#compas_rhino.forms.SettingsForm.on_cancel">(compas_rhino.forms.SettingsForm method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.forms.TextForm.on_cancel.html#compas_rhino.forms.TextForm.on_cancel">(compas_rhino.forms.TextForm method)</a>
 </li>
       </ul></li>
@@ -6650,6 +6718,10 @@ document.write(`
       <li><a href="reference/generated/compas_rhino.forms.ImageForm.on_ok.html#compas_rhino.forms.ImageForm.on_ok">on_ok() (compas_rhino.forms.ImageForm method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_rhino.forms.PropertyListForm.on_ok.html#compas_rhino.forms.PropertyListForm.on_ok">(compas_rhino.forms.PropertyListForm method)</a>
+</li>
+        <li><a href="reference/generated/compas_rhino.forms.SettingsForm.on_ok.html#compas_rhino.forms.SettingsForm.on_ok">(compas_rhino.forms.SettingsForm method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.forms.TextForm.on_ok.html#compas_rhino.forms.TextForm.on_ok">(compas_rhino.forms.TextForm method)</a>
 </li>
       </ul></li>
@@ -6699,8 +6771,6 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.geometry.Polyline.parameter_at.html#compas.geometry.Polyline.parameter_at">parameter_at() (compas.geometry.Polyline method)</a>
 </li>
-      <li><a href="reference/generated/compas.datastructures.ParametricFeature.html#compas.datastructures.ParametricFeature">ParametricFeature (class in compas.datastructures)</a>
-</li>
       <li><a href="reference/generated/compas.files.GLTFParser.parse.html#compas.files.GLTFParser.parse">parse() (compas.files.GLTFParser method)</a>
 
       <ul>
@@ -6712,8 +6782,6 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.files.URDFParser.parse_element.html#compas.files.URDFParser.parse_element">parse_element() (compas.files.URDFParser class method)</a>
-</li>
-      <li><a href="reference/generated/compas.datastructures.Part.html#compas.datastructures.Part">Part (class in compas.datastructures)</a>
 </li>
       <li><a href="reference/generated/compas.datastructures.Assembly.parts.html#compas.datastructures.Assembly.parts">parts() (compas.datastructures.Assembly method)</a>
 </li>
@@ -6790,6 +6858,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.point_at.html#compas.geometry.ToroidalSurface.point_at">(compas.geometry.ToroidalSurface method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.point_at.html#compas_blender.geometry.BlenderCurve.point_at">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.point_at.html#compas_blender.geometry.BlenderNurbsCurve.point_at">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.point_at.html#compas_rhino.geometry.RhinoNurbsCurve.point_at">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsSurface.point_at.html#compas_rhino.geometry.RhinoNurbsSurface.point_at">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
@@ -6799,8 +6871,6 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas_rhino.conversions.point_to_rhino.html#compas_rhino.conversions.point_to_rhino">point_to_rhino() (in module compas_rhino.conversions)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas_blender.artists.PointArtist.html#compas_blender.artists.PointArtist">PointArtist (class in compas_blender.artists)</a>
 
       <ul>
@@ -6809,6 +6879,8 @@ document.write(`
         <li><a href="reference/generated/compas_rhino.artists.PointArtist.html#compas_rhino.artists.PointArtist">(class in compas_rhino.artists)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.geometry.Pointcloud.html#compas.geometry.Pointcloud">Pointcloud (class in compas.geometry)</a>
 </li>
       <li><a href="reference/generated/compas_blender.conversions.pointcloud_to_blender.html#compas_blender.conversions.pointcloud_to_blender">pointcloud_to_blender() (in module compas_blender.conversions)</a>
@@ -6895,6 +6967,8 @@ document.write(`
         <li><a href="reference/generated/compas.files.OFFReader.pre.html#compas.files.OFFReader.pre">(compas.files.OFFReader method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/generated/compas.datastructures.Tree.print.html#compas.datastructures.Tree.print">print() (compas.datastructures.Tree method)</a>
+</li>
       <li><a href="reference/generated/compas.rpc.Server.process_request.html#compas.rpc.Server.process_request">process_request() (compas.rpc.Server method)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.project_point_line.html#compas.geometry.project_point_line">project_point_line() (in module compas.geometry)</a>
@@ -6912,6 +6986,8 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.Plane.projected_point.html#compas.geometry.Plane.projected_point">projected_point() (compas.geometry.Plane method)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.Projection.html#compas.geometry.Projection">Projection (class in compas.geometry)</a>
+</li>
+      <li><a href="reference/generated/compas_rhino.forms.PropertyListForm.html#compas_rhino.forms.PropertyListForm">PropertyListForm (class in compas_rhino.forms)</a>
 </li>
       <li><a href="reference/generated/compas.rpc.Proxy.html#compas.rpc.Proxy">Proxy (class in compas.rpc)</a>
 </li>
@@ -7044,8 +7120,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.redraw.html#compas_ghpython.artists.BoxArtist.redraw">(compas_ghpython.artists.BoxArtist static method)</a>
 </li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.redraw.html#compas_ghpython.artists.BrepArtist.redraw">(compas_ghpython.artists.BrepArtist static method)</a>
-</li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.redraw.html#compas_ghpython.artists.CapsuleArtist.redraw">(compas_ghpython.artists.CapsuleArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CircleArtist.redraw.html#compas_ghpython.artists.CircleArtist.redraw">(compas_ghpython.artists.CircleArtist static method)</a>
@@ -7136,12 +7210,16 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.NurbsCurve.reduce_degree.html#compas.geometry.NurbsCurve.reduce_degree">reduce_degree() (compas.geometry.NurbsCurve method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.reduce_degree.html#compas_blender.geometry.BlenderNurbsCurve.reduce_degree">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.reduce_degree.html#compas_rhino.geometry.RhinoNurbsCurve.reduce_degree">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.geometry.NurbsCurve.refine_knot.html#compas.geometry.NurbsCurve.refine_knot">refine_knot() (compas.geometry.NurbsCurve method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.refine_knot.html#compas_blender.geometry.BlenderNurbsCurve.refine_knot">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.refine_knot.html#compas_rhino.geometry.RhinoNurbsCurve.refine_knot">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -7205,8 +7283,6 @@ document.write(`
         <li><a href="reference/generated/compas_blender.artists.VolMeshArtist.register.html#compas_blender.artists.VolMeshArtist.register">(compas_blender.artists.VolMeshArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.register.html#compas_ghpython.artists.BoxArtist.register">(compas_ghpython.artists.BoxArtist static method)</a>
-</li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.register.html#compas_ghpython.artists.BrepArtist.register">(compas_ghpython.artists.BrepArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.register.html#compas_ghpython.artists.CapsuleArtist.register">(compas_ghpython.artists.CapsuleArtist static method)</a>
 </li>
@@ -7350,8 +7426,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.BoxArtist.register_artists.html#compas_ghpython.artists.BoxArtist.register_artists">(compas_ghpython.artists.BoxArtist static method)</a>
 </li>
-        <li><a href="reference/generated/compas_ghpython.artists.BrepArtist.register_artists.html#compas_ghpython.artists.BrepArtist.register_artists">(compas_ghpython.artists.BrepArtist static method)</a>
-</li>
         <li><a href="reference/generated/compas_ghpython.artists.CapsuleArtist.register_artists.html#compas_ghpython.artists.CapsuleArtist.register_artists">(compas_ghpython.artists.CapsuleArtist static method)</a>
 </li>
         <li><a href="reference/generated/compas_ghpython.artists.CircleArtist.register_artists.html#compas_ghpython.artists.CircleArtist.register_artists">(compas_ghpython.artists.CircleArtist static method)</a>
@@ -7453,9 +7527,13 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.rpc.Server.remote_shutdown.html#compas.rpc.Server.remote_shutdown">remote_shutdown() (compas.rpc.Server method)</a>
 </li>
+      <li><a href="reference/generated/compas.datastructures.Tree.remove.html#compas.datastructures.Tree.remove">remove() (compas.datastructures.Tree method)</a>
+</li>
       <li><a href="reference/generated/compas.geometry.NurbsCurve.remove_knot.html#compas.geometry.NurbsCurve.remove_knot">remove_knot() (compas.geometry.NurbsCurve method)</a>
 
       <ul>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.remove_knot.html#compas_blender.geometry.BlenderNurbsCurve.remove_knot">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.remove_knot.html#compas_rhino.geometry.RhinoNurbsCurve.remove_knot">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -7474,8 +7552,6 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.rpc.Proxy.restart_server.html#compas.rpc.Proxy.restart_server">restart_server() (compas.rpc.Proxy method)</a>
-</li>
-      <li><a href="reference/generated/compas.datastructures.ParametricFeature.restore.html#compas.datastructures.ParametricFeature.restore">restore() (compas.datastructures.ParametricFeature method)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.Arc.reverse.html#compas.geometry.Arc.reverse">reverse() (compas.geometry.Arc method)</a>
 
@@ -7497,6 +7573,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Parabola.reverse.html#compas.geometry.Parabola.reverse">(compas.geometry.Parabola method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.reverse.html#compas.geometry.Polyline.reverse">(compas.geometry.Polyline method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.reverse.html#compas_blender.geometry.BlenderCurve.reverse">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.reverse.html#compas_blender.geometry.BlenderNurbsCurve.reverse">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.reverse.html#compas_rhino.geometry.RhinoNurbsCurve.reverse">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -7521,6 +7601,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Parabola.reversed.html#compas.geometry.Parabola.reversed">(compas.geometry.Parabola method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.reversed.html#compas.geometry.Polyline.reversed">(compas.geometry.Polyline method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.reversed.html#compas_blender.geometry.BlenderCurve.reversed">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.reversed.html#compas_blender.geometry.BlenderNurbsCurve.reversed">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.reversed.html#compas_rhino.geometry.RhinoNurbsCurve.reversed">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -7614,6 +7698,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.rotate.html#compas.geometry.Vector.rotate">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.rotate.html#compas_blender.geometry.BlenderCurve.rotate">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.rotate.html#compas_blender.geometry.BlenderNurbsCurve.rotate">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.rotate.html#compas_rhino.geometry.RhinoBrep.rotate">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.rotate.html#compas_rhino.geometry.RhinoNurbsCurve.rotate">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
@@ -7694,6 +7782,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.rotated.html#compas.geometry.Vector.rotated">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.rotated.html#compas_blender.geometry.BlenderCurve.rotated">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.rotated.html#compas_blender.geometry.BlenderNurbsCurve.rotated">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.rotated.html#compas_rhino.geometry.RhinoBrep.rotated">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.rotated.html#compas_rhino.geometry.RhinoNurbsCurve.rotated">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
@@ -7719,7 +7811,7 @@ document.write(`
 </li>
       <li><a href="reference/generated/compas.colors.Color.saturated.html#compas.colors.Color.saturated">saturated() (compas.colors.Color method)</a>
 </li>
-      <li><a href="reference/generated/compas.numerical.scalarfield_contours_numpy.html#compas.numerical.scalarfield_contours_numpy">scalarfield_contours_numpy() (in module compas.numerical)</a>
+      <li><a href="reference/generated/compas.numerical.scalarfield_contours.html#compas.numerical.scalarfield_contours">scalarfield_contours() (in module compas.numerical)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.Scale.html#compas.geometry.Scale">Scale (class in compas.geometry)</a>
 </li>
@@ -7791,6 +7883,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Torus.scale.html#compas.geometry.Torus.scale">(compas.geometry.Torus method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.scale.html#compas.geometry.Vector.scale">(compas.geometry.Vector method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.scale.html#compas_blender.geometry.BlenderCurve.scale">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.scale.html#compas_blender.geometry.BlenderNurbsCurve.scale">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.scale.html#compas_rhino.geometry.RhinoBrep.scale">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
@@ -7879,6 +7975,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Torus.scaled.html#compas.geometry.Torus.scaled">(compas.geometry.Torus method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.scaled.html#compas.geometry.Vector.scaled">(compas.geometry.Vector method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.scaled.html#compas_blender.geometry.BlenderCurve.scaled">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.scaled.html#compas_blender.geometry.BlenderNurbsCurve.scaled">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.scaled.html#compas_rhino.geometry.RhinoBrep.scaled">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
@@ -7989,6 +8089,8 @@ document.write(`
       </ul></li>
       <li><a href="reference/generated/compas.datastructures.Mesh.set_vertex_point.html#compas.datastructures.Mesh.set_vertex_point">set_vertex_point() (compas.datastructures.Mesh method)</a>
 </li>
+      <li><a href="reference/generated/compas_rhino.forms.SettingsForm.html#compas_rhino.forms.SettingsForm">SettingsForm (class in compas_rhino.forms)</a>
+</li>
       <li><a href="reference/generated/compas.geometry.Brep.sew.html#compas.geometry.Brep.sew">sew() (compas.geometry.Brep method)</a>
 
       <ul>
@@ -8008,10 +8110,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.sha256.html#compas.datastructures.Datastructure.sha256">(compas.datastructures.Datastructure method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.sha256.html#compas.datastructures.Feature.sha256">(compas.datastructures.Feature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.sha256.html#compas.datastructures.GeometricFeature.sha256">(compas.datastructures.GeometricFeature method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.sha256.html#compas.datastructures.Graph.sha256">(compas.datastructures.Graph method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.sha256.html#compas.datastructures.HalfEdge.sha256">(compas.datastructures.HalfEdge method)</a>
@@ -8022,9 +8120,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.sha256.html#compas.datastructures.Network.sha256">(compas.datastructures.Network method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.sha256.html#compas.datastructures.ParametricFeature.sha256">(compas.datastructures.ParametricFeature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.sha256.html#compas.datastructures.Part.sha256">(compas.datastructures.Part method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.sha256.html#compas.datastructures.Tree.sha256">(compas.datastructures.Tree method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.sha256.html#compas.datastructures.VolMesh.sha256">(compas.datastructures.VolMesh method)</a>
 </li>
@@ -8122,6 +8218,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.sha256.html#compas.geometry.Vector.sha256">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.sha256.html#compas_blender.geometry.BlenderCurve.sha256">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.sha256.html#compas_blender.geometry.BlenderNurbsCurve.sha256">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.sha256.html#compas_rhino.geometry.RhinoBrep.sha256">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.sha256.html#compas_rhino.geometry.RhinoBrepEdge.sha256">(compas_rhino.geometry.RhinoBrepEdge method)</a>
@@ -8166,6 +8266,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas_rhino.forms.ImageForm.show.html#compas_rhino.forms.ImageForm.show">(compas_rhino.forms.ImageForm method)</a>
 </li>
+        <li><a href="reference/generated/compas_rhino.forms.PropertyListForm.show.html#compas_rhino.forms.PropertyListForm.show">(compas_rhino.forms.PropertyListForm method)</a>
+</li>
+        <li><a href="reference/generated/compas_rhino.forms.SettingsForm.show.html#compas_rhino.forms.SettingsForm.show">(compas_rhino.forms.SettingsForm method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.forms.SliderForm.show.html#compas_rhino.forms.SliderForm.show">(compas_rhino.forms.SliderForm method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.forms.TextForm.show.html#compas_rhino.forms.TextForm.show">(compas_rhino.forms.TextForm method)</a>
@@ -8209,6 +8313,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Parabola.smooth.html#compas.geometry.Parabola.smooth">(compas.geometry.Parabola method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.smooth.html#compas.geometry.Polyline.smooth">(compas.geometry.Polyline method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.smooth.html#compas_blender.geometry.BlenderCurve.smooth">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.smooth.html#compas_blender.geometry.BlenderNurbsCurve.smooth">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.smooth.html#compas_rhino.geometry.RhinoNurbsCurve.smooth">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -8299,6 +8407,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Parabola.split.html#compas.geometry.Parabola.split">(compas.geometry.Parabola method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.split.html#compas.geometry.Polyline.split">(compas.geometry.Polyline method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.split.html#compas_blender.geometry.BlenderCurve.split">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.split.html#compas_blender.geometry.BlenderNurbsCurve.split">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.split.html#compas_rhino.geometry.RhinoBrep.split">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
@@ -8416,6 +8528,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.tangent_at.html#compas.geometry.Polyline.tangent_at">(compas.geometry.Polyline method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.tangent_at.html#compas_blender.geometry.BlenderCurve.tangent_at">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.tangent_at.html#compas_blender.geometry.BlenderNurbsCurve.tangent_at">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.tangent_at.html#compas_rhino.geometry.RhinoNurbsCurve.tangent_at">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -8498,10 +8614,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.to_data.html#compas.datastructures.Datastructure.to_data">(compas.datastructures.Datastructure method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.to_data.html#compas.datastructures.Feature.to_data">(compas.datastructures.Feature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.to_data.html#compas.datastructures.GeometricFeature.to_data">(compas.datastructures.GeometricFeature method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.to_data.html#compas.datastructures.Graph.to_data">(compas.datastructures.Graph method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.to_data.html#compas.datastructures.HalfEdge.to_data">(compas.datastructures.HalfEdge method)</a>
@@ -8512,9 +8624,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.to_data.html#compas.datastructures.Network.to_data">(compas.datastructures.Network method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.to_data.html#compas.datastructures.ParametricFeature.to_data">(compas.datastructures.ParametricFeature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.to_data.html#compas.datastructures.Part.to_data">(compas.datastructures.Part method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.to_data.html#compas.datastructures.Tree.to_data">(compas.datastructures.Tree method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.to_data.html#compas.datastructures.VolMesh.to_data">(compas.datastructures.VolMesh method)</a>
 </li>
@@ -8614,6 +8724,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.to_data.html#compas.geometry.Vector.to_data">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.to_data.html#compas_blender.geometry.BlenderCurve.to_data">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.to_data.html#compas_blender.geometry.BlenderNurbsCurve.to_data">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.to_data.html#compas_rhino.geometry.RhinoBrep.to_data">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.to_data.html#compas_rhino.geometry.RhinoBrepEdge.to_data">(compas_rhino.geometry.RhinoBrepEdge method)</a>
@@ -8662,10 +8776,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.to_json.html#compas.datastructures.Datastructure.to_json">(compas.datastructures.Datastructure method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.to_json.html#compas.datastructures.Feature.to_json">(compas.datastructures.Feature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.to_json.html#compas.datastructures.GeometricFeature.to_json">(compas.datastructures.GeometricFeature method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.to_json.html#compas.datastructures.Graph.to_json">(compas.datastructures.Graph method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.to_json.html#compas.datastructures.HalfEdge.to_json">(compas.datastructures.HalfEdge method)</a>
@@ -8676,9 +8786,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.to_json.html#compas.datastructures.Network.to_json">(compas.datastructures.Network method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.to_json.html#compas.datastructures.ParametricFeature.to_json">(compas.datastructures.ParametricFeature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.to_json.html#compas.datastructures.Part.to_json">(compas.datastructures.Part method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.to_json.html#compas.datastructures.Tree.to_json">(compas.datastructures.Tree method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.to_json.html#compas.datastructures.VolMesh.to_json">(compas.datastructures.VolMesh method)</a>
 </li>
@@ -8776,6 +8884,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.to_json.html#compas.geometry.Vector.to_json">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.to_json.html#compas_blender.geometry.BlenderCurve.to_json">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.to_json.html#compas_blender.geometry.BlenderNurbsCurve.to_json">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.to_json.html#compas_rhino.geometry.RhinoBrep.to_json">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.to_json.html#compas_rhino.geometry.RhinoBrepEdge.to_json">(compas_rhino.geometry.RhinoBrepEdge method)</a>
@@ -8872,6 +8984,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.to_obj.html#compas.geometry.Polyline.to_obj">(compas.geometry.Polyline method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.to_obj.html#compas_blender.geometry.BlenderCurve.to_obj">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.to_obj.html#compas_blender.geometry.BlenderNurbsCurve.to_obj">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.to_obj.html#compas_rhino.geometry.RhinoNurbsCurve.to_obj">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -8912,6 +9028,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.to_points.html#compas.geometry.Polyline.to_points">(compas.geometry.Polyline method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.to_points.html#compas_blender.geometry.BlenderCurve.to_points">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.to_points.html#compas_blender.geometry.BlenderNurbsCurve.to_points">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.to_points.html#compas_rhino.geometry.RhinoNurbsCurve.to_points">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
@@ -8935,6 +9055,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Parabola.to_polygon.html#compas.geometry.Parabola.to_polygon">(compas.geometry.Parabola method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.to_polygon.html#compas.geometry.Polyline.to_polygon">(compas.geometry.Polyline method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.to_polygon.html#compas_blender.geometry.BlenderCurve.to_polygon">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.to_polygon.html#compas_blender.geometry.BlenderNurbsCurve.to_polygon">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.to_polygon.html#compas_rhino.geometry.RhinoNurbsCurve.to_polygon">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -8993,6 +9117,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Parabola.to_polyline.html#compas.geometry.Parabola.to_polyline">(compas.geometry.Parabola method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.to_polyline.html#compas.geometry.Polyline.to_polyline">(compas.geometry.Polyline method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.to_polyline.html#compas_blender.geometry.BlenderCurve.to_polyline">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.to_polyline.html#compas_blender.geometry.BlenderNurbsCurve.to_polyline">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.to_polyline.html#compas_rhino.geometry.RhinoNurbsCurve.to_polyline">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
@@ -9054,6 +9182,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.ToroidalSurface.to_step.html#compas.geometry.ToroidalSurface.to_step">(compas.geometry.ToroidalSurface method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.to_step.html#compas_blender.geometry.BlenderCurve.to_step">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.to_step.html#compas_blender.geometry.BlenderNurbsCurve.to_step">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.to_step.html#compas_rhino.geometry.RhinoBrep.to_step">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.to_step.html#compas_rhino.geometry.RhinoNurbsCurve.to_step">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
@@ -9113,10 +9245,10 @@ document.write(`
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsSurface.to_triangles.html#compas_rhino.geometry.RhinoNurbsSurface.to_triangles">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.datastructures.VolMesh.to_vertices_and_cells.html#compas.datastructures.VolMesh.to_vertices_and_cells">to_vertices_and_cells() (compas.datastructures.VolMesh method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/generated/compas.datastructures.Mesh.to_vertices_and_faces.html#compas.datastructures.Mesh.to_vertices_and_faces">to_vertices_and_faces() (compas.datastructures.Mesh method)</a>
 
       <ul>
@@ -9194,10 +9326,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.ToString.html#compas.datastructures.Datastructure.ToString">(compas.datastructures.Datastructure method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.ToString.html#compas.datastructures.Feature.ToString">(compas.datastructures.Feature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.ToString.html#compas.datastructures.GeometricFeature.ToString">(compas.datastructures.GeometricFeature method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.ToString.html#compas.datastructures.Graph.ToString">(compas.datastructures.Graph method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.ToString.html#compas.datastructures.HalfEdge.ToString">(compas.datastructures.HalfEdge method)</a>
@@ -9208,9 +9336,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.ToString.html#compas.datastructures.Network.ToString">(compas.datastructures.Network method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.ToString.html#compas.datastructures.ParametricFeature.ToString">(compas.datastructures.ParametricFeature method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.ToString.html#compas.datastructures.Part.ToString">(compas.datastructures.Part method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.ToString.html#compas.datastructures.Tree.ToString">(compas.datastructures.Tree method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.ToString.html#compas.datastructures.VolMesh.ToString">(compas.datastructures.VolMesh method)</a>
 </li>
@@ -9308,6 +9434,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.ToString.html#compas.geometry.Vector.ToString">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.ToString.html#compas_blender.geometry.BlenderCurve.ToString">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.ToString.html#compas_blender.geometry.BlenderNurbsCurve.ToString">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.ToString.html#compas_rhino.geometry.RhinoBrep.ToString">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrepEdge.ToString.html#compas_rhino.geometry.RhinoBrepEdge.ToString">(compas_rhino.geometry.RhinoBrepEdge method)</a>
@@ -9399,6 +9529,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Torus.transform.html#compas.geometry.Torus.transform">(compas.geometry.Torus method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.transform.html#compas.geometry.Vector.transform">(compas.geometry.Vector method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.transform.html#compas_blender.geometry.BlenderCurve.transform">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.transform.html#compas_blender.geometry.BlenderNurbsCurve.transform">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.transform.html#compas_rhino.geometry.RhinoBrep.transform">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
@@ -9504,6 +9638,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.transformed.html#compas.geometry.Vector.transformed">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.transformed.html#compas_blender.geometry.BlenderCurve.transformed">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.transformed.html#compas_blender.geometry.BlenderNurbsCurve.transformed">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.transformed.html#compas_rhino.geometry.RhinoBrep.transformed">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.transformed.html#compas_rhino.geometry.RhinoNurbsCurve.transformed">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
@@ -9581,6 +9719,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Torus.translate.html#compas.geometry.Torus.translate">(compas.geometry.Torus method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.translate.html#compas.geometry.Vector.translate">(compas.geometry.Vector method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.translate.html#compas_blender.geometry.BlenderCurve.translate">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.translate.html#compas_blender.geometry.BlenderNurbsCurve.translate">(compas_blender.geometry.BlenderNurbsCurve method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.translate.html#compas_rhino.geometry.RhinoBrep.translate">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
@@ -9662,6 +9804,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.translated.html#compas.geometry.Vector.translated">(compas.geometry.Vector method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.translated.html#compas_blender.geometry.BlenderCurve.translated">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.translated.html#compas_blender.geometry.BlenderNurbsCurve.translated">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.translated.html#compas_rhino.geometry.RhinoBrep.translated">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.translated.html#compas_rhino.geometry.RhinoNurbsCurve.translated">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
@@ -9707,6 +9853,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Translation.transposed.html#compas.geometry.Translation.transposed">(compas.geometry.Translation method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/generated/compas.datastructures.Tree.traverse.html#compas.datastructures.Tree.traverse">traverse() (compas.datastructures.Tree method)</a>
+</li>
+      <li><a href="reference/generated/compas.datastructures.Tree.html#compas.datastructures.Tree">Tree (class in compas.datastructures)</a>
+</li>
       <li><a href="reference/generated/compas.geometry.Arc.trim.html#compas.geometry.Arc.trim">trim() (compas.geometry.Arc method)</a>
 
       <ul>
@@ -9730,6 +9880,10 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.geometry.Polyline.trim.html#compas.geometry.Polyline.trim">(compas.geometry.Polyline method)</a>
 </li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.trim.html#compas_blender.geometry.BlenderCurve.trim">(compas_blender.geometry.BlenderCurve method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.trim.html#compas_blender.geometry.BlenderNurbsCurve.trim">(compas_blender.geometry.BlenderNurbsCurve method)</a>
+</li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.trim.html#compas_rhino.geometry.RhinoBrep.trim">(compas_rhino.geometry.RhinoBrep method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoNurbsCurve.trim.html#compas_rhino.geometry.RhinoNurbsCurve.trim">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
@@ -9750,7 +9904,7 @@ document.write(`
       <ul>
         <li><a href="reference/generated/compas.geometry.trimesh_gaussian_curvature.html#compas.geometry.trimesh_gaussian_curvature">(in module compas.geometry)</a>
 </li>
-        <li><a href="reference/generated/compas_rhino.geometry.trimesh.trimesh_gaussian_curvature.html#compas_rhino.geometry.trimesh.trimesh_gaussian_curvature">(in module compas_rhino.geometry.trimesh)</a>
+        <li><a href="reference/generated/compas_rhino.geometry.trimesh_gaussian_curvature.html#compas_rhino.geometry.trimesh_gaussian_curvature">(in module compas_rhino.geometry)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.geometry.trimesh_geodistance.html#compas.geometry.trimesh_geodistance">trimesh_geodistance() (in module compas.geometry)</a>
@@ -9770,13 +9924,13 @@ document.write(`
       <ul>
         <li><a href="reference/generated/compas.geometry.trimesh_mean_curvature.html#compas.geometry.trimesh_mean_curvature">(in module compas.geometry)</a>
 </li>
-        <li><a href="reference/generated/compas_rhino.geometry.trimesh.trimesh_mean_curvature.html#compas_rhino.geometry.trimesh.trimesh_mean_curvature">(in module compas_rhino.geometry.trimesh)</a>
+        <li><a href="reference/generated/compas_rhino.geometry.trimesh_mean_curvature.html#compas_rhino.geometry.trimesh_mean_curvature">(in module compas_rhino.geometry)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.geometry.trimesh_principal_curvature.html#compas.geometry.trimesh_principal_curvature">trimesh_principal_curvature() (in module compas.geometry)</a>
 
       <ul>
-        <li><a href="reference/generated/compas_rhino.geometry.trimesh.trimesh_principal_curvature.html#compas_rhino.geometry.trimesh.trimesh_principal_curvature">(in module compas_rhino.geometry.trimesh)</a>
+        <li><a href="reference/generated/compas_rhino.geometry.trimesh_principal_curvature.html#compas_rhino.geometry.trimesh_principal_curvature">(in module compas_rhino.geometry)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.datastructures.trimesh_pull_points_numpy.html#compas.datastructures.trimesh_pull_points_numpy">trimesh_pull_points_numpy() (in module compas.datastructures)</a>
@@ -9796,7 +9950,7 @@ document.write(`
       <li><a href="reference/generated/compas.geometry.trimesh_slice.html#compas.geometry.trimesh_slice">trimesh_slice() (in module compas.geometry)</a>
 
       <ul>
-        <li><a href="reference/generated/compas_rhino.geometry.trimesh.trimesh_slice.html#compas_rhino.geometry.trimesh.trimesh_slice">(in module compas_rhino.geometry.trimesh)</a>
+        <li><a href="reference/generated/compas_rhino.geometry.trimesh_slice.html#compas_rhino.geometry.trimesh_slice">(in module compas_rhino.geometry)</a>
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.datastructures.trimesh_smooth_laplacian_cotangent.html#compas.datastructures.trimesh_smooth_laplacian_cotangent">trimesh_smooth_laplacian_cotangent() (in module compas.datastructures)</a>
@@ -9828,6 +9982,8 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="reference/generated/compas.topology.unify_cycles_numpy.html#compas.topology.unify_cycles_numpy">unify_cycles_numpy() (in module compas.topology)</a>
+</li>
+      <li><a href="reference/generated/compas_ghpython.components.uninstall_userobjects.html#compas_ghpython.components.uninstall_userobjects">uninstall_userobjects() (in module compas_ghpython.components)</a>
 </li>
       <li><a href="reference/generated/compas.geometry.Quaternion.unitize.html#compas.geometry.Quaternion.unitize">unitize() (compas.geometry.Quaternion method)</a>
 
@@ -10044,10 +10200,6 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Datastructure.validate_data.html#compas.datastructures.Datastructure.validate_data">(compas.datastructures.Datastructure class method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.Feature.validate_data.html#compas.datastructures.Feature.validate_data">(compas.datastructures.Feature class method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.GeometricFeature.validate_data.html#compas.datastructures.GeometricFeature.validate_data">(compas.datastructures.GeometricFeature class method)</a>
-</li>
         <li><a href="reference/generated/compas.datastructures.Graph.validate_data.html#compas.datastructures.Graph.validate_data">(compas.datastructures.Graph class method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.HalfEdge.validate_data.html#compas.datastructures.HalfEdge.validate_data">(compas.datastructures.HalfEdge class method)</a>
@@ -10058,9 +10210,7 @@ document.write(`
 </li>
         <li><a href="reference/generated/compas.datastructures.Network.validate_data.html#compas.datastructures.Network.validate_data">(compas.datastructures.Network class method)</a>
 </li>
-        <li><a href="reference/generated/compas.datastructures.ParametricFeature.validate_data.html#compas.datastructures.ParametricFeature.validate_data">(compas.datastructures.ParametricFeature class method)</a>
-</li>
-        <li><a href="reference/generated/compas.datastructures.Part.validate_data.html#compas.datastructures.Part.validate_data">(compas.datastructures.Part class method)</a>
+        <li><a href="reference/generated/compas.datastructures.Tree.validate_data.html#compas.datastructures.Tree.validate_data">(compas.datastructures.Tree class method)</a>
 </li>
         <li><a href="reference/generated/compas.datastructures.VolMesh.validate_data.html#compas.datastructures.VolMesh.validate_data">(compas.datastructures.VolMesh class method)</a>
 </li>
@@ -10157,6 +10307,10 @@ document.write(`
         <li><a href="reference/generated/compas.geometry.Translation.validate_data.html#compas.geometry.Translation.validate_data">(compas.geometry.Translation class method)</a>
 </li>
         <li><a href="reference/generated/compas.geometry.Vector.validate_data.html#compas.geometry.Vector.validate_data">(compas.geometry.Vector class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderCurve.validate_data.html#compas_blender.geometry.BlenderCurve.validate_data">(compas_blender.geometry.BlenderCurve class method)</a>
+</li>
+        <li><a href="reference/generated/compas_blender.geometry.BlenderNurbsCurve.validate_data.html#compas_blender.geometry.BlenderNurbsCurve.validate_data">(compas_blender.geometry.BlenderNurbsCurve class method)</a>
 </li>
         <li><a href="reference/generated/compas_rhino.geometry.RhinoBrep.validate_data.html#compas_rhino.geometry.RhinoBrep.validate_data">(compas_rhino.geometry.RhinoBrep class method)</a>
 </li>

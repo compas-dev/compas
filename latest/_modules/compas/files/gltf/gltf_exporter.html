@@ -1,0 +1,1026 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>compas.files.gltf.gltf_exporter &#8212; compas</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/compas/files/gltf/gltf_exporter';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">compas.files.gltf.gltf_exporter</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for compas.files.gltf.gltf_exporter</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">array</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">COMPONENT_TYPE_ENUM</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">COMPONENT_TYPE_FLOAT</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">COMPONENT_TYPE_UNSIGNED_INT</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">COMPONENT_TYPE_UNSIGNED_SHORT</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">NUM_COMPONENTS_BY_TYPE_ENUM</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">TYPE_MAT4</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">TYPE_SCALAR</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">TYPE_VEC2</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">TYPE_VEC3</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.constants</span> <span class="kn">import</span> <span class="n">TYPE_VEC4</span>
+<span class="kn">from</span> <span class="nn">compas.files.gltf.data_classes</span> <span class="kn">import</span> <span class="n">BaseGLTFDataClass</span>
+
+
+<span class="c1"># This fails on IronPython 2.7.8 (eg. Rhino 6 on Windows)</span>
+<span class="c1"># but works on IronPython 2.7.9 (Rhino 6 on Mac)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">pack_into</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">USE_BYTEARRAY_BUFFERS</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+    <span class="n">USE_BYTEARRAY_BUFFERS</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="GLTFExporter"><a class="viewcode-back" href="../../../../reference/generated/compas.files.GLTFExporter.html#compas.files.GLTFExporter">[docs]</a><span class="k">class</span> <span class="nc">GLTFExporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export a glTF or glb file based on the supplied scene and ancillary data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        Location where the glTF or glb is to be written. The extension of the filepath</span>
+<span class="sd">        determines which format will be used. If there will be an accompanying binary file,</span>
+<span class="sd">        it will be written in the same directory.</span>
+<span class="sd">    content : :class:`compas.files.GLTFContent`</span>
+<span class="sd">    embed_data : bool</span>
+<span class="sd">        When ``True``, all mesh and other data will be embedded as data uri&#39;s in the glTF json,</span>
+<span class="sd">        with the exception of external image data.</span>
+<span class="sd">        When ``False``, the data will be written to an external binary file or chunk.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">embed_data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gltf_filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dirname</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ext</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_embed_data</span> <span class="o">=</span> <span class="n">embed_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="n">content</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_node_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scene_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_camera_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_skin_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_material_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_texture_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sampler_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_index_by_key</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">embed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embed_data</span>
+
+    <span class="nd">@embed_data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">embed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embed_data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_embed_data</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GLTFExporter.load"><a class="viewcode-back" href="../../../../reference/generated/compas.files.GLTFExporter.load.html#compas.files.GLTFExporter.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the json object and the binary data (if any) to be written.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">remove_orphans</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">check_if_forest</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_initial_gltf_dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">meshes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_node_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scene_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">scenes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_camera_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">cameras</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_skin_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">skins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_material_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_texture_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">textures</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sampler_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">samplers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image_index_by_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_path_attributes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_meshes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_nodes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_scenes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_cameras</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_skins</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_materials</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_textures</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_samplers</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_images</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_animations</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_buffer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_index_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">)}</span>
+
+<div class="viewcode-block" id="GLTFExporter.export"><a class="viewcode-back" href="../../../../reference/generated/compas.files.GLTFExporter.export.html#compas.files.GLTFExporter.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes the json to *.gltf* or *.glb*, and binary data to *.bin* as required.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gltf_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ext</span> <span class="o">==</span> <span class="s2">&quot;.gltf&quot;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gltf_filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">gltf_json</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embed_data</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bin_path</span><span class="p">(),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ext</span> <span class="o">==</span> <span class="s2">&quot;.glb&quot;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gltf_filepath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">gltf_data</span> <span class="o">=</span> <span class="n">gltf_json</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+                <span class="n">length_gltf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gltf_data</span><span class="p">)</span>
+                <span class="n">spaces_gltf</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="p">(</span><span class="n">length_gltf</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mi">3</span>
+                <span class="n">length_gltf</span> <span class="o">+=</span> <span class="n">spaces_gltf</span>
+
+                <span class="n">length_bin</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
+                <span class="n">zeros_bin</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="p">(</span><span class="n">length_bin</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mi">3</span>
+                <span class="n">length_bin</span> <span class="o">+=</span> <span class="n">zeros_bin</span>
+
+                <span class="n">length</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">length_gltf</span>
+                <span class="k">if</span> <span class="n">length_bin</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">length</span> <span class="o">+=</span> <span class="mi">8</span> <span class="o">+</span> <span class="n">length_bin</span>
+
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;glTF&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
+
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span> <span class="n">length_gltf</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;JSON&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">gltf_data</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spaces_gltf</span><span class="p">):</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+
+                <span class="k">if</span> <span class="n">length_bin</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;I&quot;</span><span class="p">,</span> <span class="n">length_bin</span><span class="p">))</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;BIN</span><span class="se">\0</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">zeros_bin</span><span class="p">):</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\0</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_extensions_recursively</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="c1"># get the extensions that are in the attributes</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">BaseGLTFDataClass</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">extensions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ek</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions_used</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="p">):</span>  <span class="c1"># attention: self._content.extension exists if we have general extensions.</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions_used</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">ek</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions_used</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions_used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ek</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">images_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">image_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">image_data</span><span class="o">.</span><span class="n">uri</span><span class="p">:</span>
+                <span class="c1"># copy to file location</span>
+                <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">uri</span><span class="p">)</span>
+                <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dirname</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">src</span> <span class="o">!=</span> <span class="n">dst</span><span class="p">:</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+                <span class="n">image_data</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">basename</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_image_data_uri</span><span class="p">(</span><span class="n">image_data</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_data</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">buffer_view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_buffer_view</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed_data</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">images_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_image_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">buffer_view</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">image_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;images&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">images_list</span>
+
+    <span class="k">def</span> <span class="nf">_construct_image_data_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">image_data</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;data:&quot;</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">mime_type</span> <span class="k">if</span> <span class="n">image_data</span><span class="o">.</span><span class="n">mime_type</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;;base64,&quot;</span>
+            <span class="o">+</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions_used</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;extensionsRequired&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions_used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;extensionsUsed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions_used</span>
+
+    <span class="k">def</span> <span class="nf">_add_samplers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">samplers</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">samplers_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">samplers</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">sampler_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">samplers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">samplers_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampler_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">sampler_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;samplers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">samplers_list</span>
+
+    <span class="k">def</span> <span class="nf">_add_textures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">textures</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">textures_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">textures</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">texture_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">textures</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">textures_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_texture_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">texture_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sampler_index_by_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_index_by_key</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">texture_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;textures&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">textures_list</span>
+
+    <span class="k">def</span> <span class="nf">_add_materials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">materials</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">materials_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">material_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">materials_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_material_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">material_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_texture_index_by_key</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">material_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;materials&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">materials_list</span>
+
+    <span class="k">def</span> <span class="nf">_add_skins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">skins</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">skins_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">skins</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">skin_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">skins</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">accessor_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_accessor</span><span class="p">(</span><span class="n">skin_data</span><span class="o">.</span><span class="n">inverse_bind_matrices</span><span class="p">,</span> <span class="n">COMPONENT_TYPE_FLOAT</span><span class="p">,</span> <span class="n">TYPE_MAT4</span><span class="p">)</span>
+            <span class="n">skins_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_skin_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">skin_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_node_index_by_key</span><span class="p">,</span> <span class="n">accessor_index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">skin_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;skins&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">skins_list</span>
+
+    <span class="k">def</span> <span class="nf">_add_cameras</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">cameras</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">camera_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">cameras</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">camera_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">cameras</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">camera_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_camera_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">camera_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">camera_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;cameras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">camera_list</span>
+
+    <span class="k">def</span> <span class="nf">_add_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">meshes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">mesh_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">meshes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">mesh_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">meshes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">primitives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_primitives</span><span class="p">(</span><span class="n">mesh_data</span><span class="p">)</span>
+            <span class="n">mesh_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_mesh_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="n">primitives</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">mesh_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;meshes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mesh_list</span>
+
+    <span class="k">def</span> <span class="nf">_add_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;byteLength&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embed_data</span><span class="p">:</span>
+            <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;uri&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;data:application/octet-stream;base64,&quot;</span> <span class="o">+</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ext</span> <span class="o">==</span> <span class="s2">&quot;.gltf&quot;</span><span class="p">:</span>
+            <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;uri&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bin_filename</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;buffers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">buffer</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_add_animations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">animations</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">animation_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">animation_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">animations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">samplers_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_animation_samplers_list</span><span class="p">(</span><span class="n">animation_data</span><span class="p">)</span>
+            <span class="n">animation_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">animation_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="n">samplers_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node_index_by_key</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_extensions_recursively</span><span class="p">(</span><span class="n">animation_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;animations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">animation_list</span>
+
+    <span class="k">def</span> <span class="nf">_construct_animation_samplers_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">animation_data</span><span class="p">):</span>
+        <span class="n">sampler_index_by_key</span> <span class="o">=</span> <span class="n">animation_data</span><span class="o">.</span><span class="n">get_sampler_index_by_key</span><span class="p">()</span>
+        <span class="n">samplers_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">sampler_index_by_key</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">sampler_data</span> <span class="ow">in</span> <span class="n">animation_data</span><span class="o">.</span><span class="n">samplers_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">input_accessor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_accessor</span><span class="p">(</span>
+                <span class="n">sampler_data</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
+                <span class="n">COMPONENT_TYPE_FLOAT</span><span class="p">,</span>
+                <span class="n">TYPE_SCALAR</span><span class="p">,</span>
+                <span class="n">include_bounds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="n">TYPE_VEC3</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sampler_data</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sampler_data</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="n">type_</span> <span class="o">=</span> <span class="n">TYPE_SCALAR</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">sampler_data</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">type_</span> <span class="o">=</span> <span class="n">TYPE_VEC4</span>
+            <span class="n">output_accessor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_accessor</span><span class="p">(</span><span class="n">sampler_data</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">COMPONENT_TYPE_FLOAT</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+            <span class="n">samplers_list</span><span class="p">[</span><span class="n">sampler_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">sampler_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="n">input_accessor</span><span class="p">,</span> <span class="n">output_accessor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">samplers_list</span>
+
+    <span class="k">def</span> <span class="nf">_set_initial_gltf_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">asset_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">}</span>
+        <span class="n">gltf_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;asset&quot;</span><span class="p">:</span> <span class="n">asset_dict</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extras</span><span class="p">:</span>
+            <span class="n">gltf_dict</span><span class="p">[</span><span class="s2">&quot;extras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extras</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+            <span class="n">gltf_dict</span><span class="p">[</span><span class="s2">&quot;extensions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">extensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span> <span class="o">=</span> <span class="n">gltf_dict</span>
+
+    <span class="k">def</span> <span class="nf">_add_scenes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">scenes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">default_scene_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scene_index_by_key</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">default_scene_key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">scenes</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">key</span>
+        <span class="n">scene_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">scenes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">scene</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">scenes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">scene_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_scene_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_node_index_by_key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;scenes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scene_list</span>
+
+    <span class="k">def</span> <span class="nf">_add_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">node_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">node_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_node_index_by_key</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_node_index_by_key</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_index_by_key</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_camera_index_by_key</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_skin_index_by_key</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_list</span>
+
+    <span class="k">def</span> <span class="nf">_construct_primitives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_data</span><span class="p">):</span>
+        <span class="n">primitives</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">primitive_data</span> <span class="ow">in</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">primitive_data_list</span><span class="p">:</span>
+            <span class="n">indices_accessor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_accessor</span><span class="p">(</span>
+                <span class="n">primitive_data</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">COMPONENT_TYPE_UNSIGNED_SHORT</span><span class="p">,</span> <span class="n">TYPE_SCALAR</span>
+            <span class="p">)</span>
+
+            <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">primitive_data</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+                <span class="n">component_type</span> <span class="o">=</span> <span class="n">COMPONENT_TYPE_UNSIGNED_INT</span> <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;JOINT&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">COMPONENT_TYPE_FLOAT</span>
+                <span class="n">type_</span> <span class="o">=</span> <span class="n">TYPE_VEC3</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">primitive_data</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">type_</span> <span class="o">=</span> <span class="n">TYPE_VEC4</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">primitive_data</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attr</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">type_</span> <span class="o">=</span> <span class="n">TYPE_VEC2</span>
+                <span class="n">attributes</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_accessor</span><span class="p">(</span>
+                    <span class="n">primitive_data</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attr</span><span class="p">],</span> <span class="n">component_type</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="kc">True</span>
+                <span class="p">)</span>
+
+            <span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">primitive_data</span><span class="o">.</span><span class="n">targets</span> <span class="ow">or</span> <span class="p">[]:</span>
+                <span class="n">target_dict</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span>
+                    <span class="n">component_type</span> <span class="o">=</span> <span class="n">COMPONENT_TYPE_FLOAT</span>
+                    <span class="n">type_</span> <span class="o">=</span> <span class="n">TYPE_VEC3</span>
+                    <span class="n">target_dict</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_accessor</span><span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="n">attr</span><span class="p">],</span> <span class="n">component_type</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_dict</span><span class="p">)</span>
+
+            <span class="n">primitive_dict</span> <span class="o">=</span> <span class="n">primitive_data</span><span class="o">.</span><span class="n">to_data</span><span class="p">(</span><span class="n">indices_accessor</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_material_index_by_key</span><span class="p">)</span>
+
+            <span class="n">primitives</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">primitive_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">primitives</span>
+
+    <span class="k">def</span> <span class="nf">_construct_accessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">component_type</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">include_bounds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">fmt_char</span> <span class="o">=</span> <span class="n">COMPONENT_TYPE_ENUM</span><span class="p">[</span><span class="n">component_type</span><span class="p">]</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt_char</span> <span class="o">*</span> <span class="n">NUM_COMPONENTS_BY_TYPE_ENUM</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
+
+        <span class="n">component_size</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="n">fmt_char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">component_type</span> <span class="o">==</span> <span class="s2">&quot;MAT2&quot;</span> <span class="ow">and</span> <span class="n">component_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;&lt;FFxxFFxx&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">fmt_char</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">component_type</span> <span class="o">==</span> <span class="s2">&quot;MAT3&quot;</span> <span class="ow">and</span> <span class="n">component_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;&lt;FFFxFFFxFFFx&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">fmt_char</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">component_type</span> <span class="o">==</span> <span class="s2">&quot;MAT3&quot;</span> <span class="ow">and</span> <span class="n">component_size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;&lt;FFFxxFFFxxFFFxx&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">fmt_char</span><span class="p">)</span>
+
+        <span class="n">component_len</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+
+        <span class="c1"># ensure bytes_ length is divisible by 4</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">count</span> <span class="o">*</span> <span class="n">component_len</span>
+        <span class="n">size</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="n">size</span> <span class="o">%</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span>
+
+        <span class="k">if</span> <span class="n">USE_BYTEARRAY_BUFFERS</span><span class="p">:</span>
+            <span class="n">bytes_</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bytes_</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">datum</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datum</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datum</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="n">struct</span><span class="o">.</span><span class="n">pack_into</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">component_len</span><span class="p">),</span> <span class="n">datum</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">struct</span><span class="o">.</span><span class="n">pack_into</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">component_len</span><span class="p">),</span> <span class="o">*</span><span class="n">datum</span><span class="p">)</span>
+
+        <span class="n">buffer_view_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_buffer_view</span><span class="p">(</span><span class="n">bytes_</span><span class="p">)</span>
+        <span class="n">accessor_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;bufferView&quot;</span><span class="p">:</span> <span class="n">buffer_view_index</span><span class="p">,</span>
+            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+            <span class="s2">&quot;componentType&quot;</span><span class="p">:</span> <span class="n">component_type</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">type_</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">include_bounds</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Here we check if ``data`` contains tuples,</span>
+                <span class="c1"># and compute min/max per coordinate.</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="n">minimum</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">)))</span>
+                <span class="n">maximum</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">)))</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="c1"># Here, ``data`` must contain primitives and not tuples,</span>
+                <span class="c1"># so min and max are more simply computed.</span>
+                <span class="n">minimum</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">),)</span>
+                <span class="n">maximum</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">),)</span>
+            <span class="n">accessor_dict</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minimum</span>
+            <span class="n">accessor_dict</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">maximum</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;accessors&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accessor_dict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;accessors&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_construct_buffer_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bytes_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">byte_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_buffer</span><span class="p">(</span><span class="n">bytes_</span><span class="p">)</span>
+        <span class="n">buffer_view_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;byteLength&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">bytes_</span><span class="p">),</span>
+            <span class="s2">&quot;byteOffset&quot;</span><span class="p">:</span> <span class="n">byte_offset</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;bufferViews&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buffer_view_dict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gltf_dict</span><span class="p">[</span><span class="s2">&quot;bufferViews&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_update_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">):</span>
+        <span class="n">byte_offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
+        <span class="c1"># If bytes_ was not created as bytearray, cast now</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">USE_BYTEARRAY_BUFFERS</span><span class="p">:</span>
+            <span class="n">bytes_</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">bytes_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">+=</span> <span class="n">bytes_</span>
+        <span class="k">return</span> <span class="n">byte_offset</span>
+
+    <span class="k">def</span> <span class="nf">_set_path_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dirname</span><span class="p">,</span> <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gltf_filepath</span><span class="p">)</span>
+        <span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dirname</span> <span class="o">=</span> <span class="n">dirname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ext</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GLTFExporter.get_bin_path"><a class="viewcode-back" href="../../../../reference/generated/compas.files.GLTFExporter.get_bin_path.html#compas.files.GLTFExporter.get_bin_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_bin_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dirname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">+</span> <span class="s2">&quot;.bin&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GLTFExporter.get_bin_filename"><a class="viewcode-back" href="../../../../reference/generated/compas.files.GLTFExporter.get_bin_filename.html#compas.files.GLTFExporter.get_bin_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_bin_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">+</span> <span class="s2">&quot;.bin&quot;</span></div></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

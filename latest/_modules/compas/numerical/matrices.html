@@ -1,0 +1,862 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>compas.numerical.matrices &#8212; compas</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="icon" sizes="16x16" type="image/ico" href="../../../_static/images/compas.ico" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/compas.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/compas/numerical/matrices';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        </script>
+    <link rel="shortcut icon" href="../../../_static/compas.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      latest  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">compas.numerical.matrices</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for compas.numerical.matrices</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="nb">abs</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">asarray</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">tile</span>
+
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">coo_matrix</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">diags</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">vstack</span> <span class="k">as</span> <span class="n">svstack</span>  <span class="c1"># type: ignore</span>
+
+
+<span class="k">def</span> <span class="nf">_return_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">rtype</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;list&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;array&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;csr&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;csc&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">tocsc</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;coo&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">M</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># adjacency</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="adjacency_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.adjacency_matrix.html#compas.numerical.adjacency_matrix">[docs]</a><span class="k">def</span> <span class="nf">adjacency_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a vertex adjacency matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    adjacency : list</span>
+<span class="sd">        List of lists, vertex adjacency data.</span>
+<span class="sd">    rtype : {&#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;, &#39;list&#39;}</span>
+<span class="sd">        Format of the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Constructed adjacency matrix.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adjacency</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">adjacency</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)))</span><span class="o">.</span><span class="n">asfptype</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="face_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.face_matrix.html#compas.numerical.face_matrix">[docs]</a><span class="k">def</span> <span class="nf">face_matrix</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a face-vertex adjacency matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    face_vertices : list</span>
+<span class="sd">        List of lists, vertices per face.</span>
+<span class="sd">    rtype : {&#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;, &#39;list&#39;}</span>
+<span class="sd">        Format of the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Constructed face matrix.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">array</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">array</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">f</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">f</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">f</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># degree</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="degree_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.degree_matrix.html#compas.numerical.degree_matrix">[docs]</a><span class="k">def</span> <span class="nf">degree_matrix</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a matrix representing vertex degrees.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    adjacency : list</span>
+<span class="sd">        List of lists, vertex adjacency data.</span>
+<span class="sd">    rtype : {&#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;, &#39;list&#39;}</span>
+<span class="sd">        Format of the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Constructed degree matrix.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">len</span><span class="p">(</span><span class="n">adjacency</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adjacency</span><span class="p">))]</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)))</span><span class="o">.</span><span class="n">asfptype</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># connectivity</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="connectivity_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.connectivity_matrix.html#compas.numerical.connectivity_matrix">[docs]</a><span class="k">def</span> <span class="nf">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a connectivity matrix from a list of vertex index pairs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    edges : list</span>
+<span class="sd">        List of lists [[node_i, node_j], [node_k, node_l]].</span>
+<span class="sd">    rtype : {&#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;, &#39;list&#39;}</span>
+<span class="sd">        Format of the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Constructed connectivity matrix.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The connectivity matrix encodes how edges in a network are connected</span>
+<span class="sd">    together. Each row represents an edge and has 1 and -1 inserted into the</span>
+<span class="sd">    columns for the start and end nodes.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{C}_{ij} =</span>
+<span class="sd">        \cases{</span>
+<span class="sd">            -1 &amp; if edge i starts at vertex j \cr</span>
+<span class="sd">            +1 &amp; if edge i ends at vertex j \cr</span>
+<span class="sd">            0  &amp; otherwise</span>
+<span class="sd">        }</span>
+
+<span class="sd">    A connectivity matrix is generally sparse and will perform superior</span>
+<span class="sd">    in numerical calculations as a sparse matrix.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype=&#39;array&#39;)</span>
+<span class="sd">    array([[-1.,  1.,  0.,  0.],</span>
+<span class="sd">           [-1.,  0.,  1.,  0.],</span>
+<span class="sd">           [-1.,  0.,  0.,  1.]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)))</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">])</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)))</span><span class="o">.</span><span class="n">asfptype</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># laplacian</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="c1"># change this to a procedural approach</span>
+<span class="c1"># constructing (fundamental) matrices should not involve matrix operations</span>
+<div class="viewcode-block" id="laplacian_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.laplacian_matrix.html#compas.numerical.laplacian_matrix">[docs]</a><span class="k">def</span> <span class="nf">laplacian_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a laplacian matrix from a list of edge topologies.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    edges : list</span>
+<span class="sd">        List of lists [[node_i, node_j], [node_k, node_l]].</span>
+<span class="sd">    rtype : {&#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;, &#39;list&#39;}</span>
+<span class="sd">        Format of the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Constructed Laplacian matrix.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The laplacian matrix is defined as</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{L} = \mathbf{C} ^ \mathrm{T} \mathbf{C}</span>
+
+<span class="sd">    The current implementation only supports umbrella weights.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype=&#39;array&#39;)</span>
+<span class="sd">    array([[ 3., -1., -1., -1.],</span>
+<span class="sd">           [-1.,  1.,  0.,  0.],</span>
+<span class="sd">           [-1.,  0.,  1.,  0.],</span>
+<span class="sd">           [-1.,  0.,  0.,  1.]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;csr&quot;</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="n">L</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># structural</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="equilibrium_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.equilibrium_matrix.html#compas.numerical.equilibrium_matrix">[docs]</a><span class="k">def</span> <span class="nf">equilibrium_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">free</span><span class="p">,</span> <span class="n">rtype</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct the equilibrium matrix of a structural system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    C : array-like</span>
+<span class="sd">        Connectivity matrix (m x n).</span>
+<span class="sd">    xyz : array-like</span>
+<span class="sd">        Array of vertex coordinates (n x 3).</span>
+<span class="sd">    free : list</span>
+<span class="sd">        The index values of the free vertices.</span>
+<span class="sd">    rtype : {&#39;array&#39;, &#39;csc&#39;, &#39;csr&#39;, &#39;coo&#39;, &#39;list&#39;}</span>
+<span class="sd">        Format of the result.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Constructed equilibrium matrix.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Analysis of the equilibrium matrix reveals some of the properties of the</span>
+<span class="sd">    structural system, its size is (2ni x m) where ni is the number of free or</span>
+<span class="sd">    internal nodes. It is calculated by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{E}</span>
+<span class="sd">        =</span>
+<span class="sd">        \left[</span>
+<span class="sd">            \begin{array}{c}</span>
+<span class="sd">                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{U} \\[0.3em]</span>
+<span class="sd">                \hline \\[-0.7em]</span>
+<span class="sd">                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{V}</span>
+<span class="sd">            \end{array}</span>
+<span class="sd">        \right].</span>
+
+<span class="sd">    The matrix of vertex coordinates is vectorised to speed up the</span>
+<span class="sd">    calculations.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])</span>
+<span class="sd">    &gt;&gt;&gt; xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]</span>
+<span class="sd">    &gt;&gt;&gt; equilibrium_matrix(C, xyz, [0], rtype=&#39;array&#39;)</span>
+<span class="sd">    array([[ 0.,  1., -1.],</span>
+<span class="sd">           [-1.,  1.,  1.]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">uv</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">diags</span><span class="p">([</span><span class="n">uv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">diags</span><span class="p">([</span><span class="n">uv</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">Ct</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="n">Cti</span> <span class="o">=</span> <span class="n">Ct</span><span class="p">[</span><span class="n">free</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">svstack</span><span class="p">((</span><span class="n">Cti</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">),</span> <span class="n">Cti</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">_return_matrix</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mass_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.mass_matrix.html#compas.numerical.mass_matrix">[docs]</a><span class="k">def</span> <span class="nf">mass_matrix</span><span class="p">(</span><span class="n">Ct</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tiled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a network&#39;s nodal mass matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Ct : sparse</span>
+<span class="sd">        Sparse transpose of the connectivity matrix (n x m).</span>
+<span class="sd">    ks : array</span>
+<span class="sd">        Vector of member EA / L (m x 1).</span>
+<span class="sd">    q : array</span>
+<span class="sd">        Vector of member force densities (m x 1).</span>
+<span class="sd">    c : float</span>
+<span class="sd">        Convergence factor.</span>
+<span class="sd">    tiled : bool</span>
+<span class="sd">        Whether to tile horizontally by 3 for x, y, z.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array</span>
+<span class="sd">        Mass matrix, either (m x 1) or (m x 3).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The mass matrix is defined as the sum of the member axial stiffnesses</span>
+<span class="sd">    (inline) of the elements connected to each node, plus the force density.</span>
+<span class="sd">    The force density ensures a non-zero value in form-finding/pre-stress</span>
+<span class="sd">    modelling where E=0.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{m} =</span>
+<span class="sd">        |\mathbf{C}^\mathrm{T}|</span>
+<span class="sd">        (\mathbf{E} \circ \mathbf{A} \oslash \mathbf{l} + \mathbf{f} \oslash \mathbf{l})</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Ct</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ks</span> <span class="o">+</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tiled</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tile</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">m</span></div>
+
+
+<div class="viewcode-block" id="stiffness_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.numerical.stiffness_matrix.html#compas.numerical.stiffness_matrix">[docs]</a><span class="k">def</span> <span class="nf">stiffness_matrix</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
