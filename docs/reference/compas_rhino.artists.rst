@@ -1,15 +1,15 @@
 
 ********************************************************************************
-compas_rhino.artists
+compas_rhino.scene
 ********************************************************************************
 
-.. currentmodule:: compas_rhino.artists
+.. currentmodule:: compas_rhino.scene
 
 .. rst-class:: lead
 
 
-This package provides artist plugins for visualising COMPAS objects in Rhino.
-When working in Rhino, :class:`compas.artists.Artist` will automatically use the corresponding Rhino artist for each COMPAS object type.
+This package provides sceneobject plugins for visualising COMPAS objects in Rhino.
+When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino sceneobject for each COMPAS object type.
 
 
 Classes
@@ -21,29 +21,29 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    BoxArtist
-    BrepArtist
-    CapsuleArtist
-    CircleArtist
-    ConeArtist
-    CurveArtist
-    CylinderArtist
-    EllipseArtist
-    FrameArtist
-    LineArtist
-    MeshArtist
-    NetworkArtist
-    PlaneArtist
-    PointArtist
-    PolygonArtist
-    PolyhedronArtist
-    PolylineArtist
-    RhinoArtist
-    SphereArtist
-    SurfaceArtist
-    TorusArtist
-    VectorArtist
-    VolMeshArtist
+    BoxObject
+    BrepObject
+    CapsuleObject
+    CircleObject
+    ConeObject
+    CurveObject
+    CylinderObject
+    EllipseObject
+    FrameObject
+    LineObject
+    MeshObject
+    NetworkObject
+    PlaneObject
+    PointObject
+    PolygonObject
+    PolyhedronObject
+    PolylineObject
+    RhinoObject
+    SphereObject
+    SurfaceObject
+    TorusObject
+    VectorObject
+    VolMeshObject
 
 
 

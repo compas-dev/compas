@@ -182,9 +182,8 @@ class XFunc(object):
     .. code-block:: python
 
         import compas
-        import compas_rhino
 
-        from compas_rhino.artists import MeshArtist
+        from compas.scene import Scene
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
 
@@ -213,9 +212,9 @@ class XFunc(object):
             attr['y'] = xyz[vertex][1]
             attr['z'] = xyz[vertex][2]
 
-        artist = MeshArtist(mesh)
-        artist.draw_vertices()
-        artist.draw_edges()
+        scene = Scene()
+        scene.add(mesh)
+        scene.redraw()
 
     """
 

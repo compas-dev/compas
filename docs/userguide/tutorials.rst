@@ -10,4 +10,4 @@ Tutorials
     tutorials/datastructures/index
     tutorials/rpc
     tutorials/colors
-    turorials/artists/index
+    turorials/scene/index

@@ -9,5 +9,5 @@ COMPAS geometry and data structures in Rhino, through GHPython.
     :titlesonly:
     :caption: compas_ghpython
 
-    compas_ghpython.artists
+    compas_ghpython.scene
     compas_ghpython.components

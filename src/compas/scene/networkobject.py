@@ -41,7 +41,7 @@ class NetworkObject(SceneObject):
     edge_color = ColorDictAttribute(default=Color.black())
 
     def __init__(self, network, **kwargs):
-        super(NetworkObject, self).__init__(item=network,**kwargs)
+        super(NetworkObject, self).__init__(item=network, **kwargs)
         self._network = None
         self._node_xyz = None
         self.network = network

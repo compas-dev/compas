@@ -1,15 +1,15 @@
 
 ********************************************************************************
-compas_ghpython.artists
+compas_ghpython.scene
 ********************************************************************************
 
-.. currentmodule:: compas_ghpython.artists
+.. currentmodule:: compas_ghpython.scene
 
 .. rst-class:: lead
 
 
-This package provides artist plugins for visualising COMPAS objects in Grasshopper.
-When working in GH Python components, :class:`compas.artists.Artist` will automatically use the corresponding GHPython artist for each COMPAS object type.
+This package provides sceneobject plugins for visualising COMPAS objects in Grasshopper.
+When working in GH Python components, :class:`compas.scene.SceneObject` will automatically use the corresponding GHPython sceneobject for each COMPAS object type.
 
 
 Classes
@@ -21,27 +21,27 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    BoxArtist
-    CapsuleArtist
-    CircleArtist
-    ConeArtist
-    CurveArtist
-    CylinderArtist
-    EllipseArtist
-    FrameArtist
-    GHArtist
-    LineArtist
-    MeshArtist
-    NetworkArtist
-    PointArtist
-    PolygonArtist
-    PolyhedronArtist
-    PolylineArtist
-    SphereArtist
-    SurfaceArtist
-    TorusArtist
-    VectorArtist
-    VolMeshArtist
+    BoxObject
+    CapsuleObject
+    CircleObject
+    ConeObject
+    CurveObject
+    CylinderObject
+    EllipseObject
+    FrameObject
+    GHObject
+    LineObject
+    MeshObject
+    NetworkObject
+    PointObject
+    PolygonObject
+    PolyhedronObject
+    PolylineObject
+    SphereObject
+    SurfaceObject
+    TorusObject
+    VectorObject
+    VolMeshObject
 
 
 

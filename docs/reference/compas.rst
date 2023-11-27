@@ -11,7 +11,7 @@ and can be used independently of CAD systems in any environment that supports Py
     :titlesonly:
     :caption: compas
 
-    compas.artists
+    compas.scene
     compas.colors
     compas.data
     compas.datastructures

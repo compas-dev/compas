@@ -9,6 +9,6 @@ COMPAS geometry and data structures in Blender, and for basic user inter interac
     :titlesonly:
     :caption: compas_blender
 
-    compas_blender.artists
+    compas_blender.scene
     compas_blender.conversions
     compas_blender.geometry

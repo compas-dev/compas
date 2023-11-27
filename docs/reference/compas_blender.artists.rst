@@ -1,47 +1,47 @@
 
 ********************************************************************************
-compas_blender.artists
+compas_blender.scene
 ********************************************************************************
 
-.. currentmodule:: compas_blender.artists
+.. currentmodule:: compas_blender.scene
 
 .. rst-class:: lead
 
 
-This package provides artist plugins for visualising COMPAS objects in Blender.
-When working in Blender, :class:`compas.artists.Artist` will automatically use the corresponding Blender artist for each COMPAS object type.
+This package provides sceneobject plugins for visualising COMPAS objects in Blender.
+When working in Blender, :class:`compas.scene.SceneObject` will automatically use the corresponding Blender sceneobject for each COMPAS object type.
 
 
 Classes
 =======
-
+BoxObject
 
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    BlenderArtist
-    BoxArtist
-    CapsuleArtist
-    CircleArtist
-    ConeArtist
-    CurveArtist
-    CylinderArtist
-    FrameArtist
-    LineArtist
-    MeshArtist
-    NetworkArtist
-    PointArtist
-    PointcloudArtist
-    PolygonArtist
-    PolyhedronArtist
-    PolylineArtist
-    SphereArtist
-    SurfaceArtist
-    TorusArtist
-    VectorArtist
-    VolMeshArtist
+    BlenderSceneObject
+    BoxObject
+    CapsuleObject
+    CircleObject
+    ConeObject
+    CurveObject
+    CylinderObject
+    FrameObject
+    LineObject
+    MeshObject
+    NetworkObject
+    PointObject
+    PointcloudObject
+    PolygonObject
+    PolyhedronObject
+    PolylineObject
+    SphereObject
+    SurfaceObject
+    TorusObject
+    VectorObject
+    VolMeshObject
 
 
 
