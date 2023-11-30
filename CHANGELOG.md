@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Torus.to_brep()`.
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
+* Added `compas.scene.Scene`.
 
 ### Changed
 
@@ -24,7 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.geometry.NurbsSurface.u_isocurve` to `isocurve_u`.
 * Changed `compas.geometry.NurbsSurface.v_isocurve` to `isocurve_v`.
 * Changed `compas.brep.Brep.from_step_file` to `from_step`.
-* * Moved `compas.brep` to `compas.geometry.brep`.
+* Moved `compas.brep` to `compas.geometry.brep`.
+* `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
 
 
 ### Removed
@@ -52,7 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `networkx` version to `>=3.0` to ensure support for `is_planar`.
 * Moved `compas.geometry.curves.nurbs_.py` and `compas.geometry.surfaces.nurbs_.py` to `compas_nurbs`.
 * Fixed `mesh_to_compas` returning an empty `Mesh` when colors and/or face normals are missing.
-* ARTISTS ARE NOW SCENEOBJECTS (TO BE FURTHER DETAILED BEFORE MERGE).
 
 ### Removed
 
