@@ -1,5 +1,10 @@
-Code Constributions
+.. _code-contributions:
+
+Code Contributions
 ===================
+
+.. note::
+    For the proper way of contributing code to COMPAS, please follow the :ref:`development-workflow`.
 
 To keep code clean, consistent and readable we try to follow the following guidelines when developing COMPAS.
 Generally, we try to follow the `PEP8 <https://peps.python.org/pep-0008/>`_ style guide for Python code.
@@ -19,7 +24,6 @@ Classes should be names using the `CamelCase` convention
     class MyClass(object):
         ...
 
-
 **Functions**, **methods**, **arguments** and **local/member variables** should be named using the ``snake_case`` convention
 
 .. code-block:: python
@@ -31,7 +35,7 @@ Classes should be names using the `CamelCase` convention
         result = x + y
         return result
 
-*Functions*, *methods* and *member variables* which are intended for internal use only should be prefixed with an ``_`` (underscore)
+**Functions**, **methods** and **member variables** which are intended for internal use only should be prefixed with an ``_`` (underscore)
 
 .. code-block:: python
 
@@ -103,7 +107,6 @@ The code should be self-explanatory and comments should be used sparingly. Howev
     def my_function():
         # while seems unlikely, 42 is the answer to everything
         some_piece_of_code() * thats_counter_intuitive() + 42
-
 
 Docstrings
 ----------

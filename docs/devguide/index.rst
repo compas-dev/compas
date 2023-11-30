@@ -18,3 +18,4 @@ This guide is intended for developers who want to contribute to the code and/or 
    :titlesonly:
 
    workflow
+   code
