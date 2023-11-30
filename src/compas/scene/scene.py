@@ -48,9 +48,19 @@ class Scene(Data):
 
         drawn_objects = []
         for sceneobject in self.sceneobjects:
-            drawn_objects.append(sceneobject.draw())
+            drawn_object = sceneobject.draw()
 
-        if sceneobject:
+            # TODO: unify output of draw(), so we don't have to do this
+            if isinstance(drawn_object, (list, tuple)):
+                for item in drawn_object:
+                    if isinstance(item, (list, tuple)):
+                        drawn_objects.extend(item)
+                    else:
+                        drawn_objects.append(item)
+            else:
+                drawn_objects.append(drawn_object)
+
+        if drawn_objects:
             sceneobject.redraw()
 
         return drawn_objects

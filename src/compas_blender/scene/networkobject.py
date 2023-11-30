@@ -145,7 +145,7 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
         for node in nodes or self.network.nodes():  # type: ignore
             name = f"{self.network.name}.node.{node}"  # type: ignore
             color = self.node_color[node]  # type: ignore
-            point = self.node_xyz[node]  # type: ignore
+            point = self.network.nodes_attributes("xyz")[node]  # type: ignore
 
             # there is no such thing as a sphere data block
             bpy.ops.mesh.primitive_uv_sphere_add(location=point, radius=radius, segments=u, ring_count=v)
@@ -186,7 +186,9 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
         for u, v in edges or self.network.edges():  # type: ignore
             name = f"{self.network.name}.edge.{u}-{v}"  # type: ignore
             color = self.edge_color[u, v]  # type: ignore
-            curve = conversions.line_to_blender_curve(Line(self.node_xyz[u], self.node_xyz[v]))
+            curve = conversions.line_to_blender_curve(
+                Line(self.network.nodes_attributes("xyz")[u], self.network.nodes_attributes("xyz")[v])
+            )
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=collection)
@@ -217,7 +219,7 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
     #     for node in self.node_text:
     #         labels.append(
     #             {
-    #                 "pos": self.node_xyz[node],
+    #                 "pos": self.network.nodes_attributes("xyz")[node],
     #                 "name": f"{self.network.name}.nodelabel.{node}",
     #                 "text": self.node_text[node],
     #                 "color": self.node_color[node],
@@ -245,7 +247,7 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
     #         u, v = edge
     #         labels.append(
     #             {
-    #                 "pos": centroid_points([self.node_xyz[u], self.node_xyz[v]]),
+    #                 "pos": centroid_points([self.network.nodes_attributes("xyz")[u], self.network.nodes_attributes("xyz")[v]]),
     #                 "name": f"{self.network.name}.edgelabel.{u}-{v}",
     #                 "text": self.edge_text[edge],
     #                 "color": self.edge_color[edge],

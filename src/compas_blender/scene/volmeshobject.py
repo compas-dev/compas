@@ -153,7 +153,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for vertex in vertices or self.volmesh.vertices():  # type: ignore
             name = f"{self.volmesh.name}.vertex.{vertex}"  # type: ignore
             color = self.vertex_color[vertex]  # type: ignore
-            point = self.vertex_xyz[vertex]
+            point = self.volmesh.vertices_attributes("xyz")[vertex]
 
             # there is no such thing as a sphere data block
             bpy.ops.mesh.primitive_uv_sphere_add(location=point, radius=radius, segments=u, ring_count=v)
@@ -194,7 +194,9 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for u, v in edges or self.volmesh.edges():  # type: ignore
             name = f"{self.volmesh.name}.edge.{u}-{v}"  # type: ignore
             color = self.edge_color[u, v]  # type: ignore
-            curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
+            curve = conversions.line_to_blender_curve(
+                Line(self.volmesh.vertices_attributes("xyz")[u], self.volmesh.vertices_attributes("xyz")[v])
+            )
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=collection)  # type: ignore
@@ -235,7 +237,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for face in faces or self.volmesh.faces():  # type: ignore
             name = f"{self.volmesh.name}.face.{face}"  # type: ignore
             color = self.face_color[face]  # type: ignore
-            points = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
+            points = [self.volmesh.vertices_attributes("xyz")[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
             mesh = conversions.polygon_to_blender_mesh(points, name=name)  # type: ignore
 
             obj = self.create_object(mesh, name=name)
@@ -282,7 +284,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
             faces = self.volmesh.cell_faces(cell)  # type: ignore
             vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
 
-            vertices = [self.vertex_xyz[vertex] for vertex in vertices]
+            vertices = [self.volmesh.vertices_attributes("xyz")[vertex] for vertex in vertices]
             faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]  # type: ignore
 
             mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=name)  # type: ignore
@@ -331,7 +333,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for vertex in vertices or self.volmesh.vertices():  # type: ignore
             name = f"{self.volmesh.name}.vertex.{vertex}.normal"  # type: ignore
 
-            a = self.vertex_xyz[vertex]
+            a = self.volmesh.vertices_attributes("xyz")[vertex]
             n = self.volmesh.vertex_normal(vertex)  # type: ignore
             b = add_vectors(a, scale_vector(n, scale))
 
@@ -377,7 +379,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for face in faces or self.volmesh.faces():  # type: ignore
             name = f"{self.volmesh.name}.face.{face}.normal"  # type: ignore
 
-            a = centroid_points([self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)])  # type: ignore
+            a = centroid_points([self.volmesh.vertices_attributes("xyz")[vertex] for vertex in self.volmesh.face_vertices(face)])  # type: ignore
             n = self.volmesh.face_normal(face)  # type: ignore
             b = add_vectors(a, scale_vector(n, scale))
 
@@ -413,7 +415,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
     #     for vertex in self.vertex_text:
     #         labels.append(
     #             {
-    #                 "pos": self.vertex_xyz[vertex],
+    #                 "pos": self.volmesh.vertices_attributes("xyz")[vertex],
     #                 "name": f"{self.volmesh.name}.vertexlabel.{vertex}",
     #                 "text": self.vertex_text[vertex],
     #                 "color": self.vertex_color[vertex],
@@ -441,7 +443,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
     #         u, v = edge
     #         labels.append(
     #             {
-    #                 "pos": centroid_points([self.vertex_xyz[u], self.vertex_xyz[v]]),
+    #                 "pos": centroid_points([self.volmesh.vertices_attributes("xyz")[u], self.volmesh.vertices_attributes("xyz")[v]]),
     #                 "name": f"{self.volmesh.name}.edgelabel.{u}-{v}",
     #                 "text": self.edge_text[edge],
     #                 "color": self.edge_color[edge],
@@ -468,7 +470,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
     #     for face in self.face_text:
     #         labels.append(
     #             {
-    #                 "pos": centroid_points([self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]),
+    #                 "pos": centroid_points([self.volmesh.vertices_attributes("xyz")[vertex] for vertex in self.volmesh.face_vertices(face)]),
     #                 "name": "{}.facelabel.{}".format(self.volmesh.name, face),
     #                 "text": self.face_text[face],
     #                 "color": self.face_color[face],
