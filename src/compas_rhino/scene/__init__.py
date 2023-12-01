@@ -74,7 +74,7 @@ def redraw_rhino():
 
 
 @plugin(category="factories", requires=["Rhino"])
-def register_sceneobjects():
+def register_scene_objects():
     SceneObject.register(Circle, CircleObject, context="Rhino")
     SceneObject.register(Ellipse, EllipseObject, context="Rhino")
     SceneObject.register(Frame, FrameObject, context="Rhino")

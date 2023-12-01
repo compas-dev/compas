@@ -32,12 +32,12 @@ redraw.__pluggable__ = True
 
 
 @pluggable(category="factories", selector="collect_all")
-def register_sceneobjects():
+def register_scene_objects():
     """Registers sceneobjects available in the current context."""
     raise NotImplementedError
 
 
-register_sceneobjects.__pluggable__ = True
+register_scene_objects.__pluggable__ = True
 
 
 def is_viewer_open():
@@ -138,7 +138,7 @@ class SceneObject(object):
 
     def __new__(cls, item, **kwargs):
         if not SceneObject.__SCENEOBJECTS_REGISTERED:
-            cls.register_sceneobjects()
+            cls.register_scene_objects()
             SceneObject.__SCENEOBJECTS_REGISTERED = True
 
         if item is None:
@@ -234,7 +234,7 @@ class SceneObject(object):
         return redraw()
 
     @staticmethod
-    def register_sceneobjects():
+    def register_scene_objects():
         """Register SceneObjects using available plugins.
 
         Returns
@@ -243,7 +243,7 @@ class SceneObject(object):
             List containing names of discovered SceneObject plugins.
 
         """
-        return register_sceneobjects()
+        return register_scene_objects()
 
     @staticmethod
     def register(item_type, sceneobject_type, context=None):

@@ -40,7 +40,7 @@ Pluggables are functions that don't have an actual implementation, but receive a
 
     clear
     redraw
-    register_SceneObjects
+    register_scene_objects
 
 
 

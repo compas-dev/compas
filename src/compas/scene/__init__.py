@@ -18,7 +18,7 @@ from .volmeshobject import VolMeshObject
 
 from .sceneobject import clear
 from .sceneobject import redraw
-from .sceneobject import register_sceneobjects
+from .sceneobject import register_scene_objects
 
 from .scene import Scene
 
@@ -33,5 +33,5 @@ __all__ = [
     "Scene",
     "clear",
     "redraw",
-    "register_sceneobjects",
+    "register_scene_objects",
 ]

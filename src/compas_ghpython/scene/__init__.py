@@ -55,7 +55,7 @@ from .brepobject import BrepObject
 
 
 @plugin(category="factories", requires=["Rhino"])
-def register_sceneobjects():
+def register_scene_objects():
     SceneObject.register(Box, BoxObject, context="Grasshopper")
     SceneObject.register(Capsule, CapsuleObject, context="Grasshopper")
     SceneObject.register(Circle, CircleObject, context="Grasshopper")

@@ -65,8 +65,8 @@ def test_get_sceneobject_cls_with_out_of_order_registration():
 if not compas.IPY:
 
     def test_sceneobject_auto_context_discovery(mocker):
-        mocker.patch("compas.scene.SceneObject.register_sceneobjects")
-        SceneObject.register_sceneobjects.side_effect = register_fake_context
+        mocker.patch("compas.scene.SceneObject.register_scene_objects")
+        SceneObject.register_scene_objects.side_effect = register_fake_context
         SceneObject._SceneObject__SCENEOBJECTS_REGISTERED = False  # type: ignore
 
         item = FakeItem()

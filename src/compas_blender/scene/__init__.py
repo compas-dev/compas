@@ -63,7 +63,7 @@ def redraw_blender():
 
 
 @plugin(category="factories", requires=["bpy"])
-def register_sceneobjects():
+def register_scene_objects():
     SceneObject.register(Box, BoxObject, context="Blender")
     SceneObject.register(Capsule, CapsuleObject, context="Blender")
     SceneObject.register(Circle, CircleObject, context="Blender")
