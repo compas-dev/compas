@@ -665,7 +665,7 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import compas_rhino</span>
 <span class="sd">    &gt;&gt;&gt; from compas_rhino.geometry import RhinoSurface</span>
-<span class="sd">    &gt;&gt;&gt; from compas_rhino.artists import MeshArtist</span>
+<span class="sd">    &gt;&gt;&gt; from compas.scene import Scene</span>
 
 <span class="sd">    &gt;&gt;&gt; def facefilter(face):</span>
 <span class="sd">    ...     success, w, h = face.GetSurfaceSize()</span>
@@ -679,9 +679,9 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; surf = RhinoSurface.from_guid(guid)</span>
 <span class="sd">    &gt;&gt;&gt; mesh = surf.to_compas(facefilter=facefilter)</span>
 
-<span class="sd">    &gt;&gt;&gt; artist = MeshArtist(mesh, layer=&quot;Blocks&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; artist.clear_layer()</span>
-<span class="sd">    &gt;&gt;&gt; artist.draw()</span>
+<span class="sd">    &gt;&gt;&gt; scene = Scene()</span>
+<span class="sd">    &gt;&gt;&gt; scene.add(mesh, layer=&quot;Blocks&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; scene.redraw()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">surface</span><span class="o">.</span><span class="n">HasBrepForm</span><span class="p">:</span>

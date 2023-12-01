@@ -541,11 +541,13 @@ Rhino 5 on Windows, please download and install GhPython <a class="reference ext
 component on your Grasshopper canvas, paste the following script and hit <cite>OK</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_ghpython.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
+<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
 
-<span class="n">a</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
 </pre></div>
 </div>
 <figure class="figure align-default">
@@ -577,7 +579,7 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
 <p class="admonition-title">Note</p>
 <p>Prefer using <cite>unload_modules</cite> as early as possible in your grasshopper
 workflow. Re-loading modules later might result, for example,
-in COMPAS not being able to find an <cite>Artist</cite> as well as other issues
+in COMPAS not being able to find an <cite>SceneObject</cite> as well as other issues
 related to a mid-workflow re-definition of Python types.</p>
 </div>
 </section>

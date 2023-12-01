@@ -656,9 +656,8 @@ document.write(`
 <span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        import compas</span>
-<span class="sd">        import compas_rhino</span>
 
-<span class="sd">        from compas_rhino.artists import MeshArtist</span>
+<span class="sd">        from compas.scene import Scene</span>
 <span class="sd">        from compas.datastructures import Mesh</span>
 <span class="sd">        from compas.utilities import XFunc</span>
 
@@ -687,9 +686,9 @@ document.write(`
 <span class="sd">            attr[&#39;y&#39;] = xyz[vertex][1]</span>
 <span class="sd">            attr[&#39;z&#39;] = xyz[vertex][2]</span>
 
-<span class="sd">        artist = MeshArtist(mesh)</span>
-<span class="sd">        artist.draw_vertices()</span>
-<span class="sd">        artist.draw_edges()</span>
+<span class="sd">        scene = Scene()</span>
+<span class="sd">        scene.add(mesh)</span>
+<span class="sd">        scene.redraw()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
