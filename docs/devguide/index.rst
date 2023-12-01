@@ -20,4 +20,4 @@ This guide is intended for developers who want to contribute to the code and/or 
    setup
    workflow
    code
-   ghcomponents
+   ghcomponent
