@@ -11,7 +11,6 @@ and can be used independently of CAD systems in any environment that supports Py
     :titlesonly:
     :caption: compas
 
-    compas.scene
     compas.colors
     compas.data
     compas.datastructures
@@ -20,4 +19,5 @@ and can be used independently of CAD systems in any environment that supports Py
     compas.numerical
     compas.plugins
     compas.rpc
+    compas.scene
     compas.topology
