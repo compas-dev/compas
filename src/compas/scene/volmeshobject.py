@@ -12,7 +12,7 @@ from .descriptors.colordict import ColorDictAttribute
 
 
 class VolMeshObject(SceneObject):
-    """Sceneobject for drawing volmesh data structures.
+    """Scene object for drawing volmesh data structures.
 
     Parameters
     ----------

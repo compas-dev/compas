@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class BoxObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing box shapes.
+    """Scene object for drawing box shapes.
 
     Parameters
     ----------

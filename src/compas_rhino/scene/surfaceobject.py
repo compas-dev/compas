@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class SurfaceObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing surfaces.
+    """Scene object for drawing surfaces.
 
     Parameters
     ----------

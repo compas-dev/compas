@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class ConeObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing cone shapes.
+    """Scene object for drawing cone shapes.
 
     Parameters
     ----------

@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class TorusObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing torus shapes.
+    """Scene object for drawing torus shapes.
 
     Parameters
     ----------

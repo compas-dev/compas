@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class SphereObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing sphere shapes.
+    """Scene object for drawing sphere shapes.
 
     Parameters
     ----------

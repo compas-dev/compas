@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class CylinderObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing cylinder shapes.
+    """Scene object for drawing cylinder shapes.
 
     Parameters
     ----------

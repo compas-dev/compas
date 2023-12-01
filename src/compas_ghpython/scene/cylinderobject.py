@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class CylinderObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing cylinder shapes.
+    """Scene object for drawing cylinder shapes.
 
     Parameters
     ----------

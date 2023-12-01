@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class CircleObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing circles.
+    """Scene object for drawing circles.
 
     Parameters
     ----------

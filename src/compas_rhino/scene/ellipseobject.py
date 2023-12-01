@@ -14,7 +14,7 @@ from ._helpers import attributes
 
 
 class EllipseObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing ellipses.
+    """Scene object for drawing ellipses.
 
     Parameters
     ----------

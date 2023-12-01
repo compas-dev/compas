@@ -15,7 +15,7 @@ from ._helpers import attributes
 
 
 class CircleObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing circles.
+    """Scene object for drawing circles.
 
     Parameters
     ----------

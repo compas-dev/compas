@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class CurveObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing curves.
+    """Scene object for drawing curves.
 
     Parameters
     ----------

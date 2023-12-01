@@ -11,7 +11,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class CircleObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing circles in Blender.
+    """Scene object for drawing circles in Blender.
 
     Parameters
     ----------

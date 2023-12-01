@@ -7,7 +7,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class PlaneObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing planes.
+    """Scene object for drawing planes.
 
     Parameters
     ----------

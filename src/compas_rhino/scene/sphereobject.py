@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class SphereObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing sphere shapes.
+    """Scene object for drawing sphere shapes.
 
     Parameters
     ----------

@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class LineObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing lines.
+    """Scene object for drawing lines.
 
     Parameters
     ----------

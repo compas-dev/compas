@@ -143,7 +143,7 @@ class SceneObject(object):
 
         if item is None:
             raise ValueError(
-                "Cannot create an scene object for None. Please ensure you pass a instance of a supported class."
+                "Cannot create a scene object for None. Please ensure you pass a instance of a supported class."
             )
 
         cls = _get_sceneobject_cls(item, **kwargs)
@@ -172,7 +172,7 @@ class SceneObject(object):
 
     @staticmethod
     def build(item, **kwargs):
-        """Build an scene object corresponding to the item type.
+        """Build a scene object corresponding to the item type.
 
         Parameters
         ----------
@@ -193,7 +193,7 @@ class SceneObject(object):
 
     @staticmethod
     def build_as(item, sceneobject_type, **kwargs):
-        """Build an scene object with the given type.
+        """Build a scene object with the given type.
 
         Parameters
         ----------

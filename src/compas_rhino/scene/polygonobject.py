@@ -15,7 +15,7 @@ from ._helpers import attributes
 
 
 class PolygonObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing polygons.
+    """Scene object for drawing polygons.
 
     Parameters
     ----------

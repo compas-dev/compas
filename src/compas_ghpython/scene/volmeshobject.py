@@ -10,7 +10,7 @@ from .sceneobject import GHSceneObject
 
 
 class VolMeshObject(GHSceneObject, BaseVolMeshObject):
-    """Sceneobject for drawing volmesh data structures.
+    """Scene object for drawing volmesh data structures.
 
     Parameters
     ----------

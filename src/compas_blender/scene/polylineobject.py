@@ -13,7 +13,7 @@ from compas_blender import conversions
 
 
 class PolylineObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing polylines in Blender.
+    """Scene object for drawing polylines in Blender.
 
     Parameters
     ----------

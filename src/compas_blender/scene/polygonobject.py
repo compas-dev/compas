@@ -14,7 +14,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class PolygonObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing polygons in Blender.
+    """Scene object for drawing polygons in Blender.
 
     Parameters
     ----------

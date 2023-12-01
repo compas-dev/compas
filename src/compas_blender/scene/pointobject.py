@@ -11,7 +11,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class PointObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing points in Blender.
+    """Scene object for drawing points in Blender.
 
     Parameters
     ----------

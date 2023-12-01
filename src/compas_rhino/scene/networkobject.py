@@ -19,7 +19,7 @@ from ._helpers import attributes
 
 
 class NetworkObject(RhinoSceneObject, BaseNetworkObject):
-    """Sceneobject for drawing network data structures.
+    """Scene object for drawing network data structures.
 
     Parameters
     ----------

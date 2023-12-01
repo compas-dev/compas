@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class PointObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing points.
+    """Scene object for drawing points.
 
     Parameters
     ----------

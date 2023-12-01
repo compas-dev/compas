@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class FrameObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing frames.
+    """Scene object for drawing frames.
 
     Parameters
     ----------

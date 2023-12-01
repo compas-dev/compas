@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class NetworkObject(GHSceneObject, BaseNetworkObject):
-    """Sceneobject for drawing network data structures.
+    """Scene object for drawing network data structures.
 
     Parameters
     ----------

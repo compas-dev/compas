@@ -14,7 +14,7 @@ from compas_blender import conversions
 
 
 class SphereObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing sphere shapes in Blender.
+    """Scene object for drawing sphere shapes in Blender.
 
     Parameters
     ----------

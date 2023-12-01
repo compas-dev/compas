@@ -14,7 +14,7 @@ from ._helpers import attributes
 
 
 class VectorObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing vectors.
+    """Scene object for drawing vectors.
 
     Parameters
     ----------

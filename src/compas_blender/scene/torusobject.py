@@ -13,7 +13,7 @@ from compas_blender import conversions
 
 
 class TorusObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing torus shapes in Blender.
+    """Scene object for drawing torus shapes in Blender.
 
     Parameters
     ----------

@@ -27,7 +27,7 @@ from ._helpers import ngon
 
 
 class MeshObject(RhinoSceneObject, BaseMeshObject):
-    """Sceneobject for drawing mesh data structures.
+    """Scene object for drawing mesh data structures.
 
     Parameters
     ----------

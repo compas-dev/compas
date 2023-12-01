@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class TorusObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing torus shapes.
+    """Scene object for drawing torus shapes.
 
     Parameters
     ----------

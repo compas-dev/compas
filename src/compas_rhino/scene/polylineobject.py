@@ -14,7 +14,7 @@ from ._helpers import attributes
 
 
 class PolylineObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing polylines.
+    """Scene object for drawing polylines.
 
     Parameters
     ----------

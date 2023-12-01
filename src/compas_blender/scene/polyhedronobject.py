@@ -13,7 +13,7 @@ from compas_blender import conversions
 
 
 class PolyhedronObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing polyhedron shapes in Blender.
+    """Scene object for drawing polyhedron shapes in Blender.
 
     Parameters
     ----------

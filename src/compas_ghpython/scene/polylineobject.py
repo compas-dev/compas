@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class PolylineObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing polylines.
+    """Scene object for drawing polylines.
 
     Parameters
     ----------

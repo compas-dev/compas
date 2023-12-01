@@ -12,7 +12,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class CurveObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing curves in Blender.
+    """Scene object for drawing curves in Blender.
 
     Parameters
     ----------

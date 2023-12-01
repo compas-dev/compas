@@ -13,7 +13,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class CapsuleObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing capsule shapes in Blender.
+    """Scene object for drawing capsule shapes in Blender.
 
     Parameters
     ----------

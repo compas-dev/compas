@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class ConeObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing cone shapes.
+    """Scene object for drawing cone shapes.
 
     Parameters
     ----------

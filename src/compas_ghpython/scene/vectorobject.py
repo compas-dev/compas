@@ -10,7 +10,7 @@ from .sceneobject import GHSceneObject
 
 
 class VectorObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing vectors.
+    """Scene object for drawing vectors.
 
     Parameters
     ----------

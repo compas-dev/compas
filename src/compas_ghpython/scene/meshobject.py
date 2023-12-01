@@ -10,7 +10,7 @@ from .sceneobject import GHSceneObject
 
 
 class MeshObject(GHSceneObject, BaseMeshObject):
-    """Sceneobject for drawing mesh data structures.
+    """Scene object for drawing mesh data structures.
 
     Parameters
     ----------

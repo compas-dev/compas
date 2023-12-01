@@ -13,7 +13,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class CylinderObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing cylinder shapes in Blender.
+    """Scene object for drawing cylinder shapes in Blender.
 
     Parameters
     ----------

@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class PolyhedronObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing polyhedron shapes.
+    """Scene object for drawing polyhedron shapes.
 
     Parameters
     ----------

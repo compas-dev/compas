@@ -19,7 +19,7 @@ from compas_blender import conversions
 
 
 class NetworkObject(BlenderSceneObject, BaseSceneObject):
-    """Sceneobject for drawing network data structures in Blender.
+    """Scene object for drawing network data structures in Blender.
 
     Parameters
     ----------

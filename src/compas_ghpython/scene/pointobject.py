@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class PointObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing points.
+    """Scene object for drawing points.
 
     Parameters
     ----------

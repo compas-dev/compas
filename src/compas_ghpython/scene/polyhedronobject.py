@@ -11,7 +11,7 @@ from .sceneobject import GHSceneObject
 
 
 class PolyhedronObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing polyhedron shapes.
+    """Scene object for drawing polyhedron shapes.
 
     Parameters
     ----------

@@ -24,7 +24,7 @@ from compas_blender import conversions
 
 
 class MeshObject(BlenderSceneObject, BaseMeshObject):
-    """Sceneobject for drawing mesh data structures in Blender.
+    """Scene object for drawing mesh data structures in Blender.
 
     Parameters
     ----------

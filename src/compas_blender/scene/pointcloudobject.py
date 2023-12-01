@@ -13,7 +13,7 @@ from compas_blender import conversions
 
 
 class PointcloudObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing pointclouds in Blender.
+    """Scene object for drawing pointclouds in Blender.
 
     Parameters
     ----------

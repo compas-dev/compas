@@ -14,7 +14,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class LineObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing lines in Blender.
+    """Scene object for drawing lines in Blender.
 
     Parameters
     ----------

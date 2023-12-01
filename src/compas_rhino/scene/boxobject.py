@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class BoxObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing box shapes.
+    """Scene object for drawing box shapes.
 
     Parameters
     ----------

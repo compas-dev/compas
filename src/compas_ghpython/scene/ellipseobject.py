@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class EllipseObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing ellipses.
+    """Scene object for drawing ellipses.
 
     Parameters
     ----------

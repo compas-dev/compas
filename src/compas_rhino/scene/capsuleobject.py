@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class CapsuleObject(RhinoSceneObject, GeometryObject):
-    """Sceneobject for drawing capsule shapes.
+    """Scene object for drawing capsule shapes.
 
     Parameters
     ----------

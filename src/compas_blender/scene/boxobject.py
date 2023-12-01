@@ -14,7 +14,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class BoxObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing box shapes in Blender.
+    """Scene object for drawing box shapes in Blender.
 
     Parameters
     ----------

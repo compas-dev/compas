@@ -18,7 +18,7 @@ from ._helpers import ngon
 
 
 class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
-    """Sceneobject for drawing volmesh data structures.
+    """Scene object for drawing volmesh data structures.
 
     Parameters
     ----------

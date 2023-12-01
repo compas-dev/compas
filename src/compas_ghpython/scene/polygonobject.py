@@ -11,7 +11,7 @@ from .sceneobject import GHSceneObject
 
 
 class PolygonObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing polygons.
+    """Scene object for drawing polygons.
 
     Parameters
     ----------

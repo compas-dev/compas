@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class FrameObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing frames.
+    """Scene object for drawing frames.
 
     Parameters
     ----------

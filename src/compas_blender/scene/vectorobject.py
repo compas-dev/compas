@@ -15,7 +15,7 @@ from compas_blender import conversions
 
 
 class VectorObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing vectors in Blender.
+    """Scene object for drawing vectors in Blender.
 
     Parameters
     ----------

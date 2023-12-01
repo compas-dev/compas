@@ -13,7 +13,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class ConeObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing cone shapes in Blender.
+    """Scene object for drawing cone shapes in Blender.
 
     Parameters
     ----------

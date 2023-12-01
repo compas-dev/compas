@@ -11,7 +11,7 @@ from .descriptors.colordict import ColorDictAttribute
 
 
 class NetworkObject(SceneObject):
-    """Sceneobject for drawing network data structures.
+    """Scene object for drawing network data structures.
 
     Parameters
     ----------

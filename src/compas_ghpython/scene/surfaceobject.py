@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class SurfaceObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing surfaces.
+    """Scene object for drawing surfaces.
 
     Parameters
     ----------

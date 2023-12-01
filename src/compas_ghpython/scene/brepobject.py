@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class BrepObject(GHSceneObject, GeometryObject):
-    """An Sceneobject for drawing a brep in Grasshopper.
+    """A Scene object for drawing a brep in Grasshopper.
 
     Parameters
     ----------

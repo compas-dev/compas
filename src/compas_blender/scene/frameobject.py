@@ -12,7 +12,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class FrameObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing frames in Blender.
+    """Scene object for drawing frames in Blender.
 
     Parameters
     ----------

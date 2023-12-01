@@ -9,7 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class CapsuleObject(GHSceneObject, GeometryObject):
-    """Sceneobject for drawing capsule shapes.
+    """Scene object for drawing capsule shapes.
 
     Parameters
     ----------

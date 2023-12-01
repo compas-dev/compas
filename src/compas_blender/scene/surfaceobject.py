@@ -13,7 +13,7 @@ from compas_blender import conversions
 
 
 class SurfaceObject(BlenderSceneObject, GeometryObject):
-    """Sceneobject for drawing surfaces in Blender.
+    """Scene object for drawing surfaces in Blender.
 
     Parameters
     ----------
