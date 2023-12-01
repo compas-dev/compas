@@ -8,8 +8,8 @@ compas_rhino.scene
 .. rst-class:: lead
 
 
-This package provides sceneobject plugins for visualising COMPAS objects in Rhino.
-When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino sceneobject for each COMPAS object type.
+This package provides scene object plugins for visualising COMPAS objects in Rhino.
+When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino scene object for each COMPAS object type.
 
 
 Classes

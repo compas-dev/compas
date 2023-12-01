@@ -35,7 +35,7 @@ class CylinderObject(BlenderSceneObject, GeometryObject):
         show_wire: bool = False,
         shade_smooth: bool = True,
     ) -> bpy.types.Object:
-        """Draw the cylinder associated with the sceneobject.
+        """Draw the cylinder associated with the scene object.
 
         Parameters
         ----------

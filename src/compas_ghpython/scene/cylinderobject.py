@@ -24,7 +24,7 @@ class CylinderObject(GHSceneObject, GeometryObject):
         super(CylinderObject, self).__init__(geometry=cylinder, **kwargs)
 
     def draw(self, color=None, u=16):
-        """Draw the cylinder associated with the sceneobject.
+        """Draw the cylinder associated with the scene object.
 
         Parameters
         ----------

@@ -28,7 +28,7 @@ class TorusObject(RhinoSceneObject, GeometryObject):
         super(TorusObject, self).__init__(geometry=torus, **kwargs)
 
     def draw(self, color=None):
-        """Draw the torus associated with the sceneobject.
+        """Draw the torus associated with the scene object.
 
         Parameters
         ----------

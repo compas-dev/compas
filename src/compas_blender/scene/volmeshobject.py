@@ -22,7 +22,7 @@ from compas_blender import conversions
 
 
 class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
-    """An sceneobject for drawing volumetric mesh data structures in Blender.
+    """An scene object for drawing volumetric mesh data structures in Blender.
 
     Parameters
     ----------

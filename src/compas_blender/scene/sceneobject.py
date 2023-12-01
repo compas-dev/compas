@@ -13,19 +13,19 @@ from compas_blender import conversions
 
 
 class BlenderSceneObject(SceneObject):
-    """Base class for all Blender sceneobjects.
+    """Base class for all Blender scene objects.
 
     Parameters
     ----------
     collection : str | :blender:`bpy.types.Collection`, optional
-        The Blender scene collection the object(s) created by the sceneobject belong to.
+        The Blender scene collection the object(s) created by the scene object belong to.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     Attributes
     ----------
     objects : list[:blender:`bpy.types.Object`]
-        The Blender objects created by the sceneobject.
+        The Blender objects created by the scene object.
 
     """
 

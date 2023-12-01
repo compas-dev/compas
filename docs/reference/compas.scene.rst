@@ -8,9 +8,9 @@ compas.scene
 .. rst-class:: lead
 
 
-This package defines sceneobjects for visualising COMPAS objects.
-Every object type is paired with a corresponding sceneobject type that is capable of visualizing the data of the object.
-The sceneobjects are implemented as pluggables, and automatically switch between plugins depending on the contexct in which they are used.
+This package defines scene objects for visualising COMPAS objects.
+Every object type is paired with a corresponding scene object type that is capable of visualizing the data of the object.
+The scene objects are implemented as pluggables, and automatically switch between plugins depending on the contexct in which they are used.
 
 
 Classes

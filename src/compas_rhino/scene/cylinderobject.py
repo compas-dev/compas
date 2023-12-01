@@ -28,7 +28,7 @@ class CylinderObject(RhinoSceneObject, GeometryObject):
         super(CylinderObject, self).__init__(geometry=cylinder, **kwargs)
 
     def draw(self, color=None):
-        """Draw the cylinder associated with the sceneobject.
+        """Draw the cylinder associated with the scene object.
 
         Parameters
         ----------

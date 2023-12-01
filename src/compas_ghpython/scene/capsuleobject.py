@@ -24,7 +24,7 @@ class CapsuleObject(GHSceneObject, GeometryObject):
         super(CapsuleObject, self).__init__(geometry=capsule, **kwargs)
 
     def draw(self):
-        """Draw the capsule associated with the sceneobject.
+        """Draw the capsule associated with the scene object.
 
         Returns
         -------

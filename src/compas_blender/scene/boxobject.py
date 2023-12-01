@@ -34,7 +34,7 @@ class BoxObject(BlenderSceneObject, GeometryObject):
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         show_wire: bool = True,
     ) -> bpy.types.Object:
-        """Draw the box associated with the sceneobject.
+        """Draw the box associated with the scene object.
 
         Parameters
         ----------

@@ -11,7 +11,7 @@ if not compas.IPY:
     def reset_sceneobjects():
         # before each test
         yield
-        # after each test, reset sceneobjects
+        # after each test, reset scene objects
         SceneObject.ITEM_SCENEOBJECT.clear()
         SceneObject._SceneObject__SCENEOBJECTS_REGISTERED = False  # type: ignore
 

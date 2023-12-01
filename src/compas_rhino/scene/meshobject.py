@@ -46,7 +46,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
     # ==========================================================================
 
     def clear(self):
-        """Delete all objects drawn by this sceneobject.
+        """Delete all objects drawn by this scene object.
 
         Returns
         -------
@@ -57,7 +57,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertices(self):
-        """Delete all vertices drawn by this sceneobject.
+        """Delete all vertices drawn by this scene object.
 
         Returns
         -------
@@ -68,7 +68,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
-        """Delete all edges drawn by this sceneobject.
+        """Delete all edges drawn by this scene object.
 
         Returns
         -------
@@ -79,7 +79,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_faces(self):
-        """Delete all faces drawn by this sceneobject.
+        """Delete all faces drawn by this scene object.
 
         Returns
         -------
@@ -90,7 +90,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexnormals(self):
-        """Delete all vertex normals drawn by this sceneobject.
+        """Delete all vertex normals drawn by this scene object.
 
         Returns
         -------
@@ -101,7 +101,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facenormals(self):
-        """Delete all face normals drawn by this sceneobject.
+        """Delete all face normals drawn by this scene object.
 
         Returns
         -------
@@ -112,7 +112,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_vertexlabels(self):
-        """Delete all vertex labels drawn by this sceneobject.
+        """Delete all vertex labels drawn by this scene object.
 
         Returns
         -------
@@ -123,7 +123,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
-        """Delete all edge labels drawn by this sceneobject.
+        """Delete all edge labels drawn by this scene object.
 
         Returns
         -------
@@ -134,7 +134,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
-        """Delete all face labels drawn by this sceneobject.
+        """Delete all face labels drawn by this scene object.
 
         Returns
         -------

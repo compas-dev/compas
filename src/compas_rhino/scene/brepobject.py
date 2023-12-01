@@ -13,7 +13,7 @@ from ._helpers import attributes
 
 
 class BrepObject(RhinoSceneObject, GeometryObject):
-    """A sceneobject for drawing a RhinoBrep.
+    """A scene object for drawing a RhinoBrep.
 
     Parameters
     ----------

@@ -36,7 +36,7 @@ class TorusObject(BlenderSceneObject, GeometryObject):
         show_wire: bool = False,
         shade_smooth: bool = True,
     ) -> bpy.types.Object:
-        """Draw the torus associated with the sceneobject.
+        """Draw the torus associated with the scene object.
 
         Parameters
         ----------

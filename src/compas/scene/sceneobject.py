@@ -33,7 +33,7 @@ redraw.__pluggable__ = True
 
 @pluggable(category="factories", selector="collect_all")
 def register_scene_objects():
-    """Registers sceneobjects available in the current context."""
+    """Registers scene objects available in the current context."""
     raise NotImplementedError
 
 
@@ -105,14 +105,14 @@ def _get_sceneobject_cls(data, **kwargs):
 
     if cls is None:
         raise SceneObjectNotRegisteredError(
-            "No sceneobject is registered for this data type: {} in this context: {}".format(dtype, context_name)
+            "No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name)
         )
 
     return cls
 
 
 class SceneObject(object):
-    """Base class for all sceneobjects.
+    """Base class for all scene objects.
 
     Parameters
     ----------
@@ -125,7 +125,7 @@ class SceneObject(object):
     Attributes
     ----------
     ITEM_SCENEOBJECT : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.scene.SceneObject`]]]
-        Dictionary mapping data types to the corresponding sceneobjects types per visualization context.
+        Dictionary mapping data types to the corresponding scene objects types per visualization context.
 
     """
 
@@ -143,7 +143,7 @@ class SceneObject(object):
 
         if item is None:
             raise ValueError(
-                "Cannot create an sceneobject for None. Please ensure you pass a instance of a supported class."
+                "Cannot create an scene object for None. Please ensure you pass a instance of a supported class."
             )
 
         cls = _get_sceneobject_cls(item, **kwargs)
@@ -156,7 +156,7 @@ class SceneObject(object):
 
     @property
     def transformation(self):
-        """The transformation matrix of the sceneobject.
+        """The transformation matrix of the scene object.
 
         Returns
         -------
@@ -172,18 +172,18 @@ class SceneObject(object):
 
     @staticmethod
     def build(item, **kwargs):
-        """Build an sceneobject corresponding to the item type.
+        """Build an scene object corresponding to the item type.
 
         Parameters
         ----------
         **kwargs : dict[str, Any], optional
             The keyword arguments (kwargs) collected in a dict.
-            For relevant options, see the parameter lists of the matching sceneobject type.
+            For relevant options, see the parameter lists of the matching scene object type.
 
         Returns
         -------
         :class:`~compas.scene.SceneObject`
-            A sceneobject of the type matching the provided item according to the item-sceneobject map :attr:`~SceneObject.ITEM_SCENEOBJECT`.
+            A scene object of the type matching the provided item according to the item-sceneobject map :attr:`~SceneObject.ITEM_SCENEOBJECT`.
             The map is created by registering item-sceneobject type pairs using :meth:`~SceneObject.register`.
 
         """
@@ -193,7 +193,7 @@ class SceneObject(object):
 
     @staticmethod
     def build_as(item, sceneobject_type, **kwargs):
-        """Build an sceneobject with the given type.
+        """Build an scene object with the given type.
 
         Parameters
         ----------
@@ -205,7 +205,7 @@ class SceneObject(object):
         Returns
         -------
         :class:`~compas.scene.SceneObject`
-            A sceneobject of the given type.
+            A scene object of the given type.
 
         """
         sceneobject = sceneobject_type(item, **kwargs)
@@ -247,14 +247,14 @@ class SceneObject(object):
 
     @staticmethod
     def register(item_type, sceneobject_type, context=None):
-        """Register a sceneobject type to a data type.
+        """Register a scene object type to a data type.
 
         Parameters
         ----------
         item_type : :class:`~compas.data.Data`
             The type of data item.
         sceneobject_type : :class:`~compas.scene.SceneObject`
-            The type of the corresponding/compatible sceneobject.
+            The type of the corresponding/compatible scene object.
         context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
             The visualization context in which the pair should be registered.
 

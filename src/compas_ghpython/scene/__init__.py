@@ -1,6 +1,6 @@
 """
-This package provides sceneobject plugins for visualising COMPAS objects in Grasshopper.
-When working in GH Python components, :class:`compas.scene.SceneObject` will automatically use the corresponding GHPython sceneobject for each COMPAS object type.
+This package provides scene object plugins for visualising COMPAS objects in Grasshopper.
+When working in GH Python components, :class:`compas.scene.SceneObject` will automatically use the corresponding GHPython scene object for each COMPAS object type.
 """
 from __future__ import absolute_import
 

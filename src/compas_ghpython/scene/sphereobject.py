@@ -24,7 +24,7 @@ class SphereObject(GHSceneObject, GeometryObject):
         super(SphereObject, self).__init__(geometry=sphere, **kwargs)
 
     def draw(self):
-        """Draw the sphere associated with the sceneobject.
+        """Draw the sphere associated with the scene object.
 
         Returns
         -------

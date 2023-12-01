@@ -36,7 +36,7 @@ class CapsuleObject(BlenderSceneObject, GeometryObject):
         show_wire: bool = False,
         shade_smooth: bool = True,
     ) -> bpy.types.Object:
-        """Draw the capsule associated with the sceneobject.
+        """Draw the capsule associated with the scene object.
 
         Parameters
         ----------

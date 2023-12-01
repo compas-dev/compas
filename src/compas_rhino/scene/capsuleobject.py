@@ -28,7 +28,7 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
         super(CapsuleObject, self).__init__(geometry=capsule, **kwargs)
 
     def draw(self, color=None):
-        """Draw the capsule associated with the sceneobject.
+        """Draw the capsule associated with the scene object.
 
         Parameters
         ----------

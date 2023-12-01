@@ -24,7 +24,7 @@ class TorusObject(GHSceneObject, GeometryObject):
         super(TorusObject, self).__init__(geometry=torus, **kwargs)
 
     def draw(self):
-        """Draw the torus associated with the sceneobject.
+        """Draw the torus associated with the scene object.
 
         Returns
         -------

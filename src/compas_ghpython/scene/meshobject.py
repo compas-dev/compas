@@ -37,7 +37,7 @@ class MeshObject(GHSceneObject, BaseMeshObject):
         :rhino:`Rhino.Geometry.Mesh`
 
         """
-        # the rhino sceneobject can set an overal color and component colors simultaneously
+        # the rhino scene object can set an overal color and component colors simultaneously
         # because it can set an overall color on the mesh object attributes
         # this is not possible in GH (since there is no such object)
         # either we set an overall color or we set component colors

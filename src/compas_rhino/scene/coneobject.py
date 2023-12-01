@@ -28,7 +28,7 @@ class ConeObject(RhinoSceneObject, GeometryObject):
         super(ConeObject, self).__init__(geometry=cone, **kwargs)
 
     def draw(self, color=None):
-        """Draw the cone associated with the sceneobject.
+        """Draw the cone associated with the scene object.
 
         Parameters
         ----------

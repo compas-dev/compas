@@ -35,7 +35,7 @@ class ConeObject(BlenderSceneObject, GeometryObject):
         show_wire: bool = False,
         shade_smooth: bool = True,
     ) -> bpy.types.Object:
-        """Draw the cone associated with the sceneobject.
+        """Draw the cone associated with the scene object.
 
         Parameters
         ----------

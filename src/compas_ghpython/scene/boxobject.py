@@ -24,7 +24,7 @@ class BoxObject(GHSceneObject, GeometryObject):
         super(BoxObject, self).__init__(geometry=box, **kwargs)
 
     def draw(self):
-        """Draw the box associated with the sceneobject.
+        """Draw the box associated with the scene object.
 
         Returns
         -------

@@ -7,7 +7,7 @@ from .descriptors.color import ColorAttribute
 
 
 class GeometryObject(SceneObject):
-    """Base class for sceneobjects for geometry objects.
+    """Base class for scene objects for geometry objects.
 
     Parameters
     ----------
@@ -17,7 +17,7 @@ class GeometryObject(SceneObject):
     Attributes
     ----------
     geometry : :class:`compas.geometry.Geometry`
-        The geometry object associated with the sceneobject.
+        The geometry object associated with the scene object.
     color : :class:`compas.colors.Color`
         The color of the object.
 

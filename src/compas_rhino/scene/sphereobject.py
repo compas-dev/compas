@@ -28,7 +28,7 @@ class SphereObject(RhinoSceneObject, GeometryObject):
         super(SphereObject, self).__init__(geometry=sphere, **kwargs)
 
     def draw(self, color=None):
-        """Draw the sphere associated with the sceneobject.
+        """Draw the sphere associated with the scene object.
 
         Parameters
         ----------

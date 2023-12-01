@@ -9,7 +9,7 @@ from compas.scene import SceneObject
 
 
 class RhinoSceneObject(SceneObject):
-    """Base class for all Rhino sceneobjects.
+    """Base class for all Rhino scene objects.
 
     Parameters
     ----------
@@ -64,7 +64,7 @@ class RhinoSceneObject(SceneObject):
             sc.doc.Groups.AddToGroup(group.Index, guids)
 
     def clear_layer(self):
-        """Clear the layer of the sceneobject.
+        """Clear the layer of the scene object.
 
         Returns
         -------

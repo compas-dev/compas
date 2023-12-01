@@ -22,7 +22,7 @@ class VolMeshObject(SceneObject):
     Attributes
     ----------
     volmesh : :class:`compas.datastructures.VolMesh`
-        The COMPAS volmesh associated with the sceneobject.
+        The COMPAS volmesh associated with the scene object.
     vertex_xyz : dict[int, list[float]]
         The view coordinates of the vertices.
         By default, the actual vertex coordinates are used.

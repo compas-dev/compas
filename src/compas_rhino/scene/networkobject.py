@@ -38,7 +38,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
     # ==========================================================================
 
     def clear(self):
-        """Delete all objects drawn by this sceneobject.
+        """Delete all objects drawn by this scene object.
 
         Returns
         -------
@@ -49,7 +49,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_nodes(self):
-        """Delete all nodes drawn by this sceneobject.
+        """Delete all nodes drawn by this scene object.
 
         Returns
         -------
@@ -60,7 +60,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
-        """Delete all edges drawn by this sceneobject.
+        """Delete all edges drawn by this scene object.
 
         Returns
         -------

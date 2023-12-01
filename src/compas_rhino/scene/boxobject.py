@@ -28,7 +28,7 @@ class BoxObject(RhinoSceneObject, GeometryObject):
         super(BoxObject, self).__init__(geometry=box, **kwargs)
 
     def draw(self, color=None):
-        """Draw the box associated with the sceneobject.
+        """Draw the box associated with the scene object.
 
         Parameters
         ----------

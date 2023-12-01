@@ -26,7 +26,7 @@ class PolyhedronObject(GHSceneObject, GeometryObject):
         super(PolyhedronObject, self).__init__(geometry=polyhedron, **kwargs)
 
     def draw(self, color=None):
-        """Draw the polyhedron associated with the sceneobject.
+        """Draw the polyhedron associated with the scene object.
 
         Parameters
         ----------

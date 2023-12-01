@@ -4,11 +4,11 @@ from __future__ import division
 
 
 class SceneObjectNotRegisteredError(Exception):
-    """Exception that is raised when no sceneobject is registered for a given data type."""
+    """Exception that is raised when no scene object is registered for a given data type."""
 
 
 class NoSceneObjectContextError(Exception):
-    """Exception that is raised when no sceneobject context is assigned is registered for a given data type."""
+    """Exception that is raised when no scene object context is assigned is registered for a given data type."""
 
     def __init__(self):
         error_message = "No context defined."

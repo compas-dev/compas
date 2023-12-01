@@ -24,7 +24,7 @@ class ConeObject(GHSceneObject, GeometryObject):
         super(ConeObject, self).__init__(geometry=cone, **kwargs)
 
     def draw(self):
-        """Draw the cone associated with the sceneobject.
+        """Draw the cone associated with the scene object.
 
         Returns
         -------

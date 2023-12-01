@@ -37,7 +37,7 @@ class SphereObject(BlenderSceneObject, GeometryObject):
         show_wire: bool = False,
         shade_smooth: bool = True,
     ) -> List[bpy.types.Object]:
-        """Draw the sphere associated with the sceneobject.
+        """Draw the sphere associated with the scene object.
 
         Parameters
         ----------

@@ -21,7 +21,7 @@ class NetworkObject(SceneObject):
     Attributes
     ----------
     network : :class:`compas.datastructures.Network`
-        The COMPAS network associated with the sceneobject.
+        The COMPAS network associated with the scene object.
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.

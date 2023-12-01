@@ -30,7 +30,7 @@ class PolyhedronObject(BlenderSceneObject, GeometryObject):
     def draw(
         self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
     ) -> List[bpy.types.Object]:
-        """Draw the polyhedron associated with the sceneobject.
+        """Draw the polyhedron associated with the scene object.
 
         Parameters
         ----------

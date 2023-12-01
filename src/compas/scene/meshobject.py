@@ -11,7 +11,7 @@ from .descriptors.colordict import ColorDictAttribute
 
 
 class MeshObject(SceneObject):
-    """Base class for all mesh sceneobjects.
+    """Base class for all mesh scene objects.
 
     Parameters
     ----------
