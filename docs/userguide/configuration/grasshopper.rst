@@ -23,6 +23,7 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
     from compas.scene import Scene
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
+
     scene = Scene()
     scene.add(mesh)
     a = scene.redraw()
