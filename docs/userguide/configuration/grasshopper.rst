@@ -20,11 +20,13 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
 
     import compas
     from compas.datastructures import Mesh
-    from compas_ghpython.artists import MeshArtist
+    from compas.scene import Scene
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    a = MeshArtist(mesh).draw()
+    scene = Scene()
+    scene.add(mesh)
+    a = scene.redraw()
 
 
 .. figure:: /_images/gh_verify.jpg
@@ -64,6 +66,6 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
 
     Prefer using `unload_modules` as early as possible in your grasshopper
     workflow. Re-loading modules later might result, for example,
-    in COMPAS not being able to find an `Artist` as well as other issues
+    in COMPAS not being able to find an `SceneObject` as well as other issues
     related to a mid-workflow re-definition of Python types.
 

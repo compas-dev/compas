@@ -1,4 +1,4 @@
-from compas.artists import Artist
+from compas.scene import Scene
 from compas.robots import Joint
 from compas.robots import RobotModel
 from compas.geometry import Box
@@ -49,6 +49,6 @@ hat_link = model.add_link("hat", visual_meshes=[hat, brim])
 hat_joint_origin = Frame([0, 0, 1 - 0.3 + 1.5 / 2], [1, 0, 0], [0, 1, 0])
 model.add_joint("hat_joint", Joint.FIXED, head_link, hat_link, origin=hat_joint_origin)
 
-artist = Artist(model, layer="COMPAS::Example Robot")
-artist.clear_layer()
-artist.draw_visual()
+scene = Scene()
+scene.add(model, layer="COMPAS::Example Robot")
+scene.redraw()

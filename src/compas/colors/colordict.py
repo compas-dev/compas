@@ -83,7 +83,7 @@ class ColorDict(Data):
 
         Parameters
         ----------
-        other : dict or :class:`compas.artists.ColorDict`
+        other : dict or :class:`compas.scene.ColorDict`
             The other dictionary.
 
         Returns

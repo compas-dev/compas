@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
@@ -438,12 +440,14 @@ class Tree(Datastructure):
     def __repr__(self):
         return "<Tree with {} nodes>".format(len(list(self.nodes)))
 
-    def print(self):
+    def print_hierarchy(self):
         """Print the spatial hierarchy of the tree."""
 
-        def _print(node, depth=0):
-            print("  " * depth + str(node))
-            for child in node.children:
-                _print(child, depth + 1)
+        def _print(node, prefix="", last=True):
+            connector = "└── " if last else "├── "
+            print("{}{}{}".format(prefix, connector, node))
+            prefix += "    " if last else "│   "
+            for i, child in enumerate(node.children):
+                _print(child, prefix, i == len(node.children) - 1)
 
         _print(self.root)

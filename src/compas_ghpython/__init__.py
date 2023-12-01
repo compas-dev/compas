@@ -20,7 +20,7 @@ __all__ = [
 __all_plugins__ = [
     "compas_ghpython.install",
     "compas_ghpython.uninstall",
-    "compas_ghpython.artists",
+    "compas_ghpython.scene",
 ]
 
 

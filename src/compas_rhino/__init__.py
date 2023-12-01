@@ -45,7 +45,7 @@ __all_plugins__ = [
     "compas_rhino.geometry.trimesh_slicing",
     "compas_rhino.install",
     "compas_rhino.uninstall",
-    "compas_rhino.artists",
+    "compas_rhino.scene",
     "compas_rhino.geometry.curves",
     "compas_rhino.geometry.surfaces",
     "compas_rhino.geometry.brep",

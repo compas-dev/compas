@@ -191,7 +191,7 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
     --------
     >>> import compas_rhino
     >>> from compas_rhino.geometry import RhinoSurface
-    >>> from compas_rhino.artists import MeshArtist
+    >>> from compas.scene import Scene
 
     >>> def facefilter(face):
     ...     success, w, h = face.GetSurfaceSize()
@@ -205,9 +205,9 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
     >>> surf = RhinoSurface.from_guid(guid)
     >>> mesh = surf.to_compas(facefilter=facefilter)
 
-    >>> artist = MeshArtist(mesh, layer="Blocks")
-    >>> artist.clear_layer()
-    >>> artist.draw()
+    >>> scene = Scene()
+    >>> scene.add(mesh, layer="Blocks")
+    >>> scene.redraw()
 
     """
     if not surface.HasBrepForm:
