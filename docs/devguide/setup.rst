@@ -4,8 +4,8 @@ Development Setup
 =================
 
 .. note::
-    This section is for you if you intenting to develop for COMPAS. If you
-    just want to use it, please check out the user :ref:`user_guide_install`.
+    This section is for you if you are intending to develop for COMPAS. If you
+    just want to use it, please check out the user :ref:`user_guide_install` guide.
 
 Tools
 -----
@@ -13,7 +13,7 @@ To get started you would need to install the following tools:
 
 * Text/code editor
 * Git
-* Python (virtual environement)
+* Python (virtual environment)
 
 Text/code editor
 ----------------
@@ -24,7 +24,7 @@ Git
 ---
 For version control we use `git <https://git-scm.com/>`_. Our remote repository is hosted on `GitHub <https://github.com/compas-dev/compas/>`_
 
-While and git offers an extensive command line interface, there are plentty of GUI based clients out there including:
+While git offers an extensive command line interface, there are plentty of GUI based clients out there including:
 
 * `GitHub Desktop <https://desktop.github.com/>`_
 * `SourceTree <https://www.sourcetreeapp.com/>`_
@@ -40,7 +40,7 @@ Python virtual environments
 During development there might be a need to install different versions of different dependencies, some of them might conflict with ones used for other projects.
 Moreover, using early development code can often lead to a corrupt python environment which can be hard to fix. For these reasons it is highly recommended to use virtual environments for development.
 
-For developing COMPAS it is recommended to use `conda <https://conda.io/docs/>`_.
+For developing COMPAS we recommend using `conda <https://conda.io/docs/>`_.
 
 Installing COMPAS for development
 ---------------------------------

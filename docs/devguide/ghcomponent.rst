@@ -168,7 +168,7 @@ Once the components are compiled, and are in the ``target_dir`` folder, you can 
     compas               OK
     compas_ghpython      OK
     compas_rhino         OK
-    compas_bananas      OK
+    compas_bananas       OK
 
     Running post-installation steps...
 
