@@ -17,4 +17,7 @@ This guide is intended for developers who want to contribute to the code and/or 
    :maxdepth: 1
    :titlesonly:
 
+   setup
    workflow
+   code
+   ghcomponent

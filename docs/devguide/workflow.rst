@@ -1,3 +1,5 @@
+.. _development-workflow:
+
 Development Workflow
 ====================
 
@@ -46,7 +48,7 @@ Making changes
 2. Making and pushing changes.
 
    Go ahead and make a few changes to the project using your favorite text editor. When you're ready to submit your changes, stage and commit your changes. Please use clear commit messages detailing the changes made.
-   
+
    .. code-block:: bash
 
       git add .
@@ -113,7 +115,7 @@ The procedure for submitting a PR is the following.
    * If your PR adds a new feature, add ``New feature`` to the description.
    * If your PR fixes a bug, add ``Bug fix`` to the description.
    * If your PR changes the API, add ``Breaking change`` to the description.
-   
+
 6. Wait for the tests to pass and for the code to be reviewed.
 
    We review pull requests as soon as we can, typically within a week. If you get no review comments within two weeks, feel free to ask for feedback by adding a comment on your PR (this will notify maintainers). Thank you!
