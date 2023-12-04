@@ -15,9 +15,9 @@ Naming conventions
 .. note::
 
     When naming **variables**, **functions**, **classes** and **modules** it is important to take the time and choose meaningful names.
-    Names should short but descriptive and ideally unambiguous in the field they are intended to be used.
+    Names should be short but descriptive and ideally unambiguous in the field they are intended to be used.
 
-Classes should be names using the `CamelCase` convention
+**Classes** should be named using the ``CamelCase`` convention
 
 .. code-block:: python
 
@@ -71,10 +71,10 @@ Classes should be names using the `CamelCase` convention
 Line length
 -----------
 
-**COMPAS uses a line length of 120 characters**. This is longer than the 80 characters recommended by ``PEP8`` and in our opinion a more reasonable limit for modern displays.
-This is enforces and can be automatically set using ``black -l 120``.
+**COMPAS uses a line length of 120 characters**. While longer than the 80 characters recommended by ``PEP8``, it is in our opinion a more reasonable limit for modern displays.
+This is enforced and can be automatically set using ``black -l 120``.
 
-**Indentations are 4 spaces**. Some editors like VScode can be configured to insert 4 spaces when pressing the tab key.
+**Indentations are 4 spaces**. Tab to spaces setting can be set in ``.editorconfig`` which is respected by most editors. For more information see `EditorConfig <https://editorconfig.org/>`_.
 
 Imports
 -------
@@ -89,13 +89,14 @@ Single-item imports are preferred over multi-item imports
 
 .. code-block:: python
 
+    # use:
     from compas.geometry import Frame
     from compas.geometry import Point
 
     # instead of:
     from compas.geometry import Frame, Point
 
-Star (`*`) imports should be avoided.
+Star (``*``) imports should be avoided.
 
 Comments
 --------
@@ -106,12 +107,12 @@ The code should be self-explanatory and comments should be used sparingly. Howev
 
     def my_function():
         # while seems unlikely, 42 is the answer to everything
-        some_piece_of_code() * thats_counter_intuitive() + 42
+        return some_piece_of_code() + 42
 
 Docstrings
 ----------
 
-Docstings in the COMPAS ecosystem follow the `NumPy style docstrings <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html>`_.
+Docstings in the COMPAS ecosystem follow the `NumPy style docstrings <https://numpydoc.readthedocs.io/en/latest/format.html>`_.
 These docstrings are later used by `Sphinx <https://www.sphinx-doc.org/en/master/>`_ to generate the API documentation.
 
 Therefore, it is important that functions and methods have at least the following docstrings:
@@ -143,4 +144,4 @@ Python 2.7 compatibility
 ------------------------
 
 **To keep COMPAS usable in Rhino, we make sure to maintain Python 2.7 compatibility** in parts of the package which are used in Rhino.
-Packages that will for sure not be used in Rhino can utilies Python 3 features.
+Packages that are not intended to be used in Rhino can utilise Python 3 features.
