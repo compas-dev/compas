@@ -266,7 +266,7 @@ class RhinoBrep(Brep):
         """
         
         meshing_params = Rhino.Geometry.MeshingParameters(density, minimum_edge_length)
-        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, meshing_params)
+        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep.native_brep, meshing_params)
 
         meshes = [mesh_to_compas(m) for m in rg_meshes]
 
