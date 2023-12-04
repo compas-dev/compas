@@ -10,6 +10,7 @@ from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 
 from .builder import _RhinoBrepBuilder
@@ -247,6 +248,30 @@ class RhinoBrep(Brep):
     # Methods
     # ==============================================================================
 
+    def to_meshes(self, density, minimum_edge_length):         
+    
+        """Transform this Brep by given transformation matrix
+
+        Parameters
+        ----------
+        density: 
+        Float, where 0.0 <= density <= 1.0, where 0 quickly creates coarse meshes, and 1 slowly creates dense meshes.
+        minimum_edge_length:
+        Float, the minimum edge length of the mesh.
+        
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+
+        """
+        
+        meshing_params = Rhino.Geometry.MeshingParameters(density, minimum_edge_length)
+        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, meshing_params)
+
+        meshes = [mesh_to_compas(m) for m in rg_meshes]
+
+        return meshes
+    
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
 
