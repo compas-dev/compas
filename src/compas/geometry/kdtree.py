@@ -4,7 +4,7 @@ from __future__ import division
 
 import collections
 
-from .distance import distance_point_point_sqrd
+from ._core.distance import distance_point_point_sqrd
 
 
 Node = collections.namedtuple("Node", "point axis label left right")

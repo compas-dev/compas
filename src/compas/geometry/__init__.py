@@ -144,7 +144,6 @@ from ._core.size import (
     volume_polyhedron,
 )
 from ._core.tangent import tangent_points_to_circle_xy
-from ._core.kdtree import KDTree
 from ._core.matrices import (
     axis_and_angle_from_matrix,
     axis_angle_from_quaternion,
@@ -279,11 +278,11 @@ from .booleans import (
     boolean_intersection_polygon_polygon,
 )
 from .hull import convex_hull, convex_hull_xy
-from .interpolation.barycentric import barycentric_coordinates
-from .interpolation.coons import discrete_coons_patch
-from .interpolation.tweening import tween_points, tween_points_distance
-from .intersections import intersection_mesh_mesh, intersection_ray_mesh
-from .intersections.intersections import (
+from .interpolation_barycentric import barycentric_coordinates  # move this to core
+from .interpolation_coons import discrete_coons_patch
+from .interpolation_tweening import tween_points, tween_points_distance
+from .intersections import intersection_mesh_mesh, intersection_ray_mesh  # move this into intersections.intersections
+from .intersections.intersections import (  # move this to intersections.py
     intersection_circle_circle_xy,
     intersection_ellipse_line_xy,
     intersection_line_box_xy,
@@ -306,15 +305,20 @@ from .intersections.intersections import (
     intersection_sphere_line,
     intersection_sphere_sphere,
 )
+from .kdtree import KDTree
 from .offset import (
     offset_line,
     offset_polyline,
     offset_polygon,
 )
 from .quadmesh_planarize import quadmesh_planarize
-from .triangulation import conforming_delaunay_triangulation, constrained_delaunay_triangulation, delaunay_triangulation
-from .triangulation.delaunay import delaunay_from_points
-from .triangulation.earclip import earclip_polygon
+from .triangulation_delaunay import (
+    conforming_delaunay_triangulation,
+    constrained_delaunay_triangulation,
+    delaunay_triangulation,
+)
+from .triangulation_delaunay_none import delaunay_from_points
+from .triangulation_earclip import earclip_polygon
 from .trimesh_curvature import (
     trimesh_mean_curvature,
     trimesh_gaussian_curvature,
@@ -348,7 +352,7 @@ if not compas.IPY:
     )
     from .hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
     from .icp_numpy import icp_numpy
-    from .triangulation.delaunay_numpy import delaunay_from_points_numpy, voronoi_from_points_numpy
+    from .triangulation_delaunay_numpy import delaunay_from_points_numpy, voronoi_from_points_numpy
     from .trimesh_gradient_numpy import trimesh_gradient_numpy
     from .trimesh_descent_numpy import trimesh_descent_numpy
 
