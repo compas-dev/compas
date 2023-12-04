@@ -98,6 +98,40 @@ Single-item imports are preferred over multi-item imports
 
 Star (``*``) imports should be avoided.
 
+Second-level imports
+--------------------
+To keep the API clean and consistent, any new public functions or classes should be importable from a second-level package.
+This is achieved by importing the function or class in the ``__init__.py`` file of the package.
+
+For example:
+
+.. code-block:: bash
+
+    compas
+    ├── __init__.py
+    └── my_package
+        ├── __init__.py
+        └── new_module.py
+
+.. code-block:: python
+
+    # new_module.py
+    class NewClass(object):
+        ...
+
+.. code-block:: python
+
+    # compas.my_package.__init__.py
+    from .new_module import NewClass
+
+    __all__ = ['NewClass']
+
+The result should be:
+
+.. code-block:: python
+
+    >>> from compas.my_package import NewClass
+
 Comments
 --------
 
