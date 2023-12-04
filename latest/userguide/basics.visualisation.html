@@ -523,6 +523,115 @@ document.write(`
                   
   <section id="visualisation">
 <h1>Visualisation</h1>
+<p>COMPAS (data) objects can be visualised by placing them into a “scene”.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="scene-objects">
+<h2>Scene Objects</h2>
+<p>When a COMPAS object is added to a scene, a scene object is created automatically, corresponding to the type of COMPAS object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span>
+<span class="go">BoxObject</span>
+</pre></div>
+</div>
+<p>The scene object holds a reference to the COMPAS data object, and stores its visualisation settings and transformation matrix.
+Multiple scene objects can be created for the same COMPAS data object, each with different visualisation settings and transformations.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj2</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span> <span class="ow">is</span> <span class="n">sceneobj2</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="n">sceneobj2</span><span class="o">.</span><span class="n">data</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</section>
+<section id="visualiation-settings">
+<h2>Visualiation Settings</h2>
+<p>Scene objects have visualisation settings that can be changed by setting the corresponding attributes.
+All scene objects have a color attribute.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">color</span>
+<span class="go">Color(0.0, 0.0, 0.0, alpha=1.0)</span>
+</pre></div>
+</div>
+<p>Color attributes can be set using a COMPAS Color object, or a tuple of RGB values, with the color components specified as floats in the range 0.0-1.0 or as integers in the range 0-255.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about working with colors in COMPAS, see <a class="reference internal" href="basics.colors.html"><span class="doc">Working with Colors and Color Maps</span></a>.</p>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">color</span>
+<span class="go">Color(1.0, 0.0, 0.0, alpha=1.0)</span>
+</pre></div>
+</div>
+<p>Visualisation settings can be changed by modifying the corresponding attributes of the scene object, or by providing values or the attributes to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Scene.add()</span></code> method.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">color</span>
+<span class="go">Color(0.0, 1.0, 0.0, alpha=1.0)</span>
+</pre></div>
+</div>
+<p>Some objects have additional color attributes, for more precise control over the visualisation.
+For example, meshes can have different colors for the vertices, the edges, and the faces.
+And the colors of vertices, edges, and faces can be specified individually, per element.
+See the section about mesh visualisation for more information.</p>
+</section>
+<section id="object-transformation">
+<h2>Object Transformation</h2>
+<p>All scene objects have a transformation matrix that can be used to transform the object in the visualisation,
+independently of the geometry of the underlying data object.
+The default transformation matrix is the identity matrix, which means that the visualised geometry is the same as the geometry represented by the data.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">transformation</span>
+<span class="go">Transformation([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]])</span>
+</pre></div>
+</div>
+<p>The transformation matrix can be set using a COMPAS Transformation object, or a 4x4 nested list of floats.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Translation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">transformation</span> <span class="o">=</span> <span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">transformation</span>
+<span class="go">Transformation([[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 2.0], [0.0, 0.0, 1.0, 3.0], [0.0, 0.0, 0.0, 1.0]])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about working with transformations in COMPAS, see <a class="reference internal" href="basics.geometry.transformations.html"><span class="doc">Transformations</span></a>.</p>
+</div>
+</section>
+<section id="scene-hierarchy">
+<h2>Scene Hierarchy</h2>
+<p>Scene objects are organised in a hierarchy, with the scene as the root node.
+The hierarchy is represented by a COMPAS Tree data structure.
+All scene objects are nodes in the tree.
+The scene tree has an implicit root node, which is the scene itself.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">root</span>
+<span class="go">SceneObject</span>
+</pre></div>
+</div>
+<p>By default, every scene object is added as a direct child of the scene.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">parent</span>
+<span class="go">SceneObject</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">children</span><span class="p">()</span>
+<span class="go">[BoxObject]</span>
+</pre></div>
+</div>
+<p>To use a different scene object as the parent, the parent attribute of the scene object can be set to the desired parent.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pointobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boxobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">pointobj</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boxobj</span><span class="o">.</span><span class="n">parent</span>
+<span class="go">PointObject</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -565,6 +674,19 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-objects">Scene Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualiation-settings">Visualiation Settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-transformation">Object Transformation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-hierarchy">Scene Hierarchy</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   
