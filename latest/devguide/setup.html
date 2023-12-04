@@ -64,6 +64,8 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development Workflow" href="workflow.html" />
+    <link rel="prev" title="Developer Guide" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -166,7 +168,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Developer Guide
                       </a>
@@ -293,7 +295,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -318,7 +320,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Developer Guide
                       </a>
@@ -410,6 +412,20 @@ document.write(`
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Development Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ghcomponent.html">Developing a GH Component</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -442,6 +458,9 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Developer Guide</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page">Development Setup</li>
   </ul>
 </nav>
@@ -460,7 +479,47 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="development-setup">
-<h1>Development Setup</h1>
+<span id="dev-setup"></span><h1>Development Setup</h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is for you if you are intending to develop for COMPAS. If you
+just want to use it, please check out the user <a class="reference internal" href="../userguide/installation.html#user-guide-install"><span class="std std-ref">Installation</span></a> guide.</p>
+</div>
+<section id="tools">
+<h2>Tools</h2>
+<p>To get started you would need to install the following tools:</p>
+<ul class="simple">
+<li><p>Text/code editor</p></li>
+<li><p>Git</p></li>
+<li><p>Python (virtual environment)</p></li>
+</ul>
+</section>
+<section id="text-code-editor">
+<h2>Text/code editor</h2>
+<p>While any text editor can be used for developing COMPAS, we recommend using <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a>.
+It is free to use, open source and has a lot of useful features for developing python code.</p>
+</section>
+<section id="git">
+<h2>Git</h2>
+<p>For version control we use <a class="reference external" href="https://git-scm.com/">git</a>. Our remote repository is hosted on <a class="reference external" href="https://github.com/compas-dev/compas/">GitHub</a></p>
+<p>While git offers an extensive command line interface, there are plentty of GUI based clients out there including:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://desktop.github.com/">GitHub Desktop</a></p></li>
+<li><p><a class="reference external" href="https://www.sourcetreeapp.com/">SourceTree</a></p></li>
+</ul>
+<p>VS Code also has a built-in git client</p>
+<img alt="../_images/vscode_git.JPG" class="align-center" src="../_images/vscode_git.JPG" />
+</section>
+<section id="python-virtual-environments">
+<h2>Python virtual environments</h2>
+<p>During development there might be a need to install different versions of different dependencies, some of them might conflict with ones used for other projects.
+Moreover, using early development code can often lead to a corrupt python environment which can be hard to fix. For these reasons it is highly recommended to use virtual environments for development.</p>
+<p>For developing COMPAS we recommend using <a class="reference external" href="https://conda.io/docs/">conda</a>.</p>
+</section>
+<section id="installing-compas-for-development">
+<h2>Installing COMPAS for development</h2>
+<p>See the <a class="reference internal" href="workflow.html#development-workflow"><span class="std std-ref">Development Workflow</span></a> for more details on how to install COMPAS for development and how to contribute to the project.</p>
+</section>
 </section>
 
 
@@ -474,6 +533,24 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Developer Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="workflow.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Development Workflow</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div></div>
   
 </div>
@@ -485,6 +562,20 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tools">Tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-code-editor">Text/code editor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git">Git</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-virtual-environments">Python virtual environments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-compas-for-development">Installing COMPAS for development</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   
