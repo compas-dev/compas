@@ -250,26 +250,22 @@ class RhinoBrep(Brep):
 
     def to_meshes(self, density, minimum_edge_length):         
     
-        """Transform this Brep by given transformation matrix
+        """Convert the faces of this Brep shape to meshes.
 
         Parameters
         ----------
-        density: 
-        Float, where 0.0 <= density <= 1.0, where 0 quickly creates coarse meshes, and 1 slowly creates dense meshes.
-        minimum_edge_length:
-        Float, the minimum edge length of the mesh.
-        
+        u : int, optional
+            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
+        v : int, optional
+            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
+
         Returns
         -------
         list[:class:`~compas.datastructures.Mesh`]
 
         """
-        
-        meshing_params = Rhino.Geometry.MeshingParameters(density, minimum_edge_length)
-        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep.native_brep, meshing_params)
-
+        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep.native_brep, Rhino.Geometry.MeshingParamaters.Default)
         meshes = [mesh_to_compas(m) for m in rg_meshes]
-
         return meshes
     
     def transform(self, matrix):
