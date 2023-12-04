@@ -248,7 +248,7 @@ class RhinoBrep(Brep):
     # Methods
     # ==============================================================================
 
-    def to_meshes(self, density, minimum_edge_length):         
+    def to_meshes(self, u=16, v=16):         
     
         """Convert the faces of this Brep shape to meshes.
 
