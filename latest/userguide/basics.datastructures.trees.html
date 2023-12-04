@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Networks &#8212; compas</title>
+    <title>Trees &#8212; compas</title>
   
   
   
@@ -64,8 +64,8 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Networks" href="basics.datastructures.assemblies.html" />
-    <link rel="prev" title="Networks" href="basics.datastructures.cells.html" />
+    <link rel="next" title="Assemblies" href="basics.datastructures.assemblies.html" />
+    <link rel="prev" title="Cellular Meshes" href="basics.datastructures.cells.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -429,25 +429,25 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.primitives.html">Geometric Primitives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.polygons_and_polyhedrons.html">Polygons and Polyhedrons</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.curves_and_surfaces.html">Curves and Surfaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basics.geometry.solids.html">Transformations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basics.geometry.breps.html">Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.geometry.solids.html">Shapes and Solids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.geometry.breps.html">Boundary Representations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.intersections.html">Intersections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.transformations.html">Transformations</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="basics.datastructures.html">Datastructures</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basics.datastructures.networks.html">Networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basics.datastructures.meshes.html">Networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basics.datastructures.cells.html">Networks</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basics.datastructures.assemblies.html">Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.datastructures.meshes.html">Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.datastructures.cells.html">Cellular Meshes</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.datastructures.assemblies.html">Assemblies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="basics.visualisation.html">Visualisation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Advanced</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="advanced.tolerance.html">Working with Tolerances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.tolerance.html">Dealing with Tolerances</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.serialisation.html">Serialising Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.rpc.html">Remote Procedure Calls (RPC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.pluggables.html">Pluggables and Plugins</a></li>
@@ -457,7 +457,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="cad.rhino.html">Working in Rhino</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.grasshopper.html">Working in Grasshopper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.blender.html">Working in Blender</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cad.other.html">Working in Rhino</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cad.other.html">Working in Other CAD Software</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous Info</span></p>
 <ul class="nav bd-sidenav">
@@ -507,7 +507,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="basics.datastructures.html" class="nav-link">Datastructures</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Networks</li>
+    <li class="breadcrumb-item active" aria-current="page">Trees</li>
   </ul>
 </nav>
 </div>
@@ -524,8 +524,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="networks">
-<h1>Networks</h1>
+  <section id="trees">
+<h1>Trees</h1>
 </section>
 
 
@@ -545,7 +545,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Networks</p>
+        <p class="prev-next-title">Cellular Meshes</p>
       </div>
     </a>
     <a class="right-next"
@@ -553,7 +553,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Networks</p>
+        <p class="prev-next-title">Assemblies</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
