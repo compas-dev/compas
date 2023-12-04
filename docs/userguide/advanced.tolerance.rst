@@ -1,4 +1,4 @@
 ***********************
-Working with Tolerances
+Dealing with Tolerances
 ***********************
 

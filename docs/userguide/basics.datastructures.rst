@@ -4,7 +4,7 @@ Datastructures
 .. toctree::
     :maxdepth: 2
     :titlesonly:
-    :caption: Geometry
+    :caption: Data Structures
 
     basics.datastructures.networks
     basics.datastructures.meshes
