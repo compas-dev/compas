@@ -42,7 +42,7 @@ source_suffix = {
     ".md": "markdown",
 }
 templates_path = sphinx_compas_theme.get_autosummary_templates_path() + ["_templates"]
-exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp", "reference/**", "**/__old"]
+exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp", "**/__old"]
 
 # pygments_style = "sphinx"
 # pygments_dark_style = "monokai"
