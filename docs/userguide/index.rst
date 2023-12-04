@@ -1,39 +1,53 @@
 User Guide
 ==========
 
-Getting Started
----------------
-
 .. toctree::
     :maxdepth: 2
     :titlesonly:
     :caption: Getting Started
 
+    introduction
     installation
-    configuration
+    firststeps
+    whatsnext
 
-Tutorials
----------
-
-.. toctree::
-    :maxdepth: 2
-    :titlesonly:
-    :caption: Tutorials
-
-    tutorials/data
-    tutorials/geometry/index
-    tutorials/datastructures/index
-    tutorials/rpc
-    tutorials/colors
-    turorials/artists/index
-
-Miscellaneous
--------------
 
 .. toctree::
     :maxdepth: 2
     :titlesonly:
-    :caption: Miscellaneous
+    :caption: Tutorial: Basics
+
+    basics.geometry
+    basics.datastructures
+    basics.visualisation
+
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+    :caption: Tutorial: Advanced
+
+    advanced.tolerance
+    advanced.serialisation
+    advanced.rpc
+    advanced.pluggables
+
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+    :caption: Tutorial: Working in CAD
+
+    cad.rhino
+    cad.grasshopper
+    cad.blender
+    cad.other
+
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+    :caption: Miscellaneous Info
 
     releases
     citing
