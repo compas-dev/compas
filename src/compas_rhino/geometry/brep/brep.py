@@ -248,8 +248,7 @@ class RhinoBrep(Brep):
     # Methods
     # ==============================================================================
 
-    def to_meshes(self, u=16, v=16):         
-    
+    def to_meshes(self, u=16, v=16):
         """Convert the faces of this Brep shape to meshes.
 
         Parameters
@@ -267,7 +266,7 @@ class RhinoBrep(Brep):
         rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep.native_brep, Rhino.Geometry.MeshingParamaters.Default)
         meshes = [mesh_to_compas(m) for m in rg_meshes]
         return meshes
-    
+
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
 
