@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Torus.to_brep()`.
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
+* Added `compas_rhino.geometry.brep.RhinoBrep.to_meshes()`.
+
 
 ### Changed
 
