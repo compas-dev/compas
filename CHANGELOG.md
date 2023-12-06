@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.geometry.NurbsSurface.v_isocurve` to `isocurve_v`.
 * Changed `compas.brep.Brep.from_step_file` to `from_step`.
 * Moved `compas.brep` to `compas.geometry.brep`.
+* Updated `compas-actions.docs` workflow to `v3`.
 * `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
 
 
