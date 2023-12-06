@@ -1,12 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import json
+import zipfile
+
 from compas import _iotools
 from compas.data import Data  # noqa: F401
-from compas.data import DataEncoder
 from compas.data import DataDecoder
+from compas.data import DataEncoder
+
+_JSON_CONTENT_FILENAME = "content.json"
 
 
 def json_dump(data, fp, pretty=False, compact=False, minimal=False):
@@ -23,6 +27,8 @@ def json_dump(data, fp, pretty=False, compact=False, minimal=False):
         If True, format the output with newlines and indentation.
     compact : bool, optional
         If True, format the output without any whitespace.
+    minimal : bool, optional
+        If True, exclude the GUID from the JSON output.
 
     Returns
     -------
@@ -72,6 +78,8 @@ def json_dumps(data, pretty=False, compact=False, minimal=False):  # type: (...)
         If True, format the output with newlines and indentation.
     compact : bool, optional
         If True, format the output without any whitespace.
+    minimal : bool, optional
+        If True, exclude the GUID from the JSON output.
 
     Returns
     -------
@@ -104,6 +112,65 @@ def json_dumps(data, pretty=False, compact=False, minimal=False):  # type: (...)
         kwargs["indent"] = None
         kwargs["separators"] = (",", ":")
     return json.dumps(data, cls=DataEncoder, **kwargs)
+
+
+def json_dumpz(data, zip_filename, pretty=False, compact=False, minimal=False):
+    """Write a collection of COMPAS objects to a compressed JSON file (using ZIP compression).
+
+    Parameters
+    ----------
+    data : object
+        Any JSON serializable object.
+        This includes any (combination of) COMPAS object(s).
+    pretty : bool, optional
+        If True, format the output with newlines and indentation.
+    compact : bool, optional
+        If True, format the output without any whitespace.
+    compact : bool, optional
+        If True, format the output without any whitespace.
+
+    Returns
+    -------
+    str
+
+    See Also
+    --------
+    :class:`compas.data.json_dump`
+    :class:`compas.data.json_load`
+    :class:`compas.data.json_loads`
+    :class:`compas.data.json_loadz`
+    """
+    json_str = json_dumps(data, pretty=pretty, compact=compact, minimal=minimal)
+
+    with zipfile.ZipFile(zip_filename, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr(_JSON_CONTENT_FILENAME, json_str)
+
+
+def json_loadz(zip_file):
+    """Read COMPAS object data from a compressed JSON file (ZIP).
+
+    Parameters
+    ----------
+    zip_file : path string | file-like object
+        A readable path or a file-like object pointing to a ZIP file.
+
+    Returns
+    -------
+    object
+        The (COMPAS) data contained in the file.
+
+    See Also
+    --------
+    :class:`compas.data.json_dump`
+    :class:`compas.data.json_dumps`
+    :class:`compas.data.json_dumpz`
+    :class:`compas.data.json_loads`
+    """
+    with zipfile.ZipFile(zip_file) as zf:
+        with zf.open(_JSON_CONTENT_FILENAME) as f:
+            json_str = f.read().decode("utf-8")
+
+    return json_loads(json_str)
 
 
 def json_load(fp):  # type: (...) -> dict

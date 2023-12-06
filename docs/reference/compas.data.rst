@@ -37,5 +37,7 @@ Functions
     dataclass_typeschema
     json_dump
     json_dumps
+    json_dumpz
     json_load
     json_loads
+    json_loadz

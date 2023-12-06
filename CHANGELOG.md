@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
 * Added `compas.scene.Scene`.
+* Added `compas.json_loadz()` and `compas.json_dumpz()` to support ZIP compressed JSON files.
 
 ### Changed
 
