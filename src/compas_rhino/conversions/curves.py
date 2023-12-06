@@ -19,6 +19,7 @@ from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas.geometry import Polyline
 from compas.geometry import Arc
+from compas.geometry import NurbsCurve
 
 from .exceptions import ConversionError
 
@@ -439,3 +440,25 @@ def curve_to_compas_data(curve):
         "degree": degree,
         "is_periodic": is_periodic,
     }
+
+
+def nurbscurve_to_compas(curve):
+    """Convert a Rhino Nurbs curve to a COMPAS curve.
+
+    Parameters
+    ----------
+    curve : :rhino:`Rhino.Geometry.NurbsCurve`
+
+    Returns
+    -------
+    :class:`compas.geometry.NurbsCurve`
+
+    Raises
+    ------
+    ConversionError
+        If the curve cannot be converted to a COMPAS curve.
+
+    """
+    if isinstance(curve, RhinoObject):
+        curve = curve.Geometry
+    return NurbsCurve.from_native(curve)

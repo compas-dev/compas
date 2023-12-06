@@ -38,6 +38,7 @@ from .curves import (
     ellipse_to_compas,
     line_to_compas,
     polyline_to_compas,
+    nurbscurve_to_compas,
 )
 from .surfaces import (
     surface_to_rhino,
@@ -50,6 +51,7 @@ from .surfaces import (
 from .shapes import (
     box_to_rhino,
     sphere_to_rhino,
+    capsule_to_rhino,
     capsule_to_rhino_brep,
     cone_to_rhino,
     cone_to_rhino_brep,
@@ -121,6 +123,7 @@ __all__ = [
     "curve_to_compas_ellipse",
     "curve_to_compas_line",
     "curve_to_compas_polyline",
+    "nurbscurve_to_compas",
     # surfaces
     "surface_to_rhino",
     "surface_to_compas_data",
@@ -131,6 +134,7 @@ __all__ = [
     # shapes
     "box_to_rhino",
     "sphere_to_rhino",
+    "capsule_to_rhino",
     "capsule_to_rhino_brep",
     "cone_to_rhino",
     "cone_to_rhino_brep",

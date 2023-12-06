@@ -20,6 +20,11 @@ def new_nurbscurve(cls, *args, **kwargs):
 
 
 @pluggable(category="factories")
+def new_nurbscurve_from_native(cls, *args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
 def new_nurbscurve_from_parameters(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
@@ -185,6 +190,23 @@ class NurbsCurve(Curve):
     # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_native(cls, curve):
+        """Construct a NURBS curve from a curve object.
+
+        Parameters
+        ----------
+        curve : :class:`Rhino.Geometry.NurbsCurve`
+            A *Rhino* curve object.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsCurve`
+            A COMPAS NURBS curve.
+
+        """
+        return new_nurbscurve_from_native(cls, curve)
 
     @classmethod
     def from_step(cls, filepath):
