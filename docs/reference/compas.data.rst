@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas.data
 ********************************************************************************
@@ -6,8 +7,8 @@ compas.data
 
 .. rst-class:: lead
 
-This package provides a base data class for all COMPAS data objects such as geometry objects, robots, and data structures,
-and the infrastructure for data validation, conversion, coercion, and JSON serialisation.
+This package defines the core infrastructure for data serialisation in the COMPAS framework.
+It provides a base class for data objects, a JSON encoder and decoder, serialisers and deserialisers, and schema validation.
 
 
 Classes
@@ -18,8 +19,9 @@ Classes
     :nosignatures:
 
     Data
-    DataEncoder
     DataDecoder
+    DataEncoder
+    DecoderError
 
 
 Functions
@@ -29,18 +31,11 @@ Functions
     :toctree: generated/
     :nosignatures:
 
-    json_load
-    json_loads
+    compas_dataclasses
+    dataclass_dataschema
+    dataclass_jsonschema
+    dataclass_typeschema
     json_dump
     json_dumps
-
-
-Exceptions
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    DecoderError
-
+    json_load
+    json_loads

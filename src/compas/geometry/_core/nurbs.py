@@ -27,6 +27,14 @@ def construct_knotvector(degree, pointcount):
     ValueError
         If the number of control points is less than degree + 1.
 
+    See Also
+    --------
+    knotvector_to_knots_and_mults
+    knots_and_mults_to_knotvector
+    find_span
+    compute_basisfuncs
+    compute_basisfuncsderivs
+
     References
     ----------
     The NURBS Book. Chapter 2. Page 66.
@@ -53,6 +61,14 @@ def knotvector_to_knots_and_mults(knotvector):
     -------
     tuple[list[int | float], list[int]]
         Knots and multiplicities.
+
+    See Also
+    --------
+    construct_knotvector
+    knots_and_mults_to_knotvector
+    find_span
+    compute_basisfuncs
+    compute_basisfuncsderivs
 
     Notes
     -----
@@ -87,6 +103,14 @@ def knots_and_mults_to_knotvector(knots, mults):
     -------
     list[int | float]
         Knot vector.
+
+    See Also
+    --------
+    construct_knotvector
+    knotvector_to_knots_and_mults
+    find_span
+    compute_basisfuncs
+    compute_basisfuncsderivs
 
     Notes
     -----
@@ -128,6 +152,14 @@ def find_span(n, degree, knotvector, u):
     ------
     ValueError
         If the parameter value is greater than the maximum knot or less than the minimum knot.
+
+    See Also
+    --------
+    construct_knotvector
+    knotvector_to_knots_and_mults
+    knots_and_mults_to_knotvector
+    compute_basisfuncs
+    compute_basisfuncsderivs
 
     References
     ----------
@@ -175,6 +207,14 @@ def compute_basisfuncs(degree, knotvector, i, u):
     -------
     list[float]
         Basis functions.
+
+    See Also
+    --------
+    construct_knotvector
+    knotvector_to_knots_and_mults
+    knots_and_mults_to_knotvector
+    find_span
+    compute_basisfuncsderivs
 
     Notes
     -----
@@ -229,6 +269,14 @@ def compute_basisfuncsderivs(degree, knotvector, i, u, n):
     -------
     list[float]
         Derivatives of the basis functions.
+
+    See Also
+    --------
+    construct_knotvector
+    knotvector_to_knots_and_mults
+    knots_and_mults_to_knotvector
+    find_span
+    compute_basisfuncs
 
     References
     ----------

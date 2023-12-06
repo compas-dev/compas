@@ -18,19 +18,19 @@ class BrepFace(Data):
         Returns True if this face is a cone, False otherwise.
     is_bspline : bool, read-only
         Returns True if this face is a bspline, False otherwise.
-    vertices : list[:class:`~compas.geometry.BrepVertex`], read-only
+    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
         Returns a list of the vertices comprising this face.
-    edges : list[:class:`~compas.geometry.BrepEdge`], read-only
+    edges : list[:class:`compas.geometry.BrepEdge`], read-only
         Returns a list of the edges comprising this face.
-    loops : list[:class:`~compas.geometry.BrepLoop`], read-only
+    loops : list[:class:`compas.geometry.BrepLoop`], read-only
         Returns a list of the loops comprising this face.
-    surface : :class:`~compas.geometry.Surface`, read-only
+    surface : :class:`compas.geometry.Surface`, read-only
         Returns the geometry of this face as a surface.
-    nurbssurface : :class:`~compas.geometry.NurbsSurface`, read-only
+    nurbssurface : :class:`compas.geometry.NurbsSurface`, read-only
         Returns the geometry of this face as a NURBS surface.
     area : float, read-only
         Returns the area of this face's geometry.
-    centroid : :class:`~compas.geometry.Point`, read-only
+    centroid : :class:`compas.geometry.Point`, read-only
         Returns the centroid of this face's geometry.
     is_valid : bool, read-only
         Return True if this face is valid, False otherwise.
@@ -51,7 +51,6 @@ class BrepFace(Data):
 
     @property
     def is_sphere(self):
-
         raise NotImplementedError
 
     @property
@@ -108,11 +107,11 @@ class BrepFace(Data):
 
         Parameters
         ----------
-        plane : :class:`~compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepFace`
+        :class:`compas.geometry.BrepFace`
 
         """
         raise NotImplementedError
@@ -123,11 +122,11 @@ class BrepFace(Data):
 
         Parameters
         ----------
-        cylinder : :class:`~compas.geometry.Cylinder`
+        cylinder : :class:`compas.geometry.Cylinder`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepFace`
+        :class:`compas.geometry.BrepFace`
 
         """
         raise NotImplementedError
@@ -138,11 +137,11 @@ class BrepFace(Data):
 
         Parameters
         ----------
-        cone : :class:`~compas.geometry.Cone`
+        cone : :class:`compas.geometry.Cone`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepFace`
+        :class:`compas.geometry.BrepFace`
 
         """
         raise NotImplementedError
@@ -153,11 +152,11 @@ class BrepFace(Data):
 
         Parameters
         ----------
-        sphere : :class:`~compas.geometry.Sphere`
+        sphere : :class:`compas.geometry.Sphere`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepFace`
+        :class:`compas.geometry.BrepFace`
 
         """
         raise NotImplementedError
@@ -168,11 +167,11 @@ class BrepFace(Data):
 
         Parameters
         ----------
-        torus : :class:`~compas.geometry.Torus`
+        torus : :class:`compas.geometry.Torus`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepFace`
+        :class:`compas.geometry.BrepFace`
 
         """
         raise NotImplementedError
@@ -183,11 +182,11 @@ class BrepFace(Data):
 
         Parameters
         ----------
-        surface : :class:`~compas.geometry.Surface`
+        surface : :class:`compas.geometry.Surface`
 
         Returns
         -------
-        :class:`~compas.geometry.BrepFace`
+        :class:`compas.geometry.BrepFace`
 
         """
         raise NotImplementedError

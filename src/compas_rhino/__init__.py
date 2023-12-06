@@ -1,21 +1,3 @@
-"""
-************
-compas_rhino
-************
-
-.. currentmodule:: compas_rhino
-
-.. toctree::
-    :maxdepth: 1
-
-    compas_rhino.artists
-    compas_rhino.conduits
-    compas_rhino.conversions
-    compas_rhino.forms
-    compas_rhino.geometry
-    compas_rhino.utilities
-
-"""
 from __future__ import absolute_import
 
 import io
@@ -59,10 +41,11 @@ __all__ = [
 
 __all_plugins__ = [
     "compas_rhino.geometry.booleans",
-    "compas_rhino.geometry.trimesh",
+    "compas_rhino.geometry.trimesh_curvature",
+    "compas_rhino.geometry.trimesh_slicing",
     "compas_rhino.install",
     "compas_rhino.uninstall",
-    "compas_rhino.artists",
+    "compas_rhino.scene",
     "compas_rhino.geometry.curves",
     "compas_rhino.geometry.surfaces",
     "compas_rhino.geometry.brep",

@@ -11,7 +11,7 @@ def dataclass_dataschema(cls):  # type: (...) -> dict
 
     Parameters
     ----------
-    cls : :class:`~compas.data.Data`
+    cls : :class:`compas.data.Data`
         The COMPAS object class.
 
     Returns
@@ -28,7 +28,7 @@ def dataclass_typeschema(cls):  # type: (...) -> dict
 
     Parameters
     ----------
-    cls : :class:`~compas.data.Data`
+    cls : :class:`compas.data.Data`
         The COMPAS object class.
 
     Returns
@@ -48,7 +48,7 @@ def dataclass_jsonschema(cls, filepath=None, draft=None):  # type: (...) -> dict
 
     Parameters
     ----------
-    cls : :class:`~compas.data.Data`
+    cls : :class:`compas.data.Data`
         The COMPAS object class.
     filepath : str, optional
         The path to the file where the schema should be saved.

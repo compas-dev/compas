@@ -1,3 +1,4 @@
+
 ********************************************************************************
 compas.colors
 ********************************************************************************
@@ -6,8 +7,8 @@ compas.colors
 
 .. rst-class:: lead
 
-This package provides a class for working with colors in different color spaces,
-and color maps for various color palettes.
+This package defines a color and color map class,
+that can be used to work wihth colors in a consistent way across color spaces.
 
 
 Classes
@@ -22,9 +23,4 @@ Classes
     ColorMap
 
 
-HTML Colors
-===========
 
-.. toctree::
-    
-    compas.colors.html_colors

@@ -163,29 +163,29 @@ class Brep(Geometry):
 
     Attributes
     ----------
-    vertices : list[:class:`~compas.geometry.BrepVertex`], read-only
+    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
         The vertices of the Brep.
-    edges : list[:class:`~compas.geometry.BrepEdge`], read-only
+    edges : list[:class:`compas.geometry.BrepEdge`], read-only
         The edges of the Brep.
-    trims : list[:class:`~compas.geometry.BrepTrim`], read-only
+    trims : list[:class:`compas.geometry.BrepTrim`], read-only
         The trims of the Brep.
-    loops : list[:class:`~compas.geometry.BrepLoop`], read-only
+    loops : list[:class:`compas.geometry.BrepLoop`], read-only
         The loops of the Brep.
-    faces : list[:class:`~compas.geometry.BrepFace`], read-only
+    faces : list[:class:`compas.geometry.BrepFace`], read-only
         The faces of the Brep.
-    frame : :class:`~compas.geometry.Frame`, read-only
+    frame : :class:`compas.geometry.Frame`, read-only
         The local coordinate system of the Brep.
     area : float, read-only
         The surface area of the Brep.
     volume : float, read-only
         The volume of the regions contained by the Brep.
-    solids : list[:class:`~compas.geometry.Brep`], read-only
+    solids : list[:class:`compas.geometry.Brep`], read-only
         The solids of this brep.
-    shells : list[:class:`~compas.geometry.Brep`], read-only
+    shells : list[:class:`compas.geometry.Brep`], read-only
         The shells of this brep.
-    points : list[:class:`~compas.geometry.Point`], read-only
+    points : list[:class:`compas.geometry.Point`], read-only
         The points of this brep.
-    centroid : :class:`~compas.geometry.Point`, read-only
+    centroid : :class:`compas.geometry.Point`, read-only
         The centroid of this brep.
     is_valid : bool, read-only
         True if this brep is valid, False otherwise
@@ -387,11 +387,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        box : :class:`~compas.geometry.Box`
+        box : :class:`compas.geometry.Box`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_box(box)
@@ -402,11 +402,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        faces : list[:class:`~compas.geometry.BrepFace`]
+        faces : list[:class:`compas.geometry.BrepFace`]
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_brepfaces(faces)
@@ -417,11 +417,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        cone : :class:`~compas.geometry.Cone`
+        cone : :class:`compas.geometry.Cone`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_cone(cone)
@@ -432,11 +432,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        curves : list[:class:`~compas.geometry.NurbsCurve`]
+        curves : list[:class:`compas.geometry.NurbsCurve`]
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_curves(curves)
@@ -447,11 +447,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        cylinder : :class:`~compas.geometry.Cylinder`
+        cylinder : :class:`compas.geometry.Cylinder`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_cylinder(cylinder)
@@ -462,14 +462,14 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`compas.geometry.Curve`
             The curve to extrude
-        vector : :class:`~compas.geometry.Vector`
+        vector : :class:`compas.geometry.Vector`
             The vector to extrude the curve by
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_extrusion(curve, vector)
@@ -484,7 +484,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_iges(filename)
@@ -495,11 +495,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        curves : list[:class:`~compas.geometry.Curve`]
+        curves : list[:class:`compas.geometry.Curve`]
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_loft(curves)
@@ -510,11 +510,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        mesh : :class:`~compas.datastructures.Mesh`
+        mesh : :class:`compas.datastructures.Mesh`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_mesh(mesh)
@@ -530,7 +530,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
         """
         return from_native(native_brep)
 
@@ -540,7 +540,7 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`compas.geometry.Curve`
             The curve to extrude
         radius : float
             The radius of the pipe.
@@ -550,7 +550,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_pipe(curve, radius, thickness=thickness)
@@ -561,11 +561,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        polygons : list[:class:`~compas.geometry.Polygon`]
+        polygons : list[:class:`compas.geometry.Polygon`]
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_polygons(polygons)
@@ -576,11 +576,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        sphere : :class:`~compas.geometry.Sphere`
+        sphere : :class:`compas.geometry.Sphere`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_sphere(sphere)
@@ -595,7 +595,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_step(filename)
@@ -606,14 +606,14 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        profile : :class:`~compas.geometry.BrepEdge` or :class:`~compas.geometry.BrepFace`
+        profile : :class:`compas.geometry.BrepEdge` or :class:`compas.geometry.BrepFace`
             the profile to sweep. Either an edge or a face.
-        path : :class:`~compas.geometry.BrepLoop`
+        path : :class:`compas.geometry.BrepLoop`
             the path to sweep along
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_sweep(profile, path)
@@ -624,11 +624,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        torus : :class:`~compas.geometry.Torus`
+        torus : :class:`compas.geometry.Torus`
 
         Returns
         -------
-        :class:`~compas.geometry.BRep`
+        :class:`compas.geometry.BRep`
 
         """
         return from_torus(torus)
@@ -643,12 +643,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        brep_a : :class:`~compas.geometry.Brep`
-        brep_b : :class:`~compas.geometry.Brep`
+        brep_a : :class:`compas.geometry.Brep`
+        brep_b : :class:`compas.geometry.Brep`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_boolean_difference(brep_a, brep_b)
@@ -659,12 +659,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        brep_a : :class:`~compas.geometry.Brep`
-        brep_b : :class:`~compas.geometry.Brep`
+        brep_a : :class:`compas.geometry.Brep`
+        brep_b : :class:`compas.geometry.Brep`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_boolean_intersection(brep_a, brep_b)
@@ -675,12 +675,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        brep_a : :class:`~compas.geometry.Brep`
-        brep_b : :class:`~compas.geometry.Brep`
+        brep_a : :class:`compas.geometry.Brep`
+        brep_b : :class:`compas.geometry.Brep`
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
 
         """
         return from_boolean_union(brep_a, brep_b)
@@ -690,12 +690,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Brep`
+        other : :class:`compas.geometry.Brep`
             The other Brep to create a union with.
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
             The Brep resulting from the difference operation.
 
         """
@@ -709,12 +709,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Brep`
+        other : :class:`compas.geometry.Brep`
             The other Brep to create a union with.
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
             The Brep resulting from the intersection operation.
 
         """
@@ -728,12 +728,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Brep`
+        other : :class:`compas.geometry.Brep`
             The other Brep to create a union with.
 
         Returns
         -------
-        :class:`~compas.geometry.Brep`
+        :class:`compas.geometry.Brep`
             The Brep resulting from the union operation.
 
         """
@@ -786,7 +786,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
 
         """
         raise NotImplementedError
@@ -803,7 +803,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        list[:class:`~compas.datastructures.Mesh`]
+        list[:class:`compas.datastructures.Mesh`]
 
         """
         raise NotImplementedError
@@ -818,7 +818,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`~compas.datastructure.Mesh`
+        :class:`compas.datastructure.Mesh`
 
         """
         raise NotImplementedError
@@ -832,11 +832,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        vertex : :class:`~compas.geometry.BrepVertex`
+        vertex : :class:`compas.geometry.BrepVertex`
 
         Returns
         -------
-        list[:class:`~compas.geometry.BrepVertex`]
+        list[:class:`compas.geometry.BrepVertex`]
 
         """
         raise NotImplementedError
@@ -846,11 +846,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        vertex : :class:`~compas.geometry.BrepVertex`
+        vertex : :class:`compas.geometry.BrepVertex`
 
         Returns
         -------
-        list[:class:`~compas.geometry.BrepEdge`]
+        list[:class:`compas.geometry.BrepEdge`]
 
         """
         raise NotImplementedError
@@ -860,11 +860,11 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        vertex : :class:`~compas.geometry.BrepVertex`
+        vertex : :class:`compas.geometry.BrepVertex`
 
         Returns
         -------
-        list[:class:`~compas.geometry.BrepFace`]
+        list[:class:`compas.geometry.BrepFace`]
 
         """
         raise NotImplementedError
@@ -878,7 +878,7 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        trimming_plane : :class:`~compas.geometry.Frame`
+        trimming_plane : :class:`compas.geometry.Frame`
             defines the trimming plane
         tolerance: float
             the tolerance to use when trimming
@@ -965,12 +965,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        planes : list[:class:`~compas.geometry.Plane`]
+        planes : list[:class:`compas.geometry.Plane`]
             The slicing planes.
 
         Returns
         -------
-        list[list[:class:`~compas.geometry.Polyline`]]
+        list[list[:class:`compas.geometry.Polyline`]]
             A list of polylines per plane.
 
         """
@@ -985,7 +985,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.BrepFace`
+        :class:`compas.geometry.BrepFace`
 
         """
 
@@ -994,12 +994,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        cutter : :class:`~compas.geomtery.Brep`
+        cutter : :class:`compas.geomtery.Brep`
             Another Brep to use as a cutter.
 
         Returns
         -------
-        list[:class:`~compas.geometry.Brep`]
+        list[:class:`compas.geometry.Brep`]
 
         """
         raise NotImplementedError
@@ -1009,7 +1009,7 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Brep`
+        other : :class:`compas.geometry.Brep`
             The other Brep.
         deflection : float, optional
             Allowable deflection for mesh generation used for proximity detection.
@@ -1018,7 +1018,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        tuple[list[:class:`~compas.geometry.BrepFace`]]
+        tuple[list[:class:`compas.geometry.BrepFace`]]
 
         """
         raise NotImplementedError

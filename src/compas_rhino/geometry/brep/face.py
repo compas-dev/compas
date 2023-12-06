@@ -86,12 +86,12 @@ class RhinoBrepFace(BrepFace):
         ----------
         data : dict
             The data dictionary.
-        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+        builder : :class:`compas_rhino.geometry.BrepBuilder`
             The object reconstructing the current Brep.
 
         Returns
         -------
-        :class:`~compas.data.Data`
+        :class:`compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """

@@ -42,7 +42,7 @@ source_suffix = {
     ".md": "markdown",
 }
 templates_path = sphinx_compas_theme.get_autosummary_templates_path() + ["_templates"]
-exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
+exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp", "**/__old"]
 
 # pygments_style = "sphinx"
 # pygments_dark_style = "monokai"
@@ -59,11 +59,10 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
-    # "sphinx.ext.linkcode",
+    "sphinx.ext.linkcode",
     "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
-    # "sphinx.ext.inheritance_diagram",
     "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.autodoc.typehints",
@@ -72,8 +71,8 @@ extensions = [
     "sphinx_togglebutton",
     "sphinx_remove_toctrees",
     "sphinx_copybutton",
-    # "sphinxcontrib.bibtex",
     "numpydoc",
+    "sphinx.ext.viewcode",
 ]
 
 # remove_from_toctrees = ["api/generated/*"]
@@ -285,29 +284,22 @@ html_theme_options = {
     "navbar_center": ["navbar-nav"],
     "navbar_end": [
         "version-switcher",
-        # "theme-switcher",
+        "theme-switcher",
         "navbar-icon-links",
     ],
     "navbar_persistent": ["search-button"],
     "navbar_align": "content",
-    "article_header_start": [
-        # "breadcrumbs"
-    ],
+    "article_header_start": ["breadcrumbs"],
     "article_header_end": [],
-    "primary_sidebar_end": [
-        # "sidebar-ethical-ads"
-    ],
+    "primary_sidebar_end": [],
     "secondary_sidebar_items": ["page-toc", "edit-this-page", "sourcelink"],
     "article_footer_items": ["prev-next.html"],
     "show_prev_next": True,
-    # "content_footer_items": [],
     "footer_start": ["copyright", "sphinx-version"],
     "footer_end": ["theme-version"],
     # navigation and links
     "external_links": [
-        # {"name": "Changelog", "url": "https://github.com/compas-dev/compas/releases"},
         {"name": "COMPAS Framework", "url": "https://compas.dev"},
-        # {"name": "COMPAS Association", "url": "https://compas.dev/association"},
     ],
     "header_links_before_dropdown": 5,
     "icon_links": [
@@ -362,7 +354,6 @@ html_theme_options = {
 html_sidebars = {
     "**": [
         "sidebar-nav-bs",
-        # "sidebar-ethical-ads",
     ],
 }
 

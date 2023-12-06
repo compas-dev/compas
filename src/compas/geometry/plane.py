@@ -16,9 +16,9 @@ class Plane(Geometry):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         The base point of the plane.
-    normal : [float, float, float] | :class:`~compas.geometry.Vector`
+    normal : [float, float, float] | :class:`compas.geometry.Vector`
         The normal vector of the plane.
 
     Attributes
@@ -27,9 +27,9 @@ class Plane(Geometry):
         The coefficients of the plane equation.
     d : float, read-only
         The *d* parameter of the linear equation describing the plane.
-    normal : :class:`~compas.geometry.Vector`
+    normal : :class:`compas.geometry.Vector`
         The normal vector of the plane.
-    point : :class:`~compas.geometry.Plane`
+    point : :class:`compas.geometry.Plane`
         The base point of the plane.
 
     Examples
@@ -148,16 +148,16 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        a : [float, float, float] | :class:`~compas.geometry.Point`
+        a : [float, float, float] | :class:`compas.geometry.Point`
             The first point.
-        b : [float, float, float] | :class:`~compas.geometry.Point`
+        b : [float, float, float] | :class:`compas.geometry.Point`
             The second point.
-        c : [float, float, float] | :class:`~compas.geometry.Point`
+        c : [float, float, float] | :class:`compas.geometry.Point`
             The second point.
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             A plane with base point `a` and normal vector defined as the unitized
             cross product of the vectors `ab` and `ac`.
 
@@ -182,16 +182,16 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The base point.
-        u : [float, float, float] | :class:`~compas.geometry.Vector`
+        u : [float, float, float] | :class:`compas.geometry.Vector`
             The first vector.
-        v : [float, float, float] | :class:`~compas.geometry.Vector`
+        v : [float, float, float] | :class:`compas.geometry.Vector`
             The second vector.
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             A plane with base point `point` and normal vector defined as the unitized
             cross product of vectors `u` and `v`.
 
@@ -218,7 +218,7 @@ class Plane(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
 
         """
         a, b, c, d = abcd
@@ -233,7 +233,7 @@ class Plane(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             The world XY plane.
 
         """
@@ -245,7 +245,7 @@ class Plane(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             The world YZ plane.
 
         """
@@ -257,7 +257,7 @@ class Plane(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             The world ZX plane.
 
         """
@@ -269,7 +269,7 @@ class Plane(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             A plane with the frame's `point` and the frame's `normal`.
 
         Examples
@@ -290,12 +290,12 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        points : list of [float, float, float] | :class:`~compas.geometry.Point`
+        points : list of [float, float, float] | :class:`compas.geometry.Point`
             The points.
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             The plane defined by the points.
 
         See Also
@@ -326,7 +326,7 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
@@ -356,7 +356,7 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Plane`
+        other : :class:`compas.geometry.Plane`
             The other plane.
         tol : float, optional
             Tolerance for the dot product of the normals.
@@ -382,7 +382,7 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Plane`
+        other : :class:`compas.geometry.Plane`
             The other plane.
         tol : float, optional
             Tolerance for the dot product of the normals.
@@ -410,7 +410,7 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point.
         tol : float, optional
             Tolerance for the distance from the point to the plane.
@@ -438,7 +438,7 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point.
 
         Returns
@@ -464,12 +464,12 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point.
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The closest point on the plane.
 
         Examples
@@ -491,12 +491,12 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point.
 
         Returns
         -------
-        :class:`~compas.geometry.Point` | None
+        :class:`compas.geometry.Point` | None
             The projected point, or None if a direction is given and it is parallel to the plane.
 
         Examples
@@ -523,12 +523,12 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point.
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The mirrored point.
 
         Examples
@@ -547,14 +547,14 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        line : :class:`~compas.geometry.Line`
+        line : :class:`compas.geometry.Line`
             The line.
         tol : float, optional
             Tolerance for the dot product of the line vector and the plane normal.
 
         Returns
         -------
-        :class:`~compas.geometry.Point` | None
+        :class:`compas.geometry.Point` | None
             The intersection point, or ``None`` if the line is parallel to the plane.
 
         Examples
@@ -577,12 +577,12 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        plane : :class:`~compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane`
             The other plane.
 
         Returns
         -------
-        :class:`~compas.geometry.Line` | None
+        :class:`compas.geometry.Line` | None
             The intersection line, or None if the planes are parallel or coincident.
 
         Examples
@@ -612,14 +612,14 @@ class Plane(Geometry):
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`compas.geometry.Curve`
             The curve.
         tol : float, optional
             Tolerance for the dot product of the line vector and the plane normal.
 
         Returns
         -------
-        list of :class:`~compas.geometry.Point`
+        list of :class:`compas.geometry.Point`
             The intersection points.
 
         Examples
@@ -647,7 +647,7 @@ class Plane(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Plane`
+        :class:`compas.geometry.Plane`
             The offset plane.
 
         """

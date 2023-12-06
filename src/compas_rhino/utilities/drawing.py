@@ -756,7 +756,7 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
 
     Parameters
     ----------
-    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    vertices : list[[float, float, float] | :class:`compas.geometry.Point`]
         A list of point locations.
     faces : list[list[int]]
         A list of faces as lists of indices into `vertices`.
@@ -1080,7 +1080,7 @@ def draw_brep(brep, color=None, **kwargs):
 
     Parameters
     ----------
-    brep : :class:`~compas_rhino.geometry.RhinoBrep`
+    brep : :class:`compas_rhino.geometry.RhinoBrep`
         The brep to draw.
     color : tuple[int, int, int] | tuple[float, float, float], optional
         The color to draw the brep with.

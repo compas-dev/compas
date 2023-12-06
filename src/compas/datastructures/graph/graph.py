@@ -154,7 +154,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        :class:`~compas.datastructures.Graph`
+        :class:`compas.datastructures.Graph`
 
         See Also
         --------
@@ -180,7 +180,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        :class:`~compas.datastructures.Graph`
+        :class:`compas.datastructures.Graph`
 
         See Also
         --------

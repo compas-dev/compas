@@ -14,14 +14,14 @@ def mesh_offset(mesh, distance=1.0):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A Mesh to offset.
     distance : float, optional
         The offset distance.
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The offset mesh.
 
     Notes
@@ -57,7 +57,7 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh to thicken.
     thickness : float, optional
         The mesh thickness.
@@ -68,7 +68,7 @@ def mesh_thicken(mesh, thickness=1.0, both=True):
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The thickened mesh.
 
     Raises

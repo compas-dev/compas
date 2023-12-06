@@ -18,7 +18,7 @@ class BrepTrim(Data):
 
     Attributes
     ----------
-    curve : :class:`~compas.geometry.NurbsCurve`, read_only
+    curve : :class:`compas.geometry.NurbsCurve`, read_only
         Returns the geometry for this trim as a 2d curve.
     iso_status : literal(NONE|X|Y|WEST|SOUTH|EAST|NORTH)
         The isoparametric curve direction on the surface.

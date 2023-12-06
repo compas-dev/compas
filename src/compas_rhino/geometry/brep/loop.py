@@ -32,9 +32,9 @@ class RhinoBrepLoop(BrepLoop):
 
     Attributes
     ----------
-    edges : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`], read-only
+    edges : list[:class:`compas_rhino.geometry.RhinoBrepLoop`], read-only
         The list of edges which comprise this loop.
-    loop_type : :class:`~compas_rhino.geometry.brep.loop.LoopType`, read-only
+    loop_type : :class:`compas_rhino.geometry.brep.loop.LoopType`, read-only
         The type of this loop.
     is_outer : bool, read-only
         True if this loop is an outer boundary, False otherwise.
@@ -83,12 +83,12 @@ class RhinoBrepLoop(BrepLoop):
         ----------
         data : dict
             The data dictionary.
-        builder : :class:`~compas_rhino.geometry.BrepFaceBuilder`
+        builder : :class:`compas_rhino.geometry.BrepFaceBuilder`
             The object reconstructing the current BrepFace.
 
         Returns
         -------
-        :class:`~compas.data.Data`
+        :class:`compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """

@@ -10,7 +10,7 @@ def transformation_to_rhino(transformation):
 
     Parameters
     ----------
-    transformation : :class:`~compas.geometry.Transformation`
+    transformation : :class:`compas.geometry.Transformation`
         COMPAS transformation.
 
     Returns

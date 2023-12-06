@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Torus.to_brep()`.
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
+* Added `compas.scene.Scene`.
 
 ### Changed
 
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.brep.Brep.from_step_file` to `from_step`.
 * Moved `compas.brep` to `compas.geometry.brep`.
 * Updated `compas-actions.docs` workflow to `v3`.
+* `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
 
 
 ### Removed
@@ -38,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Frame.axes`
 * Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
 * Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
+* Added `compas.scene.Scene`.
 
 ### Changed
 

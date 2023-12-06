@@ -27,7 +27,7 @@ def test_json_shape():
     before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=1, ysize=1, zsize=1)
     after = compas.json_loads(compas.json_dumps(before))
     assert before.dtype == after.dtype
-    assert all(a == b for a, b in zip(before.vertices, after.vertices))
+    assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
     assert before.guid == after.guid
 
 
