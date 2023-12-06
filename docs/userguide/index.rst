@@ -39,6 +39,7 @@ User Guide
     :caption: Tutorial: Working in CAD
 
     cad.rhino
+    cad.rhino8
     cad.grasshopper
     cad.blender
     cad.other
