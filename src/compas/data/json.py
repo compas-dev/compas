@@ -126,8 +126,8 @@ def json_dumpz(data, zip_filename, pretty=False, compact=False, minimal=False):
         If True, format the output with newlines and indentation.
     compact : bool, optional
         If True, format the output without any whitespace.
-    compact : bool, optional
-        If True, format the output without any whitespace.
+    minimal : bool, optional
+        If True, exclude the GUID from the JSON output.
 
     Returns
     -------
