@@ -284,15 +284,15 @@ def pluggable(
                 if plugin_impl is None:
                     try:
                         return func(*args, **kwargs)
-                    except PluginNotInstalledError as e:
-                        raise e
                     except NotImplementedError:
                         raise PluginNotInstalledError(
-                            "Plugin not found for extension point URL: {}".format(extension_point_url)
+                            "Plugin not found and no default implementation for extension point URL: {}".format(
+                                extension_point_url
+                            )
                         )
                     except ImportError:
                         raise PluginDefaultNotAvailableError(
-                            "The default implementation for extension point URL {} is not available in the current environment.".format(
+                            "Plugin not found and the default implementation is not available in your environment for extension point URL: {}".format(
                                 extension_point_url
                             )
                         )
