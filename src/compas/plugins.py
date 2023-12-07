@@ -29,11 +29,23 @@ __all__ = [
     "PluginManager",
     "PluginNotInstalledError",
     "PluginValidator",
+    "PluginDefaultNotAvailableError",
 ]
 
 
 class PluginNotInstalledError(Exception):
     """Exception raised when an extension point is invoked but no plugin is available."""
+
+    pass
+
+
+class PluginDefaultNotAvailableError(Exception):
+    """Exception raised when an extension point is invoked but no plugin is available, and the default implementation is also not available.
+
+    The most likely circumstance for this error is when the default implementation is based on Numpy, Scipy, or similar,
+    and the pluggable is invoked in a context where these packages are not available.
+
+    """
 
     pass
 
@@ -272,9 +284,17 @@ def pluggable(
                 if plugin_impl is None:
                     try:
                         return func(*args, **kwargs)
-                    except Exception:
+                    except PluginNotInstalledError as e:
+                        raise e
+                    except NotImplementedError:
                         raise PluginNotInstalledError(
                             "Plugin not found for extension point URL: {}".format(extension_point_url)
+                        )
+                    except ImportError:
+                        raise PluginDefaultNotAvailableError(
+                            "The default implementation for extension point URL {} is not available in the current environment.".format(
+                                extension_point_url
+                            )
                         )
 
                 # Invoke plugin
