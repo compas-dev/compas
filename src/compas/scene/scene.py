@@ -6,9 +6,10 @@ from .context import redraw
 
 
 class Scene(Data):
-    def __init__(self, name=None):
+    def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
         self._tree = Tree("Scene")
+        self.context = context
         root = TreeNode(name="root")
         self.tree.add(root)
 
@@ -21,7 +22,7 @@ class Scene(Data):
         return [node.attributes["sceneobject"] for node in self.tree.nodes if "sceneobject" in node.attributes]
 
     def add(self, item, parent=None, **kwargs):
-        sceneobject = build_scene_object(item, **kwargs)
+        sceneobject = build_scene_object(item, context=self.context, **kwargs)
         name = item.name or item.__class__.__name__
         node = TreeNode(name, attributes={"sceneobject": sceneobject})
 
