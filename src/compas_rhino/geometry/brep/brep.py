@@ -51,20 +51,9 @@ class RhinoBrep(Brep):
 
     """
 
-    # this makes de-serialization backend-agnostic.
-    # The deserializing type is determined by plugin availability when de-serializing
-    # regardless of the context available when serializing.
-    __class__ = Brep
-
-    def __new__(cls, *args, **kwargs):
-        # This breaks the endless recursion when calling `compas.geometry.Brep()` and allows
-        # having Brep here as the parent class. Otherwise RhinoBrep() calls Brep.__new__()
-        # which calls RhinoBrep() and so on...
-        return object.__new__(cls, *args, **kwargs)
-
-    def __init__(self, brep=None):
+    def __init__(self):
         super(RhinoBrep, self).__init__()
-        self._brep = brep or Rhino.Geometry.Brep()
+        self._brep = Rhino.Geometry.Brep()
 
     def __deepcopy__(self, *args, **kwargs):
         return self.copy()
@@ -172,7 +161,8 @@ class RhinoBrep(Brep):
         :class:`compas_rhino.geometry.RhinoBrep`
 
         """
-        brep = cls(rhino_brep)
+        brep = cls()
+        brep._brep = rhino_brep
         return brep
 
     @classmethod

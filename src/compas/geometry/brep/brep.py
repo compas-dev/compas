@@ -1,5 +1,24 @@
 from compas.geometry import Geometry
 
+from . import new_brep
+from . import from_brepfaces
+from . import from_box
+from . import from_cylinder
+from . import from_sphere
+from . import from_mesh
+from . import from_cone
+from . import from_surface
+from . import from_torus
+from . import from_extrusion
+from . import from_boolean_difference
+from . import from_boolean_intersection
+from . import from_boolean_union
+from . import from_curves
+from . import from_polygons
+from . import from_step
+from . import from_sweep
+from . import from_native
+
 
 LINEAR_DEFLECTION = 1e-3
 
@@ -126,6 +145,10 @@ class Brep(Geometry):
     # ==============================================================================
     # Data
     # ==============================================================================
+
+    @property
+    def dtype(self):
+        return "compas.geometry/Brep"
 
     @property
     def data(self):
