@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Working in Grasshopper" href="cad.grasshopper.html" />
+    <link rel="next" title="Working in Rhino 8" href="cad.rhino8.html" />
     <link rel="prev" title="Pluggables and Plugins" href="advanced.pluggables.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -164,13 +164,6 @@
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         User Guide
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
                       </a>
                     </li>
                 
@@ -328,13 +321,6 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -469,6 +455,7 @@ document.write(`
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Working in CAD</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Working in Rhino</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cad.rhino8.html">Working in Rhino 8</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.grasshopper.html">Working in Grasshopper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.blender.html">Working in Blender</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.other.html">Working in Other CAD Software</a></li>
@@ -537,6 +524,70 @@ document.write(`
                   
   <section id="working-in-rhino">
 <h1>Working in Rhino</h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These instructions are for Rhino 6 and 7.
+For Rhino 8, please refer to <a class="reference internal" href="cad.rhino8.html"><span class="doc">Working in Rhino 8</span></a>.</p>
+</div>
+<p>The core library of COMPAS (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code>), and the Rhino CAD package (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_rhino</span></code>)
+are backwards compatible with Python 2.7 and written in pure Python,
+such that they can be used in Rhino IronPython scripts (Rhino 7 and below),
+as well as in the new Rhino CPython scripts (Rhino 8).</p>
+<section id="installation">
+<h2>Installation</h2>
+<p>To use COMPAS in Rhino 6 or 7, you need to make Rhino aware of your COMPAS installation.
+This can be done with a simple command on the command line.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Assuming COMPAS is installed in a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment, make sure to activate the environment before running any of the commands below.
+It is recommended to also close Rhino before running the commands.
+If Rhino was still running, it will have to restarted before the changes take effect.</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install
+</pre></div>
+</div>
+<p>This will install all Rhino-compatible packages of COMPAS that are present in the current Python environment into Rhino.
+It will also automatically install all GH Components that are available for the installed packages.
+Once the command terminates, you should see a message like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>...
+</pre></div>
+</div>
+<p>The default Rhino version is 7.
+To install into Rhino 6, use the <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install<span class="w"> </span>-v<span class="w"> </span><span class="m">6</span>.0
+</pre></div>
+</div>
+<p>Note that if COMPAS is installed in a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment, you need to activate it the environment before running the command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>compas-dev
+python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install
+</pre></div>
+</div>
+</section>
+<section id="sample-script">
+<h2>Sample Script</h2>
+<p>To test if the installation was successful, you can run the following script in Rhino.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">import</span> <span class="nn">compas_rhino</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="visualisation">
+<h2>Visualisation</h2>
+</section>
+<section id="conversions">
+<h2>Conversions</h2>
+</section>
+<section id="data-exchange">
+<h2>Data Exchange</h2>
+</section>
+<section id="remote-procedure-calls">
+<h2>Remote Procedure Calls</h2>
+</section>
+<section id="known-issues">
+<h2>Known Issues</h2>
+</section>
 </section>
 
 
@@ -560,11 +611,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="cad.grasshopper.html"
+       href="cad.rhino8.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Working in Grasshopper</p>
+        <p class="prev-next-title">Working in Rhino 8</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -579,6 +630,22 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-script">Sample Script</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation">Visualisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversions">Conversions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exchange">Data Exchange</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-procedure-calls">Remote Procedure Calls</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   

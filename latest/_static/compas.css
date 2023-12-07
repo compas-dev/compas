@@ -15,7 +15,7 @@ body {
 }
 
 @media (min-width: 960px) {
-    .bd-page-width {
+    /* .bd-page-width {
         max-width: 106rem;
     }
     .bd-sidebar-primary {
@@ -26,7 +26,7 @@ body {
     }
     .bd-main .bd-content .bd-article-container {
         max-width: 66rem;
-    }
+    } */
 }
 
 .bd-header {

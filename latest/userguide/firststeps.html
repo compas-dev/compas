@@ -169,13 +169,6 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -328,13 +321,6 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -469,6 +455,7 @@ document.write(`
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Working in CAD</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="cad.rhino.html">Working in Rhino</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cad.rhino8.html">Working in Rhino 8</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.grasshopper.html">Working in Grasshopper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.blender.html">Working in Blender</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.other.html">Working in Other CAD Software</a></li>
@@ -537,17 +524,62 @@ document.write(`
                   
   <section id="first-steps">
 <h1>First Steps</h1>
-<p>Once COMPAS is installed, you can start using it in your Python scripts.
-Here are some some super simple examples to get you started.</p>
+<p class="lead">Once COMPAS is installed, you can start using it in your Python scripts.
+On this page are a few simple snippets to get you started.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The visualisations shown on this page are generated with the COMPAS Viewer in VS Code.
-See the <a class="reference internal" href="basics.visualisation.html"><span class="doc">Visualisation</span></a> for more information on how to set it up and use it.
-Alternatively, you can run the examples in Rhino or Blender.
-See the <a class="reference internal" href="cad.rhino.html"><span class="doc">Working in Rhino</span></a> and <a class="reference internal" href="cad.blender.html"><span class="doc">Working in Blender</span></a> for more information on how to get started with that.</p>
-<section id="naive-collision-detection">
-<h2>Naive Collision Detection</h2>
+See <a class="reference internal" href="basics.visualisation.html"><span class="doc">Visualisation</span></a> for more information on how to set it up and use it.</p>
+<p>Alternatively, you can run the examples in Rhino or Blender.
+See <a class="reference internal" href="cad.rhino.html"><span class="doc">Working in Rhino</span></a> and <a class="reference internal" href="cad.blender.html"><span class="doc">Working in Blender</span></a> for more information on how to get started with that.</p>
+</div>
+<section id="a-simple-box">
+<h2>A Simple Box</h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>
+<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+
+<span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
-<section id="various-mesh-operations">
-<h2>Various Mesh Operations</h2>
+<section id="points-in-box-test">
+<h2>Points-in-box Test</h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Pointcloud</span>
+<span class="kn">from</span> <span class="nn">compas.colors</span> <span class="kn">import</span> <span class="n">Color</span>
+<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+
+<span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pcl</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">box</span><span class="o">.</span><span class="n">rotate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">45</span><span class="p">)</span>
+<span class="n">box</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">pcl</span><span class="o">.</span><span class="n">centroid</span><span class="p">)</span>
+
+<span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="p">:</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span> <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">else</span> <span class="n">Color</span><span class="o">.</span><span class="n">blue</span><span class="p">()</span>
+    <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-mesh-from-an-obj-file">
+<h2>Creating a Mesh From an OBJ File</h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.obj&#39;</span><span class="p">))</span>
+
+<span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -598,8 +630,9 @@ See the <a class="reference internal" href="cad.rhino.html"><span class="doc">Wo
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-collision-detection">Naive Collision Detection</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#various-mesh-operations">Various Mesh Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-box">A Simple Box</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#points-in-box-test">Points-in-box Test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-mesh-from-an-obj-file">Creating a Mesh From an OBJ File</a></li>
 </ul>
   </nav></div>
 
