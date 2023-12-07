@@ -2,6 +2,8 @@
 First Steps
 ***********
 
+.. rst-class:: lead
+
 Once COMPAS is installed, you can start using it in your Python scripts.
 On this page are a few simple snippets to get you started.
 

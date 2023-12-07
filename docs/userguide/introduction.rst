@@ -2,6 +2,8 @@
 Introduction
 ************
 
+.. rst-class:: lead
+
 COMPAS is an open-source, Python-based framework for computational research and collaboration in architecture, engineering, fabrication and construction.
 It offers a wide range of functionality for the analysis, planning, and simulation of complex and bespoke architectural and engineering systems.
 
