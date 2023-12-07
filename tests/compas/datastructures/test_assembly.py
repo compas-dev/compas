@@ -24,6 +24,7 @@ def test_add_parts():
 
     assert len(list(assembly.parts())) == 3
 
+
 def test_delete_part():
     assembly = Assembly()
     part1 = Part()
@@ -62,10 +63,11 @@ def test_add_connections():
 
     assert list(assembly.connections()) == [(0, 1), (1, 2), (2, 0)]
 
+
 def test_delete_connection():
     assembly = Assembly()
     parts = [Part() for i in range(3)]
-    
+
     for part in parts:
         assembly.add_part(part)
 
