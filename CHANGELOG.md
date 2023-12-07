@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
 * Added `compas.scene.Scene`.
+* Added `compas.datastructures.assembly.delete_part()`.
+* Added `compas.datastructures.assembly.delete_connection()`.
 
 ### Changed
 
