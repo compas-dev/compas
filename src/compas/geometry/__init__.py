@@ -266,7 +266,11 @@ from ._core.nurbs import (
 # Algorithms
 # =============================================================================
 
-from .bbox import bounding_box, bounding_box_xy
+from .bbox import (
+    bounding_box,
+    bounding_box_xy,
+    oriented_bounding_box,
+)
 from .bestfit import bestfit_plane
 from .booleans import (
     boolean_union_mesh_mesh,
@@ -685,6 +689,7 @@ __all__ = [
     "offset_polygon",
     "offset_polyline",
     "orient_points",
+    "oriented_bounding_box",
     "orthonormalize_axes",
     "orthonormalize_vectors",
     "power_vector",
