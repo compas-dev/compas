@@ -16,9 +16,10 @@ from .networkobject import NetworkObject
 from .geometryobject import GeometryObject
 from .volmeshobject import VolMeshObject
 
-from .sceneobject import clear
-from .sceneobject import redraw
-from .sceneobject import register_scene_objects
+from .context import clear
+from .context import redraw
+from .context import register_scene_objects
+from .context import register
 
 from .scene import Scene
 
@@ -34,4 +35,5 @@ __all__ = [
     "clear",
     "redraw",
     "register_scene_objects",
+    "register",
 ]
