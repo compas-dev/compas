@@ -19,6 +19,7 @@ from .volmeshobject import VolMeshObject
 from .context import clear
 from .context import redraw
 from .context import register_scene_objects
+from .context import build_scene_object
 from .context import register
 
 from .scene import Scene
@@ -35,5 +36,6 @@ __all__ = [
     "clear",
     "redraw",
     "register_scene_objects",
+    "build_scene_object",
     "register",
 ]
