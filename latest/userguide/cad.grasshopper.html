@@ -458,10 +458,12 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="basics.visualisation.html">Visualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basics.colors.html">Colors and Color Maps</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Advanced</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="advanced.tolerance.html">Dealing with Tolerances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.coordinategrids.html">Coordinate Grids</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.serialisation.html">Serialising Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.rpc.html">Remote Procedure Calls (RPC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.pluggables.html">Pluggables and Plugins</a></li>
@@ -538,6 +540,58 @@ document.write(`
                   
   <section id="working-in-grasshopper">
 <h1>Working in Grasshopper</h1>
+<p class="lead">To get COMPAS working in Grasshopper, you first have to install COMPAS for Rhino (see <a class="reference internal" href="cad.rhino.html"><span class="doc">Working in Rhino</span></a>).
+In Grasshopper, COMPAS is imported from within a GhPython component. Rhino for
+Mac and Rhino 6+ all come with their own GhPython interpreter, but if you use
+Rhino 5 on Windows, please download and install GhPython <a class="reference external" href="https://www.food4rhino.com/app/ghpython">here</a>.</p>
+<section id="verify-setup">
+<h2>Verify setup</h2>
+<p>To verify that everything is working properly, simply create a GhPython
+component on your Grasshopper canvas, paste the following script and hit <cite>OK</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+
+<span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="figure align-default">
+<img alt="../_images/cad.grasshopper.gh_verify.jpg" class="figure-img img-fluid" src="../_images/cad.grasshopper.gh_verify.jpg" />
+</figure>
+</section>
+<section id="grasshopper-components-for-compas">
+<h2>Grasshopper components for COMPAS</h2>
+<p>When COMPAS for Rhino is installed, it also installs Grasshopper components for
+COMPAS.  For example, the current environment information can be retrieved with
+the INFO component.</p>
+<figure class="figure align-default">
+<img alt="../_images/cad.grasshopper.ghpython_component.jpg" class="figure-img img-fluid" src="../_images/cad.grasshopper.ghpython_component.jpg" />
+</figure>
+</section>
+<section id="reloading-changed-libraries">
+<h2>Reloading changed libraries</h2>
+<p>If you change a Python library during a running Rhino application, which is
+imported in a GhPython component (e.g. via <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">compas_fab</span></code>),
+it is necessary to reload the library so that the GhPython interpreter
+recognizes the changes. To avoid restarting Rhino, you can use the function
+<code class="docutils literal notranslate"><span class="pre">unload_modules</span></code>. The following example reloads the library <code class="docutils literal notranslate"><span class="pre">compas_fab</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compas_ghpython</span> <span class="kn">import</span> <span class="n">unload_modules</span>
+
+<span class="n">unload_modules</span><span class="p">(</span><span class="s1">&#39;compas_fab&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prefer using <cite>unload_modules</cite> as early as possible in your grasshopper
+workflow. Re-loading modules later might result, for example,
+in COMPAS not being able to find a <cite>SceneObject</cite> as well as other issues
+related to a mid-workflow re-definition of Python types.</p>
+</div>
+</section>
 </section>
 
 
@@ -580,6 +634,18 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-setup">Verify setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grasshopper-components-for-compas">Grasshopper components for COMPAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reloading-changed-libraries">Reloading changed libraries</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   

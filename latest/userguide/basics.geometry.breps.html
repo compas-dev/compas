@@ -458,10 +458,12 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="basics.visualisation.html">Visualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basics.colors.html">Colors and Color Maps</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Advanced</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="advanced.tolerance.html">Dealing with Tolerances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.coordinategrids.html">Coordinate Grids</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.serialisation.html">Serialising Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.rpc.html">Remote Procedure Calls (RPC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.pluggables.html">Pluggables and Plugins</a></li>
@@ -541,6 +543,109 @@ document.write(`
                   
   <section id="boundary-representations">
 <h1>Boundary Representations</h1>
+<p class="lead">Boundary representation (Brep) support is realized in COMPAS using its <cite>plugin</cite> system.
+The expected interface for Brep related classes is defined in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry.brep</span></code> module
+whereas the actual implementation is context dependent and implemented using plugins.</p>
+<section id="brep-basics">
+<h2>Brep Basics</h2>
+<p>Brep is a data structure used to describe a shape by means of recording topological and geometrical information of the shape’s boundaries.
+Some topological properties are associated with an underlying geometry, while others are purely topological.</p>
+<p>A Brep is comprised of the following:</p>
+<table class="colwidths-auto table table-bordered">
+<thead>
+<tr class="row-odd"><th class="head"><p>Topology</p></th>
+<th class="head"><p>Geometry</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Vertex</p></td>
+<td><p>3D Point</p></td>
+<td><p>The most basic element of a Brep, geometrically described as a point in 3D space.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edge</p></td>
+<td><p>3D Curve</p></td>
+<td><p>An edge has a start vertex and an end vertex. The underlying 3D curve describes the geometry of the edge (Line, Circle etc.). Closed edges feature start_vertex == end_vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p>Loop</p></td>
+<td><p>None</p></td>
+<td><p>A collection of trims which define the inner or outer boundary of a face.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Face</p></td>
+<td><p>Surface</p></td>
+<td><p>Defines the geometry of one of the shape’s faces using a surface. Associated with at least one loop which describes the trimmed outer boundary of the surface. Inner loops are referred to as holes in the face.</p></td>
+</tr>
+<tr class="row-even"><td><p>Trim</p></td>
+<td><p>2D Curve</p></td>
+<td><p>A 2D curve which trims a face. Trims are associated with a corresponding edge.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="getting-started-with-compas-brep">
+<h2>Getting Started with COMPAS Brep</h2>
+<p>To create an empty <cite>Brep</cite></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">brep</span> <span class="o">=</span> <span class="n">Brep</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Notice that the type of the actual instance created by <cite>Brep()</cite> will differ depending on the currently available backend.
+For example, when in Rhino</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">brep</span><span class="p">)</span>
+<span class="go">compas_rhino.geometry.RhinoBrep</span>
+</pre></div>
+</div>
+<p>Every backend is expected to implement some alternative constructors</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="n">from_width_height_depth</span><span class="p">(</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">brep_box</span> <span class="o">=</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>Brep</cite> can also be instantiated from an instance of a backend native <cite>Brep</cite></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Rhino</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Brep</span><span class="o">.</span><span class="n">from_native</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Brep</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="brep-operations">
+<h2>Brep operations</h2>
+<p>Trimming a Brep in Grasshopper</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
+
+<span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="n">from_width_height_depth</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">brep</span> <span class="o">=</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="n">cutting_plane</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+
+<span class="n">brep</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">cutting_plane</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="userguide/files/box_w_plane.png"><img alt="pic1" src="userguide/files/box_w_plane.png" style="width: 48%;" /></a> <a class="reference internal" href="userguide/files/trimmed_box.png"><img alt="pic2" src="userguide/files/trimmed_box.png" style="width: 48%;" /></a></p>
+<p>Splitting a Brep in Grasshopper</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span><span class="p">,</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Translation</span>
+
+<span class="n">brep</span> <span class="o">=</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_box</span><span class="p">(</span><span class="n">Box</span><span class="o">.</span><span class="n">from_width_height_depth</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_box</span><span class="p">(</span><span class="n">Box</span><span class="o">.</span><span class="n">from_width_height_depth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cutter</span><span class="p">)</span>
+
+<span class="n">world_xy</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
+<span class="n">translated_frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="n">world_xy</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">world_xy</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Translation</span><span class="o">.</span><span class="n">from_frame_to_frame</span><span class="p">(</span><span class="n">world_xy</span><span class="p">,</span> <span class="n">translated_frame</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">b</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">native_brep</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]]</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="userguide/files/3_way_split.png"><img alt="userguide/files/3_way_split.png" src="userguide/files/3_way_split.png" style="width: 50%;" /></a>
+</section>
 </section>
 
 
@@ -583,6 +688,18 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brep-basics">Brep Basics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started-with-compas-brep">Getting Started with COMPAS Brep</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brep-operations">Brep operations</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   

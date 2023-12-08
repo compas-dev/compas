@@ -780,44 +780,6 @@ document.write(`
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
             <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_i</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span></div></div>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># methods</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="c1"># def plot(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;Visualize the current map with the plotter.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     None</span>
-
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     from compas_plotters.plotter import Plotter</span>
-    <span class="c1">#     from compas.geometry import Pointcloud</span>
-    <span class="c1">#     from compas.geometry import Plane, Circle, Polygon</span>
-
-    <span class="c1">#     plotter = Plotter(figsize=(16, 12))</span>
-    <span class="c1">#     w = 16</span>
-    <span class="c1">#     h = 10</span>
-    <span class="c1">#     n = len(self.colors)</span>
-    <span class="c1">#     d = w / n</span>
-    <span class="c1">#     cloud = Pointcloud.from_bounds(w, h, 0, n)</span>
-    <span class="c1">#     white = Color.white()</span>
-    <span class="c1">#     for i, color in enumerate(self.colors):</span>
-    <span class="c1">#         c = Circle(Plane(cloud[i], [0, 0, 1]), 0.1)</span>
-    <span class="c1">#         p = Polygon(</span>
-    <span class="c1">#             [</span>
-    <span class="c1">#                 [i * d, -2, 0],</span>
-    <span class="c1">#                 [(i + 1) * d, -2, 0],</span>
-    <span class="c1">#                 [(i + 1) * d, -1, 0],</span>
-    <span class="c1">#                 [i * d, -1, 0],</span>
-    <span class="c1">#             ]</span>
-    <span class="c1">#         )</span>
-    <span class="c1">#         plotter.add(c, facecolor=color, edgecolor=white, linewidth=0.5)</span>
-    <span class="c1">#         plotter.add(p, facecolor=color, edgecolor=color)</span>
-    <span class="c1">#     plotter.zoom_extents()</span>
-    <span class="c1">#     plotter.show()</span>
 </pre></div>
 
                 </article>
