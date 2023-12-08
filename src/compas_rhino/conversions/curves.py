@@ -442,12 +442,12 @@ def curve_to_compas_data(curve):
     }
 
 
-def nurbscurve_to_compas(curve):
-    """Convert a Rhino Nurbs curve to a COMPAS curve.
+def curve_to_compas(curve):
+    """Convert a Rhino (Nurbs) curve to a COMPAS curve.
 
     Parameters
     ----------
-    curve : :rhino:`Rhino.Geometry.NurbsCurve`
+    curve : :rhino:`Rhino.Geometry.Curve`
 
     Returns
     -------
@@ -461,4 +461,5 @@ def nurbscurve_to_compas(curve):
     """
     if isinstance(curve, RhinoObject):
         curve = curve.Geometry
-    return NurbsCurve.from_native(curve)
+    nurbs = curve.ToNurbsCurve()
+    return NurbsCurve.from_native(nurbs)

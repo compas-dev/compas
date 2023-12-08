@@ -285,8 +285,7 @@ from .hull import convex_hull, convex_hull_xy
 from .interpolation_barycentric import barycentric_coordinates  # move this to core
 from .interpolation_coons import discrete_coons_patch
 from .interpolation_tweening import tween_points, tween_points_distance
-from .intersections import intersection_mesh_mesh, intersection_ray_mesh  # move this into intersections.intersections
-from .intersections.intersections import (  # move this to intersections.py
+from .intersections import (
     intersection_circle_circle_xy,
     intersection_ellipse_line_xy,
     intersection_line_box_xy,
@@ -308,6 +307,8 @@ from .intersections.intersections import (  # move this to intersections.py
     intersection_segment_segment,
     intersection_sphere_line,
     intersection_sphere_sphere,
+    intersection_mesh_mesh,
+    intersection_ray_mesh,
 )
 from .kdtree import KDTree
 from .offset import (

@@ -209,38 +209,3 @@ of the available data with the object type.
         {'point': [0.0, 0.0, 0.0],
          'xaxis': [1.0, 0.0, 0.0],
          'zaxis': [0.0, 0.0, 1.0]}
-
-
-Custom Objects
-==============
-
-To add a new object class that implements the data interface, only a few attributes have to be implemented.
-
-.. code-block:: python
-
-    class MyObject(Data):
-
-        def __init__(self, a, b, **kwargs):
-            super(MyObject, self).__init__(**kwargs)
-            self.a = a
-            self.b = b
-
-        @property
-        def data(self):
-            """dict : The data dictionary that represents the data of the object."""
-            return {'a': self.a, 'b': self.b}
-
-        @data.setter
-        def data(self, data):
-            self.a = data['a']
-            self.b = data['b']
-
-        @classmethod
-        def from_data(cls, data):
-            return cls(data['a'], data['b'])
-
-
-GH Components
-=============
-
-*Coming soon...*
