@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="json_load" href="compas.data.json_load.html" />
+    <link rel="next" title="json_dumpz" href="compas.data.json_dumpz.html" />
     <link rel="prev" title="json_dump" href="compas.data.json_dump.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -628,8 +628,10 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.data.dataclass_typeschema.html">dataclass_typeschema</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.data.json_dump.html">json_dump</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">json_dumps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_dumpz.html">json_dumpz</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.data.json_load.html">json_load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.data.json_loads.html">json_loads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_loadz.html">json_loadz</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas.datastructures.html">compas.datastructures</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -2515,6 +2517,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.from_ellipse.html">NurbsCurve.from_ellipse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.from_interpolation.html">NurbsCurve.from_interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.from_line.html">NurbsCurve.from_line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.from_native.html">NurbsCurve.from_native</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.from_parameters.html">NurbsCurve.from_parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.from_points.html">NurbsCurve.from_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.geometry.NurbsCurve.from_step.html">NurbsCurve.from_step</a></li>
@@ -5132,6 +5135,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_data.html">RhinoNurbsCurve.from_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_ellipse.html">RhinoNurbsCurve.from_ellipse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_json.html">RhinoNurbsCurve.from_json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_native.html">RhinoNurbsCurve.from_native</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_obj.html">RhinoNurbsCurve.from_obj</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_rhino.html">RhinoNurbsCurve.from_rhino</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.from_step.html">RhinoNurbsCurve.from_step</a></li>
@@ -5300,7 +5304,7 @@ document.write(`
 <h1>json_dumps</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.data.json_dumps">
-<span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">json_dumps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/json.py#L63"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas/data/json.html#json_dumps"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">json_dumps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/data/json.py#L69"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas/data/json.html#json_dumps"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Write a collection of COMPAS objects to a JSON string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -5311,6 +5315,8 @@ This includes any (combination of) COMPAS object(s).</p>
 <dt><strong>pretty</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, format the output with newlines and indentation.</p>
 </dd>
 <dt><strong>compact</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, format the output without any whitespace.</p>
+</dd>
+<dt><strong>minimal</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, exclude the GUID from the JSON output.</p>
 </dd>
 </dl>
 </dd>
@@ -5363,11 +5369,11 @@ This includes any (combination of) COMPAS object(s).</p>
       </div>
     </a>
     <a class="right-next"
-       href="compas.data.json_load.html"
+       href="compas.data.json_dumpz.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">json_load</p>
+        <p class="prev-next-title">json_dumpz</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

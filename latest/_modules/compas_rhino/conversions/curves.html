@@ -493,6 +493,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Ellipse</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polyline</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Arc</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">NurbsCurve</span>
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">ConversionError</span>
 
@@ -913,6 +914,28 @@ document.write(`
         <span class="s2">&quot;degree&quot;</span><span class="p">:</span> <span class="n">degree</span><span class="p">,</span>
         <span class="s2">&quot;is_periodic&quot;</span><span class="p">:</span> <span class="n">is_periodic</span><span class="p">,</span>
     <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">nurbscurve_to_compas</span><span class="p">(</span><span class="n">curve</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a Rhino Nurbs curve to a COMPAS curve.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    curve : :rhino:`Rhino.Geometry.NurbsCurve`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`compas.geometry.NurbsCurve`</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ConversionError</span>
+<span class="sd">        If the curve cannot be converted to a COMPAS curve.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">RhinoObject</span><span class="p">):</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">Geometry</span>
+    <span class="k">return</span> <span class="n">NurbsCurve</span><span class="o">.</span><span class="n">from_native</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
 </pre></div>
 
                 </article>

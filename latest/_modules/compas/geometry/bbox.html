@@ -477,6 +477,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">compas.plugins</span> <span class="kn">import</span> <span class="n">pluggable</span>
 
 
 <div class="viewcode-block" id="bounding_box"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.bounding_box.html#compas.geometry.bounding_box">[docs]</a><span class="k">def</span> <span class="nf">bounding_box</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
@@ -551,6 +552,70 @@ document.write(`
         <span class="p">[</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
         <span class="p">[</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
     <span class="p">]</span></div>
+
+
+<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;geometry&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">oriented_bounding_box</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the oriented minimum bounding box of a list of points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : sequence[point]</span>
+<span class="sd">        XYZ coordinates of the points.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[[float, float, float]]</span>
+<span class="sd">        XYZ coordinates of 8 points defining a box.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :func:`compas.geometry.oriented_bounding_box_numpy`</span>
+<span class="sd">    :func:`compas.geometry.bounding_box`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is a pluggable.</span>
+<span class="sd">    If no plugin is found, it will use the default implementation (:func:`compas.geometry.oriented_bounding_box_numpy`).</span>
+<span class="sd">    If you cannot use the default implementation because you&#39;re working in Rhino, you can call this function through RPC.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.bbox_numpy</span> <span class="kn">import</span> <span class="n">oriented_bounding_box_numpy</span>
+
+    <span class="k">return</span> <span class="n">oriented_bounding_box_numpy</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+
+<span class="n">oriented_bounding_box</span><span class="o">.</span><span class="n">__pluggable__</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="c1"># @pluggable(category=&quot;geometry&quot;)</span>
+<span class="c1"># def oriented_bounding_box_xy(points):</span>
+<span class="c1">#     &quot;&quot;&quot;Compute the oriented minimum bounding box of a list of points in the XY-plane.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     points : sequence[point]</span>
+<span class="c1">#         XY(Z) coordinates of the points.</span>
+
+<span class="c1">#     Returns</span>
+<span class="c1">#     -------</span>
+<span class="c1">#     list[[float, float, float]]</span>
+<span class="c1">#         XYZ coordinates of 8 points defining a box.</span>
+
+<span class="c1">#     See Also</span>
+<span class="c1">#     --------</span>
+<span class="c1">#     :func:`compas.geometry.oriented_bounding_box_xy_numpy`</span>
+<span class="c1">#     :func:`compas.geometry.bounding_box`</span>
+
+<span class="c1">#     Notes</span>
+<span class="c1">#     -----</span>
+<span class="c1">#     This function simply ignores the Z components of the points, if it is provided.</span>
+
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     raise PluginNotInstalledError</span>
+
+
+<span class="c1"># oriented_bounding_box_xy.__pluggable__ = True</span>
 </pre></div>
 
                 </article>

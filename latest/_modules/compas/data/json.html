@@ -472,15 +472,19 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for compas.data.json</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+
 <span class="kn">from</span> <span class="nn">compas</span> <span class="kn">import</span> <span class="n">_iotools</span>
 <span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">Data</span>  <span class="c1"># noqa: F401</span>
-<span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">DataEncoder</span>
 <span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">DataDecoder</span>
+<span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">DataEncoder</span>
+
+<span class="n">_JSON_CONTENT_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;content.json&quot;</span>
 
 
 <div class="viewcode-block" id="json_dump"><a class="viewcode-back" href="../../../reference/generated/compas.data.json_dump.html#compas.data.json_dump">[docs]</a><span class="k">def</span> <span class="nf">json_dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -497,6 +501,8 @@ document.write(`
 <span class="sd">        If True, format the output with newlines and indentation.</span>
 <span class="sd">    compact : bool, optional</span>
 <span class="sd">        If True, format the output without any whitespace.</span>
+<span class="sd">    minimal : bool, optional</span>
+<span class="sd">        If True, exclude the GUID from the JSON output.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -546,6 +552,8 @@ document.write(`
 <span class="sd">        If True, format the output with newlines and indentation.</span>
 <span class="sd">    compact : bool, optional</span>
 <span class="sd">        If True, format the output without any whitespace.</span>
+<span class="sd">    minimal : bool, optional</span>
+<span class="sd">        If True, exclude the GUID from the JSON output.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -578,6 +586,65 @@ document.write(`
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;indent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;separators&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DataEncoder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="json_dumpz"><a class="viewcode-back" href="../../../reference/generated/compas.data.json_dumpz.html#compas.data.json_dumpz">[docs]</a><span class="k">def</span> <span class="nf">json_dumpz</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">zip_filename</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a collection of COMPAS objects to a compressed JSON file (using ZIP compression).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : object</span>
+<span class="sd">        Any JSON serializable object.</span>
+<span class="sd">        This includes any (combination of) COMPAS object(s).</span>
+<span class="sd">    pretty : bool, optional</span>
+<span class="sd">        If True, format the output with newlines and indentation.</span>
+<span class="sd">    compact : bool, optional</span>
+<span class="sd">        If True, format the output without any whitespace.</span>
+<span class="sd">    minimal : bool, optional</span>
+<span class="sd">        If True, exclude the GUID from the JSON output.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :class:`compas.data.json_dump`</span>
+<span class="sd">    :class:`compas.data.json_load`</span>
+<span class="sd">    :class:`compas.data.json_loads`</span>
+<span class="sd">    :class:`compas.data.json_loadz`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">json_str</span> <span class="o">=</span> <span class="n">json_dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="n">compact</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="n">minimal</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">)</span> <span class="k">as</span> <span class="n">zf</span><span class="p">:</span>
+        <span class="n">zf</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span><span class="n">_JSON_CONTENT_FILENAME</span><span class="p">,</span> <span class="n">json_str</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="json_loadz"><a class="viewcode-back" href="../../../reference/generated/compas.data.json_loadz.html#compas.data.json_loadz">[docs]</a><span class="k">def</span> <span class="nf">json_loadz</span><span class="p">(</span><span class="n">zip_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read COMPAS object data from a compressed JSON file (ZIP).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zip_file : path string | file-like object</span>
+<span class="sd">        A readable path or a file-like object pointing to a ZIP file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    object</span>
+<span class="sd">        The (COMPAS) data contained in the file.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :class:`compas.data.json_dump`</span>
+<span class="sd">    :class:`compas.data.json_dumps`</span>
+<span class="sd">    :class:`compas.data.json_dumpz`</span>
+<span class="sd">    :class:`compas.data.json_loads`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">zf</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">zf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">_JSON_CONTENT_FILENAME</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json_str</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">json_loads</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="json_load"><a class="viewcode-back" href="../../../reference/generated/compas.data.json_load.html#compas.data.json_load">[docs]</a><span class="k">def</span> <span class="nf">json_load</span><span class="p">(</span><span class="n">fp</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; dict</span>

@@ -503,6 +503,7 @@ document.write(`
     <span class="s2">&quot;PluginManager&quot;</span><span class="p">,</span>
     <span class="s2">&quot;PluginNotInstalledError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;PluginValidator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PluginDefaultNotAvailableError&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -510,6 +511,17 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised when an extension point is invoked but no plugin is available.&quot;&quot;&quot;</span>
 
     <span class="k">pass</span></div>
+
+
+<span class="k">class</span> <span class="nc">PluginDefaultNotAvailableError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised when an extension point is invoked but no plugin is available, and the default implementation is also not available.</span>
+
+<span class="sd">    The most likely circumstance for this error is when the default implementation is based on Numpy, Scipy, or similar,</span>
+<span class="sd">    and the pluggable is invoked in a context where these packages are not available.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span>
 
 
 <span class="k">def</span> <span class="nf">_get_extension_point_url_from_name</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">pluggable_name</span><span class="p">):</span>
@@ -540,6 +552,7 @@ document.write(`
 <span class="sd">        Method implementing the a plugin&#39;s behavior.</span>
 <span class="sd">    plugin_opts : dict</span>
 <span class="sd">        Dictionary containing plugin options.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">plugin_opts</span><span class="p">):</span>
@@ -567,6 +580,7 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plugin Manager handles discovery and registry of plugins.</span>
 
 <span class="sd">    Usually there is only one instance of a plugin manager per host.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
@@ -588,6 +602,7 @@ document.write(`
 <span class="sd">        dict</span>
 <span class="sd">            Dictionary of available plugins. The keys are extension point URLs</span>
 <span class="sd">            and the values are instances of :class:`PluginImpl`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discovery_done</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">load_plugins</span><span class="p">()</span>
@@ -601,6 +616,7 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">            Number of loaded plugins.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Since we modify global state,</span>
         <span class="c1"># let&#39;s lock around this.</span>
@@ -728,6 +744,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; @pluggable(category=&#39;triangulation&#39;)</span>
 <span class="sd">    ... def triangulate_mesh(mesh):</span>
 <span class="sd">    ...    pass</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">pluggable_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -738,6 +755,21 @@ document.write(`
             <span class="c1"># Select first matching plugin</span>
             <span class="k">if</span> <span class="n">selector</span> <span class="o">==</span> <span class="s2">&quot;first_match&quot;</span><span class="p">:</span>
                 <span class="n">plugin_impl</span> <span class="o">=</span> <span class="n">_select_plugin</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">plugin_impl</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">(</span>
+                            <span class="s2">&quot;Plugin not found and no default implementation for extension point URL: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">extension_point_url</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">PluginDefaultNotAvailableError</span><span class="p">(</span>
+                            <span class="s2">&quot;Plugin not found and the default implementation is not available in your environment for extension point URL: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">extension_point_url</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
 
                 <span class="c1"># Invoke plugin</span>
                 <span class="k">return</span> <span class="n">plugin_impl</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -918,10 +950,10 @@ document.write(`
         <span class="n">plugins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_plugin_selectable</span><span class="p">(</span><span class="n">plugin</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">plugin</span>
+                <span class="k">return</span> <span class="n">plugin</span></div>
 
         <span class="c1"># Nothing found, raise</span>
-        <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">(</span><span class="s2">&quot;Plugin not found for extension point URL: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span></div>
+        <span class="c1"># raise PluginNotInstalledError(&quot;Plugin not found for extension point URL: {}&quot;.format(extension_point_url))</span>
 
 <div class="viewcode-block" id="PluginValidator.collect_plugins"><a class="viewcode-back" href="../../reference/generated/compas.plugins.PluginValidator.collect_plugins.html#compas.plugins.PluginValidator.collect_plugins">[docs]</a>    <span class="k">def</span> <span class="nf">collect_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension_point_url</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>

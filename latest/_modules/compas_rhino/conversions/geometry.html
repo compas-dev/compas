@@ -552,19 +552,7 @@ document.write(`
     <span class="k">return</span> <span class="n">RhinoPlane</span><span class="p">(</span><span class="n">point_to_rhino</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="p">),</span> <span class="n">vector_to_rhino</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span><span class="p">),</span> <span class="n">vector_to_rhino</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="frame_to_rhino"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.conversions.frame_to_rhino.html#compas_rhino.conversions.frame_to_rhino">[docs]</a><span class="k">def</span> <span class="nf">frame_to_rhino</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a COMPAS frame to a Rhino plane.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    frame : :class:`compas.geometry.Frame`</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    :rhino:`Rhino.Geometry.Plane`</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">RhinoPlane</span><span class="p">(</span><span class="n">point_to_rhino</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">vector_to_rhino</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">vector_to_rhino</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span></div>
+<span class="n">frame_to_rhino</span> <span class="o">=</span> <span class="n">frame_to_rhino_plane</span>
 
 
 <div class="viewcode-block" id="polygon_to_rhino"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.conversions.polygon_to_rhino.html#compas_rhino.conversions.polygon_to_rhino">[docs]</a><span class="k">def</span> <span class="nf">polygon_to_rhino</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
@@ -649,6 +637,9 @@ document.write(`
         <span class="n">vector_to_compas</span><span class="p">(</span><span class="n">plane</span><span class="o">.</span><span class="n">XAxis</span><span class="p">),</span>
         <span class="n">vector_to_compas</span><span class="p">(</span><span class="n">plane</span><span class="o">.</span><span class="n">YAxis</span><span class="p">),</span>
     <span class="p">)</span></div>
+
+
+<span class="n">frame_to_compas</span> <span class="o">=</span> <span class="n">plane_to_compas_frame</span>
 
 
 <div class="viewcode-block" id="polygon_to_compas"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.conversions.polygon_to_compas.html#compas_rhino.conversions.polygon_to_compas">[docs]</a><span class="k">def</span> <span class="nf">polygon_to_compas</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
