@@ -2,15 +2,17 @@
 Working in Rhino
 ****************
 
-.. warning::
-
-    These instructions are for Rhino 6 and 7.
-    For Rhino 8, please refer to :doc:`/userguide/cad.rhino8`.
+.. rst-class:: lead
 
 The core library of COMPAS (:mod:`compas`), and the Rhino CAD package (:mod:`compas_rhino`)
 are backwards compatible with Python 2.7 and written in pure Python,
 such that they can be used in Rhino IronPython scripts (Rhino 7 and below),
 as well as in the new Rhino CPython scripts (Rhino 8).
+
+.. warning::
+
+    These instructions are for Rhino 6 and 7.
+    For Rhino 8, please refer to :doc:`/userguide/cad.rhino8`.
 
 Installation
 ============
