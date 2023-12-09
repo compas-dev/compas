@@ -140,6 +140,21 @@ def cylinder_to_rhino_brep(cylinder):
     return RhinoCylinder.ToBrep(cylinder_to_rhino(cylinder), True, True)
 
 
+def capsule_to_rhino(capsule):
+    """Convert a COMPAS capsule to a Rhino cylinder.
+
+    Parameters
+    ----------
+    capsule : :class:`compas.geometry.Capsule`
+
+    Returns
+    -------
+    :rhino:`Rhino.Geometry.Cylinder`
+
+    """
+    raise NotImplementedError
+
+
 def capsule_to_rhino_brep(capsule):
     """Convert a COMPAS capsule to a Rhino Brep.
 

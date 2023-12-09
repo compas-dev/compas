@@ -5,7 +5,7 @@ When working in GH Python components, :class:`compas.scene.SceneObject` will aut
 from __future__ import absolute_import
 
 from compas.plugins import plugin
-from compas.scene import SceneObject
+from compas.scene import register
 
 from compas.geometry import Box
 from compas.geometry import Capsule
@@ -56,27 +56,27 @@ from .brepobject import BrepObject
 
 @plugin(category="factories", requires=["Rhino"])
 def register_scene_objects():
-    SceneObject.register(Box, BoxObject, context="Grasshopper")
-    SceneObject.register(Capsule, CapsuleObject, context="Grasshopper")
-    SceneObject.register(Circle, CircleObject, context="Grasshopper")
-    SceneObject.register(Cone, ConeObject, context="Grasshopper")
-    SceneObject.register(Curve, CurveObject, context="Grasshopper")
-    SceneObject.register(Cylinder, CylinderObject, context="Grasshopper")
-    SceneObject.register(Ellipse, EllipseObject, context="Grasshopper")
-    SceneObject.register(Frame, FrameObject, context="Grasshopper")
-    SceneObject.register(Line, LineObject, context="Grasshopper")
-    SceneObject.register(Mesh, MeshObject, context="Grasshopper")
-    SceneObject.register(Network, NetworkObject, context="Grasshopper")
-    SceneObject.register(Point, PointObject, context="Grasshopper")
-    SceneObject.register(Polygon, PolygonObject, context="Grasshopper")
-    SceneObject.register(Polyhedron, PolyhedronObject, context="Grasshopper")
-    SceneObject.register(Polyline, PolylineObject, context="Grasshopper")
-    SceneObject.register(Sphere, SphereObject, context="Grasshopper")
-    SceneObject.register(Surface, SurfaceObject, context="Grasshopper")
-    SceneObject.register(Torus, TorusObject, context="Grasshopper")
-    SceneObject.register(Vector, VectorObject, context="Grasshopper")
-    SceneObject.register(VolMesh, VolMeshObject, context="Grasshopper")
-    SceneObject.register(Brep, BrepObject, context="Grasshopper")
+    register(Box, BoxObject, context="Grasshopper")
+    register(Capsule, CapsuleObject, context="Grasshopper")
+    register(Circle, CircleObject, context="Grasshopper")
+    register(Cone, ConeObject, context="Grasshopper")
+    register(Curve, CurveObject, context="Grasshopper")
+    register(Cylinder, CylinderObject, context="Grasshopper")
+    register(Ellipse, EllipseObject, context="Grasshopper")
+    register(Frame, FrameObject, context="Grasshopper")
+    register(Line, LineObject, context="Grasshopper")
+    register(Mesh, MeshObject, context="Grasshopper")
+    register(Network, NetworkObject, context="Grasshopper")
+    register(Point, PointObject, context="Grasshopper")
+    register(Polygon, PolygonObject, context="Grasshopper")
+    register(Polyhedron, PolyhedronObject, context="Grasshopper")
+    register(Polyline, PolylineObject, context="Grasshopper")
+    register(Sphere, SphereObject, context="Grasshopper")
+    register(Surface, SurfaceObject, context="Grasshopper")
+    register(Torus, TorusObject, context="Grasshopper")
+    register(Vector, VectorObject, context="Grasshopper")
+    register(VolMesh, VolMeshObject, context="Grasshopper")
+    register(Brep, BrepObject, context="Grasshopper")
     print("GH SceneObjects registered.")
 
 

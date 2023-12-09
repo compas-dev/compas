@@ -6,7 +6,7 @@ When working in Blender, :class:`compas.scene.SceneObject` will automatically us
 import compas_blender
 
 from compas.plugins import plugin
-from compas.scene import SceneObject
+from compas.scene import register
 
 from compas.geometry import Box
 from compas.geometry import Capsule
@@ -64,26 +64,26 @@ def redraw_blender():
 
 @plugin(category="factories", requires=["bpy"])
 def register_scene_objects():
-    SceneObject.register(Box, BoxObject, context="Blender")
-    SceneObject.register(Capsule, CapsuleObject, context="Blender")
-    SceneObject.register(Circle, CircleObject, context="Blender")
-    SceneObject.register(Cone, ConeObject, context="Blender")
-    SceneObject.register(Curve, CurveObject, context="Blender")
-    SceneObject.register(Cylinder, CylinderObject, context="Blender")
-    SceneObject.register(Frame, FrameObject, context="Blender")
-    SceneObject.register(Line, LineObject, context="Blender")
-    SceneObject.register(Mesh, MeshObject, context="Blender")
-    SceneObject.register(Network, NetworkObject, context="Blender")
-    SceneObject.register(Point, PointObject, context="Blender")
-    SceneObject.register(Pointcloud, PointcloudObject, context="Blender")
-    SceneObject.register(Polygon, PolygonObject, context="Blender")
-    SceneObject.register(Polyhedron, PolyhedronObject, context="Blender")
-    SceneObject.register(Polyline, PolylineObject, context="Blender")
-    SceneObject.register(Sphere, SphereObject, context="Blender")
-    SceneObject.register(Surface, SurfaceObject, context="Blender")
-    SceneObject.register(Torus, TorusObject, context="Blender")
-    SceneObject.register(Vector, VectorObject, context="Blender")
-    SceneObject.register(VolMesh, VolMeshObject, context="Blender")
+    register(Box, BoxObject, context="Blender")
+    register(Capsule, CapsuleObject, context="Blender")
+    register(Circle, CircleObject, context="Blender")
+    register(Cone, ConeObject, context="Blender")
+    register(Curve, CurveObject, context="Blender")
+    register(Cylinder, CylinderObject, context="Blender")
+    register(Frame, FrameObject, context="Blender")
+    register(Line, LineObject, context="Blender")
+    register(Mesh, MeshObject, context="Blender")
+    register(Network, NetworkObject, context="Blender")
+    register(Point, PointObject, context="Blender")
+    register(Pointcloud, PointcloudObject, context="Blender")
+    register(Polygon, PolygonObject, context="Blender")
+    register(Polyhedron, PolyhedronObject, context="Blender")
+    register(Polyline, PolylineObject, context="Blender")
+    register(Sphere, SphereObject, context="Blender")
+    register(Surface, SurfaceObject, context="Blender")
+    register(Torus, TorusObject, context="Blender")
+    register(Vector, VectorObject, context="Blender")
+    register(VolMesh, VolMeshObject, context="Blender")
     print("Blender Objects registered.")
 
 
