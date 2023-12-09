@@ -6,6 +6,17 @@ Colors and Color Maps
 
 In COMPAS colors are defined in RGB color space, with components in the range of 0-1.
 
+Basic Usage
+===========
+
+
+Color Spaces
+============
+
+
+Color Information
+=================
+
 
 The RGB Color Circle
 ====================
@@ -113,6 +124,46 @@ and some of the `matplotlib` color palettes are also available.
 * :meth:`compas.colors.ColorMap.from_palette`
 * :meth:`compas.colors.ColorMap.from_mpl`
 
+
+There is currently no predefined function for color map examples.
+However, using the following template we can compare various examples.
+
+>>> from compas.geometry import Point, Polygon
+>>> from compas.utilities import linspace, pairwise
+>>> from compas.datastructures import Mesh
+>>> from compas.colors import Color, ColorMap
+>>> from compas_view2.app import App
+
+>>> n = 1000
+>>> t = 0.3
+
+>>> up = []
+>>> down = []
+>>> for i in linspace(0, 10, n):
+...    point = Point(i, 0, 0)
+...    up.append(point + [0, t, 0])
+...    down.append(point - [0, t, 0])
+
+>>> polygons = []
+>>> for (d, c), (a, b) in zip(pairwise(up), pairwise(down)):
+...    polygons.append(Polygon([a, b, c, d]))
+
+>>> mesh = Mesh.from_polygons(polygons)
+
+>>> cmap = ...  # define color map here
+>>> facecolors = {i: cmap(i, minval=0, maxval=n - 1) for i in range(n)}
+
+>>> viewer = App()
+>>> viewer.view.show_grid = False
+>>> viewer.add(mesh, facecolor=facecolors, show_lines=False)
+>>> viewer.show()
+
+
+From Palette
+------------
+
+>>> cmap = ColorMap.from_mpl('viridis')
+
 .. figure:: /_images/userguide/basics.colors_maps.png
     :figclass: figure
     :class: figure-img img-fluid
@@ -120,31 +171,8 @@ and some of the `matplotlib` color palettes are also available.
     `viridis` color map from matplotlib.
 
 
-Examples
---------
-
-Using the following template we can compare various color maps.
-
->>> from compas.colors import Color, ColorMap
->>> from compas.geometry import Bezier, Circle, Frame
->>> from compas_view2.app import App
-
->>> points = [Point(0, 0, 0), Point(3, 6, 0), Point(6, -6, 6), Point(9, 0, 0)]
->>> curve = Bezier(points)
-
->>> cmap = ...
-
->>> viewer = App()
->>> n = 500
->>> for i, point in enumerate(curve.to_points(n)):
-...     color = cmap(i, minval=0, maxval=n - 1)
-...     plotter.add(point, pointcolor=color, pointsize=30)
-...
->>> viewer.show()
-
-
 From RGB
-~~~~~~~~
+--------
 
 >>> cmap = ColorMap.from_rgb()
 
@@ -156,13 +184,13 @@ From RGB
 
 
 From One Color
-~~~~~~~~~~~~~~
+--------------
 
 >>> cmap = ColorMap.from_color(Color.red())
 >>> cmap = ColorMap.from_color(Color.red(), rangetype='light')
 >>> cmap = ColorMap.from_color(Color.red(), rangetype='dark')
 
-.. figure:: /_images/userguide/basics.colors_maps_from-rgb.png
+.. figure:: /_images/userguide/basics.colors_maps_from-one-color.png
     :figclass: figure
     :class: figure-img img-fluid
 
@@ -170,61 +198,29 @@ From One Color
 
 
 From Two Colors
-~~~~~~~~~~~~~~~
+---------------
 
 ::
 
     >>> cmap = ColorMap.from_two_colors(Color.from_hex('#0092D2'), Color.pink())
     >>> cmap = ColorMap.from_two_colors(Color.from_hex('#0092D2'), Color.pink(), diverging=True)
 
-.. plot::
+.. figure:: /_images/userguide/basics.colors_maps_from-two-colors.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
-    from compas.colors import Color, ColorMap
-    from compas.geometry import Point, Bezier, Translation
-    from compas_plotters.plotter import Plotter
-    points = [Point(0, 0, 0), Point(3, 6, 0), Point(6, -6, 6), Point(9, 0, 0)]
-    curve = Bezier(points)
-
-    plotter = Plotter(figsize=(16, 9))
-    n = 500
-
-    cmap = ColorMap.from_two_colors(Color.from_hex('#0092D2'), Color.pink())
-    for i, point in enumerate(curve.transformed(Translation.from_vector([0, 0, 0])).locus(n)):
-        color = cmap(i, 0, n - 1)
-        plotter.add(point, facecolor=color, edgecolor=color, edgewidth=0.5, size=10)
-
-    cmap = ColorMap.from_two_colors(Color.from_hex('#0092D2'), Color.pink(), diverging=True)
-    for i, point in enumerate(curve.transformed(Translation.from_vector([0, -1, 0])).locus(n)):
-        color = cmap(i, 0, n - 1)
-        plotter.add(point, facecolor=color, edgecolor=color, edgewidth=0.5, size=10)
-
-    plotter.zoom_extents()
-    plotter.show()
+    Color maps constructed from two colors.
 
 
 From Three Colors
-~~~~~~~~~~~~~~~~~
+-----------------
 
 ::
 
     >>> cmap = ColorMap.from_three_colors(Color.red(), Color.green(), Color.blue())
 
-.. plot::
+.. figure:: /_images/userguide/basics.colors_maps_from-three-colors.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
-    from compas.colors import Color, ColorMap
-    from compas.geometry import Point, Bezier, Translation
-    from compas_plotters.plotter import Plotter
-    points = [Point(0, 0, 0), Point(3, 6, 0), Point(6, -6, 6), Point(9, 0, 0)]
-    curve = Bezier(points)
-
-    plotter = Plotter(figsize=(16, 9))
-    n = 500
-
-    cmap = ColorMap.from_three_colors(Color.red(), Color.green(), Color.blue())
-
-    for i, point in enumerate(curve.transformed(Translation.from_vector([0, 0, 0])).locus(n)):
-        color = cmap(i, 0, n - 1)
-        plotter.add(point, facecolor=color, edgecolor=color, edgewidth=0.5, size=10)
-
-    plotter.zoom_extents()
-    plotter.show()
+    Color maps constructed from three colors.

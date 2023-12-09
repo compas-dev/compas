@@ -18,7 +18,7 @@ white = Color.white()
 facecolors = {}
 polygons = []
 for i, color in enumerate(cmap.colors):
-    c = Circle(0.1, Frame(cloud[i]))
+    # c = Circle(0.1, Frame(cloud[i]))
     p = Polygon(
         [
             [i * d, -2, 0],
@@ -29,7 +29,7 @@ for i, color in enumerate(cmap.colors):
     )
     polygons.append(p)
     facecolors[i] = color
-    viewer.add(c.to_polygon(100), facecolor=color)
+    # viewer.add(c.to_polygon(100), facecolor=color)
 
 viewer.add(Mesh.from_polygons(polygons), facecolor=facecolors, show_lines=False)
 
