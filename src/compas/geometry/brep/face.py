@@ -190,3 +190,27 @@ class BrepFace(Data):
 
         """
         raise NotImplementedError
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
+
+    def adjacent_faces(self):
+        """Returns a list of the faces adjacent to this face.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.BrepFace`]
+
+        """
+        raise NotImplementedError
+
+    def as_brep(self):
+        """Returns a Brep representation of this face.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        raise NotImplementedError

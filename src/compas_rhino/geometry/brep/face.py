@@ -2,6 +2,7 @@ import Rhino
 from Rhino.Geometry import Interval
 from Rhino.Geometry import RevSurface
 
+from compas.geometry import Brep
 from compas.geometry import BrepFace
 from compas.geometry import Sphere
 from compas.geometry import Cylinder
@@ -191,3 +192,30 @@ class RhinoBrepFace(BrepFace):
         surface.SetDomain(0, Interval(*u_domain))
         surface.SetDomain(1, Interval(*v_domain))
         return surface
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
+
+    def adjacent_faces(self):
+        """Returns a list of the faces adjacent to this face.
+
+        Returns
+        -------
+        list[:class:`compas_rhino.geometry.RhinoBrepFace`]
+            The list of adjacent faces.
+
+        """
+        face_indices = self._face.AdjacentFaces()
+        brep = self._face.Brep
+        return [RhinoBrepFace(brep.Faces[index]) for index in face_indices]
+
+    def as_brep(self):
+        """Returns a Brep representation of this face.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        return Brep.from_native(self._face.ToBrep())
