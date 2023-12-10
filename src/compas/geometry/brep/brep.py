@@ -693,8 +693,8 @@ class Brep(Geometry):
     # Converters
     # ==============================================================================
 
-    def to_json(self, filepath):
-        """Export the BRep to a JSON file.
+    def to_iges(self, filepath):
+        """Write the Brep shape to an IGES file.
 
         Parameters
         ----------
@@ -708,8 +708,50 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
+    def to_meshes(self, u=16, v=16):
+        """Convert the faces of this Brep shape to meshes.
+
+        Parameters
+        ----------
+        u : int, optional
+            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
+        v : int, optional
+            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
+
+        Returns
+        -------
+        list[:class:`compas.datastructures.Mesh`]
+
+        """
+        raise NotImplementedError
+
+    def to_polygons(self):
+        """Convert the faces of this Brep shape to polygons.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Polygon`]
+
+        """
+        raise NotImplementedError
+
     def to_step(self, filepath):
-        """Write the BRep shape to a STEP file.
+        """Write the Brep shape to a STEP file.
+
+        Parameters
+        ----------
+        filepath : str
+            Location of the file.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
+    def to_stl(self, filepath):
+        """Write the Brep shape to an STL file.
 
         Parameters
         ----------
@@ -734,23 +776,6 @@ class Brep(Geometry):
         Returns
         -------
         :class:`compas.datastructures.Mesh`
-
-        """
-        raise NotImplementedError
-
-    def to_meshes(self, u=16, v=16):
-        """Convert the faces of this Brep shape to meshes.
-
-        Parameters
-        ----------
-        u : int, optional
-            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
-        v : int, optional
-            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
-
-        Returns
-        -------
-        list[:class:`compas.datastructures.Mesh`]
 
         """
         raise NotImplementedError
