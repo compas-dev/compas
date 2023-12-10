@@ -413,6 +413,7 @@ from .brep.errors import (
     BrepError,
     BrepInvalidError,
     BrepTrimmingError,
+    BrepFilletError,
 )
 
 from .brep.brep import (
@@ -441,6 +442,7 @@ __all__ = [
     "BrepTrim",
     "BrepTrimIsoStatus",
     "BrepTrimmingError",
+    "BrepFilletError"
     "BrepType",
     "BrepVertex",
     "Capsule",

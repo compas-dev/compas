@@ -14,3 +14,9 @@ class BrepTrimmingError(BrepError):
     """Raised when a trimming operation has failed or had not result"""
 
     pass
+
+
+class BrepFilletError(BrepError):
+    """Raised when a fillet operation has failed or had not result"""
+
+    pass

@@ -892,6 +892,16 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
+    def heal(self):
+        """Heal the shape.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
     def cull_unused_vertices(self):
         """Remove all unused vertices.
 
@@ -944,6 +954,74 @@ class Brep(Geometry):
         -------
         list[list[:class:`compas.geometry.Polyline`]]
             A list of polylines per plane.
+
+        """
+        raise NotImplementedError
+
+    def edge_faces(self, edge):
+        """Identify the faces connected to a given edge.
+
+        Parameters
+        ----------
+        edge : :class:`~compas.geometry.BrepEdge`
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.BrepFace`]
+
+        """
+        raise NotImplementedError
+
+    def edge_loop(self, edge):
+        """Identify the parent loops of the a given edge.
+
+        Parameters
+        ----------
+        edge : :class:`~compas.geometry.BrepEdge`
+
+        Returns
+        -------
+        :class:`~compas.geometry.BrepLoop`
+
+        """
+        raise NotImplementedError
+
+    def fillet(self, radius, edges=None):
+        """Fillet the edges of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list[:class:`~compas.geometry.BrepEdge`], optional
+            List of edges to exclude from the operation. When `None` all edges are included.
+
+        Raises
+        ------
+        :class:`~compas.geometry.BrepFilletError`
+            If the fillet operation fails.
+
+        """
+        raise NotImplementedError
+
+    def filleted(self, radius, edges=None):
+        """Construct a filleted copy of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list[:class:`~compas.geometry.BrepEdge`], optional
+            List of edges to exclude from the operation. When `None` all edges are included.
+
+        Raises
+        ------
+        :class:`~compas.geometry.BrepFilletError`
+            If the fillet operation fails.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
 
         """
         raise NotImplementedError
