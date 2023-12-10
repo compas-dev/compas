@@ -43,17 +43,22 @@ def from_cone(*args, **kwargs):
 
 
 @pluggable(category="factories")
-def from_surface(*args, **kwargs):
-    raise PluginNotInstalledError
-
-
-@pluggable(category="factories")
 def from_torus(*args, **kwargs):
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
 def from_extrusion(*args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
+def from_iges(*args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
+def from_loft(*args, **kwargs):
     raise PluginNotInstalledError
 
 
@@ -74,6 +79,16 @@ def from_polygons(*args, **kwargs):
 
 @pluggable(category="factories")
 def from_curves(*args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
+def from_pipe(*args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
+def from_planes(*args, **kwargs):
     raise PluginNotInstalledError
 
 

@@ -7,13 +7,16 @@ from . import from_cylinder
 from . import from_sphere
 from . import from_mesh
 from . import from_cone
-from . import from_surface
 from . import from_torus
 from . import from_extrusion
+from . import from_iges
+from . import from_loft
 from . import from_boolean_difference
 from . import from_boolean_intersection
 from . import from_boolean_union
 from . import from_curves
+from . import from_pipe
+from . import from_planes
 from . import from_polygons
 from . import from_step
 from . import from_sweep
@@ -325,6 +328,21 @@ class Brep(Geometry):
         return from_brepfaces(faces)
 
     @classmethod
+    def from_breps(cls, breps):
+        """Construct one compound Brep from a list of other Breps.
+
+        Parameters
+        ----------
+        breps : list[:class:`compas.geometry.Brep`]
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        raise NotImplementedError
+
+    @classmethod
     def from_cone(cls, cone):
         """Construct a Brep from a COMPAS cone.
 
@@ -467,6 +485,22 @@ class Brep(Geometry):
 
         """
         return from_pipe(curve, radius, thickness=thickness)
+
+    @classmethod
+    def from_planes(cls, planes):
+        """Construct a Brep from a set of planes.
+
+        Parameters
+        ----------
+        planes : list[:class:`~compas.geometry.Plane`]
+            A list of planes.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        return from_planes(planes)
 
     @classmethod
     def from_polygons(cls, polygons):
