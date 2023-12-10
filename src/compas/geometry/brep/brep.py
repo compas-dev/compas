@@ -75,50 +75,62 @@ class Brep(Geometry):
 
     Attributes
     ----------
-    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
-        The vertices of the Brep.
+    area : float, read-only
+        The surface area of the Brep.
+    centroid : :class:`compas.geometry.Point`, read-only
+        The centroid of this brep.
+    curves : list[:class:`~compas.geometry.Curve`], read-only
+        The edge curves of this brep.
     edges : list[:class:`compas.geometry.BrepEdge`], read-only
         The edges of the Brep.
-    trims : list[:class:`compas.geometry.BrepTrim`], read-only
-        The trims of the Brep.
-    loops : list[:class:`compas.geometry.BrepLoop`], read-only
-        The loops of the Brep.
     faces : list[:class:`compas.geometry.BrepFace`], read-only
         The faces of the Brep.
     frame : :class:`compas.geometry.Frame`, read-only
         The local coordinate system of the Brep.
-    area : float, read-only
-        The surface area of the Brep.
-    volume : float, read-only
-        The volume of the regions contained by the Brep.
-    solids : list[:class:`compas.geometry.Brep`], read-only
-        The solids of this brep.
-    shells : list[:class:`compas.geometry.Brep`], read-only
-        The shells of this brep.
-    points : list[:class:`compas.geometry.Point`], read-only
-        The points of this brep.
-    centroid : :class:`compas.geometry.Point`, read-only
-        The centroid of this brep.
-    is_valid : bool, read-only
-        True if this brep is valid, False otherwise
-    is_solid : bool, read-only
-        True if this brep is a solid, False otherwise.
+    is_closed : bool, read-only
+        True if this brep is closed, False otherwise.
     is_compound : bool, read-only
         True if this brep's type is a compound, False otherwise.
     is_compoundsolid : bool, read-only
         True if this brep's type is a compoundsolid, False otherwise.
-    is_orientable : bool, read-only
-        True if this brep is orientable, False otherwise.
-    is_closed : bool, read-only
-        True if this brep is closed, False otherwise.
-    is_infinite : bool, read-only
-        True if this brep is infinite, False otherwise.
     is_convex : bool, read-only
         True if this brep is convex, False otherwise.
+    is_infinite : bool, read-only
+        True if this brep is infinite, False otherwise.
     is_manifold : bool, read-only
         True if this brep is a manifold, False otherwise.
+    is_orientable : bool, read-only
+        True if this brep is orientable, False otherwise.
+    is_shell : bool, read-only
+        True if this brep is a shell, False otherwise.
+    is_solid : bool, read-only
+        True if this brep is a solid, False otherwise.
     is_surface : bool, read-only
         True if this brep is a surface, False otherwise.
+    is_valid : bool, read-only
+        True if this brep is valid, False otherwise
+    loops : list[:class:`compas.geometry.BrepLoop`], read-only
+        The loops of the Brep.
+    native_brep : Any
+        The backend specific brep object.
+    orientation : literal(:class:`~compas.geometry.BrepOrientation`)
+        One of [FORWARD, REVERSE, INTERNAL, EXTERNAL], read-only
+    points : list[:class:`compas.geometry.Point`], read-only
+        The points of this brep.
+    shells : list[:class:`compas.geometry.Brep`], read-only
+        The shells of this brep.
+    solids : list[:class:`compas.geometry.Brep`], read-only
+        The solids of this brep.
+    surfaces : list[:class:`~compas.geometry.Surface`], read-only
+        The face surfaces of this brep.
+    trims : list[:class:`compas.geometry.BrepTrim`], read-only
+        The trims of the Brep.
+    type : literal(:class:`~compas.geometry.BrepType`), read-only
+        One of [COMPOUND, COMPSOLID, SHELL, FACE, WIRE, EDGE, VERTEX, SHAPE]
+    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
+        The vertices of the Brep.
+    volume : float, read-only
+        The volume of the regions contained by the Brep.
 
     """
 
@@ -149,21 +161,6 @@ class Brep(Geometry):
     @property
     def dtype(self):
         return "compas.geometry/Brep"
-
-    @property
-    def data(self):
-        faces = []
-        for face in self.faces:
-            faces.append(face.data)
-        return {"faces": faces}
-
-    @classmethod
-    def from_data(cls, data):
-        # faces = []
-        # for face in data["faces"]:
-        #     faces.append(BrepFace.from_data(face))
-        # return cls.from_brepfaces(faces)
-        pass
 
     # ==============================================================================
     # Properties
