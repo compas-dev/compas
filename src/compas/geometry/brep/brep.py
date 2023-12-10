@@ -845,6 +845,22 @@ class Brep(Geometry):
     # Other Methods
     # ==============================================================================
 
+    def contains(self, object):
+        """Check if the Brep contains a given geometric primitive.
+
+        Parameters
+        ----------
+        object : :class:`compas.geometry.Point`, :class:`compas.geometry.Curve`, :class:`compas.geometry.Surface`
+            The object to check for containment.
+
+        Returns
+        -------
+        bool
+            True if the object is contained in the Brep, False otherwise.
+
+        """
+        raise NotImplementedError
+
     def trim(self, trimming_plane, tolerance):
         """Trim this Brep using the given trimming plane.
 

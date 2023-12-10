@@ -1,4 +1,4 @@
-import Rhino
+import Rhino  # noqa: F401
 
 from compas.plugins import plugin
 from compas.geometry import Brep

@@ -3,7 +3,9 @@ import Rhino
 from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepTrimmingError
+from compas.geometry import BrepError
 from compas.geometry import Plane
+from compas.geometry import Point
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
@@ -11,6 +13,7 @@ from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import mesh_to_rhino
+from compas_rhino.conversions import point_to_rhino
 
 from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
@@ -95,6 +98,14 @@ class RhinoBrep(Brep):
     # ==============================================================================
     # Properties
     # ==============================================================================
+
+    @property
+    def is_manifold(self):
+        return self._brep.IsManifold
+
+    @property
+    def is_solid(self):
+        return self._brep.IsSolid
 
     @property
     def native_brep(self):
@@ -236,6 +247,35 @@ class RhinoBrep(Brep):
     # ==============================================================================
     # Methods
     # ==============================================================================
+
+    def contains(self, object):
+        """Check if the Brep contains a given geometric primitive.
+
+        Only closed and manifold breps can be checked for containment.
+
+        Parameters
+        ----------
+        object : :class:`~compas.geometry.Point`, :class:`~compas.geometry.Curve`, :class:`~compas.geometry.Surface`
+            The object to check for containment.
+
+        Raises
+        ------
+        BrepError
+            If the Brep is not solid.
+
+        Returns
+        -------
+        bool
+            True if the object is contained in the Brep, False otherwise.
+
+        """
+        if not self.is_solid:
+            raise BrepError("Cannot check for containment if brep is not manifold or is not closed")
+
+        if isinstance(object, Point):
+            return self._brep.IsPointInside(point_to_rhino(object), TOLERANCE, False)
+        else:
+            raise NotImplementedError
 
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
