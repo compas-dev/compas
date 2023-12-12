@@ -169,6 +169,13 @@
                 
 
                     <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -316,6 +323,13 @@ document.write(`
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        API Reference
                       </a>
                     </li>
                 
@@ -575,12 +589,12 @@ for the requested function.</p>
 </section>
 <section id="configuration-options">
 <h2>Configuration Options</h2>
-<p>The <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.rpc.Proxy.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object has several configuration options.
+<p>The <a class="reference internal" href="../reference/generated/compas.rpc.Proxy.html" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object has several configuration options.
 We will discuss only a few of those here.
 For a complete overview, please refer to the API docs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code>).</p>
 <section id="python">
 <h3><code class="docutils literal notranslate"><span class="pre">python</span></code></h3>
-<p>The <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.rpc.Proxy.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object will automatically try to reconnect to an
+<p>The <a class="reference internal" href="../reference/generated/compas.rpc.Proxy.html" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object will automatically try to reconnect to an
 active instance of the command server, or start a new one if no active server can be found.</p>
 <p>By default, a newly started server will run an instance of the default Python interpreter of the active environment.
 For example, when running RPC from an Anaconda Prompt, or from a <code class="docutils literal notranslate"><span class="pre">conda</span></code>-enabled Terminal it will use the interpreter of the active <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment.</p>
