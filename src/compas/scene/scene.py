@@ -3,6 +3,7 @@ from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 from .context import build_scene_object
 from .context import redraw
+from .context import clear
 
 
 class Scene(Data):
@@ -36,7 +37,7 @@ class Scene(Data):
 
     def remove(self, sceneobject):
         node = self._get_node(sceneobject)
-        self.tree.remove_node(node)
+        self.tree.remove(node)
 
     def _get_node(self, sceneobject):
         for node in self.tree.nodes:
@@ -44,6 +45,9 @@ class Scene(Data):
                 if node.attributes["sceneobject"] == sceneobject:
                     return node
         raise Exception("Scene object not in scene")
+
+    def clear(self):
+        clear()
 
     def redraw(self):
         drawn_objects = []
