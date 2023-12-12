@@ -232,6 +232,7 @@ class Shape(Geometry):
         transform
 
         """
+        axis = axis or [0, 0, 1]
         point = point or [0, 0, 0]
         matrix = Rotation.from_axis_and_angle(axis=axis, angle=angle, point=point)
         self.transform(matrix)
