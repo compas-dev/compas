@@ -442,8 +442,8 @@ __all__ = [
     "BrepTrim",
     "BrepTrimIsoStatus",
     "BrepTrimmingError",
-    "BrepFilletError"
     "BrepType",
+    "BrepFilletError",
     "BrepVertex",
     "Capsule",
     "Circle",
