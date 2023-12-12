@@ -169,13 +169,6 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -328,13 +321,6 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -440,7 +426,8 @@ document.write(`
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Basics</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="basics.geometry.html">Geometry</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="basics.geometry.primitives.html">Geometric Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.geometry.points_and_vectors.html">Points and Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.geometry.planes_and_frames.html">Planes and Frames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.polygons_and_polyhedrons.html">Polygons and Polyhedrons</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.curves_and_surfaces.html">Curves and Surfaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.solids.html">Shapes and Solids</a></li>
@@ -552,7 +539,7 @@ document.write(`
 </section>
 <section id="the-rgb-color-circle">
 <h2>The RGB Color Circle</h2>
-<p>The color class (<a class="reference internal" href="../reference/generated/compas.colors.Color.html" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>) provides constructor methods
+<p>The color class (<a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>) provides constructor methods
 for the primary, secondary, and tertiary colors of the RGB color wheel or color circle.</p>
 <section id="primary-colors">
 <h3>Primary Colors</h3>
@@ -602,9 +589,9 @@ for the primary, secondary, and tertiary colors of the RGB color wheel or color 
 </section>
 <section id="lighter-and-darker-colors">
 <h2>Lighter and Darker Colors</h2>
-<p>The color class (<a class="reference internal" href="../reference/generated/compas.colors.Color.html" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>) provides methods to generate lighter and darker variations of a given color.
-The methods can be used to modify the colors in-place (<a class="reference internal" href="../reference/generated/compas.colors.Color.lighten.html" title="compas.colors.Color.lighten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.lighten()</span></code></a> and <a class="reference internal" href="../reference/generated/compas.colors.Color.darken.html" title="compas.colors.Color.darken"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.darken()</span></code></a>),
-or to generate new colors (<a class="reference internal" href="../reference/generated/compas.colors.Color.lightened.html" title="compas.colors.Color.lightened"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.lightened()</span></code></a> and <a class="reference internal" href="../reference/generated/compas.colors.Color.darkened.html" title="compas.colors.Color.darkened"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.darkened()</span></code></a>).</p>
+<p>The color class (<a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>) provides methods to generate lighter and darker variations of a given color.
+The methods can be used to modify the colors in-place (<a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.lighten.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.lighten()</span></code></a> and <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.darken.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.darken()</span></code></a>),
+or to generate new colors (<a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.lightened.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.lightened()</span></code></a> and <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.darkened.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.darkened()</span></code></a>).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">red</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">red</span><span class="o">.</span><span class="n">lighten</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 <span class="go">None</span>
@@ -631,7 +618,7 @@ or to generate new colors (<a class="reference internal" href="../reference/gene
 <section id="saturation">
 <h2>Saturation</h2>
 <p>Similar to generating lighter and darker colors, the color class provides methods for saturating or desaturating colors
-(<a class="reference internal" href="../reference/generated/compas.colors.Color.saturate.html" title="compas.colors.Color.saturate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturate()</span></code></a> and <a class="reference internal" href="../reference/generated/compas.colors.Color.desaturate.html" title="compas.colors.Color.desaturate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturate()</span></code></a>, and <a class="reference internal" href="../reference/generated/compas.colors.Color.saturated.html" title="compas.colors.Color.saturated"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturated()</span></code></a> and <a class="reference internal" href="../reference/generated/compas.colors.Color.desaturated.html" title="compas.colors.Color.desaturated"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturated()</span></code></a>).</p>
+(<a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.saturate.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturate()</span></code></a> and <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.desaturate.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturate()</span></code></a>, and <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.saturated.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.saturated()</span></code></a> and <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.Color.desaturated.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.Color.desaturated()</span></code></a>).</p>
 <figure class="figure align-default" id="id3">
 <img alt="../_images/basics.colors_saturation.png" class="figure-img img-fluid" src="../_images/basics.colors_saturation.png" />
 <figcaption>
@@ -641,18 +628,18 @@ or to generate new colors (<a class="reference internal" href="../reference/gene
 </section>
 <section id="color-maps">
 <h2>Color Maps</h2>
-<p>Using <a class="reference internal" href="../reference/generated/compas.colors.ColorMap.html" title="compas.colors.ColorMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorMap</span></code></a>, color maps can be constructed from various color inputs.</p>
+<p>Using <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.ColorMap.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorMap</span></code></a>, color maps can be constructed from various color inputs.</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../reference/generated/compas.colors.ColorMap.from_rgb.html" title="compas.colors.ColorMap.from_rgb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_rgb()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../reference/generated/compas.colors.ColorMap.from_color.html" title="compas.colors.ColorMap.from_color"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_color()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../reference/generated/compas.colors.ColorMap.from_two_colors.html" title="compas.colors.ColorMap.from_two_colors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_two_colors()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../reference/generated/compas.colors.ColorMap.from_three_colors.html" title="compas.colors.ColorMap.from_three_colors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_three_colors()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.ColorMap.from_rgb.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_rgb()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.ColorMap.from_color.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_color()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.ColorMap.from_two_colors.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_two_colors()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.ColorMap.from_three_colors.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_three_colors()</span></code></a></p></li>
 </ul>
 <p>Maps based on named scientific color palettes designed by Fabio Crameri (<a class="reference external" href="https://www.fabiocrameri.ch/colourmaps/">https://www.fabiocrameri.ch/colourmaps/</a>)
 and some of the <cite>matplotlib</cite> color palettes are also available.</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../reference/generated/compas.colors.ColorMap.from_palette.html" title="compas.colors.ColorMap.from_palette"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_palette()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../reference/generated/compas.colors.ColorMap.from_mpl.html" title="compas.colors.ColorMap.from_mpl"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_mpl()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.ColorMap.from_palette.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_palette()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.colors.ColorMap.from_mpl.html" title="(in COMPAS vlatest)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.colors.ColorMap.from_mpl()</span></code></a></p></li>
 </ul>
 <p>There is currently no predefined function for color map examples.
 However, using the following template we can compare various examples.</p>

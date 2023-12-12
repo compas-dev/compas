@@ -169,13 +169,6 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -328,13 +321,6 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../devguide/index.html">
                         Developer Guide
                       </a>
@@ -440,7 +426,8 @@ document.write(`
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Basics</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="basics.geometry.html">Geometry</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="basics.geometry.primitives.html">Geometric Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.geometry.points_and_vectors.html">Points and Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.geometry.planes_and_frames.html">Planes and Frames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.polygons_and_polyhedrons.html">Polygons and Polyhedrons</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.curves_and_surfaces.html">Curves and Surfaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.solids.html">Shapes and Solids</a></li>
@@ -540,7 +527,7 @@ document.write(`
                   
   <section id="serialising-data">
 <h1>Serialising Data</h1>
-<p class="lead">The data package provides a base class (<a class="reference internal" href="../reference/generated/compas.data.Data.html" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>) for all data objects in the COMPAS framework (see <span class="xref std std-ref">Inheritance Diagrams</span>),
+<p class="lead">The data package provides a base class (<a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.data.Data.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>) for all data objects in the COMPAS framework (see <span class="xref std std-ref">Inheritance Diagrams</span>),
 the mechanism for serialization of data to JSON format,
 and the base infrastructure for validation of the data of COMPAS objects in both the original Python and serialized JSON formats.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">Data</span>

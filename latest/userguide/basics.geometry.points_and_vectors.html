@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Introduction &#8212; compas</title>
+    <title>Points and Vectors &#8212; compas</title>
   
   
   
@@ -56,7 +56,7 @@
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/design-tabs.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'userguide/introduction';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'userguide/basics.geometry.points_and_vectors';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
@@ -64,8 +64,8 @@
     <link rel="shortcut icon" href="../_static/compas.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Installation" href="installation.html" />
-    <link rel="prev" title="User Guide" href="index.html" />
+    <link rel="next" title="Planes and Frames" href="basics.geometry.planes_and_frames.html" />
+    <link rel="prev" title="Geometry" href="basics.geometry.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -417,16 +417,16 @@ document.write(`
      aria-label="Section Navigation">
   <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="whatsnext.html">What’s Next</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Basics</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="basics.geometry.html">Geometry</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="basics.geometry.points_and_vectors.html">Points and Vectors</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="basics.geometry.html">Geometry</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Points and Vectors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.planes_and_frames.html">Planes and Frames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.polygons_and_polyhedrons.html">Polygons and Polyhedrons</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.geometry.curves_and_surfaces.html">Curves and Surfaces</a></li>
@@ -508,7 +508,10 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Introduction</li>
+    
+    <li class="breadcrumb-item"><a href="basics.geometry.html" class="nav-link">Geometry</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Points and Vectors</li>
   </ul>
 </nav>
 </div>
@@ -525,33 +528,186 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="introduction">
-<h1>Introduction</h1>
-<p class="lead">COMPAS is an open-source, Python-based framework for computational research and collaboration in architecture, engineering, fabrication and construction.
-It offers a wide range of functionality for the analysis, planning, and simulation of complex and bespoke architectural and engineering systems.</p>
-<section id="the-framework">
-<h2>The Framework</h2>
-<p>The framework consists of a core library (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code>), core extensions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_cgal</span></code>, <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_libigl</span></code>, <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_occ</span></code>, <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_gmsh</span></code>),
-a standalone viewer (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_view2</span></code>),
-dedicated integrations for Rhino (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_rhino</span></code>), Grasshopper (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_ghpython</span></code>), and Blender (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code>),
-and a growing number of packages for specific tasks in the AEC domain, such as:</p>
-<ul class="simple">
-<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_fab</span></code> for robotic fabrication</p></li>
-<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_dem</span></code> for discrete element modelling</p></li>
-<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_fea</span></code> for finite element analysis</p></li>
-<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_fdm</span></code> for constrained form finding</p></li>
-<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_ifc</span></code> for building information modelling</p></li>
-<li><p>…</p></li>
-</ul>
-<p>This documentation is primarily about the core library, but it also contains information about the dedicated CAD integrations,
-and, where relevant, the reader is referred to the documentation of core extensions and some of the AEC packages.</p>
+  <section id="points-and-vectors">
+<h1>Points and Vectors</h1>
+<p>Points and vectors are represented by three floats, planes by a point and a vector, and frames by a point and two vectors.</p>
+<section id="points">
+<h2>Points</h2>
+<p>A <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.geometry.Point.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> represents a location in 3D space.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">Point(x=1.0, y=2.0, z=3.0)</span>
+</pre></div>
+</div>
+<p>The individual coordinates of a point can be accessed by their names,
+or by the corresponding index of each name (<code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">-&gt;</span> <span class="pre">x,</span> <span class="pre">1</span> <span class="pre">-&gt;</span> <span class="pre">y,</span> <span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">z</span></code>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">x</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">y</span>
+<span class="go">2.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">z</span>
+<span class="go">3.0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">2.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">3.0</span>
+</pre></div>
+</div>
+<p>When construction a point, the Z coordinate is optional and defaults to zero.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">Point(x=1.0, y=2.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">z</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+<p>The coordinates of a point can be modified by assigning new values to the corresponding attributes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">Point(x=1.0, y=0.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">Point(x=0.0, y=1.0, z=0.0)</span>
+</pre></div>
+</div>
+<p>Point objects have various methods for distance calculations, and for membership tests.
+See <a class="reference internal" href="basics.geometry.distance_and_membership.html"><span class="doc">Distance and Membership</span></a> for more information.</p>
 </section>
-<section id="compas-dev">
-<h2>compas-dev</h2>
-<p>The development of the core infrastructure of COMPAS is coordinated on GitHub at the <code class="docutils literal notranslate"><span class="pre">compas-dev</span></code> organisation.</p>
+<section id="vectors">
+<h2>Vectors</h2>
+<p>A <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.geometry.Vector.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a> represents a direction in 3D space
+and a distance or magnitude along that direction (the length of the vector).
+Vectors are always based at the origin of the coordinate system.
+A vector is the direction, and distance along that direction,
+from the origin of the coordinate system to a point in space.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span>
+<span class="go">Vector(x=1.0, y=0.0, z=0.0)</span>
+</pre></div>
+</div>
+<p>Special vectors can be constructed using predefined constructor methods.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Vector</span><span class="o">.</span><span class="n">Xaxis</span><span class="p">()</span>
+<span class="go">Vector(x=1.0, y=0.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vector</span><span class="o">.</span><span class="n">Yaxis</span><span class="p">()</span>
+<span class="go">Vector(x=0.0, y=1.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vector</span><span class="o">.</span><span class="n">Zaxis</span><span class="p">()</span>
+<span class="go">Vector(x=0.0, y=0.0, z=1.0)</span>
+</pre></div>
+</div>
+<p>Working with vectors is very similar to working with points.
+Vector components can be accessed using the component attribute names, or using the corresponding indices.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span>
+<span class="go">Vector(x=1.0, y=1.0, z=1.0)</span>
+</pre></div>
+</div>
+<p>All components are automatically converted to floats.
+The Z component is optional and defaults to zero.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">Vector(x=1.0, y=0.0, z=0.0)</span>
+</pre></div>
+</div>
+<p>In addition to information about components or coordinates, vectors have a direction and magnitude.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">direction</span>
+<span class="go">Vector(x=0.5773502691896258, y=0.5773502691896258, z=0.5773502691896258)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">magnitude</span>
+<span class="go">1.7320508075688772</span>
+</pre></div>
+</div>
+<p>An alias for <code class="docutils literal notranslate"><span class="pre">magnitude</span></code> is <code class="docutils literal notranslate"><span class="pre">length</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">length</span>
+<span class="go">1.7320508075688772</span>
+</pre></div>
+</div>
+<p>Vector objects support dot and cross product calculations.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">Vector(x=0.0, y=0.0, z=1.0)</span>
+</pre></div>
+</div>
+<p>Angles between two vectors can also be calculated.
+Note that the angles are always returned in radians.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">1.5707963267948966</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">angles</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">(1.5707963267948966, 4.71238898038469)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">angle_signed</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">-1.5707963267948966</span>
+</pre></div>
+</div>
 </section>
-<section id="compas-association">
-<h2>COMPAS Association</h2>
+<section id="basic-arithmetic">
+<h2>Basic Arithmetic</h2>
+<p><a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.geometry.Point.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> and <a class="reference external" href="https://compas.dev/compas/latest/reference/generated/compas.geometry.Vector.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a> objects support basic arithmetic
+through Python’s built-in operators.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="go">Point(x=1.0, y=1.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+<span class="go">Vector(x=1.0, y=-1.0, z=0.0)  # not sure that this is helpful</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="go">Point(x=2.0, y=0.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="go">Point(x=0.5, x=0.0, z=0.0)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">+</span> <span class="n">v</span>
+<span class="go">Vector(x=1.0, y=1.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">-</span> <span class="n">v</span>
+<span class="go">Vector(x=1.0, y=-1.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="go">Vector(x=2.0, y=0.0, z=0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="go">Vector(x=0.5, y=0.0, z=0.0)</span>
+</pre></div>
+</div>
+<p>The second operand of addition and subtraction can also be a Python list or tuple.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">Point(x=1.0, y=1.0, z=0.0)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">Vector(x=1.0, y=1.0, z=0.0)</span>
+</pre></div>
+</div>
+<p>A binary operator involving points and vectors returns a new object.
+Therefore the operators can be chained.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="go">Point(x=1.0, y=2.0, z=3.0)</span>
+</pre></div>
+</div>
+<p>The in-place variants of binary operators modify the objects in place.
+Chaining is therefore not possible.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">+=</span> <span class="n">v</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span>
+<span class="go">Vector(x=1.0, y=1.0, z=0.0)</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -567,20 +723,20 @@ and, where relevant, the reader is referred to the documentation of core extensi
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="basics.geometry.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">User Guide</p>
+        <p class="prev-next-title">Geometry</p>
       </div>
     </a>
     <a class="right-next"
-       href="installation.html"
+       href="basics.geometry.planes_and_frames.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Installation</p>
+        <p class="prev-next-title">Planes and Frames</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -602,16 +758,16 @@ and, where relevant, the reader is referred to the documentation of core extensi
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-framework">The Framework</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compas-dev">compas-dev</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compas-association">COMPAS Association</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#points">Points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors">Vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-arithmetic">Basic Arithmetic</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/compas-dev/compas/edit/main/docs/userguide/introduction.rst">
+    <a href="https://github.com/compas-dev/compas/edit/main/docs/userguide/basics.geometry.points_and_vectors.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
