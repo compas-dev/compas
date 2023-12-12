@@ -37,4 +37,5 @@ class BoxObject(GHSceneObject, GeometryObject):
             transformation = conversions.transformation_to_rhino(self.transformation)
             box.Transform(transformation)
 
-        return box
+        self._item_guids = [box]
+        return self._item_guids

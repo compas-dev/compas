@@ -12,4 +12,5 @@ class GHSceneObject(SceneObject):
         super(GHSceneObject, self).__init__(**kwargs)
 
     def clear(self):
-        raise NotImplementedError
+        """Clear the object from the Rhino scene. In GH, this is not necessary."""
+        pass

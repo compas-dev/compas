@@ -13,14 +13,12 @@ class SceneObject(object):
     ----------
     item : Any
         The item which should be visualized using the created SceneObject.
-    context : str, optional
-        Explicit context to pick the SceneObject from.
-        If not specified, an attempt will be made to automatically detect the appropriate context.
+
 
     Attributes
     ----------
-    ITEM_SCENEOBJECT : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.scene.SceneObject`]]]
-        Dictionary mapping data types to the corresponding scene objects types per visualization context.
+    item_guids : list[object]
+        The GUIDs of the drawn item in the visualization context.
 
     """
 
@@ -30,6 +28,11 @@ class SceneObject(object):
     def __init__(self, item, **kwargs):
         self._item = item
         self._transformation = None
+        self._item_guids = None
+
+    @property
+    def item_guids(self):
+        return self._item_guids or []
 
     @property
     def transformation(self):
@@ -52,7 +55,7 @@ class SceneObject(object):
         """The main drawing method."""
         raise NotImplementedError
 
-    @staticmethod
-    def draw_collection(collection):
-        """Drawing method for drawing an entire collection of objects."""
+    @abstractmethod
+    def clear(self):
+        """The main clearing method."""
         raise NotImplementedError
