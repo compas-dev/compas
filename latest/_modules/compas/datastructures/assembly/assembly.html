@@ -621,6 +621,37 @@ document.write(`
             <span class="k">raise</span> <span class="n">AssemblyError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Assembly.delete_part"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.delete_part.html#compas.datastructures.Assembly.delete_part">[docs]</a>    <span class="k">def</span> <span class="nf">delete_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove a part  from the assembly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        part : :class:`compas.datastructures.Part`</span>
+<span class="sd">            The part to add.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="p">[</span><span class="n">part</span><span class="o">.</span><span class="n">guid</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_node</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">part</span><span class="o">.</span><span class="n">key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Assembly.delete_connection"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.delete_connection.html#compas.datastructures.Assembly.delete_connection">[docs]</a>    <span class="k">def</span> <span class="nf">delete_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a connection between two parts.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : :class:`compas.datastructures.Part`</span>
+<span class="sd">            The part to add.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_edge</span><span class="p">(</span><span class="n">edge</span><span class="o">=</span><span class="n">edge</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Assembly.parts"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.parts.html#compas.datastructures.Assembly.parts">[docs]</a>    <span class="k">def</span> <span class="nf">parts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The parts of the assembly.</span>
 

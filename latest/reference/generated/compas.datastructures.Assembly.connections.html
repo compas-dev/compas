@@ -64,7 +64,7 @@
     <link rel="shortcut icon" href="../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Assembly.find" href="compas.datastructures.Assembly.find.html" />
+    <link rel="next" title="Assembly.delete_connection" href="compas.datastructures.Assembly.delete_connection.html" />
     <link rel="prev" title="Assembly.add_part" href="compas.datastructures.Assembly.add_part.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -611,6 +611,8 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="compas.datastructures.Assembly.add_connection.html">Assembly.add_connection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.datastructures.Assembly.add_part.html">Assembly.add_part</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Assembly.connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.datastructures.Assembly.delete_connection.html">Assembly.delete_connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compas.datastructures.Assembly.delete_part.html">Assembly.delete_part</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.datastructures.Assembly.find.html">Assembly.find</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.datastructures.Assembly.find_by_key.html">Assembly.find_by_key</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compas.datastructures.Assembly.from_data.html">Assembly.from_data</a></li>
@@ -4930,7 +4932,7 @@ document.write(`
 <h1>Assembly.connections</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Assembly.connections">
-<span class="sig-prename descclassname"><span class="pre">Assembly.</span></span><span class="sig-name descname"><span class="pre">connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/assembly/assembly.py#L162"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas/datastructures/assembly/assembly.html#Assembly.connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Assembly.</span></span><span class="sig-name descname"><span class="pre">connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/assembly/assembly.py#L193"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas/datastructures/assembly/assembly.html#Assembly.connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Iterate over the connections between the parts.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4972,11 +4974,11 @@ If <cite>data</cite> is True, the next connector identifier and its attributes a
       </div>
     </a>
     <a class="right-next"
-       href="compas.datastructures.Assembly.find.html"
+       href="compas.datastructures.Assembly.delete_connection.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Assembly.find</p>
+        <p class="prev-next-title">Assembly.delete_connection</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
