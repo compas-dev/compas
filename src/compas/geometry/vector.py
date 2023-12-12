@@ -75,6 +75,8 @@ class Vector(Geometry):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
+        self._direction = None
+        self._magnitude = None
         self.x = x
         self.y = y
         self.z = z
@@ -192,6 +194,8 @@ class Vector(Geometry):
     @x.setter
     def x(self, x):
         self._x = float(x)
+        self._direction = None
+        self._magnitude = None
 
     @property
     def y(self):
@@ -200,6 +204,8 @@ class Vector(Geometry):
     @y.setter
     def y(self, y):
         self._y = float(y)
+        self._direction = None
+        self._magnitude = None
 
     @property
     def z(self):
@@ -208,10 +214,24 @@ class Vector(Geometry):
     @z.setter
     def z(self, z):
         self._z = float(z)
+        self._direction = None
+        self._magnitude = None
+
+    @property
+    def magnitude(self):
+        if self._magnitude is None:
+            self._magnitude = length_vector(self)
+        return self._magnitude
 
     @property
     def length(self):
-        return length_vector(self)
+        return self.magnitude
+
+    @property
+    def direction(self):
+        if not self._direction:
+            self._direction = self.unitized()
+        return self._direction
 
     # ==========================================================================
     # Constructors
@@ -788,6 +808,24 @@ class Vector(Geometry):
 
         """
         return angles_vectors(self, other)
+
+    def component(self, other):
+        """Compute the component of this vector in the direction of another vector.
+
+        Parameters
+        ----------
+        other : [float, float, float] | :class:`compas.geometry.Vector`
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        cosa = self.dot(other)
+        component = Vector(other[0], other[1], other[2])
+        L = component.length
+        component.scale(cosa / L)
+        return component
 
     def transform(self, T):
         """Transform this vector.
