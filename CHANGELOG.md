@@ -17,6 +17,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
 * Added `compas.scene.Scene`.
+* Added `compas.geometry.Brep.from_breps()`
+* Added `compas.geometry.Brep.from_planes()`
+* Added `compas.geometry.Brep.to_iges()`
+* Added `compas.geometry.Brep.to_meshes()`
+* Added `compas.geometry.Brep.to_polygons()`
+* Added `compas.geometry.Brep.to_stl()`
+* Added `compas.geometry.Brep.heal()`
+* Added `compas.geometry.Brep.edge_faces()`
+* Added `compas.geometry.Brep.edge_loop()`
+* Added `compas.geometry.Brep.fillet()`
+* Added `compas.geometry.Brep.filleted()`
+* Added `compas.geometry.BrepFilletError`
+* Added `compas.geometry.Brep.is_shell`
+* Added `compas.geometry.Brep.contains()`
+* Added `compas.geometry.BrepFace.adjacent_faces()`
+* Added `compas_rhino.geometry.RhinoBrep.is_manifold`
+* Added `compas_rhino.geometry.RhinoBrep.contains()`
+* Added `compas_rhino.geometry.RhinoBrepFace.adjacent_faces()`
+* Added `compas_rhino.geometry.RhinoBrepFace.as_brep()`
 
 ### Changed
 
