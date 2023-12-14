@@ -39,6 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.BrepEdge.orientation`.
 * Added `compas.geometry.BrepEdge.type`.
 * Added `compas.geometry.BrepEdge.length`.
+* Added `compas.geometry.BrepFace.type`.
+* Added `compas.geometry.BrepFace.add_loop()`.
+* Added `compas.geometry.BrepFace.add_loops()`.
+* Added `compas.geometry.BrepFace.to_polygon()` with generic implementation.
+* Added `compas.geometry.BrepFace.try_get_nurbssurface()`.
 
 ### Changed
 
