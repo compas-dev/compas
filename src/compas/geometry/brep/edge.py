@@ -40,9 +40,9 @@ class BrepEdge(Data):
         Returns True if this edge is a bspline, False otherwise.
     is_other : bool, read-only
         Returns True if this edge is of another shape, False otherwise.
-    orientation : literal(BrepOrientation), read-only
+    orientation : literal(:class:`~compas.geometry.BrepOrientation`), read-only
         Returns the orientation of this edge. One of: FORWARD, REVERSED, INTERNAL, EXTERNAL.
-    type : literal(CurveType), read-only
+    type : literal(:class:`~compas.geometry.CurveType`), read-only
         Returns the type of this edge. One of: LINE, CIRCLE, ELLIPSE, HYPERBOLA, PARABOLA, BEZIER, BSPLINE, OTHER.
     vertices : list[:class:`compas.geometry.BrepVertex`], read-only
         Gets the list of vertices which compound this edge.
