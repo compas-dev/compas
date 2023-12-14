@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.geometry.plane &#8212; compas</title>
+    <title>compas.geometry.plane &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/tabs.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -525,12 +524,12 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;normal&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Plane.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.html#compas.geometry.Plane.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Plane</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_normal</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span></div>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(point=</span><span class="si">{1!r}</span><span class="s2">, normal=</span><span class="si">{2!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -616,7 +615,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Plane.from_three_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.from_three_points.html#compas.geometry.Plane.from_three_points">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_three_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a plane from three points in three-dimensional space.</span>
 
@@ -648,9 +647,9 @@ document.write(`
         <span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">b</span><span class="p">)</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
         <span class="n">normal</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span> <span class="o">-</span> <span class="n">a</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Plane.from_point_and_two_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.from_point_and_two_vectors.html#compas.geometry.Plane.from_point_and_two_vectors">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_point_and_two_vectors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a plane from a base point and two vectors.</span>
 
@@ -679,9 +678,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">normal</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Plane.from_abcd"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.from_abcd.html#compas.geometry.Plane.from_abcd">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_abcd</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">abcd</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a plane from the plane equation coefficients.</span>
 
@@ -699,9 +698,9 @@ document.write(`
         <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">normal</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
         <span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">b</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Plane.worldXY"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.worldXY.html#compas.geometry.Plane.worldXY">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">worldXY</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world XY plane.</span>
 
@@ -711,9 +710,9 @@ document.write(`
 <span class="sd">            The world XY plane.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Plane.worldYZ"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.worldYZ.html#compas.geometry.Plane.worldYZ">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">worldYZ</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world YZ plane.</span>
 
@@ -723,9 +722,9 @@ document.write(`
 <span class="sd">            The world YZ plane.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Plane.worldZX"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.worldZX.html#compas.geometry.Plane.worldZX">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">worldZX</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world ZX plane.</span>
 
@@ -735,9 +734,9 @@ document.write(`
 <span class="sd">            The world ZX plane.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Plane.from_frame"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.from_frame.html#compas.geometry.Plane.from_frame">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_frame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a plane from a frame.</span>
 
@@ -754,9 +753,9 @@ document.write(`
 <span class="sd">        Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Plane.from_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.from_points.html#compas.geometry.Plane.from_points">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Plane</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a plane from a list of points.</span>
 
@@ -789,13 +788,13 @@ document.write(`
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_three_points</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">)</span>
         <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">bestfit_plane</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Transformations</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Plane.transform"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.transform.html#compas.geometry.Plane.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform this plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -819,13 +818,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Plane.is_parallel"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.is_parallel.html#compas.geometry.Plane.is_parallel">[docs]</a>    <span class="k">def</span> <span class="nf">is_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if this plane is parallel to another plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -849,9 +848,9 @@ document.write(`
 <span class="sd">        True</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">normal</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span></div>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">normal</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span>
 
-<div class="viewcode-block" id="Plane.is_perpendicular"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.is_perpendicular.html#compas.geometry.Plane.is_perpendicular">[docs]</a>    <span class="k">def</span> <span class="nf">is_perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if this plane is perpendicular to another plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -875,11 +874,11 @@ document.write(`
 <span class="sd">        False</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">normal</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tol</span></div>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">normal</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tol</span>
 
     <span class="c1"># move to Point.is_on_plane?</span>
     <span class="c1"># if point.is_on_plane(plane): ...</span>
-<div class="viewcode-block" id="Plane.contains_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.contains_point.html#compas.geometry.Plane.contains_point">[docs]</a>    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if a given point lies in the plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -903,11 +902,11 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">-</span> <span class="n">point</span>
-        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tol</span></div>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tol</span>
 
     <span class="c1"># move to Point.distance_to_plane?</span>
     <span class="c1"># point.distance_to_plane(plane)</span>
-<div class="viewcode-block" id="Plane.distance_to_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.distance_to_point.html#compas.geometry.Plane.distance_to_point">[docs]</a>    <span class="k">def</span> <span class="nf">distance_to_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">distance_to_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the distance from a given point to the plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -928,12 +927,12 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">-</span> <span class="n">point</span>
-        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
 
     <span class="c1"># move to Point.closest_on_plane?</span>
     <span class="c1"># point.closest_on_plane(plane)</span>
     <span class="c1"># remove entirely?</span>
-<div class="viewcode-block" id="Plane.closest_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.closest_point.html#compas.geometry.Plane.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the closest point on the plane to a given point.</span>
 
 <span class="sd">        Parameters</span>
@@ -955,12 +954,12 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">-</span> <span class="n">point</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
 
     <span class="c1"># move to Point.proejcted_on_plane?</span>
     <span class="c1"># point.projected_on_plane(plane)</span>
     <span class="c1"># point.project_on_plane(plane)</span>
-<div class="viewcode-block" id="Plane.projected_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.projected_point.html#compas.geometry.Plane.projected_point">[docs]</a>    <span class="k">def</span> <span class="nf">projected_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">projected_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the projection of a given point onto the plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -987,12 +986,12 @@ document.write(`
 
         <span class="n">line</span> <span class="o">=</span> <span class="n">Line</span><span class="o">.</span><span class="n">from_point_and_vector</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
         <span class="n">intersection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intersection_with_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">intersection</span></div>
+        <span class="k">return</span> <span class="n">intersection</span>
 
     <span class="c1"># move to Point.mirrored_by_plane?</span>
     <span class="c1"># point.mirrored_by_plane(plane)</span>
     <span class="c1"># point.mirror_by_plane(plane)</span>
-<div class="viewcode-block" id="Plane.mirrored_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.mirrored_point.html#compas.geometry.Plane.mirrored_point">[docs]</a>    <span class="k">def</span> <span class="nf">mirrored_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">mirrored_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the mirror image of a given point.</span>
 
 <span class="sd">        Parameters</span>
@@ -1014,9 +1013,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">-</span> <span class="n">point</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">distance</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">distance</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Plane.intersection_with_line"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.intersection_with_line.html#compas.geometry.Plane.intersection_with_line">[docs]</a>    <span class="k">def</span> <span class="nf">intersection_with_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">intersection_with_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the intersection of a plane and a line.</span>
 
 <span class="sd">        Parameters</span>
@@ -1044,9 +1043,9 @@ document.write(`
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">-</span> <span class="n">line</span><span class="o">.</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span> <span class="o">/</span> <span class="n">line</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Plane.intersection_with_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.intersection_with_plane.html#compas.geometry.Plane.intersection_with_plane">[docs]</a>    <span class="k">def</span> <span class="nf">intersection_with_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">intersection_with_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the intersection of two planes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1079,9 +1078,9 @@ document.write(`
         <span class="n">line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">direction</span><span class="p">))</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">plane</span><span class="o">.</span><span class="n">intersection_with_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">Line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point</span> <span class="o">+</span> <span class="n">direction</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point</span> <span class="o">+</span> <span class="n">direction</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Plane.intersections_with_curve"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.intersections_with_curve.html#compas.geometry.Plane.intersections_with_curve">[docs]</a>    <span class="k">def</span> <span class="nf">intersections_with_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">intersections_with_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the intersection of a plane and a curve.</span>
 
 <span class="sd">        Parameters</span>
@@ -1104,12 +1103,12 @@ document.write(`
 <span class="sd">        [Point(0.000, 0.000, 0.000)]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">pass</span>
 
-<div class="viewcode-block" id="Plane.intersections_with_surface"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.intersections_with_surface.html#compas.geometry.Plane.intersections_with_surface">[docs]</a>    <span class="k">def</span> <span class="nf">intersections_with_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">intersections_with_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-<div class="viewcode-block" id="Plane.offset"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Plane.offset.html#compas.geometry.Plane.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new offset plane by a given distance.</span>
 
 <span class="sd">        The plane normal is used as positive direction.</span>
@@ -1125,7 +1124,7 @@ document.write(`
 <span class="sd">            The offset plane.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Plane</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">distance</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Plane</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">distance</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>
@@ -1134,14 +1133,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>

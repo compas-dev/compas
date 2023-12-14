@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.geometry.curves.curve &#8212; compas</title>
+    <title>compas.geometry.curves.curve &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/tabs.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -542,13 +541,13 @@ document.write(`
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">new_curve</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Curve.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.html#compas.geometry.Curve.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Curve</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_domain</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">frame</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span></div>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(frame=</span><span class="si">{1!r}</span><span class="s2">, domain=</span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -605,7 +604,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Curve.from_step"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.from_step.html#compas.geometry.Curve.from_step">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_step</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a curve from a STP file.</span>
 
@@ -619,9 +618,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Curve`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.from_obj"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.from_obj.html#compas.geometry.Curve.from_obj">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a curve from an OBJ file.</span>
 
@@ -635,13 +634,13 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Curve`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Curve.to_step"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.to_step.html#compas.geometry.Curve.to_step">[docs]</a>    <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;AP203&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;AP203&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the curve geometry to a STP file.</span>
 
 <span class="sd">        Parameters</span>
@@ -656,9 +655,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.to_obj"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.to_obj.html#compas.geometry.Curve.to_obj">[docs]</a>    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the curve geometry to an OBJ file.</span>
 
 <span class="sd">        Parameters</span>
@@ -671,9 +670,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.to_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.to_points.html#compas.geometry.Curve.to_points">[docs]</a>    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the curve to a list of points.</span>
 
 <span class="sd">        Parameters</span>
@@ -693,9 +692,9 @@ document.write(`
         <span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span>
         <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">domain</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="n">points</span></div>
+        <span class="k">return</span> <span class="n">points</span>
 
-<div class="viewcode-block" id="Curve.to_polyline"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.to_polyline.html#compas.geometry.Curve.to_polyline">[docs]</a>    <span class="k">def</span> <span class="nf">to_polyline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_polyline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the curve to a polyline.</span>
 
 <span class="sd">        Parameters</span>
@@ -715,9 +714,9 @@ document.write(`
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polyline</span>
 
         <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Polyline</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Polyline</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Curve.to_polygon"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.to_polygon.html#compas.geometry.Curve.to_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">to_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the curve to a polygon.</span>
 
 <span class="sd">        Parameters</span>
@@ -742,13 +741,13 @@ document.write(`
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
 
         <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_points</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">points</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">points</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Transformations</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Curve.transform"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.transform.html#compas.geometry.Curve.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the local coordinate system of the curve.</span>
 
 <span class="sd">        Parameters</span>
@@ -769,13 +768,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Curve.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.point_at.html#compas.geometry.Curve.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a point of the curve at a parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -798,9 +797,9 @@ document.write(`
 <span class="sd">        :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.normal_at.html#compas.geometry.Curve.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the normal of the curve at a parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -823,9 +822,9 @@ document.write(`
 <span class="sd">        :meth:`point_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.tangent_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.tangent_at.html#compas.geometry.Curve.tangent_at">[docs]</a>    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the tangent vector of the curve at a parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -848,9 +847,9 @@ document.write(`
 <span class="sd">        :meth:`point_at`, :meth:`normal_at`, :meth:`binormal_at`, :meth:`frame_at`, :meth:`curvature_at`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.frame_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.frame_at.html#compas.geometry.Curve.frame_at">[docs]</a>    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the local frame of the curve at a parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -873,9 +872,9 @@ document.write(`
 <span class="sd">        :meth:`point_at`, :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`curvature_at`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">tangent_at</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_at</span><span class="p">(</span><span class="n">t</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">tangent_at</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_at</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Curve.curvature_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.curvature_at.html#compas.geometry.Curve.curvature_at">[docs]</a>    <span class="k">def</span> <span class="nf">curvature_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">curvature_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the curvature vector of the curve at a parameter.</span>
 
 <span class="sd">        This is a vector pointing from the point on the curve at the specified parameter,</span>
@@ -903,13 +902,13 @@ document.write(`
 <span class="sd">        :meth:`point_at`, :meth:`normal_at`, :meth:`tangent_at`, :meth:`binormal_at`, :meth:`frame_at`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Methods continued</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Curve.reverse"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.reverse.html#compas.geometry.Curve.reverse">[docs]</a>    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reverse the parametrisation of the curve.</span>
 
 <span class="sd">        Returns</span>
@@ -921,9 +920,9 @@ document.write(`
 <span class="sd">        :meth:`reversed`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.reversed"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.reversed.html#compas.geometry.Curve.reversed">[docs]</a>    <span class="k">def</span> <span class="nf">reversed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">reversed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reverse a copy of the curve.</span>
 
 <span class="sd">        Returns</span>
@@ -937,7 +936,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">copy</span><span class="o">.</span><span class="n">reverse</span>
-        <span class="k">return</span> <span class="n">copy</span></div>
+        <span class="k">return</span> <span class="n">copy</span>
 
     <span class="c1"># def space(self, n=10):</span>
     <span class="c1">#     &quot;&quot;&quot;Compute evenly spaced parameters over the curve domain.</span>
@@ -980,7 +979,7 @@ document.write(`
     <span class="c1">#     &quot;&quot;&quot;</span>
     <span class="c1">#     return [self.point_at(t) for t in self.space(resolution)]</span>
 
-<div class="viewcode-block" id="Curve.closest_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.closest_point.html#compas.geometry.Curve.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">return_parameter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">return_parameter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the closest point on the curve to a given point.</span>
 
 <span class="sd">        Parameters</span>
@@ -997,9 +996,9 @@ document.write(`
 <span class="sd">            If `return_parameter` is True, the closest point and the corresponding parameter are returned.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.divide_by_count"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.divide_by_count.html#compas.geometry.Curve.divide_by_count">[docs]</a>    <span class="k">def</span> <span class="nf">divide_by_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">return_points</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">divide_by_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">return_points</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the curve parameters that divide the curve into a specific number of equal length segments.</span>
 
 <span class="sd">        Parameters</span>
@@ -1023,9 +1022,9 @@ document.write(`
 <span class="sd">        :meth:`split`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.divide_by_length"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.divide_by_length.html#compas.geometry.Curve.divide_by_length">[docs]</a>    <span class="k">def</span> <span class="nf">divide_by_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">return_points</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">divide_by_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">return_points</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the curve parameters that divide the curve into segments of specified length.</span>
 
 <span class="sd">        Parameters</span>
@@ -1049,9 +1048,9 @@ document.write(`
 <span class="sd">        :meth:`split`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.aabb"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.aabb.html#compas.geometry.Curve.aabb">[docs]</a>    <span class="k">def</span> <span class="nf">aabb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">aabb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the axis-aligned bounding box of the curve.</span>
 
 <span class="sd">        Returns</span>
@@ -1059,9 +1058,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Box`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.length"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.length.html#compas.geometry.Curve.length">[docs]</a>    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the length of the curve.</span>
 
 <span class="sd">        Parameters</span>
@@ -1070,22 +1069,22 @@ document.write(`
 <span class="sd">            Required precision of the calculated length.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.fair"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.fair.html#compas.geometry.Curve.fair">[docs]</a>    <span class="k">def</span> <span class="nf">fair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="k">def</span> <span class="nf">fair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.offset"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.offset.html#compas.geometry.Curve.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.smooth"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.smooth.html#compas.geometry.Curve.smooth">[docs]</a>    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.split"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.split.html#compas.geometry.Curve.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Curve.trim"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Curve.trim.html#compas.geometry.Curve.trim">[docs]</a>    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </pre></div>
 
                 </article>
@@ -1094,14 +1093,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>

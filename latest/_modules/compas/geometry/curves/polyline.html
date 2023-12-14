@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.geometry.curves.polyline &#8212; compas</title>
+    <title>compas.geometry.curves.polyline &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/tabs.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -557,11 +556,11 @@ document.write(`
         <span class="n">curve</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">curve</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyline.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.html#compas.geometry.Polyline.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Polyline</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span></div>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(</span><span class="si">{1!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -650,7 +649,7 @@ document.write(`
     <span class="c1"># Transformations</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Polyline.transform"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.transform.html#compas.geometry.Polyline.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform this polyline.</span>
 
 <span class="sd">        Parameters</span>
@@ -670,13 +669,13 @@ document.write(`
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">transform_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">T</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Polyline.append"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.append.html#compas.geometry.Polyline.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Append a point to the end of the polyline.</span>
 
 <span class="sd">        Parameters</span>
@@ -686,9 +685,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Polyline.insert"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.insert.html#compas.geometry.Polyline.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Insert a point at the specified index.</span>
 
 <span class="sd">        Parameters</span>
@@ -700,9 +699,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Polyline.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.point_at.html#compas.geometry.Polyline.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Point on the polyline at a specific normalized parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -749,9 +748,9 @@ document.write(`
                         <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">end</span>
                 <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">point_at</span><span class="p">((</span><span class="n">t</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">polyline_length</span> <span class="o">/</span> <span class="n">line_length</span><span class="p">)</span>
             <span class="n">x</span> <span class="o">+=</span> <span class="n">dx</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<div class="viewcode-block" id="Polyline.parameter_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.parameter_at.html#compas.geometry.Polyline.parameter_at">[docs]</a>    <span class="k">def</span> <span class="nf">parameter_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parameter_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parameter of the polyline at a specific point.</span>
 
 <span class="sd">        Parameters</span>
@@ -783,9 +782,9 @@ document.write(`
                 <span class="k">continue</span>
             <span class="n">dx</span> <span class="o">+=</span> <span class="n">line</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">distance_to_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
             <span class="k">break</span>
-        <span class="k">return</span> <span class="n">dx</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span></div>
+        <span class="k">return</span> <span class="n">dx</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
 
-<div class="viewcode-block" id="Polyline.tangent_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.tangent_at.html#compas.geometry.Polyline.tangent_at">[docs]</a>    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tangent vector at a specific normalized parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -825,9 +824,9 @@ document.write(`
             <span class="k">if</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">&gt;</span> <span class="n">t</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">direction</span>
             <span class="n">x</span> <span class="o">+=</span> <span class="n">dx</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<div class="viewcode-block" id="Polyline.tangent_at_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.tangent_at_point.html#compas.geometry.Polyline.tangent_at_point">[docs]</a>    <span class="k">def</span> <span class="nf">tangent_at_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">tangent_at_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the tangent vector of a point on a polyline</span>
 
 <span class="sd">        Parameters</span>
@@ -842,9 +841,9 @@ document.write(`
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_point_on_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">direction</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> not found!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">point</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> not found!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Polyline.split_at_corners"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.split_at_corners.html#compas.geometry.Polyline.split_at_corners">[docs]</a>    <span class="k">def</span> <span class="nf">split_at_corners</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_threshold</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">split_at_corners</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_threshold</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Splits a polyline at corners larger than the given angle_threshold</span>
 
 <span class="sd">        Parameters</span>
@@ -886,9 +885,9 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">corner_ids</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">Polyline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)]</span>
 
-        <span class="k">return</span> <span class="n">split_polylines</span></div>
+        <span class="k">return</span> <span class="n">split_polylines</span>
 
-<div class="viewcode-block" id="Polyline.divide_at_corners"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.divide_at_corners.html#compas.geometry.Polyline.divide_at_corners">[docs]</a>    <span class="k">def</span> <span class="nf">divide_at_corners</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_threshold</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">divide_at_corners</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_threshold</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Divides a polyline at corners larger than the given angle_threshold</span>
 
 <span class="sd">        Parameters</span>
@@ -910,9 +909,9 @@ document.write(`
             <span class="n">angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">seg2</span><span class="p">]</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="n">seg1</span><span class="p">]</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">angle</span> <span class="o">&gt;=</span> <span class="n">angle_threshold</span><span class="p">:</span>
                 <span class="n">corner_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seg1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">corner_ids</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">corner_ids</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Polyline.divide"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.divide.html#compas.geometry.Polyline.divide">[docs]</a>    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_segments</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_segments</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Divide a polyline in equal segments.</span>
 
 <span class="sd">        Parameters</span>
@@ -933,9 +932,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">segment_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">/</span> <span class="n">num_segments</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">divide_by_length</span><span class="p">(</span><span class="n">segment_length</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">divide_by_length</span><span class="p">(</span><span class="n">segment_length</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Polyline.divide_by_length"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.divide_by_length.html#compas.geometry.Polyline.divide_by_length">[docs]</a>    <span class="k">def</span> <span class="nf">divide_by_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">divide_by_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Divide a polyline in segments of a given length.</span>
 
 <span class="sd">        Parameters</span>
@@ -997,9 +996,9 @@ document.write(`
         <span class="k">elif</span> <span class="n">strict</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">division_pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">distance_to_point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
             <span class="n">division_pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">division_pts</span></div>
+        <span class="k">return</span> <span class="n">division_pts</span>
 
-<div class="viewcode-block" id="Polyline.split_by_length"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.split_by_length.html#compas.geometry.Polyline.split_by_length">[docs]</a>    <span class="k">def</span> <span class="nf">split_by_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">split_by_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Split a polyline in segments of a given length.</span>
 
 <span class="sd">        Parameters</span>
@@ -1062,9 +1061,9 @@ document.write(`
                 <span class="n">polyline_points_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">polyline_copy</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">divided_polylines</span><span class="p">):</span>
             <span class="n">divided_polylines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>  <span class="c1"># Add the last segment</span>
-        <span class="k">return</span> <span class="n">divided_polylines</span></div>
+        <span class="k">return</span> <span class="n">divided_polylines</span>
 
-<div class="viewcode-block" id="Polyline.split"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.split.html#compas.geometry.Polyline.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_segments</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_segments</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Split a polyline in equal segments.</span>
 
 <span class="sd">        Parameters</span>
@@ -1092,9 +1091,9 @@ document.write(`
             <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span>
         <span class="n">total_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
         <span class="n">segment_length</span> <span class="o">=</span> <span class="n">total_length</span> <span class="o">/</span> <span class="n">num_segments</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_by_length</span><span class="p">(</span><span class="n">segment_length</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_by_length</span><span class="p">(</span><span class="n">segment_length</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Polyline.extend"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.extend.html#compas.geometry.Polyline.extend">[docs]</a>    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extends a polyline by a given length, by modifying the first and/or last point tangentially.</span>
 
 <span class="sd">        Parameters</span>
@@ -1115,9 +1114,9 @@ document.write(`
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">end</span> <span class="o">=</span> <span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">unitized</span><span class="p">()</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Polyline.extended"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.extended.html#compas.geometry.Polyline.extended">[docs]</a>    <span class="k">def</span> <span class="nf">extended</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">extended</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of this polyline extended by a given length.</span>
 
 <span class="sd">        Parameters</span>
@@ -1133,9 +1132,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">crv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">crv</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">crv</span></div>
+        <span class="k">return</span> <span class="n">crv</span>
 
-<div class="viewcode-block" id="Polyline.shorten"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.shorten.html#compas.geometry.Polyline.shorten">[docs]</a>    <span class="k">def</span> <span class="nf">shorten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">shorten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortens a polyline by a given length.</span>
 
 <span class="sd">        Parameters</span>
@@ -1177,9 +1176,9 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">unitized</span><span class="p">()</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">total_length</span> <span class="o">-</span> <span class="n">end</span><span class="p">)</span>
                 <span class="k">break</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Polyline.shortened"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Polyline.shortened.html#compas.geometry.Polyline.shortened">[docs]</a>    <span class="k">def</span> <span class="nf">shortened</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">shortened</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of this polyline shortened by a given length.</span>
 
 <span class="sd">        Parameters</span>
@@ -1195,7 +1194,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">crv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">crv</span><span class="o">.</span><span class="n">shorten</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">crv</span></div></div>
+        <span class="k">return</span> <span class="n">crv</span></div>
 </pre></div>
 
                 </article>
@@ -1204,14 +1203,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>

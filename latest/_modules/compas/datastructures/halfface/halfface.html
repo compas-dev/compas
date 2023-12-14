@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.datastructures.halfface.halfface &#8212; compas</title>
+    <title>compas.datastructures.halfface.halfface &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/tabs.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -592,7 +591,7 @@ document.write(`
         <span class="p">],</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="HalfFace.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.html#compas.datastructures.HalfFace.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">default_vertex_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -622,7 +621,7 @@ document.write(`
         <span class="k">if</span> <span class="n">default_face_attributes</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_face_attributes</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">default_cell_attributes</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_cell_attributes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_cell_attributes</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;&lt;HalfFace with </span><span class="si">{}</span><span class="s2"> vertices, </span><span class="si">{}</span><span class="s2"> faces, </span><span class="si">{}</span><span class="s2"> cells, </span><span class="si">{}</span><span class="s2"> edges&gt;&quot;</span>
@@ -670,7 +669,7 @@ document.write(`
             <span class="s2">&quot;max_cell&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span><span class="p">,</span>
         <span class="p">}</span>
 
-<div class="viewcode-block" id="HalfFace.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.from_data.html#compas.datastructures.HalfFace.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">dva</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dva&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">dea</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dea&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -709,7 +708,7 @@ document.write(`
         <span class="n">halfface</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_face&quot;</span><span class="p">,</span> <span class="n">halfface</span><span class="o">.</span><span class="n">_max_face</span><span class="p">)</span>
         <span class="n">halfface</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_cell&quot;</span><span class="p">,</span> <span class="n">halfface</span><span class="o">.</span><span class="n">_max_cell</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">halfface</span></div>
+        <span class="k">return</span> <span class="n">halfface</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Properties</span>
@@ -719,7 +718,7 @@ document.write(`
     <span class="c1"># Helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.clear"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.clear.html#compas.datastructures.HalfFace.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear all the volmesh data.</span>
 
 <span class="sd">        Returns</span>
@@ -743,9 +742,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_sample"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_sample.html#compas.datastructures.HalfFace.vertex_sample">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the identifiers of a set of random vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -763,9 +762,9 @@ document.write(`
 <span class="sd">        :meth:`edge_sample`, :meth:`face_sample`, :meth:`cell_sample`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.edge_sample"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edge_sample.html#compas.datastructures.HalfFace.edge_sample">[docs]</a>    <span class="k">def</span> <span class="nf">edge_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the identifiers of a set of random edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -783,9 +782,9 @@ document.write(`
 <span class="sd">        :meth:`vertex_sample`, :meth:`face_sample`, :meth:`cell_sample`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.face_sample"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.face_sample.html#compas.datastructures.HalfFace.face_sample">[docs]</a>    <span class="k">def</span> <span class="nf">face_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the identifiers of a set of random faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -803,9 +802,9 @@ document.write(`
 <span class="sd">        :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`cell_sample`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.cell_sample"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_sample.html#compas.datastructures.HalfFace.cell_sample">[docs]</a>    <span class="k">def</span> <span class="nf">cell_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the identifiers of a set of random cells.</span>
 
 <span class="sd">        Parameters</span>
@@ -823,9 +822,9 @@ document.write(`
 <span class="sd">        :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`face_sample`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_index"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_index.html#compas.datastructures.HalfFace.vertex_index">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary that maps vertex dictionary keys to the</span>
 <span class="sd">        corresponding index in a vertex list or array.</span>
 
@@ -839,9 +838,9 @@ document.write(`
 <span class="sd">        :meth:`index_vertex`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span>
 
-<div class="viewcode-block" id="HalfFace.index_vertex"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.index_vertex.html#compas.datastructures.HalfFace.index_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">index_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">index_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary that maps the indices of a vertex list to</span>
 <span class="sd">        keys in the vertex dictionary.</span>
 
@@ -855,13 +854,13 @@ document.write(`
 <span class="sd">        :meth:`vertex_index`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span></div>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Builders</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.add_vertex"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.add_vertex.html#compas.datastructures.HalfFace.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a vertex to the volmesh object.</span>
 
 <span class="sd">        Parameters</span>
@@ -903,9 +902,9 @@ document.write(`
         <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">key</span></div>
+        <span class="k">return</span> <span class="n">key</span>
 
-<div class="viewcode-block" id="HalfFace.add_halfface"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.add_halfface.html#compas.datastructures.HalfFace.add_halfface">[docs]</a>    <span class="k">def</span> <span class="nf">add_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a face to the volmesh object.</span>
 
 <span class="sd">        Parameters</span>
@@ -962,9 +961,9 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">fkey</span></div>
+        <span class="k">return</span> <span class="n">fkey</span>
 
-<div class="viewcode-block" id="HalfFace.add_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.add_cell.html#compas.datastructures.HalfFace.add_cell">[docs]</a>    <span class="k">def</span> <span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">ckey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">ckey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a cell to the volmesh object.</span>
 
 <span class="sd">        Parameters</span>
@@ -1021,13 +1020,13 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ckey</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">ckey</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkey</span>
 
-        <span class="k">return</span> <span class="n">ckey</span></div>
+        <span class="k">return</span> <span class="n">ckey</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Modifiers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.delete_vertex"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.delete_vertex.html#compas.datastructures.HalfFace.delete_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">delete_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">delete_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a vertex from the volmesh and everything that is attached to it.</span>
 
 <span class="sd">        Parameters</span>
@@ -1045,9 +1044,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_cells</span><span class="p">(</span><span class="n">vertex</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.delete_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.delete_cell.html#compas.datastructures.HalfFace.delete_cell">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">delete_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a cell from the volmesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1089,9 +1088,9 @@ document.write(`
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.remove_unused_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.remove_unused_vertices.html#compas.datastructures.HalfFace.remove_unused_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">remove_unused_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">remove_unused_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all unused vertices from the volmesh object.</span>
 
 <span class="sd">        Returns</span>
@@ -1105,7 +1104,7 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">vertex</span><span class="p">]:</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
-                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span></div>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
 
     <span class="n">cull_vertices</span> <span class="o">=</span> <span class="n">remove_unused_vertices</span>
 
@@ -1113,7 +1112,7 @@ document.write(`
     <span class="c1"># Accessors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertices.html#compas.datastructures.HalfFace.vertices">[docs]</a>    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the vertices of the volmesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1136,9 +1135,9 @@ document.write(`
             <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">vertex</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">vertex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span></div>
+                <span class="k">yield</span> <span class="n">vertex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edges.html#compas.datastructures.HalfFace.edges">[docs]</a>    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the edges of the volmesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1168,9 +1167,9 @@ document.write(`
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
+                    <span class="k">yield</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
-<div class="viewcode-block" id="HalfFace.halffaces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halffaces.html#compas.datastructures.HalfFace.halffaces">[docs]</a>    <span class="k">def</span> <span class="nf">halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the halffaces of the volmesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1193,9 +1192,9 @@ document.write(`
             <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">hface</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">hface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">hface</span><span class="p">)</span></div>
+                <span class="k">yield</span> <span class="n">hface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">hface</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.faces.html#compas.datastructures.HalfFace.faces">[docs]</a>    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;Iterate over the halffaces of the volmesh and yield faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -1233,9 +1232,9 @@ document.write(`
             <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">face</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">face</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+                <span class="k">yield</span> <span class="n">face</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.cells"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cells.html#compas.datastructures.HalfFace.cells">[docs]</a>    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the cells of the volmesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1258,9 +1257,9 @@ document.write(`
             <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">cell</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">cell</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_attributes</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></div>
+                <span class="k">yield</span> <span class="n">cell</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_attributes</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.vertices_where"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertices_where.html#compas.datastructures.HalfFace.vertices_where">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get vertices for which a certain condition or set of conditions is true.</span>
 
 <span class="sd">        Parameters</span>
@@ -1341,9 +1340,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span></div>
+                    <span class="k">yield</span> <span class="n">key</span>
 
-<div class="viewcode-block" id="HalfFace.vertices_where_predicate"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertices_where_predicate.html#compas.datastructures.HalfFace.vertices_where_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get vertices for which a certain condition or set of conditions is true using a lambda function.</span>
 
 <span class="sd">        Parameters</span>
@@ -1371,9 +1370,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span></div>
+                    <span class="k">yield</span> <span class="n">key</span>
 
-<div class="viewcode-block" id="HalfFace.edges_where"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edges_where.html#compas.datastructures.HalfFace.edges_where">[docs]</a>    <span class="k">def</span> <span class="nf">edges_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get edges for which a certain condition or set of conditions is true.</span>
 
 <span class="sd">        Parameters</span>
@@ -1436,9 +1435,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span></div>
+                    <span class="k">yield</span> <span class="n">key</span>
 
-<div class="viewcode-block" id="HalfFace.edges_where_predicate"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edges_where_predicate.html#compas.datastructures.HalfFace.edges_where_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">edges_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get edges for which a certain condition or set of conditions is true using a lambda function.</span>
 
 <span class="sd">        Parameters</span>
@@ -1466,9 +1465,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span></div>
+                    <span class="k">yield</span> <span class="n">key</span>
 
-<div class="viewcode-block" id="HalfFace.faces_where"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.faces_where.html#compas.datastructures.HalfFace.faces_where">[docs]</a>    <span class="k">def</span> <span class="nf">faces_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get faces for which a certain condition or set of conditions is true.</span>
 
 <span class="sd">        Parameters</span>
@@ -1531,9 +1530,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">fkey</span></div>
+                    <span class="k">yield</span> <span class="n">fkey</span>
 
-<div class="viewcode-block" id="HalfFace.faces_where_predicate"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.faces_where_predicate.html#compas.datastructures.HalfFace.faces_where_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">faces_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get faces for which a certain condition or set of conditions is true using a lambda function.</span>
 
 <span class="sd">        Parameters</span>
@@ -1561,9 +1560,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">fkey</span></div>
+                    <span class="k">yield</span> <span class="n">fkey</span>
 
-<div class="viewcode-block" id="HalfFace.cells_where"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cells_where.html#compas.datastructures.HalfFace.cells_where">[docs]</a>    <span class="k">def</span> <span class="nf">cells_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get cells for which a certain condition or set of conditions is true.</span>
 
 <span class="sd">        Parameters</span>
@@ -1626,9 +1625,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">ckey</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">ckey</span></div>
+                    <span class="k">yield</span> <span class="n">ckey</span>
 
-<div class="viewcode-block" id="HalfFace.cells_where_predicate"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cells_where_predicate.html#compas.datastructures.HalfFace.cells_where_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">cells_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get cells for which a certain condition or set of conditions is true using a lambda function.</span>
 
 <span class="sd">        Parameters</span>
@@ -1656,13 +1655,13 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">ckey</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">ckey</span></div>
+                    <span class="k">yield</span> <span class="n">ckey</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Vertex attributes</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.update_default_vertex_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.update_default_vertex_attributes.html#compas.datastructures.HalfFace.update_default_vertex_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">update_default_vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_default_vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the default vertex attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1688,9 +1687,9 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_attribute.html#compas.datastructures.HalfFace.vertex_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -1729,9 +1728,9 @@ document.write(`
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.unset_vertex_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.unset_vertex_attribute.html#compas.datastructures.HalfFace.unset_vertex_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">unset_vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">unset_vertex_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unset the attribute of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -1761,9 +1760,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">]:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_attributes.html#compas.datastructures.HalfFace.vertex_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -1814,9 +1813,9 @@ document.write(`
                 <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">values</span></div>
+        <span class="k">return</span> <span class="n">values</span>
 
-<div class="viewcode-block" id="HalfFace.vertices_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertices_attribute.html#compas.datastructures.HalfFace.vertices_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -1851,9 +1850,9 @@ document.write(`
             <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.vertices_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertices_attributes.html#compas.datastructures.HalfFace.vertices_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -1892,13 +1891,13 @@ document.write(`
             <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Edge attributes</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.update_default_edge_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.update_default_edge_attributes.html#compas.datastructures.HalfFace.update_default_edge_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">update_default_edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_default_edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the default edge attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1924,9 +1923,9 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.edge_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edge_attribute.html#compas.datastructures.HalfFace.edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1967,9 +1966,9 @@ document.write(`
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.unset_edge_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.unset_edge_attribute.html#compas.datastructures.HalfFace.unset_edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">unset_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">unset_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unset the attribute of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -2003,9 +2002,9 @@ document.write(`
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">edge</span><span class="p">)))</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.edge_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edge_attributes.html#compas.datastructures.HalfFace.edge_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -2052,9 +2051,9 @@ document.write(`
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">values</span></div>
+        <span class="k">return</span> <span class="n">values</span>
 
-<div class="viewcode-block" id="HalfFace.edges_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edges_attribute.html#compas.datastructures.HalfFace.edges_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -2089,9 +2088,9 @@ document.write(`
             <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.edges_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edges_attributes.html#compas.datastructures.HalfFace.edges_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">edges_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -2128,13 +2127,13 @@ document.write(`
             <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Face attributes</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.update_default_face_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.update_default_face_attributes.html#compas.datastructures.HalfFace.update_default_face_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">update_default_face_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_default_face_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the default face attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -2160,9 +2159,9 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.face_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.face_attribute.html#compas.datastructures.HalfFace.face_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -2202,9 +2201,9 @@ document.write(`
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.unset_face_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.unset_face_attribute.html#compas.datastructures.HalfFace.unset_face_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">unset_face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">unset_face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unset the attribute of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -2237,9 +2236,9 @@ document.write(`
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.face_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.face_attributes.html#compas.datastructures.HalfFace.face_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">face_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -2284,9 +2283,9 @@ document.write(`
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_attribute</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">values</span></div>
+        <span class="k">return</span> <span class="n">values</span>
 
-<div class="viewcode-block" id="HalfFace.faces_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.faces_attribute.html#compas.datastructures.HalfFace.faces_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">faces_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of multiple faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -2321,9 +2320,9 @@ document.write(`
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">face_attribute</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_attribute</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_attribute</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.faces_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.faces_attributes.html#compas.datastructures.HalfFace.faces_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">faces_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of multiple faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -2362,13 +2361,13 @@ document.write(`
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Cell attributes</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.update_default_cell_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.update_default_cell_attributes.html#compas.datastructures.HalfFace.update_default_cell_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">update_default_cell_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_default_cell_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the default cell attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -2394,9 +2393,9 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.cell_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_attribute.html#compas.datastructures.HalfFace.cell_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">cell_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -2435,9 +2434,9 @@ document.write(`
         <span class="k">if</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.unset_cell_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.unset_cell_attribute.html#compas.datastructures.HalfFace.unset_cell_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">unset_cell_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">unset_cell_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unset the attribute of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -2470,9 +2469,9 @@ document.write(`
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">name</span><span class="p">]</span></div>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.cell_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_attributes.html#compas.datastructures.HalfFace.cell_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">cell_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -2516,9 +2515,9 @@ document.write(`
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_attribute</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">values</span></div>
+        <span class="k">return</span> <span class="n">values</span>
 
-<div class="viewcode-block" id="HalfFace.cells_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cells_attribute.html#compas.datastructures.HalfFace.cells_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">cells_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cells</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cells</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of multiple cells.</span>
 
 <span class="sd">        Parameters</span>
@@ -2553,9 +2552,9 @@ document.write(`
             <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cell_attribute</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cell_attribute</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cell_attribute</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.cells_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cells_attributes.html#compas.datastructures.HalfFace.cells_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">cells_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cells</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cells</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of multiple cells.</span>
 
 <span class="sd">        Parameters</span>
@@ -2595,13 +2594,13 @@ document.write(`
             <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cell_attributes</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cell_attributes</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cell_attributes</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Info</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.number_of_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.number_of_vertices.html#compas.datastructures.HalfFace.number_of_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">number_of_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the number of vertices in the volmesh.</span>
 
 <span class="sd">        Returns</span>
@@ -2614,9 +2613,9 @@ document.write(`
 <span class="sd">        :meth:`number_of_edges`, :meth:`number_of_faces`, :meth:`number_of_cells`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span>
 
-<div class="viewcode-block" id="HalfFace.number_of_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.number_of_edges.html#compas.datastructures.HalfFace.number_of_edges">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">number_of_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the number of edges in the volmesh.</span>
 
 <span class="sd">        Returns</span>
@@ -2629,9 +2628,9 @@ document.write(`
 <span class="sd">        :meth:`number_of_vertices`, :meth:`number_of_faces`, :meth:`number_of_cells`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
 
-<div class="viewcode-block" id="HalfFace.number_of_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.number_of_faces.html#compas.datastructures.HalfFace.number_of_faces">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">number_of_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the number of faces in the volmesh.</span>
 
 <span class="sd">        Returns</span>
@@ -2644,9 +2643,9 @@ document.write(`
 <span class="sd">        :meth:`number_of_vertices`, :meth:`number_of_edges`, :meth:`number_of_cells`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()))</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()))</span>
 
-<div class="viewcode-block" id="HalfFace.number_of_cells"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.number_of_cells.html#compas.datastructures.HalfFace.number_of_cells">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">number_of_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the number of faces in the volmesh.</span>
 
 <span class="sd">        Returns</span>
@@ -2659,9 +2658,9 @@ document.write(`
 <span class="sd">        :meth:`number_of_vertices`, :meth:`number_of_edges`, :meth:`number_of_faces`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">()))</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">()))</span>
 
-<div class="viewcode-block" id="HalfFace.is_valid"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.is_valid.html#compas.datastructures.HalfFace.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that the volmesh is valid.</span>
 
 <span class="sd">        Returns</span>
@@ -2671,13 +2670,13 @@ document.write(`
 <span class="sd">            False otherwise.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Vertex topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.has_vertex"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.has_vertex.html#compas.datastructures.HalfFace.has_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">has_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that a vertex is in the volmesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -2696,9 +2695,9 @@ document.write(`
 <span class="sd">        :meth:`has_edge`, :meth:`has_face`, :meth:`has_cell`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span></div>
+        <span class="k">return</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_neighbors.html#compas.datastructures.HalfFace.vertex_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vertex neighbors of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -2718,9 +2717,9 @@ document.write(`
 <span class="sd">        :meth:`vertex_neighborhood`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_neighborhood"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_neighborhood.html#compas.datastructures.HalfFace.vertex_neighborhood">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vertices in the neighborhood of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -2754,9 +2753,9 @@ document.write(`
                 <span class="n">temp</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
             <span class="n">nbrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">vertex</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">vertex</span><span class="p">]))</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_degree"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_degree.html#compas.datastructures.HalfFace.vertex_degree">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count the neighbors of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -2774,9 +2773,9 @@ document.write(`
 <span class="sd">        :meth:`vertex_neighbors`, :meth:`vertex_min_degree`, :meth:`vertex_max_degree`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vertex</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vertex</span><span class="p">))</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_min_degree"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_min_degree.html#compas.datastructures.HalfFace.vertex_min_degree">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_min_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_min_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the minimum degree of all vertices.</span>
 
 <span class="sd">        Returns</span>
@@ -2791,9 +2790,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_max_degree"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_max_degree.html#compas.datastructures.HalfFace.vertex_max_degree">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_max_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_max_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the maximum degree of all vertices.</span>
 
 <span class="sd">        Returns</span>
@@ -2808,9 +2807,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_halffaces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_halffaces.html#compas.datastructures.HalfFace.vertex_halffaces">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all halffaces connected to a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -2836,9 +2835,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">]:</span>
                     <span class="n">halffaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">][</span><span class="n">nbr</span><span class="p">])</span>
                     <span class="n">halffaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">nbr</span><span class="p">][</span><span class="n">vertex</span><span class="p">])</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">halffaces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">halffaces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.vertex_cells"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertex_cells.html#compas.datastructures.HalfFace.vertex_cells">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all cells connected to a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -2861,9 +2860,9 @@ document.write(`
             <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">nbr</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">cells</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.is_vertex_on_boundary"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.is_vertex_on_boundary.html#compas.datastructures.HalfFace.is_vertex_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">is_vertex_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_vertex_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that a vertex is on a boundary.</span>
 
 <span class="sd">        Parameters</span>
@@ -2886,13 +2885,13 @@ document.write(`
         <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">halfface</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Edge topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.has_edge"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.has_edge.html#compas.datastructures.HalfFace.has_edge">[docs]</a>    <span class="k">def</span> <span class="nf">has_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that the volmesh contains a directed edge (u, v).</span>
 
 <span class="sd">        Parameters</span>
@@ -2911,9 +2910,9 @@ document.write(`
 <span class="sd">        :meth:`has_vertex`, :meth:`has_face`, :meth:`has_cell`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">edge</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">edge</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
 
-<div class="viewcode-block" id="HalfFace.edge_halffaces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edge_halffaces.html#compas.datastructures.HalfFace.edge_halffaces">[docs]</a>    <span class="k">def</span> <span class="nf">edge_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ordered halffaces around edge (u, v).</span>
 
 <span class="sd">        Parameters</span>
@@ -2944,9 +2943,9 @@ document.write(`
             <span class="n">halfface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
             <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span>
             <span class="n">halffaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">halffaces</span></div>
+        <span class="k">return</span> <span class="n">halffaces</span>
 
-<div class="viewcode-block" id="HalfFace.edge_cells"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.edge_cells.html#compas.datastructures.HalfFace.edge_cells">[docs]</a>    <span class="k">def</span> <span class="nf">edge_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ordered cells around edge (u, v).</span>
 
 <span class="sd">        Parameters</span>
@@ -2965,9 +2964,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_halffaces</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.is_edge_on_boundary"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.is_edge_on_boundary.html#compas.datastructures.HalfFace.is_edge_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">is_edge_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_edge_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that an edge is on the boundary.</span>
 
 <span class="sd">        Parameters</span>
@@ -2992,13 +2991,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
-        <span class="k">return</span> <span class="kc">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="kc">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Halfface topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.has_halfface"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.has_halfface.html#compas.datastructures.HalfFace.has_halfface">[docs]</a>    <span class="k">def</span> <span class="nf">has_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that a face is part of the volmesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -3017,9 +3016,9 @@ document.write(`
 <span class="sd">        :meth:`has_vertex`, :meth:`has_edge`, :meth:`has_cell`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span></div>
+        <span class="k">return</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_vertices.html#compas.datastructures.HalfFace.halfface_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The vertices of a halfface.</span>
 
 <span class="sd">        Parameters</span>
@@ -3037,9 +3036,9 @@ document.write(`
 <span class="sd">        :meth:`halfface_edges`, :meth:`halfface_halfedges`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_halfedges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_halfedges.html#compas.datastructures.HalfFace.halfface_halfedges">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The halfedges of a halfface.</span>
 
 <span class="sd">        Parameters</span>
@@ -3058,9 +3057,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">vertices</span> <span class="o">+</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">vertices</span> <span class="o">+</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]))</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_cell.html#compas.datastructures.HalfFace.halfface_cell">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The cell to which the halfface belongs to.</span>
 
 <span class="sd">        Parameters</span>
@@ -3079,9 +3078,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_opposite_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_opposite_cell.html#compas.datastructures.HalfFace.halfface_opposite_cell">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_opposite_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_opposite_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The cell to which the opposite halfface belongs to.</span>
 
 <span class="sd">        Parameters</span>
@@ -3100,9 +3099,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_opposite_halfface"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_opposite_halfface.html#compas.datastructures.HalfFace.halfface_opposite_halfface">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_opposite_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_opposite_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The opposite face of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -3127,9 +3126,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span>
-        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">nbr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">nbr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_adjacent_halfface"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_adjacent_halfface.html#compas.datastructures.HalfFace.halfface_adjacent_halfface">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_adjacent_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_adjacent_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the halfface adjacent to the halfface across the halfedge.</span>
 
 <span class="sd">        Parameters</span>
@@ -3158,9 +3157,9 @@ document.write(`
         <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
         <span class="n">nbr_halfface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
         <span class="n">nbr_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">nbr_halfface</span><span class="p">]</span>
-        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">nbr_cell</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr_cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">nbr_cell</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr_cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_vertex_ancestor"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_vertex_ancestor.html#compas.datastructures.HalfFace.halfface_vertex_ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_vertex_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_vertex_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vertex before the specified vertex in a specific face.</span>
 
 <span class="sd">        Parameters</span>
@@ -3186,9 +3185,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_vertex_descendent"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_vertex_descendent.html#compas.datastructures.HalfFace.halfface_vertex_descendent">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_vertex_descendent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_vertex_descendent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vertex after the specified vertex in a specific face.</span>
 
 <span class="sd">        Parameters</span>
@@ -3216,9 +3215,9 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">vertex</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_manifold_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_manifold_neighbors.html#compas.datastructures.HalfFace.halfface_manifold_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_manifold_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_manifold_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the halfface neighbors of a halfface that are on the same manifold.</span>
 
 <span class="sd">        Parameters</span>
@@ -3248,9 +3247,9 @@ document.write(`
             <span class="k">if</span> <span class="n">nbr_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr_cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
                 <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">nbrs</span></div>
+        <span class="k">return</span> <span class="n">nbrs</span>
 
-<div class="viewcode-block" id="HalfFace.halfface_manifold_neighborhood"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halfface_manifold_neighborhood.html#compas.datastructures.HalfFace.halfface_manifold_neighborhood">[docs]</a>    <span class="k">def</span> <span class="nf">halfface_manifold_neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_manifold_neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the halfface neighborhood of a halfface across their edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -3282,9 +3281,9 @@ document.write(`
                 <span class="n">temp</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_manifold_neighbors</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
             <span class="n">nbrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">halfface</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">halfface</span><span class="p">]))</span>
 
-<div class="viewcode-block" id="HalfFace.is_halfface_on_boundary"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.is_halfface_on_boundary.html#compas.datastructures.HalfFace.is_halfface_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">is_halfface_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_halfface_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that a face is on the boundary.</span>
 
 <span class="sd">        Parameters</span>
@@ -3304,13 +3303,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Cell topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.cell_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_vertices.html#compas.datastructures.HalfFace.cell_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">cell_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The vertices of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3333,9 +3332,9 @@ document.write(`
 <span class="sd">        but in the context of a cell of the `VolMesh`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">vertex</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]))</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">vertex</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]))</span>
 
-<div class="viewcode-block" id="HalfFace.cell_halfedges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_halfedges.html#compas.datastructures.HalfFace.cell_halfedges">[docs]</a>    <span class="k">def</span> <span class="nf">cell_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The halfedges of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3361,9 +3360,9 @@ document.write(`
         <span class="n">halfedges</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
             <span class="n">halfedges</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">halfedges</span></div>
+        <span class="k">return</span> <span class="n">halfedges</span>
 
-<div class="viewcode-block" id="HalfFace.cell_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_edges.html#compas.datastructures.HalfFace.cell_edges">[docs]</a>    <span class="k">def</span> <span class="nf">cell_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all edges of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3386,9 +3385,9 @@ document.write(`
 <span class="sd">        but in the context of a cell of the `VolMesh`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="HalfFace.cell_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_faces.html#compas.datastructures.HalfFace.cell_faces">[docs]</a>    <span class="k">def</span> <span class="nf">cell_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The faces of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3414,9 +3413,9 @@ document.write(`
         <span class="n">faces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
             <span class="n">faces</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.cell_vertex_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_vertex_neighbors.html#compas.datastructures.HalfFace.cell_vertex_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">cell_vertex_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_vertex_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ordered vertex neighbors of a vertex of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3452,9 +3451,9 @@ document.write(`
             <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertex_ancestor</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span>
             <span class="n">ordered_vkeys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ordered_vkeys</span></div>
+        <span class="k">return</span> <span class="n">ordered_vkeys</span>
 
-<div class="viewcode-block" id="HalfFace.cell_vertex_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_vertex_faces.html#compas.datastructures.HalfFace.cell_vertex_faces">[docs]</a>    <span class="k">def</span> <span class="nf">cell_vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ordered faces connected to a vertex of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3489,9 +3488,9 @@ document.write(`
             <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
             <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertex_ancestor</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
             <span class="n">ordered_faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ordered_faces</span></div>
+        <span class="k">return</span> <span class="n">ordered_faces</span>
 
-<div class="viewcode-block" id="HalfFace.cell_halfedge_face"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_halfedge_face.html#compas.datastructures.HalfFace.cell_halfedge_face">[docs]</a>    <span class="k">def</span> <span class="nf">cell_halfedge_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_halfedge_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the face corresponding to a specific halfedge of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3517,9 +3516,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">halfedge</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.cell_halfedge_opposite_face"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_halfedge_opposite_face.html#compas.datastructures.HalfFace.cell_halfedge_opposite_face">[docs]</a>    <span class="k">def</span> <span class="nf">cell_halfedge_opposite_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_halfedge_opposite_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the opposite face corresponding to a specific halfedge of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3540,9 +3539,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">halfedge</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
 
-<div class="viewcode-block" id="HalfFace.cell_face_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_face_neighbors.html#compas.datastructures.HalfFace.cell_face_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">cell_face_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_face_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the faces adjacent to a given face of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3572,9 +3571,9 @@ document.write(`
             <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halfedge_opposite_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">nbr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">nbrs</span></div>
+        <span class="k">return</span> <span class="n">nbrs</span>
 
-<div class="viewcode-block" id="HalfFace.cell_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cell_neighbors.html#compas.datastructures.HalfFace.cell_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">cell_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the neighbors of a given cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -3597,9 +3596,9 @@ document.write(`
             <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_opposite_cell</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">nbr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">nbrs</span></div>
+        <span class="k">return</span> <span class="n">nbrs</span>
 
-<div class="viewcode-block" id="HalfFace.is_cell_on_boundary"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.is_cell_on_boundary.html#compas.datastructures.HalfFace.is_cell_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">is_cell_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_cell_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that a cell is on the boundary.</span>
 
 <span class="sd">        Parameters</span>
@@ -3622,13 +3621,13 @@ document.write(`
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Boundary</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="HalfFace.vertices_on_boundaries"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.vertices_on_boundaries.html#compas.datastructures.HalfFace.vertices_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the vertices on the boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -3645,9 +3644,9 @@ document.write(`
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
                 <span class="n">vertices</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.halffaces_on_boundaries"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.halffaces_on_boundaries.html#compas.datastructures.HalfFace.halffaces_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">halffaces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halffaces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the faces on the boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -3664,9 +3663,9 @@ document.write(`
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
                 <span class="n">faces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="HalfFace.cells_on_boundaries"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.HalfFace.cells_on_boundaries.html#compas.datastructures.HalfFace.cells_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">cells_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the cells on the boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -3682,7 +3681,7 @@ document.write(`
         <span class="n">cells</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halffaces_on_boundaries</span><span class="p">():</span>
             <span class="n">cells</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>
@@ -3691,14 +3690,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>

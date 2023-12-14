@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.geometry.transformation &#8212; compas</title>
+    <title>compas.geometry.transformation &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/tabs.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -569,11 +568,11 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Transformation.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.html#compas.geometry.Transformation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Transformation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matrix</span><span class="p">:</span>
             <span class="n">matrix</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span></div>
 
     <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">concatenated</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
@@ -684,7 +683,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Transformation.from_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.from_matrix.html#compas.geometry.Transformation.from_matrix">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a transformation from a list[list[float]] object.</span>
 
@@ -699,9 +698,9 @@ document.write(`
 <span class="sd">            The transformation.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transformation.from_list"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.from_list.html#compas.geometry.Transformation.from_list">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">numbers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a transformation from a list of 16 numbers.</span>
 
@@ -730,9 +729,9 @@ document.write(`
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
                 <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">j</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transformation.from_euler_angles"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.from_euler_angles.html#compas.geometry.Transformation.from_euler_angles">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_euler_angles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a transformation from a rotation represented by Euler angles.</span>
 
@@ -757,10 +756,10 @@ document.write(`
         <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
         <span class="n">T</span> <span class="o">=</span> <span class="n">matrix_from_translation</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
         <span class="n">M</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 
     <span class="c1"># should not one of the two just have a &quot;to&quot; function</span>
-<div class="viewcode-block" id="Transformation.from_frame"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.from_frame.html#compas.geometry.Transformation.from_frame">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_frame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a transformation from world XY to frame.</span>
 
@@ -788,9 +787,9 @@ document.write(`
 <span class="sd">        True</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Transformation.from_frame_to_frame"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.from_frame_to_frame.html#compas.geometry.Transformation.from_frame_to_frame">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_frame_to_frame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame_from</span><span class="p">,</span> <span class="n">frame_to</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a transformation between two frames.</span>
 
@@ -823,9 +822,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">T1</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="n">frame_from</span><span class="p">)</span>
         <span class="n">T2</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="n">frame_to</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">matrix_inverse</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">matrix</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">matrix_inverse</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">matrix</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="Transformation.from_change_of_basis"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.from_change_of_basis.html#compas.geometry.Transformation.from_change_of_basis">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_change_of_basis</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame_from</span><span class="p">,</span> <span class="n">frame_to</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a change of basis transformation between two frames.</span>
 
@@ -859,13 +858,13 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">T1</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="n">frame_from</span><span class="p">)</span>
         <span class="n">T2</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="n">frame_to</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="n">matrix_inverse</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">matrix</span><span class="p">),</span> <span class="n">T1</span><span class="o">.</span><span class="n">matrix</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="n">matrix_inverse</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">matrix</span><span class="p">),</span> <span class="n">T1</span><span class="o">.</span><span class="n">matrix</span><span class="p">))</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Transformation.copy"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.copy.html#compas.geometry.Transformation.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of the transformation.</span>
 
 <span class="sd">        Returns</span>
@@ -881,9 +880,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">][:],</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">3</span><span class="p">][:],</span>
         <span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transformation.transpose"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.transpose.html#compas.geometry.Transformation.transpose">[docs]</a>    <span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transpose the matrix of this transformation.</span>
 
 <span class="sd">        Returns</span>
@@ -892,9 +891,9 @@ document.write(`
 <span class="sd">            The transformation is transposed in-place.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">transpose_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">transpose_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transformation.transposed"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.transposed.html#compas.geometry.Transformation.transposed">[docs]</a>    <span class="k">def</span> <span class="nf">transposed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">transposed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a transposed copy of this transformation.</span>
 
 <span class="sd">        Returns</span>
@@ -905,9 +904,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">T</span></div>
+        <span class="k">return</span> <span class="n">T</span>
 
-<div class="viewcode-block" id="Transformation.invert"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.invert.html#compas.geometry.Transformation.invert">[docs]</a>    <span class="k">def</span> <span class="nf">invert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">invert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Invert this transformation.</span>
 
 <span class="sd">        Returns</span>
@@ -916,9 +915,9 @@ document.write(`
 <span class="sd">            The transformation is transposed in-place.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transformation.inverse"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.inverse.html#compas.geometry.Transformation.inverse">[docs]</a>    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the inverse transformation.</span>
 
 <span class="sd">        Returns</span>
@@ -938,11 +937,11 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">T</span><span class="o">.</span><span class="n">invert</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">T</span></div>
+        <span class="k">return</span> <span class="n">T</span>
 
     <span class="n">inverted</span> <span class="o">=</span> <span class="n">inverse</span>
 
-<div class="viewcode-block" id="Transformation.decomposed"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.decomposed.html#compas.geometry.Transformation.decomposed">[docs]</a>    <span class="k">def</span> <span class="nf">decomposed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decomposed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decompose the `Transformation` into its components.</span>
 
 <span class="sd">        Returns</span>
@@ -989,9 +988,9 @@ document.write(`
         <span class="n">R</span> <span class="o">=</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_euler_angles</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">)</span>
         <span class="n">T</span> <span class="o">=</span> <span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="n">P</span> <span class="o">=</span> <span class="n">Projection</span><span class="o">.</span><span class="n">from_entries</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">S</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span></div>
+        <span class="k">return</span> <span class="n">S</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">P</span>
 
-<div class="viewcode-block" id="Transformation.concatenate"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.concatenate.html#compas.geometry.Transformation.concatenate">[docs]</a>    <span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Concatenate another transformation to this transformation.</span>
 
 <span class="sd">        Parameters</span>
@@ -1009,9 +1008,9 @@ document.write(`
 <span class="sd">        Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transformation.concatenated"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Transformation.concatenated.html#compas.geometry.Transformation.concatenated">[docs]</a>    <span class="k">def</span> <span class="nf">concatenated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">concatenated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Concatenate two transformations into one `Transformation`.</span>
 
 <span class="sd">        Parameters</span>
@@ -1032,7 +1031,7 @@ document.write(`
         <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">matrix</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">Transformation</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">matrix</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="n">Transformation</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">matrix</span><span class="p">))</span></div>
 </pre></div>
 
                 </article>
@@ -1041,14 +1040,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>

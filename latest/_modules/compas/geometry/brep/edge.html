@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.geometry.brep.edge &#8212; compas</title>
+    <title>compas.geometry.brep.edge &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/tabs.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -569,7 +568,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="BrepEdge.from_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.from_vertices.html#compas.geometry.BrepEdge.from_vertices">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_vertices</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an edge from two vertices.</span>
 
@@ -582,9 +581,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.BrepVertex`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.from_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.from_points.html#compas.geometry.BrepEdge.from_points">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an edge from two points.</span>
 
@@ -597,9 +596,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.BrepVertex`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.from_line"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.from_line.html#compas.geometry.BrepEdge.from_line">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_line</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an edge from a line.</span>
 
@@ -612,9 +611,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.BrepEdge`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.from_circle"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.from_circle.html#compas.geometry.BrepEdge.from_circle">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_circle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">circle</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an edge from a circle.</span>
 
@@ -627,9 +626,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.BrepEdge`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.from_ellipse"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.from_ellipse.html#compas.geometry.BrepEdge.from_ellipse">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_ellipse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an edge from an ellipse.</span>
 
@@ -642,9 +641,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.BrepEdge`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.from_curve"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.from_curve.html#compas.geometry.BrepEdge.from_curve">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_curve</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an edge from a curve.</span>
 
@@ -657,13 +656,13 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.BrepEdge`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="BrepEdge.to_line"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_line.html#compas.geometry.BrepEdge.to_line">[docs]</a>    <span class="k">def</span> <span class="nf">to_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a line from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -671,9 +670,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Line`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.to_circle"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_circle.html#compas.geometry.BrepEdge.to_circle">[docs]</a>    <span class="k">def</span> <span class="nf">to_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a circle from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -681,9 +680,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Circle`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.to_ellipse"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_ellipse.html#compas.geometry.BrepEdge.to_ellipse">[docs]</a>    <span class="k">def</span> <span class="nf">to_ellipse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_ellipse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an ellipse from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -691,9 +690,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Ellipse`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.to_hyperbola"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_hyperbola.html#compas.geometry.BrepEdge.to_hyperbola">[docs]</a>    <span class="k">def</span> <span class="nf">to_hyperbola</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_hyperbola</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a hyperbola from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -701,9 +700,9 @@ document.write(`
 <span class="sd">        TODO: type?</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.to_parabola"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_parabola.html#compas.geometry.BrepEdge.to_parabola">[docs]</a>    <span class="k">def</span> <span class="nf">to_parabola</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_parabola</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a parabola from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -711,9 +710,9 @@ document.write(`
 <span class="sd">        TODO: type?</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.to_bezier"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_bezier.html#compas.geometry.BrepEdge.to_bezier">[docs]</a>    <span class="k">def</span> <span class="nf">to_bezier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_bezier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a bezier from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -721,9 +720,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Bezier`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.to_bspline"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_bspline.html#compas.geometry.BrepEdge.to_bspline">[docs]</a>    <span class="k">def</span> <span class="nf">to_bspline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_bspline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a bspline from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -731,9 +730,9 @@ document.write(`
 <span class="sd">        TODO: type?</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="BrepEdge.to_curve"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.to_curve.html#compas.geometry.BrepEdge.to_curve">[docs]</a>    <span class="k">def</span> <span class="nf">to_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a curve from this edge&#39;s geometry.</span>
 
 <span class="sd">        Returns</span>
@@ -741,7 +740,7 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Curve`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </pre></div>
 
                 </article>
@@ -750,14 +749,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>

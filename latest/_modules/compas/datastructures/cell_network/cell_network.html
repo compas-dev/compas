@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.datastructures.cell_network.cell_network &#8212; compas</title>
+    <title>compas.datastructures.cell_network.cell_network &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/tabs.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -524,7 +523,7 @@ document.write(`
 <span class="sd">        Default values for cell attributes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="CellNetwork.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.html#compas.datastructures.CellNetwork.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">default_vertex_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -545,7 +544,7 @@ document.write(`
             <span class="n">default_face_attributes</span><span class="o">=</span><span class="n">_default_face_attributes</span><span class="p">,</span>
             <span class="n">default_cell_attributes</span><span class="o">=</span><span class="n">_default_cell_attributes</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="o">=</span> <span class="p">{}</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;&lt;CellNetwork with </span><span class="si">{}</span><span class="s2"> vertices, </span><span class="si">{}</span><span class="s2"> faces, </span><span class="si">{}</span><span class="s2"> cells, </span><span class="si">{}</span><span class="s2"> edges&gt;&quot;</span>
@@ -560,7 +559,7 @@ document.write(`
     <span class="c1"># vertex</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.add_vertex"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_vertex.html#compas.datastructures.CellNetwork.add_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a vertex and specify its attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -582,13 +581,13 @@ document.write(`
         <span class="n">key</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CellNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="n">key</span></div>
+        <span class="k">return</span> <span class="n">key</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># vertex geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.vertex_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertex_coordinates.html#compas.datastructures.CellNetwork.vertex_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinates of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -604,9 +603,9 @@ document.write(`
 <span class="sd">        list[float]</span>
 <span class="sd">            Coordinates of the vertex.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span>
 
-<div class="viewcode-block" id="CellNetwork.vertices_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertices_coordinates.html#compas.datastructures.CellNetwork.vertices_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinates of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -622,9 +621,9 @@ document.write(`
 <span class="sd">        list of list[float]</span>
 <span class="sd">            Coordinates of the vertices.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
 
-<div class="viewcode-block" id="CellNetwork.vertex_point"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertex_point.html#compas.datastructures.CellNetwork.vertex_point">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the point representation of a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -637,9 +636,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Point`</span>
 <span class="sd">            The point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">))</span>
 
-<div class="viewcode-block" id="CellNetwork.vertices_points"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.vertices_points.html#compas.datastructures.CellNetwork.vertices_points">[docs]</a>    <span class="k">def</span> <span class="nf">vertices_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertices_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the point representation of multiple vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -652,13 +651,13 @@ document.write(`
 <span class="sd">        list of :class:`compas.geometry.Point`</span>
 <span class="sd">            The points.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># edge</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.add_edge"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_edge.html#compas.datastructures.CellNetwork.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an edge and specify its attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -700,9 +699,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
+        <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_attribute.html#compas.datastructures.CellNetwork.edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -734,9 +733,9 @@ document.write(`
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="CellNetwork.edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edges.html#compas.datastructures.CellNetwork.edges">[docs]</a>    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the edges of the cell network.</span>
 
 <span class="sd">        Parameters</span>
@@ -760,13 +759,13 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
+                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># edge geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_coordinates.html#compas.datastructures.CellNetwork.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinates of the start and end point of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -783,9 +782,9 @@ document.write(`
 <span class="sd">            The coordinates of the end point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_start"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_start.html#compas.datastructures.CellNetwork.edge_start">[docs]</a>    <span class="k">def</span> <span class="nf">edge_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the start point of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -798,9 +797,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Point`</span>
 <span class="sd">            The start point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_end"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_end.html#compas.datastructures.CellNetwork.edge_end">[docs]</a>    <span class="k">def</span> <span class="nf">edge_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the end point of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -813,9 +812,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Point`</span>
 <span class="sd">            The end point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_vector"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_vector.html#compas.datastructures.CellNetwork.edge_vector">[docs]</a>    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -829,9 +828,9 @@ document.write(`
 <span class="sd">            The vector from start to end.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Vector</span><span class="o">.</span><span class="n">from_start_end</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Vector</span><span class="o">.</span><span class="n">from_start_end</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_direction"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_direction.html#compas.datastructures.CellNetwork.edge_direction">[docs]</a>    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the direction vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -844,9 +843,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Vector`</span>
 <span class="sd">            The direction vector of the edge.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">edge</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">edge</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_line"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_line.html#compas.datastructures.CellNetwork.edge_line">[docs]</a>    <span class="k">def</span> <span class="nf">edge_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the line representation of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -859,9 +858,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Line`</span>
 <span class="sd">            The line.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Line</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">Line</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_length"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_length.html#compas.datastructures.CellNetwork.edge_length">[docs]</a>    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the length of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -875,13 +874,13 @@ document.write(`
 <span class="sd">            The length of the edge.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># edge topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_faces.html#compas.datastructures.CellNetwork.edge_faces">[docs]</a>    <span class="k">def</span> <span class="nf">edge_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the faces adjacent to an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -900,9 +899,9 @@ document.write(`
             <span class="n">faces</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
             <span class="n">faces</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
 
-<div class="viewcode-block" id="CellNetwork.edges_no_face"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edges_no_face.html#compas.datastructures.CellNetwork.edges_no_face">[docs]</a>    <span class="k">def</span> <span class="nf">edges_no_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edges_no_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the edges that are not part of a face.</span>
 
 <span class="sd">        Returns</span>
@@ -912,9 +911,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="p">{</span><span class="n">edge</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_faces</span><span class="p">(</span><span class="n">edge</span><span class="p">)}</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.non_manifold_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.non_manifold_edges.html#compas.datastructures.CellNetwork.non_manifold_edges">[docs]</a>    <span class="k">def</span> <span class="nf">non_manifold_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">non_manifold_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the edges that belong to more than two faces.</span>
 
 <span class="sd">        Returns</span>
@@ -924,13 +923,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="p">{</span><span class="n">edge</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_faces</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">}</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># faces</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.add_face"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_face.html#compas.datastructures.CellNetwork.add_face">[docs]</a>    <span class="k">def</span> <span class="nf">add_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a face to the cell network.</span>
 
 <span class="sd">        Parameters</span>
@@ -967,9 +966,9 @@ document.write(`
 
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_edges</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">fkey</span></div>
+        <span class="k">return</span> <span class="n">fkey</span>
 
-<div class="viewcode-block" id="CellNetwork.face_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_attribute.html#compas.datastructures.CellNetwork.face_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1008,13 +1007,13 @@ document.write(`
         <span class="k">if</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">face</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># face geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.face_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_vertices.html#compas.datastructures.CellNetwork.face_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The vertices of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1028,9 +1027,9 @@ document.write(`
 <span class="sd">            Ordered vertex identifiers.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.face_coordinates"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_coordinates.html#compas.datastructures.CellNetwork.face_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1052,9 +1051,9 @@ document.write(`
 <span class="sd">        :meth:`face_area`, :meth:`face_flatness`, :meth:`face_aspect_ratio`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
 
-<div class="viewcode-block" id="CellNetwork.face_points"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_points.html#compas.datastructures.CellNetwork.face_points">[docs]</a>    <span class="k">def</span> <span class="nf">face_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the points of the vertices of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1072,9 +1071,9 @@ document.write(`
 <span class="sd">        :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
 
-<div class="viewcode-block" id="CellNetwork.face_polygon"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_polygon.html#compas.datastructures.CellNetwork.face_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">face_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the polygon of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1092,9 +1091,9 @@ document.write(`
 <span class="sd">        :meth:`face_points`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_points</span><span class="p">(</span><span class="n">face</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_points</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
 
-<div class="viewcode-block" id="CellNetwork.face_normal"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_normal.html#compas.datastructures.CellNetwork.face_normal">[docs]</a>    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the oriented normal of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1114,9 +1113,9 @@ document.write(`
 <span class="sd">        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_centroid`, :meth:`face_center`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">))</span>
 
-<div class="viewcode-block" id="CellNetwork.face_centroid"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_centroid.html#compas.datastructures.CellNetwork.face_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the centroid of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1134,9 +1133,9 @@ document.write(`
 <span class="sd">        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_center`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="CellNetwork.face_center"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_center.html#compas.datastructures.CellNetwork.face_center">[docs]</a>    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the center of mass of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1154,9 +1153,9 @@ document.write(`
 <span class="sd">        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="CellNetwork.face_area"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_area.html#compas.datastructures.CellNetwork.face_area">[docs]</a>    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the oriented area of a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1174,7 +1173,7 @@ document.write(`
 <span class="sd">        :meth:`face_flatness`, :meth:`face_aspect_ratio`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
     <span class="n">halfface_area</span> <span class="o">=</span> <span class="n">face_area</span>
     <span class="n">halfface_centroid</span> <span class="o">=</span> <span class="n">face_centroid</span>
@@ -1182,7 +1181,7 @@ document.write(`
     <span class="n">halfface_coordinates</span> <span class="o">=</span> <span class="n">face_coordinates</span>
     <span class="n">halfface_normal</span> <span class="o">=</span> <span class="n">face_normal</span>
 
-<div class="viewcode-block" id="CellNetwork.mesh_from_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.mesh_from_faces.html#compas.datastructures.CellNetwork.mesh_from_faces">[docs]</a>    <span class="k">def</span> <span class="nf">mesh_from_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">mesh_from_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a mesh from a list of faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -1206,16 +1205,16 @@ document.write(`
                 <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="n">fkey</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">mesh</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="n">fkey</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
+        <span class="k">return</span> <span class="n">mesh</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># face topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.face_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_edges.html#compas.datastructures.CellNetwork.face_edges">[docs]</a>    <span class="k">def</span> <span class="nf">face_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">face_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.face_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_neighbors.html#compas.datastructures.CellNetwork.face_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">face_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the neighbors of a face across its edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -1232,9 +1231,9 @@ document.write(`
         <span class="n">nbrs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_edges</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
             <span class="n">nbrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_faces</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="p">{</span><span class="n">fkey</span><span class="p">})</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="p">{</span><span class="n">fkey</span><span class="p">})</span>
 
-<div class="viewcode-block" id="CellNetwork.edge_face_adjacency"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.edge_face_adjacency.html#compas.datastructures.CellNetwork.edge_face_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">edge_face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an adjacency where adjacency[edge] = {face1, face2}.</span>
 
 <span class="sd">        Parameters</span>
@@ -1257,9 +1256,9 @@ document.write(`
                     <span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">}</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">adjacency</span></div>
+        <span class="k">return</span> <span class="n">adjacency</span>
 
-<div class="viewcode-block" id="CellNetwork.face_adjacency"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_adjacency.html#compas.datastructures.CellNetwork.face_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a face adjacency dictionary from a list of faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -1276,9 +1275,9 @@ document.write(`
         <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
         <span class="n">faces_vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({</span><span class="n">v</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces_vertices</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">face</span><span class="p">}</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1"># unique, but keep order</span>
-        <span class="k">return</span> <span class="n">face_adjacency</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">face_adjacency</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.face_cells"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_cells.html#compas.datastructures.CellNetwork.face_cells">[docs]</a>    <span class="k">def</span> <span class="nf">face_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the cells connected to a face.</span>
 
 <span class="sd">        Parameters</span>
@@ -1293,9 +1292,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cells</span> <span class="o">=</span> <span class="p">{</span><span class="n">cell</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_opposite_cell</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span> <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.faces_no_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.faces_no_cell.html#compas.datastructures.CellNetwork.faces_no_cell">[docs]</a>    <span class="k">def</span> <span class="nf">faces_no_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">faces_no_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the faces that are not part of a cell.</span>
 
 <span class="sd">        Returns</span>
@@ -1305,9 +1304,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_cells</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.is_halfface_on_boundary"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.is_halfface_on_boundary.html#compas.datastructures.CellNetwork.is_halfface_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">is_halfface_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_halfface_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that a face is on the boundary.</span>
 
 <span class="sd">        Parameters</span>
@@ -1325,14 +1324,14 @@ document.write(`
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">cu</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
         <span class="n">cv</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">halfface</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">cu</span> <span class="o">+</span> <span class="n">cv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># only one of them</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">cu</span> <span class="o">+</span> <span class="n">cv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># only one of them</span>
 
     <span class="n">is_face_on_boundary</span> <span class="o">=</span> <span class="n">is_halfface_on_boundary</span>
 
-<div class="viewcode-block" id="CellNetwork.faces_on_boundaries"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.faces_on_boundaries.html#compas.datastructures.CellNetwork.faces_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">faces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halffaces_on_boundaries</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">faces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halffaces_on_boundaries</span><span class="p">()</span>
 
-<div class="viewcode-block" id="CellNetwork.face_cell_adjacency"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.face_cell_adjacency.html#compas.datastructures.CellNetwork.face_cell_adjacency">[docs]</a>    <span class="k">def</span> <span class="nf">face_cell_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_cell_adjacency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an adjacency where adjacency[face] = [cell1, cell2].</span>
 
 <span class="sd">        Parameters</span>
@@ -1347,13 +1346,13 @@ document.write(`
             <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_cells</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">):</span>
                 <span class="n">adjacency</span><span class="p">[</span><span class="n">face</span><span class="p">]</span> <span class="o">=</span> <span class="n">cells</span>
-        <span class="k">return</span> <span class="n">adjacency</span></div>
+        <span class="k">return</span> <span class="n">adjacency</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># cell</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.add_cell"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.add_cell.html#compas.datastructures.CellNetwork.add_cell">[docs]</a>    <span class="k">def</span> <span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">ckey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">ckey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a cell to the cell network object.</span>
 
 <span class="sd">        In order to add a valid cell to the network, the faces must form a closed mesh.</span>
@@ -1435,13 +1434,13 @@ document.write(`
                     <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">ckey</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ckey</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">ckey</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkey</span>
-        <span class="k">return</span> <span class="n">ckey</span></div>
+        <span class="k">return</span> <span class="n">ckey</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># cell geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.cell_points"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_points.html#compas.datastructures.CellNetwork.cell_points">[docs]</a>    <span class="k">def</span> <span class="nf">cell_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the points of the vertices of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -1458,9 +1457,9 @@ document.write(`
 <span class="sd">        --------</span>
 <span class="sd">        :meth:`cell_polygon`, :meth:`cell_centroid`, :meth:`cell_center`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_point</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span>
 
-<div class="viewcode-block" id="CellNetwork.cell_centroid"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_centroid.html#compas.datastructures.CellNetwork.cell_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">cell_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the centroid of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -1478,9 +1477,9 @@ document.write(`
 <span class="sd">        :meth:`cell_center`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]))</span>
 
-<div class="viewcode-block" id="CellNetwork.cell_center"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_center.html#compas.datastructures.CellNetwork.cell_center">[docs]</a>    <span class="k">def</span> <span class="nf">cell_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point at the center of mass of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -1498,9 +1497,9 @@ document.write(`
 <span class="sd">        :meth:`cell_centroid`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">centroid_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="CellNetwork.cell_vertex_normal"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_vertex_normal.html#compas.datastructures.CellNetwork.cell_vertex_normal">[docs]</a>    <span class="k">def</span> <span class="nf">cell_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the normal vector at the vertex of a boundary cell as the weighted average of the</span>
 <span class="sd">        normals of the neighboring faces.</span>
 
@@ -1519,9 +1518,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cell_faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_halffaces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">if</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">cell_faces</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="CellNetwork.cell_polyhedron"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_polyhedron.html#compas.datastructures.CellNetwork.cell_polyhedron">[docs]</a>    <span class="k">def</span> <span class="nf">cell_polyhedron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_polyhedron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a polyhedron from the vertices and faces of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -1536,9 +1535,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CellNetwork.cell_to_vertices_and_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_to_vertices_and_faces.html#compas.datastructures.CellNetwork.cell_to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">cell_to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the vertices and faces of a cell.</span>
 
 <span class="sd">        Parameters</span>
@@ -1563,9 +1562,9 @@ document.write(`
         <span class="n">vertex_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">)}</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
 
-<div class="viewcode-block" id="CellNetwork.cell_to_mesh"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cell_to_mesh.html#compas.datastructures.CellNetwork.cell_to_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">cell_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a mesh object from from a cell of a cell network.</span>
 
 <span class="sd">        Parameters</span>
@@ -1584,13 +1583,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># cell topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.cells_on_boundaries"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.cells_on_boundaries.html#compas.datastructures.CellNetwork.cells_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">cells_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the cells on the boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -1606,7 +1605,7 @@ document.write(`
         <span class="n">cells</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces_on_boundaries</span><span class="p">():</span>
             <span class="n">cells</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_cells</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># data</span>
@@ -1653,11 +1652,11 @@ document.write(`
             <span class="s2">&quot;max_cell&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span><span class="p">,</span>
         <span class="p">}</span>
 
-<div class="viewcode-block" id="CellNetwork.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.from_data.html#compas.datastructures.CellNetwork.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">cell_network</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">cell_network</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">cell_network</span></div>
+        <span class="k">return</span> <span class="n">cell_network</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -1701,7 +1700,7 @@ document.write(`
     <span class="c1"># extraction</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="CellNetwork.to_network"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.CellNetwork.to_network.html#compas.datastructures.CellNetwork.to_network">[docs]</a>    <span class="k">def</span> <span class="nf">to_network</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_network</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the cell network to a network.</span>
 
 <span class="sd">        Returns</span>
@@ -1715,7 +1714,7 @@ document.write(`
             <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">vertex</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">network</span></div></div>
+        <span class="k">return</span> <span class="n">network</span></div>
 </pre></div>
 
                 </article>
@@ -1724,14 +1723,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>

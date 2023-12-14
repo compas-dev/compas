@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>compas.geometry.brep.brep &#8212; compas</title>
+    <title>compas.geometry.brep.brep &#8212; COMPAS</title>
   
   
   
@@ -29,14 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="icon" sizes="16x16" type="image/ico" href="../../../../_static/images/compas.ico" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/compas.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -46,9 +44,9 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/tabs.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -60,7 +58,6 @@
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
-    <link rel="shortcut icon" href="../../../../_static/compas.ico"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -106,12 +103,6 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-
-  <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
-  </div>
-
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -145,7 +136,7 @@
   </div>
   
   
-  <div class="col-lg-9 navbar-header-items">
+  <div class=" navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -266,7 +257,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -295,7 +286,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -410,7 +401,7 @@ document.write(`
           
           
           
-          <a href="https://pypi.org/project/COMPAS/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
             <label class="sr-only">PyPI</label></a>
         </li>
 </ul></div>
@@ -418,6 +409,14 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -687,8 +686,8 @@ document.write(`
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">new_brep</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Brep</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+<div class="viewcode-block" id="Brep.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.html#compas.geometry.Brep.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Brep</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
@@ -715,13 +714,13 @@ document.write(`
             <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;faces&quot;</span><span class="p">:</span> <span class="n">faces</span><span class="p">}</span>
 
-<div class="viewcode-block" id="Brep.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_data.html#compas.geometry.Brep.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="c1"># faces = []</span>
         <span class="c1"># for face in data[&quot;faces&quot;]:</span>
         <span class="c1">#     faces.append(BrepFace.from_data(face))</span>
         <span class="c1"># return cls.from_brepfaces(faces)</span>
-        <span class="k">pass</span></div>
+        <span class="k">pass</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
@@ -855,7 +854,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Brep.from_box"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_box.html#compas.geometry.Brep.from_box">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_box</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a COMPAS box.</span>
 
@@ -868,9 +867,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_brepfaces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_brepfaces.html#compas.geometry.Brep.from_brepfaces">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_brepfaces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a Brep from a list of Brep faces forming an open or closed shell.</span>
 
@@ -883,9 +882,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_brepfaces</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_brepfaces</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_cone"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_cone.html#compas.geometry.Brep.from_cone">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_cone</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cone</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a COMPAS cone.</span>
 
@@ -898,9 +897,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_cone</span><span class="p">(</span><span class="n">cone</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_cone</span><span class="p">(</span><span class="n">cone</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_curves"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_curves.html#compas.geometry.Brep.from_curves">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_curves</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a set of curves.</span>
 
@@ -913,9 +912,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_curves</span><span class="p">(</span><span class="n">curves</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_curves</span><span class="p">(</span><span class="n">curves</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_cylinder"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_cylinder.html#compas.geometry.Brep.from_cylinder">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_cylinder</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cylinder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a COMPAS cylinder.</span>
 
@@ -928,9 +927,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_cylinder</span><span class="p">(</span><span class="n">cylinder</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_cylinder</span><span class="p">(</span><span class="n">cylinder</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_extrusion"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_extrusion.html#compas.geometry.Brep.from_extrusion">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_extrusion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep by extruding a closed curve along a direction vector.</span>
 
@@ -946,9 +945,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_extrusion</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_extrusion</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_iges"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_iges.html#compas.geometry.Brep.from_iges">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_iges</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from the data contained in an IGES file.</span>
 
@@ -961,9 +960,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_iges</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_iges</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_loft"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_loft.html#compas.geometry.Brep.from_loft">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_loft</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curves</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep by lofting a set of curves.</span>
 
@@ -976,9 +975,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_loft</span><span class="p">(</span><span class="n">curves</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_loft</span><span class="p">(</span><span class="n">curves</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_mesh"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_mesh.html#compas.geometry.Brep.from_mesh">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_mesh</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a COMPAS mesh.</span>
 
@@ -991,9 +990,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_native"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_native.html#compas.geometry.Brep.from_native">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_native</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">native_brep</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a Brep from an instance of a native backend Brep type.</span>
 
@@ -1006,9 +1005,9 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_native</span><span class="p">(</span><span class="n">native_brep</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_native</span><span class="p">(</span><span class="n">native_brep</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_pipe"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_pipe.html#compas.geometry.Brep.from_pipe">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_pipe</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep by extruding a closed curve along a path curve.</span>
 
@@ -1027,9 +1026,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_pipe</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_pipe</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_polygons"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_polygons.html#compas.geometry.Brep.from_polygons">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_polygons</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a set of polygons.</span>
 
@@ -1042,9 +1041,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_polygons</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_polygons</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_sphere"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_sphere.html#compas.geometry.Brep.from_sphere">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_sphere</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sphere</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a COMPAS sphere.</span>
 
@@ -1057,9 +1056,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_sphere</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_sphere</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_step"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_step.html#compas.geometry.Brep.from_step">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_step</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Conctruct a Brep from the data contained in a STEP file.</span>
 
@@ -1072,9 +1071,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_step</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_step</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_sweep"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_sweep.html#compas.geometry.Brep.from_sweep">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_sweep</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a BRep by sweeping a profile along a path.</span>
 
@@ -1090,9 +1089,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_sweep</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_sweep</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_torus"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_torus.html#compas.geometry.Brep.from_torus">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_torus</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">torus</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a COMPAS torus.</span>
 
@@ -1105,13 +1104,13 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.BRep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_torus</span><span class="p">(</span><span class="n">torus</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_torus</span><span class="p">(</span><span class="n">torus</span><span class="p">)</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Boolean Constructors</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Brep.from_boolean_difference"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_boolean_difference.html#compas.geometry.Brep.from_boolean_difference">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_boolean_difference</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from the boolean difference of two other Breps.</span>
 
@@ -1125,9 +1124,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_boolean_difference</span><span class="p">(</span><span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_boolean_difference</span><span class="p">(</span><span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_boolean_intersection"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_boolean_intersection.html#compas.geometry.Brep.from_boolean_intersection">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_boolean_intersection</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a BRep from the boolean intersection of two other Breps.</span>
 
@@ -1141,9 +1140,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_boolean_intersection</span><span class="p">(</span><span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_boolean_intersection</span><span class="p">(</span><span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.from_boolean_union"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.from_boolean_union.html#compas.geometry.Brep.from_boolean_union">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_boolean_union</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from the boolean union of two other Breps.</span>
 
@@ -1157,7 +1156,7 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">from_boolean_union</span><span class="p">(</span><span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">from_boolean_union</span><span class="p">(</span><span class="n">brep_a</span><span class="p">,</span> <span class="n">brep_b</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the boolean difference using the &quot;-&quot; operator of this shape and another.</span>
@@ -1220,7 +1219,7 @@ document.write(`
     <span class="c1"># Converters</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Brep.to_json"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.to_json.html#compas.geometry.Brep.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Export the BRep to a JSON file.</span>
 
 <span class="sd">        Parameters</span>
@@ -1233,9 +1232,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.to_step"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.to_step.html#compas.geometry.Brep.to_step">[docs]</a>    <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the BRep shape to a STEP file.</span>
 
 <span class="sd">        Parameters</span>
@@ -1248,9 +1247,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.to_tesselation"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.to_tesselation.html#compas.geometry.Brep.to_tesselation">[docs]</a>    <span class="k">def</span> <span class="nf">to_tesselation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linear_deflection</span><span class="o">=</span><span class="n">LINEAR_DEFLECTION</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_tesselation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linear_deflection</span><span class="o">=</span><span class="n">LINEAR_DEFLECTION</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a tesselation of the shape for visualisation.</span>
 
 <span class="sd">        Parameters</span>
@@ -1263,9 +1262,9 @@ document.write(`
 <span class="sd">        :class:`compas.datastructures.Mesh`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.to_meshes"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.to_meshes.html#compas.geometry.Brep.to_meshes">[docs]</a>    <span class="k">def</span> <span class="nf">to_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the faces of this Brep shape to meshes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1280,9 +1279,9 @@ document.write(`
 <span class="sd">        list[:class:`compas.datastructures.Mesh`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.to_viewmesh"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.to_viewmesh.html#compas.geometry.Brep.to_viewmesh">[docs]</a>    <span class="k">def</span> <span class="nf">to_viewmesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_viewmesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert this Brep to a view mesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1295,13 +1294,13 @@ document.write(`
 <span class="sd">        :class:`compas.datastructure.Mesh`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Relationships</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Brep.vertex_neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify the neighbouring vertices of a given vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -1313,9 +1312,9 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.BrepVertex`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.vertex_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify the edges connected to a given vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -1327,9 +1326,9 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.BrepEdge`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.vertex_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify the faces connected to a vertex.</span>
 
 <span class="sd">        Parameters</span>
@@ -1341,13 +1340,13 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.BrepFace`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Other Methods</span>
     <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="Brep.trim"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.trim.html#compas.geometry.Brep.trim">[docs]</a>    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trimming_plane</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trimming_plane</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Trim this Brep using the given trimming plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -1362,9 +1361,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.make_solid"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.make_solid.html#compas.geometry.Brep.make_solid">[docs]</a>    <span class="k">def</span> <span class="nf">make_solid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">make_solid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the current shape to a solid if it is a shell.</span>
 
 <span class="sd">        Returns</span>
@@ -1372,9 +1371,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.sew"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.sew.html#compas.geometry.Brep.sew">[docs]</a>    <span class="k">def</span> <span class="nf">sew</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sew</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sew together the individual parts of the shape.</span>
 
 <span class="sd">        Returns</span>
@@ -1382,9 +1381,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.fix"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.fix.html#compas.geometry.Brep.fix">[docs]</a>    <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fix the shell.</span>
 
 <span class="sd">        Returns</span>
@@ -1392,9 +1391,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.cull_unused_vertices"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.cull_unused_vertices.html#compas.geometry.Brep.cull_unused_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">cull_unused_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cull_unused_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all unused vertices.</span>
 
 <span class="sd">        Returns</span>
@@ -1402,9 +1401,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.cull_unused_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.cull_unused_edges.html#compas.geometry.Brep.cull_unused_edges">[docs]</a>    <span class="k">def</span> <span class="nf">cull_unused_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cull_unused_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all unused edges.</span>
 
 <span class="sd">        Returns</span>
@@ -1412,9 +1411,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.cull_unused_loops"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.cull_unused_loops.html#compas.geometry.Brep.cull_unused_loops">[docs]</a>    <span class="k">def</span> <span class="nf">cull_unused_loops</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cull_unused_loops</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all unused loops.</span>
 
 <span class="sd">        Returns</span>
@@ -1422,9 +1421,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.cull_unused_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.cull_unused_faces.html#compas.geometry.Brep.cull_unused_faces">[docs]</a>    <span class="k">def</span> <span class="nf">cull_unused_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cull_unused_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all unused faces.</span>
 
 <span class="sd">        Returns</span>
@@ -1432,9 +1431,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.contours"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.contours.html#compas.geometry.Brep.contours">[docs]</a>    <span class="k">def</span> <span class="nf">contours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">planes</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">contours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">planes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate contour lines by slicing the Brep shape with a series of planes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1448,9 +1447,9 @@ document.write(`
 <span class="sd">            A list of polylines per plane.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.slice"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.slice.html#compas.geometry.Brep.slice">[docs]</a>    <span class="k">def</span> <span class="nf">slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Slice through the BRep with a plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -1461,9 +1460,9 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        :class:`compas.geometry.BrepFace`</span>
 
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Brep.split"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.split.html#compas.geometry.Brep.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Slice through the BRep with a plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -1476,9 +1475,9 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.Brep`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="Brep.overlap"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.overlap.html#compas.geometry.Brep.overlap">[docs]</a>    <span class="k">def</span> <span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">deflection</span><span class="o">=</span><span class="n">LINEAR_DEFLECTION</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">deflection</span><span class="o">=</span><span class="n">LINEAR_DEFLECTION</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the overlap between this BRep and another.</span>
 
 <span class="sd">        Parameters</span>
@@ -1495,7 +1494,7 @@ document.write(`
 <span class="sd">        tuple[list[:class:`compas.geometry.BrepFace`]]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </pre></div>
 
                 </article>
@@ -1504,14 +1503,6 @@ document.write(`
               
                 <footer class="bd-footer-article">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-</div></div>
-  
-</div>
-
                 </footer>
               
             </div>
