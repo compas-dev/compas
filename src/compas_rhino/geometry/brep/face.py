@@ -7,6 +7,8 @@ from compas.geometry import BrepFace
 from compas.geometry import Sphere
 from compas.geometry import Cylinder
 from compas.geometry import Frame
+from compas.geometry import SurfaceType
+
 
 from compas_rhino.geometry import RhinoNurbsSurface
 from compas_rhino.geometry.surfaces import RhinoSurface
@@ -18,6 +20,7 @@ from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
 
 from .loop import RhinoBrepLoop
+from .edge import RhinoBrepEdge
 
 
 class RhinoBrepFace(BrepFace):
@@ -51,6 +54,7 @@ class RhinoBrepFace(BrepFace):
 
     def _set_face(self, native_face):
         self._face = native_face
+        self._mass_props = Rhino.Geometry.AreaMassProperties.Compute(self.as_brep().native_brep)
         self._loops = [RhinoBrepLoop(loop) for loop in native_face.Loops]
         self._surface = RhinoNurbsSurface.from_rhino(self._face.UnderlyingSurface().ToNurbsSurface())
 
@@ -110,6 +114,20 @@ class RhinoBrepFace(BrepFace):
         return self._surface
 
     @property
+    def area(self):
+        return self._mass_props.Area
+
+    @property
+    def centroid(self):
+        return self._mass_props.Centroid
+
+    @property
+    def edges(self):
+        brep = self._face.Brep
+        edge_indices = self._face.AdjacentEdges()
+        return [RhinoBrepEdge(brep.Edges[index]) for index in edge_indices]
+
+    @property
     def loops(self):
         return self._loops
 
@@ -127,7 +145,53 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def is_plane(self):
-        return
+        return self._face.UnderlyingSurface().IsPlanar()
+
+    @property
+    def is_cone(self):
+        return self._face.UnderlyingSurface().IsCone()
+
+    @property
+    def is_cylinder(self):
+        return self._face.UnderlyingSurface().IsCylinder()
+
+    @property
+    def is_sphere(self):
+        return self._face.UnderlyingSurface().IsSphere()
+
+    @property
+    def is_torus(self):
+        return self._face.UnderlyingSurface().IsTorus()
+
+    @property
+    def nurbssurface(self):
+        return self._surface
+
+    @property
+    def vertices(self):
+        vertices = []
+        for edge in self.edges:
+            vertices.extend(edge.vertices)
+        return vertices
+
+    @property
+    def type(self):
+        if self.is_cone:
+            return SurfaceType.CONE
+        elif self.is_cylinder:
+            return SurfaceType.CYLINDER
+        elif self.is_sphere:
+            return SurfaceType.SPHERE
+        elif self.is_torus:
+            return SurfaceType.TORUS
+        elif self.is_plane:
+            return SurfaceType.PLANE
+        else:
+            return SurfaceType.OTHER_SURFACE
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
 
     @staticmethod
     def _get_surface_geometry(surface):

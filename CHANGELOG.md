@@ -44,6 +44,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.BrepFace.add_loops()`.
 * Added `compas.geometry.BrepFace.to_polygon()` with generic implementation.
 * Added `compas.geometry.BrepFace.try_get_nurbssurface()`.
+* Added `compas_rhino.geometry.RhinoBrepFace.area`.
+* Added `compas_rhino.geometry.RhinoBrepFace.centroid`.
+* Added `compas_rhino.geometry.RhinoBrepFace.edges`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_cone`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_cylinder`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_torus`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_sphere`.
+* Added `compas_rhino.geometry.RhinoBrepFace.nurbssurface`.
+* Added `compas_rhino.geometry.RhinoBrepFace.vertices`.
+* Added `compas_rhino.geometry.RhinoBrepLoop.trims`.
 
 ### Changed
 
@@ -54,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.brep.Brep.from_step_file` to `from_step`.
 * Moved `compas.brep` to `compas.geometry.brep`.
 * `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
+* Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 
 
 ### Removed

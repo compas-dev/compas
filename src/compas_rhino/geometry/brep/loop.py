@@ -3,6 +3,7 @@ import Rhino
 from compas.geometry import BrepLoop
 
 from .trim import RhinoBrepTrim
+from .edge import RhinoBrepEdge
 
 
 class LoopType(object):
@@ -32,8 +33,10 @@ class RhinoBrepLoop(BrepLoop):
 
     Attributes
     ----------
-    edges : list[:class:`compas_rhino.geometry.RhinoBrepLoop`], read-only
+    edges : list[:class:`compas_rhino.geometry.RhinoBrepEdge`], read-only
         The list of edges which comprise this loop.
+    trims : list[:class:`compas_rhino.geometry.RhinoBrepTrim`], read-only
+        The list of trims which comprise this loop.
     loop_type : :class:`compas_rhino.geometry.brep.loop.LoopType`, read-only
         The type of this loop.
     is_outer : bool, read-only
@@ -102,7 +105,11 @@ class RhinoBrepLoop(BrepLoop):
 
     @property
     def edges(self):
-        return self._edges
+        return [RhinoBrepEdge(trim.Edge) for trim in self._loop.Trims]
+
+    @property
+    def trims(self):
+        return self._trims
 
     @property
     def is_outer(self):

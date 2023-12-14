@@ -141,6 +141,10 @@ class RhinoBrepEdge(BrepEdge):
     def is_ellipse(self):
         return self._edge.EdgeCurve.IsEllipse()
 
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
+
     def _get_curve_geometry(self):
         curve = self._edge.EdgeCurve
         domain = [self._edge.Domain[0], self._edge.Domain[1]]

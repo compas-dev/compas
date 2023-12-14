@@ -423,9 +423,15 @@ from .brep.brep import (
 )
 from .brep.edge import BrepEdge
 from .brep.loop import BrepLoop
-from .brep.face import BrepFace
+from .brep.face import (
+    BrepFace,
+    SurfaceType
+)
 from .brep.vertex import BrepVertex
-from .brep.trim import BrepTrim, BrepTrimIsoStatus
+from .brep.trim import (
+    BrepTrim,
+    BrepTrimIsoStatus
+)
 
 
 __all__ = [
@@ -436,6 +442,7 @@ __all__ = [
     "BrepEdge",
     "BrepError",
     "BrepFace",
+    "SurfaceType",
     "BrepInvalidError",
     "BrepLoop",
     "BrepOrientation",
