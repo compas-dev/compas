@@ -14,7 +14,7 @@ package = "compas"
 master_doc = "index"
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 templates_path = sphinx_compas2_theme.get_autosummary_templates_path()
-exclude_patterns = sphinx_compas2_theme.default_exclude_patterns + ["reference/**"]
+exclude_patterns = sphinx_compas2_theme.default_exclude_patterns
 add_module_names = True
 language = "en"
 
@@ -157,6 +157,7 @@ html_theme_options = {
         "text": "COMPAS docs",
     },
     "anouncements": "This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
+    "navigation_depth": 2,
 }
 
 html_sidebars = {"index": []}
