@@ -20,6 +20,7 @@ User Guide
     basics.geometry
     basics.datastructures
     basics.visualisation
+    basics.colors
 
 
 .. toctree::
@@ -28,6 +29,7 @@ User Guide
     :caption: Tutorial: Advanced
 
     advanced.tolerance
+    advanced.coordinategrids
     advanced.serialisation
     advanced.rpc
     advanced.pluggables
@@ -39,6 +41,7 @@ User Guide
     :caption: Tutorial: Working in CAD
 
     cad.rhino
+    cad.rhino8
     cad.grasshopper
     cad.blender
     cad.other

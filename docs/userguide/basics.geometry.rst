@@ -6,7 +6,8 @@ Geometry
     :titlesonly:
     :caption: Geometry
 
-    basics.geometry.primitives
+    basics.geometry.points_and_vectors
+    basics.geometry.planes_and_frames
     basics.geometry.polygons_and_polyhedrons
     basics.geometry.curves_and_surfaces
     basics.geometry.solids

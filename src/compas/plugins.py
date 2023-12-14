@@ -29,11 +29,23 @@ __all__ = [
     "PluginManager",
     "PluginNotInstalledError",
     "PluginValidator",
+    "PluginDefaultNotAvailableError",
 ]
 
 
 class PluginNotInstalledError(Exception):
     """Exception raised when an extension point is invoked but no plugin is available."""
+
+    pass
+
+
+class PluginDefaultNotAvailableError(Exception):
+    """Exception raised when an extension point is invoked but no plugin is available, and the default implementation is also not available.
+
+    The most likely circumstance for this error is when the default implementation is based on Numpy, Scipy, or similar,
+    and the pluggable is invoked in a context where these packages are not available.
+
+    """
 
     pass
 
@@ -66,6 +78,7 @@ class PluginImpl(object):
         Method implementing the a plugin's behavior.
     plugin_opts : dict
         Dictionary containing plugin options.
+
     """
 
     def __init__(self, plugin, method, plugin_opts):
@@ -93,6 +106,7 @@ class PluginManager(object):
     """Plugin Manager handles discovery and registry of plugins.
 
     Usually there is only one instance of a plugin manager per host.
+
     """
 
     DEBUG = False
@@ -114,6 +128,7 @@ class PluginManager(object):
         dict
             Dictionary of available plugins. The keys are extension point URLs
             and the values are instances of :class:`PluginImpl`.
+
         """
         if not self._discovery_done:
             self.load_plugins()
@@ -127,6 +142,7 @@ class PluginManager(object):
         -------
         int
             Number of loaded plugins.
+
         """
         # Since we modify global state,
         # let's lock around this.
@@ -254,6 +270,7 @@ def pluggable(
     >>> @pluggable(category='triangulation')
     ... def triangulate_mesh(mesh):
     ...    pass
+
     """
 
     def pluggable_decorator(func):
@@ -264,6 +281,21 @@ def pluggable(
             # Select first matching plugin
             if selector == "first_match":
                 plugin_impl = _select_plugin(extension_point_url)
+                if plugin_impl is None:
+                    try:
+                        return func(*args, **kwargs)
+                    except NotImplementedError:
+                        raise PluginNotInstalledError(
+                            "Plugin not found and no default implementation for extension point URL: {}".format(
+                                extension_point_url
+                            )
+                        )
+                    except ImportError:
+                        raise PluginDefaultNotAvailableError(
+                            "Plugin not found and the default implementation is not available in your environment for extension point URL: {}".format(
+                                extension_point_url
+                            )
+                        )
 
                 # Invoke plugin
                 return plugin_impl.method(*args, **kwargs)
@@ -447,7 +479,7 @@ class PluginValidator(object):
                 return plugin
 
         # Nothing found, raise
-        raise PluginNotInstalledError("Plugin not found for extension point URL: {}".format(extension_point_url))
+        # raise PluginNotInstalledError("Plugin not found for extension point URL: {}".format(extension_point_url))
 
     def collect_plugins(self, extension_point_url):
         if self.manager.DEBUG:

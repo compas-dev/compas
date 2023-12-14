@@ -1,13 +1,16 @@
 from compas.data import Data
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
-from compas.scene import SceneObject
+from .context import build_scene_object
+from .context import redraw
+from .context import clear
 
 
 class Scene(Data):
-    def __init__(self, name=None):
+    def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
         self._tree = Tree("Scene")
+        self.context = context
         root = TreeNode(name="root")
         self.tree.add(root)
 
@@ -20,7 +23,7 @@ class Scene(Data):
         return [node.attributes["sceneobject"] for node in self.tree.nodes if "sceneobject" in node.attributes]
 
     def add(self, item, parent=None, **kwargs):
-        sceneobject = SceneObject(item, **kwargs)
+        sceneobject = build_scene_object(item, context=self.context, **kwargs)
         name = item.name or item.__class__.__name__
         node = TreeNode(name, attributes={"sceneobject": sceneobject})
 
@@ -34,7 +37,7 @@ class Scene(Data):
 
     def remove(self, sceneobject):
         node = self._get_node(sceneobject)
-        self.tree.remove_node(node)
+        self.tree.remove(node)
 
     def _get_node(self, sceneobject):
         for node in self.tree.nodes:
@@ -43,9 +46,10 @@ class Scene(Data):
                     return node
         raise Exception("Scene object not in scene")
 
-    def redraw(self):
-        sceneobject = None
+    def clear(self):
+        clear()
 
+    def redraw(self):
         drawn_objects = []
         for sceneobject in self.sceneobjects:
             drawn_object = sceneobject.draw()
@@ -61,7 +65,7 @@ class Scene(Data):
                 drawn_objects.append(drawn_object)
 
         if drawn_objects:
-            sceneobject.redraw()
+            redraw()
 
         return drawn_objects
 

@@ -5,7 +5,7 @@ When working in Rhino, :class:`compas.scene.SceneObject` will automatically use 
 from __future__ import absolute_import
 
 from compas.plugins import plugin
-from compas.scene import SceneObject
+from compas.scene import register
 
 from compas.geometry import Circle
 from compas.geometry import Ellipse
@@ -75,29 +75,28 @@ def redraw_rhino():
 
 @plugin(category="factories", requires=["Rhino"])
 def register_scene_objects():
-    SceneObject.register(Circle, CircleObject, context="Rhino")
-    SceneObject.register(Ellipse, EllipseObject, context="Rhino")
-    SceneObject.register(Frame, FrameObject, context="Rhino")
-    SceneObject.register(Line, LineObject, context="Rhino")
-    SceneObject.register(Plane, PlaneObject, context="Rhino")
-    SceneObject.register(Point, PointObject, context="Rhino")
-    SceneObject.register(Polygon, PolygonObject, context="Rhino")
-    SceneObject.register(Polyline, PolylineObject, context="Rhino")
-    SceneObject.register(Vector, VectorObject, context="Rhino")
-    SceneObject.register(Box, BoxObject, context="Rhino")
-    SceneObject.register(Capsule, CapsuleObject, context="Rhino")
-    SceneObject.register(Cone, ConeObject, context="Rhino")
-    SceneObject.register(Cylinder, CylinderObject, context="Rhino")
-    SceneObject.register(Polyhedron, PolyhedronObject, context="Rhino")
-    SceneObject.register(Sphere, SphereObject, context="Rhino")
-    SceneObject.register(Torus, TorusObject, context="Rhino")
-    SceneObject.register(Mesh, MeshObject, context="Rhino")
-    SceneObject.register(Network, NetworkObject, context="Rhino")
-    SceneObject.register(VolMesh, VolMeshObject, context="Rhino")
-    SceneObject.register(Curve, CurveObject, context="Rhino")
-    SceneObject.register(Surface, SurfaceObject, context="Rhino")
-    SceneObject.register(Brep, BrepObject, context="Rhino")
-    print("Rhino SceneObjects registered.")
+    register(Circle, CircleObject, context="Rhino")
+    register(Ellipse, EllipseObject, context="Rhino")
+    register(Frame, FrameObject, context="Rhino")
+    register(Line, LineObject, context="Rhino")
+    register(Plane, PlaneObject, context="Rhino")
+    register(Point, PointObject, context="Rhino")
+    register(Polygon, PolygonObject, context="Rhino")
+    register(Polyline, PolylineObject, context="Rhino")
+    register(Vector, VectorObject, context="Rhino")
+    register(Box, BoxObject, context="Rhino")
+    register(Capsule, CapsuleObject, context="Rhino")
+    register(Cone, ConeObject, context="Rhino")
+    register(Cylinder, CylinderObject, context="Rhino")
+    register(Polyhedron, PolyhedronObject, context="Rhino")
+    register(Sphere, SphereObject, context="Rhino")
+    register(Torus, TorusObject, context="Rhino")
+    register(Mesh, MeshObject, context="Rhino")
+    register(Network, NetworkObject, context="Rhino")
+    register(VolMesh, VolMeshObject, context="Rhino")
+    register(Curve, CurveObject, context="Rhino")
+    register(Surface, SurfaceObject, context="Rhino")
+    register(Brep, BrepObject, context="Rhino")
 
 
 __all__ = [

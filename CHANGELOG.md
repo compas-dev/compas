@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
 * Added `compas.scene.Scene`.
+* Added `compas.json_loadz()` and `compas.json_dumpz()` to support ZIP compressed JSON files.
+* Added `compas.datastructures.assembly.delete_part()`.
+* Added `compas.datastructures.assembly.delete_connection()`.
 * Added `compas.geometry.Brep.from_breps()`.
 * Added `compas.geometry.Brep.from_planes()`.
 * Added `compas.geometry.Brep.to_iges()`.
@@ -63,7 +66,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.geometry.NurbsSurface.v_isocurve` to `isocurve_v`.
 * Changed `compas.brep.Brep.from_step_file` to `from_step`.
 * Moved `compas.brep` to `compas.geometry.brep`.
+* Updated `compas-actions.docs` workflow to `v3`.
 * `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
+* Context related functions like `register`, `build`, `redraw` and `clear` are moved to `compas.scene.context` from `compas.scene.SceneObject`. 
+* Changed plugin selection to fall back to a default implementation if possible.
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 
 

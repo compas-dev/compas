@@ -28,3 +28,5 @@ class GeometryObject(SceneObject):
     def __init__(self, geometry, **kwargs):
         super(GeometryObject, self).__init__(item=geometry, **kwargs)
         self.geometry = geometry
+        if "color" in kwargs:
+            self.color = kwargs["color"]

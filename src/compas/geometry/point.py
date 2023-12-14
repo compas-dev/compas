@@ -116,7 +116,7 @@ class Point(Geometry):
         self.z = z
 
     def __repr__(self):
-        return "{0}({1}, {2}, z={3})".format(
+        return "{0}(x={1}, y={2}, z={3})".format(
             type(self).__name__,
             self.x,
             self.y,

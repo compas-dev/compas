@@ -147,6 +147,37 @@ class Assembly(Datastructure):
             raise AssemblyError(error_msg)
         return self.graph.add_edge(a.key, b.key, **kwargs)
 
+    def delete_part(self, part):
+        """Remove a part  from the assembly.
+
+        Parameters
+        ----------
+        part : :class:`compas.datastructures.Part`
+            The part to add.
+
+        Returns
+        -------
+        None
+
+        """
+        del self._parts[part.guid]
+        self.graph.delete_node(key=part.key)
+
+    def delete_connection(self, edge):
+        """Delete a connection between two parts.
+
+        Parameters
+        ----------
+        edge : :class:`compas.datastructures.Part`
+            The part to add.
+
+        Returns
+        -------
+        None
+
+        """
+        self.graph.delete_edge(edge=edge)
+
     def parts(self):
         """The parts of the assembly.
 

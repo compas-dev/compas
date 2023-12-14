@@ -25,6 +25,21 @@ def test_add_parts():
     assert len(list(assembly.parts())) == 3
 
 
+def test_delete_part():
+    assembly = Assembly()
+    part1 = Part()
+    part2 = Part()
+    part3 = Part()
+
+    assembly.add_part(part1)
+    assembly.add_part(part2)
+    assembly.add_part(part3)
+
+    assert len(list(assembly.parts())) == 3
+    assembly.delete_part(part2)
+    assert len(list(assembly.parts())) == 2
+
+
 def test_add_duplicate_parts():
     assembly = Assembly()
 
@@ -47,6 +62,22 @@ def test_add_connections():
     assembly.add_connection(parts[2], parts[0])
 
     assert list(assembly.connections()) == [(0, 1), (1, 2), (2, 0)]
+
+
+def test_delete_connection():
+    assembly = Assembly()
+    parts = [Part() for i in range(3)]
+
+    for part in parts:
+        assembly.add_part(part)
+
+    assembly.add_connection(parts[0], parts[1])
+    assembly.add_connection(parts[1], parts[2])
+    assembly.add_connection(parts[2], parts[0])
+
+    assert list(assembly.connections()) == [(0, 1), (1, 2), (2, 0)]
+    assembly.delete_connection((parts[0].key, parts[1].key))
+    assert list(assembly.connections()) == [(1, 2), (2, 0)]
 
 
 def test_find():

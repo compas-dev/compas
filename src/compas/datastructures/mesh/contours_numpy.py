@@ -9,9 +9,7 @@ from numpy import amax
 from numpy import amin
 
 from scipy.interpolate import griddata
-
 import matplotlib.pyplot as plt
-
 from compas.numerical import scalarfield_contours
 
 
