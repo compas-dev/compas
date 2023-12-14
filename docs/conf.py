@@ -1,6 +1,7 @@
 # flake8: noqa
 # -*- coding: utf-8 -*-
 
+from sphinx.writers import html, html5
 import sphinx_compas2_theme
 
 # -- General configuration ------------------------------------------------
@@ -42,19 +43,19 @@ numpydoc_attributes_as_param_list = True
 # autodoc options
 
 autodoc_type_aliases = {}
-
 autodoc_typehints_description_target = "documented"
-
 autodoc_mock_imports = sphinx_compas2_theme.default_mock_imports
-
 autodoc_default_options = {
     "undoc-members": True,
     "show-inheritance": True,
 }
-
 autodoc_member_order = "groupwise"
-
 autoclass_content = "class"
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", sphinx_compas2_theme.skip)
+
 
 # autosummary options
 
@@ -90,38 +91,21 @@ extlinks = {
 
 # from pytorch
 
-from sphinx.writers import html, html5
-
-
-def replace(Klass):
-    old_call = Klass.visit_reference
-
-    def visit_reference(self, node):
-        if "refuri" in node:
-            refuri = node.get("refuri")
-            if "generated" in refuri:
-                href_anchor = refuri.split("#")
-                if len(href_anchor) > 1:
-                    href = href_anchor[0]
-                    anchor = href_anchor[1]
-                    page = href.split("/")[-1]
-                    parts = page.split(".")
-                    if parts[-1] == "html":
-                        pagename = ".".join(parts[:-1])
-                        if anchor == pagename:
-                            node["refuri"] = href
-        return old_call(self, node)
-
-    Klass.visit_reference = visit_reference
-
-
-replace(html.HTMLTranslator)
-replace(html5.HTML5Translator)
+sphinx_compas2_theme.replace(html.HTMLTranslator)
+sphinx_compas2_theme.replace(html5.HTML5Translator)
 
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "multisection"
 html_title = project
+html_sidebars = {"index": []}
+
+favicons = [
+    {
+        "rel": "icon",
+        "href": "compas.ico",
+    }
+]
 
 html_theme_options = {
     "external_links": [
@@ -152,22 +136,13 @@ html_theme_options = {
         "version_match": version,
     },
     "logo": {
-        "image_light": "_static/compas_icon_white.png",  # relative to parent of conf.py
-        "image_dark": "_static/compas_icon_white.png",  # relative to parent of conf.py
+        "image_light": "_static/compas_icon_white.png",
+        "image_dark": "_static/compas_icon_white.png",
         "text": "COMPAS docs",
     },
-    "anouncement": "This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
+    "anouncement": "This is the documentation for the pre-release of COMPAS 2.0. The documentation of the stable release of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
     "navigation_depth": 2,
 }
-
-html_sidebars = {"index": []}
-
-favicons = [
-    {
-        "rel": "icon",
-        "href": "compas.ico",  # relative to the static path
-    }
-]
 
 html_context = {
     "github_url": "https://github.com",
