@@ -7,6 +7,7 @@ The COMPAS ecosystem offers excellent integration with Grasshopper. Thanks to th
 it is possible to write Grasshopper components in Python, in a git friendly way, including the components' code in the same repository as the rest of your project.
 
 .. note::
+
     To develop GH components using the GHPython Componentizer, you would need a development setup of COMPAS. See :ref:`dev_setup` for more information.
 
 GHPython Componentizer
@@ -22,14 +23,14 @@ By default, the components' code is expected in ``src/{your_package_name}/compon
 .. code-block:: python
 
     ns.configure(
-    {
-        "ghuser": {
-            "source_dir": "src/compas_bananas/components",
-            "target_dir": "src/compas_bananas/components/ghuser",
-            "prefix": "(COMPAS_BANANAS)",
-        },
-    }
-)
+        {
+            "ghuser": {
+                "source_dir": "src/compas_bananas/components",
+                "target_dir": "src/compas_bananas/components/ghuser",
+                "prefix": "(COMPAS_BANANAS)",
+            },
+        }
+    )
 
 Creating a component
 --------------------

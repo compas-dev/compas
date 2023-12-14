@@ -364,14 +364,14 @@ class Color(Data):
 
     @classmethod
     def from_hls(cls, hue, luminance, saturation):  # type: (float, float, float) -> Color
-        """Construct a color from Hue, Luminance, and Saturation.
+        """Construct a color from Hue, Lightness, and Saturation.
 
         Parameters
         ----------
         hue : float
             Hue.
-        luminance : float
-            Luminance.
+        lightness : float
+            Lightness.
         saturation : float
             Saturation.
 
