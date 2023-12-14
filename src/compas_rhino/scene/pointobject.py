@@ -46,6 +46,6 @@ class PointObject(RhinoSceneObject, GeometryObject):
         geometry = point_to_rhino(self.geometry)
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
-        
+
         self._guids = [sc.doc.Objects.AddPoint(geometry, attr)]
         return self.guids
