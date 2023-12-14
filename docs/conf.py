@@ -156,7 +156,7 @@ html_theme_options = {
         "image_dark": "_static/compas_icon_white.png",  # relative to parent of conf.py
         "text": "COMPAS docs",
     },
-    "anouncements": "This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
+    "anouncement": "This is the WIP documentation for the pre-release of COMPAS 2.0. The documentation of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
     "navigation_depth": 2,
 }
 
