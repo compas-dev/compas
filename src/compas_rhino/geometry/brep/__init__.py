@@ -1,7 +1,6 @@
 import Rhino  # noqa: F401
 
 from compas.plugins import plugin
-from compas.geometry import Brep
 
 from .brep import RhinoBrep
 
@@ -9,6 +8,7 @@ from .brep import RhinoBrep
 @plugin(category="factories", requires=["Rhino"])
 def new_brep(*args, **kwargs):
     return object.__new__(RhinoBrep)
+
 
 @plugin(category="factories", requires=["Rhino"])
 def from_native(*args, **kwargs):
