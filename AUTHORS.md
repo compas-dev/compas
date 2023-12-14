@@ -37,3 +37,4 @@
 - Nickolas Maslarinos <<maslarinosnickolas@gmail.com>> [@nmaslarinos](https://github.com/nmaslarinos)
 - Katerina Toumpektsi <<e.toumpeksti@gmail.com>> [@katarametin](https://github.com/katarametin)
 - Joelle Baehr-Bruyere <<joelle.baehr-bruyere@epfl.ch>> [@baehrjo](https://github.com/baehrjo)
+- Adam Anouar <<aanouar@student.ethz.ch>> [@AdamAnouar](https://github.com/AdamAnouar)
