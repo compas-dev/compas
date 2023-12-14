@@ -5,6 +5,7 @@ from compas.geometry import Polygon
 
 class SurfaceType(object):
     """Enumaration of surface types."""
+
     PLANE = 0
     CYLINDER = 1
     CONE = 2
@@ -287,15 +288,15 @@ class BrepFace(Data):
         raise NotImplementedError
 
     def try_get_nurbssurface(
-            self,
-            precision,
-            continuity_u,
-            continuity_v,
-            maxdegree_u,
-            maxdegree_v,
-            maxsegments_u,
-            maxsegments_v,
-        ):
+        self,
+        precision,
+        continuity_u,
+        continuity_v,
+        maxdegree_u,
+        maxdegree_v,
+        maxsegments_u,
+        maxsegments_v,
+    ):
         """Returns the NURBS surface representation of this face. Or None if this cannot be done.
 
         Parameters

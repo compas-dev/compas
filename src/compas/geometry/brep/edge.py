@@ -3,6 +3,7 @@ from compas.data import Data
 
 class CurveType(object):
     """Enumaration of curve types."""
+
     LINE = 0
     CIRCLE = 1
     ELLIPSE = 2
