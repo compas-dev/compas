@@ -16,6 +16,7 @@ from compas.geometry import Cylinder
 from compas.geometry import Ellipse
 from compas.geometry import Frame
 from compas.geometry import Line
+from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
@@ -42,6 +43,7 @@ from .frameobject import FrameObject
 from .lineobject import LineObject
 from .meshobject import MeshObject
 from .networkobject import NetworkObject
+from .planeobject import PlaneObject
 from .pointobject import PointObject
 from .polygonobject import PolygonObject
 from .polyhedronobject import PolyhedronObject
@@ -67,6 +69,7 @@ def register_scene_objects():
     register(Line, LineObject, context="Grasshopper")
     register(Mesh, MeshObject, context="Grasshopper")
     register(Network, NetworkObject, context="Grasshopper")
+    register(Plane, PlaneObject, context="Grasshopper")
     register(Point, PointObject, context="Grasshopper")
     register(Polygon, PolygonObject, context="Grasshopper")
     register(Polyhedron, PolyhedronObject, context="Grasshopper")
@@ -93,6 +96,7 @@ __all__ = [
     "LineObject",
     "MeshObject",
     "NetworkObject",
+    "PlaneObject",
     "PointObject",
     "PolygonObject",
     "PolyhedronObject",

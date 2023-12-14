@@ -28,8 +28,8 @@ class BrepObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Brep`
-            The Grasshopper geometry instance.
+        list[:rhino:`Rhino.Geometry.Brep`]
+            List of created Rhino breps.
 
         """
         brep = conversions.brep_to_rhino(self.geometry)
@@ -38,4 +38,5 @@ class BrepObject(GHSceneObject, GeometryObject):
             transformation = conversions.transformation_to_rhino(self.transformation)
             brep.Transform(transformation)
 
-        return brep
+        self._guids = [brep]
+        return self.guids

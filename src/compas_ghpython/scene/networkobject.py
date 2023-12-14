@@ -28,13 +28,11 @@ class NetworkObject(GHSceneObject, BaseNetworkObject):
 
         Returns
         -------
-        list[:rhino:`Rhino.Geometry.Point3d`]
-            The objects representing the nodes of the network.
-        list[:rhino:`Rhino.Geometry.Line`]
-            The objects representing the edges of the network.
-
+        list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
+            List of created Rhino geometries.
         """
-        return self.draw_nodes(), self.draw_edges()
+        self._guids = self.draw_edges() + self.draw_nodes()
+        return self.guids
 
     def draw_nodes(self, nodes=None):
         """Draw a selection of nodes.

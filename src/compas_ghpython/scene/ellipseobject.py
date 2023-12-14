@@ -28,7 +28,8 @@ class EllipseObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Ellipse`
+        list[:rhino:`Rhino.Geometry.Ellipse`]
+            List of created Rhino ellipse.
 
         """
         ellipse = conversions.ellipse_to_rhino(self.geometry)
@@ -37,4 +38,5 @@ class EllipseObject(GHSceneObject, GeometryObject):
         if self.transformation:
             ellipse.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return ellipse
+        self._guids = [ellipse]
+        return self.guids

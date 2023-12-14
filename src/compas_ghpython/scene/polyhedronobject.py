@@ -35,7 +35,8 @@ class PolyhedronObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Mesh`
+        list[:rhino:`Rhino.Geometry.Mesh`]
+            List of created Rhino mesh.
 
         """
         color = Color.coerce(color) or self.color
@@ -46,4 +47,5 @@ class PolyhedronObject(GHSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

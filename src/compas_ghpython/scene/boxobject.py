@@ -28,7 +28,8 @@ class BoxObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Box`
+        list[:rhino:`Rhino.Geometry.Box`]
+            List of created Rhino box.
 
         """
         box = conversions.box_to_rhino(self.geometry)
@@ -38,4 +39,4 @@ class BoxObject(GHSceneObject, GeometryObject):
             box.Transform(transformation)
 
         self._guids = [box]
-        return self._guids
+        return self.guids

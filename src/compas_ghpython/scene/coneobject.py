@@ -29,6 +29,7 @@ class ConeObject(GHSceneObject, GeometryObject):
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Brep`]
+            List of created Rhino breps.
 
         """
         brep = conversions.cone_to_rhino_brep(self.geometry)
@@ -37,4 +38,5 @@ class ConeObject(GHSceneObject, GeometryObject):
             transformation = conversions.transformation_to_rhino(self.transformation)
             brep.Transform(transformation)
 
-        return brep
+        self._guids = [brep]
+        return self.guids

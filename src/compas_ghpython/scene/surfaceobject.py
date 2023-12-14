@@ -31,7 +31,8 @@ class SurfaceObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Surface`
+        list[:rhino:`Rhino.Geometry.Surface`]
+            The created Rhino surfaces.
 
         """
         geometry = conversions.surface_to_rhino(self.geometry)
@@ -39,4 +40,5 @@ class SurfaceObject(GHSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

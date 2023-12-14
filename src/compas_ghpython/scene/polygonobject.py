@@ -35,7 +35,7 @@ class PolygonObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Mesh`
+        list[:rhino:`Rhino.Geometry.Mesh`]
 
         """
         color = Color.coerce(color) or self.color
@@ -47,4 +47,5 @@ class PolygonObject(GHSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

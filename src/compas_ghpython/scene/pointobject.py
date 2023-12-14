@@ -28,12 +28,13 @@ class PointObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Point3d`
-
+        list[:rhino:`Rhino.Geometry.Point3d`]
+            List of created Rhino points.
         """
         geometry = conversions.point_to_rhino(self.geometry)
 
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

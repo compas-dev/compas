@@ -28,11 +28,13 @@ class TorusObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Torus`
+        list[:rhino:`Rhino.Geometry.Brep`]
+            List of created Rhino torus.
 
         """
         brep = conversions.torus_to_rhino_brep(self.geometry)
         if self.transformation:
             brep.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return brep
+        self._guids = [brep]
+        return self.guids
