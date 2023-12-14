@@ -29,12 +29,14 @@ class FakeSceneObject(SceneObject):
     def clear(self):
         pass
 
+
 class FakeSubSceneObject(SceneObject):
     def draw(self):
         pass
 
     def clear(self):
         pass
+
 
 class FakeItem(object):
     pass
