@@ -2,6 +2,7 @@ from Rhino.Geometry import ArcCurve
 from Rhino.Geometry import NurbsCurve
 from Rhino.Geometry import LineCurve
 from Rhino.Geometry import Interval
+from Rhino.Geometry import LengthMassProperties
 
 from compas.geometry import BrepEdge
 from compas.geometry import Line
@@ -21,6 +22,7 @@ from compas_rhino.conversions import frame_to_rhino_plane
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import arc_to_compas
 from compas_rhino.conversions import arc_to_rhino
+from compas_rhino.conversions import point_to_compas
 
 from .vertex import RhinoBrepVertex
 
@@ -57,11 +59,13 @@ class RhinoBrepEdge(BrepEdge):
         self._curve_type = None
         self._start_vertex = None
         self._end_vertex = None
+        self._mass_props = None
         if rhino_edge:
             self._set_edge(rhino_edge)
 
     def _set_edge(self, rhino_edge):
         self._edge = rhino_edge
+        self._mass_props = LengthMassProperties.Compute(rhino_edge.EdgeCurve)
         self._curve = RhinoNurbsCurve.from_rhino(rhino_edge.EdgeCurve.ToNurbsCurve())
         self._start_vertex = RhinoBrepVertex(rhino_edge.StartVertex)
         self._end_vertex = RhinoBrepVertex(rhino_edge.EndVertex)
@@ -114,6 +118,10 @@ class RhinoBrepEdge(BrepEdge):
     # ==============================================================================
 
     @property
+    def centroid(self):
+        return point_to_compas(self._mass_props.Centroid)
+
+    @property
     def curve(self):
         return self._curve
 
@@ -140,6 +148,10 @@ class RhinoBrepEdge(BrepEdge):
     @property
     def is_ellipse(self):
         return self._edge.EdgeCurve.IsEllipse()
+
+    @property
+    def length(self):
+        return self._mass_props.Length
 
     # ==============================================================================
     # Methods

@@ -57,6 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoBrepFace.nurbssurface`.
 * Added `compas_rhino.geometry.RhinoBrepFace.vertices`.
 * Added `compas_rhino.geometry.RhinoBrepLoop.trims`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.length`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.centroid`.
 
 ### Changed
 
