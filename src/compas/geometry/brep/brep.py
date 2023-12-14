@@ -140,8 +140,8 @@ class Brep(Geometry):
     def __new__(cls, *args, **kwargs):
         return new_brep(cls, *args, **kwargs)
 
-    def __init__(self, name=None):
-        super(Brep, self).__init__(name=name)
+    def __init__(self, *args, **kwargs):
+        super(Brep, self).__init__(*args, **kwargs)
 
     def __str__(self):
         lines = [
@@ -164,6 +164,11 @@ class Brep(Geometry):
     @property
     def dtype(self):
         return "compas.geometry/Brep"
+
+    @classmethod
+    def from_data(cls, data):
+        cls = new_brep(cls)
+        return cls.from_data(data)
 
     # ==============================================================================
     # Properties

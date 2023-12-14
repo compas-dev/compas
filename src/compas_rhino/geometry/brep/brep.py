@@ -73,8 +73,21 @@ class RhinoBrep(Brep):
             "faces": [f.data for f in self.faces],
         }
 
-    @data.setter
-    def data(self, data):
+    @classmethod
+    def from_data(cls, data):
+        """Construct a RhinoBrep from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        instance = cls()
         builder = _RhinoBrepBuilder()
         for v_data in data["vertices"]:
             RhinoBrepVertex.from_data(v_data, builder)
@@ -82,7 +95,8 @@ class RhinoBrep(Brep):
             RhinoBrepEdge.from_data(e_data, builder)
         for f_data in data["faces"]:
             RhinoBrepFace.from_data(f_data, builder)
-        self._brep = builder.result
+        instance.native_brep = builder.result
+        return instance
 
     def copy(self, cls=None):
         """Creates a deep-copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.
@@ -110,6 +124,10 @@ class RhinoBrep(Brep):
     @property
     def native_brep(self):
         return self._brep
+
+    @native_brep.setter
+    def native_brep(self, rhino_brep):
+        self._brep = rhino_brep
 
     @property
     def vertices(self):

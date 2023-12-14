@@ -82,7 +82,7 @@ class RhinoBrepLoop(BrepLoop):
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
-        instance = cls(builder=builder)
+        instance = cls()
         instance._type = (
             Rhino.Geometry.BrepLoopType.Outer if data["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
         )
