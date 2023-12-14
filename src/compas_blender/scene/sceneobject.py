@@ -33,6 +33,10 @@ class BlenderSceneObject(SceneObject):
         super().__init__(**kwargs)
         self.objects = []
 
+    def clear(self):
+        for obj in self.guids:
+            self.delete_object(obj)
+
     # many of the methods below will be added to a general scene object in the future
     # to make them universaly accessible they are added here for now
 
@@ -182,6 +186,21 @@ class BlenderSceneObject(SceneObject):
             obj.matrix_world = conversions.transformation_to_blender(transformation)
         elif self.transformation:
             obj.matrix_world = conversions.transformation_to_blender(self.transformation)
+
+    def delete_object(self, obj) -> None:
+        """Delete a Blender object.
+
+        Parameters
+        ----------
+        obj : :class:`bpy.types.Object`
+            The Blender object to delete.
+
+        Returns
+        -------
+        None
+
+        """
+        bpy.data.objects.remove(obj, do_unlink=True)
 
     # =============================================================================
     # Collections

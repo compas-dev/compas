@@ -34,7 +34,7 @@ class PointcloudObject(BlenderSceneObject, GeometryObject):
         radius: float = 0.01,
         u: int = 16,
         v: int = 16,
-    ) -> bpy.types.Object:
+    ) -> list[bpy.types.Object]:
         """Draw the pointcloud.
 
         Parameters
@@ -52,7 +52,8 @@ class PointcloudObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
         name = self.geometry.name
@@ -63,4 +64,5 @@ class PointcloudObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

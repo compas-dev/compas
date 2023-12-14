@@ -30,7 +30,7 @@ class CurveObject(BlenderSceneObject, GeometryObject):
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-    ) -> bpy.types.Object:
+    ) -> list[bpy.types.Object]:
         """Draw the curve.
 
         Parameters
@@ -42,14 +42,17 @@ class CurveObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
         name = self.geometry.name
         color = Color.coerce(color) or self.color
-        curve = conversions.nurbscurve_to_blender_curve(self.geometry)
+        # TODO: add support for NurbsCurve
+        curve = conversions.polyline_to_blender_curve(self.geometry.to_polyline(), name=name)
 
         obj = self.create_object(curve, name=name)
         self.update_object(obj, color=color, collection=collection)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

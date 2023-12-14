@@ -87,7 +87,7 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
         edges: Optional[Tuple[int, int]] = None,
         nodecolor: Optional[Union[Color, Dict[int, Color]]] = None,
         edgecolor: Optional[Union[Color, Dict[Tuple[int, int], Color]]] = None,
-    ) -> None:
+    ) -> list[bpy.types.Object]:
         """Draw the network.
 
         Parameters
@@ -105,12 +105,12 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
 
         Returns
         -------
-        None
+        list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
-        self.clear()
-        self.draw_nodes(nodes=nodes, color=nodecolor)
-        self.draw_edges(edges=edges, color=edgecolor)
+        self._guids = self.draw_nodes(nodes=nodes, color=nodecolor) + self.draw_edges(edges=edges, color=edgecolor)
+        return self.guids
 
     def draw_nodes(
         self,

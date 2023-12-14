@@ -1,6 +1,5 @@
 from typing import Optional
 from typing import Any
-from typing import List
 
 import bpy  # type: ignore
 
@@ -36,7 +35,7 @@ class SphereObject(BlenderSceneObject, GeometryObject):
         v: int = 16,
         show_wire: bool = False,
         shade_smooth: bool = True,
-    ) -> List[bpy.types.Object]:
+    ) -> list[bpy.types.Object]:
         """Draw the sphere associated with the scene object.
 
         Parameters
@@ -56,7 +55,7 @@ class SphereObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        list
+        list[:blender:`bpy.types.Object`]
             The objects created in Blender.
         """
         name = self.geometry.name
@@ -70,4 +69,5 @@ class SphereObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

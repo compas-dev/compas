@@ -32,7 +32,7 @@ class PointObject(BlenderSceneObject, GeometryObject):
         radius: float = 0.01,
         u: int = 16,
         v: int = 16,
-    ) -> bpy.types.Object:
+    ) -> list[bpy.types.Object]:
         """Draw the point.
 
         Parameters
@@ -50,7 +50,7 @@ class PointObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
 
         """
         name = self.geometry.name
@@ -67,4 +67,5 @@ class PointObject(BlenderSceneObject, GeometryObject):
         self.objects.append(obj)
         self.update_object(obj, name=name, color=color, collection=collection)
 
-        return obj
+        self._guids = [obj]
+        return self.guids
