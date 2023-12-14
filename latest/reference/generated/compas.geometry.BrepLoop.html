@@ -1292,15 +1292,17 @@ document.write(`
 <dt class="sig sig-object py" id="compas.geometry.BrepLoop">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">BrepLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/brep/loop.py#L4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas/geometry/brep/loop.html#BrepLoop"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.data.Data</span></code></a></p>
-<p>An interface for a Brep Loop</p>
+<p>An interface for a Brep Loop.</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
+<dt><strong>edges</strong><span class="classifier">list[<a class="reference internal" href="compas.geometry.BrepEdge.html#compas.geometry.BrepEdge" title="compas.geometry.BrepEdge"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepEdge</span></code></a>], read-only</span></dt><dd><p>Returns the list of deges associated with this loop.</p>
+</dd>
 <dt><strong>is_valid</strong><span class="classifier">bool, read-only</span></dt><dd><p>Returns True if this loop is valid, False otherwise.</p>
 </dd>
 <dt><strong>vertices</strong><span class="classifier">list[<a class="reference internal" href="compas.geometry.BrepVertex.html#compas.geometry.BrepVertex" title="compas.geometry.BrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepVertex</span></code></a>], read-only</span></dt><dd><p>Returns the list of vertices associated with this loop.</p>
 </dd>
-<dt><strong>edges</strong><span class="classifier">list[<a class="reference internal" href="compas.geometry.BrepEdge.html#compas.geometry.BrepEdge" title="compas.geometry.BrepEdge"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepEdge</span></code></a>], read-only</span></dt><dd><p>Returns the list of deges associated with this loop.</p>
+<dt><strong>native_loop</strong><span class="classifier">Any</span></dt><dd><p>The underlying loop object. Type is backend-dependent.</p>
 </dd>
 </dl>
 </dd>
@@ -1380,7 +1382,10 @@ document.write(`
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">native_loop</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>

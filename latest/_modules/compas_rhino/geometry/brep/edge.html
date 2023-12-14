@@ -475,6 +475,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">NurbsCurve</span>
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">LineCurve</span>
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Interval</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">LengthMassProperties</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">BrepEdge</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Line</span>
@@ -494,6 +495,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">line_to_rhino</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">arc_to_compas</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">arc_to_rhino</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">point_to_compas</span>
 
 <span class="kn">from</span> <span class="nn">.vertex</span> <span class="kn">import</span> <span class="n">RhinoBrepVertex</span>
 
@@ -519,25 +521,21 @@ document.write(`
 <span class="sd">        True if the geometry of this edge is a circle, False otherwise.</span>
 <span class="sd">    is_line : bool, read-only</span>
 <span class="sd">        True if the geometry of this edge is a line, False otherwise.</span>
+<span class="sd">    native_edge : :class:`Rhino.Geometry.BrepEdge`</span>
+<span class="sd">        The underlying BrepEdge object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoBrepEdge.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepEdge.html#compas_rhino.geometry.RhinoBrepEdge.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_edge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">builder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoBrepEdge.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepEdge.html#compas_rhino.geometry.RhinoBrepEdge.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_edge</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrepEdge</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span> <span class="o">=</span> <span class="n">builder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_curve</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_curve_type</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_vertex</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_vertex</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">rhino_edge</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_edge</span><span class="p">(</span><span class="n">rhino_edge</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">_set_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_edge</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="o">=</span> <span class="n">rhino_edge</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_curve</span> <span class="o">=</span> <span class="n">RhinoNurbsCurve</span><span class="o">.</span><span class="n">from_rhino</span><span class="p">(</span><span class="n">rhino_edge</span><span class="o">.</span><span class="n">EdgeCurve</span><span class="o">.</span><span class="n">ToNurbsCurve</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_vertex</span> <span class="o">=</span> <span class="n">RhinoBrepVertex</span><span class="p">(</span><span class="n">rhino_edge</span><span class="o">.</span><span class="n">StartVertex</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_end_vertex</span> <span class="o">=</span> <span class="n">RhinoBrepVertex</span><span class="p">(</span><span class="n">rhino_edge</span><span class="o">.</span><span class="n">EndVertex</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_edge</span> <span class="o">=</span> <span class="n">rhino_edge</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -554,12 +552,6 @@ document.write(`
             <span class="s2">&quot;end_vertex&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="o">.</span><span class="n">EndVertex</span><span class="o">.</span><span class="n">VertexIndex</span><span class="p">,</span>
             <span class="s2">&quot;domain&quot;</span><span class="p">:</span> <span class="n">domain</span><span class="p">,</span>
         <span class="p">}</span>
-
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="n">edge_curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_curve_from_data</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;curve_type&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;curve&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">])</span>
-        <span class="n">edge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">edge_curve</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;start_vertex&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;end_vertex&quot;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_edge</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
@@ -578,17 +570,34 @@ document.write(`
 <span class="sd">            An instance of this object type if the data contained in the dict has the correct schema.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">builder</span><span class="o">=</span><span class="n">builder</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">obj</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">edge_curve</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_curve_from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;curve_type&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;curve&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">])</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">native_edge</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">edge_curve</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;start_vertex&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;end_vertex&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">instance</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
     <span class="c1"># ==============================================================================</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">point_to_compas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span><span class="o">.</span><span class="n">Centroid</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curve</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">native_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_native_edge</span>
+
+    <span class="nd">@native_edge</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">native_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span> <span class="o">=</span> <span class="n">LengthMassProperties</span><span class="o">.</span><span class="n">Compute</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">EdgeCurve</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_curve</span> <span class="o">=</span> <span class="n">RhinoNurbsCurve</span><span class="o">.</span><span class="n">from_rhino</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">EdgeCurve</span><span class="o">.</span><span class="n">ToNurbsCurve</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_vertex</span> <span class="o">=</span> <span class="n">RhinoBrepVertex</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">StartVertex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_vertex</span> <span class="o">=</span> <span class="n">RhinoBrepVertex</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">EndVertex</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">start_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -613,6 +622,14 @@ document.write(`
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_ellipse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="o">.</span><span class="n">EdgeCurve</span><span class="o">.</span><span class="n">IsEllipse</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span><span class="o">.</span><span class="n">Length</span>
+
+    <span class="c1"># ==============================================================================</span>
+    <span class="c1"># Methods</span>
+    <span class="c1"># ==============================================================================</span>
 
     <span class="k">def</span> <span class="nf">_get_curve_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span><span class="o">.</span><span class="n">EdgeCurve</span>

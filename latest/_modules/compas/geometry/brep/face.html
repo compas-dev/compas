@@ -473,40 +473,63 @@ document.write(`
   <h1>Source code for compas.geometry.brep.face</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">Data</span>
 
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
+
+
+<span class="k">class</span> <span class="nc">SurfaceType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumaration of surface types.&quot;&quot;&quot;</span>
+
+    <span class="n">PLANE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">CYLINDER</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">CONE</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">SPHERE</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">TORUS</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">BEZIER_SURFACE</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">BSPLINE_SURFACE</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">SURFACE_OF_REVOLUTION</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">SURFACE_OF_EXTRUSTION</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">OFFSET_SURFACE</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">OTHER_SURFACE</span> <span class="o">=</span> <span class="mi">10</span>
+
 
 <div class="viewcode-block" id="BrepFace"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepFace.html#compas.geometry.BrepFace">[docs]</a><span class="k">class</span> <span class="nc">BrepFace</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for a Brep Face.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    is_plane : bool, read-only</span>
-<span class="sd">        Returns True if this face is a plane, False otherwise.</span>
-<span class="sd">    is_cylinder : bool, read-only</span>
-<span class="sd">        Returns True if this face is a cylinder, False otherwise.</span>
-<span class="sd">    is_sphere : bool, read-only</span>
-<span class="sd">        Returns True if this face is a sphere, False otherwise.</span>
-<span class="sd">    is_torus : bool, read-only</span>
-<span class="sd">        Returns True if this face is a torus, False otherwise.</span>
-<span class="sd">    is_cone : bool, read-only</span>
-<span class="sd">        Returns True if this face is a cone, False otherwise.</span>
-<span class="sd">    is_bspline : bool, read-only</span>
-<span class="sd">        Returns True if this face is a bspline, False otherwise.</span>
-<span class="sd">    vertices : list[:class:`compas.geometry.BrepVertex`], read-only</span>
-<span class="sd">        Returns a list of the vertices comprising this face.</span>
-<span class="sd">    edges : list[:class:`compas.geometry.BrepEdge`], read-only</span>
-<span class="sd">        Returns a list of the edges comprising this face.</span>
-<span class="sd">    loops : list[:class:`compas.geometry.BrepLoop`], read-only</span>
-<span class="sd">        Returns a list of the loops comprising this face.</span>
-<span class="sd">    surface : :class:`compas.geometry.Surface`, read-only</span>
-<span class="sd">        Returns the geometry of this face as a surface.</span>
-<span class="sd">    nurbssurface : :class:`compas.geometry.NurbsSurface`, read-only</span>
-<span class="sd">        Returns the geometry of this face as a NURBS surface.</span>
 <span class="sd">    area : float, read-only</span>
 <span class="sd">        Returns the area of this face&#39;s geometry.</span>
 <span class="sd">    centroid : :class:`compas.geometry.Point`, read-only</span>
 <span class="sd">        Returns the centroid of this face&#39;s geometry.</span>
+<span class="sd">    edges : list[:class:`compas.geometry.BrepEdge`], read-only</span>
+<span class="sd">        Returns a list of the edges comprising this face.</span>
+<span class="sd">    is_bspline : bool, read-only</span>
+<span class="sd">        Returns True if this face is a bspline, False otherwise.</span>
+<span class="sd">    is_cone : bool, read-only</span>
+<span class="sd">        Returns True if this face is a cone, False otherwise.</span>
+<span class="sd">    is_cylinder : bool, read-only</span>
+<span class="sd">        Returns True if this face is a cylinder, False otherwise.</span>
+<span class="sd">    is_plane : bool, read-only</span>
+<span class="sd">        Returns True if this face is a plane, False otherwise.</span>
+<span class="sd">    is_sphere : bool, read-only</span>
+<span class="sd">        Returns True if this face is a sphere, False otherwise.</span>
+<span class="sd">    is_torus : bool, read-only</span>
+<span class="sd">        Returns True if this face is a torus, False otherwise.</span>
 <span class="sd">    is_valid : bool, read-only</span>
 <span class="sd">        Return True if this face is valid, False otherwise.</span>
+<span class="sd">    loops : list[:class:`compas.geometry.BrepLoop`], read-only</span>
+<span class="sd">        Returns a list of the loops comprising this face.</span>
+<span class="sd">    native_face : Any</span>
+<span class="sd">        The underlying face object. Type is backend-dependent.</span>
+<span class="sd">    nurbssurface : :class:`compas.geometry.NurbsSurface`, read-only</span>
+<span class="sd">        Returns the geometry of this face as a NURBS surface.</span>
+<span class="sd">    surface : :class:`compas.geometry.Surface`, read-only</span>
+<span class="sd">        Returns the geometry of this face as a surface.</span>
+<span class="sd">    type : literal(SurfaceType), read-only</span>
+<span class="sd">        Returns the surface type of this face. One of: PLANE, CYLINDER, CONE, SPHERE, TORUS, BEZIER_SURFACE,</span>
+<span class="sd">        BSPLINE_SURFACE, SURFACE_OF_REVOLUTION, SURFACE_OF_EXTRUSTION, OFFSET_SURFACE, OTHER_SURFACE.</span>
+<span class="sd">    vertices : list[:class:`compas.geometry.BrepVertex`], read-only</span>
+<span class="sd">        Returns a list of the vertices comprising this face.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -555,6 +578,10 @@ document.write(`
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">native_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">nurbssurface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -568,6 +595,10 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># ==============================================================================</span>
@@ -660,6 +691,113 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        :class:`compas.geometry.BrepFace`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="c1"># ==============================================================================</span>
+    <span class="c1"># Conversions</span>
+    <span class="c1"># ==============================================================================</span>
+
+    <span class="k">def</span> <span class="nf">to_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the face to a polygon without underlying geometry.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~compas.geometry.Polygon`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="c1"># ==============================================================================</span>
+    <span class="c1"># Methods</span>
+    <span class="c1"># ==============================================================================</span>
+
+    <span class="k">def</span> <span class="nf">adjacent_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of the faces adjacent to this face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[:class:`compas.geometry.BrepFace`]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">as_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a Brep representation of this face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Brep`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">add_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds an inner loop to this face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        loop : :class:`compas.geometry.BrepLoop`</span>
+<span class="sd">            The loop to add</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Any additional arguments may be backend specific.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">add_loops</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loops</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds several inner loops to this face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        loops : list[:class:`compas.geometry.BrepLoop`]</span>
+<span class="sd">            The loops to add.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Any additional arguments may be backend specific.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">try_get_nurbssurface</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">precision</span><span class="p">,</span>
+        <span class="n">continuity_u</span><span class="p">,</span>
+        <span class="n">continuity_v</span><span class="p">,</span>
+        <span class="n">maxdegree_u</span><span class="p">,</span>
+        <span class="n">maxdegree_v</span><span class="p">,</span>
+        <span class="n">maxsegments_u</span><span class="p">,</span>
+        <span class="n">maxsegments_v</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the NURBS surface representation of this face. Or None if this cannot be done.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        precision : float</span>
+<span class="sd">            The precision of the conversion.</span>
+<span class="sd">        continuity_u : int</span>
+<span class="sd">            The continuity of the surface in the u direction.</span>
+<span class="sd">        continuity_v : int</span>
+<span class="sd">            The continuity of the surface in the v direction.</span>
+<span class="sd">        maxdegree_u : int</span>
+<span class="sd">            The maximum degree of the surface in the u direction.</span>
+<span class="sd">        maxdegree_v : int</span>
+<span class="sd">            The maximum degree of the surface in the v direction.</span>
+<span class="sd">        maxsegments_u : int</span>
+<span class="sd">            The maximum number of segments in the u direction.</span>
+<span class="sd">        maxsegments_v : int</span>
+<span class="sd">            The maximum number of segments in the v direction.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~compas.geometry.NurbsSurface` or None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>

@@ -481,22 +481,19 @@ document.write(`
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
+<span class="sd">    native_vertex : :class:`Rhino.Geometry.BrepVertex`</span>
+<span class="sd">        The underlying Rhino BrepBertex object.</span>
 <span class="sd">    point : :class:`compas.geometry.Point`, read-only</span>
 <span class="sd">        The geometry of this vertex as a point in 3D space.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoBrepVertex.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepVertex.html#compas_rhino.geometry.RhinoBrepVertex.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_vertex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">builder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoBrepVertex.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepVertex.html#compas_rhino.geometry.RhinoBrepVertex.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_vertex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrepVertex</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span> <span class="o">=</span> <span class="n">builder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">rhino_vertex</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_vertex</span><span class="p">(</span><span class="n">rhino_vertex</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">_set_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_vertex</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span> <span class="o">=</span> <span class="n">native_vertex</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="n">point_to_compas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="o">.</span><span class="n">Location</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_vertex</span> <span class="o">=</span> <span class="n">rhino_vertex</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -507,11 +504,6 @@ document.write(`
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
-
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="n">Point</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
@@ -530,9 +522,10 @@ document.write(`
 <span class="sd">            An instance of this object type if the data contained in the dict has the correct schema.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">builder</span><span class="o">=</span><span class="n">builder</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">obj</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="n">Point</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">])</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">native_vertex</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
@@ -540,7 +533,16 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">native_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span>
+
+    <span class="nd">@native_vertex</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">native_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span> <span class="o">=</span> <span class="n">vertex</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="n">point_to_compas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="o">.</span><span class="n">Location</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>

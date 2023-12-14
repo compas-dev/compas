@@ -472,116 +472,31 @@ document.write(`
                   
   <h1>Source code for compas.geometry.brep.brep</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
-<span class="kn">from</span> <span class="nn">compas.plugins</span> <span class="kn">import</span> <span class="n">pluggable</span>
-<span class="kn">from</span> <span class="nn">compas.plugins</span> <span class="kn">import</span> <span class="n">PluginNotInstalledError</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">new_brep</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_brepfaces</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_box</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_cylinder</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_sphere</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_mesh</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_cone</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_torus</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_extrusion</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_iges</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_loft</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_boolean_difference</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_boolean_intersection</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_boolean_union</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_curves</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_pipe</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_planes</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_polygons</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_step</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_sweep</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">from_native</span>
 
 
 <span class="n">LINEAR_DEFLECTION</span> <span class="o">=</span> <span class="mf">1e-3</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">new_brep</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_boolean_difference</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_boolean_intersection</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_boolean_union</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_box</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_brepfaces</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_cone</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_curves</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_cylinder</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_extrusion</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_iges</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_loft</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_mesh</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_native</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_pipe</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_polygons</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_sphere</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_step</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_surface</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_sweep</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
-
-
-<span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;factories&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">from_torus</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="BrepType"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepType.html#compas.geometry.BrepType">[docs]</a><span class="k">class</span> <span class="nc">BrepType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -636,58 +551,70 @@ document.write(`
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vertices : list[:class:`compas.geometry.BrepVertex`], read-only</span>
-<span class="sd">        The vertices of the Brep.</span>
+<span class="sd">    area : float, read-only</span>
+<span class="sd">        The surface area of the Brep.</span>
+<span class="sd">    centroid : :class:`compas.geometry.Point`, read-only</span>
+<span class="sd">        The centroid of this brep.</span>
+<span class="sd">    curves : list[:class:`~compas.geometry.Curve`], read-only</span>
+<span class="sd">        The edge curves of this brep.</span>
 <span class="sd">    edges : list[:class:`compas.geometry.BrepEdge`], read-only</span>
 <span class="sd">        The edges of the Brep.</span>
-<span class="sd">    trims : list[:class:`compas.geometry.BrepTrim`], read-only</span>
-<span class="sd">        The trims of the Brep.</span>
-<span class="sd">    loops : list[:class:`compas.geometry.BrepLoop`], read-only</span>
-<span class="sd">        The loops of the Brep.</span>
 <span class="sd">    faces : list[:class:`compas.geometry.BrepFace`], read-only</span>
 <span class="sd">        The faces of the Brep.</span>
 <span class="sd">    frame : :class:`compas.geometry.Frame`, read-only</span>
 <span class="sd">        The local coordinate system of the Brep.</span>
-<span class="sd">    area : float, read-only</span>
-<span class="sd">        The surface area of the Brep.</span>
-<span class="sd">    volume : float, read-only</span>
-<span class="sd">        The volume of the regions contained by the Brep.</span>
-<span class="sd">    solids : list[:class:`compas.geometry.Brep`], read-only</span>
-<span class="sd">        The solids of this brep.</span>
-<span class="sd">    shells : list[:class:`compas.geometry.Brep`], read-only</span>
-<span class="sd">        The shells of this brep.</span>
-<span class="sd">    points : list[:class:`compas.geometry.Point`], read-only</span>
-<span class="sd">        The points of this brep.</span>
-<span class="sd">    centroid : :class:`compas.geometry.Point`, read-only</span>
-<span class="sd">        The centroid of this brep.</span>
-<span class="sd">    is_valid : bool, read-only</span>
-<span class="sd">        True if this brep is valid, False otherwise</span>
-<span class="sd">    is_solid : bool, read-only</span>
-<span class="sd">        True if this brep is a solid, False otherwise.</span>
+<span class="sd">    is_closed : bool, read-only</span>
+<span class="sd">        True if this brep is closed, False otherwise.</span>
 <span class="sd">    is_compound : bool, read-only</span>
 <span class="sd">        True if this brep&#39;s type is a compound, False otherwise.</span>
 <span class="sd">    is_compoundsolid : bool, read-only</span>
 <span class="sd">        True if this brep&#39;s type is a compoundsolid, False otherwise.</span>
-<span class="sd">    is_orientable : bool, read-only</span>
-<span class="sd">        True if this brep is orientable, False otherwise.</span>
-<span class="sd">    is_closed : bool, read-only</span>
-<span class="sd">        True if this brep is closed, False otherwise.</span>
-<span class="sd">    is_infinite : bool, read-only</span>
-<span class="sd">        True if this brep is infinite, False otherwise.</span>
 <span class="sd">    is_convex : bool, read-only</span>
 <span class="sd">        True if this brep is convex, False otherwise.</span>
+<span class="sd">    is_infinite : bool, read-only</span>
+<span class="sd">        True if this brep is infinite, False otherwise.</span>
 <span class="sd">    is_manifold : bool, read-only</span>
 <span class="sd">        True if this brep is a manifold, False otherwise.</span>
+<span class="sd">    is_orientable : bool, read-only</span>
+<span class="sd">        True if this brep is orientable, False otherwise.</span>
+<span class="sd">    is_shell : bool, read-only</span>
+<span class="sd">        True if this brep is a shell, False otherwise.</span>
+<span class="sd">    is_solid : bool, read-only</span>
+<span class="sd">        True if this brep is a solid, False otherwise.</span>
 <span class="sd">    is_surface : bool, read-only</span>
 <span class="sd">        True if this brep is a surface, False otherwise.</span>
+<span class="sd">    is_valid : bool, read-only</span>
+<span class="sd">        True if this brep is valid, False otherwise</span>
+<span class="sd">    loops : list[:class:`compas.geometry.BrepLoop`], read-only</span>
+<span class="sd">        The loops of the Brep.</span>
+<span class="sd">    native_brep : Any</span>
+<span class="sd">        The backend specific brep object.</span>
+<span class="sd">    orientation : literal(:class:`~compas.geometry.BrepOrientation`)</span>
+<span class="sd">        One of [FORWARD, REVERSE, INTERNAL, EXTERNAL], read-only</span>
+<span class="sd">    points : list[:class:`compas.geometry.Point`], read-only</span>
+<span class="sd">        The points of this brep.</span>
+<span class="sd">    shells : list[:class:`compas.geometry.Brep`], read-only</span>
+<span class="sd">        The shells of this brep.</span>
+<span class="sd">    solids : list[:class:`compas.geometry.Brep`], read-only</span>
+<span class="sd">        The solids of this brep.</span>
+<span class="sd">    surfaces : list[:class:`~compas.geometry.Surface`], read-only</span>
+<span class="sd">        The face surfaces of this brep.</span>
+<span class="sd">    trims : list[:class:`compas.geometry.BrepTrim`], read-only</span>
+<span class="sd">        The trims of the Brep.</span>
+<span class="sd">    type : literal(:class:`~compas.geometry.BrepType`), read-only</span>
+<span class="sd">        One of [COMPOUND, COMPSOLID, SHELL, FACE, WIRE, EDGE, VERTEX, SHAPE]</span>
+<span class="sd">    vertices : list[:class:`compas.geometry.BrepVertex`], read-only</span>
+<span class="sd">        The vertices of the Brep.</span>
+<span class="sd">    volume : float, read-only</span>
+<span class="sd">        The volume of the regions contained by the Brep.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">new_brep</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Brep.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.html#compas.geometry.Brep.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Brep</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Brep.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Brep.html#compas.geometry.Brep.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Brep</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
@@ -708,19 +635,13 @@ document.write(`
     <span class="c1"># ==============================================================================</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
-            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;faces&quot;</span><span class="p">:</span> <span class="n">faces</span><span class="p">}</span>
+    <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;compas.geometry/Brep&quot;</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="c1"># faces = []</span>
-        <span class="c1"># for face in data[&quot;faces&quot;]:</span>
-        <span class="c1">#     faces.append(BrepFace.from_data(face))</span>
-        <span class="c1"># return cls.from_brepfaces(faces)</span>
-        <span class="k">pass</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="n">new_brep</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
@@ -885,6 +806,21 @@ document.write(`
         <span class="k">return</span> <span class="n">from_brepfaces</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_breps</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">breps</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct one compound Brep from a list of other Breps.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        breps : list[:class:`compas.geometry.Brep`]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Brep`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_cone</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cone</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a COMPAS cone.</span>
 
@@ -1027,6 +963,22 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">from_pipe</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_planes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">planes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a Brep from a set of planes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        planes : list[:class:`~compas.geometry.Plane`]</span>
+<span class="sd">            A list of planes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Brep`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">from_planes</span><span class="p">(</span><span class="n">planes</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_polygons</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">polygons</span><span class="p">):</span>
@@ -1219,8 +1171,8 @@ document.write(`
     <span class="c1"># Converters</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Export the BRep to a JSON file.</span>
+    <span class="k">def</span> <span class="nf">to_iges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the Brep shape to an IGES file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1234,8 +1186,50 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
+    <span class="k">def</span> <span class="nf">to_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the faces of this Brep shape to meshes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : int, optional</span>
+<span class="sd">            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.</span>
+<span class="sd">        v : int, optional</span>
+<span class="sd">            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[:class:`compas.datastructures.Mesh`]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">to_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the faces of this Brep shape to polygons.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[:class:`compas.geometry.Polygon`]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
     <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the BRep shape to a STEP file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the Brep shape to a STEP file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str</span>
+<span class="sd">            Location of the file.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">to_stl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the Brep shape to an STL file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1260,23 +1254,6 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        :class:`compas.datastructures.Mesh`</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">to_meshes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the faces of this Brep shape to meshes.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        u : int, optional</span>
-<span class="sd">            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.</span>
-<span class="sd">        v : int, optional</span>
-<span class="sd">            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list[:class:`compas.datastructures.Mesh`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -1346,6 +1323,22 @@ document.write(`
     <span class="c1"># Other Methods</span>
     <span class="c1"># ==============================================================================</span>
 
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the Brep contains a given geometric primitive.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        object : :class:`compas.geometry.Point`, :class:`compas.geometry.Curve`, :class:`compas.geometry.Surface`</span>
+<span class="sd">            The object to check for containment.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the object is contained in the Brep, False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
     <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trimming_plane</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Trim this Brep using the given trimming plane.</span>
 
@@ -1385,6 +1378,16 @@ document.write(`
 
     <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fix the shell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">heal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Heal the shape.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1445,6 +1448,74 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        list[list[:class:`compas.geometry.Polyline`]]</span>
 <span class="sd">            A list of polylines per plane.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">edge_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify the faces connected to a given edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : :class:`~compas.geometry.BrepEdge`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[:class:`~compas.geometry.BrepFace`]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">edge_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify the parent loops of the a given edge.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge : :class:`~compas.geometry.BrepEdge`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~compas.geometry.BrepLoop`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">fillet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fillet the edges of the Brep.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        radius : float</span>
+<span class="sd">            The radius of the fillet.</span>
+<span class="sd">        edges : list[:class:`~compas.geometry.BrepEdge`], optional</span>
+<span class="sd">            List of edges to exclude from the operation. When `None` all edges are included.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        :class:`~compas.geometry.BrepFilletError`</span>
+<span class="sd">            If the fillet operation fails.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">filleted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a filleted copy of the Brep.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        radius : float</span>
+<span class="sd">            The radius of the fillet.</span>
+<span class="sd">        edges : list[:class:`~compas.geometry.BrepEdge`], optional</span>
+<span class="sd">            List of edges to exclude from the operation. When `None` all edges are included.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        :class:`~compas.geometry.BrepFilletError`</span>
+<span class="sd">            If the fillet operation fails.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~compas.geometry.Brep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>

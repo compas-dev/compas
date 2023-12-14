@@ -1290,12 +1290,16 @@ document.write(`
 <h1>compas.geometry.BrepEdge</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.BrepEdge">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">BrepEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/brep/edge.py#L4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas/geometry/brep/edge.html#BrepEdge"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">BrepEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/brep/edge.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas/geometry/brep/edge.html#BrepEdge"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.data.Data</span></code></a></p>
 <p>An interface for a Brep Edge</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
+<dt><strong>curve</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Curve</span></code></a></span></dt><dd><p>Returns the curve geometry of this edge.</p>
+</dd>
+<dt><strong>first_vertex</strong><span class="classifier"><a class="reference internal" href="compas.geometry.BrepVertex.html#compas.geometry.BrepVertex" title="compas.geometry.BrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepVertex</span></code></a></span></dt><dd><p>Returns the first vertex of this edge.</p>
+</dd>
 <dt><strong>is_line</strong><span class="classifier">bool, read-only</span></dt><dd><p>Returns True if this edge is a line, False otherwise.</p>
 </dd>
 <dt><strong>is_circle</strong><span class="classifier">bool, read-only</span></dt><dd><p>Returns True if this edge is a circle, False otherwise.</p>
@@ -1312,15 +1316,17 @@ document.write(`
 </dd>
 <dt><strong>is_other</strong><span class="classifier">bool, read-only</span></dt><dd><p>Returns True if this edge is of another shape, False otherwise.</p>
 </dd>
-<dt><strong>is_valid</strong><span class="classifier">bool, read-only</span></dt><dd><p>Returns True if this edge is valid, False otherwise.</p>
+<dt><strong>orientation</strong><span class="classifier">literal(<a class="reference internal" href="compas.geometry.BrepOrientation.html#compas.geometry.BrepOrientation" title="compas.geometry.BrepOrientation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepOrientation</span></code></a>), read-only</span></dt><dd><p>Returns the orientation of this edge. One of: FORWARD, REVERSED, INTERNAL, EXTERNAL.</p>
+</dd>
+<dt><strong>type</strong><span class="classifier">literal(<code class="xref py py-class docutils literal notranslate"><span class="pre">CurveType</span></code>), read-only</span></dt><dd><p>Returns the type of this edge. One of: LINE, CIRCLE, ELLIPSE, HYPERBOLA, PARABOLA, BEZIER, BSPLINE, OTHER.</p>
 </dd>
 <dt><strong>vertices</strong><span class="classifier">list[<a class="reference internal" href="compas.geometry.BrepVertex.html#compas.geometry.BrepVertex" title="compas.geometry.BrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepVertex</span></code></a>], read-only</span></dt><dd><p>Gets the list of vertices which compound this edge.</p>
 </dd>
-<dt><strong>first_vertex</strong><span class="classifier"><a class="reference internal" href="compas.geometry.BrepVertex.html#compas.geometry.BrepVertex" title="compas.geometry.BrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepVertex</span></code></a></span></dt><dd><p>Returns the first vertex of this edge.</p>
-</dd>
 <dt><strong>last_vertex</strong><span class="classifier"><a class="reference internal" href="compas.geometry.BrepVertex.html#compas.geometry.BrepVertex" title="compas.geometry.BrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepVertex</span></code></a></span></dt><dd><p>Returns the last vertex of this edge.</p>
 </dd>
-<dt><strong>curve</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Curve</span></code></a></span></dt><dd><p>Returns the curve geometry of this edge.</p>
+<dt><strong>length</strong><span class="classifier">float, read-only</span></dt><dd><p>Returns the length of this edge.</p>
+</dd>
+<dt><strong>native_edge</strong><span class="classifier">Any</span></dt><dd><p>The underlying edge object. Type is backend-dependent.</p>
 </dd>
 </dl>
 </dd>
@@ -1460,10 +1466,19 @@ document.write(`
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_vertex</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">orientation</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>

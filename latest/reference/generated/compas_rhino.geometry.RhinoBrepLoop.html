@@ -1290,13 +1290,15 @@ document.write(`
 <h1>compas_rhino.geometry.RhinoBrepLoop</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrepLoop">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/loop.py#L30"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/loop.html#RhinoBrepLoop"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/loop.py#L31"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/loop.html#RhinoBrepLoop"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.BrepLoop.html#compas.geometry.BrepLoop" title="compas.geometry.brep.loop.BrepLoop"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.brep.loop.BrepLoop</span></code></a></p>
 <p>A wrapper for Rhino.Geometry.BrepLoop</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
-<dt><strong>edges</strong><span class="classifier">list[<a class="reference internal" href="#compas_rhino.geometry.RhinoBrepLoop" title="compas_rhino.geometry.RhinoBrepLoop"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrepLoop</span></code></a>], read-only</span></dt><dd><p>The list of edges which comprise this loop.</p>
+<dt><strong>edges</strong><span class="classifier">list[<a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.html#compas_rhino.geometry.RhinoBrepEdge" title="compas_rhino.geometry.RhinoBrepEdge"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrepEdge</span></code></a>], read-only</span></dt><dd><p>The list of edges which comprise this loop.</p>
+</dd>
+<dt><strong>trims</strong><span class="classifier">list[<a class="reference internal" href="compas_rhino.geometry.RhinoBrepTrim.html#compas_rhino.geometry.RhinoBrepTrim" title="compas_rhino.geometry.RhinoBrepTrim"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrepTrim</span></code></a>], read-only</span></dt><dd><p>The list of trims which comprise this loop.</p>
 </dd>
 <dt><strong>loop_type</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.brep.loop.LoopType</span></code>, read-only</span></dt><dd><p>The type of this loop.</p>
 </dd>
@@ -1304,12 +1306,14 @@ document.write(`
 </dd>
 <dt><strong>is_inner</strong><span class="classifier">bool, read-only</span></dt><dd><p>True if this loop is an inner hole, False otherwise.</p>
 </dd>
+<dt><strong>native_loop</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.BrepLoop</span></code></span></dt><dd><p>The underlying Rhino BrepLoop object.</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrepLoop.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/loop.py#L46"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/loop.html#RhinoBrepLoop.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/loop.py#L51"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/loop.html#RhinoBrepLoop.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
@@ -1389,6 +1393,12 @@ document.write(`
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">native_loop</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trims</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></p></td>

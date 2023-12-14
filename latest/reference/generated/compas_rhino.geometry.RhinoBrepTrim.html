@@ -1290,7 +1290,7 @@ document.write(`
 <h1>compas_rhino.geometry.RhinoBrepTrim</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrepTrim">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepTrim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_trim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/trim.py#L7"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/trim.html#RhinoBrepTrim"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepTrim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_trim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/trim.py#L7"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/trim.html#RhinoBrepTrim"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.BrepTrim.html#compas.geometry.BrepTrim" title="compas.geometry.brep.trim.BrepTrim"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.brep.trim.BrepTrim</span></code></a></p>
 <p>An interface for a Brep Trim</p>
 <dl class="field-list">
@@ -1302,12 +1302,14 @@ document.write(`
 </dd>
 <dt><strong>is_reversed</strong><span class="classifier">bool</span></dt><dd><p>True if this trim is reversed from its associated edge curve and False otherwise.</p>
 </dd>
+<dt><strong>native_trim</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.BrepTrim</span></code></span></dt><dd><p>The underlying Rhino BrepTrim object.</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrepTrim.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_trim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/trim.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/trim.html#RhinoBrepTrim.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rhino_trim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas_rhino/geometry/brep/trim.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/compas_rhino/geometry/brep/trim.html#RhinoBrepTrim.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
@@ -1375,6 +1377,9 @@ document.write(`
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">native_trim</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>

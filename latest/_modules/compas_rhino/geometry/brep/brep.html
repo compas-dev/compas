@@ -476,7 +476,9 @@ document.write(`
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">BrepTrimmingError</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">BrepError</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
 
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">box_to_rhino</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">transformation_to_rhino</span>
@@ -484,6 +486,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">cylinder_to_rhino</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">sphere_to_rhino</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">mesh_to_rhino</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">point_to_rhino</span>
 
 <span class="kn">from</span> <span class="nn">.builder</span> <span class="kn">import</span> <span class="n">_RhinoBrepBuilder</span>
 <span class="kn">from</span> <span class="nn">.face</span> <span class="kn">import</span> <span class="n">RhinoBrepFace</span>
@@ -524,20 +527,9 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># this makes de-serialization backend-agnostic.</span>
-    <span class="c1"># The deserializing type is determined by plugin availability when de-serializing</span>
-    <span class="c1"># regardless of the context available when serializing.</span>
-    <span class="vm">__class__</span> <span class="o">=</span> <span class="n">Brep</span>
-
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="c1"># This breaks the endless recursion when calling `compas.geometry.Brep()` and allows</span>
-        <span class="c1"># having Brep here as the parent class. Otherwise RhinoBrep() calls Brep.__new__()</span>
-        <span class="c1"># which calls RhinoBrep() and so on...</span>
-        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<div class="viewcode-block" id="RhinoBrep.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brep</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoBrep.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrep</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span> <span class="o">=</span> <span class="n">brep</span> <span class="ow">or</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Brep</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Brep</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -554,8 +546,21 @@ document.write(`
             <span class="s2">&quot;faces&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">],</span>
         <span class="p">}</span>
 
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a RhinoBrep from its data representation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : :obj:`dict`</span>
+<span class="sd">            The data dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas_rhino.geometry.RhinoBrep`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">builder</span> <span class="o">=</span> <span class="n">_RhinoBrepBuilder</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">v_data</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vertices&quot;</span><span class="p">]:</span>
             <span class="n">RhinoBrepVertex</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">v_data</span><span class="p">,</span> <span class="n">builder</span><span class="p">)</span>
@@ -563,7 +568,8 @@ document.write(`
             <span class="n">RhinoBrepEdge</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">e_data</span><span class="p">,</span> <span class="n">builder</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f_data</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;faces&quot;</span><span class="p">]:</span>
             <span class="n">RhinoBrepFace</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">f_data</span><span class="p">,</span> <span class="n">builder</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">result</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">native_brep</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">result</span>
+        <span class="k">return</span> <span class="n">instance</span>
 
     <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a deep-copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.</span>
@@ -581,8 +587,20 @@ document.write(`
     <span class="c1"># ==============================================================================</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_manifold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span><span class="o">.</span><span class="n">IsManifold</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_solid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span><span class="o">.</span><span class="n">IsSolid</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">native_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span>
+
+    <span class="nd">@native_brep</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">native_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_brep</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span> <span class="o">=</span> <span class="n">rhino_brep</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -645,7 +663,8 @@ document.write(`
 <span class="sd">        :class:`compas_rhino.geometry.RhinoBrep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">brep</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">rhino_brep</span><span class="p">)</span>
+        <span class="n">brep</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">brep</span><span class="o">.</span><span class="n">_brep</span> <span class="o">=</span> <span class="n">rhino_brep</span>
         <span class="k">return</span> <span class="n">brep</span>
 
     <span class="nd">@classmethod</span>
@@ -719,6 +738,35 @@ document.write(`
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==============================================================================</span>
+
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the Brep contains a given geometric primitive.</span>
+
+<span class="sd">        Only closed and manifold breps can be checked for containment.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        object : :class:`~compas.geometry.Point`, :class:`~compas.geometry.Curve`, :class:`~compas.geometry.Surface`</span>
+<span class="sd">            The object to check for containment.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        BrepError</span>
+<span class="sd">            If the Brep is not solid.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the object is contained in the Brep, False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_solid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BrepError</span><span class="p">(</span><span class="s2">&quot;Cannot check for containment if brep is not manifold or is not closed&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">Point</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brep</span><span class="o">.</span><span class="n">IsPointInside</span><span class="p">(</span><span class="n">point_to_rhino</span><span class="p">(</span><span class="nb">object</span><span class="p">),</span> <span class="n">TOLERANCE</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform this Brep by given transformation matrix</span>

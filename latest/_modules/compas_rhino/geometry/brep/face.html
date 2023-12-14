@@ -475,10 +475,13 @@ document.write(`
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Interval</span>
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">RevSurface</span>
 
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">BrepFace</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Cylinder</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">SurfaceType</span>
+
 
 <span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="kn">import</span> <span class="n">RhinoNurbsSurface</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.geometry.surfaces</span> <span class="kn">import</span> <span class="n">RhinoSurface</span>
@@ -490,6 +493,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">compas_rhino.conversions</span> <span class="kn">import</span> <span class="n">frame_to_rhino_plane</span>
 
 <span class="kn">from</span> <span class="nn">.loop</span> <span class="kn">import</span> <span class="n">RhinoBrepLoop</span>
+<span class="kn">from</span> <span class="nn">.edge</span> <span class="kn">import</span> <span class="n">RhinoBrepEdge</span>
 
 
 <div class="viewcode-block" id="RhinoBrepFace"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepFace.html#compas_rhino.geometry.RhinoBrepFace">[docs]</a><span class="k">class</span> <span class="nc">RhinoBrepFace</span><span class="p">(</span><span class="n">BrepFace</span><span class="p">):</span>
@@ -509,22 +513,18 @@ document.write(`
 <span class="sd">        The list of loops which comprise the holes of this brep, if any.</span>
 <span class="sd">    is_plane : float, read-only</span>
 <span class="sd">        True if the geometry of this face is a plane, False otherwise.</span>
+<span class="sd">    native_face : :class:`Rhino.Geometry.BrepFace`</span>
+<span class="sd">        The underlying BrepFace object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoBrepFace.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepFace.html#compas_rhino.geometry.RhinoBrepFace.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_face</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">builder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoBrepFace.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepFace.html#compas_rhino.geometry.RhinoBrepFace.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_face</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrepFace</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span> <span class="o">=</span> <span class="n">builder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_surface</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_face</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">rhino_face</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_face</span><span class="p">(</span><span class="n">rhino_face</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">_set_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">native_face</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_face</span> <span class="o">=</span> <span class="n">native_face</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span> <span class="o">=</span> <span class="p">[</span><span class="n">RhinoBrepLoop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span> <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">native_face</span><span class="o">.</span><span class="n">Loops</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_surface</span> <span class="o">=</span> <span class="n">RhinoNurbsSurface</span><span class="o">.</span><span class="n">from_rhino</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">UnderlyingSurface</span><span class="p">()</span><span class="o">.</span><span class="n">ToNurbsSurface</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_face</span> <span class="o">=</span> <span class="n">rhino_face</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -540,16 +540,6 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="n">plane_to_compas_frame</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>  <span class="c1"># until all shapes have a frame</span>
             <span class="s2">&quot;loops&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">loop</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">],</span>
         <span class="p">}</span>
-
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_surface_from_data</span><span class="p">(</span>
-            <span class="n">value</span><span class="p">[</span><span class="s2">&quot;surface_type&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;surface&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;uv_domain&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span>
-        <span class="p">)</span>
-        <span class="n">face_builder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_surface</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">loop_data</span> <span class="ow">in</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;loops&quot;</span><span class="p">]:</span>
-            <span class="n">RhinoBrepLoop</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">loop_data</span><span class="p">,</span> <span class="n">face_builder</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_face</span><span class="p">(</span><span class="n">face_builder</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
@@ -569,9 +559,15 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">builder</span><span class="o">=</span><span class="n">builder</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">obj</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_surface</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_make_surface_from_data</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;surface_type&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;surface&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;uv_domain&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">face_builder</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_surface</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">loop_data</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;loops&quot;</span><span class="p">]:</span>
+            <span class="n">RhinoBrepLoop</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">loop_data</span><span class="p">,</span> <span class="n">face_builder</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">native_face</span> <span class="o">=</span> <span class="n">face_builder</span><span class="o">.</span><span class="n">result</span>
+        <span class="k">return</span> <span class="n">instance</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
@@ -580,6 +576,20 @@ document.write(`
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">native_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surface</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span><span class="o">.</span><span class="n">Area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span><span class="o">.</span><span class="n">Centroid</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">brep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">Brep</span>
+        <span class="n">edge_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">AdjacentEdges</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">RhinoBrepEdge</span><span class="p">(</span><span class="n">brep</span><span class="o">.</span><span class="n">Edges</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">edge_indices</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">loops</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -599,7 +609,64 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">UnderlyingSurface</span><span class="p">()</span><span class="o">.</span><span class="n">IsPlanar</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_cone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">UnderlyingSurface</span><span class="p">()</span><span class="o">.</span><span class="n">IsCone</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_cylinder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">UnderlyingSurface</span><span class="p">()</span><span class="o">.</span><span class="n">IsCylinder</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">UnderlyingSurface</span><span class="p">()</span><span class="o">.</span><span class="n">IsSphere</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_torus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">UnderlyingSurface</span><span class="p">()</span><span class="o">.</span><span class="n">IsTorus</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">native_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span>
+
+    <span class="nd">@native_face</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">native_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_face</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_face</span> <span class="o">=</span> <span class="n">rhino_face</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">AreaMassProperties</span><span class="o">.</span><span class="n">Compute</span><span class="p">(</span><span class="n">rhino_face</span><span class="o">.</span><span class="n">ToBrep</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span> <span class="o">=</span> <span class="p">[</span><span class="n">RhinoBrepLoop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span> <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">rhino_face</span><span class="o">.</span><span class="n">Loops</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_surface</span> <span class="o">=</span> <span class="n">RhinoNurbsSurface</span><span class="o">.</span><span class="n">from_rhino</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">UnderlyingSurface</span><span class="p">()</span><span class="o">.</span><span class="n">ToNurbsSurface</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nurbssurface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surface</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="n">vertices</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vertices</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cone</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SurfaceType</span><span class="o">.</span><span class="n">CONE</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cylinder</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SurfaceType</span><span class="o">.</span><span class="n">CYLINDER</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_sphere</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SurfaceType</span><span class="o">.</span><span class="n">SPHERE</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_torus</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SurfaceType</span><span class="o">.</span><span class="n">TORUS</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_plane</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SurfaceType</span><span class="o">.</span><span class="n">PLANE</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SurfaceType</span><span class="o">.</span><span class="n">OTHER_SURFACE</span>
+
+    <span class="c1"># ==============================================================================</span>
+    <span class="c1"># Methods</span>
+    <span class="c1"># ==============================================================================</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_surface_geometry</span><span class="p">(</span><span class="n">surface</span><span class="p">):</span>
@@ -663,7 +730,34 @@ document.write(`
         <span class="n">surface</span> <span class="o">=</span> <span class="n">RevSurface</span><span class="o">.</span><span class="n">CreateFromSphere</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
         <span class="n">surface</span><span class="o">.</span><span class="n">SetDomain</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Interval</span><span class="p">(</span><span class="o">*</span><span class="n">u_domain</span><span class="p">))</span>
         <span class="n">surface</span><span class="o">.</span><span class="n">SetDomain</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Interval</span><span class="p">(</span><span class="o">*</span><span class="n">v_domain</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">surface</span></div>
+        <span class="k">return</span> <span class="n">surface</span>
+
+    <span class="c1"># ==============================================================================</span>
+    <span class="c1"># Methods</span>
+    <span class="c1"># ==============================================================================</span>
+
+    <span class="k">def</span> <span class="nf">adjacent_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of the faces adjacent to this face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[:class:`compas_rhino.geometry.RhinoBrepFace`]</span>
+<span class="sd">            The list of adjacent faces.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">face_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">AdjacentFaces</span><span class="p">()</span>
+        <span class="n">brep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">Brep</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">RhinoBrepFace</span><span class="p">(</span><span class="n">brep</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face_indices</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">as_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a Brep representation of this face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`~compas_rhino.geometry.RhinoBrep`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_native</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">ToBrep</span><span class="p">())</span></div>
 </pre></div>
 
                 </article>

@@ -474,11 +474,29 @@ document.write(`
 <span></span><span class="kn">from</span> <span class="nn">compas.data</span> <span class="kn">import</span> <span class="n">Data</span>
 
 
+<span class="k">class</span> <span class="nc">CurveType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumaration of curve types.&quot;&quot;&quot;</span>
+
+    <span class="n">LINE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">CIRCLE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ELLIPSE</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">HYPERBOLA</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">PARABOLA</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">BEZIER</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">BSPLINE</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">OTHER</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">CURVE2D</span> <span class="o">=</span> <span class="mi">8</span>
+
+
 <div class="viewcode-block" id="BrepEdge"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.BrepEdge.html#compas.geometry.BrepEdge">[docs]</a><span class="k">class</span> <span class="nc">BrepEdge</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An interface for a Brep Edge</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
+<span class="sd">    curve : :class:`compas.geometry.Curve`</span>
+<span class="sd">        Returns the curve geometry of this edge.</span>
+<span class="sd">    first_vertex : :class:`compas.geometry.BrepVertex`</span>
+<span class="sd">        Returns the first vertex of this edge.</span>
 <span class="sd">    is_line : bool, read-only</span>
 <span class="sd">        Returns True if this edge is a line, False otherwise.</span>
 <span class="sd">    is_circle : bool, read-only</span>
@@ -495,16 +513,18 @@ document.write(`
 <span class="sd">        Returns True if this edge is a bspline, False otherwise.</span>
 <span class="sd">    is_other : bool, read-only</span>
 <span class="sd">        Returns True if this edge is of another shape, False otherwise.</span>
-<span class="sd">    is_valid : bool, read-only</span>
-<span class="sd">        Returns True if this edge is valid, False otherwise.</span>
+<span class="sd">    orientation : literal(:class:`~compas.geometry.BrepOrientation`), read-only</span>
+<span class="sd">        Returns the orientation of this edge. One of: FORWARD, REVERSED, INTERNAL, EXTERNAL.</span>
+<span class="sd">    type : literal(:class:`~compas.geometry.CurveType`), read-only</span>
+<span class="sd">        Returns the type of this edge. One of: LINE, CIRCLE, ELLIPSE, HYPERBOLA, PARABOLA, BEZIER, BSPLINE, OTHER.</span>
 <span class="sd">    vertices : list[:class:`compas.geometry.BrepVertex`], read-only</span>
 <span class="sd">        Gets the list of vertices which compound this edge.</span>
-<span class="sd">    first_vertex : :class:`compas.geometry.BrepVertex`</span>
-<span class="sd">        Returns the first vertex of this edge.</span>
 <span class="sd">    last_vertex : :class:`compas.geometry.BrepVertex`</span>
 <span class="sd">        Returns the last vertex of this edge.</span>
-<span class="sd">    curve : :class:`compas.geometry.Curve`</span>
-<span class="sd">        Returns the curve geometry of this edge.</span>
+<span class="sd">    length : float, read-only</span>
+<span class="sd">        Returns the length of this edge.</span>
+<span class="sd">    native_edge : Any</span>
+<span class="sd">        The underlying edge object. Type is backend-dependent.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -561,7 +581,19 @@ document.write(`
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="c1"># ==============================================================================</span>
