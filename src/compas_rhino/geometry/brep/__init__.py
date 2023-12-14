@@ -7,9 +7,8 @@ from .brep import RhinoBrep
 
 
 @plugin(category="factories", requires=["Rhino"])
-def new_brep(cls, *args, **kwargs):
-    return super(Brep, cls).__new__(cls)
-
+def new_brep(*args, **kwargs):
+    return object.__new__(RhinoBrep)
 
 @plugin(category="factories", requires=["Rhino"])
 def from_native(*args, **kwargs):
