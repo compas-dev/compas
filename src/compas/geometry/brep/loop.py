@@ -2,7 +2,7 @@ from compas.data import Data
 
 
 class BrepLoop(Data):
-    """An interface for a Brep Loop
+    """An interface for a Brep Loop.
 
     Attributes
     ----------
