@@ -83,7 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Context related functions like `register`, `build`, `redraw` and `clear` are moved to `compas.scene.context` from `compas.scene.SceneObject`. 
 * Changed plugin selection to fall back to a default implementation if possible.
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
-
+* Fixed `compas_rhino.geometry.RhinoBrep` serialization.
 
 ### Removed
 
