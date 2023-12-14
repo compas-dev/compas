@@ -2,6 +2,7 @@ from Rhino.Geometry import ArcCurve
 from Rhino.Geometry import NurbsCurve
 from Rhino.Geometry import LineCurve
 from Rhino.Geometry import Interval
+from Rhino.Geometry import LengthMassProperties
 
 from compas.geometry import BrepEdge
 from compas.geometry import Line
@@ -21,6 +22,7 @@ from compas_rhino.conversions import frame_to_rhino_plane
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import arc_to_compas
 from compas_rhino.conversions import arc_to_rhino
+from compas_rhino.conversions import point_to_compas
 
 from .vertex import RhinoBrepVertex
 
@@ -46,25 +48,21 @@ class RhinoBrepEdge(BrepEdge):
         True if the geometry of this edge is a circle, False otherwise.
     is_line : bool, read-only
         True if the geometry of this edge is a line, False otherwise.
+    native_edge : :class:`Rhino.Geometry.BrepEdge`
+        The underlying BrepEdge object.
 
     """
 
-    def __init__(self, rhino_edge=None, builder=None):
+    def __init__(self, rhino_edge=None):
         super(RhinoBrepEdge, self).__init__()
-        self._builder = builder
         self._edge = None
         self._curve = None
         self._curve_type = None
         self._start_vertex = None
         self._end_vertex = None
+        self._mass_props = None
         if rhino_edge:
-            self._set_edge(rhino_edge)
-
-    def _set_edge(self, rhino_edge):
-        self._edge = rhino_edge
-        self._curve = RhinoNurbsCurve.from_rhino(rhino_edge.EdgeCurve.ToNurbsCurve())
-        self._start_vertex = RhinoBrepVertex(rhino_edge.StartVertex)
-        self._end_vertex = RhinoBrepVertex(rhino_edge.EndVertex)
+            self.native_edge = rhino_edge
 
     # ==============================================================================
     # Data
@@ -81,12 +79,6 @@ class RhinoBrepEdge(BrepEdge):
             "end_vertex": self._edge.EndVertex.VertexIndex,
             "domain": domain,
         }
-
-    @data.setter
-    def data(self, value):
-        edge_curve = self._create_curve_from_data(value["curve_type"], value["curve"], value["frame"], value["domain"])
-        edge = self._builder.add_edge(edge_curve, value["start_vertex"], value["end_vertex"])
-        self._set_edge(edge)
 
     @classmethod
     def from_data(cls, data, builder):
@@ -105,17 +97,34 @@ class RhinoBrepEdge(BrepEdge):
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
-        obj = cls(builder=builder)
-        obj.data = data
-        return obj
+        instance = cls()
+        edge_curve = cls._create_curve_from_data(data["curve_type"], data["curve"], data["frame"], data["domain"])
+        instance.native_edge = builder.add_edge(edge_curve, data["start_vertex"], data["end_vertex"])
+        return instance
 
     # ==============================================================================
     # Properties
     # ==============================================================================
 
     @property
+    def centroid(self):
+        return point_to_compas(self._mass_props.Centroid)
+
+    @property
     def curve(self):
         return self._curve
+
+    @property
+    def native_edge(self):
+        return self._native_edge
+
+    @native_edge.setter
+    def native_edge(self, value):
+        self._edge = value
+        self._mass_props = LengthMassProperties.Compute(value.EdgeCurve)
+        self._curve = RhinoNurbsCurve.from_rhino(value.EdgeCurve.ToNurbsCurve())
+        self._start_vertex = RhinoBrepVertex(value.StartVertex)
+        self._end_vertex = RhinoBrepVertex(value.EndVertex)
 
     @property
     def start_vertex(self):
@@ -140,6 +149,14 @@ class RhinoBrepEdge(BrepEdge):
     @property
     def is_ellipse(self):
         return self._edge.EdgeCurve.IsEllipse()
+
+    @property
+    def length(self):
+        return self._mass_props.Length
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
 
     def _get_curve_geometry(self):
         curve = self._edge.EdgeCurve

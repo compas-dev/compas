@@ -24,6 +24,8 @@ class BrepTrim(Data):
         The isoparametric curve direction on the surface.
     is_reversed : bool
         True if this trim is reversed from its associated edge curve and False otherwise.
+    native_trim : Any
+        The underlying trim object. Type is backend-dependent.
 
     """
 
@@ -37,4 +39,8 @@ class BrepTrim(Data):
 
     @property
     def is_reversed(self):
+        raise NotImplementedError
+
+    @property
+    def native_trim(self):
         raise NotImplementedError

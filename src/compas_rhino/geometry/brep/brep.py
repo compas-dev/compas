@@ -3,7 +3,9 @@ import Rhino
 from compas.geometry import Frame
 from compas.geometry import Brep
 from compas.geometry import BrepTrimmingError
+from compas.geometry import BrepError
 from compas.geometry import Plane
+from compas.geometry import Point
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
@@ -11,6 +13,7 @@ from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import mesh_to_rhino
+from compas_rhino.conversions import point_to_rhino
 
 from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
@@ -51,20 +54,9 @@ class RhinoBrep(Brep):
 
     """
 
-    # this makes de-serialization backend-agnostic.
-    # The deserializing type is determined by plugin availability when de-serializing
-    # regardless of the context available when serializing.
-    __class__ = Brep
-
-    def __new__(cls, *args, **kwargs):
-        # This breaks the endless recursion when calling `compas.geometry.Brep()` and allows
-        # having Brep here as the parent class. Otherwise RhinoBrep() calls Brep.__new__()
-        # which calls RhinoBrep() and so on...
-        return object.__new__(cls, *args, **kwargs)
-
-    def __init__(self, brep=None):
+    def __init__(self):
         super(RhinoBrep, self).__init__()
-        self._brep = brep or Rhino.Geometry.Brep()
+        self._brep = Rhino.Geometry.Brep()
 
     def __deepcopy__(self, *args, **kwargs):
         return self.copy()
@@ -81,8 +73,21 @@ class RhinoBrep(Brep):
             "faces": [f.data for f in self.faces],
         }
 
-    @data.setter
-    def data(self, data):
+    @classmethod
+    def from_data(cls, data):
+        """Construct a RhinoBrep from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        instance = cls()
         builder = _RhinoBrepBuilder()
         for v_data in data["vertices"]:
             RhinoBrepVertex.from_data(v_data, builder)
@@ -90,7 +95,8 @@ class RhinoBrep(Brep):
             RhinoBrepEdge.from_data(e_data, builder)
         for f_data in data["faces"]:
             RhinoBrepFace.from_data(f_data, builder)
-        self._brep = builder.result
+        instance.native_brep = builder.result
+        return instance
 
     def copy(self, cls=None):
         """Creates a deep-copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.
@@ -108,8 +114,20 @@ class RhinoBrep(Brep):
     # ==============================================================================
 
     @property
+    def is_manifold(self):
+        return self._brep.IsManifold
+
+    @property
+    def is_solid(self):
+        return self._brep.IsSolid
+
+    @property
     def native_brep(self):
         return self._brep
+
+    @native_brep.setter
+    def native_brep(self, rhino_brep):
+        self._brep = rhino_brep
 
     @property
     def vertices(self):
@@ -172,7 +190,8 @@ class RhinoBrep(Brep):
         :class:`compas_rhino.geometry.RhinoBrep`
 
         """
-        brep = cls(rhino_brep)
+        brep = cls()
+        brep._brep = rhino_brep
         return brep
 
     @classmethod
@@ -246,6 +265,35 @@ class RhinoBrep(Brep):
     # ==============================================================================
     # Methods
     # ==============================================================================
+
+    def contains(self, object):
+        """Check if the Brep contains a given geometric primitive.
+
+        Only closed and manifold breps can be checked for containment.
+
+        Parameters
+        ----------
+        object : :class:`~compas.geometry.Point`, :class:`~compas.geometry.Curve`, :class:`~compas.geometry.Surface`
+            The object to check for containment.
+
+        Raises
+        ------
+        BrepError
+            If the Brep is not solid.
+
+        Returns
+        -------
+        bool
+            True if the object is contained in the Brep, False otherwise.
+
+        """
+        if not self.is_solid:
+            raise BrepError("Cannot check for containment if brep is not manifold or is not closed")
+
+        if isinstance(object, Point):
+            return self._brep.IsPointInside(point_to_rhino(object), TOLERANCE, False)
+        else:
+            raise NotImplementedError
 
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
