@@ -50,6 +50,8 @@ class BrepEdge(Data):
         Returns the last vertex of this edge.
     length : float, read-only
         Returns the length of this edge.
+    native_edge : Any
+        The underlying edge object. Type is backend-dependent.
 
     """
 

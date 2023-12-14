@@ -59,6 +59,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoBrepLoop.trims`.
 * Added `compas_rhino.geometry.RhinoBrepEdge.length`.
 * Added `compas_rhino.geometry.RhinoBrepEdge.centroid`.
+* Added `compas.geometry.BrepFace.native_face`.
+* Added `compas.geometry.BrepEdge.native_edge`.
+* Added `compas.geometry.BrepLoop.native_loop`.
+* Added `compas.geometry.BrepTrim.native_trim`.
+* Added `compas.geometry.BrepVertex.native_vertex`.
+* Added `compas_rhino.geometry.RhinoBrepFace.native_face`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.native_edge`.
+* Added `compas_rhino.geometry.RhinoBrepLoop.native_loop`.
+* Added `compas_rhino.geometry.RhinoBrepTrim.native_trim`.
+* Added `compas_rhino.geometry.RhinoBrepVertex.native_vertex`.
 
 ### Changed
 
@@ -77,6 +87,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Added `compas_rhino.geometry.RhinoBrepFace.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepLoop.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepTrim.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepVertex.data.setter`.
 
 ## [2.0.0-alpha.2] 2023-11-07
 

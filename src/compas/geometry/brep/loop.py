@@ -6,12 +6,14 @@ class BrepLoop(Data):
 
     Attributes
     ----------
+    edges : list[:class:`compas.geometry.BrepEdge`], read-only
+        Returns the list of deges associated with this loop.
     is_valid : bool, read-only
         Returns True if this loop is valid, False otherwise.
     vertices : list[:class:`compas.geometry.BrepVertex`], read-only
         Returns the list of vertices associated with this loop.
-    edges : list[:class:`compas.geometry.BrepEdge`], read-only
-        Returns the list of deges associated with this loop.
+    native_loop : Any
+        The underlying loop object. Type is backend-dependent.
 
     """
 
@@ -29,6 +31,10 @@ class BrepLoop(Data):
 
     @property
     def edges(self):
+        raise NotImplementedError
+
+    @property
+    def native_loop(self):
         raise NotImplementedError
 
     # ==============================================================================

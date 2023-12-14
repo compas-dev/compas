@@ -15,24 +15,23 @@ class RhinoBrepTrim(BrepTrim):
         The isoparametric curve direction on the surface.
     is_reversed : bool
         True if this trim is reversed from its associated edge curve and False otherwise.
+    native_trim : :class:`Rhino.Geometry.BrepTrim`
+        The underlying Rhino BrepTrim object.
 
     """
 
-    def __init__(self, rhino_trim=None, builder=None):
+    def __init__(self, rhino_trim=None):
         super(RhinoBrepTrim, self).__init__()
-        self._builder = builder
         self._trim = None
         self._curve = None
         self._is_reversed = None
         self._iso_type = None
         if rhino_trim:
-            self._set_trim(rhino_trim)
+            self.native_trim = rhino_trim
 
-    def _set_trim(self, rhino_trim):
-        self._trim = rhino_trim
-        self._curve = RhinoNurbsCurve.from_rhino(rhino_trim.TrimCurve.ToNurbsCurve())
-        self._is_reversed = rhino_trim.IsReversed()
-        self._iso_type = int(rhino_trim.IsoStatus)
+    # ==============================================================================
+    # Data
+    # ==============================================================================
 
     @property
     def data(self):
@@ -43,14 +42,6 @@ class RhinoBrepTrim(BrepTrim):
             "iso": str(self._trim.IsoStatus),
             "is_reversed": "true" if self._trim.IsReversed() else "false",
         }
-
-    @data.setter
-    def data(self, value):
-        curve = RhinoNurbsCurve.from_data(value["curve"]).rhino_curve
-        iso_status = getattr(Rhino.Geometry.IsoStatus, value["iso"])
-        is_reversed = True if value["is_reversed"] == "true" else False
-        trim = self._builder.add_trim(curve, value["edge"], is_reversed, iso_status, value["vertex"])
-        self._set_trim(trim)
 
     @classmethod
     def from_data(cls, data, builder):
@@ -69,9 +60,16 @@ class RhinoBrepTrim(BrepTrim):
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
-        obj = cls(builder=builder)
-        obj.data = data
-        return obj
+        instance = cls()
+        curve = RhinoNurbsCurve.from_data(data["curve"]).rhino_curve
+        iso_status = getattr(Rhino.Geometry.IsoStatus, data["iso"])
+        is_reversed = True if data["is_reversed"] == "true" else False
+        instance.native_trim = builder.add_trim(curve, data["edge"], is_reversed, iso_status, data["vertex"])
+        return instance
+
+    # ==============================================================================
+    # Properties
+    # ==============================================================================
 
     @property
     def curve(self):
@@ -84,3 +82,14 @@ class RhinoBrepTrim(BrepTrim):
     @property
     def iso_status(self):
         return self._iso_type
+
+    @property
+    def native_trim(self):
+        return self._trim
+
+    @native_trim.setter
+    def native_trim(self, rhino_trim):
+        self._trim = rhino_trim
+        self._curve = RhinoNurbsCurve.from_rhino(rhino_trim.TrimCurve.ToNurbsCurve())
+        self._is_reversed = rhino_trim.IsReversed()
+        self._iso_type = int(rhino_trim.IsoStatus)

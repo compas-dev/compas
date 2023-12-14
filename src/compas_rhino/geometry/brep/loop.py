@@ -43,22 +43,19 @@ class RhinoBrepLoop(BrepLoop):
         True if this loop is an outer boundary, False otherwise.
     is_inner : bool, read-only
         True if this loop is an inner hole, False otherwise.
+    native_loop : :class:`Rhino.Geometry.BrepLoop`
+        The underlying Rhino BrepLoop object.
 
     """
 
-    def __init__(self, rhino_loop=None, builder=None):
+    def __init__(self, rhino_loop=None):
         super(RhinoBrepLoop, self).__init__()
-        self._builder = builder
         self._loop = None
         self._type = LoopType.UNKNOWN
         self._trims = None
+        self._type = None
         if rhino_loop:
-            self._set_loop(rhino_loop)
-
-    def _set_loop(self, native_loop):
-        self._loop = native_loop
-        self._type = int(self._loop.LoopType)
-        self._trims = [RhinoBrepTrim(trim) for trim in self._loop.Trims]
+            self.native_loop = rhino_loop
 
     # ==============================================================================
     # Data
@@ -67,16 +64,6 @@ class RhinoBrepLoop(BrepLoop):
     @property
     def data(self):
         return {"type": str(self._loop.LoopType), "trims": [t.data for t in self._trims]}
-
-    @data.setter
-    def data(self, value):
-        self._type = (
-            Rhino.Geometry.BrepLoopType.Outer if value["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
-        )
-        loop_builder = self._builder.add_loop(self._type)
-        for trim_data in value["trims"]:
-            RhinoBrepTrim.from_data(trim_data, loop_builder)
-        self._set_loop(loop_builder.result)
 
     @classmethod
     def from_data(cls, data, builder):
@@ -95,9 +82,15 @@ class RhinoBrepLoop(BrepLoop):
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
-        obj = cls(builder=builder)
-        obj.data = data
-        return obj
+        instance = cls(builder=builder)
+        instance._type = (
+            Rhino.Geometry.BrepLoopType.Outer if data["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
+        )
+        loop_builder = builder.add_loop(instance._type)
+        for trim_data in data["trims"]:
+            RhinoBrepTrim.from_data(trim_data, loop_builder)
+        instance.native_loop = loop_builder.result
+        return instance
 
     # ==============================================================================
     # Properties
@@ -122,3 +115,13 @@ class RhinoBrepLoop(BrepLoop):
     @property
     def loop_type(self):
         return Rhino.Geometry.BrepLoopType(self._type)
+
+    @property
+    def native_loop(self):
+        return self._loop
+
+    @native_loop.setter
+    def native_loop(self, rhino_loop):
+        self._loop = rhino_loop
+        self._type = int(self._loop.LoopType)
+        self._trims = [RhinoBrepTrim(trim) for trim in self._loop.Trims]

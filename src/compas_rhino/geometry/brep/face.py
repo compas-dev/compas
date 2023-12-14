@@ -40,23 +40,18 @@ class RhinoBrepFace(BrepFace):
         The list of loops which comprise the holes of this brep, if any.
     is_plane : float, read-only
         True if the geometry of this face is a plane, False otherwise.
+    native_face : :class:`Rhino.Geometry.BrepFace`
+        The underlying BrepFace object.
 
     """
 
-    def __init__(self, rhino_face=None, builder=None):
+    def __init__(self, rhino_face=None):
         super(RhinoBrepFace, self).__init__()
-        self._builder = builder
         self._loops = None
         self._surface = None
         self._face = None
         if rhino_face:
-            self._set_face(rhino_face)
-
-    def _set_face(self, native_face):
-        self._face = native_face
-        self._mass_props = Rhino.Geometry.AreaMassProperties.Compute(self.as_brep().native_brep)
-        self._loops = [RhinoBrepLoop(loop) for loop in native_face.Loops]
-        self._surface = RhinoNurbsSurface.from_rhino(self._face.UnderlyingSurface().ToNurbsSurface())
+            self.native_face = rhino_face
 
     # ==============================================================================
     # Data
@@ -72,16 +67,6 @@ class RhinoBrepFace(BrepFace):
             "frame": plane_to_compas_frame(plane).data,  # until all shapes have a frame
             "loops": [loop.data for loop in self._loops],
         }
-
-    @data.setter
-    def data(self, value):
-        self._surface = self._make_surface_from_data(
-            value["surface_type"], value["surface"], value["uv_domain"], value["frame"]
-        )
-        face_builder = self._builder.add_face(self._surface)
-        for loop_data in value["loops"]:
-            RhinoBrepLoop.from_data(loop_data, face_builder)
-        self._set_face(face_builder.result)
 
     @classmethod
     def from_data(cls, data, builder):
@@ -101,9 +86,15 @@ class RhinoBrepFace(BrepFace):
 
         """
 
-        obj = cls(builder=builder)
-        obj.data = data
-        return obj
+        instance = cls()
+        instance._surface = instance._make_surface_from_data(
+            data["surface_type"], data["surface"], data["uv_domain"], data["frame"]
+        )
+        face_builder = builder.add_face(instance._surface)
+        for loop_data in data["loops"]:
+            RhinoBrepLoop.from_data(loop_data, face_builder)
+        instance.native_face = face_builder.result
+        return instance
 
     # ==============================================================================
     # Properties
@@ -162,6 +153,17 @@ class RhinoBrepFace(BrepFace):
     @property
     def is_torus(self):
         return self._face.UnderlyingSurface().IsTorus()
+
+    @property
+    def native_face(self):
+        return self._face
+
+    @native_face.setter
+    def native_face(self, rhino_face):
+        self._face = rhino_face
+        self._mass_props = Rhino.Geometry.AreaMassProperties.Compute(rhino_face.ToBrep())
+        self._loops = [RhinoBrepLoop(loop) for loop in rhino_face.Loops]
+        self._surface = RhinoNurbsSurface.from_rhino(self._face.UnderlyingSurface().ToNurbsSurface())
 
     @property
     def nurbssurface(self):

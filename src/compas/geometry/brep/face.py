@@ -46,6 +46,8 @@ class BrepFace(Data):
         Return True if this face is valid, False otherwise.
     loops : list[:class:`compas.geometry.BrepLoop`], read-only
         Returns a list of the loops comprising this face.
+    native_face : Any
+        The underlying face object. Type is backend-dependent.
     nurbssurface : :class:`compas.geometry.NurbsSurface`, read-only
         Returns the geometry of this face as a NURBS surface.
     surface : :class:`compas.geometry.Surface`, read-only
@@ -100,6 +102,10 @@ class BrepFace(Data):
 
     @property
     def surface(self):
+        raise NotImplementedError
+
+    @property
+    def native_face(self):
         raise NotImplementedError
 
     @property
