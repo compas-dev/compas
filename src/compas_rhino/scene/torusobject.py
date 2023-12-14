@@ -37,8 +37,8 @@ class TorusObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the object created in Rhino.
+        list[System.Guid]
+            The GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -47,4 +47,5 @@ class TorusObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             brep.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddBrep(brep, attr)
+        self._guids = [sc.doc.Objects.AddBrep(brep, attr)]
+        return self.guids

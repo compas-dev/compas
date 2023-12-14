@@ -37,8 +37,8 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the created Rhino object.
+        list[System.Guid]
+            The GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -46,4 +46,5 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
         surface = surface_to_rhino(self.geometry)
         if self.transformation:
             surface.Transform(transformation_to_rhino(self.transformation))
-        return sc.doc.Objects.AddSurface(surface, attr)
+        self._guids = [sc.doc.Objects.AddSurface(surface, attr)]
+        return self.guids

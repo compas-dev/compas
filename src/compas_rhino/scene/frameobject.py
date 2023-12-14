@@ -97,4 +97,5 @@ class FrameObject(RhinoSceneObject, GeometryObject):
                     obj.Geometry.Transform(transformation)
                     obj.CommitChanges()
 
-        return guids
+        self._guids = guids
+        return self.guids

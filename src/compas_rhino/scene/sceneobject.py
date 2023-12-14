@@ -83,5 +83,5 @@ class RhinoSceneObject(SceneObject):
         None
 
         """
-        delete_objects(self.item_guids, purge=purge, redraw=redraw)
-        self._item_guids = None
+        delete_objects(self.guids, purge=purge, redraw=redraw)
+        self._guids = None

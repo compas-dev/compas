@@ -37,8 +37,8 @@ class PolyhedronObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the object created in Rhino.
+        list[System.Guid]
+            The GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -50,4 +50,5 @@ class PolyhedronObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddMesh(geometry, attr)
+        self._guids = [sc.doc.Objects.AddMesh(geometry, attr)]
+        return self.guids

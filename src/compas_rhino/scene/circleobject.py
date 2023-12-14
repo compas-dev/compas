@@ -39,8 +39,8 @@ class CircleObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the created Rhino object.
+        list[System.Guid]
+            List of GUIDs of the object created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -51,4 +51,5 @@ class CircleObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddCircle(geometry, attr)
+        self._guids = [sc.doc.Objects.AddCircle(geometry, attr)]
+        return self.guids

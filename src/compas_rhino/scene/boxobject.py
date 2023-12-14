@@ -51,6 +51,5 @@ class BoxObject(RhinoSceneObject, GeometryObject):
             transformation = transformation_to_rhino(self.transformation)
             geometry.Transform(transformation)
 
-        obj = sc.doc.Objects.AddBox(geometry, attr)
-        self._item_guids = [obj]
-        return self._item_guids
+        self._guids = [sc.doc.Objects.AddBox(geometry, attr)]
+        return self.guids

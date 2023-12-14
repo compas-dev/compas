@@ -17,7 +17,7 @@ class SceneObject(object):
 
     Attributes
     ----------
-    item_guids : list[object]
+    guids : list[object]
         The GUIDs of the drawn item in the visualization context.
 
     """
@@ -28,11 +28,11 @@ class SceneObject(object):
     def __init__(self, item, **kwargs):
         self._item = item
         self._transformation = None
-        self._item_guids = None
+        self._guids = None
 
     @property
-    def item_guids(self):
-        return self._item_guids or []
+    def guids(self):
+        return self._guids or []
 
     @property
     def transformation(self):

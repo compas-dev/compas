@@ -51,5 +51,5 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
             for geometry in breps:
                 geometry.Transform(transformation)
 
-        guids = [sc.doc.Objects.AddBrep(brep, attr) for brep in breps]
-        return guids
+        self._guids = [sc.doc.Objects.AddBrep(brep, attr) for brep in breps]
+        return self.guids
