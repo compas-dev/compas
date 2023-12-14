@@ -38,7 +38,7 @@ Classes
     PolygonObject
     PolyhedronObject
     PolylineObject
-    RhinoObject
+    RhinoSceneObject
     SphereObject
     SurfaceObject
     TorusObject

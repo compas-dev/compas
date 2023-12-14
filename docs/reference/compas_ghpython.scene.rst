@@ -29,7 +29,7 @@ Classes
     CylinderObject
     EllipseObject
     FrameObject
-    GHObject
+    GHSceneObject
     LineObject
     MeshObject
     NetworkObject

@@ -1,5 +1,5 @@
 # from pathlib import Path
-from compas_rhino import geometry as module
+from compas import scene as module
 
 TPL = """
 ********************************************************************************
