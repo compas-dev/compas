@@ -1,114 +1,29 @@
 from compas.geometry import Geometry
-from compas.plugins import pluggable
-from compas.plugins import PluginNotInstalledError
+
+from . import new_brep
+from . import from_brepfaces
+from . import from_box
+from . import from_cylinder
+from . import from_sphere
+from . import from_mesh
+from . import from_cone
+from . import from_torus
+from . import from_extrusion
+from . import from_iges
+from . import from_loft
+from . import from_boolean_difference
+from . import from_boolean_intersection
+from . import from_boolean_union
+from . import from_curves
+from . import from_pipe
+from . import from_planes
+from . import from_polygons
+from . import from_step
+from . import from_sweep
+from . import from_native
 
 
 LINEAR_DEFLECTION = 1e-3
-
-
-@pluggable(category="factories")
-def new_brep(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_boolean_difference(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_boolean_intersection(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_boolean_union(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_box(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_brepfaces(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_cone(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_curves(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_cylinder(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_extrusion(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_iges(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_loft(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_mesh(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_native(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_pipe(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_polygons(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_sphere(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_step(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_surface(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_sweep(*args, **kwargs):
-    raise PluginNotInstalledError()
-
-
-@pluggable(category="factories")
-def from_torus(*args, **kwargs):
-    raise PluginNotInstalledError()
 
 
 class BrepType(object):
@@ -163,58 +78,70 @@ class Brep(Geometry):
 
     Attributes
     ----------
-    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
-        The vertices of the Brep.
+    area : float, read-only
+        The surface area of the Brep.
+    centroid : :class:`compas.geometry.Point`, read-only
+        The centroid of this brep.
+    curves : list[:class:`~compas.geometry.Curve`], read-only
+        The edge curves of this brep.
     edges : list[:class:`compas.geometry.BrepEdge`], read-only
         The edges of the Brep.
-    trims : list[:class:`compas.geometry.BrepTrim`], read-only
-        The trims of the Brep.
-    loops : list[:class:`compas.geometry.BrepLoop`], read-only
-        The loops of the Brep.
     faces : list[:class:`compas.geometry.BrepFace`], read-only
         The faces of the Brep.
     frame : :class:`compas.geometry.Frame`, read-only
         The local coordinate system of the Brep.
-    area : float, read-only
-        The surface area of the Brep.
-    volume : float, read-only
-        The volume of the regions contained by the Brep.
-    solids : list[:class:`compas.geometry.Brep`], read-only
-        The solids of this brep.
-    shells : list[:class:`compas.geometry.Brep`], read-only
-        The shells of this brep.
-    points : list[:class:`compas.geometry.Point`], read-only
-        The points of this brep.
-    centroid : :class:`compas.geometry.Point`, read-only
-        The centroid of this brep.
-    is_valid : bool, read-only
-        True if this brep is valid, False otherwise
-    is_solid : bool, read-only
-        True if this brep is a solid, False otherwise.
+    is_closed : bool, read-only
+        True if this brep is closed, False otherwise.
     is_compound : bool, read-only
         True if this brep's type is a compound, False otherwise.
     is_compoundsolid : bool, read-only
         True if this brep's type is a compoundsolid, False otherwise.
-    is_orientable : bool, read-only
-        True if this brep is orientable, False otherwise.
-    is_closed : bool, read-only
-        True if this brep is closed, False otherwise.
-    is_infinite : bool, read-only
-        True if this brep is infinite, False otherwise.
     is_convex : bool, read-only
         True if this brep is convex, False otherwise.
+    is_infinite : bool, read-only
+        True if this brep is infinite, False otherwise.
     is_manifold : bool, read-only
         True if this brep is a manifold, False otherwise.
+    is_orientable : bool, read-only
+        True if this brep is orientable, False otherwise.
+    is_shell : bool, read-only
+        True if this brep is a shell, False otherwise.
+    is_solid : bool, read-only
+        True if this brep is a solid, False otherwise.
     is_surface : bool, read-only
         True if this brep is a surface, False otherwise.
+    is_valid : bool, read-only
+        True if this brep is valid, False otherwise
+    loops : list[:class:`compas.geometry.BrepLoop`], read-only
+        The loops of the Brep.
+    native_brep : Any
+        The backend specific brep object.
+    orientation : literal(:class:`~compas.geometry.BrepOrientation`)
+        One of [FORWARD, REVERSE, INTERNAL, EXTERNAL], read-only
+    points : list[:class:`compas.geometry.Point`], read-only
+        The points of this brep.
+    shells : list[:class:`compas.geometry.Brep`], read-only
+        The shells of this brep.
+    solids : list[:class:`compas.geometry.Brep`], read-only
+        The solids of this brep.
+    surfaces : list[:class:`~compas.geometry.Surface`], read-only
+        The face surfaces of this brep.
+    trims : list[:class:`compas.geometry.BrepTrim`], read-only
+        The trims of the Brep.
+    type : literal(:class:`~compas.geometry.BrepType`), read-only
+        One of [COMPOUND, COMPSOLID, SHELL, FACE, WIRE, EDGE, VERTEX, SHAPE]
+    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
+        The vertices of the Brep.
+    volume : float, read-only
+        The volume of the regions contained by the Brep.
 
     """
 
     def __new__(cls, *args, **kwargs):
         return new_brep(cls, *args, **kwargs)
 
-    def __init__(self, name=None):
-        super(Brep, self).__init__(name=name)
+    def __init__(self, *args, **kwargs):
+        super(Brep, self).__init__(*args, **kwargs)
 
     def __str__(self):
         lines = [
@@ -235,19 +162,13 @@ class Brep(Geometry):
     # ==============================================================================
 
     @property
-    def data(self):
-        faces = []
-        for face in self.faces:
-            faces.append(face.data)
-        return {"faces": faces}
+    def dtype(self):
+        return "compas.geometry/Brep"
 
     @classmethod
     def from_data(cls, data):
-        # faces = []
-        # for face in data["faces"]:
-        #     faces.append(BrepFace.from_data(face))
-        # return cls.from_brepfaces(faces)
-        pass
+        cls = new_brep(cls)
+        return cls.from_data(data)
 
     # ==============================================================================
     # Properties
@@ -412,6 +333,21 @@ class Brep(Geometry):
         return from_brepfaces(faces)
 
     @classmethod
+    def from_breps(cls, breps):
+        """Construct one compound Brep from a list of other Breps.
+
+        Parameters
+        ----------
+        breps : list[:class:`compas.geometry.Brep`]
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        raise NotImplementedError
+
+    @classmethod
     def from_cone(cls, cone):
         """Construct a Brep from a COMPAS cone.
 
@@ -554,6 +490,22 @@ class Brep(Geometry):
 
         """
         return from_pipe(curve, radius, thickness=thickness)
+
+    @classmethod
+    def from_planes(cls, planes):
+        """Construct a Brep from a set of planes.
+
+        Parameters
+        ----------
+        planes : list[:class:`~compas.geometry.Plane`]
+            A list of planes.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        return from_planes(planes)
 
     @classmethod
     def from_polygons(cls, polygons):
@@ -746,8 +698,8 @@ class Brep(Geometry):
     # Converters
     # ==============================================================================
 
-    def to_json(self, filepath):
-        """Export the BRep to a JSON file.
+    def to_iges(self, filepath):
+        """Write the Brep shape to an IGES file.
 
         Parameters
         ----------
@@ -761,8 +713,50 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
+    def to_meshes(self, u=16, v=16):
+        """Convert the faces of this Brep shape to meshes.
+
+        Parameters
+        ----------
+        u : int, optional
+            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
+        v : int, optional
+            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
+
+        Returns
+        -------
+        list[:class:`compas.datastructures.Mesh`]
+
+        """
+        raise NotImplementedError
+
+    def to_polygons(self):
+        """Convert the faces of this Brep shape to polygons.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Polygon`]
+
+        """
+        raise NotImplementedError
+
     def to_step(self, filepath):
-        """Write the BRep shape to a STEP file.
+        """Write the Brep shape to a STEP file.
+
+        Parameters
+        ----------
+        filepath : str
+            Location of the file.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
+    def to_stl(self, filepath):
+        """Write the Brep shape to an STL file.
 
         Parameters
         ----------
@@ -787,23 +781,6 @@ class Brep(Geometry):
         Returns
         -------
         :class:`compas.datastructures.Mesh`
-
-        """
-        raise NotImplementedError
-
-    def to_meshes(self, u=16, v=16):
-        """Convert the faces of this Brep shape to meshes.
-
-        Parameters
-        ----------
-        u : int, optional
-            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
-        v : int, optional
-            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
-
-        Returns
-        -------
-        list[:class:`compas.datastructures.Mesh`]
 
         """
         raise NotImplementedError
@@ -873,6 +850,22 @@ class Brep(Geometry):
     # Other Methods
     # ==============================================================================
 
+    def contains(self, object):
+        """Check if the Brep contains a given geometric primitive.
+
+        Parameters
+        ----------
+        object : :class:`compas.geometry.Point`, :class:`compas.geometry.Curve`, :class:`compas.geometry.Surface`
+            The object to check for containment.
+
+        Returns
+        -------
+        bool
+            True if the object is contained in the Brep, False otherwise.
+
+        """
+        raise NotImplementedError
+
     def trim(self, trimming_plane, tolerance):
         """Trim this Brep using the given trimming plane.
 
@@ -912,6 +905,16 @@ class Brep(Geometry):
 
     def fix(self):
         """Fix the shell.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
+    def heal(self):
+        """Heal the shape.
 
         Returns
         -------
@@ -972,6 +975,74 @@ class Brep(Geometry):
         -------
         list[list[:class:`compas.geometry.Polyline`]]
             A list of polylines per plane.
+
+        """
+        raise NotImplementedError
+
+    def edge_faces(self, edge):
+        """Identify the faces connected to a given edge.
+
+        Parameters
+        ----------
+        edge : :class:`~compas.geometry.BrepEdge`
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.BrepFace`]
+
+        """
+        raise NotImplementedError
+
+    def edge_loop(self, edge):
+        """Identify the parent loops of the a given edge.
+
+        Parameters
+        ----------
+        edge : :class:`~compas.geometry.BrepEdge`
+
+        Returns
+        -------
+        :class:`~compas.geometry.BrepLoop`
+
+        """
+        raise NotImplementedError
+
+    def fillet(self, radius, edges=None):
+        """Fillet the edges of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list[:class:`~compas.geometry.BrepEdge`], optional
+            List of edges to exclude from the operation. When `None` all edges are included.
+
+        Raises
+        ------
+        :class:`~compas.geometry.BrepFilletError`
+            If the fillet operation fails.
+
+        """
+        raise NotImplementedError
+
+    def filleted(self, radius, edges=None):
+        """Construct a filleted copy of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list[:class:`~compas.geometry.BrepEdge`], optional
+            List of edges to exclude from the operation. When `None` all edges are included.
+
+        Raises
+        ------
+        :class:`~compas.geometry.BrepFilletError`
+            If the fillet operation fails.
+
+        Returns
+        -------
+        :class:`~compas.geometry.Brep`
 
         """
         raise NotImplementedError
