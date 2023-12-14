@@ -424,12 +424,16 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">compas</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="compas.scene.html">compas.scene</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.SceneObject.html">compas.scene.SceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.GeometryObject.html">compas.scene.GeometryObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.MeshObject.html">compas.scene.MeshObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.NetworkObject.html">compas.scene.NetworkObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.NoSceneObjectContextError.html">compas.scene.NoSceneObjectContextError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.Scene.html">compas.scene.Scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.SceneObject.html">compas.scene.SceneObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.SceneObjectNotRegisteredError.html">compas.scene.SceneObjectNotRegisteredError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.VolMeshObject.html">compas.scene.VolMeshObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.build_scene_object.html">compas.scene.build_scene_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.register.html">compas.scene.register</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.clear.html">compas.scene.clear</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.redraw.html">compas.scene.redraw</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.register_scene_objects.html">compas.scene.register_scene_objects</a></li>
@@ -1081,6 +1085,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_ghpython.scene.CylinderObject.html">compas_ghpython.scene.CylinderObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_ghpython.scene.EllipseObject.html">compas_ghpython.scene.EllipseObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_ghpython.scene.FrameObject.html">compas_ghpython.scene.FrameObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas_ghpython.scene.GHSceneObject.html">compas_ghpython.scene.GHSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_ghpython.scene.LineObject.html">compas_ghpython.scene.LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_ghpython.scene.MeshObject.html">compas_ghpython.scene.MeshObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_ghpython.scene.NetworkObject.html">compas_ghpython.scene.NetworkObject</a></li>
@@ -1121,6 +1126,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.scene.PolygonObject.html">compas_rhino.scene.PolygonObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.scene.PolyhedronObject.html">compas_rhino.scene.PolyhedronObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.scene.PolylineObject.html">compas_rhino.scene.PolylineObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.scene.RhinoSceneObject.html">compas_rhino.scene.RhinoSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.scene.SphereObject.html">compas_rhino.scene.SphereObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.scene.SurfaceObject.html">compas_rhino.scene.SurfaceObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.scene.TorusObject.html">compas_rhino.scene.TorusObject</a></li>
@@ -1344,19 +1350,22 @@ When working in Rhino, <a class="reference internal" href="generated/compas.scen
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.scene.PolylineObject.html" title="compas_rhino.scene.PolylineObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PolylineObject</span></code></a></p></td>
 <td><p>Scene object for drawing polylines.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.scene.SphereObject.html" title="compas_rhino.scene.SphereObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SphereObject</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.scene.RhinoSceneObject.html" title="compas_rhino.scene.RhinoSceneObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RhinoSceneObject</span></code></a></p></td>
+<td><p>Base class for all Rhino scene objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.scene.SphereObject.html" title="compas_rhino.scene.SphereObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SphereObject</span></code></a></p></td>
 <td><p>Scene object for drawing sphere shapes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.scene.SurfaceObject.html" title="compas_rhino.scene.SurfaceObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceObject</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.scene.SurfaceObject.html" title="compas_rhino.scene.SurfaceObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceObject</span></code></a></p></td>
 <td><p>Scene object for drawing surfaces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.scene.TorusObject.html" title="compas_rhino.scene.TorusObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorusObject</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.scene.TorusObject.html" title="compas_rhino.scene.TorusObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorusObject</span></code></a></p></td>
 <td><p>Scene object for drawing torus shapes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.scene.VectorObject.html" title="compas_rhino.scene.VectorObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorObject</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.scene.VectorObject.html" title="compas_rhino.scene.VectorObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorObject</span></code></a></p></td>
 <td><p>Scene object for drawing vectors.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_rhino.scene.VolMeshObject.html" title="compas_rhino.scene.VolMeshObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMeshObject</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_rhino.scene.VolMeshObject.html" title="compas_rhino.scene.VolMeshObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMeshObject</span></code></a></p></td>
 <td><p>Scene object for drawing volmesh data structures.</p></td>
 </tr>
 </tbody>

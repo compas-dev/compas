@@ -507,7 +507,7 @@ document.write(`
 <span class="n">register_scene_objects</span><span class="o">.</span><span class="n">__pluggable__</span> <span class="o">=</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">item_type</span><span class="p">,</span> <span class="n">sceneobject_type</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="register"><a class="viewcode-back" href="../../../reference/generated/compas.scene.register.html#compas.scene.register">[docs]</a><span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">item_type</span><span class="p">,</span> <span class="n">sceneobject_type</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a scene object type to a data type.</span>
 
 <span class="sd">    Parameters</span>
@@ -524,7 +524,7 @@ document.write(`
 <span class="sd">    None</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ITEM_SCENEOBJECT</span><span class="p">[</span><span class="n">context</span><span class="p">][</span><span class="n">item_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">sceneobject_type</span>
+    <span class="n">ITEM_SCENEOBJECT</span><span class="p">[</span><span class="n">context</span><span class="p">][</span><span class="n">item_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">sceneobject_type</span></div>
 
 
 <span class="k">def</span> <span class="nf">is_viewer_open</span><span class="p">():</span>
@@ -598,7 +598,7 @@ document.write(`
     <span class="k">return</span> <span class="bp">cls</span>
 
 
-<span class="k">def</span> <span class="nf">build_scene_object</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="build_scene_object"><a class="viewcode-back" href="../../../reference/generated/compas.scene.build_scene_object.html#compas.scene.build_scene_object">[docs]</a><span class="k">def</span> <span class="nf">build_scene_object</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ITEM_SCENEOBJECT</span><span class="p">:</span>
         <span class="n">register_scene_objects</span><span class="p">()</span>
 
@@ -609,7 +609,7 @@ document.write(`
 
     <span class="bp">cls</span> <span class="o">=</span> <span class="n">_get_sceneobject_cls</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">PluginValidator</span><span class="o">.</span><span class="n">ensure_implementations</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>
