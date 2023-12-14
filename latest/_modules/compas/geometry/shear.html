@@ -517,14 +517,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Shear.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Shear.html#compas.geometry.Shear.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">matrix</span> <span class="ow">and</span> <span class="n">check</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">flatten</span><span class="p">(</span><span class="n">matrix_from_shear_entries</span><span class="p">(</span><span class="n">shear</span><span class="p">))):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This is not a proper shear matrix.&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Shear</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Shear</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Shear.from_angle_direction_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Shear.from_angle_direction_plane.html#compas.geometry.Shear.from_angle_direction_plane">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_angle_direction_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a shear transformation from an angle, direction and plane.</span>
 
@@ -560,9 +560,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">plane</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_shear</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Shear.from_entries"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Shear.from_entries.html#compas.geometry.Shear.from_entries">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_entries</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">shear_entries</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a shear transformation from the 3 factors for x-y, x-z, and y-z axes.</span>
 
@@ -582,7 +582,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_shear_entries</span><span class="p">(</span><span class="n">shear_entries</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

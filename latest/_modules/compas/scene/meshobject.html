@@ -520,11 +520,11 @@ document.write(`
     <span class="n">edge_color</span> <span class="o">=</span> <span class="n">ColorDictAttribute</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">face_color</span> <span class="o">=</span> <span class="n">ColorDictAttribute</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-<div class="viewcode-block" id="MeshObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.scene.MeshObject.html#compas.scene.MeshObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MeshObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mesh</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_xyz</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -558,7 +558,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">vertex_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_xyz</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_xyz</span> <span class="o">=</span> <span class="n">vertex_xyz</span>
 
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="MeshObject.draw_vertices"><a class="viewcode-back" href="../../../reference/generated/compas.scene.MeshObject.draw_vertices.html#compas.scene.MeshObject.draw_vertices">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the vertices of the mesh.</span>
 
@@ -581,9 +581,9 @@ document.write(`
 <span class="sd">            The identifiers of the objects representing the vertices in the visualization context.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="MeshObject.draw_edges"><a class="viewcode-back" href="../../../reference/generated/compas.scene.MeshObject.draw_edges.html#compas.scene.MeshObject.draw_edges">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the edges of the mesh.</span>
 
@@ -606,9 +606,9 @@ document.write(`
 <span class="sd">            The identifiers of the objects representing the edges in the visualization context.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="MeshObject.draw_faces"><a class="viewcode-back" href="../../../reference/generated/compas.scene.MeshObject.draw_faces.html#compas.scene.MeshObject.draw_faces">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the faces of the mesh.</span>
 
@@ -631,9 +631,9 @@ document.write(`
 <span class="sd">            The identifiers of the objects representing the faces in the visualization context.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_mesh"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_mesh.html#compas.scene.MeshObject.draw_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">draw_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the mesh of the mesh.</span>
 
 <span class="sd">        .. deprecated:: 1.14.1</span>
@@ -645,9 +645,9 @@ document.write(`
 <span class="sd">            The identifiers of the objects representing the mesh in the visualization context.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear"><a class="viewcode-back" href="../../../reference/generated/compas.scene.MeshObject.clear.html#compas.scene.MeshObject.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear all components of the mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -655,9 +655,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_ghpython.scene.MeshObject.clear_vertices.html#compas.scene.MeshObject.clear_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the vertices of the mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -665,9 +665,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_edges"><a class="viewcode-back" href="../../../reference/generated/compas_ghpython.scene.MeshObject.clear_edges.html#compas.scene.MeshObject.clear_edges">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the edges of the mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -675,9 +675,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_faces"><a class="viewcode-back" href="../../../reference/generated/compas_ghpython.scene.MeshObject.clear_faces.html#compas.scene.MeshObject.clear_faces">[docs]</a>    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the faces of the mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -685,7 +685,7 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
                 </article>

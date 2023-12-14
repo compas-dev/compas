@@ -493,10 +493,10 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="EllipseObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_ghpython.scene.EllipseObject.html#compas_ghpython.scene.EllipseObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">EllipseObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">ellipse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">EllipseObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">ellipse</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EllipseObject.draw"><a class="viewcode-back" href="../../../reference/generated/compas_ghpython.scene.EllipseObject.draw.html#compas_ghpython.scene.EllipseObject.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the ellipse.</span>
 
 <span class="sd">        Returns</span>
@@ -510,7 +510,7 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">:</span>
             <span class="n">ellipse</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">conversions</span><span class="o">.</span><span class="n">transformation_to_rhino</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">ellipse</span></div>
+        <span class="k">return</span> <span class="n">ellipse</span></div></div>
 </pre></div>
 
                 </article>

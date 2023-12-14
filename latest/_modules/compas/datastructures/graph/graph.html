@@ -543,7 +543,7 @@ document.write(`
         <span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Graph.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.html#compas.datastructures.Graph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_node_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_edge_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_node_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_edge_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Graph</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_node</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="p">{}</span>
@@ -554,7 +554,7 @@ document.write(`
         <span class="k">if</span> <span class="n">default_node_attributes</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_node_attributes</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">default_edge_attributes</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_edge_attributes</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">default_edge_attributes</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;&lt;Graph with </span><span class="si">{}</span><span class="s2"> nodes, </span><span class="si">{}</span><span class="s2"> edges&gt;&quot;</span>
@@ -584,7 +584,7 @@ document.write(`
                 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;edge&quot;</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">data</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Graph.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.from_data.html#compas.datastructures.Graph.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">dna</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dna&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">dea</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dea&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -606,7 +606,7 @@ document.write(`
 
         <span class="n">graph</span><span class="o">.</span><span class="n">_max_node</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_node&quot;</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">_max_node</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">graph</span>
+        <span class="k">return</span> <span class="n">graph</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Properties</span>
@@ -616,7 +616,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Graph.from_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.from_edges.html#compas.datastructures.Graph.from_edges">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_edges</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new graph instance from information about the edges.</span>
 
@@ -640,9 +640,9 @@ document.write(`
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
                 <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Graph.from_networkx"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.from_networkx.html#compas.datastructures.Graph.from_networkx">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_networkx</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new graph instance from a NetworkX DiGraph instance.</span>
 
@@ -670,9 +670,9 @@ document.write(`
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
             <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">,</span> <span class="o">**</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">edge</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">g</span>
+        <span class="k">return</span> <span class="n">g</span></div>
 
-    <span class="k">def</span> <span class="nf">to_networkx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.to_networkx"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.to_networkx.html#compas.datastructures.Graph.to_networkx">[docs]</a>    <span class="k">def</span> <span class="nf">to_networkx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new NetworkX graph instance from a graph.</span>
 
 <span class="sd">        Returns</span>
@@ -696,13 +696,13 @@ document.write(`
         <span class="k">for</span> <span class="n">edge</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">,</span> <span class="o">**</span><span class="n">attr</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">G</span>
+        <span class="k">return</span> <span class="n">G</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.clear"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.clear.html#compas.datastructures.Graph.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear all the network data.</span>
 
 <span class="sd">        Returns</span>
@@ -715,9 +715,9 @@ document.write(`
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span> <span class="o">=</span> <span class="p">{}</span></div>
 
-    <span class="k">def</span> <span class="nf">node_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.node_sample"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.node_sample.html#compas.datastructures.Graph.node_sample">[docs]</a>    <span class="k">def</span> <span class="nf">node_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of identifiers of a random set of n nodes.</span>
 
 <span class="sd">        Parameters</span>
@@ -735,9 +735,9 @@ document.write(`
 <span class="sd">        :meth:`edge_sample`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edge_sample"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edge_sample.html#compas.datastructures.Graph.edge_sample">[docs]</a>    <span class="k">def</span> <span class="nf">edge_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the identifiers of a set of random edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -755,9 +755,9 @@ document.write(`
 <span class="sd">        :meth:`node_sample`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()),</span> <span class="n">size</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">node_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.node_index"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.node_index.html#compas.datastructures.Graph.node_index">[docs]</a>    <span class="k">def</span> <span class="nf">node_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary that maps node identifiers to their corresponding index in a node list or array.</span>
 
 <span class="sd">        Returns</span>
@@ -771,9 +771,9 @@ document.write(`
 <span class="sd">        :meth:`edge_index`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">())}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">())}</span></div>
 
-    <span class="k">def</span> <span class="nf">index_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.index_node"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.index_node.html#compas.datastructures.Graph.index_node">[docs]</a>    <span class="k">def</span> <span class="nf">index_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary that maps the indices of a node list to keys in a node dictionary.</span>
 
 <span class="sd">        Returns</span>
@@ -787,9 +787,9 @@ document.write(`
 <span class="sd">        :meth:`index_edge`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edge_index"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edge_index.html#compas.datastructures.Graph.edge_index">[docs]</a>    <span class="k">def</span> <span class="nf">edge_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary that maps edge identifiers (i.e. pairs of vertex identifiers)</span>
 <span class="sd">        to the corresponding edge index in a list or array of edges.</span>
 
@@ -804,9 +804,9 @@ document.write(`
 <span class="sd">        :meth:`node_index`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">())}</span>
+        <span class="k">return</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">())}</span></div>
 
-    <span class="k">def</span> <span class="nf">index_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.index_edge"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.index_edge.html#compas.datastructures.Graph.index_edge">[docs]</a>    <span class="k">def</span> <span class="nf">index_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary that maps edges in a list to the corresponding</span>
 <span class="sd">        vertex identifier pairs.</span>
 
@@ -821,13 +821,13 @@ document.write(`
 <span class="sd">        :meth:`index_node`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Builders</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.add_node"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.add_node.html#compas.datastructures.Graph.add_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a node and specify its attributes (optional).</span>
 
 <span class="sd">        Parameters</span>
@@ -879,9 +879,9 @@ document.write(`
         <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">key</span>
+        <span class="k">return</span> <span class="n">key</span></div>
 
-    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.add_edge"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.add_edge.html#compas.datastructures.Graph.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an edge and specify its attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -923,13 +923,13 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Modifiers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">delete_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.delete_node"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.delete_node.html#compas.datastructures.Graph.delete_node">[docs]</a>    <span class="k">def</span> <span class="nf">delete_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a node from the graph.</span>
 
 <span class="sd">        Parameters</span>
@@ -964,9 +964,9 @@ document.write(`
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
-                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">delete_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.delete_edge"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.delete_edge.html#compas.datastructures.Graph.delete_edge">[docs]</a>    <span class="k">def</span> <span class="nf">delete_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete an edge from the network.</span>
 
 <span class="sd">        Parameters</span>
@@ -997,14 +997,14 @@ document.write(`
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">or</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span></div>
         <span class="c1"># else: an edge in an opposite direction exists, we don&#39;t want to delete the adjacency</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Info</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.summary"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.summary.html#compas.datastructures.Graph.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a summary of the graph.</span>
 
 <span class="sd">        Returns</span>
@@ -1021,9 +1021,9 @@ document.write(`
                 <span class="s2">&quot;- edges: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">]</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">())</span></div>
 
-    <span class="k">def</span> <span class="nf">number_of_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.number_of_nodes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.number_of_nodes.html#compas.datastructures.Graph.number_of_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the number of nodes of the graph.</span>
 
 <span class="sd">        Returns</span>
@@ -1036,9 +1036,9 @@ document.write(`
 <span class="sd">        :meth:`number_of_edges`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span></div>
 
-    <span class="k">def</span> <span class="nf">number_of_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.number_of_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.number_of_edges.html#compas.datastructures.Graph.number_of_edges">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the number of edges of the graph.</span>
 
 <span class="sd">        Returns</span>
@@ -1051,13 +1051,13 @@ document.write(`
 <span class="sd">        :meth:`number_of_nodes`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Accessors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.nodes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.nodes.html#compas.datastructures.Graph.nodes">[docs]</a>    <span class="k">def</span> <span class="nf">nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the nodes of the network.</span>
 
 <span class="sd">        Parameters</span>
@@ -1081,9 +1081,9 @@ document.write(`
             <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">key</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">nodes_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.nodes_where"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.nodes_where.html#compas.datastructures.Graph.nodes_where">[docs]</a>    <span class="k">def</span> <span class="nf">nodes_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get nodes for which a certain condition or set of conditions is true.</span>
 
 <span class="sd">        Parameters</span>
@@ -1157,9 +1157,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span>
+                    <span class="k">yield</span> <span class="n">key</span></div>
 
-    <span class="k">def</span> <span class="nf">nodes_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.nodes_where_predicate"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.nodes_where_predicate.html#compas.datastructures.Graph.nodes_where_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">nodes_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get nodes for which a certain condition or set of conditions is true using a lambda function.</span>
 
 <span class="sd">        Parameters</span>
@@ -1191,9 +1191,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span>
+                    <span class="k">yield</span> <span class="n">key</span></div>
 
-    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edges.html#compas.datastructures.Graph.edges">[docs]</a>    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the edges of the network.</span>
 
 <span class="sd">        Parameters</span>
@@ -1218,9 +1218,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
 
-    <span class="k">def</span> <span class="nf">edges_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edges_where"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edges_where.html#compas.datastructures.Graph.edges_where">[docs]</a>    <span class="k">def</span> <span class="nf">edges_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get edges for which a certain condition or set of conditions is true.</span>
 
 <span class="sd">        Parameters</span>
@@ -1283,9 +1283,9 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span>
+                    <span class="k">yield</span> <span class="n">key</span></div>
 
-    <span class="k">def</span> <span class="nf">edges_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edges_where_predicate"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edges_where_predicate.html#compas.datastructures.Graph.edges_where_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">edges_where_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get edges for which a certain condition or set of conditions is true using a lambda function.</span>
 
 <span class="sd">        Parameters</span>
@@ -1319,13 +1319,13 @@ document.write(`
                 <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">key</span>
+                    <span class="k">yield</span> <span class="n">key</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># default attributes</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">update_default_node_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.update_default_node_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.update_default_node_attributes.html#compas.datastructures.Graph.update_default_node_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">update_default_node_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the default node attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1347,9 +1347,9 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">update_default_edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.update_default_edge_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.update_default_edge_attributes.html#compas.datastructures.Graph.update_default_edge_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">update_default_edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the default edge attributes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1371,7 +1371,7 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
             <span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attr_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span></div>
 
     <span class="n">update_dna</span> <span class="o">=</span> <span class="n">update_default_node_attributes</span>
     <span class="n">update_dea</span> <span class="o">=</span> <span class="n">update_default_edge_attributes</span>
@@ -1380,7 +1380,7 @@ document.write(`
     <span class="c1"># Node attributes</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">node_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.node_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.node_attribute.html#compas.datastructures.Graph.node_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">node_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1419,9 +1419,9 @@ document.write(`
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">unset_node_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.unset_node_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.unset_node_attribute.html#compas.datastructures.Graph.unset_node_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">unset_node_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unset the attribute of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1447,9 +1447,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">node_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.node_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.node_attributes.html#compas.datastructures.Graph.node_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">node_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1500,9 +1500,9 @@ document.write(`
                 <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">values</span>
+        <span class="k">return</span> <span class="n">values</span></div>
 
-    <span class="k">def</span> <span class="nf">nodes_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.nodes_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.nodes_attribute.html#compas.datastructures.Graph.nodes_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">nodes_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of multiple nodes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1537,9 +1537,9 @@ document.write(`
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">nodes_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.nodes_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.nodes_attributes.html#compas.datastructures.Graph.nodes_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">nodes_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of multiple nodes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1577,13 +1577,13 @@ document.write(`
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">node_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Edge attributes</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edge_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edge_attribute.html#compas.datastructures.Graph.edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1622,9 +1622,9 @@ document.write(`
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">unset_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.unset_edge_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.unset_edge_attribute.html#compas.datastructures.Graph.unset_edge_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">unset_edge_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unset the attribute of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1658,9 +1658,9 @@ document.write(`
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edge_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edge_attributes.html#compas.datastructures.Graph.edge_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">edge_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -1707,9 +1707,9 @@ document.write(`
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">values</span>
+        <span class="k">return</span> <span class="n">values</span></div>
 
-    <span class="k">def</span> <span class="nf">edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edges_attribute"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edges_attribute.html#compas.datastructures.Graph.edges_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">edges_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set an attribute of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -1744,9 +1744,9 @@ document.write(`
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">edges_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.edges_attributes"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.edges_attributes.html#compas.datastructures.Graph.edges_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">edges_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get or set multiple attributes of multiple edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -1784,13 +1784,13 @@ document.write(`
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Node topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">has_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.has_node"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.has_node.html#compas.datastructures.Graph.has_node">[docs]</a>    <span class="k">def</span> <span class="nf">has_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if a specific node is present in the network.</span>
 
 <span class="sd">        Parameters</span>
@@ -1808,9 +1808,9 @@ document.write(`
 <span class="sd">        :meth:`has_edge`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span></div>
 
-    <span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.is_leaf"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.is_leaf.html#compas.datastructures.Graph.is_leaf">[docs]</a>    <span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if a node is a leaf.</span>
 
 <span class="sd">        Parameters</span>
@@ -1833,9 +1833,9 @@ document.write(`
 <span class="sd">        A node is a *leaf* if it has only one neighbor.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span></div>
 
-    <span class="k">def</span> <span class="nf">leaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.leaves"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.leaves.html#compas.datastructures.Graph.leaves">[docs]</a>    <span class="k">def</span> <span class="nf">leaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return all leaves of the network.</span>
 
 <span class="sd">        Returns</span>
@@ -1844,9 +1844,9 @@ document.write(`
 <span class="sd">            A list of node identifiers.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span></div>
 
-    <span class="k">def</span> <span class="nf">is_node_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.is_node_connected"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.is_node_connected.html#compas.datastructures.Graph.is_node_connected">[docs]</a>    <span class="k">def</span> <span class="nf">is_node_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if a specific node is connected.</span>
 
 <span class="sd">        Parameters</span>
@@ -1864,9 +1864,9 @@ document.write(`
 <span class="sd">        :meth:`is_leaf`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
-    <span class="k">def</span> <span class="nf">neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.neighbors"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.neighbors.html#compas.datastructures.Graph.neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the neighbors of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1885,9 +1885,9 @@ document.write(`
 <span class="sd">        :meth:`neighborhood`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.neighborhood"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.neighborhood.html#compas.datastructures.Graph.neighborhood">[docs]</a>    <span class="k">def</span> <span class="nf">neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the nodes in the neighborhood of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1919,9 +1919,9 @@ document.write(`
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">:</span>
             <span class="n">nbrs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">neighbors_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.neighbors_out"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.neighbors_out.html#compas.datastructures.Graph.neighbors_out">[docs]</a>    <span class="k">def</span> <span class="nf">neighbors_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the outgoing neighbors of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1939,9 +1939,9 @@ document.write(`
 <span class="sd">        :meth:`neighbors`, :meth:`neighbors_in`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">neighbors_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.neighbors_in"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.neighbors_in.html#compas.datastructures.Graph.neighbors_in">[docs]</a>    <span class="k">def</span> <span class="nf">neighbors_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the incoming neighbors of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1959,9 +1959,9 @@ document.write(`
 <span class="sd">        :meth:`neighbors`, :meth:`neighbors_out`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span></div>
 
-    <span class="k">def</span> <span class="nf">degree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.degree"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.degree.html#compas.datastructures.Graph.degree">[docs]</a>    <span class="k">def</span> <span class="nf">degree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of neighbors of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1979,9 +1979,9 @@ document.write(`
 <span class="sd">        :meth:`degree_out`, :meth:`degree_in`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">degree_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.degree_out"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.degree_out.html#compas.datastructures.Graph.degree_out">[docs]</a>    <span class="k">def</span> <span class="nf">degree_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of outgoing neighbors of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -1999,9 +1999,9 @@ document.write(`
 <span class="sd">        :meth:`degree`, :meth:`degree_in`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbors_out</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbors_out</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">degree_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.degree_in"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.degree_in.html#compas.datastructures.Graph.degree_in">[docs]</a>    <span class="k">def</span> <span class="nf">degree_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the numer of incoming neighbors of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -2019,9 +2019,9 @@ document.write(`
 <span class="sd">        :meth:`degree`, :meth:`degree_out`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbors_in</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neighbors_in</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">connected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.connected_edges"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.connected_edges.html#compas.datastructures.Graph.connected_edges">[docs]</a>    <span class="k">def</span> <span class="nf">connected_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the edges connected to a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -2041,13 +2041,13 @@ document.write(`
                 <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">nbr</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nbr</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">edges</span>
+        <span class="k">return</span> <span class="n">edges</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Edge topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">has_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Graph.has_edge"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Graph.has_edge.html#compas.datastructures.Graph.has_edge">[docs]</a>    <span class="k">def</span> <span class="nf">has_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if the network contains a specific edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -2070,7 +2070,7 @@ document.write(`
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
         <span class="k">if</span> <span class="n">directed</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">])</span></div></div>
 </pre></div>
 
                 </article>

@@ -593,12 +593,12 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="s2">&quot;minor&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Hyperbola.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Hyperbola.html#compas.geometry.Hyperbola.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Hyperbola</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_major</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_minor</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">major</span> <span class="o">=</span> <span class="n">major</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">minor</span> <span class="o">=</span> <span class="n">minor</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minor</span> <span class="o">=</span> <span class="n">minor</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(major=</span><span class="si">{1}</span><span class="s2">, minor=</span><span class="si">{2}</span><span class="s2">, frame=</span><span class="si">{3!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -626,13 +626,13 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Hyperbola.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Hyperbola.from_data.html#compas.geometry.Hyperbola.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">major</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">],</span>
             <span class="n">minor</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;minor&quot;</span><span class="p">],</span>
             <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Properties</span>
@@ -722,7 +722,7 @@ document.write(`
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Hyperbola.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Hyperbola.point_at.html#compas.geometry.Hyperbola.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Point at the parameter.</span>
 
@@ -753,9 +753,9 @@ document.write(`
         <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span>
+        <span class="k">return</span> <span class="n">point</span></div>
 
-    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Hyperbola.tangent_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Hyperbola.tangent_at.html#compas.geometry.Hyperbola.tangent_at">[docs]</a>    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tangent vector at the parameter.</span>
 
@@ -779,9 +779,9 @@ document.write(`
 <span class="sd">        The orientation of the vector is expressed with respect to the world coordinate system.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Hyperbola.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Hyperbola.normal_at.html#compas.geometry.Hyperbola.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Normal at a specific normalized parameter.</span>
 
@@ -805,7 +805,7 @@ document.write(`
 <span class="sd">        The orientation of the vector is expressed with respect to the world coordinate system.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
                 </article>

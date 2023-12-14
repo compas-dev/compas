@@ -518,13 +518,13 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoBrepFace.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepFace.html#compas_rhino.geometry.RhinoBrepFace.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_face</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_face</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrepFace</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_surface</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_face</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">rhino_face</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">native_face</span> <span class="o">=</span> <span class="n">rhino_face</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_face</span> <span class="o">=</span> <span class="n">rhino_face</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -541,7 +541,7 @@ document.write(`
             <span class="s2">&quot;loops&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">loop</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">],</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoBrepFace.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepFace.from_data.html#compas_rhino.geometry.RhinoBrepFace.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an object of this type from the provided data.</span>
 
@@ -567,7 +567,7 @@ document.write(`
         <span class="k">for</span> <span class="n">loop_data</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;loops&quot;</span><span class="p">]:</span>
             <span class="n">RhinoBrepLoop</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">loop_data</span><span class="p">,</span> <span class="n">face_builder</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">native_face</span> <span class="o">=</span> <span class="n">face_builder</span><span class="o">.</span><span class="n">result</span>
-        <span class="k">return</span> <span class="n">instance</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
@@ -736,7 +736,7 @@ document.write(`
     <span class="c1"># Methods</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">adjacent_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoBrepFace.adjacent_faces"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepFace.adjacent_faces.html#compas_rhino.geometry.RhinoBrepFace.adjacent_faces">[docs]</a>    <span class="k">def</span> <span class="nf">adjacent_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of the faces adjacent to this face.</span>
 
 <span class="sd">        Returns</span>
@@ -747,9 +747,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">face_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">AdjacentFaces</span><span class="p">()</span>
         <span class="n">brep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">Brep</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">RhinoBrepFace</span><span class="p">(</span><span class="n">brep</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face_indices</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">RhinoBrepFace</span><span class="p">(</span><span class="n">brep</span><span class="o">.</span><span class="n">Faces</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face_indices</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">as_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoBrepFace.as_brep"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepFace.as_brep.html#compas_rhino.geometry.RhinoBrepFace.as_brep">[docs]</a>    <span class="k">def</span> <span class="nf">as_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a Brep representation of this face.</span>
 
 <span class="sd">        Returns</span>
@@ -757,7 +757,7 @@ document.write(`
 <span class="sd">        :class:`~compas_rhino.geometry.RhinoBrep`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_native</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">ToBrep</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_native</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="o">.</span><span class="n">ToBrep</span><span class="p">())</span></div></div>
 </pre></div>
 
                 </article>

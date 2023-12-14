@@ -526,7 +526,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoBrepEdge.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepEdge.html#compas_rhino.geometry.RhinoBrepEdge.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_edge</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_edge</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrepEdge</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_edge</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_curve</span> <span class="o">=</span> <span class="kc">None</span>
@@ -535,7 +535,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_vertex</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mass_props</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">rhino_edge</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">native_edge</span> <span class="o">=</span> <span class="n">rhino_edge</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_edge</span> <span class="o">=</span> <span class="n">rhino_edge</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -553,7 +553,7 @@ document.write(`
             <span class="s2">&quot;domain&quot;</span><span class="p">:</span> <span class="n">domain</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoBrepEdge.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepEdge.from_data.html#compas_rhino.geometry.RhinoBrepEdge.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an object of this type from the provided data.</span>
 
@@ -573,7 +573,7 @@ document.write(`
         <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">edge_curve</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_curve_from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;curve_type&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;curve&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">])</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">native_edge</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">edge_curve</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;start_vertex&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;end_vertex&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">instance</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>

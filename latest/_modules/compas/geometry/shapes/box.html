@@ -586,14 +586,14 @@ document.write(`
         <span class="s2">&quot;minProperties&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Box.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.html#compas.geometry.Box.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_xsize</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ysize</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_zsize</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">=</span> <span class="n">xsize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">xsize</span> <span class="k">if</span> <span class="n">ysize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ysize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">=</span> <span class="n">xsize</span> <span class="k">if</span> <span class="n">zsize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">zsize</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">=</span> <span class="n">xsize</span> <span class="k">if</span> <span class="n">zsize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">zsize</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(xsize=</span><span class="si">{1}</span><span class="s2">, ysize=</span><span class="si">{2}</span><span class="s2">, zsize=</span><span class="si">{3}</span><span class="s2">, frame=</span><span class="si">{4!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -647,14 +647,14 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Box.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_data.html#compas.geometry.Box.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">xsize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;xsize&quot;</span><span class="p">],</span>
             <span class="n">ysize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;ysize&quot;</span><span class="p">],</span>
             <span class="n">zsize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;zsize&quot;</span><span class="p">],</span>
             <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Properties</span>
@@ -788,7 +788,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Box.from_width_height_depth"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_width_height_depth.html#compas.geometry.Box.from_width_height_depth">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_width_height_depth</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from its width, height and depth.</span>
 
@@ -821,9 +821,9 @@ document.write(`
         <span class="n">height</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
         <span class="n">depth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Box.from_bounding_box"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_bounding_box.html#compas.geometry.Box.from_bounding_box">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_bounding_box</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bbox</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from the result of a bounding box calculation.</span>
 
@@ -864,9 +864,9 @@ document.write(`
         <span class="n">ysize</span> <span class="o">=</span> <span class="n">yaxis</span><span class="o">.</span><span class="n">length</span>
         <span class="n">zsize</span> <span class="o">=</span> <span class="n">zaxis</span><span class="o">.</span><span class="n">length</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">bbox</span><span class="p">),</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="o">=</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="n">ysize</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="n">zsize</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="o">=</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="n">ysize</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="n">zsize</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Box.from_corner_corner_height"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_corner_corner_height.html#compas.geometry.Box.from_corner_corner_height">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_corner_corner_height</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">corner1</span><span class="p">,</span> <span class="n">corner2</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from the opposite corners of its base and its height.</span>
 
@@ -905,9 +905,9 @@ document.write(`
         <span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span><span class="p">),</span> <span class="n">z1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">]</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">zsize</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Box.from_diagonal"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_diagonal.html#compas.geometry.Box.from_diagonal">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_diagonal</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">diagonal</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from its main diagonal.</span>
 
@@ -944,9 +944,9 @@ document.write(`
         <span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span><span class="p">),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">z1</span> <span class="o">+</span> <span class="n">z2</span><span class="p">)]</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Box.from_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.from_points.html#compas.geometry.Box.from_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Box</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a box from a set of points.</span>
 
@@ -964,13 +964,13 @@ document.write(`
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">bounding_box</span>
 
         <span class="n">bbox</span> <span class="o">=</span> <span class="n">bounding_box</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_bounding_box</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_bounding_box</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangulated</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Box.to_vertices_and_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangulated</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -1014,9 +1014,9 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">faces</span> <span class="o">=</span> <span class="n">_faces</span>
 
-        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
 
-    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Box.to_brep"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.to_brep.html#compas.geometry.Box.to_brep">[docs]</a>    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a BREP representation of the box.</span>
 
 <span class="sd">        Returns</span>
@@ -1026,7 +1026,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
 
-        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_box</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_box</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Transformations</span>
@@ -1062,7 +1062,7 @@ document.write(`
     <span class="c1">#     self.ysize *= scaley</span>
     <span class="c1">#     self.zsize *= scalez</span>
 
-    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<div class="viewcode-block" id="Box.scale"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.scale.html#compas.geometry.Box.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scale the box.</span>
 
 <span class="sd">        Parameters</span>
@@ -1077,13 +1077,13 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">*=</span> <span class="n">factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">*=</span> <span class="n">factor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">*=</span> <span class="n">factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">*=</span> <span class="n">factor</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">corner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="Box.corner"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.corner.html#compas.geometry.Box.corner">[docs]</a>    <span class="k">def</span> <span class="nf">corner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return one of the eight corners of the box.</span>
 
 <span class="sd">        Parameters</span>
@@ -1127,9 +1127,9 @@ document.write(`
         <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dz</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dz</span>
+            <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">xaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dx</span> <span class="o">+</span> <span class="n">yaxis</span> <span class="o">*</span> <span class="o">-</span><span class="n">dy</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="o">+</span><span class="n">dz</span></div>
 
-    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<div class="viewcode-block" id="Box.contains_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.contains_point.html#compas.geometry.Box.contains_point">[docs]</a>    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if the box contains a given point.</span>
 
 <span class="sd">        Parameters</span>
@@ -1166,9 +1166,9 @@ document.write(`
         <span class="k">if</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">dz</span> <span class="ow">or</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="o">+</span><span class="n">dz</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">contains_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<div class="viewcode-block" id="Box.contains_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Box.contains_points.html#compas.geometry.Box.contains_points">[docs]</a>    <span class="k">def</span> <span class="nf">contains_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if the box contains the given points.</span>
 
 <span class="sd">        Parameters</span>
@@ -1216,7 +1216,7 @@ document.write(`
 
             <span class="n">results</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">return</span> <span class="n">results</span></div>
+        <span class="k">return</span> <span class="n">results</span></div></div>
 </pre></div>
 
                 </article>

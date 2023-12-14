@@ -594,7 +594,7 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Quaternion.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.html#compas.geometry.Quaternion.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Quaternion</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="kc">None</span>
@@ -603,7 +603,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">, </span><span class="si">{3}</span><span class="s2">, </span><span class="si">{4}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
@@ -746,7 +746,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Quaternion.from_frame"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.from_frame.html#compas.geometry.Quaternion.from_frame">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_frame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a quaternion object from a frame.</span>
 
@@ -771,9 +771,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">quaternion</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Quaternion.from_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Quaternion from a transformation matrix.</span>
 
@@ -795,9 +795,9 @@ document.write(`
 <span class="sd">        Quaternion(0.949, 0.066, 0.302, 0.066)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">))</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Quaternion.from_rotation"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.from_rotation.html#compas.geometry.Quaternion.from_rotation">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_rotation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Quaternion from a Rotatation.</span>
 
@@ -818,13 +818,13 @@ document.write(`
 <span class="sd">        Quaternion(0.500, 0.500, 0.500, 0.500)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">unitize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Quaternion.unitize"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.unitize.html#compas.geometry.Quaternion.unitize">[docs]</a>    <span class="k">def</span> <span class="nf">unitize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scales the quaternion to make it unit-length.</span>
 
 <span class="sd">        Returns</span>
@@ -842,9 +842,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qu</span> <span class="o">=</span> <span class="n">quaternion_unitize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">qu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">qu</span></div>
 
-    <span class="k">def</span> <span class="nf">unitized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Quaternion.unitized"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.unitized.html#compas.geometry.Quaternion.unitized">[docs]</a>    <span class="k">def</span> <span class="nf">unitized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a quaternion with a unit-length.</span>
 
 <span class="sd">        Returns</span>
@@ -862,9 +862,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qu</span> <span class="o">=</span> <span class="n">quaternion_unitize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">qu</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">qu</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">canonize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Quaternion.canonize"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.canonize.html#compas.geometry.Quaternion.canonize">[docs]</a>    <span class="k">def</span> <span class="nf">canonize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes the quaternion canonic.</span>
 
 <span class="sd">        Returns</span>
@@ -883,9 +883,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qc</span> <span class="o">=</span> <span class="n">quaternion_canonize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">qc</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">qc</span>  <span class="c1"># type: ignore</span></div>
 
-    <span class="k">def</span> <span class="nf">canonized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Quaternion.canonized"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.canonized.html#compas.geometry.Quaternion.canonized">[docs]</a>    <span class="k">def</span> <span class="nf">canonized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a quaternion in canonic form.</span>
 
 <span class="sd">        Returns</span>
@@ -905,9 +905,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qc</span> <span class="o">=</span> <span class="n">quaternion_canonize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">qc</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">qc</span><span class="p">)</span>  <span class="c1"># type: ignore</span></div>
 
-    <span class="k">def</span> <span class="nf">conjugate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Quaternion.conjugate"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.conjugate.html#compas.geometry.Quaternion.conjugate">[docs]</a>    <span class="k">def</span> <span class="nf">conjugate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Conjugate the quaternion.</span>
 
 <span class="sd">        Returns</span>
@@ -923,9 +923,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qc</span> <span class="o">=</span> <span class="n">quaternion_conjugate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">qc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">qc</span></div>
 
-    <span class="k">def</span> <span class="nf">conjugated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Quaternion.conjugated"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Quaternion.conjugated.html#compas.geometry.Quaternion.conjugated">[docs]</a>    <span class="k">def</span> <span class="nf">conjugated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a conjugate quaternion.</span>
 
 <span class="sd">        Returns</span>
@@ -944,7 +944,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qc</span> <span class="o">=</span> <span class="n">quaternion_conjugate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">qc</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">qc</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

@@ -567,10 +567,10 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="s2">&quot;radius&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Circle.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.html#compas.geometry.Circle.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Circle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(radius=</span><span class="si">{1!r}</span><span class="s2">, frame=</span><span class="si">{2!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -595,9 +595,9 @@ document.write(`
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Circle.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.from_data.html#compas.geometry.Circle.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]))</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Properties</span>
@@ -651,7 +651,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Circle.from_point_and_radius"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.from_point_and_radius.html#compas.geometry.Circle.from_point_and_radius">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_point_and_radius</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a circle from a point and a radius.</span>
 
@@ -673,9 +673,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Circle.from_plane_and_radius"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.from_plane_and_radius.html#compas.geometry.Circle.from_plane_and_radius">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane_and_radius</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a circle from a plane and a radius.</span>
 
@@ -704,9 +704,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Circle.from_three_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.from_three_points.html#compas.geometry.Circle.from_three_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_three_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a circle from three points.</span>
 
@@ -734,9 +734,9 @@ document.write(`
 
         <span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">),</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">circle_from_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
         <span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_plane_and_radius</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_plane_and_radius</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Circle.from_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.from_points.html#compas.geometry.Circle.from_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a circle from a list of at least three points.</span>
 
@@ -777,13 +777,13 @@ document.write(`
 
         <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">bestfit_circle_numpy</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_plane_and_radius</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_plane_and_radius</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Circle.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.point_at.html#compas.geometry.Circle.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a point on the circle at a specific parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -815,9 +815,9 @@ document.write(`
         <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span>
+        <span class="k">return</span> <span class="n">point</span></div>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Circle.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.normal_at.html#compas.geometry.Circle.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a normal on the circle at a specific parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -848,9 +848,9 @@ document.write(`
             <span class="n">normal</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">normal</span>
         <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">-</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">-</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Circle.tangent_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.tangent_at.html#compas.geometry.Circle.tangent_at">[docs]</a>    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a tangent on the circle at a specific parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -883,9 +883,9 @@ document.write(`
         <span class="n">vector</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">vector</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">vector</span>
+        <span class="k">return</span> <span class="n">vector</span></div>
 
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">return_parameter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Circle.closest_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.closest_point.html#compas.geometry.Circle.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">return_parameter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the closest point on the circle to a given point.</span>
 
 <span class="sd">        Parameters</span>
@@ -915,9 +915,9 @@ document.write(`
         <span class="k">if</span> <span class="n">return_parameter</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">+</span> <span class="n">vector</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">+</span> <span class="n">vector</span></div>
 
-    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">dmax</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<div class="viewcode-block" id="Circle.contains_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Circle.contains_point.html#compas.geometry.Circle.contains_point">[docs]</a>    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">dmax</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that the circle contains a given point.</span>
 
 <span class="sd">        Parameters</span>
@@ -946,7 +946,7 @@ document.write(`
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">z</span>  <span class="c1"># type: ignore</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">dmax</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">tol</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span></div>
+        <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">tol</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span></div></div>
 </pre></div>
 
                 </article>

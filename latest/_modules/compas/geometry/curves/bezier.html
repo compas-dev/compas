@@ -648,10 +648,10 @@ document.write(`
         <span class="n">curve</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">curve</span>
 
-<div class="viewcode-block" id="Bezier.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Bezier.html#compas.geometry.Bezier.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Bezier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(points=</span><span class="si">{1!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
@@ -699,7 +699,7 @@ document.write(`
     <span class="c1"># Transformations</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<div class="viewcode-block" id="Bezier.transform"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Bezier.transform.html#compas.geometry.Bezier.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform this curve.</span>
 
 <span class="sd">        Parameters</span>
@@ -713,13 +713,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-            <span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="Bezier.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Bezier.point_at.html#compas.geometry.Bezier.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the point on the curve at the given parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -751,9 +751,9 @@ document.write(`
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">):</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">bernstein_polynomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
             <span class="n">point</span> <span class="o">+=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">b</span>
-        <span class="k">return</span> <span class="n">point</span>
+        <span class="k">return</span> <span class="n">point</span></div>
 
-    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="Bezier.tangent_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Bezier.tangent_at.html#compas.geometry.Bezier.tangent_at">[docs]</a>    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the tangent vector to the curve at the point at the given parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -782,9 +782,9 @@ document.write(`
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">):</span>
             <span class="n">vector</span> <span class="o">+=</span> <span class="n">point</span> <span class="o">*</span> <span class="n">bernstein_derivative</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">vector</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">vector</span>
+        <span class="k">return</span> <span class="n">vector</span></div>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="Bezier.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Bezier.normal_at.html#compas.geometry.Bezier.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the normal vector to the curve at the point at the given parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -817,7 +817,7 @@ document.write(`
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">vector</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
         <span class="n">normal</span> <span class="o">=</span> <span class="n">tangent</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">tangent</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">normal</span></div>
+        <span class="k">return</span> <span class="n">normal</span></div></div>
 </pre></div>
 
                 </article>

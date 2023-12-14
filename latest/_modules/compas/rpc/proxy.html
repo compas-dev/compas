@@ -571,7 +571,7 @@ document.write(`
 <span class="sd">    Stopping the server proxy.                              # doctest: +SKIP</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Proxy.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.rpc.Proxy.html#compas.rpc.Proxy.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">package</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">python</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -603,7 +603,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_try_reconnect</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_server</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_implicitely_started_server</span> <span class="o">=</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_implicitely_started_server</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># properties</span>
@@ -706,7 +706,7 @@ document.write(`
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reconnecting to an existing server proxy.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">server</span>
 
-    <span class="k">def</span> <span class="nf">start_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Proxy.start_server"><a class="viewcode-back" href="../../../reference/generated/compas.rpc.Proxy.start_server.html#compas.rpc.Proxy.start_server">[docs]</a>    <span class="k">def</span> <span class="nf">start_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Start the remote server.</span>
 
 <span class="sd">        Returns</span>
@@ -787,9 +787,9 @@ document.write(`
             <span class="k">raise</span> <span class="n">RPCServerError</span><span class="p">(</span><span class="s2">&quot;The server is not available.&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New proxy server started.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">server</span>
+        <span class="k">return</span> <span class="n">server</span></div>
 
-    <span class="k">def</span> <span class="nf">stop_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Proxy.stop_server"><a class="viewcode-back" href="../../../reference/generated/compas.rpc.Proxy.stop_server.html#compas.rpc.Proxy.stop_server">[docs]</a>    <span class="k">def</span> <span class="nf">stop_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop the remote server and terminate/kill the python process that was used to start it.</span>
 
 <span class="sd">        Returns</span>
@@ -808,9 +808,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="o">.</span><span class="n">remote_shutdown</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_terminate_process</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_terminate_process</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">restart_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Proxy.restart_server"><a class="viewcode-back" href="../../../reference/generated/compas.rpc.Proxy.restart_server.html#compas.rpc.Proxy.restart_server">[docs]</a>    <span class="k">def</span> <span class="nf">restart_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Restart the server.</span>
 
 <span class="sd">        Returns</span>
@@ -819,7 +819,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_server</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_server</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_server</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_terminate_process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempts to terminate the python process hosting the proxy server.</span>

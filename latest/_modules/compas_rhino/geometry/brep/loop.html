@@ -521,14 +521,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoBrepLoop.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepLoop.html#compas_rhino.geometry.RhinoBrepLoop.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_loop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_loop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrepLoop</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">LoopType</span><span class="o">.</span><span class="n">UNKNOWN</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trims</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">rhino_loop</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">native_loop</span> <span class="o">=</span> <span class="n">rhino_loop</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_loop</span> <span class="o">=</span> <span class="n">rhino_loop</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -538,7 +538,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">LoopType</span><span class="p">),</span> <span class="s2">&quot;trims&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trims</span><span class="p">]}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoBrepLoop.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepLoop.from_data.html#compas_rhino.geometry.RhinoBrepLoop.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an object of this type from the provided data.</span>
 
@@ -563,7 +563,7 @@ document.write(`
         <span class="k">for</span> <span class="n">trim_data</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trims&quot;</span><span class="p">]:</span>
             <span class="n">RhinoBrepTrim</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">trim_data</span><span class="p">,</span> <span class="n">loop_builder</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">native_loop</span> <span class="o">=</span> <span class="n">loop_builder</span><span class="o">.</span><span class="n">result</span>
-        <span class="k">return</span> <span class="n">instance</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>

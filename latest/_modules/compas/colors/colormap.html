@@ -532,9 +532,9 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ColorMap.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.colors.ColorMap.html#compas.colors.ColorMap.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># properties</span>
@@ -586,7 +586,7 @@ document.write(`
     <span class="c1"># constructors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ColorMap.from_palette"><a class="viewcode-back" href="../../../reference/generated/compas.colors.ColorMap.from_palette.html#compas.colors.ColorMap.from_palette">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_palette</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a color map from a named palette.</span>
 
@@ -625,9 +625,9 @@ document.write(`
                         <span class="n">b</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
                         <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
         <span class="n">cmap</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cmap</span>
+        <span class="k">return</span> <span class="n">cmap</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ColorMap.from_mpl"><a class="viewcode-back" href="../../../reference/generated/compas.colors.ColorMap.from_mpl.html#compas.colors.ColorMap.from_mpl">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_mpl</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a color map from matplotlib.</span>
 
@@ -654,9 +654,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">Color</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">mpl</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ColorMap.from_color"><a class="viewcode-back" href="../../../reference/generated/compas.colors.ColorMap.from_color.html#compas.colors.ColorMap.from_color">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_color</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">rangetype</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a color map from a single color by varying luminance.</span>
 
@@ -693,9 +693,9 @@ document.write(`
             <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hls</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mf">0.0</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`rangetype` should be one of &#39;full&#39;, &#39;light&#39;, &#39;dark&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`rangetype` should be one of &#39;full&#39;, &#39;light&#39;, &#39;dark&#39;.&quot;</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ColorMap.from_two_colors"><a class="viewcode-back" href="../../../reference/generated/compas.colors.ColorMap.from_two_colors.html#compas.colors.ColorMap.from_two_colors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_two_colors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">diverging</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a color map from two colors.</span>
 
@@ -732,9 +732,9 @@ document.write(`
                 <span class="n">g</span> <span class="o">=</span> <span class="n">c1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">c2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span>
                 <span class="n">b</span> <span class="o">=</span> <span class="n">c1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">c2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span>
                 <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Color</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ColorMap.from_three_colors"><a class="viewcode-back" href="../../../reference/generated/compas.colors.ColorMap.from_three_colors.html#compas.colors.ColorMap.from_three_colors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_three_colors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a color map from three colors.</span>
 
@@ -764,9 +764,9 @@ document.write(`
             <span class="n">g</span> <span class="o">=</span> <span class="n">c2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">c3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">c2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">c3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span>
             <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Color</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ColorMap.from_rgb"><a class="viewcode-back" href="../../../reference/generated/compas.colors.ColorMap.from_rgb.html#compas.colors.ColorMap.from_rgb">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_rgb</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a color map from the complete rgb color space.</span>
 
@@ -778,7 +778,7 @@ document.write(`
         <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
             <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_i</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

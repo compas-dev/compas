@@ -506,21 +506,21 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="VolMeshObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.html#compas_blender.scene.VolMeshObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volmesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volmesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">volmesh</span><span class="o">=</span><span class="n">volmesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexobjects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edgeobjects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faceobjects</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cellobjects</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cellobjects</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># clear</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
+<div class="viewcode-block" id="VolMeshObject.clear"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.clear.html#compas_blender.scene.VolMeshObject.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VolMeshObject.clear_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.clear_vertices.html#compas_blender.scene.VolMeshObject.clear_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the objects contained in the vertex collection (``self.vertexcollection``).</span>
 
 <span class="sd">        Returns</span>
@@ -528,9 +528,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertexobjects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertexobjects</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VolMeshObject.clear_edges"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.clear_edges.html#compas_blender.scene.VolMeshObject.clear_edges">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the objects contained in the edge collection (``self.edgecollection``).</span>
 
 <span class="sd">        Returns</span>
@@ -538,9 +538,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edgeobjects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edgeobjects</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VolMeshObject.clear_faces"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.clear_faces.html#compas_blender.scene.VolMeshObject.clear_faces">[docs]</a>    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the objects contained in the face collection (``self.facecollection``).</span>
 
 <span class="sd">        Returns</span>
@@ -548,9 +548,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceobjects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceobjects</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VolMeshObject.clear_cells"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.clear_cells.html#compas_blender.scene.VolMeshObject.clear_cells">[docs]</a>    <span class="k">def</span> <span class="nf">clear_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the objects contained in the cell collection (``self.cellcollection``).</span>
 
 <span class="sd">        Returns</span>
@@ -558,13 +558,13 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cellobjects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cellobjects</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
+<div class="viewcode-block" id="VolMeshObject.draw"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.draw.html#compas_blender.scene.VolMeshObject.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a selection of cells.</span>
@@ -585,9 +585,9 @@ document.write(`
 <span class="sd">        list[:blender:`bpy.types.Object`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_cells</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_cells</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span>
+<div class="viewcode-block" id="VolMeshObject.draw_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.draw_vertices.html#compas_blender.scene.VolMeshObject.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">vertices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -635,9 +635,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span>
+<div class="viewcode-block" id="VolMeshObject.draw_edges"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.draw_edges.html#compas_blender.scene.VolMeshObject.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">edges</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -675,9 +675,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span>
+<div class="viewcode-block" id="VolMeshObject.draw_faces"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.draw_faces.html#compas_blender.scene.VolMeshObject.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">faces</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -717,9 +717,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">,</span> <span class="n">show_wire</span><span class="o">=</span><span class="n">show_wire</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_cells</span><span class="p">(</span>
+<div class="viewcode-block" id="VolMeshObject.draw_cells"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.draw_cells.html#compas_blender.scene.VolMeshObject.draw_cells">[docs]</a>    <span class="k">def</span> <span class="nf">draw_cells</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">cells</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -767,13 +767,13 @@ document.write(`
 
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw normals</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span>
+<div class="viewcode-block" id="VolMeshObject.draw_vertexnormals"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.draw_vertexnormals.html#compas_blender.scene.VolMeshObject.draw_vertexnormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">vertices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">green</span><span class="p">(),</span>
@@ -817,9 +817,9 @@ document.write(`
 
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span>
+<div class="viewcode-block" id="VolMeshObject.draw_facenormals"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.VolMeshObject.draw_facenormals.html#compas_blender.scene.VolMeshObject.draw_facenormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">faces</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">cyan</span><span class="p">(),</span>
@@ -863,7 +863,7 @@ document.write(`
 
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span></div>
+        <span class="k">return</span> <span class="n">objects</span></div></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw labels</span>

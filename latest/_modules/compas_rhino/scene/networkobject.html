@@ -503,14 +503,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="NetworkObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.html#compas_rhino.scene.NetworkObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">NetworkObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NetworkObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># clear</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.clear"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.clear.html#compas_rhino.scene.NetworkObject.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all objects drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -519,9 +519,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.clear_nodes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.clear_nodes.html#compas_rhino.scene.NetworkObject.clear_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">clear_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all nodes drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -530,9 +530,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.node.*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.clear_edges"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.clear_edges.html#compas_rhino.scene.NetworkObject.clear_edges">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all edges drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -541,13 +541,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
+<div class="viewcode-block" id="NetworkObject.draw"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.draw.html#compas_rhino.scene.NetworkObject.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -578,9 +578,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">nodecolor</span><span class="p">)</span>
         <span class="n">guids</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">edges</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">edgecolor</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.draw_nodes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.draw_nodes.html#compas_rhino.scene.NetworkObject.draw_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">draw_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a selection of nodes.</span>
 
 <span class="sd">        Parameters</span>
@@ -613,9 +613,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_direction</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.draw_edges"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.draw_edges.html#compas_rhino.scene.NetworkObject.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_direction</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a selection of edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -656,13 +656,13 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># draw labels</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_nodelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.draw_nodelabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.draw_nodelabels.html#compas_rhino.scene.NetworkObject.draw_nodelabels">[docs]</a>    <span class="k">def</span> <span class="nf">draw_nodelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw labels for a selection of nodes.</span>
 
 <span class="sd">        Parameters</span>
@@ -704,9 +704,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.draw_edgelabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.draw_edgelabels.html#compas_rhino.scene.NetworkObject.draw_edgelabels">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw labels for a selection of edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -752,13 +752,13 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># draw miscellaneous</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_spheres</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.draw_spheres"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.draw_spheres.html#compas_rhino.scene.NetworkObject.draw_spheres">[docs]</a>    <span class="k">def</span> <span class="nf">draw_spheres</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw spheres at the vertices of the network.</span>
 
 <span class="sd">        Parameters</span>
@@ -794,9 +794,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_pipes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkObject.draw_pipes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.NetworkObject.draw_pipes.html#compas_rhino.scene.NetworkObject.draw_pipes">[docs]</a>    <span class="k">def</span> <span class="nf">draw_pipes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw pipes around the edges of the network.</span>
 
 <span class="sd">        Parameters</span>
@@ -833,7 +833,7 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span></div>
+        <span class="k">return</span> <span class="n">guids</span></div></div>
 </pre></div>
 
                 </article>

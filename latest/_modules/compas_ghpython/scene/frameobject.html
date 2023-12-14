@@ -508,11 +508,11 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="FrameObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_ghpython.scene.FrameObject.html#compas_ghpython.scene.FrameObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FrameObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
 
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FrameObject.draw"><a class="viewcode-back" href="../../../reference/generated/compas_ghpython.scene.FrameObject.draw.html#compas_ghpython.scene.FrameObject.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the frame.</span>
 
 <span class="sd">        Returns</span>
@@ -533,7 +533,7 @@ document.write(`
         <span class="n">geometry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conversions</span><span class="o">.</span><span class="n">line_to_rhino</span><span class="p">([</span><span class="n">origin</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
         <span class="n">geometry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conversions</span><span class="o">.</span><span class="n">line_to_rhino</span><span class="p">([</span><span class="n">origin</span><span class="p">,</span> <span class="n">z</span><span class="p">]))</span>
 
-        <span class="k">return</span> <span class="n">geometry</span></div>
+        <span class="k">return</span> <span class="n">geometry</span></div></div>
 </pre></div>
 
                 </article>

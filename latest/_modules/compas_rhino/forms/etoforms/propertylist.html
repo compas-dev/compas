@@ -487,7 +487,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="PropertyListForm"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.PropertyListForm.html#compas_rhino.forms.PropertyListForm">[docs]</a><span class="k">class</span> <span class="nc">PropertyListForm</span><span class="p">(</span><span class="n">Eto</span><span class="o">.</span><span class="n">Forms</span><span class="o">.</span><span class="n">Dialog</span><span class="p">[</span><span class="nb">bool</span><span class="p">]):</span>
-<div class="viewcode-block" id="PropertyListForm.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.PropertyListForm.html#compas_rhino.forms.PropertyListForm.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
 
@@ -519,7 +519,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">Padding</span> <span class="o">=</span> <span class="n">Eto</span><span class="o">.</span><span class="n">Drawing</span><span class="o">.</span><span class="n">Padding</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Resizable</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Content</span> <span class="o">=</span> <span class="n">layout</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Eto</span><span class="o">.</span><span class="n">Drawing</span><span class="o">.</span><span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Eto</span><span class="o">.</span><span class="n">Drawing</span><span class="o">.</span><span class="n">Size</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -533,7 +533,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">AbortButton</span><span class="o">.</span><span class="n">Click</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_cancel</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">AbortButton</span>
 
-    <span class="k">def</span> <span class="nf">on_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="PropertyListForm.on_ok"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.PropertyListForm.on_ok.html#compas_rhino.forms.PropertyListForm.on_ok">[docs]</a>    <span class="k">def</span> <span class="nf">on_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">DataStore</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
@@ -541,13 +541,13 @@ document.write(`
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">on_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="PropertyListForm.on_cancel"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.PropertyListForm.on_cancel.html#compas_rhino.forms.PropertyListForm.on_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">on_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">)</span></div>
+<div class="viewcode-block" id="PropertyListForm.show"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.PropertyListForm.show.html#compas_rhino.forms.PropertyListForm.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

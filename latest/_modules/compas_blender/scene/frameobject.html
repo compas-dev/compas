@@ -510,14 +510,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="FrameObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.FrameObject.html#compas_blender.scene.FrameObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color_origin</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">black</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color_xaxis</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color_yaxis</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">green</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color_zaxis</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">blue</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_zaxis</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">blue</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
+<div class="viewcode-block" id="FrameObject.draw"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.FrameObject.draw.html#compas_blender.scene.FrameObject.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="n">collection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -578,7 +578,7 @@ document.write(`
         <span class="c1"># ]</span>
         <span class="c1"># return compas_blender.draw_lines(lines, self.collection)</span>
 
-        <span class="k">return</span> <span class="n">objects</span></div>
+        <span class="k">return</span> <span class="n">objects</span></div></div>
 </pre></div>
 
                 </article>

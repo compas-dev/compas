@@ -516,7 +516,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Server.ping"><a class="viewcode-back" href="../../../reference/generated/compas.rpc.Server.ping.html#compas.rpc.Server.ping">[docs]</a>    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Simple function used to check if a remote server can be reached.</span>
 
 <span class="sd">        Returns</span>
@@ -530,9 +530,9 @@ document.write(`
 <span class="sd">        Should be used together with an instance of `compas.rpc.Server`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
 
-    <span class="k">def</span> <span class="nf">remote_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Server.remote_shutdown"><a class="viewcode-back" href="../../../reference/generated/compas.rpc.Server.remote_shutdown.html#compas.rpc.Server.remote_shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">remote_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop the server through a call from the client side.</span>
 
 <span class="sd">        Returns</span>
@@ -542,7 +542,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_shutdown_thread</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
 
     <span class="k">def</span> <span class="nf">_shutdown_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span></div>

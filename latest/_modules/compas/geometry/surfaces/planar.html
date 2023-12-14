@@ -514,12 +514,12 @@ document.write(`
         <span class="n">surface</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">surface</span>
 
-<div class="viewcode-block" id="PlanarSurface.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.PlanarSurface.html#compas.geometry.PlanarSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PlanarSurface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_xsize</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ysize</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">=</span> <span class="n">xsize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">ysize</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">ysize</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(xsize=</span><span class="si">{1}</span><span class="s2">, ysize=</span><span class="si">{2}</span><span class="s2">, frame=</span><span class="si">{3!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -550,13 +550,13 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PlanarSurface.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.PlanarSurface.from_data.html#compas.geometry.PlanarSurface.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">xsize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;xsize&quot;</span><span class="p">],</span>
             <span class="n">ysize</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;ysize&quot;</span><span class="p">],</span>
             <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Properties</span>
@@ -590,7 +590,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PlanarSurface.from_plane_and_size"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.PlanarSurface.from_plane_and_size.html#compas.geometry.PlanarSurface.from_plane_and_size">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane_and_size</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a planar surface from a plane and x and y sizes.</span>
 
@@ -609,13 +609,13 @@ document.write(`
 <span class="sd">            A planar surface.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">))</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PlanarSurface.to_plane"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.PlanarSurface.to_plane.html#compas.geometry.PlanarSurface.to_plane">[docs]</a>    <span class="k">def</span> <span class="nf">to_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the planar surface to a plane.</span>
 
 <span class="sd">        Returns</span>
@@ -624,13 +624,13 @@ document.write(`
 <span class="sd">            The plane of the planar surface.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Plane</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Plane</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span><span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="PlanarSurface.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.PlanarSurface.point_at.html#compas.geometry.PlanarSurface.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a point on the planar surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -651,10 +651,10 @@ document.write(`
         <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span>
+        <span class="k">return</span> <span class="n">point</span></div>
         <span class="c1"># return self.frame.point + self.frame.xaxis * u + self.frame.yaxis * v</span>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="PlanarSurface.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.PlanarSurface.normal_at.html#compas.geometry.PlanarSurface.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the normal at a point on the planar surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -674,9 +674,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span>
-        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PlanarSurface.frame_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.PlanarSurface.frame_at.html#compas.geometry.PlanarSurface.frame_at">[docs]</a>    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame at a point on the planar surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -694,7 +694,7 @@ document.write(`
 <span class="sd">            The frame.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span></div></div>
 </pre></div>
 
                 </article>

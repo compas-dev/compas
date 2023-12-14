@@ -511,14 +511,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MeshObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.html#compas_rhino.scene.MeshObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MeshObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MeshObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># clear</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear.html#compas_rhino.scene.MeshObject.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all objects drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -527,9 +527,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_vertices.html#compas_rhino.scene.MeshObject.clear_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all vertices drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -538,9 +538,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.vertex.*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_edges"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_edges.html#compas_rhino.scene.MeshObject.clear_edges">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all edges drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -549,9 +549,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_faces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_faces.html#compas_rhino.scene.MeshObject.clear_faces">[docs]</a>    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all faces drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -560,9 +560,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.face.*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_vertexnormals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_vertexnormals"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_vertexnormals.html#compas_rhino.scene.MeshObject.clear_vertexnormals">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertexnormals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all vertex normals drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -571,9 +571,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.vertex.*.normal&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_facenormals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_facenormals"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_facenormals.html#compas_rhino.scene.MeshObject.clear_facenormals">[docs]</a>    <span class="k">def</span> <span class="nf">clear_facenormals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all face normals drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -582,9 +582,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.face.*.normal&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_vertexlabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_vertexlabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_vertexlabels.html#compas_rhino.scene.MeshObject.clear_vertexlabels">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertexlabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all vertex labels drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -593,9 +593,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.vertex.*.label&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_edgelabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_edgelabels.html#compas_rhino.scene.MeshObject.clear_edgelabels">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all edge labels drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -604,9 +604,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.*.label&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_facelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_facelabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.clear_facelabels.html#compas_rhino.scene.MeshObject.clear_facelabels">[docs]</a>    <span class="k">def</span> <span class="nf">clear_facelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all face labels drawn by this scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -615,13 +615,13 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_objects</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.face.*.label&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vertexcolors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">disjoint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw.html#compas_rhino.scene.MeshObject.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vertexcolors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">disjoint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the mesh as a consolidated RhinoMesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -663,9 +663,9 @@ document.write(`
             <span class="n">geometry</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">transformation_to_rhino</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">))</span>
 
         <span class="n">guid</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddMesh</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_vertices.html#compas_rhino.scene.MeshObject.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a selection of vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -701,9 +701,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_edges"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_edges.html#compas_rhino.scene.MeshObject.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a selection of edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -743,9 +743,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_faces"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_faces.html#compas_rhino.scene.MeshObject.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a selection of faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -787,13 +787,13 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw labels</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_vertexlabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_vertexlabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_vertexlabels.html#compas_rhino.scene.MeshObject.draw_vertexlabels">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertexlabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw labels for a selection of vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -836,9 +836,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_edgelabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_edgelabels.html#compas_rhino.scene.MeshObject.draw_edgelabels">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw labels for a selection of edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -882,9 +882,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_facelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_facelabels"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_facelabels.html#compas_rhino.scene.MeshObject.draw_facelabels">[docs]</a>    <span class="k">def</span> <span class="nf">draw_facelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontheight</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontface</span><span class="o">=</span><span class="s2">&quot;Arial Regular&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw labels for a selection of faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -926,13 +926,13 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw normals</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_vertexnormals"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_vertexnormals.html#compas_rhino.scene.MeshObject.draw_vertexnormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the normals at the vertices of the mesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -970,9 +970,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_facenormals"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_facenormals.html#compas_rhino.scene.MeshObject.draw_facenormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the normals of the faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -1010,13 +1010,13 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw miscellaneous</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_spheres</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_spheres"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_spheres.html#compas_rhino.scene.MeshObject.draw_spheres">[docs]</a>    <span class="k">def</span> <span class="nf">draw_spheres</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw spheres at the vertices of the mesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1052,9 +1052,9 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_pipes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.draw_pipes"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.MeshObject.draw_pipes.html#compas_rhino.scene.MeshObject.draw_pipes">[docs]</a>    <span class="k">def</span> <span class="nf">draw_pipes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw pipes around the edges of the mesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -1091,7 +1091,7 @@ document.write(`
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_to_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">guids</span></div>
+        <span class="k">return</span> <span class="n">guids</span></div></div>
 </pre></div>
 
                 </article>

@@ -487,7 +487,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="TextForm"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.TextForm.html#compas_rhino.forms.TextForm">[docs]</a><span class="k">class</span> <span class="nc">TextForm</span><span class="p">(</span><span class="n">Eto</span><span class="o">.</span><span class="n">Forms</span><span class="o">.</span><span class="n">Dialog</span><span class="p">[</span><span class="nb">bool</span><span class="p">]):</span>
-<div class="viewcode-block" id="TextForm.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.TextForm.html#compas_rhino.forms.TextForm.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Message&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Message&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">textbox</span> <span class="o">=</span> <span class="n">textbox</span> <span class="o">=</span> <span class="n">Eto</span><span class="o">.</span><span class="n">Forms</span><span class="o">.</span><span class="n">TextArea</span><span class="p">()</span>
 
@@ -507,7 +507,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">Padding</span> <span class="o">=</span> <span class="n">Eto</span><span class="o">.</span><span class="n">Drawing</span><span class="o">.</span><span class="n">Padding</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Resizable</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Content</span> <span class="o">=</span> <span class="n">layout</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Eto</span><span class="o">.</span><span class="n">Drawing</span><span class="o">.</span><span class="n">Size</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ClientSize</span> <span class="o">=</span> <span class="n">Eto</span><span class="o">.</span><span class="n">Drawing</span><span class="o">.</span><span class="n">Size</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -521,14 +521,14 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">AbortButton</span><span class="o">.</span><span class="n">Click</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_cancel</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">AbortButton</span>
 
-    <span class="k">def</span> <span class="nf">on_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="TextForm.on_ok"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.TextForm.on_ok.html#compas_rhino.forms.TextForm.on_ok">[docs]</a>    <span class="k">def</span> <span class="nf">on_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">on_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="TextForm.on_cancel"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.TextForm.on_cancel.html#compas_rhino.forms.TextForm.on_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">on_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">)</span></div>
+<div class="viewcode-block" id="TextForm.show"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.forms.TextForm.show.html#compas_rhino.forms.TextForm.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

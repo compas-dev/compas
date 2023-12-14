@@ -480,12 +480,12 @@ document.write(`
 
 
 <div class="viewcode-block" id="Scene"><a class="viewcode-back" href="../../../reference/generated/compas.scene.Scene.html#compas.scene.Scene">[docs]</a><span class="k">class</span> <span class="nc">Scene</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
-<div class="viewcode-block" id="Scene.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.scene.Scene.html#compas.scene.Scene.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Scene</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="s2">&quot;Scene&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">root</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -495,7 +495,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">sceneobjects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;sceneobject&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="s2">&quot;sceneobject&quot;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Scene.add"><a class="viewcode-back" href="../../../reference/generated/compas.scene.Scene.add.html#compas.scene.Scene.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">sceneobject</span> <span class="o">=</span> <span class="n">build_scene_object</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="n">node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sceneobject&quot;</span><span class="p">:</span> <span class="n">sceneobject</span><span class="p">})</span>
@@ -506,11 +506,11 @@ document.write(`
             <span class="n">parent_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_node</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sceneobject</span>
+        <span class="k">return</span> <span class="n">sceneobject</span></div>
 
-    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sceneobject</span><span class="p">):</span>
+<div class="viewcode-block" id="Scene.remove"><a class="viewcode-back" href="../../../reference/generated/compas.scene.Scene.remove.html#compas.scene.Scene.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sceneobject</span><span class="p">):</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node</span><span class="p">(</span><span class="n">sceneobject</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sceneobject</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
@@ -519,10 +519,10 @@ document.write(`
                     <span class="k">return</span> <span class="n">node</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Scene object not in scene&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">clear</span><span class="p">()</span>
+<div class="viewcode-block" id="Scene.clear"><a class="viewcode-back" href="../../../reference/generated/compas.scene.Scene.clear.html#compas.scene.Scene.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">clear</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Scene.redraw"><a class="viewcode-back" href="../../../reference/generated/compas.scene.Scene.redraw.html#compas.scene.Scene.redraw">[docs]</a>    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">drawn_objects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">sceneobject</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sceneobjects</span><span class="p">:</span>
             <span class="n">drawn_object</span> <span class="o">=</span> <span class="n">sceneobject</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
@@ -540,10 +540,10 @@ document.write(`
         <span class="k">if</span> <span class="n">drawn_objects</span><span class="p">:</span>
             <span class="n">redraw</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">drawn_objects</span>
+        <span class="k">return</span> <span class="n">drawn_objects</span></div>
 
-    <span class="k">def</span> <span class="nf">print_hierarchy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">print_hierarchy</span><span class="p">()</span></div>
+<div class="viewcode-block" id="Scene.print_hierarchy"><a class="viewcode-back" href="../../../reference/generated/compas.scene.Scene.print_hierarchy.html#compas.scene.Scene.print_hierarchy">[docs]</a>    <span class="k">def</span> <span class="nf">print_hierarchy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">print_hierarchy</span><span class="p">()</span></div></div>
 </pre></div>
 
                 </article>

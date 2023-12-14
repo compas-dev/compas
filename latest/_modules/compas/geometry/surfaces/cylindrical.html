@@ -514,10 +514,10 @@ document.write(`
         <span class="n">surface</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">surface</span>
 
-<div class="viewcode-block" id="CylindricalSurface.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.CylindricalSurface.html#compas.geometry.CylindricalSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CylindricalSurface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(radius=</span><span class="si">{1}</span><span class="s2">, frame=</span><span class="si">{2!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -545,12 +545,12 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CylindricalSurface.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.CylindricalSurface.from_data.html#compas.geometry.CylindricalSurface.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">radius</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">],</span>
             <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Properties</span>
@@ -588,7 +588,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CylindricalSurface.from_plane_and_radius"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.CylindricalSurface.from_plane_and_radius.html#compas.geometry.CylindricalSurface.from_plane_and_radius">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane_and_radius</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a cylindrical surface from a plane and a radius.</span>
 
@@ -605,9 +605,9 @@ document.write(`
 <span class="sd">            A cylindrical surface.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">))</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CylindricalSurface.from_three_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.CylindricalSurface.from_three_points.html#compas.geometry.CylindricalSurface.from_three_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_three_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a cylindrical from three points.</span>
 
@@ -627,7 +627,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="o">.</span><span class="n">from_three_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">circle</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">circle</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Conversions</span>
@@ -641,7 +641,7 @@ document.write(`
     <span class="c1"># Methods</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="CylindricalSurface.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.CylindricalSurface.point_at.html#compas.geometry.CylindricalSurface.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a point on the surface at the given parameters.</span>
 
 <span class="sd">        Parameters</span>
@@ -666,9 +666,9 @@ document.write(`
         <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span>
+        <span class="k">return</span> <span class="n">point</span></div>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="CylindricalSurface.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.CylindricalSurface.normal_at.html#compas.geometry.CylindricalSurface.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the normal at a point on the surface at the given parameters.</span>
 
 <span class="sd">        Parameters</span>
@@ -692,9 +692,9 @@ document.write(`
         <span class="n">vector</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">vector</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">vector</span>
+        <span class="k">return</span> <span class="n">vector</span></div>
 
-    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="CylindricalSurface.frame_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.CylindricalSurface.frame_at.html#compas.geometry.CylindricalSurface.frame_at">[docs]</a>    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the frame at a point on the surface at the given parameters.</span>
 
 <span class="sd">        Parameters</span>
@@ -720,7 +720,7 @@ document.write(`
         <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">frame</span></div>
+        <span class="k">return</span> <span class="n">frame</span></div></div>
 </pre></div>
 
                 </article>

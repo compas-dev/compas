@@ -518,11 +518,11 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BrowserForm.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BrowserForm.html#compas_rhino.forms.BrowserForm.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Browser&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">786</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Browser&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">786</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">FormBorderStyle</span> <span class="o">=</span> <span class="n">FormBorderStyle</span><span class="o">.</span><span class="n">Sizable</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">BrowserForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BrowserForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -537,7 +537,7 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BrowserForm.init"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BrowserForm.init.html#compas_rhino.forms.BrowserForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the form.</span>
 
 <span class="sd">        Returns</span>
@@ -553,9 +553,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">ToolStripStatusLabel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status_strip</span><span class="o">.</span><span class="n">Items</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status_strip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Controls</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status_strip</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">on_statustext_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">eargs</span><span class="p">):</span>
+<div class="viewcode-block" id="BrowserForm.on_statustext_changed"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BrowserForm.on_statustext_changed.html#compas_rhino.forms.BrowserForm.on_statustext_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_statustext_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">eargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback for changes in the status text.</span>
 
 <span class="sd">        Parameters</span>
@@ -570,7 +570,7 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">StatusText</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">StatusText</span></div></div>
 </pre></div>
 
                 </article>

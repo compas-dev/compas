@@ -488,8 +488,8 @@ document.write(`
 <div class="viewcode-block" id="Geometry"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.html#compas.geometry.Geometry">[docs]</a><span class="k">class</span> <span class="nc">Geometry</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all geometric objects.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Geometry.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.html#compas.geometry.Geometry.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Geometry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Geometry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -498,7 +498,7 @@ document.write(`
         <span class="c1"># this is not obvious to ironpython</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.transform"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.transform.html#compas.geometry.Geometry.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -518,9 +518,9 @@ document.write(`
 <span class="sd">        scale</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
+<div class="viewcode-block" id="Geometry.transformed"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.transformed.html#compas.geometry.Geometry.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a transformed copy of this geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -543,9 +543,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># type: Geometry</span>
         <span class="n">geometry</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">geometry</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="n">geometry</span>  <span class="c1"># type: ignore</span></div>
 
-    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.scale"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.scale.html#compas.geometry.Geometry.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scale the geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -579,9 +579,9 @@ document.write(`
         <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Scale</span><span class="o">.</span><span class="n">from_factors</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Scale</span><span class="o">.</span><span class="n">from_factors</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]))</span></div>
 
-    <span class="k">def</span> <span class="nf">scaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
+<div class="viewcode-block" id="Geometry.scaled"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.scaled.html#compas.geometry.Geometry.scaled">[docs]</a>    <span class="k">def</span> <span class="nf">scaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a scaled copy of this geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -616,9 +616,9 @@ document.write(`
         <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Scale</span><span class="o">.</span><span class="n">from_factors</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Scale</span><span class="o">.</span><span class="n">from_factors</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]))</span></div>
 
-    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.translate"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.translate.html#compas.geometry.Geometry.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate the geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -640,9 +640,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Translation</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">translated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
+<div class="viewcode-block" id="Geometry.translated"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.translated.html#compas.geometry.Geometry.translated">[docs]</a>    <span class="k">def</span> <span class="nf">translated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a translated copy of this geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -665,9 +665,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Translation</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.rotate"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.rotate.html#compas.geometry.Geometry.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate the geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -698,9 +698,9 @@ document.write(`
         <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">rotated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
+<div class="viewcode-block" id="Geometry.rotated"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Geometry.rotated.html#compas.geometry.Geometry.rotated">[docs]</a>    <span class="k">def</span> <span class="nf">rotated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; G</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a rotated copy of this geometry.</span>
 
 <span class="sd">        Parameters</span>
@@ -732,7 +732,7 @@ document.write(`
         <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span></div></div>
 </pre></div>
 
                 </article>

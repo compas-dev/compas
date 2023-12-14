@@ -493,11 +493,11 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoSceneObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.RhinoSceneObject.html#compas_rhino.scene.RhinoSceneObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoSceneObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
 
-    <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSceneObject.get_group"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.RhinoSceneObject.get_group.html#compas_rhino.scene.RhinoSceneObject.get_group">[docs]</a>    <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the group with the given name, or create a new one.</span>
 
 <span class="sd">        Parameters</span>
@@ -515,9 +515,9 @@ document.write(`
             <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Groups</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to add group: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
             <span class="n">group</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Groups</span><span class="o">.</span><span class="n">FindName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">group</span>
+        <span class="k">return</span> <span class="n">group</span></div>
 
-    <span class="k">def</span> <span class="nf">add_to_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">guids</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSceneObject.add_to_group"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.RhinoSceneObject.add_to_group.html#compas_rhino.scene.RhinoSceneObject.add_to_group">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">guids</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the objects to the group.</span>
 
 <span class="sd">        Parameters</span>
@@ -534,9 +534,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
-            <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Groups</span><span class="o">.</span><span class="n">AddToGroup</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
+            <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Groups</span><span class="o">.</span><span class="n">AddToGroup</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RhinoSceneObject.clear_layer"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.scene.RhinoSceneObject.clear_layer.html#compas_rhino.scene.RhinoSceneObject.clear_layer">[docs]</a>    <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the layer of the scene object.</span>
 
 <span class="sd">        Returns</span>
@@ -545,7 +545,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span>
-            <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span></div>
+            <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

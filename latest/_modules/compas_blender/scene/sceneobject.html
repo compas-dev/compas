@@ -502,9 +502,9 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BlenderSceneObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.html#compas_blender.scene.BlenderSceneObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># many of the methods below will be added to a general scene object in the future</span>
     <span class="c1"># to make them universaly accessible they are added here for now</span>
@@ -513,7 +513,7 @@ document.write(`
     <span class="c1"># Objects</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">create_object</span><span class="p">(</span>
+<div class="viewcode-block" id="BlenderSceneObject.create_object"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.create_object.html#compas_blender.scene.BlenderSceneObject.create_object">[docs]</a>    <span class="k">def</span> <span class="nf">create_object</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Mesh</span><span class="p">,</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Curve</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an object to the Blender scene.</span>
@@ -533,9 +533,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">return</span> <span class="n">obj</span></div>
 
-    <span class="k">def</span> <span class="nf">update_object</span><span class="p">(</span>
+<div class="viewcode-block" id="BlenderSceneObject.update_object"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.update_object.html#compas_blender.scene.BlenderSceneObject.update_object">[docs]</a>    <span class="k">def</span> <span class="nf">update_object</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -576,9 +576,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">set_object_color</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_object_tranformation</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_object_to_collection</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">collection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_object_to_collection</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">collection</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">add_object_to_collection</span><span class="p">(</span>
+<div class="viewcode-block" id="BlenderSceneObject.add_object_to_collection"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.add_object_to_collection.html#compas_blender.scene.BlenderSceneObject.add_object_to_collection">[docs]</a>    <span class="k">def</span> <span class="nf">add_object_to_collection</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">do_unlink</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Collection</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an object to a collection.</span>
@@ -605,9 +605,9 @@ document.write(`
                 <span class="n">c</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
         <span class="n">collection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">collection</span>
+        <span class="k">return</span> <span class="n">collection</span></div>
 
-    <span class="k">def</span> <span class="nf">set_object_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="BlenderSceneObject.set_object_color"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.set_object_color.html#compas_blender.scene.BlenderSceneObject.set_object_color">[docs]</a>    <span class="k">def</span> <span class="nf">set_object_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the color of a Blender object.</span>
 
 <span class="sd">        Parameters</span>
@@ -632,9 +632,9 @@ document.write(`
             <span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">material</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">obj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">material</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">active_material</span> <span class="o">=</span> <span class="n">material</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">active_material</span> <span class="o">=</span> <span class="n">material</span></div>
 
-    <span class="k">def</span> <span class="nf">set_object_tranformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">transformation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transformation</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="BlenderSceneObject.set_object_tranformation"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.set_object_tranformation.html#compas_blender.scene.BlenderSceneObject.set_object_tranformation">[docs]</a>    <span class="k">def</span> <span class="nf">set_object_tranformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">transformation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Transformation</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the transformation of a Blender object.</span>
 
 <span class="sd">        Parameters</span>
@@ -654,13 +654,13 @@ document.write(`
                 <span class="n">transformation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation</span> <span class="o">*</span> <span class="n">transformation</span>
             <span class="n">obj</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">transformation_to_blender</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">:</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">transformation_to_blender</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">matrix_world</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">transformation_to_blender</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Collections</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">create_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Collection</span><span class="p">:</span>
+<div class="viewcode-block" id="BlenderSceneObject.create_collection"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.create_collection.html#compas_blender.scene.BlenderSceneObject.create_collection">[docs]</a>    <span class="k">def</span> <span class="nf">create_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Collection</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a collection with the given name.</span>
 
 <span class="sd">        Parameters</span>
@@ -687,9 +687,9 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">collection</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="n">parent</span> <span class="o">=</span> <span class="n">collection</span>
-        <span class="k">return</span> <span class="n">collection</span>
+        <span class="k">return</span> <span class="n">collection</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_children</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="BlenderSceneObject.clear_collection"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.clear_collection.html#compas_blender.scene.BlenderSceneObject.clear_collection">[docs]</a>    <span class="k">def</span> <span class="nf">clear_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_children</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the objects in a collection.</span>
 
 <span class="sd">        Parameters</span>
@@ -710,9 +710,9 @@ document.write(`
         <span class="k">if</span> <span class="n">include_children</span><span class="p">:</span>
             <span class="n">collection</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">collection</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">clear_collection</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_collection</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">delete_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="BlenderSceneObject.delete_collection"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.BlenderSceneObject.delete_collection.html#compas_blender.scene.BlenderSceneObject.delete_collection">[docs]</a>    <span class="k">def</span> <span class="nf">delete_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a collection.</span>
 
 <span class="sd">        Parameters</span>
@@ -726,7 +726,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_collection</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="n">name</span><span class="p">])</span></div>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="n">name</span><span class="p">])</span></div></div>
 </pre></div>
 
                 </article>

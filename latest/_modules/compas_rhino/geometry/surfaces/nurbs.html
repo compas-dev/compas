@@ -607,9 +607,9 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoNurbsSurface.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoNurbsSurface.html#compas_rhino.geometry.RhinoNurbsSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoNurbsSurface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -664,7 +664,7 @@ document.write(`
             <span class="n">is_periodic_v</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoNurbsSurface.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoNurbsSurface.from_data.html#compas_rhino.geometry.RhinoNurbsSurface.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a BSpline surface from its data representation.</span>
 
@@ -700,7 +700,7 @@ document.write(`
             <span class="n">degree_v</span><span class="p">,</span>
             <span class="n">is_periodic_u</span><span class="p">,</span>
             <span class="n">is_periodic_v</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
@@ -768,7 +768,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoNurbsSurface.from_parameters"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoNurbsSurface.from_parameters.html#compas_rhino.geometry.RhinoNurbsSurface.from_parameters">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_parameters</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">points</span><span class="p">,</span>
@@ -812,9 +812,9 @@ document.write(`
         <span class="n">surface</span><span class="o">.</span><span class="n">rhino_surface</span> <span class="o">=</span> <span class="n">rhino_surface_from_parameters</span><span class="p">(</span>
             <span class="n">points</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">knots_u</span><span class="p">,</span> <span class="n">knots_v</span><span class="p">,</span> <span class="n">mults_u</span><span class="p">,</span> <span class="n">mults_v</span><span class="p">,</span> <span class="n">degree_u</span><span class="p">,</span> <span class="n">degree_v</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">surface</span>
+        <span class="k">return</span> <span class="n">surface</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoNurbsSurface.from_points"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoNurbsSurface.from_points.html#compas_rhino.geometry.RhinoNurbsSurface.from_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">degree_u</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">degree_v</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a NURBS surface from control points.</span>
 
@@ -843,9 +843,9 @@ document.write(`
         <span class="n">surface</span><span class="o">.</span><span class="n">rhino_surface</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">NurbsSurface</span><span class="o">.</span><span class="n">CreateFromPoints</span><span class="p">(</span>
             <span class="n">points</span><span class="p">,</span> <span class="n">pointcount_u</span><span class="p">,</span> <span class="n">pointcount_v</span><span class="p">,</span> <span class="n">degree_u</span><span class="p">,</span> <span class="n">degree_v</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">surface</span>
+        <span class="k">return</span> <span class="n">surface</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoNurbsSurface.from_fill"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoNurbsSurface.from_fill.html#compas_rhino.geometry.RhinoNurbsSurface.from_fill">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_fill</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curve1</span><span class="p">,</span> <span class="n">curve2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a NURBS surface from the infill between two NURBS curves.</span>
 
@@ -862,7 +862,7 @@ document.write(`
         <span class="n">surface</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="c1"># these curves probably need to be processed first</span>
         <span class="n">surface</span><span class="o">.</span><span class="n">rhino_surface</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">NurbsSurface</span><span class="o">.</span><span class="n">CreateRuledSurface</span><span class="p">(</span><span class="n">curve1</span><span class="p">,</span> <span class="n">curve2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">surface</span></div>
+        <span class="k">return</span> <span class="n">surface</span></div></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Conversions</span>

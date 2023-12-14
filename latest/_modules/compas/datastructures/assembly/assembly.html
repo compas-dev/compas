@@ -512,12 +512,12 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;graph&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Assembly.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.html#compas.datastructures.Assembly.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Assembly</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;Assembly&quot;</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span> <span class="o">=</span> <span class="p">{}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;&lt;Assembly with </span><span class="si">{}</span><span class="s2"> parts and </span><span class="si">{}</span><span class="s2"> connections&gt;&quot;</span>
@@ -534,13 +534,13 @@ document.write(`
             <span class="s2">&quot;graph&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Assembly.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.from_data.html#compas.datastructures.Assembly.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">assembly</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">assembly</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{})</span>
         <span class="n">assembly</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;graph&quot;</span><span class="p">])</span>
         <span class="n">assembly</span><span class="o">.</span><span class="n">_parts</span> <span class="o">=</span> <span class="p">{</span><span class="n">part</span><span class="o">.</span><span class="n">guid</span><span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">key</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">assembly</span><span class="o">.</span><span class="n">parts</span><span class="p">()}</span>  <span class="c1"># type: ignore</span>
-        <span class="k">return</span> <span class="n">assembly</span>
+        <span class="k">return</span> <span class="n">assembly</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Properties</span>
@@ -562,7 +562,7 @@ document.write(`
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">add_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.add_part"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.add_part.html#compas.datastructures.Assembly.add_part">[docs]</a>    <span class="k">def</span> <span class="nf">add_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a part to the assembly.</span>
 
 <span class="sd">        Parameters</span>
@@ -588,9 +588,9 @@ document.write(`
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">part</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="p">[</span><span class="n">part</span><span class="o">.</span><span class="n">guid</span><span class="p">]</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">key</span>
-        <span class="k">return</span> <span class="n">key</span>
+        <span class="k">return</span> <span class="n">key</span></div>
 
-    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.add_connection"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.add_connection.html#compas.datastructures.Assembly.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a connection between two parts.</span>
 
 <span class="sd">        Parameters</span>
@@ -618,9 +618,9 @@ document.write(`
             <span class="k">raise</span> <span class="n">AssemblyError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">key</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">AssemblyError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">delete_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.delete_part"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.delete_part.html#compas.datastructures.Assembly.delete_part">[docs]</a>    <span class="k">def</span> <span class="nf">delete_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove a part  from the assembly.</span>
 
 <span class="sd">        Parameters</span>
@@ -634,9 +634,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="p">[</span><span class="n">part</span><span class="o">.</span><span class="n">guid</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_node</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">part</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_node</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">part</span><span class="o">.</span><span class="n">key</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">delete_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.delete_connection"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.delete_connection.html#compas.datastructures.Assembly.delete_connection">[docs]</a>    <span class="k">def</span> <span class="nf">delete_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a connection between two parts.</span>
 
 <span class="sd">        Parameters</span>
@@ -649,9 +649,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_edge</span><span class="p">(</span><span class="n">edge</span><span class="o">=</span><span class="n">edge</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_edge</span><span class="p">(</span><span class="n">edge</span><span class="o">=</span><span class="n">edge</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">parts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.parts"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.parts.html#compas.datastructures.Assembly.parts">[docs]</a>    <span class="k">def</span> <span class="nf">parts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The parts of the assembly.</span>
 
 <span class="sd">        Yields</span>
@@ -661,9 +661,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
-            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;part&quot;</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;part&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.connections"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.connections.html#compas.datastructures.Assembly.connections">[docs]</a>    <span class="k">def</span> <span class="nf">connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over the connections between the parts.</span>
 
 <span class="sd">        Parameters</span>
@@ -678,9 +678,9 @@ document.write(`
 <span class="sd">            If `data` is True, the next connector identifier and its attributes as a ((u, v), attr) tuple.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.find"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.find.html#compas.datastructures.Assembly.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find a part in the assembly by its GUID.</span>
 
 <span class="sd">        Parameters</span>
@@ -701,9 +701,9 @@ document.write(`
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;part&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;part&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">find_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.find_by_key"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Assembly.find_by_key.html#compas.datastructures.Assembly.find_by_key">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Find a part in the assembly by its key.</span>
 
 <span class="sd">        Parameters</span>
@@ -721,7 +721,7 @@ document.write(`
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;part&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;part&quot;</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

@@ -545,11 +545,11 @@ document.write(`
 
     <span class="n">DATASCHEMA</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="Data.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.html#compas.data.Data.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">__jsondump__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the required information for serialization with the COMPAS JSON serializer.</span>
@@ -612,7 +612,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Data.ToString"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.ToString.html#compas.data.Data.ToString">[docs]</a>    <span class="k">def</span> <span class="nf">ToString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the instance to a string.</span>
 
 <span class="sd">        This method exists for .NET compatibility. When using IronPython,</span>
@@ -624,7 +624,7 @@ document.write(`
 <span class="sd">        connected to a panel or other type of string output.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -642,7 +642,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Data.from_data"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.from_data.html#compas.data.Data.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>  <span class="c1"># type: (dict) -&gt; Data</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an object of this type from the provided data.</span>
 
@@ -657,9 +657,9 @@ document.write(`
 <span class="sd">            An instance of this object type if the data contained in the dict has the correct schema.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Data.to_data"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.to_data.html#compas.data.Data.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert an object to its native data representation.</span>
 
 <span class="sd">        Returns</span>
@@ -668,9 +668,9 @@ document.write(`
 <span class="sd">            The data representation of the object as described by the schema.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Data.from_json"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.from_json.html#compas.data.Data.from_json">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Data</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an object of this type from a JSON file.</span>
 
@@ -685,9 +685,9 @@ document.write(`
 <span class="sd">            An instance of this object type if the data contained in the file has the correct schema.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Data.to_json"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.to_json.html#compas.data.Data.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert an object to its native data representation and save it to a JSON file.</span>
 
 <span class="sd">        Parameters</span>
@@ -699,9 +699,9 @@ document.write(`
 <span class="sd">            Defaults to False.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="n">pretty</span><span class="p">)</span>
+        <span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="n">pretty</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; D</span>
+<div class="viewcode-block" id="Data.copy"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.copy.html#compas.data.Data.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; D</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make an independent copy of the data object.</span>
 
 <span class="sd">        Parameters</span>
@@ -718,9 +718,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="p">:</span>
             <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>  <span class="c1"># type: ignore</span></div>
 
-    <span class="k">def</span> <span class="nf">sha256</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Data.sha256"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.sha256.html#compas.data.Data.sha256">[docs]</a>    <span class="k">def</span> <span class="nf">sha256</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a hash of the data for comparison during version control using the sha256 algorithm.</span>
 
 <span class="sd">        Parameters</span>
@@ -750,9 +750,9 @@ document.write(`
         <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">json_dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Data.validate_data"><a class="viewcode-back" href="../../../reference/generated/compas.data.Data.validate_data.html#compas.data.Data.validate_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">validate_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the data against the object&#39;s data schema.</span>
 
@@ -772,7 +772,7 @@ document.write(`
 
         <span class="n">validator</span> <span class="o">=</span> <span class="n">Draft202012Validator</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">DATASCHEMA</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data</span></div>
+        <span class="k">return</span> <span class="n">data</span></div></div>
 </pre></div>
 
                 </article>

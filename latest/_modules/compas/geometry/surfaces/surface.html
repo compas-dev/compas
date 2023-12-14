@@ -526,7 +526,7 @@ document.write(`
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">new_surface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Surface.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.html#compas.geometry.Surface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Surface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="o">=</span> <span class="kc">None</span>
@@ -534,7 +534,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_domain_v</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">frame</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(frame=</span><span class="si">{1!r}</span><span class="s2">, domain_u=</span><span class="si">{2}</span><span class="s2">, domain_v=</span><span class="si">{3}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -622,7 +622,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.from_step"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.from_step.html#compas.geometry.Surface.from_step">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_step</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a surface from a STP file.</span>
 
@@ -636,9 +636,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Surface`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.from_obj"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.from_obj.html#compas.geometry.Surface.from_obj">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a surface from an OBJ file.</span>
 
@@ -652,9 +652,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Surface`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Surface.from_plane"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.from_plane.html#compas.geometry.Surface.from_plane">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a surface from a plane.</span>
 
@@ -668,13 +668,13 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Surface`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">new_surface_from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_surface_from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;AP203&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_step"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_step.html#compas.geometry.Surface.to_step">[docs]</a>    <span class="k">def</span> <span class="nf">to_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;AP203&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the surface geometry to a STP file.</span>
 
 <span class="sd">        Parameters</span>
@@ -687,9 +687,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_vertices_and_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_vertices_and_faces.html#compas.geometry.Surface.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the surface to a list of vertices and faces.</span>
 
 <span class="sd">        Parameters</span>
@@ -735,9 +735,9 @@ document.write(`
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nu</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">nv</span><span class="p">))</span>
         <span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
 
-    <span class="k">def</span> <span class="nf">to_triangles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_triangles"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_triangles.html#compas.geometry.Surface.to_triangles">[docs]</a>    <span class="k">def</span> <span class="nf">to_triangles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the surface to a list of triangles.</span>
 
 <span class="sd">        Parameters</span>
@@ -766,9 +766,9 @@ document.write(`
         <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
             <span class="n">triangles</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">vertices</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">c</span><span class="p">]])</span>
             <span class="n">triangles</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">vertices</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">d</span><span class="p">]])</span>
-        <span class="k">return</span> <span class="n">triangles</span>
+        <span class="k">return</span> <span class="n">triangles</span></div>
 
-    <span class="k">def</span> <span class="nf">to_quads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_quads"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_quads.html#compas.geometry.Surface.to_quads">[docs]</a>    <span class="k">def</span> <span class="nf">to_quads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the surface to a list of quads.</span>
 
 <span class="sd">        Parameters</span>
@@ -796,9 +796,9 @@ document.write(`
         <span class="n">quads</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
             <span class="n">quads</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">vertices</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">d</span><span class="p">]])</span>
-        <span class="k">return</span> <span class="n">quads</span>
+        <span class="k">return</span> <span class="n">quads</span></div>
 
-    <span class="k">def</span> <span class="nf">to_polyhedron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_polyhedron"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_polyhedron.html#compas.geometry.Surface.to_polyhedron">[docs]</a>    <span class="k">def</span> <span class="nf">to_polyhedron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the surface to a polyhedron.</span>
 
 <span class="sd">        Parameters</span>
@@ -825,9 +825,9 @@ document.write(`
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polyhedron</span>
 
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">(</span><span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="n">nv</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="n">du</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="n">dv</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_mesh"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_mesh.html#compas.geometry.Surface.to_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the surface to a mesh.</span>
 
 <span class="sd">        Parameters</span>
@@ -854,9 +854,9 @@ document.write(`
         <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">(</span><span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="n">nv</span><span class="p">,</span> <span class="n">du</span><span class="o">=</span><span class="n">du</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="n">dv</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">to_tesselation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_tesselation"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_tesselation.html#compas.geometry.Surface.to_tesselation">[docs]</a>    <span class="k">def</span> <span class="nf">to_tesselation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the surface to a triangle mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -864,9 +864,9 @@ document.write(`
 <span class="sd">        :class:`compas.datastructures.Mesh`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.to_brep"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.to_brep.html#compas.geometry.Surface.to_brep">[docs]</a>    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the surface to a BREP representation.</span>
 
 <span class="sd">        Returns</span>
@@ -875,13 +875,13 @@ document.write(`
 <span class="sd">            A BREP object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Transformations</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.transform"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.transform.html#compas.geometry.Surface.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the local coordinate system of the surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -901,13 +901,13 @@ document.write(`
 <span class="sd">        All other components of the transformation matrix are ignored.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">space_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.space_u"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.space_u.html#compas.geometry.Surface.space_u">[docs]</a>    <span class="k">def</span> <span class="nf">space_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute evenly spaced parameters over the surface domain in the U direction.</span>
 
 <span class="sd">        Parameters</span>
@@ -921,9 +921,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">umin</span><span class="p">,</span> <span class="n">umax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_u</span>
-        <span class="k">return</span> <span class="n">linspace</span><span class="p">(</span><span class="n">umin</span><span class="p">,</span> <span class="n">umax</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">linspace</span><span class="p">(</span><span class="n">umin</span><span class="p">,</span> <span class="n">umax</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">space_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.space_v"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.space_v.html#compas.geometry.Surface.space_v">[docs]</a>    <span class="k">def</span> <span class="nf">space_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute evenly spaced parameters over the surface domain in the V direction.</span>
 
 <span class="sd">        Parameters</span>
@@ -937,9 +937,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain_v</span>
-        <span class="k">return</span> <span class="n">linspace</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">linspace</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">isocurve_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.isocurve_u"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.isocurve_u.html#compas.geometry.Surface.isocurve_u">[docs]</a>    <span class="k">def</span> <span class="nf">isocurve_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the isoparametric curve at parameter u.</span>
 
 <span class="sd">        Parameters</span>
@@ -951,9 +951,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Curve`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">isocurve_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.isocurve_v"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.isocurve_v.html#compas.geometry.Surface.isocurve_v">[docs]</a>    <span class="k">def</span> <span class="nf">isocurve_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the isoparametric curve at parameter v.</span>
 
 <span class="sd">        Parameters</span>
@@ -965,9 +965,9 @@ document.write(`
 <span class="sd">        :class:`compas_occ.geometry.Curve`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.boundary"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.boundary.html#compas.geometry.Surface.boundary">[docs]</a>    <span class="k">def</span> <span class="nf">boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the boundary curves of the surface.</span>
 
 <span class="sd">        Returns</span>
@@ -975,9 +975,9 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.Curve`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">pointgrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.pointgrid"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.pointgrid.html#compas.geometry.Surface.pointgrid">[docs]</a>    <span class="k">def</span> <span class="nf">pointgrid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute point locations corresponding to evenly spaced parameters over the surface domain.</span>
 
 <span class="sd">        Parameters</span>
@@ -988,9 +988,9 @@ document.write(`
 <span class="sd">            The size of the grid in the V direction.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space_u</span><span class="p">(</span><span class="n">nu</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_v</span><span class="p">(</span><span class="n">nv</span><span class="p">))]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space_u</span><span class="p">(</span><span class="n">nu</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_v</span><span class="p">(</span><span class="n">nv</span><span class="p">))]</span></div>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.point_at.html#compas.geometry.Surface.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a point on the surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -1003,9 +1003,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Point`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.normal_at.html#compas.geometry.Surface.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a normal at a point on the surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -1018,9 +1018,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Point`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">curvature_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.curvature_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.curvature_at.html#compas.geometry.Surface.curvature_at">[docs]</a>    <span class="k">def</span> <span class="nf">curvature_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the curvature at a point on the surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -1033,9 +1033,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Vector`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.frame_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.frame_at.html#compas.geometry.Surface.frame_at">[docs]</a>    <span class="k">def</span> <span class="nf">frame_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the local frame at a point on the curve.</span>
 
 <span class="sd">        Parameters</span>
@@ -1048,13 +1048,13 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Frame`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Methods continued</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">return_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.closest_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.closest_point.html#compas.geometry.Surface.closest_point">[docs]</a>    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">return_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the closest point on the curve to a given point.</span>
 
 <span class="sd">        Parameters</span>
@@ -1071,9 +1071,9 @@ document.write(`
 <span class="sd">            If `return_parameters` is True, the UV parameters in addition to the nearest point on the surface.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">aabb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.aabb"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.aabb.html#compas.geometry.Surface.aabb">[docs]</a>    <span class="k">def</span> <span class="nf">aabb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the axis aligned bounding box of the surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -1086,9 +1086,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Box`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">obb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.obb"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.obb.html#compas.geometry.Surface.obb">[docs]</a>    <span class="k">def</span> <span class="nf">obb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the oriented bounding box of the surface.</span>
 
 <span class="sd">        Parameters</span>
@@ -1100,9 +1100,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Box`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">intersections_with_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.intersections_with_line"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.intersections_with_line.html#compas.geometry.Surface.intersections_with_line">[docs]</a>    <span class="k">def</span> <span class="nf">intersections_with_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the intersections with a line.</span>
 
 <span class="sd">        Parameters</span>
@@ -1114,9 +1114,9 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.Point`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">intersections_with_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.intersections_with_curve"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.intersections_with_curve.html#compas.geometry.Surface.intersections_with_curve">[docs]</a>    <span class="k">def</span> <span class="nf">intersections_with_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the intersections with a curve.</span>
 
 <span class="sd">        Parameters</span>
@@ -1128,9 +1128,9 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.Point`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">intersections_with_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+<div class="viewcode-block" id="Surface.intersections_with_plane"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Surface.intersections_with_plane.html#compas.geometry.Surface.intersections_with_plane">[docs]</a>    <span class="k">def</span> <span class="nf">intersections_with_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the intersections with a plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -1142,7 +1142,7 @@ document.write(`
 <span class="sd">        list[:class:`compas.geometry.Curve`]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
     <span class="c1"># def patch(self, u, v, du=1, dv=1):</span>
     <span class="c1">#     &quot;&quot;&quot;Construct a NURBS surface patch from the surface at the given UV parameters.</span>

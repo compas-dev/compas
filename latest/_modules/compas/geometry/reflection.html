@@ -516,14 +516,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Reflection.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Reflection.html#compas.geometry.Reflection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">matrix</span> <span class="ow">and</span> <span class="n">check</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">perspective</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">flatten</span><span class="p">(</span><span class="n">matrix_from_perspective_entries</span><span class="p">(</span><span class="n">perspective</span><span class="p">))):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This is not a proper reflection matrix.&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Reflection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Reflection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Reflection.from_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Reflection.from_plane.html#compas.geometry.Reflection.from_plane">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a reflection transformation that mirrors wrt the given plane.</span>
 
@@ -546,9 +546,9 @@ document.write(`
                 <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">normal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">normal</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
             <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="o">*</span> <span class="n">normal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Reflection.from_frame"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Reflection.from_frame.html#compas.geometry.Reflection.from_frame">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_frame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a reflection transformation that mirrors wrt the given frame.</span>
 
@@ -568,7 +568,7 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">point</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">point</span>
             <span class="n">zaxis</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_plane</span><span class="p">((</span><span class="n">point</span><span class="p">,</span> <span class="n">zaxis</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_plane</span><span class="p">((</span><span class="n">point</span><span class="p">,</span> <span class="n">zaxis</span><span class="p">))</span></div></div>
 </pre></div>
 
                 </article>

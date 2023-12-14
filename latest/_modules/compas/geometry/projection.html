@@ -514,14 +514,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Projection.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Projection.html#compas.geometry.Projection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">matrix</span> <span class="ow">and</span> <span class="n">check</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">perspective</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">flatten</span><span class="p">(</span><span class="n">matrix_from_perspective_entries</span><span class="p">(</span><span class="n">perspective</span><span class="p">))):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This is not a proper projection matrix.&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Projection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Projection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Projection.from_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Projection.from_plane.html#compas.geometry.Projection.from_plane">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an orthogonal projection transformation to project onto a plane.</span>
 
@@ -545,9 +545,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_orthogonal_projection</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Projection.from_plane_and_direction"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Projection.from_plane_and_direction.html#compas.geometry.Projection.from_plane_and_direction">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane_and_direction</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a parallel projection transformation to project onto a plane along a specific direction.</span>
 
@@ -574,9 +574,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_parallel_projection</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Projection.from_plane_and_point"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Projection.from_plane_and_point.html#compas.geometry.Projection.from_plane_and_point">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane_and_point</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">center_of_projection</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a perspective projection transformation to project onto a plane along lines that emanate from a single point, called the center of projection.</span>
 
@@ -603,9 +603,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_perspective_projection</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">center_of_projection</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Projection.from_entries"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Projection.from_entries.html#compas.geometry.Projection.from_entries">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_entries</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">perspective_entries</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a perspective transformation by the perspective entries</span>
 <span class="sd">        of a matrix.</span>
@@ -622,7 +622,7 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_perspective_entries</span><span class="p">(</span><span class="n">perspective_entries</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

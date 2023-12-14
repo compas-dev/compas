@@ -668,12 +668,12 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;vertices&quot;</span><span class="p">,</span> <span class="s2">&quot;faces&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Polyhedron.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.html#compas.geometry.Polyhedron.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Polyhedron</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vertices</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_faces</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(vertices=</span><span class="si">{1!r}</span><span class="s2">, faces=</span><span class="si">{2!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -818,7 +818,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Polyhedron.from_platonicsolid"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.from_platonicsolid.html#compas.geometry.Polyhedron.from_platonicsolid">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_platonicsolid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a polyhedron from one of the platonic solids.</span>
 
@@ -854,9 +854,9 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.&quot;</span><span class="p">)</span>
         <span class="n">solid</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">solid</span>
+        <span class="k">return</span> <span class="n">solid</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Polyhedron.from_halfspaces"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.from_halfspaces.html#compas.geometry.Polyhedron.from_halfspaces">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_halfspaces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">halfspaces</span><span class="p">,</span> <span class="n">interior_point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a polyhedron from its half-spaces and one interior point.</span>
 
@@ -910,9 +910,9 @@ document.write(`
         <span class="k">for</span> <span class="n">faces</span> <span class="ow">in</span> <span class="n">to_merge</span><span class="p">:</span>
             <span class="n">mesh_merge_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Polyhedron.from_planes"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.from_planes.html#compas.geometry.Polyhedron.from_planes">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_planes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">planes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a polyhedron from intersecting planes.</span>
 
@@ -941,9 +941,9 @@ document.write(`
 
         <span class="n">planes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">]</span>
         <span class="n">interior</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">plane</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">plane</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_halfspaces</span><span class="p">([</span><span class="n">plane</span><span class="o">.</span><span class="n">abcd</span> <span class="k">for</span> <span class="n">plane</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">],</span> <span class="n">interior</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_halfspaces</span><span class="p">([</span><span class="n">plane</span><span class="o">.</span><span class="n">abcd</span> <span class="k">for</span> <span class="n">plane</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">],</span> <span class="n">interior</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Polyhedron.from_convex_hull"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.from_convex_hull.html#compas.geometry.Polyhedron.from_convex_hull">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_convex_hull</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a polyhedron from the convex hull of a set of points.</span>
 
@@ -966,13 +966,13 @@ document.write(`
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">convex_hull_numpy</span>
 
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">convex_hull_numpy</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.to_vertices_and_faces"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.to_vertices_and_faces.html#compas.geometry.Polyhedron.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces.</span>
 
 <span class="sd">        Returns</span>
@@ -981,9 +981,9 @@ document.write(`
 <span class="sd">            A list of vertices and a list of faces.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span></div>
 
-    <span class="k">def</span> <span class="nf">to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.to_mesh"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.to_mesh.html#compas.geometry.Polyhedron.to_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a mesh representation of the polyhedron.</span>
 
 <span class="sd">        Returns</span>
@@ -994,13 +994,13 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 
-        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Transformations</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.transform"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.transform.html#compas.geometry.Polyhedron.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the polyhedron.</span>
 
 <span class="sd">        Parameters</span>
@@ -1012,13 +1012,13 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">transform_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">transform_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.is_closed"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.is_closed.html#compas.geometry.Polyhedron.is_closed">[docs]</a>    <span class="k">def</span> <span class="nf">is_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify that the polyhedron forms a closed surface.</span>
 
 <span class="sd">        Returns</span>
@@ -1029,9 +1029,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_mesh</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">is_closed</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">mesh</span><span class="o">.</span><span class="n">is_closed</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">boolean_union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.boolean_union"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.boolean_union.html#compas.geometry.Polyhedron.boolean_union">[docs]</a>    <span class="k">def</span> <span class="nf">boolean_union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the boolean union of this polyhedron and another.</span>
 
 <span class="sd">        Parameters</span>
@@ -1058,9 +1058,9 @@ document.write(`
         <span class="n">B</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">faces</span>
         <span class="n">V</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">boolean_union_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
-        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">boolean_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.boolean_difference"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.boolean_difference.html#compas.geometry.Polyhedron.boolean_difference">[docs]</a>    <span class="k">def</span> <span class="nf">boolean_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the boolean difference of this polyhedron and another.</span>
 
 <span class="sd">        Parameters</span>
@@ -1087,9 +1087,9 @@ document.write(`
         <span class="n">B</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">faces</span>
         <span class="n">V</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">boolean_difference_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
-        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">boolean_intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Polyhedron.boolean_intersection"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Polyhedron.boolean_intersection.html#compas.geometry.Polyhedron.boolean_intersection">[docs]</a>    <span class="k">def</span> <span class="nf">boolean_intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the boolean intersection of this polyhedron and another.</span>
 
 <span class="sd">        Parameters</span>
@@ -1116,7 +1116,7 @@ document.write(`
         <span class="n">B</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">faces</span>
         <span class="n">V</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">boolean_intersection_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
-        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

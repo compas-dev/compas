@@ -506,20 +506,20 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MeshObject.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.html#compas_blender.scene.MeshObject.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="n">Mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="n">Mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexobjects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">edgeobjects</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">faceobjects</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faceobjects</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># clear</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
+<div class="viewcode-block" id="MeshObject.clear"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.clear.html#compas_blender.scene.MeshObject.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.clear_vertices.html#compas_blender.scene.MeshObject.clear_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">clear_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the vertex objects.</span>
 
 <span class="sd">        Returns</span>
@@ -527,9 +527,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertexobjects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertexobjects</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_edges"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.clear_edges.html#compas_blender.scene.MeshObject.clear_edges">[docs]</a>    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the edge objects.</span>
 
 <span class="sd">        Returns</span>
@@ -537,9 +537,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edgeobjects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edgeobjects</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshObject.clear_faces"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.clear_faces.html#compas_blender.scene.MeshObject.clear_faces">[docs]</a>    <span class="k">def</span> <span class="nf">clear_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the face objects.</span>
 
 <span class="sd">        Returns</span>
@@ -547,13 +547,13 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceobjects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceobjects</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw.html#compas_blender.scene.MeshObject.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Color</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">collection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show_wire</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the mesh.</span>
@@ -579,9 +579,9 @@ document.write(`
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_object</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">,</span> <span class="n">show_wire</span><span class="o">=</span><span class="n">show_wire</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">return</span> <span class="n">obj</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw_vertices"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw_vertices.html#compas_blender.scene.MeshObject.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">vertices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -632,9 +632,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw_edges"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw_edges.html#compas_blender.scene.MeshObject.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">edges</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -670,9 +670,9 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw_faces"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw_faces.html#compas_blender.scene.MeshObject.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">faces</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -712,13 +712,13 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">,</span> <span class="n">show_wire</span><span class="o">=</span><span class="n">show_wire</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw normals</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw_vertexnormals"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw_vertexnormals.html#compas_blender.scene.MeshObject.draw_vertexnormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">vertices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">green</span><span class="p">(),</span>
@@ -762,9 +762,9 @@ document.write(`
 
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw_facenormals"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw_facenormals.html#compas_blender.scene.MeshObject.draw_facenormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">faces</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">cyan</span><span class="p">(),</span>
@@ -808,7 +808,7 @@ document.write(`
 
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># draw labels</span>
@@ -900,7 +900,7 @@ document.write(`
     <span class="c1"># draw miscellaneous</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">draw_spheres</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw_spheres"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw_spheres.html#compas_blender.scene.MeshObject.draw_spheres">[docs]</a>    <span class="k">def</span> <span class="nf">draw_spheres</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">radius</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -938,9 +938,9 @@ document.write(`
 
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
 
-    <span class="k">def</span> <span class="nf">draw_pipes</span><span class="p">(</span>
+<div class="viewcode-block" id="MeshObject.draw_pipes"><a class="viewcode-back" href="../../../reference/generated/compas_blender.scene.MeshObject.draw_pipes.html#compas_blender.scene.MeshObject.draw_pipes">[docs]</a>    <span class="k">def</span> <span class="nf">draw_pipes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">radius</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Color</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Color</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -979,7 +979,7 @@ document.write(`
 
             <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">objects</span></div>
+        <span class="k">return</span> <span class="n">objects</span></div></div>
 </pre></div>
 
                 </article>

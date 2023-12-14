@@ -559,8 +559,8 @@ document.write(`
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">new_nurbssurface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="NurbsSurface.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.html#compas.geometry.NurbsSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">NurbsSurface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NurbsSurface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(points=</span><span class="si">{1!r}</span><span class="s2">, weigths=</span><span class="si">{2}</span><span class="s2">, knots_u=</span><span class="si">{3}</span><span class="s2">, knots_v=</span><span class="si">{4}</span><span class="s2">, mults_u=</span><span class="si">{5}</span><span class="s2">, mults_v=</span><span class="si">{6}</span><span class="s2">, degree_u=</span><span class="si">{7}</span><span class="s2">, degree_v=</span><span class="si">{8}</span><span class="s2">, is_periodic_u=</span><span class="si">{9}</span><span class="s2">, is_periodic_v=</span><span class="si">{10}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -600,7 +600,7 @@ document.write(`
             <span class="s2">&quot;is_periodic_v&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_periodic_v</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="NurbsSurface.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.from_data.html#compas.geometry.NurbsSurface.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a BSpline surface from its data representation.</span>
 
@@ -626,7 +626,7 @@ document.write(`
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;degree_v&quot;</span><span class="p">],</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;is_periodic_u&quot;</span><span class="p">],</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;is_periodic_v&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>
@@ -676,7 +676,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="NurbsSurface.from_parameters"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.from_parameters.html#compas.geometry.NurbsSurface.from_parameters">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_parameters</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">points</span><span class="p">,</span>
@@ -728,9 +728,9 @@ document.write(`
             <span class="n">degree_v</span><span class="p">,</span>
             <span class="n">is_periodic_u</span><span class="o">=</span><span class="n">is_periodic_u</span><span class="p">,</span>
             <span class="n">is_periodic_v</span><span class="o">=</span><span class="n">is_periodic_v</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="NurbsSurface.from_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.from_points.html#compas.geometry.NurbsSurface.from_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">degree_u</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">degree_v</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a NURBS surface from control points.</span>
 
@@ -748,9 +748,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.NurbsSurface`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">new_nurbssurface_from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">degree_u</span><span class="o">=</span><span class="n">degree_u</span><span class="p">,</span> <span class="n">degree_v</span><span class="o">=</span><span class="n">degree_v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_nurbssurface_from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">degree_u</span><span class="o">=</span><span class="n">degree_u</span><span class="p">,</span> <span class="n">degree_v</span><span class="o">=</span><span class="n">degree_v</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="NurbsSurface.from_meshgrid"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.from_meshgrid.html#compas.geometry.NurbsSurface.from_meshgrid">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_meshgrid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">nv</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a NURBS surface from a mesh grid.</span>
 
@@ -773,9 +773,9 @@ document.write(`
             <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
                 <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
             <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_points</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_points</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="NurbsSurface.from_step"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.from_step.html#compas.geometry.NurbsSurface.from_step">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_step</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a NURBS surface from a STP file.</span>
 
@@ -788,9 +788,9 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.NurbsSurface`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">new_nurbssurface_from_step</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_nurbssurface_from_step</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="NurbsSurface.from_fill"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.from_fill.html#compas.geometry.NurbsSurface.from_fill">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_fill</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curve1</span><span class="p">,</span> <span class="n">curve2</span><span class="p">,</span> <span class="n">curve3</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">curve4</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;stretch&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a NURBS surface from the infill between two, three or four contiguous NURBS curves.</span>
 
@@ -816,7 +816,7 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.NurbsSurface`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">new_nurbssurface_from_fill</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curve1</span><span class="p">,</span> <span class="n">curve2</span><span class="p">,</span> <span class="n">curve3</span><span class="p">,</span> <span class="n">curve4</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_nurbssurface_from_fill</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">curve1</span><span class="p">,</span> <span class="n">curve2</span><span class="p">,</span> <span class="n">curve3</span><span class="p">,</span> <span class="n">curve4</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Conversions</span>
@@ -826,7 +826,7 @@ document.write(`
     <span class="c1"># Methods</span>
     <span class="c1"># ==============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="NurbsSurface.copy"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.NurbsSurface.copy.html#compas.geometry.NurbsSurface.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make an independent copy of the surface.</span>
 
 <span class="sd">        Returns</span>
@@ -845,7 +845,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">degree_v</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_periodic_u</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_periodic_v</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

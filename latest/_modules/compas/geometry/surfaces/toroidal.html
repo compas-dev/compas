@@ -520,12 +520,12 @@ document.write(`
         <span class="n">surface</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">surface</span>
 
-<div class="viewcode-block" id="ToroidalSurface.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.ToroidalSurface.html#compas.geometry.ToroidalSurface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ToroidalSurface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius_axis</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius_pipe</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius_axis</span> <span class="o">=</span> <span class="n">radius_axis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radius_pipe</span> <span class="o">=</span> <span class="n">radius_pipe</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius_pipe</span> <span class="o">=</span> <span class="n">radius_pipe</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(radius_axis=</span><span class="si">{1}</span><span class="s2">, radius_pipe=</span><span class="si">{2}</span><span class="s2">, frame=</span><span class="si">{3!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -560,13 +560,13 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ToroidalSurface.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.ToroidalSurface.from_data.html#compas.geometry.ToroidalSurface.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">radius_axis</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius_axis&quot;</span><span class="p">],</span>
             <span class="n">radius_pipe</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius_pipe&quot;</span><span class="p">],</span>
             <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Properties</span>
@@ -596,7 +596,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ToroidalSurface.from_plane_and_radius"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.ToroidalSurface.from_plane_and_radius.html#compas.geometry.ToroidalSurface.from_plane_and_radius">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane_and_radius</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a sphere from a plane and a radius.</span>
 
@@ -613,7 +613,7 @@ document.write(`
 <span class="sd">            A sphere.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="n">plane</span><span class="p">))</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Conversions</span>
@@ -623,7 +623,7 @@ document.write(`
     <span class="c1"># Methods</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ToroidalSurface.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.ToroidalSurface.point_at.html#compas.geometry.ToroidalSurface.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a point on the sphere.</span>
 
 <span class="sd">        Parameters</span>
@@ -651,9 +651,9 @@ document.write(`
         <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">world</span><span class="p">:</span>
             <span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span>
+        <span class="k">return</span> <span class="n">point</span></div>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ToroidalSurface.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.ToroidalSurface.normal_at.html#compas.geometry.ToroidalSurface.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a normal vector at a point on the sphere.</span>
 
 <span class="sd">        Parameters</span>
@@ -671,7 +671,7 @@ document.write(`
 <span class="sd">            The normal vector.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
                 </article>

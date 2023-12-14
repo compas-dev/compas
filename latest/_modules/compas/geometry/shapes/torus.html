@@ -546,12 +546,12 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;radius_axis&quot;</span><span class="p">,</span> <span class="s2">&quot;radius_pipe&quot;</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Torus.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Torus.html#compas.geometry.Torus.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Torus</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius_axis</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius_pipe</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius_axis</span> <span class="o">=</span> <span class="n">radius_axis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radius_pipe</span> <span class="o">=</span> <span class="n">radius_pipe</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius_pipe</span> <span class="o">=</span> <span class="n">radius_pipe</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Data</span>
@@ -565,13 +565,13 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Torus.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Torus.from_data.html#compas.geometry.Torus.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">radius_axis</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius_axis&quot;</span><span class="p">],</span>
             <span class="n">radius_pipe</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius_pipe&quot;</span><span class="p">],</span>
             <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Properties</span>
@@ -656,7 +656,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Torus.from_plane_and_radii"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Torus.from_plane_and_radii.html#compas.geometry.Torus.from_plane_and_radii">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane_and_radii</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a torus from a plane and two radii.</span>
 
@@ -682,13 +682,13 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; torus = Torus.from_plane_and_radii(plane, 5.0, 2.0)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">plane</span><span class="o">=</span><span class="n">plane</span><span class="p">,</span> <span class="n">radius_axis</span><span class="o">=</span><span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="o">=</span><span class="n">radius_pipe</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">plane</span><span class="o">=</span><span class="n">plane</span><span class="p">,</span> <span class="n">radius_axis</span><span class="o">=</span><span class="n">radius_axis</span><span class="p">,</span> <span class="n">radius_pipe</span><span class="o">=</span><span class="n">radius_pipe</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">triangulated</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Torus.to_vertices_and_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Torus.to_vertices_and_faces.html#compas.geometry.Torus.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">triangulated</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces.</span>
 
 <span class="sd">        The vertices are defined in global coordinates.</span>
@@ -752,9 +752,9 @@ document.write(`
 
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">transform_points</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
 
-    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Torus.to_brep"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Torus.to_brep.html#compas.geometry.Torus.to_brep">[docs]</a>    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a BRep representation of the torus.</span>
 
 <span class="sd">        Returns</span>
@@ -764,13 +764,13 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
 
-        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_torus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Brep</span><span class="o">.</span><span class="n">from_torus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Transformations</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+<div class="viewcode-block" id="Torus.transform"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Torus.transform.html#compas.geometry.Torus.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the torus.</span>
 
 <span class="sd">        Parameters</span>
@@ -793,7 +793,7 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; torus.transform(T)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

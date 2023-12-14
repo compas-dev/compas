@@ -604,14 +604,14 @@ document.write(`
         <span class="n">curve</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">curve</span>
 
-<div class="viewcode-block" id="Arc.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Arc.html#compas.geometry.Arc.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">start_angle</span><span class="p">,</span> <span class="n">end_angle</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">start_angle</span><span class="p">,</span> <span class="n">end_angle</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Arc</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_angle</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_angle</span> <span class="o">=</span> <span class="n">start_angle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_angle</span> <span class="o">=</span> <span class="n">end_angle</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_angle</span> <span class="o">=</span> <span class="n">end_angle</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(radius=</span><span class="si">{1}</span><span class="s2">, start_angle=</span><span class="si">{2}</span><span class="s2">, end_angle=</span><span class="si">{3}</span><span class="s2">, frame=</span><span class="si">{4!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -646,14 +646,14 @@ document.write(`
             <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Arc.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Arc.from_data.html#compas.geometry.Arc.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">radius</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">],</span>
             <span class="n">start_angle</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;start_angle&quot;</span><span class="p">],</span>
             <span class="n">end_angle</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;end_angle&quot;</span><span class="p">],</span>
             <span class="n">frame</span><span class="o">=</span><span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]),</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Properties</span>
@@ -739,7 +739,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Arc.from_circle"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Arc.from_circle.html#compas.geometry.Arc.from_circle">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_circle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">circle</span><span class="p">,</span> <span class="n">start_angle</span><span class="p">,</span> <span class="n">end_angle</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an Arc from a circle and start and end angles.</span>
 
@@ -762,7 +762,7 @@ document.write(`
             <span class="n">radius</span><span class="o">=</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
             <span class="n">start_angle</span><span class="o">=</span><span class="n">start_angle</span><span class="p">,</span>
             <span class="n">end_angle</span><span class="o">=</span><span class="n">end_angle</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Conversions</span>
@@ -776,7 +776,7 @@ document.write(`
     <span class="c1"># Methods</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Arc.point_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Arc.point_at.html#compas.geometry.Arc.point_at">[docs]</a>    <span class="k">def</span> <span class="nf">point_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the point at the specified parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -817,9 +817,9 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">world</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">*</span> <span class="n">y</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">*</span> <span class="n">y</span></div>
 
-    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Arc.normal_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Arc.normal_at.html#compas.geometry.Arc.normal_at">[docs]</a>    <span class="k">def</span> <span class="nf">normal_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a normal vector to the arc at a specific parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -858,9 +858,9 @@ document.write(`
 
         <span class="n">normal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">point_at</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="n">normal</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">normal</span>
+        <span class="k">return</span> <span class="n">normal</span></div>
 
-    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Arc.tangent_at"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Arc.tangent_at.html#compas.geometry.Arc.tangent_at">[docs]</a>    <span class="k">def</span> <span class="nf">tangent_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">world</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a tangent on the circle at a specific parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -903,7 +903,7 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">world</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">*</span> <span class="n">y</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">*</span> <span class="n">y</span></div></div>
 </pre></div>
 
                 </article>

@@ -493,14 +493,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RhinoBrepTrim.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepTrim.html#compas_rhino.geometry.RhinoBrepTrim.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_trim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhino_trim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RhinoBrepTrim</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trim</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_curve</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_reversed</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iso_type</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">rhino_trim</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">native_trim</span> <span class="o">=</span> <span class="n">rhino_trim</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_trim</span> <span class="o">=</span> <span class="n">rhino_trim</span>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Data</span>
@@ -516,7 +516,7 @@ document.write(`
             <span class="s2">&quot;is_reversed&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trim</span><span class="o">.</span><span class="n">IsReversed</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="RhinoBrepTrim.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas_rhino.geometry.RhinoBrepTrim.from_data.html#compas_rhino.geometry.RhinoBrepTrim.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct an object of this type from the provided data.</span>
 
@@ -538,7 +538,7 @@ document.write(`
         <span class="n">iso_status</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">IsoStatus</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;iso&quot;</span><span class="p">])</span>
         <span class="n">is_reversed</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;is_reversed&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span> <span class="k">else</span> <span class="kc">False</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">native_trim</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">add_trim</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;edge&quot;</span><span class="p">],</span> <span class="n">is_reversed</span><span class="p">,</span> <span class="n">iso_status</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vertex&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">instance</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># Properties</span>

@@ -516,11 +516,11 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Shape.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.html#compas.geometry.Shape.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Shape</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Data</span>
@@ -566,7 +566,7 @@ document.write(`
     <span class="c1"># Conversions</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.to_vertices_and_faces"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.to_vertices_and_faces.html#compas.geometry.Shape.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the shape to a list of vertices and faces.</span>
 
 <span class="sd">        Returns</span>
@@ -577,9 +577,9 @@ document.write(`
 <span class="sd">            The faces of the shape.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">to_polyhedron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangulated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.to_polyhedron"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.to_polyhedron.html#compas.geometry.Shape.to_polyhedron">[docs]</a>    <span class="k">def</span> <span class="nf">to_polyhedron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangulated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the shape to a polyhedron.</span>
 
 <span class="sd">        Parameters</span>
@@ -622,9 +622,9 @@ document.write(`
                     <span class="n">triangles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="n">faces</span> <span class="o">=</span> <span class="n">triangles</span>
 
-        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.to_brep"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.to_brep.html#compas.geometry.Shape.to_brep">[docs]</a>    <span class="k">def</span> <span class="nf">to_brep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the shape to a Brep.</span>
 
 <span class="sd">        Returns</span>
@@ -633,13 +633,13 @@ document.write(`
 <span class="sd">            The Brep representation of the shape.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Transformation</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.transform"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.transform.html#compas.geometry.Shape.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the shape.</span>
 
 <span class="sd">        Transformations of a shape are performed by applying the transformation to the frame of the shape.</span>
@@ -663,9 +663,9 @@ document.write(`
 <span class="sd">        scale</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.translate"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.translate.html#compas.geometry.Shape.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate the shape.</span>
 
 <span class="sd">        Parameters</span>
@@ -684,9 +684,9 @@ document.write(`
 <span class="sd">        transform</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">+=</span> <span class="n">vector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">+=</span> <span class="n">vector</span></div>
 
-    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.rotate"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.rotate.html#compas.geometry.Shape.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate the shape.</span>
 
 <span class="sd">        Parameters</span>
@@ -708,9 +708,9 @@ document.write(`
         <span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">point</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.scale"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.scale.html#compas.geometry.Shape.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Scale the shape.</span>
 
 <span class="sd">        Scale transformations are applied to the parameters of a shape rahter than to its frame.</span>
@@ -732,13 +732,13 @@ document.write(`
 <span class="sd">        transform</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="c1"># =============================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># =============================================================================</span>
 
-    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.contains_point"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.contains_point.html#compas.geometry.Shape.contains_point">[docs]</a>    <span class="k">def</span> <span class="nf">contains_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if a point is inside the shape.</span>
 
 <span class="sd">        Parameters</span>
@@ -753,9 +753,9 @@ document.write(`
 <span class="sd">            False otherwise.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">contains_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+<div class="viewcode-block" id="Shape.contains_points"><a class="viewcode-back" href="../../../../reference/generated/compas.geometry.Shape.contains_points.html#compas.geometry.Shape.contains_points">[docs]</a>    <span class="k">def</span> <span class="nf">contains_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify if a list of points are inside the shape.</span>
 
 <span class="sd">        Parameters</span>
@@ -770,7 +770,7 @@ document.write(`
 <span class="sd">            False otherwise.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">contains_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">contains_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div></div>
 </pre></div>
 
                 </article>

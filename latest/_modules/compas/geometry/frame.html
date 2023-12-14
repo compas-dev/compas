@@ -553,7 +553,7 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;xaxis&quot;</span><span class="p">,</span> <span class="s2">&quot;yaxis&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Frame.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.html#compas.geometry.Frame.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">yaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Frame</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_point</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis</span> <span class="o">=</span> <span class="kc">None</span>
@@ -561,7 +561,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">xaxis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">xaxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">yaxis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">yaxis</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">yaxis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">yaxis</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(point=</span><span class="si">{1!r}</span><span class="s2">, xaxis=</span><span class="si">{2!r}</span><span class="s2">, yaxis=</span><span class="si">{3!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -666,8 +666,8 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zaxis</span>
 
-    <span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zaxis</span><span class="p">]</span>
+<div class="viewcode-block" id="Frame.axes"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.axes.html#compas.geometry.Frame.axes">[docs]</a>    <span class="k">def</span> <span class="nf">axes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zaxis</span><span class="p">]</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">quaternion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -683,7 +683,7 @@ document.write(`
     <span class="c1"># Constructors</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.worldXY"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">worldXY</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: () -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world XY frame.</span>
 
@@ -703,9 +703,9 @@ document.write(`
 <span class="sd">        Vector(0.000, 1.000, 0.000)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.worldZX"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.worldZX.html#compas.geometry.Frame.worldZX">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">worldZX</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: () -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world ZX frame.</span>
 
@@ -725,9 +725,9 @@ document.write(`
 <span class="sd">        Vector(1.000, 0.000, 0.000)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.worldYZ"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.worldYZ.html#compas.geometry.Frame.worldYZ">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">worldYZ</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># type: () -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct the world YZ frame.</span>
 
@@ -747,9 +747,9 @@ document.write(`
 <span class="sd">        Vector(0.000, 0.000, 1.000)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_points"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_points.html#compas.geometry.Frame.from_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">point_xaxis</span><span class="p">,</span> <span class="n">point_xyplane</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from 3 points.</span>
 
@@ -781,9 +781,9 @@ document.write(`
         <span class="n">xaxis</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point_xaxis</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
         <span class="n">xyvec</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point_xyplane</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
         <span class="n">yaxis</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">xyvec</span><span class="p">),</span> <span class="n">xaxis</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_rotation"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_rotation.html#compas.geometry.Frame.from_rotation">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_rotation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from a Rotation.</span>
 
@@ -810,9 +810,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">.</span><span class="n">basis_vectors</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_transformation"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_transformation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from a Transformation.</span>
 
@@ -839,9 +839,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">basis_vectors</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">translation_vector</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_matrix"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_matrix.html#compas.geometry.Frame.from_matrix">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a matrix.</span>
 
@@ -869,9 +869,9 @@ document.write(`
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">)</span>
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_list"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_list.html#compas.geometry.Frame.from_list">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a list of 12 or 16 float values.</span>
 
@@ -911,9 +911,9 @@ document.write(`
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
                 <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">j</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_quaternion"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_quaternion.html#compas.geometry.Frame.from_quaternion">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_quaternion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a rotation represented by quaternion coefficients.</span>
 
@@ -940,9 +940,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_quaternion</span><span class="p">(</span><span class="n">quaternion</span><span class="p">)</span>
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_axis_angle_vector"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_axis_angle_vector</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">axis_angle_vector</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from an axis-angle vector representing the rotation.</span>
 
@@ -970,9 +970,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_axis_angle_vector</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">)</span>
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_euler_angles"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_euler_angles.html#compas.geometry.Frame.from_euler_angles">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_euler_angles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a frame from a rotation represented by Euler angles.</span>
 
@@ -1004,9 +1004,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frame.from_plane"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.from_plane.html#compas.geometry.Frame.from_plane">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>  <span class="c1"># type: (...) -&gt; Frame</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs a frame from a plane.</span>
 
@@ -1045,13 +1045,13 @@ document.write(`
         <span class="n">idx</span> <span class="o">=</span> <span class="n">argmax</span><span class="p">([</span><span class="n">v</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">])</span>
         <span class="n">xaxis</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
         <span class="n">yaxis</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Conversions</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">to_transformation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Frame.to_transformation"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.to_transformation.html#compas.geometry.Frame.to_transformation">[docs]</a>    <span class="k">def</span> <span class="nf">to_transformation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the frame to a transformation.</span>
 
 <span class="sd">        Returns</span>
@@ -1060,13 +1060,13 @@ document.write(`
 <span class="sd">            The transformation.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># Methods</span>
     <span class="c1"># ==========================================================================</span>
 
-    <span class="k">def</span> <span class="nf">euler_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Frame.euler_angles"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles">[docs]</a>    <span class="k">def</span> <span class="nf">euler_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The Euler angles from the rotation given by the frame.</span>
 
 <span class="sd">        Parameters</span>
@@ -1092,9 +1092,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_basis_vectors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">euler_angles_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">euler_angles_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">to_local_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_in_wcf</span><span class="p">):</span>
+<div class="viewcode-block" id="Frame.to_local_coordinates"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">to_local_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_in_wcf</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the object&#39;s coordinates in the local coordinate system of the frame.</span>
 
 <span class="sd">        Parameters</span>
@@ -1124,9 +1124,9 @@ document.write(`
         <span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj_in_wcf</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">obj_in_wcf</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_in_wcf</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_in_wcf</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">to_world_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_in_lcf</span><span class="p">):</span>
+<div class="viewcode-block" id="Frame.to_world_coordinates"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">to_world_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_in_lcf</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the object&#39;s coordinates in the global coordinate frame.</span>
 
 <span class="sd">        Parameters</span>
@@ -1156,9 +1156,9 @@ document.write(`
         <span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">())</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj_in_lcf</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">obj_in_lcf</span><span class="p">)</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_in_lcf</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_in_lcf</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<div class="viewcode-block" id="Frame.transform"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Frame.transform.html#compas.geometry.Frame.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the frame.</span>
 
 <span class="sd">        Parameters</span>
@@ -1182,7 +1182,7 @@ document.write(`
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">basis_vectors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">xaxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">yaxis</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">yaxis</span></div></div>
 </pre></div>
 
                 </article>

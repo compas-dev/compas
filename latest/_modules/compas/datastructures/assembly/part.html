@@ -485,7 +485,7 @@ document.write(`
 <div class="viewcode-block" id="Feature"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Feature.html#compas.datastructures.Feature">[docs]</a><span class="k">class</span> <span class="nc">Feature</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for a feature which may be applied to a :class:`compas.datastructures.Part`.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.apply"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Feature.apply.html#compas.datastructures.Feature.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply this Feature to the given part.</span>
 
 <span class="sd">        Parameters</span>
@@ -494,7 +494,7 @@ document.write(`
 <span class="sd">            The part onto which this feature should be applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
 
 <div class="viewcode-block" id="GeometricFeature"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.GeometricFeature.html#compas.datastructures.GeometricFeature">[docs]</a><span class="k">class</span> <span class="nc">GeometricFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
@@ -533,19 +533,19 @@ document.write(`
         <span class="n">Polyhedron</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="GeometricFeature.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.GeometricFeature.html#compas.datastructures.GeometricFeature.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GeometricFeature</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;geometry&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GeometricFeature.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.GeometricFeature.from_data.html#compas.datastructures.GeometricFeature.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">feature</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">feature</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span>  <span class="c1"># this will work but is not consistent with validation</span>
-        <span class="k">return</span> <span class="n">feature</span></div>
+        <span class="k">return</span> <span class="n">feature</span></div></div>
 
 
 <div class="viewcode-block" id="ParametricFeature"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.ParametricFeature.html#compas.datastructures.ParametricFeature">[docs]</a><span class="k">class</span> <span class="nc">ParametricFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
@@ -569,10 +569,10 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ParametricFeature.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.ParametricFeature.html#compas.datastructures.ParametricFeature.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ParametricFeature</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ParametricFeature</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+<div class="viewcode-block" id="ParametricFeature.restore"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.ParametricFeature.restore.html#compas.datastructures.ParametricFeature.restore">[docs]</a>    <span class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reverses the effect this ParametricFeature has incured onto the given part.</span>
 
 <span class="sd">        Parameters</span>
@@ -581,9 +581,9 @@ document.write(`
 <span class="sd">            The part onto which this feature has been previously applied and should now be reverted.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">accumulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
+<div class="viewcode-block" id="ParametricFeature.accumulate"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.ParametricFeature.accumulate.html#compas.datastructures.ParametricFeature.accumulate">[docs]</a>    <span class="k">def</span> <span class="nf">accumulate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new ParametricFeature which has the accumulative effect of this and the given feature.</span>
 
 <span class="sd">        A TypeError is raised if the given feature is not compatible with this.</span>
@@ -598,7 +598,7 @@ document.write(`
 <span class="sd">        :class:`compas.datastructures.ParametricFeatures`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
 
 <div class="viewcode-block" id="Part"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Part.html#compas.datastructures.Part">[docs]</a><span class="k">class</span> <span class="nc">Part</span><span class="p">(</span><span class="n">Datastructure</span><span class="p">):</span>
@@ -636,13 +636,13 @@ document.write(`
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="Part.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Part.html#compas.datastructures.Part.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Part</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;Part&quot;</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span> <span class="ow">or</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -653,16 +653,16 @@ document.write(`
             <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">,</span>
         <span class="p">}</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Part.from_data"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Part.from_data.html#compas.datastructures.Part.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">part</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">part</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{})</span>
         <span class="n">part</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]</span>
         <span class="n">part</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">])</span>
         <span class="n">part</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="n">part</span>
+        <span class="k">return</span> <span class="n">part</span></div>
 
-    <span class="k">def</span> <span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_features</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Part.get_geometry"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Part.get_geometry.html#compas.datastructures.Part.get_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_features</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a transformed copy of the part&#39;s geometry.</span>
 
@@ -678,12 +678,12 @@ document.write(`
 <span class="sd">        :class:`compas.geometry.Geometry`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">clear_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features_to_clear</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<div class="viewcode-block" id="Part.clear_features"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Part.clear_features.html#compas.datastructures.Part.clear_features">[docs]</a>    <span class="k">def</span> <span class="nf">clear_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features_to_clear</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">add_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Part.add_feature"><a class="viewcode-back" href="../../../../reference/generated/compas.datastructures.Part.add_feature.html#compas.datastructures.Part.add_feature">[docs]</a>    <span class="k">def</span> <span class="nf">add_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a Feature to this Part.</span>
 
 <span class="sd">        Parameters</span>
@@ -698,7 +698,7 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>
 
                 </article>

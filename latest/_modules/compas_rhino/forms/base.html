@@ -496,7 +496,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BaseForm.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BaseForm.html#compas_rhino.forms.BaseForm.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Form&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Form&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Text</span> <span class="o">=</span> <span class="n">title</span>
         <span class="k">if</span> <span class="n">width</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Width</span> <span class="o">=</span> <span class="n">width</span>
@@ -507,9 +507,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">SuspendLayout</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ResumeLayout</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">FormClosed</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_form_closed</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">FormClosed</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_form_closed</span>
 
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseForm.init"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BaseForm.init.html#compas_rhino.forms.BaseForm.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the form.</span>
 
 <span class="sd">        Returns</span>
@@ -517,9 +517,9 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseForm.show"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BaseForm.show.html#compas_rhino.forms.BaseForm.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Show the form as a modal dialog.</span>
 
 <span class="sd">        Returns</span>
@@ -531,9 +531,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">Dialogs</span><span class="o">.</span><span class="n">ShowSemiModal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="n">DialogResult</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">eargs</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseForm.on_form_closed"><a class="viewcode-back" href="../../../reference/generated/compas_rhino.forms.BaseForm.on_form_closed.html#compas_rhino.forms.BaseForm.on_form_closed">[docs]</a>    <span class="k">def</span> <span class="nf">on_form_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">eargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback for the closing event of the form.</span>
 
 <span class="sd">        Parameters</span>
@@ -548,7 +548,7 @@ document.write(`
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">pass</span></div></div>
 </pre></div>
 
                 </article>

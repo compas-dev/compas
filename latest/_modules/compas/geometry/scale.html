@@ -528,14 +528,14 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Scale.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Scale.html#compas.geometry.Scale.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">matrix</span> <span class="ow">and</span> <span class="n">check</span><span class="p">:</span>
             <span class="n">scale</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">flatten</span><span class="p">(</span><span class="n">matrix_from_scale_factors</span><span class="p">(</span><span class="n">scale</span><span class="p">))):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This is not a proper scale matrix.&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Scale</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Scale</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Scale.from_factors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Scale.from_factors.html#compas.geometry.Scale.from_factors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_factors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a scale transformation from scale factors.</span>
 
@@ -567,7 +567,7 @@ document.write(`
             <span class="n">Tw</span> <span class="o">=</span> <span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
             <span class="n">Tl</span> <span class="o">=</span> <span class="n">matrix_inverse</span><span class="p">(</span><span class="n">Tw</span><span class="p">)</span>
             <span class="n">matrix</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">multiply_matrices</span><span class="p">(</span><span class="n">Tw</span><span class="p">,</span> <span class="n">matrix</span><span class="p">),</span> <span class="n">Tl</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

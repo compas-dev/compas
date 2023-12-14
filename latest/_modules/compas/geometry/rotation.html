@@ -545,12 +545,12 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Rotation.__init__"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.html#compas.geometry.Rotation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">matrix</span> <span class="ow">and</span> <span class="n">check</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decompose_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">flatten</span><span class="p">(</span><span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">angles</span><span class="p">))):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This is not a proper rotation matrix.&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Rotation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Rotation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">quaternion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -577,7 +577,7 @@ document.write(`
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">xaxis</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="o">*</span><span class="n">yaxis</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Rotation.from_axis_and_angle"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.from_axis_and_angle.html#compas.geometry.Rotation.from_axis_and_angle">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_axis_and_angle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a rotation transformation from a rotation axis and an angle and an optional point of rotation.</span>
 
@@ -615,9 +615,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Rotation.from_basis_vectors"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.from_basis_vectors.html#compas.geometry.Rotation.from_basis_vectors">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_basis_vectors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a rotation transformation from basis vectors (= orthonormal vectors).</span>
 
@@ -649,9 +649,9 @@ document.write(`
             <span class="p">[</span><span class="n">xaxis</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">yaxis</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">zaxis</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
             <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
         <span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Rotation.from_frame"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.from_frame.html#compas.geometry.Rotation.from_frame">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_frame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a rotation transformationn from world XY to frame.</span>
 
@@ -683,9 +683,9 @@ document.write(`
         <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Rotation.from_quaternion"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.from_quaternion.html#compas.geometry.Rotation.from_quaternion">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_quaternion</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">quaternion</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a rotation transformation` from quaternion coefficients.</span>
 
@@ -709,9 +709,9 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix_from_quaternion</span><span class="p">(</span><span class="n">quaternion</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Rotation.from_axis_angle_vector"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.from_axis_angle_vector.html#compas.geometry.Rotation.from_axis_angle_vector">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_axis_angle_vector</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">axis_angle_vector</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a rotation transformation from an axis-angle vector.</span>
 
@@ -737,10 +737,10 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">angle</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span></div>
 
     <span class="c1"># why is this repeated here?</span>
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Rotation.from_euler_angles"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.from_euler_angles.html#compas.geometry.Rotation.from_euler_angles">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_euler_angles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a rotation transformation from Euler angles.</span>
 
@@ -785,7 +785,7 @@ document.write(`
 <span class="sd">        True</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Rotation</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">from_euler_angles</span><span class="p">(</span><span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Rotation</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">from_euler_angles</span><span class="p">(</span><span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span></div>
 
     <span class="c1"># split up into two properties</span>
     <span class="c1"># euler_angles</span>
@@ -793,7 +793,7 @@ document.write(`
     <span class="c1"># xyz seems irelevant</span>
     <span class="c1"># could be added to base Transformation</span>
     <span class="c1"># always relevant</span>
-    <span class="k">def</span> <span class="nf">euler_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Rotation.euler_angles"><a class="viewcode-back" href="../../../reference/generated/compas.geometry.Rotation.euler_angles.html#compas.geometry.Rotation.euler_angles">[docs]</a>    <span class="k">def</span> <span class="nf">euler_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns Euler angles from the rotation according to specified</span>
 <span class="sd">        axis sequence and rotation type.</span>
 
@@ -821,7 +821,7 @@ document.write(`
 <span class="sd">        True</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">euler_angles_from_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">euler_angles_from_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>
