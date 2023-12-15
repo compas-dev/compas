@@ -57,8 +57,9 @@ __all_plugins__ = [
 # =============================================================================
 
 
-def clear():
-    guids = get_objects()  # noqa: F405
+def clear(guids=None):
+    if guids is None:
+        guids = get_objects()  # noqa: F405
     delete_objects(guids, purge=True)  # noqa: F405
 
 

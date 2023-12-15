@@ -5,7 +5,6 @@ from __future__ import division
 import scriptcontext as sc  # type: ignore
 
 import compas_rhino
-from compas_rhino.utilities import delete_objects
 from compas.scene import SceneObject
 
 
@@ -74,14 +73,3 @@ class RhinoSceneObject(SceneObject):
         """
         if self.layer:
             compas_rhino.clear_layer(self.layer)
-
-    def clear(self, purge=None, redraw=False):
-        """Clear the scene object.
-
-        Returns
-        -------
-        None
-
-        """
-        delete_objects(self.guids, purge=purge, redraw=redraw)
-        self._guids = None

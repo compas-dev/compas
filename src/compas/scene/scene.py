@@ -47,12 +47,17 @@ class Scene(Data):
         raise Exception("Scene object not in scene")
 
     def clear(self):
-        clear()
+        guids = []
+        for sceneobject in self.sceneobjects:
+            guids += sceneobject.guids
+            sceneobject._guids = None
+        clear(guids=guids)
 
     def redraw(self):
+        self.clear()
+
         drawn_objects = []
         for sceneobject in self.sceneobjects:
-            sceneobject.clear()
             drawn_objects += sceneobject.draw()
 
         if drawn_objects:

@@ -64,8 +64,8 @@ from .brepobject import BrepObject
 
 
 @plugin(category="drawing-utils", pluggable_name="clear", requires=["Rhino"])
-def clear_rhino():
-    compas_rhino.clear()
+def clear_rhino(guids=None):
+    compas_rhino.clear(guids=guids)
 
 
 @plugin(category="drawing-utils", pluggable_name="redraw", requires=["Rhino"])
