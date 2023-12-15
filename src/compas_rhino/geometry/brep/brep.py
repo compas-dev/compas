@@ -1,4 +1,8 @@
-import Rhino
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import Rhino  # type: ignore
 
 from compas.geometry import Frame
 from compas.geometry import Brep
@@ -68,9 +72,9 @@ class RhinoBrep(Brep):
     @property
     def data(self):
         return {
-            "vertices": [v.data for v in self.vertices],
-            "edges": [e.data for e in self.edges],
-            "faces": [f.data for f in self.faces],
+            "vertices": [v.data for v in self.vertices],  # type: ignore
+            "edges": [e.data for e in self.edges],  # type: ignore
+            "faces": [f.data for f in self.faces],  # type: ignore
         }
 
     @classmethod

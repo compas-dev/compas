@@ -1,8 +1,12 @@
-from Rhino.Geometry import ArcCurve
-from Rhino.Geometry import NurbsCurve
-from Rhino.Geometry import LineCurve
-from Rhino.Geometry import Interval
-from Rhino.Geometry import LengthMassProperties
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+from Rhino.Geometry import ArcCurve  # type: ignore
+from Rhino.Geometry import NurbsCurve  # type: ignore
+from Rhino.Geometry import LineCurve  # type: ignore
+from Rhino.Geometry import Interval  # type: ignore
+from Rhino.Geometry import LengthMassProperties  # type: ignore
 
 from compas.geometry import BrepEdge
 from compas.geometry import Line

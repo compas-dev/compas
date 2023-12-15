@@ -1,4 +1,8 @@
-import Rhino
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import Rhino  # type: ignore
 
 from compas.geometry import BrepTrim
 from compas_rhino.geometry import RhinoNurbsCurve

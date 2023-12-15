@@ -1,6 +1,10 @@
-import Rhino
-from Rhino.Geometry import Interval
-from Rhino.Geometry import RevSurface
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import Rhino  # type: ignore
+from Rhino.Geometry import Interval  # type: ignore
+from Rhino.Geometry import RevSurface  # type: ignore
 
 from compas.geometry import Brep
 from compas.geometry import BrepFace
