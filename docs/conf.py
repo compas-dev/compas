@@ -37,6 +37,7 @@ extensions = sphinx_compas2_theme.default_extensions
 numpydoc_show_class_members = False
 numpydoc_class_members_toctree = False
 numpydoc_attributes_as_param_list = True
+numpydoc_show_inherited_class_members = False
 
 # bibtex options
 
@@ -50,6 +51,9 @@ autodoc_default_options = {
     "show-inheritance": True,
 }
 autodoc_member_order = "groupwise"
+autodoc_typehints = "description"
+autodoc_class_signature = "separated"
+
 autoclass_content = "class"
 
 
@@ -140,7 +144,7 @@ html_theme_options = {
         "image_dark": "_static/compas_icon_white.png",
         "text": "COMPAS docs",
     },
-    "anouncement": "This is the documentation for the pre-release of COMPAS 2.0. The documentation of the stable release of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
+    "announcement": "This is the documentation for the pre-release of COMPAS 2.0. The documentation of the stable release of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
     "navigation_depth": 2,
 }
 

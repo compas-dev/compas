@@ -1,28 +1,25 @@
 
 ********************************************************************************
-compas_rhino.scene
+compas_ghpython.scene
 ********************************************************************************
 
-.. currentmodule:: compas_rhino.scene
+.. currentmodule:: compas_ghpython.scene
 
 .. rst-class:: lead
 
 
-This package provides scene object plugins for visualising COMPAS objects in Rhino.
-When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino scene object for each COMPAS object type.
+This package provides scene object plugins for visualising COMPAS objects in Grasshopper.
+When working in GH Python components, :class:`compas.scene.SceneObject` will automatically use the corresponding GHPython scene object for each COMPAS object type.
 
 
 Classes
 =======
-
-
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     BoxObject
-    BrepObject
     CapsuleObject
     CircleObject
     ConeObject
@@ -30,15 +27,14 @@ Classes
     CylinderObject
     EllipseObject
     FrameObject
+    GHSceneObject
     LineObject
     MeshObject
     NetworkObject
-    PlaneObject
     PointObject
     PolygonObject
     PolyhedronObject
     PolylineObject
-    RhinoSceneObject
     SphereObject
     SurfaceObject
     TorusObject

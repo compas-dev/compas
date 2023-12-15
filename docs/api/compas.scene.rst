@@ -16,8 +16,6 @@ The scene objects are implemented as pluggables, and automatically switch betwee
 Classes
 =======
 
-
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -34,8 +32,6 @@ Classes
 
 Functions
 =========
-
-
 
 .. autosummary::
     :toctree: generated/
