@@ -106,6 +106,12 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the documentation for the pre-release of COMPAS 2.0. The documentation of the stable release of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -160,15 +166,15 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API Reference
                       </a>
                     </li>
                 
@@ -319,15 +325,15 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API Reference
                       </a>
                     </li>
                 
@@ -580,12 +586,12 @@ for the requested function.</p>
 </section>
 <section id="configuration-options">
 <h2>Configuration Options</h2>
-<p>The <a class="reference internal" href="../reference/generated/compas.rpc.Proxy.html" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object has several configuration options.
+<p>The <a class="reference internal" href="../api/generated/compas.rpc.Proxy.html" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object has several configuration options.
 We will discuss only a few of those here.
 For a complete overview, please refer to the API docs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code>).</p>
 <section id="python">
 <h3><code class="docutils literal notranslate"><span class="pre">python</span></code></h3>
-<p>The <a class="reference internal" href="../reference/generated/compas.rpc.Proxy.html" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object will automatically try to reconnect to an
+<p>The <a class="reference internal" href="../api/generated/compas.rpc.Proxy.html" title="compas.rpc.Proxy"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.rpc.Proxy</span></code></a> object will automatically try to reconnect to an
 active instance of the command server, or start a new one if no active server can be found.</p>
 <p>By default, a newly started server will run an instance of the default Python interpreter of the active environment.
 For example, when running RPC from an Anaconda Prompt, or from a <code class="docutils literal notranslate"><span class="pre">conda</span></code>-enabled Terminal it will use the interpreter of the active <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment.</p>

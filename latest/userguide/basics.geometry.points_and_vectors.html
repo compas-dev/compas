@@ -106,6 +106,12 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the documentation for the pre-release of COMPAS 2.0. The documentation of the stable release of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.</div>
+  </div>
+
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
@@ -160,15 +166,15 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API Reference
                       </a>
                     </li>
                 
@@ -319,15 +325,15 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../reference/index.html">
-                        API Reference
+                      <a class="nav-link nav-internal" href="../devguide/index.html">
+                        Developer Guide
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../devguide/index.html">
-                        Developer Guide
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API Reference
                       </a>
                     </li>
                 
@@ -538,7 +544,7 @@ document.write(`
 <p>Points and vectors are represented by three floats, planes by a point and a vector, and frames by a point and two vectors.</p>
 <section id="points">
 <h2>Points</h2>
-<p>A <a class="reference internal" href="../reference/generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> represents a location in 3D space.</p>
+<p>A <a class="reference internal" href="../api/generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> represents a location in 3D space.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
@@ -587,7 +593,7 @@ See <a class="reference internal" href="basics.geometry.distance_and_membership.
 </section>
 <section id="vectors">
 <h2>Vectors</h2>
-<p>A <a class="reference internal" href="../reference/generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a> represents a direction in 3D space
+<p>A <a class="reference internal" href="../api/generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a> represents a direction in 3D space
 and a distance or magnitude along that direction (the length of the vector).
 Vectors are always based at the origin of the coordinate system.
 A vector is the direction, and distance along that direction,
@@ -659,7 +665,7 @@ Note that the angles are always returned in radians.</p>
 </section>
 <section id="basic-arithmetic">
 <h2>Basic Arithmetic</h2>
-<p><a class="reference internal" href="../reference/generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> and <a class="reference internal" href="../reference/generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a> objects support basic arithmetic
+<p><a class="reference internal" href="../api/generated/compas.geometry.Point.html" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> and <a class="reference internal" href="../api/generated/compas.geometry.Vector.html" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a> objects support basic arithmetic
 through Python’s built-in operators.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
