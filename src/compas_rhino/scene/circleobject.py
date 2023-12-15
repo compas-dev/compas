@@ -49,7 +49,7 @@ class CircleObject(RhinoSceneObject, GeometryObject):
         geometry = circle_to_rhino(self.geometry)
 
         if self.transformation:
-            geometry.Transform(transformation_to_rhino(self.transformation))
+            geometry.Transform(transformation_to_rhino(self.transformation_world))
 
         self._guids = [sc.doc.Objects.AddCircle(geometry, attr)]
         return self.guids

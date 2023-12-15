@@ -20,6 +20,9 @@ class SceneObject(object):
     guids : list[object]
         The GUIDs of the drawn item in the visualization context.
 
+    node : :class:`compas.scene.scene.SceneObjectNode`
+        The node in the scene tree which represents the scene object.
+
     """
 
     # add this to support the descriptor protocol vor Python versions below 3.6
@@ -29,10 +32,36 @@ class SceneObject(object):
         self._item = item
         self._transformation = None
         self._guids = None
+        self._node = None
+        self.ignore_parent_transformation = kwargs.get('ignore_parent_transformation', False)
+
+    @property
+    def item(self):
+        return self._item
+    
+    @property
+    def name(self):
+        return self.item.name
 
     @property
     def guids(self):
         return self._guids or []
+
+    @property
+    def node(self):
+        return self._node
+
+    @property
+    def parent(self):
+        if self.node:
+            return self.node.parent_object
+
+    @property
+    def children(self):
+        if self.node:
+            return self.node.children_objects
+        else:
+            return []
 
     @property
     def transformation(self):
@@ -49,6 +78,14 @@ class SceneObject(object):
     @transformation.setter
     def transformation(self, transformation):
         self._transformation = transformation
+
+    @property
+    def transformation_world(self):
+        print("check", self.parent)
+        if self.parent:
+            return self.parent.transformation_world * self.transformation
+        else:
+            return self.transformation
 
     @abstractmethod
     def draw(self):

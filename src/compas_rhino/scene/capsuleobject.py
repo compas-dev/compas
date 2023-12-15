@@ -47,7 +47,7 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
         breps = capsule_to_rhino_brep(self.geometry)
 
         if self.transformation:
-            transformation = transformation_to_rhino(self.transformation)
+            transformation = transformation_to_rhino(self.transformation_world)
             for geometry in breps:
                 geometry.Transform(transformation)
 

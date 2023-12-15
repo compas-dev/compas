@@ -3,55 +3,82 @@ from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 from .context import build_scene_object
 from .context import redraw
-from .context import clear
+
+
+class SceneObjectNode(TreeNode):
+    def __init__(self, sceneobject):
+        super(SceneObjectNode, self).__init__(name=sceneobject.name)
+        self.object = sceneobject
+
+    @property
+    def parent_object(self):
+        if self.parent and isinstance(self.parent, SceneObjectNode):
+            return self.parent.object
+        return None
+
+    @property
+    def children_objects(self):
+        return [child.object for child in self.children]
+
+
+class SceneTree(Tree):
+    def __init__(self, name=None):
+        super(SceneTree, self).__init__(name=name)
+        root = TreeNode(name="root")
+        self.add(root)
+
+    @property
+    def objects(self):
+        return [node.object for node in self.nodes if isinstance(node, SceneObjectNode)]
+
+    def add_object(self, sceneobject, parent=None):
+        node = SceneObjectNode(sceneobject)
+        if parent is None:
+            self.add(node, parent=self.root)
+        else:
+            parent_node = self.get_node_from_object(parent)
+            self.add(node, parent=parent_node)
+
+        sceneobject._node = node
+
+    def get_node_from_object(self, sceneobject):
+        for node in self.nodes:
+            if isinstance(node, SceneObjectNode):
+                if node.object == sceneobject:
+                    return node
+        raise ValueError("Scene object not in scene")
 
 
 class Scene(Data):
     def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
-        self._tree = Tree("Scene")
+        self._tree = SceneTree("Scene")
         self.context = context
-        root = TreeNode(name="root")
-        self.tree.add(root)
 
     @property
     def tree(self):
         return self._tree
 
     @property
-    def sceneobjects(self):
-        return [node.attributes["sceneobject"] for node in self.tree.nodes if "sceneobject" in node.attributes]
+    def objects(self):
+        return self.tree.objects
 
     def add(self, item, parent=None, **kwargs):
         sceneobject = build_scene_object(item, context=self.context, **kwargs)
-        name = item.name or item.__class__.__name__
-        node = TreeNode(name, attributes={"sceneobject": sceneobject})
-
-        if parent is None:
-            self.tree.add(node, parent=self.tree.root)
-        else:
-            parent_node = self._get_node(parent)
-            self.tree.add(node, parent=parent_node)
-
+        self.tree.add_object(sceneobject, parent=parent)
         return sceneobject
 
     def remove(self, sceneobject):
         node = self._get_node(sceneobject)
         self.tree.remove(node)
 
-    def _get_node(self, sceneobject):
-        for node in self.tree.nodes:
-            if "sceneobject" in node.attributes:
-                if node.attributes["sceneobject"] == sceneobject:
-                    return node
-        raise Exception("Scene object not in scene")
-
     def clear(self):
-        clear()
+        for sceneobject in self.objects:
+            sceneobject.clear()
 
     def redraw(self):
         drawn_objects = []
-        for sceneobject in self.sceneobjects:
+        for sceneobject in self.objects:
             sceneobject.clear()
             drawn_objects += sceneobject.draw()
 
