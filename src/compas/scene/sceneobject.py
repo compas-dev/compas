@@ -18,7 +18,7 @@ class SceneObject(object):
     Attributes
     ----------
     guids : list[object]
-        The GUIDs of the drawn item in the visualization context.
+        The GUIDs of the items drawn in the visualization context.
 
     """
 

@@ -38,7 +38,7 @@ class CurveObject(RhinoSceneObject, GeometryObject):
         Returns
         -------
         list[System.Guid]
-            List of GUIDs of the object created in Rhino.
+            List of GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
