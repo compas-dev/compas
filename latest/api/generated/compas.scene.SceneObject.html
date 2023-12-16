@@ -61,7 +61,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SceneObject.draw" href="compas.scene.SceneObject.draw.html" />
+    <link rel="next" title="SceneObject.clear" href="compas.scene.SceneObject.clear.html" />
     <link rel="prev" title="Scene.validate_data" href="compas.scene.Scene.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1253,22 +1253,19 @@ document.write(`
 <h1>SceneObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.SceneObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/scene/sceneobject.py#L9"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/scene/sceneobject.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for all scene objects.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>item</strong><span class="classifier">Any</span></dt><dd><p>The item which should be visualized using the created SceneObject.</p>
 </dd>
-<dt><strong>context</strong><span class="classifier">str, optional</span></dt><dd><p>Explicit context to pick the SceneObject from.
-If not specified, an attempt will be made to automatically detect the appropriate context.</p>
-</dd>
 </dl>
 </dd>
 <dt class="field-even">Attributes</dt>
-<dd class="field-even"><dl>
-<dt><strong>ITEM_SCENEOBJECT</strong><span class="classifier">dict[str, dict[Type[<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a>], Type[<a class="reference internal" href="#compas.scene.SceneObject" title="compas.scene.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">SceneObject</span></code></a>]]]</span></dt><dd><p>Dictionary mapping data types to the corresponding scene objects types per visualization context.</p>
+<dd class="field-even"><dl class="simple">
+<dt><strong>guids</strong><span class="classifier">list[object]</span></dt><dd><p>The GUIDs of the items drawn in the visualization context.</p>
 </dd>
 </dl>
 </dd>
@@ -1280,11 +1277,11 @@ If not specified, an attempt will be made to automatically detect the appropriat
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.draw.html#compas.scene.SceneObject.draw" title="compas.scene.SceneObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p>The main drawing method.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.clear.html#compas.scene.SceneObject.clear" title="compas.scene.SceneObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<td><p>The main clearing method.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.SceneObject.draw_collection.html#compas.scene.SceneObject.draw_collection" title="compas.scene.SceneObject.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a></p></td>
-<td><p>Drawing method for drawing an entire collection of objects.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.SceneObject.draw.html#compas.scene.SceneObject.draw" title="compas.scene.SceneObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
+<td><p>The main drawing method.</p></td>
 </tr>
 </tbody>
 </table>
