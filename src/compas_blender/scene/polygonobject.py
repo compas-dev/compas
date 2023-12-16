@@ -1,5 +1,4 @@
 from typing import Any
-from typing import List
 from typing import Optional
 
 import bpy  # type: ignore
@@ -32,7 +31,7 @@ class PolygonObject(BlenderSceneObject, GeometryObject):
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-    ) -> List[bpy.types.Object]:
+    ) -> list[bpy.types.Object]:
         """Draw the polygon.
 
         Parameters
@@ -44,7 +43,7 @@ class PolygonObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
 
         """
         name = self.geometry.name
@@ -55,4 +54,5 @@ class PolygonObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

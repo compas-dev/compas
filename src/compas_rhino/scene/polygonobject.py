@@ -39,8 +39,8 @@ class PolygonObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the created Rhino object.
+        list[System.Guid]
+            List of GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -52,7 +52,8 @@ class PolygonObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             mesh.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddMesh(mesh, attr)
+        self._guids = [sc.doc.Objects.AddMesh(mesh, attr)]
+        return self.guids
 
     def draw_vertices(self, color=None):
         """Draw the polygon vertices.

@@ -27,7 +27,7 @@ class PolylineObject(BlenderSceneObject, GeometryObject):
     def __init__(self, polyline: Polyline, **kwargs: Any):
         super().__init__(geometry=polyline, **kwargs)
 
-    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> bpy.types.Object:
+    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> list[bpy.types.Object]:
         """Draw the line.
 
         Parameters
@@ -39,7 +39,8 @@ class PolylineObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
         name = self.geometry.name
@@ -50,4 +51,5 @@ class PolylineObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(curve, name=name)
         self.update_object(obj, color=color, collection=collection)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

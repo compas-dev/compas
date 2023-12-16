@@ -93,7 +93,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
 
     def draw(
         self, cells: Optional[List[int]] = None, color: Optional[Color] = None, collection: Optional[str] = None
-    ) -> List[bpy.types.Object]:
+    ) -> list[bpy.types.Object]:
         """Draw a selection of cells.
 
         Parameters
@@ -110,9 +110,11 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         Returns
         -------
         list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
-        return self.draw_cells(cells=cells, color=color, collection=collection)
+        self._guids = self.draw_cells(cells=cells, color=color, collection=collection)
+        return self.guids
 
     def draw_vertices(
         self,

@@ -1,5 +1,4 @@
 from typing import Any
-from typing import List
 from typing import Optional
 
 import bpy  # type: ignore
@@ -29,7 +28,7 @@ class PolyhedronObject(BlenderSceneObject, GeometryObject):
 
     def draw(
         self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
-    ) -> List[bpy.types.Object]:
+    ) -> list[bpy.types.Object]:
         """Draw the polyhedron associated with the scene object.
 
         Parameters
@@ -43,8 +42,8 @@ class PolyhedronObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
-            The object created in Blender.
+        list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
         name = self.geometry.name
@@ -56,4 +55,5 @@ class PolyhedronObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

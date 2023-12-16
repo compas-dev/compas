@@ -33,7 +33,7 @@ class BoxObject(BlenderSceneObject, GeometryObject):
         color: Optional[Color] = None,
         collection: Optional[Union[str, bpy.types.Collection]] = None,
         show_wire: bool = True,
-    ) -> bpy.types.Object:
+    ) -> list[bpy.types.Object]:
         """Draw the box associated with the scene object.
 
         Parameters
@@ -47,7 +47,7 @@ class BoxObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
             The object(s) created in Blender to represent the box.
 
         """
@@ -61,4 +61,5 @@ class BoxObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

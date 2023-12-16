@@ -48,4 +48,5 @@ class LineObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddLine(geometry, attr)
+        self._guids = [sc.doc.Objects.AddLine(geometry, attr)]
+        return self.guids

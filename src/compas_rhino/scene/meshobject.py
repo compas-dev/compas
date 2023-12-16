@@ -189,8 +189,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
 
-        guid = sc.doc.Objects.AddMesh(geometry, attr)
-        return [guid]
+        self._guids = [sc.doc.Objects.AddMesh(geometry, attr)]
+        return self.guids
 
     def draw_vertices(self, vertices=None, color=None, group=None):
         """Draw a selection of vertices.

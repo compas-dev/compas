@@ -10,7 +10,7 @@ ITEM_SCENEOBJECT = defaultdict(dict)
 
 
 @pluggable(category="drawing-utils")
-def clear():
+def clear(guids=None):
     raise NotImplementedError
 
 

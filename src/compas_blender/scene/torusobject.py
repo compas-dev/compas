@@ -35,7 +35,7 @@ class TorusObject(BlenderSceneObject, GeometryObject):
         v: Optional[int] = 16,
         show_wire: bool = False,
         shade_smooth: bool = True,
-    ) -> bpy.types.Object:
+    ) -> list[bpy.types.Object]:
         """Draw the torus associated with the scene object.
 
         Parameters
@@ -55,7 +55,8 @@ class TorusObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Curve`
+        list[:blender:`bpy.types.Curve`]
+            The objects created in Blender.
 
         """
         name = self.geometry.name
@@ -69,4 +70,5 @@ class TorusObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

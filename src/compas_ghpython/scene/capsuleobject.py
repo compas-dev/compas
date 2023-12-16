@@ -29,6 +29,7 @@ class CapsuleObject(GHSceneObject, GeometryObject):
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Brep`]
+            List of created Rhino breps.
 
         """
         breps = conversions.capsule_to_rhino_brep(self.geometry)
@@ -38,4 +39,5 @@ class CapsuleObject(GHSceneObject, GeometryObject):
             for geometry in breps:
                 geometry.Transform(transformation)
 
-        return breps
+        self._guids = breps
+        return self.guids

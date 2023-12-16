@@ -1,5 +1,4 @@
 from typing import Any
-from typing import List
 from typing import Optional
 
 import bpy  # type: ignore
@@ -34,7 +33,7 @@ class LineObject(BlenderSceneObject, GeometryObject):
         self,
         color: Optional[Color] = None,
         collection: Optional[str] = None,
-    ) -> List[bpy.types.Object]:
+    ) -> list[bpy.types.Object]:
         """Draw the line.
 
         Parameters
@@ -46,7 +45,8 @@ class LineObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
         name = self.geometry.name
@@ -57,4 +57,5 @@ class LineObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(curve, name=name)
         self.update_object(obj, color=color, collection=collection, show_wire=True)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

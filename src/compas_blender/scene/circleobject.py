@@ -25,7 +25,7 @@ class CircleObject(BlenderSceneObject, GeometryObject):
     def __init__(self, circle: Circle, **kwargs: Any):
         super().__init__(geometry=circle, **kwargs)
 
-    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> bpy.types.Object:
+    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> list[bpy.types.Object]:
         """Draw the circle.
 
         Parameters
@@ -37,7 +37,7 @@ class CircleObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
             The object created in Blender.
 
         """
@@ -49,4 +49,5 @@ class CircleObject(BlenderSceneObject, GeometryObject):
         self.objects.append(obj)
         self.update_object(obj, color=color, collection=collection, transformation=self.geometry.transformation)
 
-        return obj
+        self._guids = [obj]
+        return self.guids

@@ -45,9 +45,9 @@ class FrameObject(GHSceneObject, GeometryObject):
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
-
+            List of created Rhino geometries.
         """
-        geometry = []
+        geometries = []
 
         origin = self.geometry.point
         x = self.geometry.point + self.geometry.xaxis * self.scale
@@ -55,9 +55,14 @@ class FrameObject(GHSceneObject, GeometryObject):
         z = self.geometry.point + self.geometry.zaxis * self.scale
 
         # geometry.append(conversions.frame_to_rhino(self.geometry))
-        geometry.append(conversions.point_to_rhino(self.geometry.point))
-        geometry.append(conversions.line_to_rhino([origin, x]))
-        geometry.append(conversions.line_to_rhino([origin, y]))
-        geometry.append(conversions.line_to_rhino([origin, z]))
+        geometries.append(conversions.point_to_rhino(self.geometry.point))
+        geometries.append(conversions.line_to_rhino([origin, x]))
+        geometries.append(conversions.line_to_rhino([origin, y]))
+        geometries.append(conversions.line_to_rhino([origin, z]))
 
-        return geometry
+        if self.transformation:
+            for geometry in geometries:
+                geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+
+        self._guids = geometries
+        return self.guids

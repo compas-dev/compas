@@ -4,6 +4,7 @@ from __future__ import print_function
 
 from abc import abstractmethod
 from .descriptors.protocol import DescriptorProtocol
+from .context import clear
 
 
 class SceneObject(object):
@@ -13,14 +14,12 @@ class SceneObject(object):
     ----------
     item : Any
         The item which should be visualized using the created SceneObject.
-    context : str, optional
-        Explicit context to pick the SceneObject from.
-        If not specified, an attempt will be made to automatically detect the appropriate context.
+
 
     Attributes
     ----------
-    ITEM_SCENEOBJECT : dict[str, dict[Type[:class:`~compas.data.Data`], Type[:class:`~compas.scene.SceneObject`]]]
-        Dictionary mapping data types to the corresponding scene objects types per visualization context.
+    guids : list[object]
+        The GUIDs of the items drawn in the visualization context.
 
     """
 
@@ -30,6 +29,11 @@ class SceneObject(object):
     def __init__(self, item, **kwargs):
         self._item = item
         self._transformation = None
+        self._guids = None
+
+    @property
+    def guids(self):
+        return self._guids or []
 
     @property
     def transformation(self):
@@ -52,7 +56,7 @@ class SceneObject(object):
         """The main drawing method."""
         raise NotImplementedError
 
-    @staticmethod
-    def draw_collection(collection):
-        """Drawing method for drawing an entire collection of objects."""
-        raise NotImplementedError
+    def clear(self):
+        """The main clearing method."""
+        clear(guids=self.guids)
+        self._guids = None

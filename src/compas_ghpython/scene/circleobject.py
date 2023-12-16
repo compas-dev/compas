@@ -28,7 +28,8 @@ class CircleObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Circle`
+        list[:rhino:`Rhino.Geometry.Circle`]
+            List of created Rhino circles.
 
         """
         circle = conversions.circle_to_rhino(self.geometry)
@@ -37,4 +38,5 @@ class CircleObject(GHSceneObject, GeometryObject):
             transformation = conversions.transformation_to_rhino(self.transformation)
             circle.Transform(transformation)
 
-        return circle
+        self._guids = [circle]
+        return self.guids

@@ -2,18 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import scriptcontext as sc  # type: ignore
-
+from compas_rhino import conversions
 
 from compas.scene import GeometryObject
-from .sceneobject import RhinoSceneObject
-from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import transformation_to_rhino
-from compas_rhino.conversions import vertices_and_faces_to_rhino
+from .sceneobject import GHSceneObject
 from compas.geometry import Frame
 
 
-class PlaneObject(RhinoSceneObject, GeometryObject):
+class PlaneObject(GHSceneObject, GeometryObject):
     """Scene object for drawing planes.
 
     Parameters
@@ -21,10 +17,15 @@ class PlaneObject(RhinoSceneObject, GeometryObject):
     plane : :class:`compas.geometry.Plane`
         A COMPAS plane.
     scale : float, optional
-        Scale factor.
+        Scale factor that controls the visualisation size of the plane.
         Default is ``1.0``.
     **kwargs : dict, optional
         Additional keyword arguments.
+
+    Attributes
+    ----------
+    scale : float
+        Scale factor that controls the visualisation size of the plane.
 
     """
 
@@ -33,23 +34,17 @@ class PlaneObject(RhinoSceneObject, GeometryObject):
         self.scale = scale
 
     def draw(self):
-        """Draw the plane.
+        """Draw the frame.
 
         Returns
         -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
+        list[:rhino:`Rhino.Geometry.Line`, :rhino:`Rhino.Geometry.Mesh`]
+            List of created Rhino geometries.
         """
-
         frame = Frame.from_plane(self._item)
-
-        guids = [
-            sc.doc.Objects.AddLine(
-                point_to_rhino(frame.to_world_coordinates([0, 0, 0])),
-                point_to_rhino(frame.to_world_coordinates([0, 0, self.scale])),
-            )
-        ]
+        normal = conversions.line_to_rhino(
+            [frame.to_world_coordinates([0, 0, 0]), frame.to_world_coordinates([0, 0, self.scale])]
+        )
 
         vertices = [
             frame.to_world_coordinates([-self.scale, -self.scale, 0]),
@@ -58,16 +53,13 @@ class PlaneObject(RhinoSceneObject, GeometryObject):
             frame.to_world_coordinates([-self.scale, self.scale, 0]),
         ]
         faces = [[0, 1, 2, 3]]
-        mesh = vertices_and_faces_to_rhino(vertices, faces)
-        guids.append(sc.doc.Objects.AddMesh(mesh))
+        mesh = conversions.vertices_and_faces_to_rhino(vertices, faces)
+
+        geometries = [normal, mesh]
 
         if self.transformation:
-            transformation = transformation_to_rhino(self.transformation)
-            for guid in guids:
-                obj = sc.doc.Objects.Find(guid)
-                if obj:
-                    obj.Geometry.Transform(transformation)
-                    obj.CommitChanges()
+            for geometry in geometries:
+                geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        self._guids = guids
+        self._guids = geometries
         return self.guids

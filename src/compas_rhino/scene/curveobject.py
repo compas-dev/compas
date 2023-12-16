@@ -37,8 +37,8 @@ class CurveObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the created Rhino object.
+        list[System.Guid]
+            List of GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -49,4 +49,5 @@ class CurveObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddCurve(geometry, attr)
+        self._guids = [sc.doc.Objects.AddCurve(geometry, attr)]
+        return self.guids

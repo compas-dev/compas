@@ -39,11 +39,11 @@ class VolMeshObject(GHSceneObject, BaseVolMeshObject):
         Returns
         -------
         list[:rhino:`Rhino.Geometry.Mesh`]
-            The GUIDs of the created Rhino objects.
-            Every cell is drawn as an individual mesh.
+            List of created Rhino meshes.
 
         """
-        return self.draw_cells(cells=cells, color=color)
+        self._guids = self.draw_cells(cells=cells, color=color)
+        return self.guids
 
     def draw_vertices(self, vertices=None):
         """Draw a selection of vertices.

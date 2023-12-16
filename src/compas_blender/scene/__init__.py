@@ -16,6 +16,7 @@ from compas.geometry import Curve
 from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Line
+from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Pointcloud
 from compas.geometry import Polygon
@@ -40,6 +41,7 @@ from .frameobject import FrameObject
 from .lineobject import LineObject
 from .meshobject import MeshObject
 from .networkobject import NetworkObject
+from .planeobject import PlaneObject
 from .pointobject import PointObject
 from .pointcloudobject import PointcloudObject
 from .polygonobject import PolygonObject
@@ -53,8 +55,8 @@ from .volmeshobject import VolMeshObject
 
 
 @plugin(category="drawing-utils", pluggable_name="clear", requires=["bpy"])
-def clear_blender():
-    compas_blender.clear()
+def clear_blender(guids=None):
+    compas_blender.clear(guids=guids)
 
 
 @plugin(category="drawing-utils", pluggable_name="redraw", requires=["bpy"])
@@ -74,6 +76,7 @@ def register_scene_objects():
     register(Line, LineObject, context="Blender")
     register(Mesh, MeshObject, context="Blender")
     register(Network, NetworkObject, context="Blender")
+    register(Plane, PlaneObject, context="Blender")
     register(Point, PointObject, context="Blender")
     register(Pointcloud, PointcloudObject, context="Blender")
     register(Polygon, PolygonObject, context="Blender")
@@ -99,6 +102,7 @@ __all__ = [
     "LineObject",
     "MeshObject",
     "NetworkObject",
+    "PlaneObject",
     "PointObject",
     "PointcloudObject",
     "PolygonObject",

@@ -37,8 +37,8 @@ class PointObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the created Rhino object.
+        list[System.Guid]
+            List of GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -46,4 +46,6 @@ class PointObject(RhinoSceneObject, GeometryObject):
         geometry = point_to_rhino(self.geometry)
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
-        return sc.doc.Objects.AddPoint(geometry, attr)
+
+        self._guids = [sc.doc.Objects.AddPoint(geometry, attr)]
+        return self.guids

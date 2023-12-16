@@ -41,8 +41,8 @@ class VectorObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the created Rhino object.
+        list[System.Guid]
+            List of GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -58,4 +58,5 @@ class VectorObject(RhinoSceneObject, GeometryObject):
             start_geometry.Transform(transformation)
             end_geometry.Transform(transformation)
 
-        return sc.doc.Objects.AddLine(start_geometry, end_geometry, attr)
+        self._guids = [sc.doc.Objects.AddLine(start_geometry, end_geometry, attr)]
+        return self.guids

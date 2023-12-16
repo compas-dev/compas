@@ -31,7 +31,7 @@ class CurveObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Curve`
+        list[:rhino:`Rhino.Geometry.Curve`]
 
         """
         geometry = conversions.curve_to_rhino(self.geometry)
@@ -40,4 +40,5 @@ class CurveObject(GHSceneObject, GeometryObject):
             transformation = conversions.transformation_to_rhino(self.transformation)
             geometry.Transform(transformation)
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

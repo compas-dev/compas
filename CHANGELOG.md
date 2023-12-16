@@ -1575,6 +1575,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in `compas.geometry.Box.vertices`.
+* `compas.scene.SceneObject` will now track a list of drawn Objects/GUIDs.
 
 ### Removed
 

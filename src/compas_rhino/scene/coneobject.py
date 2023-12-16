@@ -49,4 +49,5 @@ class ConeObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddBrep(geometry, attr)
+        self._guids = [sc.doc.Objects.AddBrep(geometry, attr)]
+        return self.guids

@@ -26,6 +26,7 @@ class BoxObject(RhinoSceneObject, GeometryObject):
 
     def __init__(self, box, **kwargs):
         super(BoxObject, self).__init__(geometry=box, **kwargs)
+        self.box = box
 
     def draw(self, color=None):
         """Draw the box associated with the scene object.
@@ -37,8 +38,8 @@ class BoxObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the object created in Rhino.
+        list[System.Guid]
+            List of GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -50,4 +51,5 @@ class BoxObject(RhinoSceneObject, GeometryObject):
             transformation = transformation_to_rhino(self.transformation)
             geometry.Transform(transformation)
 
-        return sc.doc.Objects.AddBox(geometry, attr)
+        self._guids = [sc.doc.Objects.AddBox(geometry, attr)]
+        return self.guids

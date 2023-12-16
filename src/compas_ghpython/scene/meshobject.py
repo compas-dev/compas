@@ -34,7 +34,7 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Mesh`
+        list[:rhino:`Rhino.Geometry.Mesh`]
 
         """
         # the rhino scene object can set an overal color and component colors simultaneously
@@ -62,7 +62,8 @@ class MeshObject(GHSceneObject, BaseMeshObject):
         # if self.transformation:
         #     geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids
 
     def draw_vertices(self, vertices=None):
         """Draw a selection of vertices.

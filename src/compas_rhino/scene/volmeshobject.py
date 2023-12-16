@@ -147,7 +147,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             Every cell is drawn as an individual mesh.
 
         """
-        return self.draw_cells(cells=cells, color=color)
+        self._guids = self.draw_cells(cells=cells, color=color)
+        return self.guids
 
     def draw_vertices(self, vertices=None, color=None, group=None):
         """Draw a selection of vertices.

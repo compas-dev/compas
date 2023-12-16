@@ -28,7 +28,8 @@ class LineObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Line`
+        list[:rhino:`Rhino.Geometry.Line`]
+            List of created Rhino lines.
 
         """
         geometry = conversions.line_to_rhino(self.geometry)
@@ -36,4 +37,5 @@ class LineObject(GHSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

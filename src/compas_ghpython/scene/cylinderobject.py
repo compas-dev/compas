@@ -23,24 +23,18 @@ class CylinderObject(GHSceneObject, GeometryObject):
     def __init__(self, cylinder, **kwargs):
         super(CylinderObject, self).__init__(geometry=cylinder, **kwargs)
 
-    def draw(self, color=None, u=16):
+    def draw(self):
         """Draw the cylinder associated with the scene object.
-
-        Parameters
-        ----------
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
-            The RGB color of the box.
-        u : int, optional
-            Number of faces in the "u" direction.
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Mesh`
-
+        list[:rhino:`Rhino.Geometry.Brep`]
+            List of created Rhino breps.
         """
         geometry = conversions.cylinder_to_rhino_brep(self.geometry)
 
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

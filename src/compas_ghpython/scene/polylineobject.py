@@ -28,7 +28,8 @@ class PolylineObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.PolylineCurve`.
+        list[:rhino:`Rhino.Geometry.PolylineCurve`]
+            List of created Rhino polyline.
 
         """
         geometry = conversions.polyline_to_rhino_curve(self.geometry)
@@ -36,4 +37,5 @@ class PolylineObject(GHSceneObject, GeometryObject):
         if self.transformation:
             geometry.Transform(conversions.transformation_to_rhino(self.transformation))
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

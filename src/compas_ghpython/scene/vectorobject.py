@@ -35,7 +35,8 @@ class VectorObject(GHSceneObject, GeometryObject):
 
         Returns
         -------
-        :rhino:`Rhino.Geometry.Line`
+        list[:rhino:`Rhino.Geometry.Line`]
+            List of created Rhino lines.
 
         """
         point = point or [0, 0, 0]
@@ -48,4 +49,5 @@ class VectorObject(GHSceneObject, GeometryObject):
             transformation = conversions.transformation_to_rhino(self.transformation)
             geometry.Transform(transformation)
 
-        return geometry
+        self._guids = [geometry]
+        return self.guids

@@ -38,8 +38,8 @@ class EllipseObject(RhinoSceneObject, GeometryObject):
 
         Returns
         -------
-        System.Guid
-            The GUID of the created Rhino object.
+        list[System.Guid]
+            The GUIDs of the objects created in Rhino.
 
         """
         color = Color.coerce(color) or self.color
@@ -51,4 +51,5 @@ class EllipseObject(RhinoSceneObject, GeometryObject):
         if self.transformation:
             ellipse.Transform(transformation_to_rhino(self.transformation))
 
-        return sc.doc.Objects.AddCurve(ellipse, attr)
+        self._guids = [sc.doc.Objects.AddCurve(ellipse, attr)]
+        return self.guids

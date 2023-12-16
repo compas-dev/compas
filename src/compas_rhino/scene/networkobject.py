@@ -105,7 +105,8 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         self.clear()
         guids = self.draw_nodes(nodes=nodes, color=nodecolor)
         guids += self.draw_edges(edges=edges, color=edgecolor)
-        return guids
+        self._guids = guids
+        return self.guids
 
     def draw_nodes(self, nodes=None, color=None, group=None):
         """Draw a selection of nodes.

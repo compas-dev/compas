@@ -82,7 +82,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
 
     def draw(
         self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
-    ) -> bpy.types.Object:
+    ) -> list[bpy.types.Object]:
         """Draw the mesh.
 
         Parameters
@@ -97,6 +97,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         Returns
         -------
         list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
         name = self.mesh.name  # type: ignore
@@ -106,7 +107,8 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         obj = self.create_object(mesh, name=name)
         self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
 
-        return obj
+        self._guids = [obj]
+        return self.guids
 
     def draw_vertices(
         self,

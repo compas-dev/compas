@@ -10,6 +10,3 @@ class GHSceneObject(SceneObject):
 
     def __init__(self, **kwargs):
         super(GHSceneObject, self).__init__(**kwargs)
-
-    def clear(self):
-        raise NotImplementedError

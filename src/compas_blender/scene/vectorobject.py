@@ -34,7 +34,7 @@ class VectorObject(BlenderSceneObject, GeometryObject):
         color: Optional[Color] = None,
         collection: Optional[str] = None,
         point: Optional[Point] = None,
-    ) -> bpy.types.Object:
+    ) -> list[bpy.types.Object]:
         """Draw the vector.
 
         Parameters
@@ -49,7 +49,8 @@ class VectorObject(BlenderSceneObject, GeometryObject):
 
         Returns
         -------
-        :blender:`bpy.types.Object`
+        list[:blender:`bpy.types.Object`]
+            The objects created in Blender.
 
         """
         name = self.geometry.name
@@ -65,4 +66,5 @@ class VectorObject(BlenderSceneObject, GeometryObject):
         obj = self.create_object(curve, name=name)
         self.update_object(obj, color=color, collection=collection)
 
-        return obj
+        self._guids = [obj]
+        return self.guids
