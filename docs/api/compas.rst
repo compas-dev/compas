@@ -1,5 +1,7 @@
+
+********************************************************************************
 compas
-======
+********************************************************************************
 
 This package is the core package of the COMPAS framework.
 It defines all functionality for geometry processing,

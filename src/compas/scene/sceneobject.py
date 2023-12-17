@@ -4,6 +4,7 @@ from __future__ import print_function
 
 from abc import abstractmethod
 from .descriptors.protocol import DescriptorProtocol
+from .context import clear
 
 
 class SceneObject(object):
@@ -18,7 +19,7 @@ class SceneObject(object):
     Attributes
     ----------
     guids : list[object]
-        The GUIDs of the drawn item in the visualization context.
+        The GUIDs of the items drawn in the visualization context.
 
     node : :class:`compas.scene.scene.SceneObjectNode`
         The node in the scene tree which represents the scene object.
@@ -92,7 +93,7 @@ class SceneObject(object):
         """The main drawing method."""
         raise NotImplementedError
 
-    @abstractmethod
     def clear(self):
         """The main clearing method."""
-        raise NotImplementedError
+        clear(guids=self.guids)
+        self._guids = None

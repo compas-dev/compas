@@ -1,5 +1,7 @@
+
+********************************************************************************
 API Reference
-=============
+********************************************************************************
 
 compas
 ------
@@ -14,7 +16,6 @@ and can be used independently of CAD systems in any environment that supports Py
     :titlesonly:
     :caption: compas
 
-    compas.scene
     compas.colors
     compas.data
     compas.datastructures
@@ -23,6 +24,7 @@ and can be used independently of CAD systems in any environment that supports Py
     compas.numerical
     compas.plugins
     compas.rpc
+    compas.scene
     compas.topology
 
 
@@ -37,9 +39,9 @@ COMPAS geometry and data structures in Blender, and for basic user inter interac
     :titlesonly:
     :caption: compas_blender
 
-    compas_blender.scene
     compas_blender.conversions
     compas_blender.geometry
+    compas_blender.scene
 
 
 compas_ghpython
@@ -53,9 +55,9 @@ COMPAS geometry and data structures in Rhino, through GHPython.
     :titlesonly:
     :caption: compas_ghpython
 
-    compas_ghpython.scene
     compas_ghpython.components
     compas_ghpython.conversions
+    compas_ghpython.scene
 
 
 compas_rhino
@@ -69,7 +71,7 @@ COMPAS geometry and data structures in Rhino, and for basic user inter interacti
     :titlesonly:
     :caption: compas_rhino
 
-    compas_rhino.scene
     compas_rhino.conversions
     compas_rhino.forms
     compas_rhino.geometry
+    compas_rhino.scene

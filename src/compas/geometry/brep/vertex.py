@@ -8,6 +8,8 @@ class BrepVertex(Data):
     ----------
     point : :class:`compas.geometry.Point`, read_only
         Returns the geometry of this vertex as a 3D point
+    native_vertex : Any
+        The underlying vertex object. Type is backend-dependent.
 
     """
 
@@ -17,6 +19,10 @@ class BrepVertex(Data):
 
     @property
     def point(self):
+        raise NotImplementedError
+
+    @property
+    def native_vertex(self):
         raise NotImplementedError
 
     # ==============================================================================

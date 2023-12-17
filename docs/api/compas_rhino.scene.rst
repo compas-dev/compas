@@ -15,8 +15,6 @@ When working in Rhino, :class:`compas.scene.SceneObject` will automatically use 
 Classes
 =======
 
-
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -38,7 +36,7 @@ Classes
     PolygonObject
     PolyhedronObject
     PolylineObject
-    RhinoObject
+    RhinoSceneObject
     SphereObject
     SurfaceObject
     TorusObject

@@ -1,5 +1,7 @@
+
+********************************************************************************
 compas_blender
-==============
+********************************************************************************
 
 This package provides functionality for reading and writing Blender geometry, for visualising
 COMPAS geometry and data structures in Blender, and for basic user inter interaction.

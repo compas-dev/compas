@@ -73,13 +73,17 @@ class Scene(Data):
         self.tree.remove(node)
 
     def clear(self):
-        for sceneobject in self.objects:
-            sceneobject.clear()
+        guids = []
+        for sceneobject in self.sceneobjects:
+            guids += sceneobject.guids
+            sceneobject._guids = None
+        clear(guids=guids)
 
     def redraw(self):
+        self.clear()
+
         drawn_objects = []
-        for sceneobject in self.objects:
-            sceneobject.clear()
+        for sceneobject in self.sceneobjects:
             drawn_objects += sceneobject.draw()
 
         if drawn_objects:

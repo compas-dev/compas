@@ -14,8 +14,6 @@ This package provides functions to convert between COMPAS data/objects and Blend
 Functions
 =========
 
-
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:

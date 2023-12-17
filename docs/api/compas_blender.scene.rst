@@ -14,8 +14,6 @@ When working in Blender, :class:`compas.scene.SceneObject` will automatically us
 
 Classes
 =======
-BoxObject
-
 
 .. autosummary::
     :toctree: generated/

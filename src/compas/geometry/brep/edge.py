@@ -1,11 +1,29 @@
 from compas.data import Data
 
 
+class CurveType(object):
+    """Enumaration of curve types."""
+
+    LINE = 0
+    CIRCLE = 1
+    ELLIPSE = 2
+    HYPERBOLA = 3
+    PARABOLA = 4
+    BEZIER = 5
+    BSPLINE = 6
+    OTHER = 7
+    CURVE2D = 8
+
+
 class BrepEdge(Data):
     """An interface for a Brep Edge
 
     Attributes
     ----------
+    curve : :class:`compas.geometry.Curve`
+        Returns the curve geometry of this edge.
+    first_vertex : :class:`compas.geometry.BrepVertex`
+        Returns the first vertex of this edge.
     is_line : bool, read-only
         Returns True if this edge is a line, False otherwise.
     is_circle : bool, read-only
@@ -22,16 +40,18 @@ class BrepEdge(Data):
         Returns True if this edge is a bspline, False otherwise.
     is_other : bool, read-only
         Returns True if this edge is of another shape, False otherwise.
-    is_valid : bool, read-only
-        Returns True if this edge is valid, False otherwise.
+    orientation : literal(:class:`~compas.geometry.BrepOrientation`), read-only
+        Returns the orientation of this edge. One of: FORWARD, REVERSED, INTERNAL, EXTERNAL.
+    type : literal(:class:`~compas.geometry.CurveType`), read-only
+        Returns the type of this edge. One of: LINE, CIRCLE, ELLIPSE, HYPERBOLA, PARABOLA, BEZIER, BSPLINE, OTHER.
     vertices : list[:class:`compas.geometry.BrepVertex`], read-only
         Gets the list of vertices which compound this edge.
-    first_vertex : :class:`compas.geometry.BrepVertex`
-        Returns the first vertex of this edge.
     last_vertex : :class:`compas.geometry.BrepVertex`
         Returns the last vertex of this edge.
-    curve : :class:`compas.geometry.Curve`
-        Returns the curve geometry of this edge.
+    length : float, read-only
+        Returns the length of this edge.
+    native_edge : Any
+        The underlying edge object. Type is backend-dependent.
 
     """
 
@@ -88,7 +108,19 @@ class BrepEdge(Data):
         raise NotImplementedError
 
     @property
+    def length(self):
+        raise NotImplementedError
+
+    @property
     def curve(self):
+        raise NotImplementedError
+
+    @property
+    def orientation(self):
+        raise NotImplementedError
+
+    @property
+    def type(self):
         raise NotImplementedError
 
     # ==============================================================================

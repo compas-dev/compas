@@ -6,11 +6,18 @@ This guide is intended for developers who want to contribute to the code and/or 
 .. toctree::
     :maxdepth: 1
     :titlesonly:
+    :caption: Development Basics
 
     setup
     workflow
     code
     documentation
+
+.. toctree::
+    :maxdepth: 1
+    :titlesonly:
+    :caption: Advanced Topics
+
     extensions
     plugins
     ghcomponent

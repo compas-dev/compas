@@ -15,8 +15,6 @@ When working in GH Python components, :class:`compas.scene.SceneObject` will aut
 Classes
 =======
 
-
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -29,7 +27,7 @@ Classes
     CylinderObject
     EllipseObject
     FrameObject
-    GHObject
+    GHSceneObject
     LineObject
     MeshObject
     NetworkObject

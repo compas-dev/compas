@@ -55,8 +55,8 @@ from .volmeshobject import VolMeshObject
 
 
 @plugin(category="drawing-utils", pluggable_name="clear", requires=["bpy"])
-def clear_blender():
-    compas_blender.clear()
+def clear_blender(guids=None):
+    compas_blender.clear(guids=guids)
 
 
 @plugin(category="drawing-utils", pluggable_name="redraw", requires=["bpy"])

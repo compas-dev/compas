@@ -14,8 +14,6 @@ This package provides plugins for various geometry pluggables using Rhino as the
 Classes
 =======
 
-
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
