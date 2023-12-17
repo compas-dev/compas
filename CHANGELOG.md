@@ -84,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed plugin selection to fall back to a default implementation if possible.
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 * Fixed `compas_rhino.geometry.RhinoBrep` serialization.
+* UPDATING `color` SETTINGS IN `SceneObject` ... [TO BE FILLED OUT]
 
 ### Removed
 

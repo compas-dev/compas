@@ -7,7 +7,6 @@ from abc import abstractmethod
 from compas.colors import Color
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
-from .descriptors.color import ColorAttribute
 from .descriptors.colordict import ColorDictAttribute
 
 
@@ -26,16 +25,16 @@ class VolMeshObject(SceneObject):
     vertex_xyz : dict[int, list[float]]
         The view coordinates of the vertices.
         By default, the actual vertex coordinates are used.
-    vertex_color : dict[int, :class:`compas.colors.Color`]
+    vertexcolor : dict[int, :class:`compas.colors.Color`]
         Mapping between vertices and colors.
         Missing vertices get the default vertex color: :attr:`default_vertexcolor`.
-    edge_color : dict[tuple[int, int], :class:`compas.colors.Color`]
+    edgecolor : dict[tuple[int, int], :class:`compas.colors.Color`]
         Mapping between edges and colors.
         Missing edges get the default edge color: :attr:`default_edgecolor`.
-    face_color : dict[int, :class:`compas.colors.Color`]
+    facecolor : dict[int, :class:`compas.colors.Color`]
         Mapping between faces and colors.
         Missing faces get the default face color: :attr:`default_facecolor`.
-    cell_color : dict[int, :class:`compas.colors.Color`]
+    cellcolor : dict[int, :class:`compas.colors.Color`]
         Mapping between cells and colors.
         Missing cells get the default cell color: :attr:`default_facecolor`.
 
@@ -46,18 +45,18 @@ class VolMeshObject(SceneObject):
 
     """
 
-    color = ColorAttribute(default=Color.grey().lightened(50))
-
-    vertex_color = ColorDictAttribute(default=Color.white())
-    edge_color = ColorDictAttribute(default=Color.black())
-    face_color = ColorDictAttribute(default=Color.grey().lightened(50))
-    cell_color = ColorDictAttribute(default=Color.grey())
+    vertexcolor = SceneObject.pointcolor
+    edgecolor = SceneObject.linecolor
+    cellcolor = ColorDictAttribute(default=Color.grey())
 
     def __init__(self, volmesh, **kwargs):
         super(VolMeshObject, self).__init__(item=volmesh, **kwargs)
         self._volmesh = None
         self._vertex_xyz = None
         self.volmesh = volmesh
+        self.vertexcolor = kwargs.get("vertexcolor", self.vertexcolor)
+        self.edgecolor = kwargs.get("edgecolor", self.edgecolor)
+        self.facecolor = kwargs.get("facecolor", self.facecolor)
 
     @property
     def volmesh(self):

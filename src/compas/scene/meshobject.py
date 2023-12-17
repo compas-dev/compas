@@ -6,8 +6,6 @@ from abc import abstractmethod
 
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
-from .descriptors.color import ColorAttribute
-from .descriptors.colordict import ColorDictAttribute
 
 
 class MeshObject(SceneObject):
@@ -27,11 +25,11 @@ class MeshObject(SceneObject):
         Defaults to the real coordinates.
     color : :class:`compas.colors.Color`
         The base RGB color of the mesh.
-    vertex_color : :class:`compas.colors.ColorDict`]
+    vertexcolor : :class:`compas.colors.ColorDict`]
         Vertex colors.
-    edge_color : :class:`compas.colors.ColorDict`
+    edgecolor : :class:`compas.colors.ColorDict`
         Edge colors.
-    face_color : :class:`compas.colors.ColorDict`
+    facecolor : :class:`compas.colors.ColorDict`
         Face colors.
 
     See Also
@@ -41,17 +39,16 @@ class MeshObject(SceneObject):
 
     """
 
-    color = ColorAttribute(default=None)
-
-    vertex_color = ColorDictAttribute(default=None)
-    edge_color = ColorDictAttribute(default=None)
-    face_color = ColorDictAttribute(default=None)
+    vertexcolor = SceneObject.pointcolor
+    edgecolor = SceneObject.linecolor
 
     def __init__(self, mesh, **kwargs):
         super(MeshObject, self).__init__(item=mesh, **kwargs)
         self._mesh = None
         self._vertex_xyz = None
         self.mesh = mesh
+        self.vertexcolor = kwargs.get("vertexcolor", self.vertexcolor)
+        self.edgecolor = kwargs.get("edgecolor", self.edgecolor)
 
     @property
     def mesh(self):

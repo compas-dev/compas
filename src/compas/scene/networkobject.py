@@ -4,10 +4,8 @@ from __future__ import division
 
 from abc import abstractmethod
 
-from compas.colors import Color
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
-from .descriptors.colordict import ColorDictAttribute
 
 
 class NetworkObject(SceneObject):
@@ -25,9 +23,9 @@ class NetworkObject(SceneObject):
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the network.
-    node_color : :class:`compas.colors.ColorDict`
+    nodecolor : :class:`compas.colors.ColorDict`
         Mapping between nodes and RGB color values.
-    edge_color : :class:`compas.colors.ColorDict`
+    edgecolor : :class:`compas.colors.ColorDict`
         Mapping between edges and colors.
 
     See Also
@@ -37,14 +35,16 @@ class NetworkObject(SceneObject):
 
     """
 
-    node_color = ColorDictAttribute(default=Color.white())
-    edge_color = ColorDictAttribute(default=Color.black())
+    nodecolor = SceneObject.pointcolor
+    edgecolor = SceneObject.linecolor
 
     def __init__(self, network, **kwargs):
         super(NetworkObject, self).__init__(item=network, **kwargs)
         self._network = None
         self._node_xyz = None
         self.network = network
+        self.nodecolor = kwargs.get("nodecolor", self.nodecolor)
+        self.edgecolor = kwargs.get("edgecolor", self.edgecolor)
 
     @property
     def network(self):

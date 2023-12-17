@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 from .sceneobject import SceneObject
-from .descriptors.color import ColorAttribute
 
 
 class GeometryObject(SceneObject):
@@ -23,10 +22,6 @@ class GeometryObject(SceneObject):
 
     """
 
-    color = ColorAttribute(default=None)
-
     def __init__(self, geometry, **kwargs):
         super(GeometryObject, self).__init__(item=geometry, **kwargs)
         self.geometry = geometry
-        if "color" in kwargs:
-            self.color = kwargs["color"]
