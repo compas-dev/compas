@@ -82,7 +82,6 @@ class SceneObject(object):
 
     @property
     def transformation_world(self):
-        print("check", self.parent)
         if self.parent:
             return self.parent.transformation_world * self.transformation
         else:

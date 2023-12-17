@@ -3,6 +3,7 @@ from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 from .context import build_scene_object
 from .context import redraw
+from .context import clear
 
 
 class SceneObjectNode(TreeNode):
