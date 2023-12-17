@@ -6,6 +6,7 @@ from abc import abstractmethod
 
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
+from .descriptors.colordict import ColorDictAttribute
 
 
 class NetworkObject(SceneObject):
@@ -27,6 +28,10 @@ class NetworkObject(SceneObject):
         Mapping between nodes and RGB color values.
     edgecolor : :class:`compas.colors.ColorDict`
         Mapping between edges and colors.
+    nodesize : float
+        The size of the nodes.
+    edgewidth : float
+        The width of the edges.
 
     See Also
     --------
@@ -35,16 +40,18 @@ class NetworkObject(SceneObject):
 
     """
 
-    nodecolor = SceneObject.pointcolor
-    edgecolor = SceneObject.linecolor
+    nodecolor = ColorDictAttribute()
+    edgecolor = ColorDictAttribute()
 
     def __init__(self, network, **kwargs):
         super(NetworkObject, self).__init__(item=network, **kwargs)
         self._network = None
         self._node_xyz = None
         self.network = network
-        self.nodecolor = kwargs.get("nodecolor", self.nodecolor)
-        self.edgecolor = kwargs.get("edgecolor", self.edgecolor)
+        self.nodecolor = kwargs.get("nodecolor", self.color)
+        self.edgecolor = kwargs.get("edgecolor", self.color)
+        self.nodesize = kwargs.get("nodesize", 1.0)
+        self.edgewidth = kwargs.get("edgewidth", 1.0)
 
     @property
     def network(self):

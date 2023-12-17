@@ -12,8 +12,9 @@ class ColorAttribute(object):
 
     """
 
-    def __init__(self, default, **kwargs):
+    def __init__(self, default=None, **kwargs):
         super(ColorAttribute, self).__init__(**kwargs)
+        default = default or Color.black()
         self.default = Color.coerce(default)
 
     def __set_name__(self, owner, name):
