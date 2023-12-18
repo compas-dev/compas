@@ -1252,10 +1252,10 @@ document.write(`
 <h1>SceneObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.SceneObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/scene/sceneobject.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/scene/sceneobject.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for all scene objects.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>item</strong><span class="classifier">Any</span></dt><dd><p>The item which should be visualized using the created SceneObject.</p>
@@ -1263,8 +1263,14 @@ document.write(`
 </dl>
 </dd>
 <dt class="field-even">Attributes</dt>
-<dd class="field-even"><dl class="simple">
+<dd class="field-even"><dl>
 <dt><strong>guids</strong><span class="classifier">list[object]</span></dt><dd><p>The GUIDs of the items drawn in the visualization context.</p>
+</dd>
+<dt><strong>transformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a></span></dt><dd><p>The transformation matrix of the scene object.</p>
+</dd>
+<dt><strong>color</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a></span></dt><dd><p>The color of the object.</p>
+</dd>
+<dt><strong>opacity</strong><span class="classifier">float</span></dt><dd><p>The opacity of the object.</p>
 </dd>
 </dl>
 </dd>

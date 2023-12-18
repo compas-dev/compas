@@ -1252,7 +1252,7 @@ document.write(`
 <h1>NetworkObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.NetworkObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">NetworkObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/scene/networkobject.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">NetworkObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/scene/networkobject.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.scene.SceneObject.html#compas.scene.SceneObject" title="compas.scene.sceneobject.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scene.sceneobject.SceneObject</span></code></a></p>
 <p>Scene object for drawing network data structures.</p>
 <dl class="field-list">
@@ -1278,9 +1278,13 @@ document.write(`
 <dt><strong>node_xyz</strong><span class="classifier">dict[hashable, list[float]]</span></dt><dd><p>Mapping between nodes and their view coordinates.
 The default view coordinates are the actual coordinates of the nodes of the network.</p>
 </dd>
-<dt><strong>node_color</strong><span class="classifier"><a class="reference internal" href="compas.colors.ColorDict.html#compas.colors.ColorDict" title="compas.colors.ColorDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorDict</span></code></a></span></dt><dd><p>Mapping between nodes and RGB color values.</p>
+<dt><strong>nodecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.ColorDict.html#compas.colors.ColorDict" title="compas.colors.ColorDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorDict</span></code></a></span></dt><dd><p>Mapping between nodes and RGB color values.</p>
 </dd>
-<dt><strong>edge_color</strong><span class="classifier"><a class="reference internal" href="compas.colors.ColorDict.html#compas.colors.ColorDict" title="compas.colors.ColorDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorDict</span></code></a></span></dt><dd><p>Mapping between edges and colors.</p>
+<dt><strong>edgecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.ColorDict.html#compas.colors.ColorDict" title="compas.colors.ColorDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.ColorDict</span></code></a></span></dt><dd><p>Mapping between edges and colors.</p>
+</dd>
+<dt><strong>nodesize</strong><span class="classifier">float</span></dt><dd><p>The size of the nodes.</p>
+</dd>
+<dt><strong>edgewidth</strong><span class="classifier">float</span></dt><dd><p>The width of the edges.</p>
 </dd>
 </dl>
 </dd>
