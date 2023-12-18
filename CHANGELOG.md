@@ -87,6 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 * Fixed `compas_rhino.geometry.RhinoBrep` serialization.
 * Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`. 
+* The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
 
 ### Removed
 

@@ -6,6 +6,7 @@ from abc import abstractmethod
 from .descriptors.protocol import DescriptorProtocol
 from .descriptors.color import ColorAttribute
 from .context import clear
+from .context import get_sceneobject_cls
 
 
 class SceneObject(object):
@@ -34,6 +35,10 @@ class SceneObject(object):
     __metaclass__ = DescriptorProtocol
 
     color = ColorAttribute()
+
+    def __new__(cls, item, **kwargs):
+        sceneobject_cls = get_sceneobject_cls(item, **kwargs)
+        return super(SceneObject, cls).__new__(sceneobject_cls)
 
     def __init__(self, item, **kwargs):
         self._item = item
