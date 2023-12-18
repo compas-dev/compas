@@ -147,11 +147,11 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.vertex_color = color
+        self.vertexcolor = color
 
         for vertex in vertices or self.mesh.vertices():  # type: ignore
             name = f"{self.mesh.name}.vertex.{vertex}"  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
             point = self.vertex_xyz[vertex]
 
             # there is no such thing as a sphere data block
@@ -188,11 +188,11 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for u, v in edges or self.mesh.edges():  # type: ignore
             name = f"{self.mesh.name}.edge.{u}-{v}"  # type: ignore
-            color = self.edge_color[u, v]  # type: ignore
+            color = self.edgecolor[u, v]  # type: ignore
             curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
 
             obj = self.create_object(curve, name=name)
@@ -229,11 +229,11 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.face_color = color
+        self.facecolor = color
 
         for face in faces or self.mesh.faces():  # type: ignore
             name = f"{self.mesh.name}.face.{face}"  # type: ignore
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             points = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
             mesh = conversions.polygon_to_blender_mesh(points, name=name)  # type: ignore
 
@@ -365,7 +365,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
     #                 "pos": self.vertex_xyz[vertex],
     #                 "name": f"{self.mesh.name}.vertexlabel.{vertex}",
     #                 "text": self.vertex_text[vertex],
-    #                 "color": self.vertex_color[vertex],
+    #                 "color": self.vertexcolor[vertex],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.vertexlabelcollection)
@@ -393,7 +393,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
     #                 "pos": centroid_points([self.vertex_xyz[u], self.vertex_xyz[v]]),
     #                 "name": f"{self.mesh.name}.edgelabel.{u}-{v}",
     #                 "text": self.edge_text[edge],
-    #                 "color": self.edge_color[edge],
+    #                 "color": self.edgecolor[edge],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.edgelabelcollection)
@@ -420,7 +420,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
     #                 "pos": centroid_points([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]),
     #                 "name": "{}.facelabel.{}".format(self.mesh.name, face),
     #                 "text": self.face_text[face],
-    #                 "color": self.face_color[face],
+    #                 "color": self.facecolor[face],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.collection)
@@ -453,11 +453,11 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.vertex_color = color
+        self.vertexcolor = color
 
         for vertex in radius:
             name = "{}.vertex.{}.sphere".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
 
             sphere = Sphere.from_point_and_radius(self.vertex_xyz[vertex], radius[vertex])
             geometry = conversions.sphere_to_blender_mesh(sphere, name=name)
@@ -493,11 +493,11 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for u, v in radius:
             name = "{}.edge.{}-{}.pipe".format(self.mesh.name, u, v)  # type: ignore
-            color = self.edge_color[u, v]  # type: ignore
+            color = self.edgecolor[u, v]  # type: ignore
 
             line = Line(self.vertex_xyz[u], self.vertex_xyz[v])
             cylinder = Cylinder.from_line_and_radius(line, radius[u, v])  # type: ignore

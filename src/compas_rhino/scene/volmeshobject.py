@@ -169,13 +169,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino point objects.
 
         """
-        self.vertex_color = color
+        self.vertexcolor = color
 
         guids = []
 
         for vertex in vertices or self.volmesh.vertices():  # type: ignore
             name = "{}.vertex.{}".format(self.volmesh.name, vertex)  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             point = self.vertex_xyz[vertex]
@@ -204,13 +204,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino line objects.
 
         """
-        self.edge_color = color
+        self.edgecolor = color
 
         guids = []
 
         for edge in edges or self.volmesh.edges():  # type: ignore
             name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)  # type: ignore
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
@@ -242,13 +242,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.face_color = color
+        self.facecolor = color
 
         guids = []
 
         for face in faces or self.volmesh.faces():  # type: ignore
             name = "{}.face.{}".format(self.volmesh.name, face)  # type: ignore
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
@@ -283,13 +283,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             Every cell is drawn as an individual mesh.
 
         """
-        self.cell_color = color
+        self.cellcolor = color
 
         guids = []
 
         for cell in cells or self.volmesh.cells():  # type: ignore
             name = "{}.cell.{}".format(self.volmesh.name, cell)  # type: ignore
-            color = self.cell_color[cell]  # type: ignore
+            color = self.cellcolor[cell]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             vertices = self.volmesh.cell_vertices(cell)  # type: ignore
@@ -329,13 +329,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.vertex_color = color
+        self.vertexcolor = color
 
         guids = []
 
         for vertex in text:
             name = "{}.vertex.{}.label".format(self.volmesh.name, vertex)  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             point = self.vertex_xyz[vertex]
@@ -374,13 +374,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.edge_color = color
+        self.edgecolor = color
 
         guids = []
 
         for edge in text:
             name = "{}.edge.{}-{}.label".format(self.volmesh.name, *edge)  # type: ignore
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
@@ -420,13 +420,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.face_color = color
+        self.facecolor = color
 
         guids = []
 
         for face in text:
             name = "{}.face.{}.label".format(self.volmesh.name, face)  # type: ignore
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
@@ -466,13 +466,13 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.cell_color = color
+        self.cellcolor = color
 
         guids = []
 
         for cell in text:
             name = "{}.cell.{}.label".format(self.volmesh.name, cell)  # type: ignore
-            color = self.cell_color[cell]  # type: ignore
+            color = self.cellcolor[cell]  # type: ignore
             attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.cell_vertices(cell)]  # type: ignore

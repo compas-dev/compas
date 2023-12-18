@@ -54,6 +54,7 @@ class ColorDictAttribute(object):
             A defaultdict with the value stored in the default attribute corresponding to the descriptor as a default value.
 
         """
+
         if not hasattr(obj, self.private_name):
             setattr(obj, self.private_name, None)
 
