@@ -69,6 +69,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoBrepLoop.native_loop`.
 * Added `compas_rhino.geometry.RhinoBrepTrim.native_trim`.
 * Added `compas_rhino.geometry.RhinoBrepVertex.native_vertex`.
+* Added `color`, `opacity` attributes to `compas.scene.SceneObject`.
+* Added `pointcolor`, `linecolor`, `surfacecolor`, `pointsize`, `linewidth` attributes to `compas.scene.GeometryObject`.
 
 ### Changed
 
@@ -84,7 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed plugin selection to fall back to a default implementation if possible.
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 * Fixed `compas_rhino.geometry.RhinoBrep` serialization.
-* UPDATING `color` SETTINGS IN `SceneObject` ... [TO BE FILLED OUT]
+* Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`. 
 
 ### Removed
 
