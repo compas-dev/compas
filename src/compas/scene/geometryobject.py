@@ -22,8 +22,6 @@ class GeometryObject(SceneObject):
         The color of the points.
     linecolor : :class:`compas.colors.Color`
         The color of the lines or curves.
-    curvecolor : :class:`compas.colors.Color`
-        The color of the lines or curves.
     surfacecolor : :class:`compas.colors.Color`
         The color of the surfaces.
     pointsize : float
@@ -34,7 +32,7 @@ class GeometryObject(SceneObject):
     """
 
     pointcolor = ColorAttribute()
-    curvecolor = linecolor = ColorAttribute()
+    linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
 
     def __init__(self, geometry, **kwargs):
