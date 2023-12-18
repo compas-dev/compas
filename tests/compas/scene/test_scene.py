@@ -3,7 +3,6 @@ import pytest  # noqa: F401
 import compas
 from compas.scene import context
 from compas.scene import register
-from compas.scene import build_scene_object
 from compas.scene import SceneObject
 from compas.scene import NoSceneObjectContextError
 
@@ -50,11 +49,11 @@ def test_get_sceneobject_cls_with_orderly_registration():
     register(FakeItem, FakeSceneObject, context="fake")
     register(FakeSubItem, FakeSubSceneObject, context="fake")
     item = FakeItem()
-    sceneobject = build_scene_object(item, context="fake")
+    sceneobject = SceneObject(item, context="fake")
     assert isinstance(sceneobject, FakeSceneObject)
 
     item = FakeSubItem()
-    sceneobject = build_scene_object(item, context="fake")
+    sceneobject = SceneObject(item, context="fake")
     assert isinstance(sceneobject, FakeSubSceneObject)
 
 
@@ -62,11 +61,11 @@ def test_get_sceneobject_cls_with_out_of_order_registration():
     register(FakeSubItem, FakeSubSceneObject, context="fake")
     register(FakeItem, FakeSceneObject, context="fake")
     item = FakeItem()
-    sceneobject = build_scene_object(item, context="fake")
+    sceneobject = SceneObject(item, context="fake")
     assert isinstance(sceneobject, FakeSceneObject)
 
     item = FakeSubItem()
-    sceneobject = build_scene_object(item, context="fake")
+    sceneobject = SceneObject(item, context="fake")
     assert isinstance(sceneobject, FakeSubSceneObject)
 
 
@@ -76,7 +75,7 @@ if not compas.IPY:
         register_fake_context()
 
         item = FakeItem()
-        sceneobject = build_scene_object(item)
+        sceneobject = SceneObject(item)
 
         assert isinstance(sceneobject, FakeSceneObject)
 
@@ -85,7 +84,7 @@ if not compas.IPY:
         context.ITEM_SCENEOBJECT["Viewer"] = {FakeItem: FakeSceneObject}
 
         item = FakeSubItem()
-        sceneobject = build_scene_object(item)
+        sceneobject = SceneObject(item)
 
         assert isinstance(sceneobject, FakeSceneObject)
 
@@ -102,7 +101,7 @@ if not compas.IPY:
         context.ITEM_SCENEOBJECT["Plotter"] = {FakeItem: FakePlotterSceneObject}
 
         item = FakeSubItem()
-        sceneobject = build_scene_object(item)
+        sceneobject = SceneObject(item)
 
         assert isinstance(sceneobject, FakeViewerSceneObject)
 
@@ -113,4 +112,4 @@ if not compas.IPY:
 
         with pytest.raises(NoSceneObjectContextError):
             item = FakeSubItem()
-            _ = build_scene_object(item)
+            _ = SceneObject(item)

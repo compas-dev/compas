@@ -125,7 +125,7 @@ def _get_sceneobject_cls(data, **kwargs):
     return cls
 
 
-def build_scene_object(item, **kwargs):
+def get_sceneobject_cls(item, **kwargs):
     if not ITEM_SCENEOBJECT:
         register_scene_objects()
 
@@ -136,4 +136,4 @@ def build_scene_object(item, **kwargs):
 
     cls = _get_sceneobject_cls(item, **kwargs)
     PluginValidator.ensure_implementations(cls)
-    return cls(item, **kwargs)
+    return cls
