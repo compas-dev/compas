@@ -28,8 +28,8 @@ class SceneObject(object):
     __metaclass__ = DescriptorProtocol
 
     def __new__(cls, item, **kwargs):
-        cls = get_sceneobject_cls(item, **kwargs)
-        return super(SceneObject, cls).__new__(cls)
+        sceneobject_cls = get_sceneobject_cls(item, **kwargs)
+        return super(SceneObject, cls).__new__(sceneobject_cls)
 
     def __init__(self, item, **kwargs):
         self._item = item
