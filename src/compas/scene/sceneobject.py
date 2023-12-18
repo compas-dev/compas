@@ -5,6 +5,7 @@ from __future__ import print_function
 from abc import abstractmethod
 from .descriptors.protocol import DescriptorProtocol
 from .context import clear
+from .context import get_sceneobject_cls
 
 
 class SceneObject(object):
@@ -25,6 +26,10 @@ class SceneObject(object):
 
     # add this to support the descriptor protocol vor Python versions below 3.6
     __metaclass__ = DescriptorProtocol
+
+    def __new__(cls, item, **kwargs):
+        cls = get_sceneobject_cls(item, **kwargs)
+        return super(SceneObject, cls).__new__(cls)
 
     def __init__(self, item, **kwargs):
         self._item = item
