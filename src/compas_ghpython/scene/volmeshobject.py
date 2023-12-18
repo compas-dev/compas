@@ -106,12 +106,12 @@ class VolMeshObject(GHSceneObject, BaseVolMeshObject):
         """
         faces = faces or self.volmesh.faces()  # type: ignore
 
-        self.face_color = color
+        self.facecolor = color
 
         meshes = []
 
         for face in faces:
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
             facet = ngon(len(vertices))
             if facet:
@@ -135,12 +135,12 @@ class VolMeshObject(GHSceneObject, BaseVolMeshObject):
         list[:rhino:`Rhino.Geometry.Mesh`]
 
         """
-        self.cell_color = color
+        self.cellcolor = color
 
         meshes = []
 
         for cell in cells or self.volmesh.cells():  # type: ignore
-            color = self.cell_color[cell]  # type: ignore
+            color = self.cellcolor[cell]  # type: ignore
 
             vertices = self.volmesh.cell_vertices(cell)  # type: ignore
             faces = self.volmesh.cell_faces(cell)  # type: ignore

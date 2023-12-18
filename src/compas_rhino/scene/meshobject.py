@@ -213,11 +213,11 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         """
         guids = []
 
-        self.vertex_color = color
+        self.vertexcolor = color
 
         for vertex in vertices or self.mesh.vertices():  # type: ignore
             name = "{}.vertex.{}".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             point = point_to_rhino(self.vertex_xyz[vertex])
@@ -255,11 +255,11 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         """
         guids = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for edge in edges or self.mesh.edges():  # type: ignore
             name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
@@ -297,11 +297,11 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         """
         guids = []
 
-        self.face_color = color
+        self.facecolor = color
 
         for face in faces or self.mesh.faces():  # type: ignore
             name = "{}.face.{}".format(self.mesh.name, face)  # type: ignore
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
@@ -344,11 +344,11 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         """
         guids = []
 
-        self.vertex_color = color
+        self.vertexcolor = color
 
         for vertex in text:
             name = "{}.vertex.{}.label".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             point = point_to_rhino(self.vertex_xyz[vertex])
@@ -389,11 +389,11 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         """
         guids = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for edge in text:
             name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
@@ -437,7 +437,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for face in text:
             name = "{}.face.{}.label".format(self.mesh.name, face)  # type: ignore
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             points = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
@@ -563,11 +563,11 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         """
         guids = []
 
-        self.vertex_color = color
+        self.vertexcolor = color
 
         for vertex in radius:
             name = "{}.vertex.{}.sphere".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             sphere = Sphere.from_point_and_radius(self.vertex_xyz[vertex], radius[vertex])
@@ -601,11 +601,11 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         """
         guids = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for edge in radius:
             name = "{}.edge.{}-{}.pipe".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])

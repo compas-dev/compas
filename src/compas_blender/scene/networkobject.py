@@ -140,11 +140,11 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
         """
         objects = []
 
-        self.node_color = color
+        self.nodecolor = color
 
         for node in nodes or self.network.nodes():  # type: ignore
             name = f"{self.network.name}.node.{node}"  # type: ignore
-            color = self.node_color[node]  # type: ignore
+            color = self.nodecolor[node]  # type: ignore
             point = self.network.nodes_attributes("xyz")[node]  # type: ignore
 
             # there is no such thing as a sphere data block
@@ -181,11 +181,11 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
         """
         objects = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for u, v in edges or self.network.edges():  # type: ignore
             name = f"{self.network.name}.edge.{u}-{v}"  # type: ignore
-            color = self.edge_color[u, v]  # type: ignore
+            color = self.edgecolor[u, v]  # type: ignore
             curve = conversions.line_to_blender_curve(
                 Line(self.network.nodes_attributes("xyz")[u], self.network.nodes_attributes("xyz")[v])
             )
@@ -222,7 +222,7 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
     #                 "pos": self.network.nodes_attributes("xyz")[node],
     #                 "name": f"{self.network.name}.nodelabel.{node}",
     #                 "text": self.node_text[node],
-    #                 "color": self.node_color[node],
+    #                 "color": self.nodecolor[node],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.nodelabelcollection)
@@ -250,7 +250,7 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
     #                 "pos": centroid_points([self.network.nodes_attributes("xyz")[u], self.network.nodes_attributes("xyz")[v]]),
     #                 "name": f"{self.network.name}.edgelabel.{u}-{v}",
     #                 "text": self.edge_text[edge],
-    #                 "color": self.edge_color[edge],
+    #                 "color": self.edgecolor[edge],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.edgelabelcollection)
