@@ -620,6 +620,7 @@ __all__ = [
     "is_coplanar",
     "is_matrix_square",
     "is_parallel_line_line",
+    "is_parallel_vector_vector",
     "is_point_behind_plane",
     "is_point_in_circle",
     "is_point_in_circle_xy",

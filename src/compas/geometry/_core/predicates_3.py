@@ -686,7 +686,7 @@ def is_point_in_circle(point, circle, tol=None):
     """
     plane, radius = circle
     if is_point_on_plane(point, plane, tol=tol):
-        return distance_point_point(point, plane[0]) <= radius
+        return TOL.is_positive(radius - distance_point_point(point, plane[0]), tol)
     return False
 
 
@@ -789,7 +789,7 @@ def is_point_in_sphere(point, sphere, tol=None):
 
     """
     center, radius = sphere
-    return distance_point_point(point, center) <= radius + tol
+    return TOL.is_positive(radius - distance_point_point(point, center), tol)
 
 
 def is_point_in_aab(point, box, tol=None):
@@ -810,10 +810,10 @@ def is_point_in_aab(point, box, tol=None):
 
     """
     a, b = box
-    return all(a[i] - tol <= point[i] <= b[i] + tol for i in range(3))
+    return all(TOL.is_between(point[i], minval=a[i], maxval=b[i], atol=tol) for i in range(3))
 
 
-def is_point_in_polyhedron(point, polyhedron):
+def is_point_in_polyhedron(point, polyhedron, tol=None):
     """Determine if the point lies inside the given polyhedron.
 
     Parameters
@@ -834,7 +834,7 @@ def is_point_in_polyhedron(point, polyhedron):
     vertices, faces = polyhedron
     polygons = [[vertices[index] for index in face] for face in faces]
     planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
-    return all(is_point_behind_plane(point, plane) for plane in planes)
+    return all(is_point_behind_plane(point, plane, tol=tol) for plane in planes)
 
 
 def is_point_infrontof_plane(point, plane, tol=None):
@@ -856,7 +856,7 @@ def is_point_infrontof_plane(point, plane, tol=None):
         False otherwise.
 
     """
-    return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > tol
+    return TOL.is_positive(dot_vectors(subtract_vectors(point, plane[0]), plane[1]), tol)
 
 
 def is_point_behind_plane(point, plane, tol=None):
@@ -878,7 +878,7 @@ def is_point_behind_plane(point, plane, tol=None):
         False otherwise.
 
     """
-    return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) < -tol
+    return TOL.is_negative(dot_vectors(subtract_vectors(point, plane[0]), plane[1]), tol)
 
 
 # =============================================================================

@@ -301,6 +301,39 @@ class Tolerance(Data):
         tol = tol or self.absolute
         return a < -tol
 
+    def is_between(self, value, minval, maxval, atol=None):
+        """Check if a value is between two other values.
+
+        Parameters
+        ----------
+        value : float
+            The value.
+        minval : float
+            The minimum value.
+        maxval : float
+            The maximum value.
+        atol : float, optional
+            The absolute tolerance.
+            Default is ``None``, in which case ``self.absolute`` is used.
+
+        Returns
+        -------
+        bool
+            ``True`` if the value is between the two other values.
+            ``False`` otherwise.
+
+        Examples
+        --------
+        >>> tol = Tolerance()
+        >>> tol.is_between(0.5, 0.0, 1.0)
+        True
+        >>> tol.is_between(1.5, 0.0, 1.0)
+        False
+
+        """
+        atol = atol or self.absolute
+        return minval - atol <= value <= maxval + atol
+
     def is_close(self, a, b, rtol=None, atol=None):
         """Check if two values are close enough to be considered equal.
 
