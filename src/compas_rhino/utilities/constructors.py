@@ -2,13 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.utilities import geometric_key
+from compas.tolerance import TOL
 
-import Rhino
-import scriptcontext as sc
-
-
-__all__ = ["volmesh_from_polysurfaces"]
+import Rhino  # type: ignore
+import scriptcontext as sc  # type: ignore
 
 
 def volmesh_from_polysurfaces(cls, guids, precision=None):
@@ -20,8 +17,9 @@ def volmesh_from_polysurfaces(cls, guids, precision=None):
         The class of volmesh.
     guids : sequence[str | System.Guid]
         The *globally unique identifiers* of the polysurfaces.
-    precision: string
-        Precision of the polysurface connectivity.
+    precision: int, optional
+        Precision for converting numbers to strings.
+        Default is :attr:`TOL.precision`.
 
     Returns
     -------
@@ -54,15 +52,15 @@ def volmesh_from_polysurfaces(cls, guids, precision=None):
             face = []
             sp = segments[0].PointAtStart
             ep = segments[0].PointAtEnd
-            sp_gkey = geometric_key(sp, precision)
-            ep_gkey = geometric_key(ep, precision)
+            sp_gkey = TOL.geometric_key(sp, precision)
+            ep_gkey = TOL.geometric_key(ep, precision)
             gkey_xyz[sp_gkey] = sp
             gkey_xyz[ep_gkey] = ep
             face.append(sp_gkey)
             face.append(ep_gkey)
             for segment in segments[1:-1]:
                 ep = segment.PointAtEnd
-                ep_gkey = geometric_key(ep, precision)
+                ep_gkey = TOL.geometric_key(ep, precision)
                 face.append(ep_gkey)
                 gkey_xyz[ep_gkey] = ep
             cell.append(face)

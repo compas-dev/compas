@@ -2,8 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.tolerance import TOL
 from compas.utilities import pairwise
-from compas.utilities import geometric_key
 
 
 def network_join_edges(network, key):
@@ -92,7 +92,7 @@ def network_polylines(network, splits=None):
     # geometric keys of split points
     if splits is None:
         splits = []
-    stop_geom_keys = set([geometric_key(xyz) for xyz in splits])
+    stop_geom_keys = set([TOL.geometric_key(xyz) for xyz in splits])
 
     polylines = []
     edges_to_visit = set(network.edges())
@@ -106,12 +106,12 @@ def network_polylines(network, splits=None):
             # ... or until both end are non-two-valent vertices
             if (
                 len(network.neighbors(polyline[-1])) != 2
-                or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
+                or TOL.geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
             ):
                 polyline = list(reversed(polyline))
                 if (
                     len(network.neighbors(polyline[-1])) != 2
-                    or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
+                    or TOL.geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
                 ):
                     break
 

@@ -52,12 +52,12 @@ from compas.geometry import midpoint_line
 from compas.geometry import vector_average
 
 from compas.utilities import linspace
-
-from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
 
 from compas.datastructures import HalfEdge
+
+from compas.tolerance import TOL
 
 from .operations.collapse import mesh_collapse_edge
 from .operations.split import mesh_split_edge
@@ -436,37 +436,50 @@ class Mesh(HalfEdge):
             A mesh object.
 
         """
-        corner_vertices = [
-            geometric_key(xyz)
-            for polyline in boundary_polylines + other_polylines
-            for xyz in [polyline[0], polyline[-1]]
-        ]
-        boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
-        mesh = cls.from_lines(
-            [(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)]
-        )
-        # remove the vertices that are not from the polyline extremities and the faces with all their vertices on the boundary
-        vertex_keys = [
-            vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
-        ]
-        vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
-        vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
+        corners = []
+        for polyline in boundary_polylines + other_polylines:
+            corners.append(TOL.geometric_key(polyline[0]))
+            corners.append(TOL.geometric_key(polyline[-1]))
+
+        boundary = []
+        for polyline in boundary_polylines:
+            for xyz in polyline:
+                boundary.append(TOL.geometric_key(xyz))
+
+        lines = []
+        for polyline in boundary_polylines + other_polylines:
+            for u, v in pairwise(polyline):
+                lines.append((u, v))
+
+        mesh = cls.from_lines(lines)
+
+        # remove the vertices that are not from the polyline extremities
+        # and the faces with all their vertices on the boundary
+
+        internal = []
+        for vertex in mesh.vertices():
+            if TOL.geometric_key(mesh.vertex_coordinates(vertex)) in corners:
+                internal.append(vertex)
+
+        vertices = [mesh.vertex_coordinates(vertex) for vertex in internal]
+        vertex_index = {vertex: index for index, vertex in enumerate(internal)}
+
         faces = []
-        for fkey in mesh.faces():
-            if sum(
-                [
-                    geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices
-                    for vkey in mesh.face_vertices(fkey)
-                ]
-            ):
-                faces.append(
-                    [
-                        vertex_map[vkey]
-                        for vkey in mesh.face_vertices(fkey)
-                        if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
-                    ]
-                )
-        mesh.cull_vertices()
+        for face in mesh.faces():
+            notonboundary = []
+            for vertex in mesh.face_vertices(face):
+                gkey = TOL.geometric_key(mesh.vertex_coordinates(vertex))
+                if gkey not in boundary:
+                    notonboundary.append(vertex)
+
+            if len(notonboundary):
+                indices = []
+                for vertex in mesh.face_vertices(face):
+                    gkey = TOL.geometric_key(mesh.vertex_coordinates(vertex))
+                    if gkey in corners:
+                        indices.append(vertex_index[vertex])
+                faces.append(indices)
+
         return cls.from_vertices_and_faces(vertices, faces)
 
     def to_polylines(self):
@@ -643,9 +656,9 @@ class Mesh(HalfEdge):
         polygons : list[list[float]]
             A list of polygons, with each polygon defined as an ordered list of
             XYZ coordinates of its corners.
-        precision: str, optional
-            The precision of the geometric map that is used to connect the lines.
-            Defaults to :attr:`compas.PRECISION`.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -658,7 +671,7 @@ class Mesh(HalfEdge):
         for points in polygons:
             face = []
             for xyz in points:
-                gkey = geometric_key(xyz, precision=precision)
+                gkey = TOL.geometric_key(xyz, precision=precision)
                 gkey_xyz[gkey] = xyz
                 face.append(gkey)
             faces.append(face)
@@ -721,15 +734,15 @@ class Mesh(HalfEdge):
     # helpers
     # --------------------------------------------------------------------------
 
-    def key_gkey(self, precision=None):
+    def vertex_gkey(self, precision=None):
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
-            Defaults to the value of :attr:`compas.PRECISION`.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -737,19 +750,19 @@ class Mesh(HalfEdge):
             A dictionary of key-geometric key pairs.
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
         return {key: gkey(xyz(key), precision) for key in self.vertices()}
 
-    def gkey_key(self, precision=None):
+    def gkey_vertex(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
-            Defaults to the value of :attr:`compas.PRECISION`.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -757,12 +770,9 @@ class Mesh(HalfEdge):
             A dictionary of geometric key-key pairs.
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
         return {gkey(xyz(key), precision): key for key in self.vertices()}
-
-    vertex_gkey = key_gkey
-    gkey_vertex = gkey_key
 
     # --------------------------------------------------------------------------
     # builders

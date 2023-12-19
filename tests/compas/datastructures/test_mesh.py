@@ -144,12 +144,12 @@ def test_from_ply():
 
 
 def test_from_stl():
-    mesh = Mesh.from_stl(compas.get("cube_ascii.stl"), "6f")
+    mesh = Mesh.from_stl(compas.get("cube_ascii.stl"), precision=6)
     assert mesh.number_of_faces() == 8016
     assert mesh.number_of_vertices() == 4020
     assert mesh.number_of_edges() == 11368
 
-    mesh = Mesh.from_stl(compas.get("cube_binary.stl"), "6f")
+    mesh = Mesh.from_stl(compas.get("cube_binary.stl"), precision=6)
     assert mesh.number_of_faces() == 12
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 18

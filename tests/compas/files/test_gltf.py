@@ -1,13 +1,11 @@
 import json
 import os
-
 import pytest
-
-import compas
 from compas.files import GLTF
 from compas.files import GLTFContent
+from compas.tolerance import TOL
 
-compas.PRECISION = "12f"
+TOL.precision = 12
 
 BASE_FOLDER = os.path.dirname(__file__)
 

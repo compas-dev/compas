@@ -5,12 +5,9 @@ from __future__ import division
 from math import fabs
 from math import sqrt
 
-import compas
-
 from compas.tolerance import TOL
 
 from compas.utilities import pairwise
-from compas.utilities import geometric_key
 from compas.plugins import pluggable
 from compas.plugins import PluginNotInstalledError
 
@@ -907,16 +904,14 @@ def intersection_polyline_box_xy(polyline, box, tol=None):
         A list of intersection points.
 
     """
-    precision = compas.PRECISION
-    compas.set_precision(tol)
+    precision = TOL.precision_from_tolerance(tol)
     points = []
     for side in pairwise(box + box[:1]):
         for segment in pairwise(polyline):
             x = intersection_segment_segment_xy(side, segment, tol=tol)
             if x:
                 points.append(x)
-    points = {geometric_key(point): point for point in points}
-    compas.PRECISION = precision
+    points = {TOL.geometric_key(point, precision): point for point in points}
     return list(points.values())
 
 
