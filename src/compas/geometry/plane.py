@@ -375,7 +375,7 @@ class Plane(Geometry):
         True
 
         """
-        return abs(self.normal.dot(other.normal)) == 1 - tol
+        return abs(self.normal.dot(other.normal)) - 1 < tol
 
     def is_perpendicular(self, other, tol=1e-06):
         """Verify if this plane is perpendicular to another plane.
