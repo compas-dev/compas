@@ -426,7 +426,7 @@ from .brep.brep import (
     BrepOrientation,
     BrepType,
 )
-from .brep.edge import BrepEdge
+from .brep.edge import BrepEdge, CurveType
 from .brep.loop import BrepLoop
 from .brep.face import BrepFace, SurfaceType
 from .brep.vertex import BrepVertex
@@ -441,7 +441,6 @@ __all__ = [
     "BrepEdge",
     "BrepError",
     "BrepFace",
-    "SurfaceType",
     "BrepInvalidError",
     "BrepLoop",
     "BrepOrientation",
@@ -456,6 +455,7 @@ __all__ = [
     "Cone",
     "ConicalSurface",
     "Curve",
+    "CurveType",
     "Cylinder",
     "CylindricalSurface",
     "Ellipse",
@@ -484,6 +484,7 @@ __all__ = [
     "Sphere",
     "SphericalSurface",
     "Surface",
+    "SurfaceType",
     "ToroidalSurface",
     "Torus",
     "Transformation",
