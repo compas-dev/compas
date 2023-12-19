@@ -1,8 +1,6 @@
 from __future__ import print_function
 
 import os
-import decimal
-
 from distutils.version import LooseVersion
 
 import compas._os
@@ -46,17 +44,17 @@ APPDATA = compas._os.user_data_dir("COMPAS", "compas-dev", roaming=True)
 APPTEMP = compas._os.absjoin(APPDATA, "temp")
 """str: Path to a temp folder in the COMPAS directory in APPDATA."""
 
-PRECISION = "3f"
-"""str:
-The precision used by COMPAS for generation of geometric keys,
-for the comparison of point locations,
-for the parsing of geometry files,
-and for the generation of human-readable representations of geometry objects.
+# PRECISION = "3f"
+# """str:
+# The precision used by COMPAS for generation of geometric keys,
+# for the comparison of point locations,
+# for the parsing of geometry files,
+# and for the generation of human-readable representations of geometry objects.
 
-The string is in the format used by the Python string formating mini language
-for formatting numbers.
-Float formatting (``'<x>f'``) and integer formatting (``'d'``) specifiers are supported.
-"""
+# The string is in the format used by the Python string formating mini language
+# for formatting numbers.
+# Float formatting (``'<x>f'``) and integer formatting (``'d'``) specifiers are supported.
+# """
 
 PY2 = compas._os.PY2
 """bool: True if the current Python version is 2.x, False otherwise."""
@@ -126,7 +124,6 @@ __all__ = [
     "is_rhino",
     "is_blender",
     "is_grasshopper",
-    "set_precision",
     "get",
     "json_dump",
     "json_load",
@@ -139,35 +136,6 @@ __all__ = [
 __all_plugins__ = [
     "compas.geometry.booleans.booleans_shapely",
 ]
-
-
-def set_precision(precision):
-    """Set the precision used by geometric maps.
-
-    Parameters
-    ----------
-    precision : float
-        The precision as a floating point number.
-        For example, ``0.0001``.
-
-    Notes
-    -----
-    This function converts the floating point number to a string formatting
-    specifier and assigns the specifier to ``compas.PRECISION``.
-
-    Examples
-    --------
-    >>> compas.set_precision(0.001)
-    >>> compas.PRECISION
-    '3f'
-
-    """
-    global PRECISION
-    precision = str(precision)
-    d = decimal.Decimal(precision).as_tuple()
-    if d.exponent < 0:
-        e = -d.exponent
-        PRECISION = "{}f".format(e)
 
 
 # ==============================================================================
@@ -256,7 +224,7 @@ def get_bunny(localstorage=None):
     try:
         from urllib.request import urlretrieve
     except ImportError:
-        from urllib import urlretrieve
+        from urllib import urlretrieve  # type: ignore
 
     if not localstorage:
         localstorage = APPDATA
