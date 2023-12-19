@@ -16,6 +16,7 @@ from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
 
@@ -298,6 +299,25 @@ class RhinoBrep(Brep):
             return self._brep.IsPointInside(point_to_rhino(object), TOLERANCE, False)
         else:
             raise NotImplementedError
+
+    def to_meshes(self, u=16, v=16):
+        """Convert the faces of this Brep shape to meshes.
+
+        Parameters
+        ----------
+        u : int, optional
+            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
+        v : int, optional
+            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+
+        """
+        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParamaters.Default)
+        meshes = [mesh_to_compas(m) for m in rg_meshes]
+        return meshes
 
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
