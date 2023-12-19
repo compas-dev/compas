@@ -12,6 +12,13 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
+if not compas.IPY:
+    from .bbox_numpy import mesh_oriented_bounding_box_numpy
+    from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
+else:
+    mesh_oriented_bounding_box_numpy = None
+    mesh_oriented_bounding_box_xy_numpy = None
+
 from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
@@ -122,11 +129,10 @@ class Mesh(HalfEdge):
     unify_cycles = mesh_unify_cycles
     quads_to_triangles = mesh_quads_to_triangles
 
-    if not compas.IPY:
-        from .bbox_numpy import mesh_oriented_bounding_box_numpy
-        from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
-
+    if mesh_oriented_bounding_box_numpy:
         obb_numpy = mesh_oriented_bounding_box_numpy
+
+    if mesh_oriented_bounding_box_xy_numpy:
         obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy
 
     def __init__(
