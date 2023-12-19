@@ -241,6 +241,7 @@ from ._core.predicates_3 import (
     is_colinear_line_line,
     is_coplanar,
     is_parallel_line_line,
+    is_parallel_vector_vector,
     is_polygon_convex,
     is_point_on_plane,
     is_point_infront_plane,

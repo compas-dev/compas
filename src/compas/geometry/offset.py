@@ -98,7 +98,7 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
     return c, d
 
 
-def offset_polygon(polygon, distance, tol=1e-6):
+def offset_polygon(polygon, distance, tol=None):
     """Offset a polygon (closed) by a distance.
 
     Parameters
@@ -112,6 +112,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
         A list of pairs of local offset values per line segment can be used to create variable offsets.
     tol : float, optional
         A tolerance value for intersection calculations.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -159,7 +160,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
     return offset
 
 
-def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
+def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=None):
     """Offset a polyline by a distance.
 
     Parameters
@@ -174,6 +175,7 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
         The normal of the offset plane.
     tol : float, optional
         A tolerance value for intersection calculations.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------

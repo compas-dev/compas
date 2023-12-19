@@ -2,7 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry import allclose
+from compas.tolerance import TOL
+
 from compas.geometry import argmax
 from compas.geometry import axis_angle_vector_from_matrix
 from compas.geometry import basis_vectors_from_matrix
@@ -124,10 +125,10 @@ class Frame(Geometry):
     def __iter__(self):
         return iter([self.point, self.xaxis, self.yaxis])
 
-    def __eq__(self, other, tol=1e-05):
+    def __eq__(self, other, tol=None):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
-        return allclose(self, other)
+        return TOL.is_allclose(self, other, atol=tol)
 
     # ==========================================================================
     # Data
@@ -461,7 +462,7 @@ class Frame(Geometry):
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> f = Frame.from_quaternion(q1, point=[1., 1., 1.])
         >>> q2 = f.quaternion
-        >>> allclose(q1, q2, tol=1e-03)
+        >>> allclose(q1, q2)
         True
 
         """

@@ -10,9 +10,9 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
-import math
-
 from compas.data import Data
+
+from compas.tolerance import TOL
 
 from compas.geometry import multiply_matrices
 from compas.geometry import transpose_matrix
@@ -118,15 +118,11 @@ class Transformation(Data):
     def __iter__(self):
         return iter(self.matrix)
 
-    def __eq__(self, other, tol=1e-05):
+    def __eq__(self, other, tol=None):
         try:
             A = self.matrix
             B = other.matrix
-            for i in range(4):
-                for j in range(4):
-                    if math.fabs(A[i][j] - B[i][j]) > tol:
-                        return False
-            return True
+            return TOL.is_allclose(A, B, rtol=0, atol=tol)
         except BaseException:
             return False
 

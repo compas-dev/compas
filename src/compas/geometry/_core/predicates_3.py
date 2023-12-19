@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.tolerance import TOL
+
 from compas.utilities import window
 
 from compas.geometry import subtract_vectors
@@ -9,7 +11,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import centroid_points
 from compas.geometry import normal_polygon
-from compas.geometry import length_vector_sqrd
+from compas.geometry import length_vector
 
 from compas.geometry import distance_point_point
 from compas.geometry import distance_point_plane
@@ -33,8 +35,7 @@ from compas.geometry import closest_point_on_segment
 # =============================================================================
 # =============================================================================
 
-
-def is_colinear(a, b, c, tol=1e-6):
+def is_colinear(a, b, c, tol=None):
     """Determine if three points are colinear.
 
     Parameters
@@ -46,7 +47,8 @@ def is_colinear(a, b, c, tol=1e-6):
     c : [float, float, float] | :class:`compas.geometry.Point`
         Point 3.
     tol : float, optional
-        Tolerance for comparing the area of the triangle defined by the three points with zero.
+        Tolerance for comparing the area of the triangle formed by the three points to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -57,13 +59,12 @@ def is_colinear(a, b, c, tol=1e-6):
     See Also
     --------
     is_colinear_line_line
-    is_coplanar
 
     """
-    return 0.5 * length_vector_sqrd(cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))) < tol**2
+    return TOL.is_zero(area_triangle([a, b, c]), tol)
 
 
-def is_colinear_line_line(line1, line2, tol=1e-6):
+def is_colinear_line_line(line1, line2, tol=None):
     """Determine if two lines are colinear.
 
     Parameters
@@ -73,7 +74,8 @@ def is_colinear_line_line(line1, line2, tol=1e-6):
     line2 : [point, point] | :class:`compas.geometry.Line`
         Line 2.
     tol : float, optional
-        A tolerance for colinearity verification.
+        Tolerance for colinearity verification used by this function.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -84,7 +86,6 @@ def is_colinear_line_line(line1, line2, tol=1e-6):
     See Also
     --------
     is_colinear
-    is_coplanar
 
     """
     a, b = line1
@@ -92,83 +93,18 @@ def is_colinear_line_line(line1, line2, tol=1e-6):
     return is_colinear(a, b, c, tol) and is_colinear(a, b, d, tol)
 
 
-def is_coplanar(points, tol=1e-6):
-    """Determine if the points are coplanar.
-
-    Parameters
-    ----------
-    points : sequence[point]
-        A sequence of point locations.
-    tol : float, optional
-        A tolerance for planarity validation.
-
-    Returns
-    -------
-    bool
-        True if the points are coplanar.
-        False otherwise.
-
-    See Also
-    --------
-    is_colinear
-    is_colinear_line_line
-
-    Notes
-    -----
-    Compute the normal vector (cross product) of the vectors formed by the first three points.
-    Taking the first point as base point, include one more vector at a time and check if that vector is perpendicular to the normal vector.
-    If all vectors are perpendicular, the points are coplanar.
-
-    """
-    if len(points) < 4:
-        return True
-
-    tol2 = tol**2
-    temp = points[:]
-
-    while True:
-        a = temp.pop(0)
-        b = temp.pop(0)
-        c = temp.pop(0)
-        n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
-        if not (0.5 * length_vector_sqrd(n) < tol2):
-            # perhaps we should use a different tolerance here?
-            # or rather check if the squared length is large enough?
-            break
-        if not temp:
-            return True
-
-    return all(is_perpendicular_vector_vector(n, subtract_vectors(d, a), tol) for d in temp)
-
-
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# Parallel, Perpendicular
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-
-
-def is_parallel_vector_vector(u, v, tol=1e-6):
+def is_parallel_vector_vector(u, v, tol=None):
     """Determine if two vectors are parallel.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u : [float, float, float] | :class:`~compas.geometry.Vector`
         Vector 1.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v : [float, float, float] | :class:`~compas.geometry.Vector`
         Vector 2.
     tol : float, optional
-        A tolerance for comparing the length of the cross product to zero.
+        Tolerance for comparing the length of the cross product of the two vectors to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -180,23 +116,26 @@ def is_parallel_vector_vector(u, v, tol=1e-6):
     --------
     is_parallel_line_line
     is_parallel_plane_plane
-    is_perpendicular_vector_vector
 
     Notes
     -----
-    This function does not distinguish between parallel and antiparallel vectors.
+    The length of the cross product of two vectors is equal to the area of the parallelogram formed by the two vectors.
+    If the vectors are parallel, the area of the parallelogram is zero.
+
+    Therefore, this predicate is based on the comparison of the length of the cross product of the two vectors to zero,
+    and not on the comparison to zero of the actual angle between the two vectors.
 
     """
-    # uv = dot_vectors(u, v)
-    # uu = dot_vectors(u, u)
-    # vv = dot_vectors(v, v)
-    # return abs(uv * uv - uu * vv) < tol
-    u_v = cross_vectors(u, v)
-    return dot_vectors(u_v, u_v) < tol**2
-    # return abs(dot_vectors(normalize_vector(u), normalize_vector(v)) - 1.0) < tol
+    # Lv = length_vector(v)
+    # V = scale_vector(v, 1 / Lv)
+    # sinus = length_vector(scale_vector(subtract_vectors(scale_vector(V, dot_vectors(u, V)), u), Lv))
+    # # for small angles, the sinus is equal to the angle in radians
+    # # for larger angles, it doesn't matter :)
+    # return TOL.is_angle_zero(sinus, tol)
+    return TOL.is_zero(length_vector(cross_vectors(u, v)), tol)
 
 
-def is_parallel_line_line(line1, line2, tol=1e-6):
+def is_parallel_line_line(line1, line2, tol=None):
     """Determine if two lines are parallel.
 
     Parameters
@@ -206,7 +145,8 @@ def is_parallel_line_line(line1, line2, tol=1e-6):
     line2 : [point, point] | :class:`compas.geometry.Line`
         Line 2.
     tol : float, optional
-        A tolerance for verifying parallelity of the line direction vectors.
+        Tolerance for comparing the length of the cross product of the direction vectors of the two lines to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -218,28 +158,27 @@ def is_parallel_line_line(line1, line2, tol=1e-6):
     --------
     is_parallel_vector_vector
     is_parallel_plane_plane
-    is_perpendicular_line_line
 
     """
     a, b = line1
     c, d = line2
-    # e1 = normalize_vector(subtract_vectors(b, a))
-    # e2 = normalize_vector(subtract_vectors(d, c))
-    # return abs(dot_vectors(e1, e2)) > 1.0 - tol
-    return is_parallel_vector_vector(subtract_vectors(b, a), subtract_vectors(d, c), tol)
+    ab = subtract_vectors(b, a)
+    cd = subtract_vectors(d, c)
+    return is_parallel_vector_vector(ab, cd, tol)
 
 
-def is_parallel_plane_plane(plane1, plane2, tol=1e-6):
+def is_parallel_plane_plane(plane1, plane2, tol=None):
     """Determine if two planes are parallel.
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+    plane1 : [point, vector] | :class:`~compas.geometry.Plane`
         Plane 1.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+    plane2 : [point, vector] | :class:`~compas.geometry.Plane`
         Plane 2.
     tol : float, optional
-        A tolerance for verifying parallelity of the plane normals.
+        Tolerance for comparing the length of the cross product of the normal vectors of the two planes to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -251,10 +190,135 @@ def is_parallel_plane_plane(plane1, plane2, tol=1e-6):
     --------
     is_parallel_vector_vector
     is_parallel_line_line
-    is_perpendicular_plane_plane
 
     """
     return is_parallel_vector_vector(plane1[1], plane2[1], tol)
+
+
+def is_perpendicular_vector_vector(u, v, tol=None):
+    """Determine if two vectors are perpendicular.
+
+    Parameters
+    ----------
+    u : [float, float, float] | :class:`~compas.geometry.Vector`
+        Vector 1.
+    v : [float, float, float] | :class:`~compas.geometry.Vector`
+        Vector 2.
+    tol : float, optional
+        Tolerance for comparing the dot product of the two vectors to zero.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if the vectors are perpendicular.
+        False otherwise.
+
+    See Also
+    --------
+    is_perpendicular_line_line
+    is_perpendicular_plane_plane
+
+    Notes
+    -----
+    The dot product of two vectors is equal to the product of the lengths of the two vectors and the cosine of the angle between the two vectors.
+    If the vectors are perpendicular, the cosine of the angle between the two vectors is zero.
+
+    Therefore, this predicate is based on the comparison of the dot product of the two vectors to zero,
+    and not on the comparison to zero of the actual angle between the two vectors.
+
+    """
+    return TOL.is_zero(dot_vectors(u, v), tol)
+
+
+def is_perpendicular_line_line(line1, line2, tol=None):
+    """Determine if two lines are perpendicular.
+
+    Parameters
+    ----------
+    line1 : [point, point] | :class:`~compas.geometry.Line`
+        Line 1.
+    line2 : [point, point] | :class:`~compas.geometry.Line`
+        Line 2.
+    tol : float, optional
+        Tolerance for verifying the perpendicularity of the direction vectors of the two lines.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if the lines are perpendicular.
+        False otherwise.
+
+    See Also
+    --------
+    is_perpendicular_vector_vector
+    is_perpendicular_plane_plane
+
+    """
+    a, b = line1
+    c, d = line2
+    ab = subtract_vectors(b, a)
+    cd = subtract_vectors(d, c)
+    return is_perpendicular_vector_vector(ab, cd, tol)
+
+
+def is_perpendicular_plane_plane(plane1, plane2, tol=None):
+    """Determine if two planes are perpendicular.
+
+    Parameters
+    ----------
+    plane1 : [point, vector] | :class:`~compas.geometry.Plane`
+        Plane 1.
+    plane2 : [point, vector] | :class:`~compas.geometry.Plane`
+        Plane 2.
+    tol : float, optional
+        Tolerance for verifying the perpendicularity of the normal vectors of the two planes.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if the planes are perpendicular.
+        False otherwise.
+
+    See Also
+    --------
+    is_perpendicular_vector_vector
+    is_perpendicular_line_line
+
+    """
+    return is_perpendicular_vector_vector(plane1[1], plane2[1], tol)
+
+
+def is_coplanar(points, tol=None):
+    """Determine if the points are coplanar.
+
+    Parameters
+    ----------
+    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+        Plane 1.
+    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+        Plane 2.
+    tol : float, optional
+        Tolerance for verifying the perpendicularity of the normal of a plane through three of the points with the vectors formed by the other points.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if the planes are parallel.
+        False otherwise.
+
+    Notes
+    -----
+    Compute the normal vector (cross product) of the vectors formed by the first three points.
+    Taking the firs tpoint as base point, include one more vector at a time and check if that vector is perpendicular to the normal vector.
+    If all vectors are perpendicular, the points are coplanar.
+
+    See Also
+    --------
+    is_colinear
 
 
 def is_perpendicular_vector_vector(u, v, tol=1e-6):
@@ -284,82 +348,20 @@ def is_perpendicular_vector_vector(u, v, tol=1e-6):
     """
     return abs(dot_vectors(u, v)) < tol
 
+    temp = points[:]
 
-def is_perpendicular_line_line(line1, line2, tol=1e-6):
-    """Determine if two lines are perpendicular.
+    while True:
+        a = temp.pop(0)
+        b = temp.pop(0)
+        c = temp.pop(0)
+        if not is_colinear(a, b, c, tol):
+            break
+        if not temp:
+            return True
 
-    Parameters
-    ----------
-    line1 : [point, point] | :class:`compas.geometry.Line`
-        Line 1.
-    line2 : [point, point] | :class:`compas.geometry.Line`
-        Line 2.
-    tol : float, optional
-        A tolerance for verifying perpendicularity of the line direction vectors.
+    n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
 
-    Returns
-    -------
-    bool
-        True if the lines are perpendicular.
-        False otherwise.
-
-    See Also
-    --------
-    is_perpendicular_vector_vector
-    is_perpendicular_plane_plane
-    is_parallel_line_line
-
-    """
-    return is_perpendicular_vector_vector(
-        subtract_vectors(line1[1], line1[0]),
-        subtract_vectors(line2[1], line2[0]),
-        tol,
-    )
-
-
-def is_perpendicular_plane_plane(plane1, plane2, tol=1e-6):
-    """Determine if two planes are perpendicular.
-
-    Parameters
-    ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
-        Plane 1.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
-        Plane 2.
-    tol : float, optional
-        A tolerance for verifying perpendicularity of the plane normals.
-
-    Returns
-    -------
-    bool
-        True if the planes are perpendicular.
-        False otherwise.
-
-    See Also
-    --------
-    is_perpendicular_vector_vector
-    is_perpendicular_line_line
-    is_parallel_plane_plane
-
-    """
-    return is_perpendicular_vector_vector(plane1[1], plane2[1], tol)
-
-
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# Convexity
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
+    return all(is_perpendicular_vector_vector(n, subtract_vectors(d, a), tol) for d in temp)
 
 
 def is_polygon_convex(polygon):
@@ -383,7 +385,11 @@ def is_polygon_convex(polygon):
     Notes
     -----
     Use this function for *spatial* polygons.
-    If the polygon is in a horizontal plane, use :func:`is_polygon_convex_xy` instead.
+    If the polygon is in a horizontal plane, use :func:`compas.geometry.is_polygon_convex_xy` instead.
+
+    See Also
+    --------
+    compas.geometry.is_polygon_convex_xy
 
     Examples
     --------
@@ -392,31 +398,45 @@ def is_polygon_convex(polygon):
     False
 
     """
-    a = polygon[0]
-    o = polygon[1]
-    b = polygon[2]
+    if len(polygon) == 3:
+        return True
+
+    temp = polygon[:]
+
+    while True:
+        a = temp.pop(0)
+        o = temp.pop(0)
+        b = temp.pop(0)
+        if not is_colinear(a, o, b):
+            break
+        if not temp:
+            return True
+
     oa = subtract_vectors(a, o)
     ob = subtract_vectors(b, o)
     n0 = cross_vectors(oa, ob)
-    for a, o, b in window(polygon + polygon[:2], 3):
+
+    for a, o, b in window(temp + temp[:2], 3):
         oa = subtract_vectors(a, o)
         ob = subtract_vectors(b, o)
         n = cross_vectors(oa, ob)
-        if dot_vectors(n, n0) >= 0:
-            continue
-        else:
+        if dot_vectors(n, n0) < 0:
             return False
     return True
 
 
-def is_polyhedron_convex(polyhedron):
-    """Determine if a polyhedron is convex.
+def is_point_on_plane(point, plane, tol=None):
+    """Determine if a point lies on a plane.
 
     Parameters
     ----------
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`
-        A polyhedron defined by a sequence of points
-        and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
+    point : [float, float, float] | :class:`~compas.geometry.Point`
+        A point.
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
+        A plane.
+    tol : float, optional
+        Tolerance for comparing the distance between the point and the plane to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -424,25 +444,31 @@ def is_polyhedron_convex(polyhedron):
         True if the polyhedron is convex.
         False otherwise.
 
-    See Also
-    --------
-    is_polygon_convex
+    """
+    return TOL.is_zero(distance_point_plane(point, plane), tol)
+
+
+def is_point_infront_plane(point, plane, tol=None):
+    """Determine if a point lies in front of a plane.
+
+    Parameters
+    ----------
+    point : [float, float, float] | :class:`~compas.geometry.Point`
+        A point.
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
+        A plane.
+    tol : float, optional
+        Tolerance for verifying that the dot product of the vector from the plane origin to the point and the plane normal is positive.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if the point is in front of the plane.
+        False otherwise.
 
     """
-    vertices, faces = polyhedron
-    for face in faces:
-        base = vertices[face[0]]
-        normal = normal_polygon([vertices[index] for index in face])
-        direction = None
-        for i in range(len(vertices)):
-            if i not in face:
-                point = vertices[i]
-                if direction is None:
-                    direction = dot_vectors(subtract_vectors(point, base), normal) >= 0
-                else:
-                    if dot_vectors(subtract_vectors(point, base), normal) >= 0 != direction:
-                        return False
-    return True
+    return TOL.is_positive(dot_vectors(subtract_vectors(point, plane[0]), plane[1]), tol)
 
 
 # =============================================================================
@@ -462,8 +488,8 @@ def is_polyhedron_convex(polyhedron):
 # =============================================================================
 
 
-def is_point_on_plane(point, plane, tol=1e-6):
-    """Determine if a point lies on a plane.
+def is_point_behind_plane(point, plane, tol=None):
+    """Determine if a point lies behind a plane.
 
     Parameters
     ----------
@@ -472,7 +498,8 @@ def is_point_on_plane(point, plane, tol=1e-6):
     plane : [point, vector] | :class:`compas.geometry.Plane`
         A plane.
     tol : float, optional
-        A tolerance for membership verification.
+        Tolerance for verifying that the dot product of the vector from the plane origin to the point and the plane normal is negative.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -481,27 +508,10 @@ def is_point_on_plane(point, plane, tol=1e-6):
         False otherwise.
 
     """
-    return distance_point_plane(point, plane) <= tol
+    return TOL.is_negative(dot_vectors(subtract_vectors(point, plane[0]), plane[1]), tol)
 
 
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# Containment (Curves)
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-
-
-def is_point_on_line(point, line, tol=1e-6):
+def is_point_on_line(point, line, tol=None):
     """Determine if a point lies on a line.
 
     Parameters
@@ -511,7 +521,8 @@ def is_point_on_line(point, line, tol=1e-6):
     line : [point, point] | :class:`compas.geometry.Line`
         A line.
     tol : float, optional
-        A tolerance for membership verification.
+        Tolerance for comparing the distance between the point and the line to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -520,10 +531,10 @@ def is_point_on_line(point, line, tol=1e-6):
         False otherwise.
 
     """
-    return distance_point_line(point, line) <= tol
+    return TOL.is_zero(distance_point_line(point, line), tol)
 
 
-def is_point_on_segment(point, segment, tol=1e-6):
+def is_point_on_segment(point, segment, tol=None):
     """Determine if a point lies on a given line segment.
 
     Parameters
@@ -533,7 +544,8 @@ def is_point_on_segment(point, segment, tol=1e-6):
     segment : [point, point] | :class:`compas.geometry.Line`
         A line segment.
     tol : float, optional
-        A tolerance for membership verification.
+        Tolerance for comparing the distance between the point and the line segment to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -554,12 +566,12 @@ def is_point_on_segment(point, segment, tol=1e-6):
     d_pa = distance_point_point(a, point)
     d_pb = distance_point_point(b, point)
 
-    if d_pa + d_pb <= d_ab + tol:
+    if TOL.is_close(d_pa + d_pb, d_ab, rtol=0, atol=tol):
         return True
     return False
 
 
-def is_point_on_polyline(point, polyline, tol=1e-6):
+def is_point_on_polyline(point, polyline, tol=None):
     """Determine if a point is on a polyline.
 
     Parameters
@@ -569,7 +581,8 @@ def is_point_on_polyline(point, polyline, tol=1e-6):
     polyline : sequence[point] | :class:`compas.geometry.Polyline`
         A polyline.
     tol : float, optional
-        The tolerance for membership verification.
+        Tolerance for comparing the distance between the point and the polyline to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -583,7 +596,7 @@ def is_point_on_polyline(point, polyline, tol=1e-6):
         b = polyline[i + 1]
         c = closest_point_on_segment(point, (a, b))
 
-        if distance_point_point(point, c) <= tol:
+        if TOL.is_zero(distance_point_point(point, c), tol):
             return True
 
     return False
@@ -671,15 +684,18 @@ def is_point_in_circle(point, circle, tol=1e-6):
     return False
 
 
-def is_point_in_triangle(point, triangle, tol=1e-6):
-    """Determine if a point is in the interior of a triangle.
+def is_intersection_line_line(l1, l2, tol=None):
+    """Verifies if two lines intersect.
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`compas.geometry.Point`
-        A point.
-    triangle : [point, point, point]
-        A triangle.
+    l1 : [point, point] | :class:`~compas.geometry.Line`
+        A line.
+    l2 : [point, point] | :class:`~compas.geometry.Line`
+        A line.
+    tol : float, optional
+        Tolerance for veryfing that the lines are not parallel, and for comparing the distance between the lines to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -689,34 +705,25 @@ def is_point_in_triangle(point, triangle, tol=1e-6):
 
     See Also
     --------
-    compas.geometry.is_point_in_triangle_xy
+    is_parallel_line_line
+    is_intersection_line_triangle
+    is_intersection_line_plane
 
     """
 
-    def is_on_same_side(p1, p2, segment):
-        a, b = segment
-        v = subtract_vectors(b, a)
-        c1 = cross_vectors(v, subtract_vectors(p1, a))
-        c2 = cross_vectors(v, subtract_vectors(p2, a))
-        if dot_vectors(c1, c2) >= 0:
-            return True
+    e1 = normalize_vector(subtract_vectors(b, a))
+    e2 = normalize_vector(subtract_vectors(d, c))
+
+    # check for parallel lines
+    if is_parallel_vector_vector(e1, e2, tol):
         return False
 
-    a, b, c = triangle
-
-    if is_point_on_plane(point, (a, normal_polygon(triangle)), tol=tol):
-        if (
-            is_on_same_side(point, a, (b, c))
-            and is_on_same_side(point, b, (a, c))
-            and is_on_same_side(point, c, (a, b))
-        ):
-            return True
-
-    return False
+    # check for intersection
+    return TOL.is_zero(dot_vectors(cross_vectors(e1, e2), subtract_vectors(c, a)), tol)
 
 
-def is_point_in_polygon(point, polygon, tol=1e-6):
-    """Determine if a point is in the interior of a polygon.
+def is_intersection_segment_segment(s1, s2, tol=None):
+    """Verifies if two segments intersect.
 
     Parameters
     ----------
@@ -735,21 +742,8 @@ def is_point_in_polygon(point, polygon, tol=1e-6):
     raise NotImplementedError
 
 
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# Containment (Solids)
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
+def is_intersection_line_triangle(line, triangle, tol=None):
+    """Verifies if a line (ray) intersects with a triangle.
 
 
 def is_point_in_sphere(point, sphere, tol=1e-6):
@@ -757,10 +751,13 @@ def is_point_in_sphere(point, sphere, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`compas.geometry.Point`
-        A point.
-    sphere : [point, float]
-        A sphere.
+    line : [point, point] | :class:`~compas.geometry.Line`
+        A line.
+    triangle : [point, point, point]
+        A triangle.
+    tol : float, optional
+        Tolerance for comparing the dot product of the direction vector of the ray and the normal vector of the plane of the triangle to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -769,41 +766,135 @@ def is_point_in_sphere(point, sphere, tol=1e-6):
         False otherwise.
 
     """
-    center, radius = sphere
-    return distance_point_point(point, center) <= radius + tol
+    a, b, c = triangle
+
+    o = line[0]
+
+    d = subtract_vectors(line[1], line[0])  # coulmn 0
+    e1 = subtract_vectors(b, a)  # column 1
+    e2 = subtract_vectors(c, a)  # column 2
+
+    # det([A B C]) = -1 * dot(cross(A, C), B) = -1 * dot(cross(C, B), A)
+
+    # cross column 0 and column 2
+    d_e2 = cross_vectors(d, e2)
+    # dot column 1 with cross of columns 0 and 2
+    det = dot_vectors(e1, d_e2)
+
+    if TOL.is_zero(det, tol):
+        return False
+
+    ao = subtract_vectors(o, a)  # substitution column
+    inv_det = 1.0 / det
+
+    # substitute ao for column 1 of the matrix
+    # compute the determinant of the new matrix
+    det_Au = dot_vectors(ao, d_e2)
+    u = det_Au * inv_det  # barycentric coordinate 1
+    if u < 0.0 or u > 1.0:
+        return False
+
+    # substitute ao for column 2 of the matrix
+    # compute the determinant of the new matrix
+    d_ao = cross_vectors(d, ao)
+    det_Av = dot_vectors(e1, d_ao)
+    v = det_Av * inv_det  # barycentric coordinate 2
+    if v < 0.0 or u + v > 1.0:
+        return False
+
+    # t = dot_vectors(e2, ap_x_e1) * inv_det  # distance from ray origin to intersection
+    # return TOL.is_positive(t, tol)
+    return True
 
 
-def is_point_in_aab(point, box, tol=1e-6):
-    """Determine if a point lies in an axis-aligned box.
+def is_intersection_ray_triangle(ray, triangle, tol=None):
+    """Verifies if a ray intersects with a triangle.
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`compas.geometry.Point`
-        A point.
-    box : [[float, float, float], [float, float, float]] | [:class:`compas.geometry.Point`, :class:`compas.geometry.Point``]
-        An axis-aligned box defined by the min/max corners.
+    ray : [point, point] | :class:`~compas.geometry.Line`
+        A ray.
+    triangle : [point, point, point]
+        A triangle.
+    tol : float, optional
+        Tolerance for comparing the dot product of the direction vector of the ray and the normal vector of the plane of the triangle to zero,
+        and for veryfing that the parameter t is a strictly positive number.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
     bool
-        True if the point lies in the box.
+        True if the ray intersects with the triangle.
         False otherwise.
 
+    Notes
+    -----
+    Based on the Moeller Trumbore intersection algorithm.
+    The ray is treated as a line segment with a start and end point.
+
+    Examples
+    --------
+    >>>
+
     """
-    a, b = box
-    return all(a[i] - tol <= point[i] <= b[i] + tol for i in range(3))
+    a, b, c = triangle
+
+    o = ray[0]
+    d = subtract_vectors(ray[1], ray[0])  # coulmn 0
+    e1 = subtract_vectors(b, a)  # column 1
+    e2 = subtract_vectors(c, a)  # column 2
+
+    # det([A B C]) = -1 * dot(cross(A, C), B) = -1 * dot(cross(C, B), A)
+
+    # cross column 0 and column 2
+    d_e2 = cross_vectors(d, e2)
+    # dot column 1 with cross of columns 0 and 2
+    det = dot_vectors(e1, d_e2)
+
+    if TOL.is_zero(det, tol):
+        return False
+
+    ao = subtract_vectors(o, a)  # substitution column
+    inv_det = 1.0 / det
+
+    # substitute ao for column 1 of the matrix
+    # compute the determinant of the new matrix
+    det_Au = dot_vectors(ao, d_e2)
+    u = det_Au * inv_det  # barycentric coordinate 1
+    if u < 0.0 or u > 1.0:
+        return False
+
+    # substitute ao for column 2 of the matrix
+    # compute the determinant of the new matrix
+    d_ao = cross_vectors(d, ao)
+    det_Av = dot_vectors(e1, d_ao)
+    # ao_x_e1 = cross_vectors(ao, e1)
+    # det_Av = dot_vectors(d, ao_x_e1)
+    v = det_Av * inv_det  # barycentric coordinate 2
+    if v < 0.0 or u + v > 1.0:
+        return False
+
+    # substitute ao for column 0 of the matrix
+    # compute the determinant of the new matrix
+    ao_e2 = cross_vectors(ao, e2)
+    det_At = dot_vectors(e1, ao_e2)
+    t = det_At * inv_det  # distance from ray origin to intersection
+
+    return TOL.is_positive(t, tol)
 
 
-def is_point_in_polyhedron(point, polyhedron):
-    """Determine if the point lies inside the given polyhedron.
+def is_intersection_line_plane(line, plane, tol=None):
+    """Determine if a line (ray) intersects with a plane.
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`compas.geometry.Point`
-        The test point.
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`.
-        The polyhedron defined by a sequence of points
-        and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
+    line : [point, point] | :class:`~compas.geometry.Line`
+        A line.
+    plane : [point, vector] | :class:`~compas.geometry.Plane`
+        A plane.
+    tol : float, optional
+        Tolerance for comparing the dot product of the direction vector of the line and the normal vector of the plane to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -818,8 +909,11 @@ def is_point_in_polyhedron(point, polyhedron):
     return all(is_point_behind_plane(point, plane) for plane in planes)
 
 
-def is_point_infront_plane(point, plane, tol=1e-6):
-    """Determine if a point lies in front of a plane.
+    return not TOL.is_zero(dot, tol)
+
+
+def is_intersection_segment_plane(segment, plane, tol=None):
+    """Determine if a line segment intersects with a plane.
 
     Parameters
     ----------
@@ -828,7 +922,8 @@ def is_point_infront_plane(point, plane, tol=1e-6):
     plane : [point, vector] | :class:`compas.geometry.Plane`
         A plane.
     tol : float, optional
-        A tolerance for membership verification.
+        Tolerance for comparing the dot product of the direction vector of the line segment and the normal vector of the plane to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -840,8 +935,18 @@ def is_point_infront_plane(point, plane, tol=1e-6):
     return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > tol
 
 
-def is_point_behind_plane(point, plane, tol=1e-6):
-    """Determine if a point lies behind a plane.
+    if TOL.is_zero(dot, tol):
+        return False
+
+    v2 = subtract_vectors(pt1, p_cent)
+    fac = -dot_vectors(p_norm, v2) / dot
+    if fac > 0.0 and fac < 1.0:
+        return True
+    return False
+
+
+def is_intersection_plane_plane(plane1, plane2, tol=None):
+    """Verifies if two planes intersect.
 
     Parameters
     ----------
@@ -850,7 +955,8 @@ def is_point_behind_plane(point, plane, tol=1e-6):
     plane : [point,  normal] | :class:`compas.geometry.Plane`
         A plane.
     tol : float, optional
-        A tolerance for membership verification.
+        Tolerance for veryfing that the planes are not parallel.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -858,8 +964,15 @@ def is_point_behind_plane(point, plane, tol=1e-6):
         True if the point is in front of the plane.
         False otherwise.
 
+    See Also
+    --------
+    is_parallel_plane_plane
+    is_parallel_vector_vector
+
     """
-    return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) < -tol
+    n1 = plane1[1]
+    n2 = plane2[1]
+    return not is_parallel_vector_vector(n1, n2, tol)
 
 
 # =============================================================================

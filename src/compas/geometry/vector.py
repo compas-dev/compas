@@ -736,7 +736,7 @@ class Vector(Geometry):
         """
         return Vector(*cross_vectors(self, other))
 
-    def angle(self, other):
+    def angle(self, other, degrees=False):
         """Compute the smallest angle between this vector and another vector.
 
         Parameters
@@ -757,7 +757,7 @@ class Vector(Geometry):
         True
 
         """
-        return angle_vectors(self, other)
+        return angle_vectors(self, other, deg=degrees)
 
     def angle_signed(self, other, normal):
         """Compute the signed angle between this vector and another vector.
