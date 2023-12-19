@@ -41,11 +41,6 @@ class Color(Data):
         If ``alpha = 0.0``, the color is fully transparent.
         If ``alpha = 1.0``, the color is fully opaque.
 
-    Other Parameters
-    ----------------
-    **kwargs : dict, optional
-        See :class:`compas.data.Data` for more information.
-
     Attributes
     ----------
     r : float
@@ -143,26 +138,6 @@ class Color(Data):
     See Also
     --------
     :class:`compas.colors.ColorMap`
-
-    Notes
-    -----
-    The following methods are static methods:
-
-    * :meth:`is_hex` : Check if a string is a valid hexadecimal color string.
-    * :meth:`is_rgb1` : Check if a tuple is a valid RGB1 color tuple.
-    * :meth:`is_rgb255` : Check if a tuple is a valid RGB255 color tuple.
-    * :meth:`coerce` : Coerce any valid color specification to a :class:`compas.colors.Color` object.
-
-    >>> Color.is_hex("#ff0000")
-    True
-
-    >>> Color.is_rgb1((1.0, 0.0, 0.0))
-    True
-
-    >>> Color.is_rgb255((255, 0, 0))
-    True
-
-    >>> color = Color.coerce((255, 0, 0))
 
     """
 
@@ -465,12 +440,12 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_i(cls, i):  # type: (float) -> Color
+    def from_number(cls, number):  # type: (float) -> Color
         """Construct a color from a single number in the range 0-1.
 
         Parameters
         ----------
-        i : float
+        number : float
             Number in the range 0-1, representing the color.
 
         Returns
@@ -478,27 +453,29 @@ class Color(Data):
         :class:`compas.colors.Color`
 
         """
-        if i == 0.0:
+        if number == 0.0:
             r, g, b = 0, 0, 255
-        elif 0.0 < i < 0.25:
-            r, g, b = 0, int(255 * (4 * i)), 255
-        elif i == 0.25:
+        elif 0.0 < number < 0.25:
+            r, g, b = 0, int(255 * (4 * number)), 255
+        elif number == 0.25:
             r, g, b = 0, 255, 255
-        elif 0.25 < i < 0.5:
-            r, g, b = 0, 255, int(255 - 255 * 4 * (i - 0.25))
-        elif i == 0.5:
+        elif 0.25 < number < 0.5:
+            r, g, b = 0, 255, int(255 - 255 * 4 * (number - 0.25))
+        elif number == 0.5:
             r, g, b = 0, 255, 0
-        elif 0.5 < i < 0.75:
-            r, g, b = int(0 + 255 * 4 * (i - 0.5)), 255, 0
-        elif i == 0.75:
+        elif 0.5 < number < 0.75:
+            r, g, b = int(0 + 255 * 4 * (number - 0.5)), 255, 0
+        elif number == 0.75:
             r, g, b = 255, 255, 0
-        elif 0.75 < i < 1.0:
-            (r, g, b) = (255, int(255 - 255 * 4 * (i - 0.75)), 0)
-        elif i == 1.0:
+        elif 0.75 < number < 1.0:
+            (r, g, b) = (255, int(255 - 255 * 4 * (number - 0.75)), 0)
+        elif number == 1.0:
             r, g, b = 255, 0, 0
         else:
             r, g, b = 0, 0, 0
         return cls(r / 255.0, g / 255.0, b / 255.0)
+
+    from_i = from_number
 
     @classmethod
     def from_hex(cls, value):  # type: (str) -> Color
@@ -542,6 +519,110 @@ class Color(Data):
         if rgb255 is None:
             raise ValueError("Color name not found.")
         return cls.from_rgb255(*rgb255)
+
+    @classmethod
+    def from_unknown(cls, unknown):
+        """Construct a color from an unknown input.
+
+        Parameters
+        ----------
+        unknown : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+            The color input.
+
+        Returns
+        -------
+        :class:`compas.colors.Color` | None
+
+        Raises
+        ------
+        :class:`ColorError`
+
+        """
+        if not unknown:
+            return
+
+        if isinstance(unknown, cls):
+            return unknown
+
+        if Color._is_rgb255(unknown):
+            return cls.from_rgb255(*list(unknown))
+
+        if Color._is_hex(unknown):
+            return cls.from_hex(unknown)
+
+        if Color._is_rgb1(unknown):
+            return cls(*list(unknown))
+
+        if isinstance(unknown, basestring):
+            return cls.from_name(unknown)
+
+        raise ColorError
+
+    @staticmethod
+    def coerce(color):
+        """Coerce a color input into a color.
+
+        Parameters
+        ----------
+        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+            The color input.
+
+        Returns
+        -------
+        :class:`compas.colors.Color` | None
+
+        Raises
+        ------
+        ColorError
+
+        """
+        if not color:
+            return
+        if Color._is_rgb255(color):
+            return Color.from_rgb255(*list(color))
+        if Color._is_hex(color):
+            return Color.from_hex(color)
+        if Color._is_rgb1(color):
+            return Color(*list(color))
+        raise ColorError
+
+    @staticmethod
+    def _is_rgb1(color):
+        """Verify that the color is in the RGB 1 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        return color and all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
+
+    @staticmethod
+    def _is_rgb255(color):
+        """Verify that the color is in the RGB 255 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        return color and all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
+
+    @staticmethod
+    def _is_hex(color):
+        """Verify that the color is in hexadecimal format.
+
+        Returns
+        -------
+        bool
+
+        """
+        if isinstance(color, basestring):
+            match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", color)
+            if match:
+                return True
+            return False
+        return False
 
     # --------------------------------------------------------------------------
     # Presets
@@ -803,72 +884,6 @@ class Color(Data):
     # --------------------------------------------------------------------------
     # Methods
     # --------------------------------------------------------------------------
-
-    @staticmethod
-    def coerce(color):
-        """Coerce a color input into a color.
-
-        Parameters
-        ----------
-        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
-            The color input.
-
-        Returns
-        -------
-        :class:`compas.colors.Color` | None
-
-        Raises
-        ------
-        ColorError
-
-        """
-        if not color:
-            return
-        if Color.is_rgb255(color):
-            return Color.from_rgb255(*list(color))
-        if Color.is_hex(color):
-            return Color.from_hex(color)
-        if Color.is_rgb1(color):
-            return Color(*list(color))
-        raise ColorError
-
-    @staticmethod
-    def is_rgb1(color):
-        """Verify that the color is in the RGB 1 color space.
-
-        Returns
-        -------
-        bool
-
-        """
-        return color and all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
-
-    @staticmethod
-    def is_rgb255(color):
-        """Verify that the color is in the RGB 255 color space.
-
-        Returns
-        -------
-        bool
-
-        """
-        return color and all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
-
-    @staticmethod
-    def is_hex(color):
-        """Verify that the color is in hexadecimal format.
-
-        Returns
-        -------
-        bool
-
-        """
-        if isinstance(color, basestring):
-            match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", color)
-            if match:
-                return True
-            return False
-        return False
 
     def lighten(self, factor=10):
         """Lighten the color.
