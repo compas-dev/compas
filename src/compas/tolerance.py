@@ -2,8 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-
 from compas.data import Data
+from decimal import Decimal
 
 
 class Tolerance(Data):
@@ -24,6 +24,14 @@ class Tolerance(Data):
         The relative tolerance.
     angular : float
         The angular tolerance.
+    approximation : float
+        The tolerance used in approximation processes.
+    precision : int
+        The precision used when converting numbers to strings.
+        Positive numbers correspond to the number of digits after the decimal point.
+        Negative numbers correspond to the number of digits before the decimal point.
+        Zero corresponds to integer precision.
+        Therefore, the higher the number the higher the precision.
 
     Notes
     -----
@@ -63,12 +71,23 @@ class Tolerance(Data):
     """float: The tolerance used in approximation processes.
     """
 
+    PRECISION = 3
+    """int: The precision used when converting numbers to strings.
+
+    The precision used when converting numbers to strings.
+    Positive numbers correspond to the number of digits after the decimal point.
+    Negative numbers correspond to the number of digits before the decimal point.
+    Zero precision is not allowed.
+
+    """
+
     def __init__(self, unit="M"):
         self._unit = None
         self._absolute = None
         self._relative = None
         self._angular = None
         self._approximation = None
+        self._precision = None
         self.unit = unit
 
     @property
@@ -97,6 +116,7 @@ class Tolerance(Data):
         self._relative = None
         self._angular = None
         self._approximation = None
+        self._precision = None
 
     @property
     def units(self):
@@ -107,6 +127,18 @@ class Tolerance(Data):
         if value not in ["M", "MM"]:
             raise ValueError("Invalid unit: {}".format(value))
         self._unit = value
+
+    @property
+    def precision(self):
+        if not self._precision:
+            return self.PRECISION
+        return self._precision
+
+    @precision.setter
+    def precision(self, value):
+        if value == 0:
+            raise ValueError("Precision cannot be zero.")
+        self._precision = value
 
     @property
     def absolute(self):
@@ -474,6 +506,161 @@ class Tolerance(Data):
         """
         tol = tol or self.angular
         return abs(a - b) <= tol
+
+    def geometric_key(self, xyz, precision=None, sanitize=True):
+        """Compute the geometric key of a point.
+
+        Parameters
+        ----------
+        xyz : list of float
+            The XYZ coordinates of the point.
+        precision : int, optional
+            The precision used when converting numbers to strings.
+            Default is ``None``, in which case ``self.precision`` is used.
+        sanitize : bool, optional
+            If ``True``, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
+
+        Returns
+        -------
+        str
+            The geometric key.
+
+        Raises
+        ------
+        ValueError
+            If the precision is zero.
+
+        Examples
+        --------
+        >>> tol = Tolerance()
+        >>> tol.geometric_key([1.0, 2.0, 3.0])
+        '1.000,2.000,3.000'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key([1.05725, 2.0195, 3.001], precision=3)
+        '1.057,2.019,3.001'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key([1.0, 2.0, 3.0], precision=-1)
+        '1,2,3'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key([1.0, 2.0, 3.0], precision=-3)
+        '0,0,0'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key([1103, 205, 30145], precision=-3)
+        '1100,200,30100'
+
+        """
+        x, y, z = xyz
+        if not precision:
+            precision = self.precision
+
+        if precision == 0:
+            raise ValueError("Precision cannot be zero.")
+
+        if precision == -1:
+            return "{:d},{:d},{:d}".format(int(x), int(y), int(z))
+
+        if precision < -1:
+            precision = -precision - 1
+            factor = 10**precision
+            return "{:d},{:d},{:d}".format(
+                int(round(x / factor) * factor),
+                int(round(y / factor) * factor),
+                int(round(z / factor) * factor),
+            )
+
+        if sanitize:
+            minzero = "-{0:.{1}f}".format(0.0, precision)
+            if "{0:.{1}f}".format(x, precision) == minzero:
+                x = 0.0
+            if "{0:.{1}f}".format(y, precision) == minzero:
+                y = 0.0
+            if "{0:.{1}f}".format(z, precision) == minzero:
+                z = 0.0
+
+        return "{0:.{3}f},{1:.{3}f},{2:.{3}f}".format(x, y, z, precision)
+
+    def format_number(self, number, precision=None):
+        """Format a number as a string.
+
+        Parameters
+        ----------
+        number : float
+            The number.
+        precision : int, optional
+            The precision used when converting numbers to strings.
+            Default is ``None``, in which case ``self.precision`` is used.
+
+        Returns
+        -------
+        str
+            The formatted number.
+
+        Examples
+        --------
+        >>> tol = Tolerance()
+        >>> tol.format_number(1.0)
+        '1.000'
+        >>> tol.format_number(1.0, precision=3)
+        '1.000'
+        >>> tol.format_number(1.0, precision=-1)
+        '1'
+        >>> tol.format_number(1.0, precision=-3)
+        '0'
+        >>> tol.format_number(12345, precision=-3)
+        '12300'
+
+        """
+        if not precision:
+            precision = self.precision
+
+        if precision == 0:
+            raise ValueError("Precision cannot be zero.")
+
+        if precision == -1:
+            return "{:d}".format(int(round(number)))
+
+        if precision < -1:
+            precision = -precision - 1
+            factor = 10**precision
+            return "{:d}".format(int(round(number / factor) * factor))
+
+        return "{0:.{1}f}".format(number, precision)
+
+    def precision_from_tolerance(self, tol=None):
+        """Compute the precision from a given tolerance.
+
+        Parameters
+        ----------
+        tol : float, optional
+            The tolerance.
+            Default is ``None``, in which case ``self.absolute`` is used.
+
+        Returns
+        -------
+        int
+            The precision.
+
+        Examples
+        --------
+        >>> tol = Tolerance()
+        >>> tol.precision_from_tolerance(1e-07)
+        7
+        >>> tol.precision_from_tolerance(1e-05)
+        5
+        >>> tol.precision_from_tolerance(1e-03)
+        3
+        >>> tol.precision_from_tolerance(1e-01)
+        1
+
+        """
+        tol = tol or self.absolute
+        if tol < 1:
+            return abs(int(Decimal(str(tol)).as_tuple().exponent))
+        raise NotImplementedError
 
 
 TOL = Tolerance()
