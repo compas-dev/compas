@@ -75,6 +75,8 @@ class Vector(Geometry):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
+        self._direction = None
+        self._magnitude = None
         self.x = x
         self.y = y
         self.z = z
@@ -192,6 +194,8 @@ class Vector(Geometry):
     @x.setter
     def x(self, x):
         self._x = float(x)
+        self._direction = None
+        self._magnitude = None
 
     @property
     def y(self):
@@ -200,6 +204,8 @@ class Vector(Geometry):
     @y.setter
     def y(self, y):
         self._y = float(y)
+        self._direction = None
+        self._magnitude = None
 
     @property
     def z(self):
@@ -208,10 +214,24 @@ class Vector(Geometry):
     @z.setter
     def z(self, z):
         self._z = float(z)
+        self._direction = None
+        self._magnitude = None
+
+    @property
+    def magnitude(self):
+        if self._magnitude is None:
+            self._magnitude = length_vector(self)
+        return self._magnitude
 
     @property
     def length(self):
-        return length_vector(self)
+        return self.magnitude
+
+    @property
+    def direction(self):
+        if not self._direction:
+            self._direction = self.unitized()
+        return self._direction
 
     # ==========================================================================
     # Constructors
@@ -223,7 +243,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             A vector with components ``x = 1.0, y = 0.0, z = 0.0``.
 
         Examples
@@ -240,7 +260,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             A vector with components ``x = 0.0, y = 1.0, z = 0.0``.
 
         Examples
@@ -257,7 +277,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             A vector with components ``x = 0.0, y = 0.0, z = 1.0``.
 
         Examples
@@ -274,14 +294,14 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        start : [float, float, float] | :class:`~compas.geometry.Point`
+        start : [float, float, float] | :class:`compas.geometry.Point`
             The start point.
-        end : [float, float, float] | :class:`~compas.geometry.Point`
+        end : [float, float, float] | :class:`compas.geometry.Point`
             The end point.
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The vector from start to end.
 
         Examples
@@ -303,7 +323,7 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        collection : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        collection : list[[float, float, float] | :class:`compas.geometry.Vector`]
             The collection of vectors.
 
         Returns
@@ -336,12 +356,12 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        collection : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        collection : list[[float, float, float] | :class:`compas.geometry.Vector`]
             The collection of vectors.
 
         Returns
         -------
-        list[:class:`~compas.geometry.Vector`]
+        list[:class:`compas.geometry.Vector`]
             The transformed vectors.
 
         Examples
@@ -368,7 +388,7 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        vectors : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        vectors : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -390,12 +410,12 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        vectors : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        vectors : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             A vector that is the sum of the vectors.
 
         Examples
@@ -412,9 +432,9 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        left : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -436,14 +456,14 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        left : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
         -------
-        list[:class:`~compas.geometry.Vector`]
+        list[:class:`compas.geometry.Vector`]
             A list of cross products.
 
         Examples
@@ -461,9 +481,9 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        left : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -485,9 +505,9 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        left : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        left : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
-        right : list[[float, float, float] | :class:`~compas.geometry.Vector`]
+        right : list[[float, float, float] | :class:`compas.geometry.Vector`]
             A list of vectors.
 
         Returns
@@ -512,7 +532,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The copy.
 
         Examples
@@ -557,7 +577,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             A unitized copy of the vector.
 
         Examples
@@ -606,7 +626,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
 
         Examples
         --------
@@ -653,7 +673,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             A scaled copy of the vector.
 
         Examples
@@ -675,7 +695,7 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -698,12 +718,12 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The cross product.
 
         Examples
@@ -721,7 +741,7 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -744,9 +764,9 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
-        normal : [float, float, float] | :class:`~compas.geometry.Vector`
+        normal : [float, float, float] | :class:`compas.geometry.Vector`
             The plane's normal spanned by this and the other vector.
 
         Returns
@@ -771,7 +791,7 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        other : [float, float, float] | :class:`~compas.geometry.Vector`
+        other : [float, float, float] | :class:`compas.geometry.Vector`
             The other vector.
 
         Returns
@@ -789,12 +809,30 @@ class Vector(Geometry):
         """
         return angles_vectors(self, other)
 
+    def component(self, other):
+        """Compute the component of this vector in the direction of another vector.
+
+        Parameters
+        ----------
+        other : [float, float, float] | :class:`compas.geometry.Vector`
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        cosa = self.dot(other)
+        component = Vector(other[0], other[1], other[2])
+        L = component.length
+        component.scale(cosa / L)
+        return component
+
     def transform(self, T):
         """Transform this vector.
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
@@ -821,12 +859,12 @@ class Vector(Geometry):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The transformed copy.
 
         Examples

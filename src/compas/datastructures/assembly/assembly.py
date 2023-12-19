@@ -19,7 +19,7 @@ class Assembly(Datastructure):
     ----------
     attributes : dict[str, Any]
         General attributes of the data structure that will be included in the data dict and serialization.
-    graph : :class:`~compas.datastructures.Graph`
+    graph : :class:`compas.datastructures.Graph`
         The graph that is used under the hood to store the parts and their connections.
 
     See Also
@@ -94,7 +94,7 @@ class Assembly(Datastructure):
 
         Parameters
         ----------
-        part : :class:`~compas.datastructures.Part`
+        part : :class:`compas.datastructures.Part`
             The part to add.
         key : int | str, optional
             The identifier of the part in the assembly.
@@ -122,9 +122,9 @@ class Assembly(Datastructure):
 
         Parameters
         ----------
-        a : :class:`~compas.datastructures.Part`
+        a : :class:`compas.datastructures.Part`
             The "from" part.
-        b : :class:`~compas.datastructures.Part`
+        b : :class:`compas.datastructures.Part`
             The "to" part.
         **kwargs : dict[str, Any], optional
             Attribute dict compiled from named arguments.
@@ -147,12 +147,43 @@ class Assembly(Datastructure):
             raise AssemblyError(error_msg)
         return self.graph.add_edge(a.key, b.key, **kwargs)
 
+    def delete_part(self, part):
+        """Remove a part  from the assembly.
+
+        Parameters
+        ----------
+        part : :class:`compas.datastructures.Part`
+            The part to add.
+
+        Returns
+        -------
+        None
+
+        """
+        del self._parts[part.guid]
+        self.graph.delete_node(key=part.key)
+
+    def delete_connection(self, edge):
+        """Delete a connection between two parts.
+
+        Parameters
+        ----------
+        edge : :class:`compas.datastructures.Part`
+            The part to add.
+
+        Returns
+        -------
+        None
+
+        """
+        self.graph.delete_edge(edge=edge)
+
     def parts(self):
         """The parts of the assembly.
 
         Yields
         ------
-        :class:`~compas.datastructures.Part`
+        :class:`compas.datastructures.Part`
             The individual parts of the assembly.
 
         """
@@ -187,7 +218,7 @@ class Assembly(Datastructure):
 
         Returns
         -------
-        :class:`~compas.datastructures.Part` | None
+        :class:`compas.datastructures.Part` | None
             The identified part,
             or None if the part can't be found.
 
@@ -209,7 +240,7 @@ class Assembly(Datastructure):
 
         Returns
         -------
-        :class:`~compas.datastructures.Part` | None
+        :class:`compas.datastructures.Part` | None
             The identified part,
             or None if the part can't be found.
 

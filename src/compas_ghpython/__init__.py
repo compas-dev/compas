@@ -1,17 +1,3 @@
-"""
-********************************************************************************
-compas_ghpython
-********************************************************************************
-
-.. currentmodule:: compas_ghpython
-
-.. toctree::
-    :maxdepth: 1
-
-    compas_ghpython.artists
-    compas_ghpython.utilities
-
-"""
 import io
 import os
 import urllib
@@ -34,7 +20,7 @@ __all__ = [
 __all_plugins__ = [
     "compas_ghpython.install",
     "compas_ghpython.uninstall",
-    "compas_ghpython.artists",
+    "compas_ghpython.scene",
 ]
 
 

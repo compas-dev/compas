@@ -8,7 +8,7 @@ def mesh_merge_faces(mesh, faces):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh data structure.
     faces : list[int]
         Face identifiers.

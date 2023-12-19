@@ -10,7 +10,7 @@ def network_disconnected_nodes(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network.
 
     Returns
@@ -27,7 +27,7 @@ def network_disconnected_edges(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network.
 
     Returns
@@ -45,12 +45,12 @@ def network_explode(network, cls=None):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network.
 
     Returns
     -------
-    list[:class:`~compas.datastructures.Network`]
+    list[:class:`compas.datastructures.Network`]
         The list of exploded network parts.
 
     """

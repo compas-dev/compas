@@ -16,7 +16,7 @@ from compas._os import (
     is_blender,
     is_grasshopper,
 )
-from compas.data import json_dump, json_dumps, json_load, json_loads
+from compas.data import json_dump, json_dumps, json_dumpz, json_load, json_loads, json_loadz
 
 
 __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
@@ -131,7 +131,9 @@ __all__ = [
     "json_dump",
     "json_load",
     "json_dumps",
+    "json_dumpz",
     "json_loads",
+    "json_loadz",
 ]
 
 __all_plugins__ = [

@@ -9,6 +9,23 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
+if not compas.IPY:
+    from .matrices import network_adjacency_matrix
+    from .matrices import network_connectivity_matrix
+    from .matrices import network_degree_matrix
+    from .matrices import network_laplacian_matrix
+    from .planarity import network_embed_in_plane
+    from .planarity import network_is_planar
+    from .planarity import network_is_planar_embedding
+else:
+    network_adjacency_matrix = None
+    network_connectivity_matrix = None
+    network_degree_matrix = None
+    network_laplacian_matrix = None
+    network_embed_in_plane = None
+    network_is_planar = None
+    network_is_planar_embedding = None
+
 from compas.files import OBJ
 
 from compas.utilities import geometric_key
@@ -69,22 +86,25 @@ class Network(Graph):
     is_crossed = network_is_crossed
     is_xy = network_is_xy
 
-    if not compas.IPY:
-        from .matrices import network_adjacency_matrix
-        from .matrices import network_connectivity_matrix
-        from .matrices import network_degree_matrix
-        from .matrices import network_laplacian_matrix
-        from .planarity import network_embed_in_plane
-        from .planarity import network_is_planar
-        from .planarity import network_is_planar_embedding
-
+    if network_adjacency_matrix:
         adjacency_matrix = network_adjacency_matrix
+
+    if network_connectivity_matrix:
         connectivity_matrix = network_connectivity_matrix
+
+    if network_degree_matrix:
         degree_matrix = network_degree_matrix
+
+    if network_laplacian_matrix:
         laplacian_matrix = network_laplacian_matrix
 
+    if network_embed_in_plane:
         embed_in_plane = network_embed_in_plane
+
+    if network_is_planar:
         is_planar = network_is_planar
+
+    if network_is_planar_embedding:
         is_planar_embedding = network_is_planar_embedding
 
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
@@ -129,7 +149,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also
@@ -163,7 +183,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also
@@ -205,7 +225,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also
@@ -234,14 +254,14 @@ class Network(Graph):
 
         Parameters
         ----------
-        cloud : :class:`~compas.geometry.Pointcloud`
+        cloud : :class:`compas.geometry.Pointcloud`
             A pointcloud object.
         degree : int, optional
             The number of connections per node.
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also

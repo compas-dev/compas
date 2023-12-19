@@ -14,7 +14,7 @@ class PlanarSurface(Surface):
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the surface.
         Default is ``None``, in which case the world coordinate system is used.
     xsize : float, optional

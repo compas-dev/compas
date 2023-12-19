@@ -9,7 +9,7 @@ def trimesh_swap_edge(mesh, edge, allow_boundary=True):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of mesh.
     edge : tuple[int, int]
         The identifier of the edge to swap.

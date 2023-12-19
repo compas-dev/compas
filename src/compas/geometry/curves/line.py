@@ -24,29 +24,29 @@ class Line(Curve):
 
     Parameters
     ----------
-    start : [float, float, float] | :class:`~compas.geometry.Point`
+    start : [float, float, float] | :class:`compas.geometry.Point`
         The first point.
-    end : [float, float, float] | :class:`~compas.geometry.Point`
+    end : [float, float, float] | :class:`compas.geometry.Point`
         The second point.
 
     Attributes
     ----------
-    start : :class:`~compas.geometry.Point`
+    start : :class:`compas.geometry.Point`
         The start point of the line.
-    end : :class:`~compas.geometry.Point`
+    end : :class:`compas.geometry.Point`
         The end point of the line.
-    vector : :class:`~compas.geometry.Vector`, read-only
+    vector : :class:`compas.geometry.Vector`, read-only
         A vector pointing from start to end.
     length : float, read-only
         The length of the vector from start to end.
-    direction : :class:`~compas.geometry.Vector`, read-only
+    direction : :class:`compas.geometry.Vector`, read-only
         A unit vector parallel to the line vector.
-    midpoint : :class:`~compas.geometry.Point`, read-only
+    midpoint : :class:`compas.geometry.Point`, read-only
         The midpoint between start and end.
-    frame : :class:`~compas.geometry.Frame`, read-only
+    frame : :class:`compas.geometry.Frame`, read-only
         The frame of the line.
         This is alsways the world XY frame.
-    transformation : :class:`~compas.geometry.Transformation`, read-only
+    transformation : :class:`compas.geometry.Transformation`, read-only
         This is always the identity transformation.
 
     Examples
@@ -205,9 +205,9 @@ class Line(Curve):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The start point of the line.
-        vector : :class:`~compas.geometry.Vector`
+        vector : :class:`compas.geometry.Vector`
             The vector of the line.
 
         Returns
@@ -235,9 +235,9 @@ class Line(Curve):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The start point of the line.
-        direction : :class:`~compas.geometry.Vector`
+        direction : :class:`compas.geometry.Vector`
             The direction of the line.
         length : float
             The length of the line.
@@ -272,7 +272,7 @@ class Line(Curve):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation`
+        T : :class:`compas.geometry.Transformation`
             The transformation.
 
         Returns
@@ -307,7 +307,7 @@ class Line(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The point at the specified location.
 
         See Also
@@ -329,7 +329,7 @@ class Line(Curve):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The point.
         return_parameter : bool, optional
             Return the parameter of the closest point on the line.
@@ -337,18 +337,16 @@ class Line(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The closest point on the line.
         float
             The parameter of the closest point on the line.
             Only if ``return_parameter`` is ``True``.
 
         """
-        a = self.start
-        vector = point - a
-        direction = self.direction
-        t = vector.dot(direction)
-        c = a + direction * t
+        vector = point - self.start
+        t = vector.dot(self.vector) / self.length**2
+        closest = self.start + self.vector * t
         if return_parameter:
-            return c, t
-        return c
+            return closest, t
+        return closest

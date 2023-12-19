@@ -1,3 +1,6 @@
+import os
+import tempfile
+
 import compas
 from compas.datastructures import Mesh
 from compas.datastructures import Network
@@ -27,7 +30,7 @@ def test_json_shape():
     before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=1, ysize=1, zsize=1)
     after = compas.json_loads(compas.json_dumps(before))
     assert before.dtype == after.dtype
-    assert all(a == b for a, b in zip(before.vertices, after.vertices))
+    assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
     assert before.guid == after.guid
 
 
@@ -111,6 +114,17 @@ def test_json_pretty():
     # strip some spacing to make the test pass on ironpython
     result = "\n".join([line.strip() for line in result.split("\n")])
     assert result == """{\n"a": 12,\n"b": 6565\n}"""
+
+
+def test_json_zip():
+    zipfile_name = os.path.join(tempfile.gettempdir(), "test.json.zip")
+
+    before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=2, ysize=5, zsize=3)
+    compas.json_dumpz(before, zipfile_name)
+    after = compas.json_loadz(zipfile_name)
+    assert before.dtype == after.dtype
+    assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
+    assert before.guid == after.guid
 
 
 # temporarily commented because folder does not exist yet on main

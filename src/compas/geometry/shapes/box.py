@@ -32,70 +32,72 @@ class Box(Shape):
     zsize : float, optional
         The size of the box in the box frame's z direction.
         Defaults to the value of ``xsize``.
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The frame of the box.
         Defaults to ``Frame.worldXY()``.
 
     Attributes
     ----------
-    xsize : float
-        The size of the box in the box frame's x direction.
-    ysize : float
-        The size of the box in the box frame's y direction.
-    zsize : float
-        The size of the box in the box frame's z direction.
-    frame : :class:`~compas.geometry.Frame`
+    area : float, read-only
+        The surface area of the box.
+    depth : float, read-only
+        The depth of the box in Y direction.
+    diagonal : :class:`compas.geometry.Line`, read-only
+        Diagonal of the box.
+    dimensions : list[float], read-only
+        The dimensions of the box in the local frame.
+    frame : :class:`compas.geometry.Frame`
         The box's frame.
+    height : float, read-only
+        The height of the box in Z direction.
+    volume : float, read-only
+        The volume of the box.
+    width : float, read-only
+        The width of the box in X direction.
     xmin : float, read-only
         Minimum value along local X axis.
     xmax : float, read-only
         Maximum value along local X axis.
+    xsize : float
+        The size of the box in the box frame's x direction.
     ymin : float, read-only
         Minimum value along local Y axis.
     ymax : float, read-only
         Maximum value along local Y axis.
+    ysize : float
+        The size of the box in the box frame's y direction.
     zmin : float, read-only
         Minimum value along local Z axis.
     zmax : float, read-only
         Maximum value along local Z axis.
-    width : float, read-only
-        The width of the box in X direction.
-    depth : float, read-only
-        The depth of the box in Y direction.
-    height : float, read-only
-        The height of the box in Z direction.
-    diagonal : :class:`~compas.geometry.Line`, read-only
-        Diagonal of the box.
-    dimensions : list[float], read-only
-        The dimensions of the box in the local frame.
-    area : float, read-only
-        The surface area of the box.
-    volume : float, read-only
-        The volume of the box.
-    points : list[:class:`~compas.geometry.Point`], read-only
-        The XYZ coordinates of the corners of the box.
-    vertices : list[:class:`~compas.geometry.Point`], read-only
-        The XYZ coordinates of the vertices of the box.
-    faces : list[list[int]], read-only
-        The faces of the box defined as lists of vertex indices.
-    bottom : list[int], read-only
-        The vertex indices of the bottom face.
-    front : list[int], read-only
-        The vertex indices of the front face.
-    right : list[int], read-only
-        The vertex indices of the right face.
-    back : list[int], read-only
-        The vertex indices of the back face.
-    left : list[int], read-only
-        The vertex indices of the left face.
-    top : list[int], read-only
-        The vertex indices of the top face.
-    edges : list[tuple[int, int]], read-only
-        The edges of the box as vertex index pairs.
+    zsize : float
+        The size of the box in the box frame's z direction.
 
     Examples
     --------
-    >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+    >>> box = Box(1)
+    >>> box.xsize
+    1.0
+    >>> box.ysize
+    1.0
+    >>> box.zsize
+    1.0
+    >>> box.volume
+    1.0
+    >>> box.area
+    6.0
+
+    >>> box = Box(1, 2, 3)
+    >>> box.xsize
+    1.0
+    >>> box.ysize
+    2.0
+    >>> box.zsize
+    3.0
+    >>> box.volume
+    6.0
+    >>> box.area
+    22.0
 
     """
 
@@ -259,8 +261,19 @@ class Box(Shape):
 
     @property
     def diagonal(self):
-        vertices = self.vertices
-        return Line(vertices[0], vertices[-2])
+        a = (
+            self.frame.point
+            + self.frame.xaxis * -0.5 * self.xsize
+            + self.frame.yaxis * -0.5 * self.ysize
+            + self.frame.zaxis * -0.5 * self.zsize
+        )
+        b = (
+            self.frame.point
+            + self.frame.xaxis * 0.5 * self.xsize
+            + self.frame.yaxis * 0.5 * self.ysize
+            + self.frame.zaxis * 0.5 * self.zsize
+        )
+        return Line(a, b)
 
     @property
     def dimensions(self):
@@ -273,36 +286,6 @@ class Box(Shape):
     @property
     def volume(self):
         return self.xsize * self.ysize * self.zsize
-
-    @property
-    def points(self):
-        return self.vertices
-
-    @property
-    def vertices(self):
-        point = self.frame.point
-        xaxis = self.frame.xaxis
-        yaxis = self.frame.yaxis
-        zaxis = self.frame.zaxis
-
-        dx = 0.5 * self.xsize
-        dy = 0.5 * self.ysize
-        dz = 0.5 * self.zsize
-
-        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
-        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
-        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
-        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
-        e = a + zaxis * self.zsize
-        f = d + zaxis * self.zsize
-        g = c + zaxis * self.zsize
-        h = b + zaxis * self.zsize
-
-        return [a, b, c, d, e, f, g, h]
-
-    @property
-    def faces(self):
-        return [self.bottom, self.front, self.right, self.back, self.left, self.top]
 
     @property
     def bottom(self):
@@ -328,19 +311,12 @@ class Box(Shape):
     def top(self):
         return [4, 5, 6, 7]
 
-    @property
-    def edges(self):
-        edges = [(0, 1), (1, 2), (2, 3), (3, 0)]
-        edges += [(4, 5), (5, 6), (6, 7), (7, 4)]
-        edges += [(0, 4), (1, 7), (2, 6), (3, 5)]
-        return edges
-
     # ==========================================================================
     # Constructors
     # ==========================================================================
 
     @classmethod
-    def from_width_height_depth(cls, width, height, depth):
+    def from_width_height_depth(cls, width, height, depth):  # type: (...) -> Box
         """Construct a box from its width, height and depth.
 
         Note that width is along the X-axis, height along Z-axis, and depth along the Y-axis.
@@ -356,7 +332,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
             The resulting box.
 
         Notes
@@ -375,12 +351,12 @@ class Box(Shape):
         return cls(width, depth, height)
 
     @classmethod
-    def from_bounding_box(cls, bbox):
+    def from_bounding_box(cls, bbox):  # type: (...) -> Box
         """Construct a box from the result of a bounding box calculation.
 
         Parameters
         ----------
-        bbox : list[[float, float, float] | :class:`~compas.geometry.Point`]
+        bbox : list[[float, float, float] | :class:`compas.geometry.Point`]
             A list of 8 point locations, representing the corners of the bounding box.
             Positions 0, 1, 2, 3 are the bottom corners.
             Positions 4, 5, 6, 7 are the top corners.
@@ -388,7 +364,7 @@ class Box(Shape):
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
             The box shape.
 
         Examples
@@ -418,21 +394,21 @@ class Box(Shape):
         return cls(xsize=xsize, ysize=ysize, zsize=zsize, frame=frame)
 
     @classmethod
-    def from_corner_corner_height(cls, corner1, corner2, height):
+    def from_corner_corner_height(cls, corner1, corner2, height):  # type: (...) -> Box
         """Construct a box from the opposite corners of its base and its height.
 
         Parameters
         ----------
-        corner1 : [float, float, float] | :class:`~compas.geometry.Point`
+        corner1 : [float, float, float] | :class:`compas.geometry.Point`
             The XYZ coordinates of the bottom left corner of the base of the box.
-        corner2 : [float, float, float] | :class:`~compas.geometry.Point`
+        corner2 : [float, float, float] | :class:`compas.geometry.Point`
             The XYZ coordinates of the top right corner of the base of the box.
         height : float
             The height of the box.
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
             The resulting box.
 
         Examples
@@ -459,17 +435,17 @@ class Box(Shape):
         return cls(xsize=width, ysize=depth, zsize=height, frame=frame)
 
     @classmethod
-    def from_diagonal(cls, diagonal):
+    def from_diagonal(cls, diagonal):  # type: (...) -> Box
         """Construct a box from its main diagonal.
 
         Parameters
         ----------
-        diagonal : [point, point] | :class:`~compas.geometry.Line`
+        diagonal : [point, point] | :class:`compas.geometry.Line`
             The diagonal of the box, represented by a pair of points in space.
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
             The resulting box.
 
         Examples
@@ -497,21 +473,25 @@ class Box(Shape):
 
         return cls(width, depth, height, frame)
 
-    # @classmethod
-    # def from_points(cls, points):
-    #     """Construct a box from a set of points.
+    @classmethod
+    def from_points(cls, points):  # type: (...) -> Box
+        """Construct a box from a set of points.
 
-    #     Parameters
-    #     ----------
-    #     points : list[:class:`~compas.geometry.Point`]
-    #         A list of points.
+        Parameters
+        ----------
+        points : list[:class:`compas.geometry.Point`]
+            A list of points.
 
-    #     Returns
-    #     -------
-    #     :class:`~compas.geometry.Box`
-    #         The resulting box.
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+            The resulting box.
 
-    #     """
+        """
+        from compas.geometry import bounding_box
+
+        bbox = bounding_box(points)
+        return cls.from_bounding_box(bbox)
 
     # ==========================================================================
     # Conversions
@@ -532,14 +512,36 @@ class Box(Shape):
             with each face defined as a list of indices into the list of vertices.
 
         """
+        point = self.frame.point
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+
+        dx = 0.5 * self.xsize
+        dy = 0.5 * self.ysize
+        dz = 0.5 * self.zsize
+
+        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
+        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
+        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
+        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
+        e = a + zaxis * self.zsize
+        f = d + zaxis * self.zsize
+        g = c + zaxis * self.zsize
+        h = b + zaxis * self.zsize
+
+        vertices = [a, b, c, d, e, f, g, h]
+        _faces = [self.bottom, self.front, self.right, self.back, self.left, self.top]
+
         if triangulated:
             faces = []
-            for a, b, c, d in self.faces:
+            for a, b, c, d in _faces:
                 faces.append([a, b, c])
                 faces.append([a, c, d])
         else:
-            faces = self.faces
-        return self.vertices, faces
+            faces = _faces
+
+        return vertices, faces
 
     def to_brep(self):
         """Returns a BREP representation of the box.
@@ -549,7 +551,7 @@ class Box(Shape):
         :class:`compas.brep.Brep`
 
         """
-        from compas.brep import Brep
+        from compas.geometry import Brep
 
         return Brep.from_box(self)
 
@@ -608,12 +610,58 @@ class Box(Shape):
     # Methods
     # ==========================================================================
 
+    def corner(self, index):
+        """Return one of the eight corners of the box.
+
+        Parameters
+        ----------
+        index : int
+            The index of the corner.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The corner point.
+
+        Raises
+        ------
+        ValueError
+            If the index is not between 0 and 7.
+
+        """
+        if index < 0 or index > 7:
+            raise ValueError("Index should be between 0 and 7.")
+
+        point = self.frame.point
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+        dx = 0.5 * self.xsize
+        dy = 0.5 * self.ysize
+        dz = 0.5 * self.zsize
+        if index == 0:
+            return point + xaxis * -dx + yaxis * -dy + zaxis * -dz
+        if index == 1:
+            return point + xaxis * -dx + yaxis * +dy + zaxis * -dz
+        if index == 2:
+            return point + xaxis * +dx + yaxis * +dy + zaxis * -dz
+        if index == 3:
+            return point + xaxis * +dx + yaxis * -dy + zaxis * -dz
+        if index == 4:
+            return point + xaxis * -dx + yaxis * -dy + zaxis * +dz
+        if index == 5:
+            return point + xaxis * -dx + yaxis * +dy + zaxis * +dz
+        if index == 6:
+            return point + xaxis * +dx + yaxis * +dy + zaxis * +dz
+        if index == 7:
+            return point + xaxis * +dx + yaxis * -dy + zaxis * +dz
+
     def contains_point(self, point, tol=1e-6):
         """Verify if the box contains a given point.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point to test.
         tol : float, optional
             The tolerance for the point containment check.
@@ -621,6 +669,10 @@ class Box(Shape):
         Returns
         -------
         bool
+
+        See Also
+        --------
+        contains_points
 
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
@@ -648,7 +700,7 @@ class Box(Shape):
 
         Parameters
         ----------
-        points : list[[float, float, float]] | list[:class:`~compas.geometry.Point`]
+        points : list[[float, float, float]] | list[:class:`compas.geometry.Point`]
             A list of points.
         tol : float, optional
             The tolerance for the point containment check.
@@ -656,6 +708,10 @@ class Box(Shape):
         Returns
         -------
         list[bool]
+
+        See Also
+        --------
+        contains_point
 
         Examples
         --------

@@ -132,7 +132,7 @@ def vertices_and_faces_to_rhino(
 
     Parameters
     ----------
-    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    vertices : list[[float, float, float] | :class:`compas.geometry.Point`]
         A list of point locations.
     faces : list[list[int]]
         A list of faces as lists of indices into `vertices`.
@@ -241,7 +241,7 @@ def mesh_to_compas(rhinomesh, cls=None):
     ----------
     rhinomesh : :class:`Rhino.Geometry.Mesh`
         A Rhino mesh object.
-    cls: :class:`~compas.datastructures.Mesh`, optional
+    cls: :class:`compas.datastructures.Mesh`, optional
         The mesh type.
 
     Returns

@@ -1,4 +1,5 @@
 from typing import Optional
+
 import bpy  # type: ignore
 import bmesh  # type: ignore
 

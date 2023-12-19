@@ -1,11 +1,18 @@
-import Rhino
-from Rhino.Geometry import Interval
-from Rhino.Geometry import RevSurface
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-from compas.brep import BrepFace
+import Rhino  # type: ignore
+from Rhino.Geometry import Interval  # type: ignore
+from Rhino.Geometry import RevSurface  # type: ignore
+
+from compas.geometry import Brep
+from compas.geometry import BrepFace
 from compas.geometry import Sphere
 from compas.geometry import Cylinder
 from compas.geometry import Frame
+from compas.geometry import SurfaceType
+
 
 from compas_rhino.geometry import RhinoNurbsSurface
 from compas_rhino.geometry.surfaces import RhinoSurface
@@ -17,6 +24,7 @@ from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
 
 from .loop import RhinoBrepLoop
+from .edge import RhinoBrepEdge
 
 
 class RhinoBrepFace(BrepFace):
@@ -36,22 +44,18 @@ class RhinoBrepFace(BrepFace):
         The list of loops which comprise the holes of this brep, if any.
     is_plane : float, read-only
         True if the geometry of this face is a plane, False otherwise.
+    native_face : :class:`Rhino.Geometry.BrepFace`
+        The underlying BrepFace object.
 
     """
 
-    def __init__(self, rhino_face=None, builder=None):
+    def __init__(self, rhino_face=None):
         super(RhinoBrepFace, self).__init__()
-        self._builder = builder
         self._loops = None
         self._surface = None
         self._face = None
         if rhino_face:
-            self._set_face(rhino_face)
-
-    def _set_face(self, native_face):
-        self._face = native_face
-        self._loops = [RhinoBrepLoop(loop) for loop in native_face.Loops]
-        self._surface = RhinoNurbsSurface.from_rhino(self._face.UnderlyingSurface().ToNurbsSurface())
+            self.native_face = rhino_face
 
     # ==============================================================================
     # Data
@@ -68,16 +72,6 @@ class RhinoBrepFace(BrepFace):
             "loops": [loop.data for loop in self._loops],
         }
 
-    @data.setter
-    def data(self, value):
-        self._surface = self._make_surface_from_data(
-            value["surface_type"], value["surface"], value["uv_domain"], value["frame"]
-        )
-        face_builder = self._builder.add_face(self._surface)
-        for loop_data in value["loops"]:
-            RhinoBrepLoop.from_data(loop_data, face_builder)
-        self._set_face(face_builder.result)
-
     @classmethod
     def from_data(cls, data, builder):
         """Construct an object of this type from the provided data.
@@ -86,19 +80,25 @@ class RhinoBrepFace(BrepFace):
         ----------
         data : dict
             The data dictionary.
-        builder : :class:`~compas_rhino.geometry.BrepBuilder`
+        builder : :class:`compas_rhino.geometry.BrepBuilder`
             The object reconstructing the current Brep.
 
         Returns
         -------
-        :class:`~compas.data.Data`
+        :class:`compas.data.Data`
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
 
-        obj = cls(builder=builder)
-        obj.data = data
-        return obj
+        instance = cls()
+        instance._surface = instance._make_surface_from_data(
+            data["surface_type"], data["surface"], data["uv_domain"], data["frame"]
+        )
+        face_builder = builder.add_face(instance._surface)
+        for loop_data in data["loops"]:
+            RhinoBrepLoop.from_data(loop_data, face_builder)
+        instance.native_face = face_builder.result
+        return instance
 
     # ==============================================================================
     # Properties
@@ -107,6 +107,20 @@ class RhinoBrepFace(BrepFace):
     @property
     def native_surface(self):
         return self._surface
+
+    @property
+    def area(self):
+        return self._mass_props.Area
+
+    @property
+    def centroid(self):
+        return self._mass_props.Centroid
+
+    @property
+    def edges(self):
+        brep = self._face.Brep
+        edge_indices = self._face.AdjacentEdges()
+        return [RhinoBrepEdge(brep.Edges[index]) for index in edge_indices]
 
     @property
     def loops(self):
@@ -126,7 +140,64 @@ class RhinoBrepFace(BrepFace):
 
     @property
     def is_plane(self):
-        return
+        return self._face.UnderlyingSurface().IsPlanar()
+
+    @property
+    def is_cone(self):
+        return self._face.UnderlyingSurface().IsCone()
+
+    @property
+    def is_cylinder(self):
+        return self._face.UnderlyingSurface().IsCylinder()
+
+    @property
+    def is_sphere(self):
+        return self._face.UnderlyingSurface().IsSphere()
+
+    @property
+    def is_torus(self):
+        return self._face.UnderlyingSurface().IsTorus()
+
+    @property
+    def native_face(self):
+        return self._face
+
+    @native_face.setter
+    def native_face(self, rhino_face):
+        self._face = rhino_face
+        self._mass_props = Rhino.Geometry.AreaMassProperties.Compute(rhino_face.ToBrep())
+        self._loops = [RhinoBrepLoop(loop) for loop in rhino_face.Loops]
+        self._surface = RhinoNurbsSurface.from_rhino(self._face.UnderlyingSurface().ToNurbsSurface())
+
+    @property
+    def nurbssurface(self):
+        return self._surface
+
+    @property
+    def vertices(self):
+        vertices = []
+        for edge in self.edges:
+            vertices.extend(edge.vertices)
+        return vertices
+
+    @property
+    def type(self):
+        if self.is_cone:
+            return SurfaceType.CONE
+        elif self.is_cylinder:
+            return SurfaceType.CYLINDER
+        elif self.is_sphere:
+            return SurfaceType.SPHERE
+        elif self.is_torus:
+            return SurfaceType.TORUS
+        elif self.is_plane:
+            return SurfaceType.PLANE
+        else:
+            return SurfaceType.OTHER_SURFACE
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
 
     @staticmethod
     def _get_surface_geometry(surface):
@@ -191,3 +262,30 @@ class RhinoBrepFace(BrepFace):
         surface.SetDomain(0, Interval(*u_domain))
         surface.SetDomain(1, Interval(*v_domain))
         return surface
+
+    # ==============================================================================
+    # Methods
+    # ==============================================================================
+
+    def adjacent_faces(self):
+        """Returns a list of the faces adjacent to this face.
+
+        Returns
+        -------
+        list[:class:`compas_rhino.geometry.RhinoBrepFace`]
+            The list of adjacent faces.
+
+        """
+        face_indices = self._face.AdjacentFaces()
+        brep = self._face.Brep
+        return [RhinoBrepFace(brep.Faces[index]) for index in face_indices]
+
+    def as_brep(self):
+        """Returns a Brep representation of this face.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        return Brep.from_native(self._face.ToBrep())

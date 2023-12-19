@@ -29,9 +29,9 @@ class BlenderCurve(Curve):
         The spatial dimension of the curve.
     domain : tuple[float, float], read-only
         The parameter domain.
-    start : :class:`~compas.geometry.Point`, read-only
+    start : :class:`compas.geometry.Point`, read-only
         The point corresponding to the start of the parameter domain.
-    end : :class:`~compas.geometry.Point`, read-only
+    end : :class:`compas.geometry.Point`, read-only
         The point corresponding to the end of the parameter domain.
     is_closed : bool, read-only
         True if the curve is closed.
@@ -117,7 +117,7 @@ class BlenderCurve(Curve):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.BlenderCurve`
+        :class:`compas_rhino.geometry.BlenderCurve`
 
         """
         curve = cls()
@@ -137,7 +137,7 @@ class BlenderCurve(Curve):
 
     #     Returns
     #     -------
-    #     :class:`~compas_rhino.geometry.RhinoCurve`
+    #     :class:`compas_rhino.geometry.RhinoCurve`
 
     #     """
     #     cls = type(self)
@@ -150,7 +150,7 @@ class BlenderCurve(Curve):
 
     #     Parameters
     #     ----------
-    #     T : :class:`~compas.geometry.Transformation`
+    #     T : :class:`compas.geometry.Transformation`
     #         A COMPAS transformation.
 
     #     Returns
@@ -180,7 +180,7 @@ class BlenderCurve(Curve):
 
     #     Returns
     #     -------
-    #     :class:`~compas.geometry.Point`
+    #     :class:`compas.geometry.Point`
     #         the corresponding point on the curve.
 
     #     """
@@ -197,7 +197,7 @@ class BlenderCurve(Curve):
 
     #     Returns
     #     -------
-    #     :class:`~compas.geometry.Vector`
+    #     :class:`compas.geometry.Vector`
     #         The corresponding tangent vector.
 
     #     """
@@ -214,7 +214,7 @@ class BlenderCurve(Curve):
 
     #     Returns
     #     -------
-    #     :class:`~compas.geometry.Vector`
+    #     :class:`compas.geometry.Vector`
     #         The corresponding curvature vector.
 
     #     """
@@ -231,7 +231,7 @@ class BlenderCurve(Curve):
 
     #     Returns
     #     -------
-    #     :class:`~compas.geometry.Frame`
+    #     :class:`compas.geometry.Frame`
     #         The corresponding local frame.
 
     #     """

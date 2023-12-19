@@ -16,8 +16,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Torus.to_brep()`.
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
+* Added `compas.scene.Scene`.
+* Added `compas.json_loadz()` and `compas.json_dumpz()` to support ZIP compressed JSON files.
+* Added `compas.datastructures.assembly.delete_part()`.
+* Added `compas.datastructures.assembly.delete_connection()`.
+* Added `compas.geometry.Brep.from_breps()`.
+* Added `compas.geometry.Brep.from_planes()`.
+* Added `compas.geometry.Brep.to_iges()`.
+* Added `compas.geometry.Brep.to_meshes()`.
+* Added `compas.geometry.Brep.to_polygons()`.
+* Added `compas.geometry.Brep.to_stl()`.
+* Added `compas.geometry.Brep.heal()`.
+* Added `compas.geometry.Brep.edge_faces()`.
+* Added `compas.geometry.Brep.edge_loop()`.
+* Added `compas.geometry.Brep.fillet()`.
+* Added `compas.geometry.Brep.filleted()`.
+* Added `compas.geometry.BrepFilletError`.
+* Added `compas.geometry.Brep.is_shell`.
+* Added `compas.geometry.Brep.contains()`.
+* Added `compas.geometry.BrepFace.adjacent_faces()`.
+* Added `compas_rhino.geometry.RhinoBrep.is_manifold`.
+* Added `compas_rhino.geometry.RhinoBrep.contains()`.
+* Added `compas_rhino.geometry.RhinoBrepFace.adjacent_faces()`.
+* Added `compas_rhino.geometry.RhinoBrepFace.as_brep()`.
+* Added `compas.geometry.BrepEdge.orientation`.
+* Added `compas.geometry.BrepEdge.type`.
+* Added `compas.geometry.BrepEdge.length`.
+* Added `compas.geometry.BrepFace.type`.
+* Added `compas.geometry.BrepFace.add_loop()`.
+* Added `compas.geometry.BrepFace.add_loops()`.
+* Added `compas.geometry.BrepFace.to_polygon()` with generic implementation.
+* Added `compas.geometry.BrepFace.try_get_nurbssurface()`.
+* Added `compas_rhino.geometry.RhinoBrepFace.area`.
+* Added `compas_rhino.geometry.RhinoBrepFace.centroid`.
+* Added `compas_rhino.geometry.RhinoBrepFace.edges`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_cone`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_cylinder`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_torus`.
+* Added `compas_rhino.geometry.RhinoBrepFace.is_sphere`.
+* Added `compas_rhino.geometry.RhinoBrepFace.nurbssurface`.
+* Added `compas_rhino.geometry.RhinoBrepFace.vertices`.
+* Added `compas_rhino.geometry.RhinoBrepLoop.trims`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.length`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.centroid`.
+* Added `compas.geometry.BrepFace.native_face`.
+* Added `compas.geometry.BrepEdge.native_edge`.
+* Added `compas.geometry.BrepLoop.native_loop`.
+* Added `compas.geometry.BrepTrim.native_trim`.
+* Added `compas.geometry.BrepVertex.native_vertex`.
+* Added `compas_rhino.geometry.RhinoBrepFace.native_face`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.native_edge`.
+* Added `compas_rhino.geometry.RhinoBrepLoop.native_loop`.
+* Added `compas_rhino.geometry.RhinoBrepTrim.native_trim`.
+* Added `compas_rhino.geometry.RhinoBrepVertex.native_vertex`.
+* Added `color`, `opacity` attributes to `compas.scene.SceneObject`.
+* Added `pointcolor`, `linecolor`, `surfacecolor`, `pointsize`, `linewidth` attributes to `compas.scene.GeometryObject`.
 * Added `compas_rhino.geometry.brep.RhinoBrep.to_meshes()`.
-
 
 ### Changed
 
@@ -26,9 +80,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.geometry.NurbsSurface.u_isocurve` to `isocurve_u`.
 * Changed `compas.geometry.NurbsSurface.v_isocurve` to `isocurve_v`.
 * Changed `compas.brep.Brep.from_step_file` to `from_step`.
+* Moved `compas.brep` to `compas.geometry.brep`.
+* Updated `compas-actions.docs` workflow to `v3`.
+* `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
+* Context related functions like `register`, `build`, `redraw` and `clear` are moved to `compas.scene.context` from `compas.scene.SceneObject`. 
+* Changed plugin selection to fall back to a default implementation if possible.
+* Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
+* Fixed `compas_rhino.geometry.RhinoBrep` serialization.
+* Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`. 
+* The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
 
 ### Removed
 
+* Added `compas_rhino.geometry.RhinoBrepFace.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepEdge.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepLoop.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepTrim.data.setter`.
+* Added `compas_rhino.geometry.RhinoBrepVertex.data.setter`.
 
 ## [2.0.0-alpha.2] 2023-11-07
 
@@ -37,6 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Frame.axes`
 * Added `compas.datastructures.TreeNode` and `compas.datastructures.Tree` classes.
 * Added `EllipseArtist` to `compas_rhino` and `compas_ghpython`.
+* Added `compas.scene.Scene`.
 
 ### Changed
 
@@ -1511,6 +1580,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in `compas.geometry.Box.vertices`.
+* `compas.scene.SceneObject` will now track a list of drawn Objects/GUIDs.
 
 ### Removed
 

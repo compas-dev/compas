@@ -11,7 +11,7 @@ def network_join_edges(network, key):
 
     Parameters
     ----------
-    network : :class:`~compas.geometry.Network`
+    network : :class:`compas.geometry.Network`
         A network data structure.
     key : hashable
         The node identifier.
@@ -61,7 +61,7 @@ def network_polylines(network, splits=None):
     ----------
     network : Network
         A network.
-    splits : sequence[[float, float, float] | :class:`~compas.geometry.Point`], optional
+    splits : sequence[[float, float, float] | :class:`compas.geometry.Point`], optional
         List of point coordinates for polyline splits.
 
     Returns

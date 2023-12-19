@@ -1,6 +1,4 @@
 # flake8: noqa
-imageio <= 2.6; python_version < '3.5'
-imageio >= 2.7; python_version >= '3.5'
 jsonschema >= 4.17, < 4.18
 matplotlib >= 2.2, < 3.0; python_version >= '2.7' and python_version < '3.0'
 matplotlib >= 2.2, < 3.1; python_version >= '3.5' and python_version <= '3.7' and sys_platform == 'win32'
@@ -8,9 +6,6 @@ matplotlib >= 3.1; python_version >= '3.8' and sys_platform == 'win32'
 matplotlib >= 2.2; python_version >= '3.5' and sys_platform != 'win32'
 networkx >= 3.0
 numpy >= 1.15.4
-pillow
-schema
 scipy >= 1.1
-sympy
 typing_extensions
 watchdog

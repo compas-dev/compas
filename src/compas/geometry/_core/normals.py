@@ -17,7 +17,7 @@ def normal_polygon(polygon, unitized=True):
 
     Parameters
     ----------
-    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         A list of polygon point coordinates.
     unitized : bool, optional
         If True, unitize the normal vector.
@@ -29,8 +29,13 @@ def normal_polygon(polygon, unitized=True):
 
     Raises
     ------
-    AssertionError
+    ValueError
         If less than three points are provided.
+
+    See Also
+    --------
+    normal_triangle
+    normal_triangle_xy
 
     Notes
     -----
@@ -40,7 +45,8 @@ def normal_polygon(polygon, unitized=True):
     """
     p = len(polygon)
 
-    assert p > 2, "At least three points required"
+    if p < 3:
+        raise ValueError("At least three points required.")
 
     nx = 0
     ny = 0
@@ -71,7 +77,7 @@ def normal_triangle(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
+    triangle : [point, point, point] | :class:`compas.geometry.Polygon`
         A list of triangle point coordinates.
     unitized : bool, optional
         If True, unitize the normal vector.
@@ -83,11 +89,18 @@ def normal_triangle(triangle, unitized=True):
 
     Raises
     ------
-    AssertionError
+    ValueError
         If the triangle does not have three vertices.
 
+    See Also
+    --------
+    normal_polygon
+    normal_triangle_xy
+
     """
-    assert len(triangle) == 3, "Three points are required."
+    if len(triangle) != 3:
+        raise ValueError("Three points are required.")
+
     a, b, c = triangle
     ab = subtract_vectors(b, a)
     ac = subtract_vectors(c, a)
@@ -103,7 +116,7 @@ def normal_triangle_xy(triangle, unitized=True):
 
     Parameters
     ----------
-    triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
+    triangle : [point, point, point] | :class:`compas.geometry.Polygon`
         A list of triangle point coordinates.
         Z-coordinates are ignored.
     unitized : bool, optional
@@ -116,10 +129,18 @@ def normal_triangle_xy(triangle, unitized=True):
 
     Raises
     ------
-    AssertionError
+    ValueError
         If the triangle does not have three vertices.
 
+    See Also
+    --------
+    normal_polygon
+    normal_triangle
+
     """
+    if len(triangle) != 3:
+        raise ValueError("Three points are required.")
+
     a, b, c = triangle
     ab = subtract_vectors_xy(b, a)
     ac = subtract_vectors_xy(c, a)

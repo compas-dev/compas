@@ -408,7 +408,7 @@ def draw_network(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
 
     Returns
     -------
@@ -464,7 +464,7 @@ def draw_brep(brep):
 
     Parameters
     ----------
-    brep : :class:`~compas.geometry.RhinoBrep`
+    brep : :class:`compas.geometry.RhinoBrep`
         The Brep to draw.
 
     Returns

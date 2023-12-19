@@ -1,30 +1,6 @@
 from __future__ import absolute_import
 
 from .azync import await_callback
-from .colors import (
-    Colormap,
-    black,
-    blue,
-    color_to_colordict,
-    color_to_rgb,
-    cyan,
-    green,
-    hex_to_rgb,
-    i_to_black,
-    i_to_blue,
-    i_to_green,
-    i_to_red,
-    i_to_rgb,
-    i_to_white,
-    is_color_hex,
-    is_color_light,
-    is_color_rgb,
-    red,
-    rgb_to_hex,
-    rgb_to_rgb,
-    white,
-    yellow,
-)
 from .datetime import now, timestamp
 from .decorators import (
     abstractclassmethod,
@@ -32,7 +8,7 @@ from .decorators import (
     memoize,
     print_profile,
 )
-from .images import gif_from_images
+
 from .itertools import (
     flatten,
     reshape,
@@ -51,35 +27,12 @@ from .ssh import SSH
 
 __all__ = [
     "await_callback",
-    "i_to_rgb",
-    "i_to_red",
-    "i_to_green",
-    "i_to_blue",
-    "i_to_white",
-    "i_to_black",
-    "is_color_rgb",
-    "is_color_hex",
-    "is_color_light",
-    "rgb_to_hex",
-    "rgb_to_rgb",
-    "hex_to_rgb",
-    "color_to_colordict",
-    "color_to_rgb",
-    "Colormap",
-    "red",
-    "green",
-    "blue",
-    "yellow",
-    "cyan",
-    "white",
-    "black",
     "timestamp",
     "now",
     "abstractstaticmethod",
     "abstractclassmethod",
     "memoize",
     "print_profile",
-    "gif_from_images",
     "normalize_values",
     "remap_values",
     "meshgrid",

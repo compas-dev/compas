@@ -1,9 +1,15 @@
-import Rhino
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import Rhino  # type: ignore
 
 from compas.geometry import Frame
-from compas.brep import Brep
-from compas.brep import BrepTrimmingError
+from compas.geometry import Brep
+from compas.geometry import BrepTrimmingError
+from compas.geometry import BrepError
 from compas.geometry import Plane
+from compas.geometry import Point
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
@@ -12,6 +18,7 @@ from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
+from compas_rhino.conversions import point_to_rhino
 
 from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
@@ -31,19 +38,19 @@ class RhinoBrep(Brep):
     ----------
     native_brep : :class:`Rhino.Geometry.Brep`
         The underlying Rhino Brep instance.
-    vertices : list[:class:`~compas_rhino.geometry.RhinoBrepVertex`], read-only
+    vertices : list[:class:`compas_rhino.geometry.RhinoBrepVertex`], read-only
         The list of vertices which comprise this Brep.
-    points : list[:class:`~compas.geometry.Point`], read-only
+    points : list[:class:`compas.geometry.Point`], read-only
         The list of vertex geometries as points in 3D space.
-    edges : list[:class:`~compas_rhino.geometry.RhinoBrepEdge`], read-only
+    edges : list[:class:`compas_rhino.geometry.RhinoBrepEdge`], read-only
         The list of edges which comprise this brep.
-    trims : list[:class:`~compas_rhino.geometry.RhinoBrepTrim`], read-only
+    trims : list[:class:`compas_rhino.geometry.RhinoBrepTrim`], read-only
         The list of trims which comprise this brep.
-    loops : list[:class:`~compas_rhino.geometry.RhinoBrepLoop`], read-only
+    loops : list[:class:`compas_rhino.geometry.RhinoBrepLoop`], read-only
         The list of loops which comprise this brep.
-    faces : list[:class:`~compas_rhino.geometry.RhinoBrepFace`], read-only
+    faces : list[:class:`compas_rhino.geometry.RhinoBrepFace`], read-only
         The list of faces which comprise this brep.
-    frame : :class:`~compas.geometry.Frame`, read-only
+    frame : :class:`compas.geometry.Frame`, read-only
         The brep's origin (Frame.worldXY()).
     area : float, read-only
         The calculated area of this brep.
@@ -52,20 +59,9 @@ class RhinoBrep(Brep):
 
     """
 
-    # this makes de-serialization backend-agnostic.
-    # The deserializing type is determined by plugin availability when de-serializing
-    # regardless of the context available when serializing.
-    __class__ = Brep
-
-    def __new__(cls, *args, **kwargs):
-        # This breaks the endless recursion when calling `compas.geometry.Brep()` and allows
-        # having Brep here as the parent class. Otherwise RhinoBrep() calls Brep.__new__()
-        # which calls RhinoBrep() and so on...
-        return object.__new__(cls, *args, **kwargs)
-
-    def __init__(self, brep=None):
+    def __init__(self):
         super(RhinoBrep, self).__init__()
-        self._brep = brep or Rhino.Geometry.Brep()
+        self._brep = Rhino.Geometry.Brep()
 
     def __deepcopy__(self, *args, **kwargs):
         return self.copy()
@@ -77,13 +73,26 @@ class RhinoBrep(Brep):
     @property
     def data(self):
         return {
-            "vertices": [v.data for v in self.vertices],
-            "edges": [e.data for e in self.edges],
-            "faces": [f.data for f in self.faces],
+            "vertices": [v.data for v in self.vertices],  # type: ignore
+            "edges": [e.data for e in self.edges],  # type: ignore
+            "faces": [f.data for f in self.faces],  # type: ignore
         }
 
-    @data.setter
-    def data(self, data):
+    @classmethod
+    def from_data(cls, data):
+        """Construct a RhinoBrep from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        instance = cls()
         builder = _RhinoBrepBuilder()
         for v_data in data["vertices"]:
             RhinoBrepVertex.from_data(v_data, builder)
@@ -91,14 +100,15 @@ class RhinoBrep(Brep):
             RhinoBrepEdge.from_data(e_data, builder)
         for f_data in data["faces"]:
             RhinoBrepFace.from_data(f_data, builder)
-        self._brep = builder.result
+        instance.native_brep = builder.result
+        return instance
 
     def copy(self, cls=None):
         """Creates a deep-copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoBrep`
+        :class:`compas_rhino.geometry.RhinoBrep`
 
         """
         # Avoid reconstruction when just copying. for sake of efficiency and stability
@@ -109,8 +119,20 @@ class RhinoBrep(Brep):
     # ==============================================================================
 
     @property
+    def is_manifold(self):
+        return self._brep.IsManifold
+
+    @property
+    def is_solid(self):
+        return self._brep.IsSolid
+
+    @property
     def native_brep(self):
         return self._brep
+
+    @native_brep.setter
+    def native_brep(self, rhino_brep):
+        self._brep = rhino_brep
 
     @property
     def vertices(self):
@@ -173,7 +195,8 @@ class RhinoBrep(Brep):
         :class:`compas_rhino.geometry.RhinoBrep`
 
         """
-        brep = cls(rhino_brep)
+        brep = cls()
+        brep._brep = rhino_brep
         return brep
 
     @classmethod
@@ -182,12 +205,12 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        box : :class:`~compas.geometry.Box`
+        box : :class:`compas.geometry.Box`
             The box geometry of the brep.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoBrep`
+        :class:`compas_rhino.geometry.RhinoBrep`
 
         """
         rhino_box = box_to_rhino(box)
@@ -199,12 +222,12 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        sphere : :class:`~compas.geometry.Sphere`
+        sphere : :class:`compas.geometry.Sphere`
             The source sphere.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoBrep`
+        :class:`compas_rhino.geometry.RhinoBrep`
 
         """
         rhino_sphere = sphere_to_rhino(sphere)
@@ -216,12 +239,12 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        box : :class:`~compas.geometry.Box`
+        box : :class:`compas.geometry.Box`
             The box geometry of the brep.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoBrep`
+        :class:`compas_rhino.geometry.RhinoBrep`
 
         """
         rhino_cylinder = cylinder_to_rhino(cylinder)
@@ -233,12 +256,12 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        mesh : :class:`~compas.datastructures.Mesh`
+        mesh : :class:`compas.datastructures.Mesh`
             The source mesh.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoBrep`
+        :class:`compas_rhino.geometry.RhinoBrep`
 
         """
         rhino_mesh = mesh_to_rhino(mesh)
@@ -248,6 +271,35 @@ class RhinoBrep(Brep):
     # Methods
     # ==============================================================================
 
+    def contains(self, object):
+        """Check if the Brep contains a given geometric primitive.
+
+        Only closed and manifold breps can be checked for containment.
+
+        Parameters
+        ----------
+        object : :class:`~compas.geometry.Point`, :class:`~compas.geometry.Curve`, :class:`~compas.geometry.Surface`
+            The object to check for containment.
+
+        Raises
+        ------
+        BrepError
+            If the Brep is not solid.
+
+        Returns
+        -------
+        bool
+            True if the object is contained in the Brep, False otherwise.
+
+        """
+        if not self.is_solid:
+            raise BrepError("Cannot check for containment if brep is not manifold or is not closed")
+
+        if isinstance(object, Point):
+            return self._brep.IsPointInside(point_to_rhino(object), TOLERANCE, False)
+        else:
+            raise NotImplementedError
+    
     def to_meshes(self, u=16, v=16):
         """Convert the faces of this Brep shape to meshes.
 
@@ -272,7 +324,7 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        matrix: :class:`~compas.geometry.Transformation`
+        matrix: :class:`compas.geometry.Transformation`
             The transformation matrix by which to transform this Brep.
 
         Returns
@@ -287,7 +339,7 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        trimming_plane : :class:`~compas.geometry.Frame` or :class:`~compas.geometry.Plane`
+        trimming_plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the frame's normal.
 
         tolerance : float
@@ -313,14 +365,14 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
             One or more Breps from which to substract.
-        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
             One or more Breps to substract.
 
         Returns
         -------
-        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        list(:class:`compas_rhino.geometry.RhinoBrep`)
             list of one or more resulting Breps.
 
         """
@@ -341,14 +393,14 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
             One of more breps to join.
-        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
             Another one of more breps to join.
 
         Returns
         -------
-        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        list(:class:`compas_rhino.geometry.RhinoBrep`)
             list of one or more resulting Breps.
 
         """
@@ -366,14 +418,14 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        breps_a : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
             One or more Breps to instrsect.
-        breps_b : :class:`~compas_rhino.geometry.RhinoBrep` or list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
             Another one or more Breps to intersect.
 
         Returns
         -------
-        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        list(:class:`compas_rhino.geometry.RhinoBrep`)
             list of one or more resulting Breps.
 
         """
@@ -393,12 +445,12 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        cutter : :class:`~compas_rhino.geometry.RhinoBrep`
+        cutter : :class:`compas_rhino.geometry.RhinoBrep`
             Another Brep to use as a cutter.
 
         Returns
         -------
-        list(:class:`~compas_rhino.geometry.RhinoBrep`)
+        list(:class:`compas_rhino.geometry.RhinoBrep`)
             list of zero or more resulting Breps.
 
         """

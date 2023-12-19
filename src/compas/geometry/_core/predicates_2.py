@@ -7,17 +7,34 @@ from compas.geometry import distance_point_line_xy
 from compas.geometry import closest_point_on_segment_xy
 
 
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Fundamental
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
 def is_ccw_xy(a, b, c, colinear=False):
     """Determine if c is on the left of ab when looking from a to b,
     and assuming that all points lie in the XY plane.
 
     Parameters
     ----------
-    a : [float, float, float] | :class:`~compas.geometry.Point`
+    a : [float, float, float] | :class:`compas.geometry.Point`
         Base point defined by XY(Z) coordinates.
-    b : [float, float, float] | :class:`~compas.geometry.Point`
+    b : [float, float, float] | :class:`compas.geometry.Point`
         First end point defined by XY(Z) coordinates.
-    c : [float, float, float] | :class:`~compas.geometry.Point`
+    c : [float, float, float] | :class:`compas.geometry.Point`
         Second end point defined by XY(Z) coordinates.
     colinear : bool, optional
         If True, colinear points will return a positive result.
@@ -27,6 +44,10 @@ def is_ccw_xy(a, b, c, colinear=False):
     bool
         True if ccw.
         False otherwise.
+
+    See Also
+    --------
+    is_colinear_xy
 
     References
     ----------
@@ -64,11 +85,11 @@ def is_colinear_xy(a, b, c):
 
     Parameters
     ----------
-    a : [float, float, float] | :class:`~compas.geometry.Point`
+    a : [float, float, float] | :class:`compas.geometry.Point`
         Point 1 defined by XY(Z) coordinates.
-    b : [float, float, float] | :class:`~compas.geometry.Point`
+    b : [float, float, float] | :class:`compas.geometry.Point`
         Point 2 defined by XY(Z) coordinates.
-    c : [float, float, float] | :class:`~compas.geometry.Point`
+    c : [float, float, float] | :class:`compas.geometry.Point`
         Point 3 defined by XY(Z) coordinates.
 
     Returns
@@ -76,6 +97,10 @@ def is_colinear_xy(a, b, c):
     bool
         True if the points are colinear.
         False otherwise.
+
+    See Also
+    --------
+    is_ccw_xy
 
     """
     ab_x = b[0] - a[0]
@@ -85,12 +110,46 @@ def is_colinear_xy(a, b, c):
     return ab_x * ac_y == ab_y * ac_x
 
 
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Parallel, Perpendicular
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Convexity
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
 def is_polygon_convex_xy(polygon, colinear=False):
     """Determine if the polygon is convex on the XY-plane.
 
     Parameters
     ----------
-    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         The XY(Z) coordinates of the corners of a polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed: the first and last vertex in the sequence should not be the same.
@@ -117,14 +176,31 @@ def is_polygon_convex_xy(polygon, colinear=False):
     return True
 
 
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Containment (Curves)
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
 def is_point_on_line_xy(point, line, tol=1e-6):
     """Determine if a point lies on a line on the XY-plane.
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point.
-    line : [point, point] | :class:`~compas.geometry.Line`
+    line : [point, point] | :class:`compas.geometry.Line`
         XY(Z) coordinates of two points defining a line.
     tol : float, optional
         A tolerance for membership verification.
@@ -135,6 +211,11 @@ def is_point_on_line_xy(point, line, tol=1e-6):
         True if the point is in on the line.
         False otherwise.
 
+    See Also
+    --------
+    is_point_on_segment_xy
+    is_point_on_polyline_xy
+
     """
     return distance_point_line_xy(point, line) <= tol
 
@@ -144,9 +225,9 @@ def is_point_on_segment_xy(point, segment, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point.
-    segment : [point, point] | :class:`~compas.geometry.Line`
+    segment : [point, point] | :class:`compas.geometry.Line`
         XY(Z) coordinates of two points defining a segment.
     tol : float, optional
         A tolerance for membership verification.
@@ -156,6 +237,11 @@ def is_point_on_segment_xy(point, segment, tol=1e-6):
     bool
         True if the point is on the line segment.
         False otherwise.
+
+    See Also
+    --------
+    is_point_on_line_xy
+    is_point_on_polyline_xy
 
     """
     a, b = segment
@@ -182,9 +268,9 @@ def is_point_on_polyline_xy(point, polyline, tol=1e-6):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates.
-    polyline : sequence[point] | :class:`~compas.geometry.Polyline`
+    polyline : sequence[point] | :class:`compas.geometry.Polyline`
         XY(Z) coordinates of the points of the polyline.
     tol : float, optional
         The tolerance for membership verification.
@@ -194,6 +280,11 @@ def is_point_on_polyline_xy(point, polyline, tol=1e-6):
     bool
         True if the point is on the polyline.
         False otherwise.
+
+    See Also
+    --------
+    is_point_on_line_xy
+    is_point_on_segment_xy
 
     """
     for i in range(len(polyline) - 1):
@@ -207,12 +298,29 @@ def is_point_on_polyline_xy(point, polyline, tol=1e-6):
     return False
 
 
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Containment (Shapes)
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
 def is_point_in_triangle_xy(point, triangle, colinear=False):
     """Determine if a point is in the interior of a triangle lying on the XY-plane.
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point.
     triangle : [point, point, point]
         XY(Z) coordinates of the corners of the triangle.
@@ -224,6 +332,12 @@ def is_point_in_triangle_xy(point, triangle, colinear=False):
     bool
         True if the point is in the convex polygon.
         False otherwise.
+
+    See Also
+    --------
+    is_point_in_convex_polygon_xy
+    is_point_in_polygon_xy
+    is_point_in_circle_xy
 
     """
     a, b, c = triangle
@@ -243,9 +357,9 @@ def is_point_in_convex_polygon_xy(point, polygon):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point (Z will be ignored).
-    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         A sequence of XY(Z) coordinates of points representing the locations of the corners of a polygon (Z will be ignored).
         The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
@@ -259,6 +373,12 @@ def is_point_in_convex_polygon_xy(point, polygon):
     Warnings
     --------
     Does not work for concave polygons.
+
+    See Also
+    --------
+    is_point_in_triangle_xy
+    is_point_in_polygon_xy
+    is_point_in_circle_xy
 
     """
     ccw = None
@@ -278,9 +398,9 @@ def is_point_in_polygon_xy(point, polygon):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point (Z will be ignored).
-    polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon : sequence[point] | :class:`compas.geometry.Polygon`
         A sequence of XY(Z) coordinates of points representing the locations of the corners of a polygon (Z will be ignored).
         The vertices are assumed to be in order.
         The polygon is assumed to be closed.
@@ -295,6 +415,12 @@ def is_point_in_polygon_xy(point, polygon):
     Warnings
     --------
     A boundary check is not yet implemented. This should include a tolerance value.
+
+    See Also
+    --------
+    is_point_in_triangle_xy
+    is_point_in_convex_polygon_xy
+    is_point_in_circle_xy
 
     """
     x, y = point[0], point[1]
@@ -320,9 +446,9 @@ def is_point_in_circle_xy(point, circle):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`~compas.geometry.Point`
+    point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point (Z will be ignored).
-    circle : [[point, vector], float] | :class:`~compas.geometry.Circle`
+    circle : [[point, vector], float] | :class:`compas.geometry.Circle`
         Center and radius of the circle on the XY plane.
 
     Returns
@@ -330,6 +456,12 @@ def is_point_in_circle_xy(point, circle):
     bool
         True if the point lies in the circle.
         False otherwise.
+
+    See Also
+    --------
+    is_point_in_triangle_xy
+    is_point_in_convex_polygon_xy
+    is_point_in_polygon_xy
 
     """
     dis = distance_point_point_xy(point, circle[0][0])
@@ -343,11 +475,11 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
 
     Parameters
     ----------
-    polygon1 : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon1 : sequence[point] | :class:`compas.geometry.Polygon`
         List of XY(Z) coordinates of points representing the locations of the corners of the exterior polygon (Z will be ignored).
         The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
-    polygon2 : sequence[point] | :class:`~compas.geometry.Polygon`
+    polygon2 : sequence[point] | :class:`compas.geometry.Polygon`
         List of XY(Z) coordinates of points representing the locations of the corners of the interior polygon (Z will be ignored).
         The vertices are assumed to be in order. The polygon is assumed to be closed:
         the first and last vertex in the sequence should not be the same.
@@ -377,14 +509,31 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
         return False
 
 
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Deprecated
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
 def is_intersection_line_line_xy(l1, l2, tol=1e-6):
     """Verifies if two lines intersect on the XY-plane.
 
     Parameters
     ----------
-    l1 : [point, point] | :class:`~compas.geometry.Line`
+    l1 : [point, point] | :class:`compas.geometry.Line`
         XY(Z) coordinates of two points defining a line.
-    l2 : [point, point] | :class:`~compas.geometry.Line`
+    l2 : [point, point] | :class:`compas.geometry.Line`
         XY(Z) coordinates of two points defining a line.
     tol : float, optional
         A tolerance for intersection verification.
@@ -404,10 +553,10 @@ def is_intersection_segment_segment_xy(ab, cd):
 
     Parameters
     ----------
-    ab : [point, point] | :class:`~compas.geometry.Line`
+    ab : [point, point] | :class:`compas.geometry.Line`
         Two points representing the start and end points of a segment.
         Z coordinates will be ignored.
-    cd : [point, point] | :class:`~compas.geometry.Line`
+    cd : [point, point] | :class:`compas.geometry.Line`
         Two points representing the start and end points of a segment.
         Z coordinates will be ignored.
 
