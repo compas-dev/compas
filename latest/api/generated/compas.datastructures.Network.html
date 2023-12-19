@@ -1252,7 +1252,7 @@ document.write(`
 <h1>Network</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Network">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L44"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L61"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Graph.html#compas.datastructures.Graph" title="compas.datastructures.graph.graph.Graph"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.graph.graph.Graph</span></code></a></p>
 <p>Geometric implementation of an edge graph.</p>
 <dl class="field-list simple">
@@ -1364,67 +1364,46 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.laplacian_matrix.html#compas.datastructures.Network.laplacian_matrix" title="compas.datastructures.Network.laplacian_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian_matrix</span></code></a></p></td>
 <td><p>Construct a Laplacian matrix from a Network datastructure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.network_adjacency_matrix.html#compas.datastructures.Network.network_adjacency_matrix" title="compas.datastructures.Network.network_adjacency_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_adjacency_matrix</span></code></a></p></td>
-<td><p>Creates a node adjacency matrix from a Network datastructure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.network_connectivity_matrix.html#compas.datastructures.Network.network_connectivity_matrix" title="compas.datastructures.Network.network_connectivity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_connectivity_matrix</span></code></a></p></td>
-<td><p>Creates a connectivity matrix from a Network datastructure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.network_degree_matrix.html#compas.datastructures.Network.network_degree_matrix" title="compas.datastructures.Network.network_degree_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_degree_matrix</span></code></a></p></td>
-<td><p>Creates a node degree matrix from a Network datastructure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.network_embed_in_plane.html#compas.datastructures.Network.network_embed_in_plane" title="compas.datastructures.Network.network_embed_in_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_embed_in_plane</span></code></a></p></td>
-<td><p>Embed the network in the plane.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.network_is_planar.html#compas.datastructures.Network.network_is_planar" title="compas.datastructures.Network.network_is_planar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_is_planar</span></code></a></p></td>
-<td><p>Check if the network is planar.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.network_is_planar_embedding.html#compas.datastructures.Network.network_is_planar_embedding" title="compas.datastructures.Network.network_is_planar_embedding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_is_planar_embedding</span></code></a></p></td>
-<td><p>Verify that a network is embedded in the plane without crossing edges.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.network_laplacian_matrix.html#compas.datastructures.Network.network_laplacian_matrix" title="compas.datastructures.Network.network_laplacian_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_laplacian_matrix</span></code></a></p></td>
-<td><p>Construct a Laplacian matrix from a Network datastructure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.node_coordinates.html#compas.datastructures.Network.node_coordinates" title="compas.datastructures.Network.node_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_coordinates</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.node_coordinates.html#compas.datastructures.Network.node_coordinates" title="compas.datastructures.Network.node_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_coordinates</span></code></a></p></td>
 <td><p>Return the coordinates of a node.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.node_gkey.html#compas.datastructures.Network.node_gkey" title="compas.datastructures.Network.node_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_gkey</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.node_gkey.html#compas.datastructures.Network.node_gkey" title="compas.datastructures.Network.node_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_gkey</span></code></a></p></td>
 <td><p>Returns a dictionary that maps node identifiers to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.node_laplacian.html#compas.datastructures.Network.node_laplacian" title="compas.datastructures.Network.node_laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_laplacian</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.node_laplacian.html#compas.datastructures.Network.node_laplacian" title="compas.datastructures.Network.node_laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_laplacian</span></code></a></p></td>
 <td><p>Return the vector from the node to the centroid of its 1-ring neighborhood.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.node_neighborhood_centroid.html#compas.datastructures.Network.node_neighborhood_centroid" title="compas.datastructures.Network.node_neighborhood_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_neighborhood_centroid</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.node_neighborhood_centroid.html#compas.datastructures.Network.node_neighborhood_centroid" title="compas.datastructures.Network.node_neighborhood_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_neighborhood_centroid</span></code></a></p></td>
 <td><p>Return the computed centroid of the neighboring nodes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.node_point.html#compas.datastructures.Network.node_point" title="compas.datastructures.Network.node_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_point</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.node_point.html#compas.datastructures.Network.node_point" title="compas.datastructures.Network.node_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_point</span></code></a></p></td>
 <td><p>Return the point of a node.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.shortest_path.html#compas.datastructures.Network.shortest_path" title="compas.datastructures.Network.shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shortest_path</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.shortest_path.html#compas.datastructures.Network.shortest_path" title="compas.datastructures.Network.shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shortest_path</span></code></a></p></td>
 <td><p>Find the shortest path between two nodes of the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.smooth.html#compas.datastructures.Network.smooth" title="compas.datastructures.Network.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.smooth.html#compas.datastructures.Network.smooth" title="compas.datastructures.Network.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
 <td><p>Smooth a network by moving every free node to the centroid of its neighbors.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.split_edge.html#compas.datastructures.Network.split_edge" title="compas.datastructures.Network.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.split_edge.html#compas.datastructures.Network.split_edge" title="compas.datastructures.Network.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a></p></td>
 <td><p>Split and edge by inserting a node along its length.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_lines.html#compas.datastructures.Network.to_lines" title="compas.datastructures.Network.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_lines.html#compas.datastructures.Network.to_lines" title="compas.datastructures.Network.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a></p></td>
 <td><p>Return the lines of the network as pairs of start and end point coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_nodes_and_edges.html#compas.datastructures.Network.to_nodes_and_edges" title="compas.datastructures.Network.to_nodes_and_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nodes_and_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_nodes_and_edges.html#compas.datastructures.Network.to_nodes_and_edges" title="compas.datastructures.Network.to_nodes_and_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nodes_and_edges</span></code></a></p></td>
 <td><p>Return the nodes and edges of a network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_obj.html#compas.datastructures.Network.to_obj" title="compas.datastructures.Network.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_obj.html#compas.datastructures.Network.to_obj" title="compas.datastructures.Network.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the network to an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_points.html#compas.datastructures.Network.to_points" title="compas.datastructures.Network.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_points.html#compas.datastructures.Network.to_points" title="compas.datastructures.Network.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
 <td><p>Return the coordinates of the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.transform.html#compas.datastructures.Network.transform" title="compas.datastructures.Network.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.transform.html#compas.datastructures.Network.transform" title="compas.datastructures.Network.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform a network.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.transformed.html#compas.datastructures.Network.transformed" title="compas.datastructures.Network.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.transformed.html#compas.datastructures.Network.transformed" title="compas.datastructures.Network.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Return a transformed copy of the network.</p></td>
 </tr>
 </tbody>
