@@ -57,8 +57,8 @@ def quaternion_unitize(q):
 
     if TOL.is_zero(n):
         raise ValueError("The given quaternion has zero length.")
-    else:
-        return [x / n for x in q]
+
+    return [x / n for x in q]
 
 
 def quaternion_is_unit(q, tol=None):
