@@ -72,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoBrepVertex.native_vertex`.
 * Added `color`, `opacity` attributes to `compas.scene.SceneObject`.
 * Added `pointcolor`, `linecolor`, `surfacecolor`, `pointsize`, `linewidth` attributes to `compas.scene.GeometryObject`.
+* Added `compas_rhino.geometry.brep.RhinoBrep.to_meshes()`.
 
 ### Changed
 
