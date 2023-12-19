@@ -166,16 +166,11 @@ from .cell_network.cell_network import CellNetwork
 
 from .tree.tree import Tree, TreeNode
 
-BaseNetwork = Network
-BaseMesh = Mesh
-BaseVolMesh = VolMesh
-
 __all__ = [
     "Datastructure",
     # Graphs
     "Graph",
     # Networks
-    "BaseNetwork",
     "CellNetwork",
     "Network",
     "network_complement",
@@ -202,7 +197,6 @@ __all__ = [
     # HalfEdge
     "HalfEdge",
     # Meshes
-    "BaseMesh",
     "Mesh",
     "mesh_add_vertex_to_face_edge",
     "mesh_bounding_box_xy",
@@ -271,7 +265,6 @@ __all__ = [
     # HalfFace
     "HalfFace",
     # Volumetric Meshes
-    "BaseVolMesh",
     "VolMesh",
     "volmesh_bounding_box",
     "volmesh_transform",
