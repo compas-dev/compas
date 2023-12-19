@@ -299,7 +299,7 @@ class RhinoBrep(Brep):
             return self._brep.IsPointInside(point_to_rhino(object), TOLERANCE, False)
         else:
             raise NotImplementedError
-    
+
     def to_meshes(self, u=16, v=16):
         """Convert the faces of this Brep shape to meshes.
 
@@ -315,7 +315,7 @@ class RhinoBrep(Brep):
         list[:class:`~compas.datastructures.Mesh`]
 
         """
-        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep.native_brep, Rhino.Geometry.MeshingParamaters.Default)
+        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParamaters.Default)
         meshes = [mesh_to_compas(m) for m in rg_meshes]
         return meshes
 
