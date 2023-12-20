@@ -13,34 +13,34 @@ from compas_rhino.utilities import clear_layer
 from compas_rhino.utilities import clear_current_layer
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 
-import System
+import System  # type: ignore
 
-from System.Collections.Generic import List
-from System.Drawing.Color import FromArgb
-from System.Enum import ToObject
+from System.Collections.Generic import List  # type: ignore
+from System.Drawing.Color import FromArgb  # type: ignore
+from System.Enum import ToObject  # type: ignore
 
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
+import rhinoscriptsyntax as rs  # type: ignore
+import scriptcontext as sc  # type: ignore
 
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Vector3d
-from Rhino.Geometry import Polyline
-from Rhino.Geometry import PolylineCurve
-from Rhino.Geometry import GeometryBase
-from Rhino.Geometry import Brep
-from Rhino.Geometry import Cylinder
-from Rhino.Geometry import Circle
-from Rhino.Geometry import Plane
-from Rhino.Geometry import PipeCapMode
-from Rhino.Geometry import Curve
-from Rhino.Geometry import Sphere
-from Rhino.Geometry import TextDot
+from Rhino.Geometry import Point3d  # type: ignore
+from Rhino.Geometry import Vector3d  # type: ignore
+from Rhino.Geometry import Polyline  # type: ignore
+from Rhino.Geometry import PolylineCurve  # type: ignore
+from Rhino.Geometry import GeometryBase  # type: ignore
+from Rhino.Geometry import Brep  # type: ignore
+from Rhino.Geometry import Cylinder  # type: ignore
+from Rhino.Geometry import Circle  # type: ignore
+from Rhino.Geometry import Plane  # type: ignore
+from Rhino.Geometry import PipeCapMode  # type: ignore
+from Rhino.Geometry import Curve  # type: ignore
+from Rhino.Geometry import Sphere  # type: ignore
+from Rhino.Geometry import TextDot  # type: ignore
 
-from Rhino.DocObjects.ObjectColorSource import ColorFromObject
-from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
-from Rhino.DocObjects.ObjectDecoration import EndArrowhead
-from Rhino.DocObjects.ObjectDecoration import StartArrowhead
-from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject
+from Rhino.DocObjects.ObjectColorSource import ColorFromObject  # type: ignore
+from Rhino.DocObjects.ObjectColorSource import ColorFromLayer  # type: ignore
+from Rhino.DocObjects.ObjectDecoration import EndArrowhead  # type: ignore
+from Rhino.DocObjects.ObjectDecoration import StartArrowhead  # type: ignore
+from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject  # type: ignore
 
 find_object = sc.doc.Objects.Find
 add_point = sc.doc.Objects.AddPoint
@@ -60,24 +60,6 @@ try:
     find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
 except SystemError:
     find_layer_by_fullpath = None
-
-
-__all__ = [
-    "draw_labels",
-    "draw_points",
-    "draw_lines",
-    "draw_geodesics",
-    "draw_polylines",
-    "draw_breps",
-    "draw_faces",
-    "draw_cylinders",
-    "draw_pipes",
-    "draw_spheres",
-    "draw_mesh",
-    "draw_circles",
-    "draw_surfaces",
-    "draw_brep",
-]
 
 
 def wrap_drawfunc(f):
@@ -102,7 +84,7 @@ def wrap_drawfunc(f):
         if redraw:
             rs.EnableRedraw(True)
         if layer:
-            rs.CurrentLayer(previous)
+            rs.CurrentLayer(previous)  # type: ignore
         return res
 
     return wrapper
