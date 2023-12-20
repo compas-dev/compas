@@ -85,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 * Fixed `compas_rhino.geometry.RhinoBrep` serialization.
 * The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
+* Moved `URDF` parsing from `compas.files` to the `compas_robots` extension (`compas_robots.files.URDF`).
 
 ### Removed
 
@@ -407,7 +408,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas_rhino.artists.VolMeshArtist.draw_edgelabels`.
 * Removed `compas_rhino.artists.VolMeshArtist.draw_facelabels`.
 * Removed `compas_rhino.artists.VolMeshArtist.draw_celllabels`.
-* Removed `compas.robots`.
+* Removed `compas.robots`, replaced with `compas_robots` package.
 * Removed `compas.artists.robotmodelartist`.
 * Removed `compas_blender.artists.robotmodelartist`.
 * Removed `compas_ghpython.artists.robotmodelartist`.
