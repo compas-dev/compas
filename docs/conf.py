@@ -70,11 +70,6 @@ autosummary_mock_imports = sphinx_compas2_theme.default_mock_imports
 
 # plot options
 
-plot_include_source = False
-plot_html_show_source_link = False
-plot_html_show_formats = False
-plot_formats = ["png"]
-
 # intersphinx options
 
 intersphinx_mapping = {

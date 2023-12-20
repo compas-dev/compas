@@ -26,3 +26,6 @@ def trimesh_massmatrix(M):
 
     """
     raise NotImplementedError
+
+
+trimesh_massmatrix.__pluggable__ = True

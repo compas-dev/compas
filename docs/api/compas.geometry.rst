@@ -7,6 +7,7 @@ compas.geometry
 
 .. rst-class:: lead
 
+
 This package defines all functionality for working with geometry in COMPAS.
 It provides classes representing geometric primitives, transformations, (NURBS) curves and surfaces,
 shapes, general polygons and polyhedrons, boundary representations (B-reps), and a number of geometry processing algorithms.
@@ -26,6 +27,7 @@ Classes
     BrepEdge
     BrepError
     BrepFace
+    BrepFilletError
     BrepInvalidError
     BrepLoop
     BrepOrientation
@@ -39,6 +41,7 @@ Classes
     Cone
     ConicalSurface
     Curve
+    CurveType
     Cylinder
     CylindricalSurface
     Ellipse
@@ -67,6 +70,7 @@ Classes
     Sphere
     SphericalSurface
     Surface
+    SurfaceType
     ToroidalSurface
     Torus
     Transformation
@@ -137,8 +141,6 @@ Functions
     compose_matrix
     compute_basisfuncs
     compute_basisfuncsderivs
-    conforming_delaunay_triangulation
-    constrained_delaunay_triangulation
     construct_knotvector
     convex_hull
     convex_hull_xy
@@ -148,7 +150,6 @@ Functions
     dehomogenize_vectors
     delaunay_from_points
     delaunay_from_points
-    delaunay_triangulation
     discrete_coons_patch
     distance_line_line
     distance_point_line
@@ -182,13 +183,11 @@ Functions
     intersection_line_segment
     intersection_line_segment_xy
     intersection_line_triangle
-    intersection_mesh_mesh
     intersection_plane_circle
     intersection_plane_plane
     intersection_plane_plane_plane
     intersection_polyline_box_xy
     intersection_polyline_plane
-    intersection_ray_mesh
     intersection_segment_plane
     intersection_segment_polyline
     intersection_segment_polyline_xy
@@ -203,6 +202,7 @@ Functions
     is_coplanar
     is_matrix_square
     is_parallel_line_line
+    is_parallel_vector_vector
     is_point_behind_plane
     is_point_in_circle
     is_point_in_circle_xy
@@ -322,18 +322,6 @@ Functions
     translate_points_xy
     translation_from_matrix
     transpose_matrix
-    trimesh_gaussian_curvature
-    trimesh_geodistance
-    trimesh_harmonic
-    trimesh_isolines
-    trimesh_lscm
-    trimesh_massmatrix
-    trimesh_mean_curvature
-    trimesh_principal_curvature
-    trimesh_remesh
-    trimesh_remesh_along_isoline
-    trimesh_remesh_constrained
-    trimesh_slice
     tween_points
     tween_points_distance
     vector_average
@@ -395,7 +383,22 @@ Pluggables are functions that don't have an actual implementation, but receive a
     boolean_symmetric_difference_polygon_polygon
     boolean_union_mesh_mesh
     boolean_union_polygon_polygon
+    conforming_delaunay_triangulation
+    constrained_delaunay_triangulation
+    delaunay_triangulation
+    intersection_mesh_mesh
+    intersection_ray_mesh
+    oriented_bounding_box
     quadmesh_planarize
-
-
-
+    trimesh_gaussian_curvature
+    trimesh_geodistance
+    trimesh_harmonic
+    trimesh_isolines
+    trimesh_lscm
+    trimesh_massmatrix
+    trimesh_mean_curvature
+    trimesh_principal_curvature
+    trimesh_remesh
+    trimesh_remesh_along_isoline
+    trimesh_remesh_constrained
+    trimesh_slice

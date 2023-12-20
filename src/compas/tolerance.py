@@ -1,9 +1,15 @@
+"""
+The tolerance module provides functionality to deal with tolerances consistently across all other COMPAS packages.
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
 from compas.data import Data
 from decimal import Decimal
+
+
+__all__ = ["Tolerance", "TOL"]
 
 
 class Tolerance(Data):

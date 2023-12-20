@@ -1,5 +1,5 @@
 # from pathlib import Path
-from compas import scene as module
+from compas import geometry as module
 
 TPL = """
 ********************************************************************************
@@ -142,7 +142,7 @@ sections = "".join([classes, errors, functions, numpy, pluggables, plugins])
 
 # docs = Path(__file__).parent
 
-with open("/Users/vanmelet/Code/compas/docs/reference/{name}.rst".format(name=module.__name__), "w") as f:
+with open("/Users/vanmelet/Code/compas/docs/api/{name}.rst".format(name=module.__name__), "w") as f:
     f.write(
         TPL.format(
             currentmodule=currentmodule,

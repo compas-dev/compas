@@ -7,6 +7,7 @@ compas.files
 
 .. rst-class:: lead
 
+
 This package defines a number of file formats and provides functionality for reading and writing data in these formats.
 
 
@@ -33,6 +34,3 @@ Functions
     :nosignatures:
 
     prettify_string
-
-
-

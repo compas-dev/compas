@@ -28,6 +28,3 @@ def quadmesh_planarize(M, kmax=500, maxdev=0.005):
 
 
 quadmesh_planarize.__pluggable__ = True
-quadmesh_planarize.__plugins__ = {
-    "libigl": "compas_libigl.planarize.quadmesh_planarize",
-}

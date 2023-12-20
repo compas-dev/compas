@@ -9,12 +9,6 @@ from xml.dom import minidom
 from compas.files._xml.xml_shared import shared_xml_from_file
 from compas.files._xml.xml_shared import shared_xml_from_string
 
-__all__ = [
-    "xml_from_file",
-    "xml_from_string",
-    "prettify_string",
-]
-
 
 def prettify_string(rough_string):
     """Return an XML string with added whitespace for legibility.

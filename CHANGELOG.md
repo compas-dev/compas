@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Added
+
+## Changed
+
+## Removed
+
+
+## [2.0.0-beta.1] 2023-12-20
+
 ### Added
 
 * Added `compas.geometry.Box.to_brep()`.
@@ -91,6 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `color`, `opacity` attributes to `compas.scene.SceneObject`.
 * Added `pointcolor`, `linecolor`, `surfacecolor`, `pointsize`, `linewidth` attributes to `compas.scene.GeometryObject`.
 * Added `compas_rhino.geometry.brep.RhinoBrep.to_meshes()`.
+* Added `compas_blender.`
 * Added `compas.geometry.Brep.trimmed()`.
 * Added `compas.geometry.RhinoBrep.slice()`.
 
@@ -104,12 +114,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `compas.brep` to `compas.geometry.brep`.
 * Updated `compas-actions.docs` workflow to `v3`.
 * `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
-* Context related functions like `register`, `build`, `redraw` and `clear` are moved to `compas.scene.context` from `compas.scene.SceneObject`. 
+* Context related functions like `register`, `build`, `redraw` and `clear` are moved to `compas.scene.context` from `compas.scene.SceneObject`.
 * Changed plugin selection to fall back to a default implementation if possible.
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 * Fixed `compas_rhino.geometry.RhinoBrep` serialization.
 * Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`.
 * The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
+* Changed `compas_blender.install` to use symlinks.
 * Moved `URDF` parsing from `compas.files` to the `compas_robots` extension (`compas_robots.files.URDF`).
 * Changed signature of `compas.geometry.Brep.slice()`
 
