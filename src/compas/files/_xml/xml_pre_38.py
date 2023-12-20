@@ -8,12 +8,6 @@ from compas.files._xml.xml_cpython import (
     prettify_string,
 )  # doesn't need special handling for pre-3.8 so we just import
 
-__all__ = [
-    "xml_from_file",
-    "xml_from_string",
-    "prettify_string",
-]
-
 
 def xml_from_file(source, tree_parser=None):
     if tree_parser:
