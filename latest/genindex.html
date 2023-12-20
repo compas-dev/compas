@@ -33,7 +33,6 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -41,9 +40,8 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/tabs.js"></script>
@@ -814,8 +812,6 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.geometry.barycentric_coordinates.html#compas.geometry.barycentric_coordinates">barycentric_coordinates() (in module compas.geometry)</a>
 </li>
-      <li><a href="api/generated/compas_rhino.forms.BaseForm.html#compas_rhino.forms.BaseForm">BaseForm (class in compas_rhino.forms)</a>
-</li>
       <li><a href="api/generated/compas.geometry.basis_vectors_from_matrix.html#compas.geometry.basis_vectors_from_matrix">basis_vectors_from_matrix() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.geometry.bestfit_circle_numpy.html#compas.geometry.bestfit_circle_numpy">bestfit_circle_numpy() (in module compas.geometry)</a>
@@ -964,6 +960,8 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.geometry.BrepFace.html#compas.geometry.BrepFace">BrepFace (class in compas.geometry)</a>
 </li>
+      <li><a href="api/generated/compas.geometry.BrepFilletError.html#compas.geometry.BrepFilletError">BrepFilletError</a>
+</li>
       <li><a href="api/generated/compas.geometry.BrepInvalidError.html#compas.geometry.BrepInvalidError">BrepInvalidError</a>
 </li>
       <li><a href="api/generated/compas.geometry.BrepLoop.html#compas.geometry.BrepLoop">BrepLoop (class in compas.geometry)</a>
@@ -983,8 +981,6 @@ document.write(`
       <li><a href="api/generated/compas.geometry.BrepVertex.html#compas.geometry.BrepVertex">BrepVertex (class in compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.colors.Color.brown.html#compas.colors.Color.brown">brown() (compas.colors.Color class method)</a>
-</li>
-      <li><a href="api/generated/compas_rhino.forms.BrowserForm.html#compas_rhino.forms.BrowserForm">BrowserForm (class in compas_rhino.forms)</a>
 </li>
       <li><a href="api/generated/compas.geometry.KDTree.build.html#compas.geometry.KDTree.build">build() (compas.geometry.KDTree method)</a>
 </li>
@@ -1231,8 +1227,6 @@ document.write(`
       <li><a href="api/generated/compas.geometry.centroid_polygon_xy.html#compas.geometry.centroid_polygon_xy">centroid_polygon_xy() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.geometry.centroid_polyhedron.html#compas.geometry.centroid_polyhedron">centroid_polyhedron() (in module compas.geometry)</a>
-</li>
-      <li><a href="api/generated/compas_rhino.forms.ChartForm.html#compas_rhino.forms.ChartForm">ChartForm (class in compas_rhino.forms)</a>
 </li>
       <li><a href="api/generated/compas.numerical.chofactor.html#compas.numerical.chofactor">chofactor() (in module compas.numerical)</a>
 </li>
@@ -2210,6 +2204,8 @@ document.write(`
         <li><a href="api/generated/compas_rhino.scene.CurveObject.html#compas_rhino.scene.CurveObject">(class in compas_rhino.scene)</a>
 </li>
       </ul></li>
+      <li><a href="api/generated/compas.geometry.CurveType.html#compas.geometry.CurveType">CurveType (class in compas.geometry)</a>
+</li>
       <li><a href="api/generated/compas.colors.Color.cyan.html#compas.colors.Color.cyan">cyan() (compas.colors.Color class method)</a>
 </li>
       <li><a href="api/generated/compas.geometry.Cylinder.html#compas.geometry.Cylinder">Cylinder (class in compas.geometry)</a>
@@ -4676,6 +4672,8 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.rpc.Server.get_request.html#compas.rpc.Server.get_request">get_request() (compas.rpc.Server method)</a>
 </li>
+      <li><a href="api/generated/compas.scene.get_sceneobject_cls.html#compas.scene.get_sceneobject_cls">get_sceneobject_cls() (in module compas.scene)</a>
+</li>
       <li><a href="api/generated/compas_ghpython.scene.GHSceneObject.html#compas_ghpython.scene.GHSceneObject">GHSceneObject (class in compas_ghpython.scene)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.Network.gkey_node.html#compas.datastructures.Network.gkey_node">gkey_node() (compas.datastructures.Network method)</a>
@@ -4964,8 +4962,6 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.geometry.identity_matrix.html#compas.geometry.identity_matrix">identity_matrix() (in module compas.geometry)</a>
 </li>
-      <li><a href="api/generated/compas_rhino.forms.ImageForm.html#compas_rhino.forms.ImageForm">ImageForm (class in compas_rhino.forms)</a>
-</li>
       <li><a href="api/generated/compas.geometry.Point.in_circle.html#compas.geometry.Point.in_circle">in_circle() (compas.geometry.Point method)</a>
 </li>
       <li><a href="api/generated/compas.geometry.Point.in_convex_polygon.html#compas.geometry.Point.in_convex_polygon">in_convex_polygon() (compas.geometry.Point method)</a>
@@ -5000,16 +4996,6 @@ document.write(`
         <li><a href="api/generated/compas.datastructures.Mesh.index_vertex.html#compas.datastructures.Mesh.index_vertex">(compas.datastructures.Mesh method)</a>
 </li>
         <li><a href="api/generated/compas.datastructures.VolMesh.index_vertex.html#compas.datastructures.VolMesh.index_vertex">(compas.datastructures.VolMesh method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/generated/compas_rhino.forms.BaseForm.init.html#compas_rhino.forms.BaseForm.init">init() (compas_rhino.forms.BaseForm method)</a>
-
-      <ul>
-        <li><a href="api/generated/compas_rhino.forms.BrowserForm.init.html#compas_rhino.forms.BrowserForm.init">(compas_rhino.forms.BrowserForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.ChartForm.init.html#compas_rhino.forms.ChartForm.init">(compas_rhino.forms.ChartForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.SliderForm.init.html#compas_rhino.forms.SliderForm.init">(compas_rhino.forms.SliderForm method)</a>
 </li>
       </ul></li>
       <li><a href="api/generated/compas.geometry.Polyline.insert.html#compas.geometry.Polyline.insert">insert() (compas.geometry.Polyline method)</a>
@@ -5190,14 +5176,14 @@ document.write(`
       </ul></li>
       <li><a href="api/generated/compas.tolerance.Tolerance.is_allclose.html#compas.tolerance.Tolerance.is_allclose">is_allclose() (compas.tolerance.Tolerance method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.tolerance.Tolerance.is_angle_zero.html#compas.tolerance.Tolerance.is_angle_zero">is_angle_zero() (compas.tolerance.Tolerance method)</a>
 </li>
       <li><a href="api/generated/compas.tolerance.Tolerance.is_angles_close.html#compas.tolerance.Tolerance.is_angles_close">is_angles_close() (compas.tolerance.Tolerance method)</a>
 </li>
       <li><a href="api/generated/compas.tolerance.Tolerance.is_between.html#compas.tolerance.Tolerance.is_between">is_between() (compas.tolerance.Tolerance method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.geometry.is_ccw_xy.html#compas.geometry.is_ccw_xy">is_ccw_xy() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.CellNetwork.is_cell_on_boundary.html#compas.datastructures.CellNetwork.is_cell_on_boundary">is_cell_on_boundary() (compas.datastructures.CellNetwork method)</a>
@@ -5299,6 +5285,8 @@ document.write(`
       <li><a href="api/generated/compas.geometry.Plane.is_parallel.html#compas.geometry.Plane.is_parallel">is_parallel() (compas.geometry.Plane method)</a>
 </li>
       <li><a href="api/generated/compas.geometry.is_parallel_line_line.html#compas.geometry.is_parallel_line_line">is_parallel_line_line() (in module compas.geometry)</a>
+</li>
+      <li><a href="api/generated/compas.geometry.is_parallel_vector_vector.html#compas.geometry.is_parallel_vector_vector">is_parallel_vector_vector() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.geometry.Plane.is_perpendicular.html#compas.geometry.Plane.is_perpendicular">is_perpendicular() (compas.geometry.Plane method)</a>
 </li>
@@ -5626,6 +5614,14 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_adjacency_matrix.html#compas.datastructures.mesh_adjacency_matrix">mesh_adjacency_matrix() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_bounding_box.html#compas.datastructures.mesh_bounding_box">mesh_bounding_box() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_bounding_box_xy.html#compas.datastructures.mesh_bounding_box_xy">mesh_bounding_box_xy() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_collapse_edge.html#compas.datastructures.mesh_collapse_edge">mesh_collapse_edge() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_connected_components.html#compas.datastructures.mesh_connected_components">mesh_connected_components() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.mesh_connectivity_matrix.html#compas.datastructures.mesh_connectivity_matrix">mesh_connectivity_matrix() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_contours_numpy.html#compas.datastructures.mesh_contours_numpy">mesh_contours_numpy() (in module compas.datastructures)</a>
@@ -5664,23 +5660,33 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_disconnected_vertices.html#compas.datastructures.mesh_disconnected_vertices">mesh_disconnected_vertices() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_dual.html#compas.datastructures.mesh_dual">mesh_dual() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.mesh_explode.html#compas.datastructures.mesh_explode">mesh_explode() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_face_adjacency.html#compas.datastructures.mesh_face_adjacency">mesh_face_adjacency() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_face_matrix.html#compas.datastructures.mesh_face_matrix">mesh_face_matrix() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_flatness.html#compas.datastructures.mesh_flatness">mesh_flatness() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_flip_cycles.html#compas.datastructures.mesh_flip_cycles">mesh_flip_cycles() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.CellNetwork.mesh_from_faces.html#compas.datastructures.CellNetwork.mesh_from_faces">mesh_from_faces() (compas.datastructures.CellNetwork method)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_geodesic_distances_numpy.html#compas.datastructures.mesh_geodesic_distances_numpy">mesh_geodesic_distances_numpy() (in module compas.datastructures)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.datastructures.mesh_insert_vertex_on_edge.html#compas.datastructures.mesh_insert_vertex_on_edge">mesh_insert_vertex_on_edge() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_is_connected.html#compas.datastructures.mesh_is_connected">mesh_is_connected() (in module compas.datastructures)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.datastructures.mesh_isolines_numpy.html#compas.datastructures.mesh_isolines_numpy">mesh_isolines_numpy() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_laplacian_matrix.html#compas.datastructures.mesh_laplacian_matrix">mesh_laplacian_matrix() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_merge_faces.html#compas.datastructures.mesh_merge_faces">mesh_merge_faces() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_offset.html#compas.datastructures.mesh_offset">mesh_offset() (in module compas.datastructures)</a>
 </li>
@@ -5692,9 +5698,21 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_quads_to_triangles.html#compas.datastructures.mesh_quads_to_triangles">mesh_quads_to_triangles() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_slice_plane.html#compas.datastructures.mesh_slice_plane">mesh_slice_plane() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_smooth_area.html#compas.datastructures.mesh_smooth_area">mesh_smooth_area() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.mesh_smooth_centerofmass.html#compas.datastructures.mesh_smooth_centerofmass">mesh_smooth_centerofmass() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_smooth_centroid.html#compas.datastructures.mesh_smooth_centroid">mesh_smooth_centroid() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.mesh_split_edge.html#compas.datastructures.mesh_split_edge">mesh_split_edge() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_split_face.html#compas.datastructures.mesh_split_face">mesh_split_face() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_split_strip.html#compas.datastructures.mesh_split_strip">mesh_split_strip() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_subdivide.html#compas.datastructures.mesh_subdivide">mesh_subdivide() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_subdivide_catmullclark.html#compas.datastructures.mesh_subdivide_catmullclark">mesh_subdivide_catmullclark() (in module compas.datastructures)</a>
 </li>
@@ -5722,9 +5740,15 @@ document.write(`
       </ul></li>
       <li><a href="api/generated/compas_rhino.conversions.mesh_to_rhino.html#compas_rhino.conversions.mesh_to_rhino">mesh_to_rhino() (in module compas_rhino.conversions)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_transform.html#compas.datastructures.mesh_transform">mesh_transform() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.mesh_transform_numpy.html#compas.datastructures.mesh_transform_numpy">mesh_transform_numpy() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.mesh_transformed.html#compas.datastructures.mesh_transformed">mesh_transformed() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.mesh_transformed_numpy.html#compas.datastructures.mesh_transformed_numpy">mesh_transformed_numpy() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.mesh_unify_cycles.html#compas.datastructures.mesh_unify_cycles">mesh_unify_cycles() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.mesh_unweld_edges.html#compas.datastructures.mesh_unweld_edges">mesh_unweld_edges() (in module compas.datastructures)</a>
 </li>
@@ -5822,17 +5846,55 @@ document.write(`
       </ul></li>
       <li><a href="api/generated/compas.datastructures.Network.html#compas.datastructures.Network">Network (class in compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.network_adjacency_matrix.html#compas.datastructures.network_adjacency_matrix">network_adjacency_matrix() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_complement.html#compas.datastructures.network_complement">network_complement() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_connectivity_matrix.html#compas.datastructures.network_connectivity_matrix">network_connectivity_matrix() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_count_crossings.html#compas.datastructures.network_count_crossings">network_count_crossings() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_degree_matrix.html#compas.datastructures.network_degree_matrix">network_degree_matrix() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.network_disconnected_edges.html#compas.datastructures.network_disconnected_edges">network_disconnected_edges() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.network_disconnected_nodes.html#compas.datastructures.network_disconnected_nodes">network_disconnected_nodes() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_embed_in_plane.html#compas.datastructures.network_embed_in_plane">network_embed_in_plane() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.network_embed_in_plane_proxy.html#compas.datastructures.network_embed_in_plane_proxy">network_embed_in_plane_proxy() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.network_explode.html#compas.datastructures.network_explode">network_explode() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.network_find_crossings.html#compas.datastructures.network_find_crossings">network_find_crossings() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_find_cycles.html#compas.datastructures.network_find_cycles">network_find_cycles() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_is_connected.html#compas.datastructures.network_is_connected">network_is_connected() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_is_crossed.html#compas.datastructures.network_is_crossed">network_is_crossed() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_is_planar.html#compas.datastructures.network_is_planar">network_is_planar() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_is_planar_embedding.html#compas.datastructures.network_is_planar_embedding">network_is_planar_embedding() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_is_xy.html#compas.datastructures.network_is_xy">network_is_xy() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.network_join_edges.html#compas.datastructures.network_join_edges">network_join_edges() (in module compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.network_laplacian_matrix.html#compas.datastructures.network_laplacian_matrix">network_laplacian_matrix() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.datastructures.network_polylines.html#compas.datastructures.network_polylines">network_polylines() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_shortest_path.html#compas.datastructures.network_shortest_path">network_shortest_path() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_smooth_centroid.html#compas.datastructures.network_smooth_centroid">network_smooth_centroid() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_split_edge.html#compas.datastructures.network_split_edge">network_split_edge() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_transform.html#compas.datastructures.network_transform">network_transform() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.network_transformed.html#compas.datastructures.network_transformed">network_transformed() (in module compas.datastructures)</a>
 </li>
       <li><a href="api/generated/compas.scene.NetworkObject.html#compas.scene.NetworkObject">NetworkObject (class in compas.scene)</a>
 
@@ -5902,6 +5964,8 @@ document.write(`
         <li><a href="api/generated/compas.datastructures.Network.nodes_where.html#compas.datastructures.Network.nodes_where">(compas.datastructures.Network method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.datastructures.Graph.nodes_where_predicate.html#compas.datastructures.Graph.nodes_where_predicate">nodes_where_predicate() (compas.datastructures.Graph method)</a>
 
       <ul>
@@ -5958,8 +6022,6 @@ document.write(`
         <li><a href="api/generated/compas_rhino.geometry.RhinoNurbsSurface.normal_at.html#compas_rhino.geometry.RhinoNurbsSurface.normal_at">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.geometry.normal_polygon.html#compas.geometry.normal_polygon">normal_polygon() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.geometry.normal_triangle.html#compas.geometry.normal_triangle">normal_triangle() (in module compas.geometry)</a>
@@ -6104,6 +6166,8 @@ document.write(`
         <li><a href="api/generated/compas_rhino.geometry.RhinoNurbsCurve.offset.html#compas_rhino.geometry.RhinoNurbsCurve.offset">(compas_rhino.geometry.RhinoNurbsCurve method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.geometry.offset_line.html#compas.geometry.offset_line">offset_line() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.geometry.offset_polygon.html#compas.geometry.offset_polygon">offset_polygon() (in module compas.geometry)</a>
@@ -6112,61 +6176,25 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.colors.Color.olive.html#compas.colors.Color.olive">olive() (compas.colors.Color class method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/compas_rhino.forms.ImageForm.on_cancel.html#compas_rhino.forms.ImageForm.on_cancel">on_cancel() (compas_rhino.forms.ImageForm method)</a>
-
-      <ul>
-        <li><a href="api/generated/compas_rhino.forms.PropertyListForm.on_cancel.html#compas_rhino.forms.PropertyListForm.on_cancel">(compas_rhino.forms.PropertyListForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.SettingsForm.on_cancel.html#compas_rhino.forms.SettingsForm.on_cancel">(compas_rhino.forms.SettingsForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.TextForm.on_cancel.html#compas_rhino.forms.TextForm.on_cancel">(compas_rhino.forms.TextForm method)</a>
-</li>
-      </ul></li>
       <li><a href="api/generated/compas.geometry.Point.on_circle.html#compas.geometry.Point.on_circle">on_circle() (compas.geometry.Point method)</a>
 </li>
       <li><a href="api/generated/compas.geometry.Point.on_curve.html#compas.geometry.Point.on_curve">on_curve() (compas.geometry.Point method)</a>
 </li>
-      <li><a href="api/generated/compas_rhino.forms.BaseForm.on_form_closed.html#compas_rhino.forms.BaseForm.on_form_closed">on_form_closed() (compas_rhino.forms.BaseForm method)</a>
-
-      <ul>
-        <li><a href="api/generated/compas_rhino.forms.BrowserForm.on_form_closed.html#compas_rhino.forms.BrowserForm.on_form_closed">(compas_rhino.forms.BrowserForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.ChartForm.on_form_closed.html#compas_rhino.forms.ChartForm.on_form_closed">(compas_rhino.forms.ChartForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.SliderForm.on_form_closed.html#compas_rhino.forms.SliderForm.on_form_closed">(compas_rhino.forms.SliderForm method)</a>
-</li>
-      </ul></li>
       <li><a href="api/generated/compas.geometry.Point.on_line.html#compas.geometry.Point.on_line">on_line() (compas.geometry.Point method)</a>
 </li>
       <li><a href="api/generated/compas.rpc.Dispatcher.on_module_imported.html#compas.rpc.Dispatcher.on_module_imported">on_module_imported() (compas.rpc.Dispatcher method)</a>
 </li>
-      <li><a href="api/generated/compas_rhino.forms.ImageForm.on_ok.html#compas_rhino.forms.ImageForm.on_ok">on_ok() (compas_rhino.forms.ImageForm method)</a>
-
-      <ul>
-        <li><a href="api/generated/compas_rhino.forms.PropertyListForm.on_ok.html#compas_rhino.forms.PropertyListForm.on_ok">(compas_rhino.forms.PropertyListForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.SettingsForm.on_ok.html#compas_rhino.forms.SettingsForm.on_ok">(compas_rhino.forms.SettingsForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.TextForm.on_ok.html#compas_rhino.forms.TextForm.on_ok">(compas_rhino.forms.TextForm method)</a>
-</li>
-      </ul></li>
       <li><a href="api/generated/compas.geometry.Point.on_plane.html#compas.geometry.Point.on_plane">on_plane() (compas.geometry.Point method)</a>
 </li>
       <li><a href="api/generated/compas.geometry.Point.on_polyline.html#compas.geometry.Point.on_polyline">on_polyline() (compas.geometry.Point method)</a>
 </li>
-      <li><a href="api/generated/compas_rhino.forms.SliderForm.on_scroll.html#compas_rhino.forms.SliderForm.on_scroll">on_scroll() (compas_rhino.forms.SliderForm method)</a>
-</li>
       <li><a href="api/generated/compas.geometry.Point.on_segment.html#compas.geometry.Point.on_segment">on_segment() (compas.geometry.Point method)</a>
-</li>
-      <li><a href="api/generated/compas_rhino.forms.BrowserForm.on_statustext_changed.html#compas_rhino.forms.BrowserForm.on_statustext_changed">on_statustext_changed() (compas_rhino.forms.BrowserForm method)</a>
-</li>
-      <li><a href="api/generated/compas_rhino.forms.SliderForm.on_textchanged.html#compas_rhino.forms.SliderForm.on_textchanged">on_textchanged() (compas_rhino.forms.SliderForm method)</a>
 </li>
       <li><a href="api/generated/compas.colors.Color.orange.html#compas.colors.Color.orange">orange() (compas.colors.Color class method)</a>
 </li>
       <li><a href="api/generated/compas.geometry.orient_points.html#compas.geometry.orient_points">orient_points() (in module compas.geometry)</a>
+</li>
+      <li><a href="api/generated/compas.geometry.oriented_bounding_box.html#compas.geometry.oriented_bounding_box">oriented_bounding_box() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.geometry.oriented_bounding_box_numpy.html#compas.geometry.oriented_bounding_box_numpy">oriented_bounding_box_numpy() (in module compas.geometry)</a>
 </li>
@@ -6221,6 +6249,10 @@ document.write(`
       <li><a href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable">pluggable() (in module compas.plugins)</a>
 </li>
       <li><a href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin">plugin() (in module compas.plugins)</a>
+</li>
+      <li><a href="api/generated/compas.plugins.plugin_manager.html#compas.plugins.plugin_manager">plugin_manager (in module compas.plugins)</a>
+</li>
+      <li><a href="api/generated/compas.plugins.PluginDefaultNotAvailableError.html#compas.plugins.PluginDefaultNotAvailableError">PluginDefaultNotAvailableError</a>
 </li>
       <li><a href="api/generated/compas.plugins.PluginManager.html#compas.plugins.PluginManager">PluginManager (class in compas.plugins)</a>
 </li>
@@ -6282,6 +6314,8 @@ document.write(`
 </li>
       <li><a href="api/generated/compas_blender.scene.PointcloudObject.html#compas_blender.scene.PointcloudObject">PointcloudObject (class in compas_blender.scene)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.geometry.ConicalSurface.pointgrid.html#compas.geometry.ConicalSurface.pointgrid">pointgrid() (compas.geometry.ConicalSurface method)</a>
 
       <ul>
@@ -6300,8 +6334,6 @@ document.write(`
         <li><a href="api/generated/compas_rhino.geometry.RhinoNurbsSurface.pointgrid.html#compas_rhino.geometry.RhinoNurbsSurface.pointgrid">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas_blender.scene.PointObject.html#compas_blender.scene.PointObject">PointObject (class in compas_blender.scene)</a>
 
       <ul>
@@ -6387,8 +6419,6 @@ document.write(`
       <li><a href="api/generated/compas.geometry.Plane.projected_point.html#compas.geometry.Plane.projected_point">projected_point() (compas.geometry.Plane method)</a>
 </li>
       <li><a href="api/generated/compas.geometry.Projection.html#compas.geometry.Projection">Projection (class in compas.geometry)</a>
-</li>
-      <li><a href="api/generated/compas_rhino.forms.PropertyListForm.html#compas_rhino.forms.PropertyListForm">PropertyListForm (class in compas_rhino.forms)</a>
 </li>
       <li><a href="api/generated/compas.rpc.Proxy.html#compas.rpc.Proxy">Proxy (class in compas.rpc)</a>
 </li>
@@ -7046,8 +7076,6 @@ document.write(`
       </ul></li>
       <li><a href="api/generated/compas.datastructures.Mesh.set_vertex_point.html#compas.datastructures.Mesh.set_vertex_point">set_vertex_point() (compas.datastructures.Mesh method)</a>
 </li>
-      <li><a href="api/generated/compas_rhino.forms.SettingsForm.html#compas_rhino.forms.SettingsForm">SettingsForm (class in compas_rhino.forms)</a>
-</li>
       <li><a href="api/generated/compas.geometry.Brep.sew.html#compas.geometry.Brep.sew">sew() (compas.geometry.Brep method)</a>
 
       <ul>
@@ -7220,24 +7248,6 @@ document.write(`
         <li><a href="api/generated/compas.topology.shortest_path.html#compas.topology.shortest_path">(in module compas.topology)</a>
 </li>
       </ul></li>
-      <li><a href="api/generated/compas_rhino.forms.BaseForm.show.html#compas_rhino.forms.BaseForm.show">show() (compas_rhino.forms.BaseForm method)</a>
-
-      <ul>
-        <li><a href="api/generated/compas_rhino.forms.BrowserForm.show.html#compas_rhino.forms.BrowserForm.show">(compas_rhino.forms.BrowserForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.ChartForm.show.html#compas_rhino.forms.ChartForm.show">(compas_rhino.forms.ChartForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.ImageForm.show.html#compas_rhino.forms.ImageForm.show">(compas_rhino.forms.ImageForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.PropertyListForm.show.html#compas_rhino.forms.PropertyListForm.show">(compas_rhino.forms.PropertyListForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.SettingsForm.show.html#compas_rhino.forms.SettingsForm.show">(compas_rhino.forms.SettingsForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.SliderForm.show.html#compas_rhino.forms.SliderForm.show">(compas_rhino.forms.SliderForm method)</a>
-</li>
-        <li><a href="api/generated/compas_rhino.forms.TextForm.show.html#compas_rhino.forms.TextForm.show">(compas_rhino.forms.TextForm method)</a>
-</li>
-      </ul></li>
       <li><a href="api/generated/compas.rpc.Server.shutdown.html#compas.rpc.Server.shutdown">shutdown() (compas.rpc.Server method)</a>
 </li>
       <li><a href="api/generated/compas.rpc.Server.shutdown_request.html#compas.rpc.Server.shutdown_request">shutdown_request() (compas.rpc.Server method)</a>
@@ -7251,8 +7261,6 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="api/generated/compas.datastructures.Mesh.slice_plane.html#compas.datastructures.Mesh.slice_plane">slice_plane() (compas.datastructures.Mesh method)</a>
-</li>
-      <li><a href="api/generated/compas_rhino.forms.SliderForm.html#compas_rhino.forms.SliderForm">SliderForm (class in compas_rhino.forms)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.Network.smooth.html#compas.datastructures.Network.smooth">smooth() (compas.datastructures.Network method)</a>
 
@@ -7444,6 +7452,8 @@ document.write(`
         <li><a href="api/generated/compas_rhino.scene.SurfaceObject.html#compas_rhino.scene.SurfaceObject">(class in compas_rhino.scene)</a>
 </li>
       </ul></li>
+      <li><a href="api/generated/compas.geometry.SurfaceType.html#compas.geometry.SurfaceType">SurfaceType (class in compas.geometry)</a>
+</li>
       <li><a href="api/generated/compas.rpc.Server.system_listMethods.html#compas.rpc.Server.system_listMethods">system_listMethods() (compas.rpc.Server method)</a>
 </li>
       <li><a href="api/generated/compas.rpc.Server.system_methodHelp.html#compas.rpc.Server.system_methodHelp">system_methodHelp() (compas.rpc.Server method)</a>
@@ -7487,8 +7497,6 @@ document.write(`
       <li><a href="api/generated/compas.geometry.tangent_points_to_circle_xy.html#compas.geometry.tangent_points_to_circle_xy">tangent_points_to_circle_xy() (in module compas.geometry)</a>
 </li>
       <li><a href="api/generated/compas.colors.Color.teal.html#compas.colors.Color.teal">teal() (compas.colors.Color class method)</a>
-</li>
-      <li><a href="api/generated/compas_rhino.forms.TextForm.html#compas_rhino.forms.TextForm">TextForm (class in compas_rhino.forms)</a>
 </li>
       <li><a href="api/generated/compas.geometry.BrepEdge.to_bezier.html#compas.geometry.BrepEdge.to_bezier">to_bezier() (compas.geometry.BrepEdge method)</a>
 
@@ -8200,8 +8208,6 @@ document.write(`
       </ul></li>
       <li><a href="api/generated/compas.datastructures.VolMesh.to_vertices_and_cells.html#compas.datastructures.VolMesh.to_vertices_and_cells">to_vertices_and_cells() (compas.datastructures.VolMesh method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.datastructures.Mesh.to_vertices_and_faces.html#compas.datastructures.Mesh.to_vertices_and_faces">to_vertices_and_faces() (compas.datastructures.Mesh method)</a>
 
       <ul>
@@ -8240,6 +8246,8 @@ document.write(`
         <li><a href="api/generated/compas_rhino.geometry.RhinoNurbsSurface.to_vertices_and_faces.html#compas_rhino.geometry.RhinoNurbsSurface.to_vertices_and_faces">(compas_rhino.geometry.RhinoNurbsSurface method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.geometry.Brep.to_viewmesh.html#compas.geometry.Brep.to_viewmesh">to_viewmesh() (compas.geometry.Brep method)</a>
 
       <ul>
@@ -8247,6 +8255,8 @@ document.write(`
 </li>
       </ul></li>
       <li><a href="api/generated/compas.geometry.Frame.to_world_coordinates.html#compas.geometry.Frame.to_world_coordinates">to_world_coordinates() (compas.geometry.Frame method)</a>
+</li>
+      <li><a href="api/generated/compas.tolerance.TOL.html#compas.tolerance.TOL">TOL (in module compas.tolerance)</a>
 </li>
       <li><a href="api/generated/compas.tolerance.Tolerance.html#compas.tolerance.Tolerance">Tolerance (class in compas.tolerance)</a>
 </li>
@@ -9350,8 +9360,6 @@ document.write(`
       </ul></li>
       <li><a href="api/generated/compas.topology.vertex_coloring.html#compas.topology.vertex_coloring">vertex_coloring() (in module compas.topology)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.datastructures.CellNetwork.vertex_coordinates.html#compas.datastructures.CellNetwork.vertex_coordinates">vertex_coordinates() (compas.datastructures.CellNetwork method)</a>
 
       <ul>
@@ -9360,6 +9368,8 @@ document.write(`
         <li><a href="api/generated/compas.datastructures.VolMesh.vertex_coordinates.html#compas.datastructures.VolMesh.vertex_coordinates">(compas.datastructures.VolMesh method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/compas.datastructures.Mesh.vertex_curvature.html#compas.datastructures.Mesh.vertex_curvature">vertex_curvature() (compas.datastructures.Mesh method)</a>
 </li>
       <li><a href="api/generated/compas.datastructures.CellNetwork.vertex_degree.html#compas.datastructures.CellNetwork.vertex_degree">vertex_degree() (compas.datastructures.CellNetwork method)</a>
@@ -9594,6 +9604,12 @@ document.write(`
 </li>
       <li><a href="api/generated/compas.datastructures.VolMesh.html#compas.datastructures.VolMesh">VolMesh (class in compas.datastructures)</a>
 </li>
+      <li><a href="api/generated/compas.datastructures.volmesh_bounding_box.html#compas.datastructures.volmesh_bounding_box">volmesh_bounding_box() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.volmesh_transform.html#compas.datastructures.volmesh_transform">volmesh_transform() (in module compas.datastructures)</a>
+</li>
+      <li><a href="api/generated/compas.datastructures.volmesh_transformed.html#compas.datastructures.volmesh_transformed">volmesh_transformed() (in module compas.datastructures)</a>
+</li>
       <li><a href="api/generated/compas.scene.VolMeshObject.html#compas.scene.VolMeshObject">VolMeshObject (class in compas.scene)</a>
 
       <ul>
@@ -9662,8 +9678,6 @@ document.write(`
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/generated/compas.rpc.XFunc.html#compas.rpc.XFunc">XFunc (class in compas.rpc)</a>
-</li>
       <li><a href="api/generated/compas.files.XML.html#compas.files.XML">XML (class in compas.files)</a>
 </li>
   </ul></td>
@@ -9733,7 +9747,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     <br/>
   </p>
 </div>
