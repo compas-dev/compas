@@ -286,6 +286,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -531,6 +535,103 @@ document.write(`
                   
   <section id="working-in-blender">
 <h1>Working in Blender</h1>
+<p class="lead">COMPAS packages can be installed in Blender and used in Blender scripts.
+Blender is also a supported visualisation backend for COMPAS scenes,
+and <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code> provides functionality for converting COMPAS objects to Blender objects, and vice versa.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The installation procedure is a work in progress.
+It has currently only been tested on macOS, and may change in the future.</p>
+</div>
+<section id="installation">
+<h2>Installation</h2>
+<p>The installation of COMPAS in Blender can be done in two ways:</p>
+<ul class="simple">
+<li><p>by installing COMPAS in Blender’s Python environment using <code class="docutils literal notranslate"><span class="pre">pip</span></code>, or</p></li>
+<li><p>by using the <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code> command.</p></li>
+</ul>
+<section id="using-pip">
+<h3>Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></h3>
+<p>Blender comes with its own Python installation.
+This procedure simply uses that Python installation and associated <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install COMPAS.
+It doesn’t require an existing COMPAS installation on your system.</p>
+<p>You need to know the path to the Python executable that comes with Blender.
+On macOS, this is typically something like <code class="docutils literal notranslate"><span class="pre">/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>compas
+</pre></div>
+</div>
+</section>
+<section id="using-compas-blender-install">
+<h3>Using <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code> command installs COMPAS in Blender’s Python <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> folder
+by creating symlinks to COMPAS packages installed in an existing (<code class="docutils literal notranslate"><span class="pre">conda</span></code>) environment.
+Therefore, before running the command below, you should activate the environment in which you have installed COMPAS.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install
+</pre></div>
+</div>
+<p>Optionally, you can specify the version of Blender using the <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>-v<span class="w"> </span><span class="m">4</span>.0
+</pre></div>
+</div>
+<p>To remove all previously installed symlinks before installing new ones, use the <code class="docutils literal notranslate"><span class="pre">--clean</span></code> flag.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>--clean
+</pre></div>
+</div>
+</section>
+</section>
+<section id="verification">
+<h2>Verification</h2>
+<p>To test if the installation was successful, you can run the following on the Blender command line.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="go">&#39;2.0.0&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="visualisation">
+<h2>Visualisation</h2>
+<p>Visualisation of COMPAS objects in Blender is handled using viualisation scenes.
+For more information on visualisation scenes, see <a class="reference internal" href="basics.visualisation.html"><span class="doc">Visualisation</span></a>.</p>
+<figure class="align-default">
+<img alt="../_images/cad.blender.visualisation.png" src="../_images/cad.blender.visualisation.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.obj&#39;</span><span class="p">))</span>
+
+<span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">scene</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="conversions">
+<h2>Conversions</h2>
+<p>More info coming soon…</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas_blender</span> <span class="kn">import</span> <span class="n">conversions</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.obj&#39;</span><span class="p">))</span>
+
+<span class="n">blender_mesh</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">mesh_to_blender</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">mesh_to_compas</span><span class="p">(</span><span class="n">blender_mesh</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="data-exchange">
+<h2>Data Exchange</h2>
+</section>
+<section id="remote-procedure-calls">
+<h2>Remote Procedure Calls</h2>
+</section>
+<section id="known-issues">
+<h2>Known Issues</h2>
+</section>
 </section>
 
 
@@ -545,6 +646,30 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pip">Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-compas-blender-install">Using <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation">Visualisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversions">Conversions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exchange">Data Exchange</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-procedure-calls">Remote Procedure Calls</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
