@@ -14,11 +14,13 @@ from compas.geometry import Point
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import frame_to_rhino
+from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import curve_to_compas
 
 from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
@@ -439,6 +441,26 @@ class RhinoBrep(Brep):
             TOLERANCE,
         )
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
+
+    def slice(self, plane):
+        """Slice through the Brep with a plane.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane` or :class:`~compas.geometry.Frame`
+            The plane to slice through the brep.
+
+        Returns
+        -------
+        list(:class:`~compas.geometry.Curve`)
+            Zero or more curves which represent the intersection(s) between the brep and the plane.
+
+        """
+        if isinstance(plane, Frame):
+            plane = Plane.from_frame(plane)
+        curves = Rhino.Geometry.Brep.CreateContourCurves(self._brep, plane_to_rhino(plane))
+        print("curves:{}".format(curves))
+        return [curve_to_compas(curve) for curve in curves]
 
     def split(self, cutter):
         """Splits a Brep into pieces using a Brep as a cutter.
