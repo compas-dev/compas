@@ -32,6 +32,8 @@ class Tolerance(Data):
         Negative numbers correspond to the number of digits before the decimal point.
         Zero corresponds to integer precision.
         Therefore, the higher the number the higher the precision.
+    lineardeflection : float
+        The maximum distance between a curve or surface and its polygonal approximation.
 
     Notes
     -----
@@ -81,6 +83,13 @@ class Tolerance(Data):
 
     """
 
+    LINEARDEFLECTION = 1e-3
+    """float: The maximum distance between a curve or surface and its polygonal approximation.
+
+    This is used by the viewer to determine the mesh and polyline resolution of curves and surfaces for visualisation.
+
+    """
+
     def __init__(self, unit="M"):
         self._unit = None
         self._absolute = None
@@ -88,6 +97,7 @@ class Tolerance(Data):
         self._angular = None
         self._approximation = None
         self._precision = None
+        self._lineardeflection = None
         self.unit = unit
 
     @property
@@ -98,6 +108,8 @@ class Tolerance(Data):
             "relative": self.relative,
             "angular": self.angular,
             "approximation": self.approximation,
+            "precision": self.precision,
+            "lineardeflection": self.lineardeflection,
         }
 
     @classmethod
@@ -108,6 +120,8 @@ class Tolerance(Data):
         tol.relative = data["relative"]
         tol.angular = data["angular"]
         tol.approximation = data["approximation"]
+        tol.precision = data["precision"]
+        tol.lineardeflection = data["lineardeflection"]
         return tol
 
     def reset(self):
@@ -117,6 +131,7 @@ class Tolerance(Data):
         self._angular = None
         self._approximation = None
         self._precision = None
+        self._lineardeflection = None
 
     @property
     def units(self):
@@ -127,18 +142,6 @@ class Tolerance(Data):
         if value not in ["M", "MM"]:
             raise ValueError("Invalid unit: {}".format(value))
         self._unit = value
-
-    @property
-    def precision(self):
-        if not self._precision:
-            return self.PRECISION
-        return self._precision
-
-    @precision.setter
-    def precision(self, value):
-        if value == 0:
-            raise ValueError("Precision cannot be zero.")
-        self._precision = value
 
     @property
     def absolute(self):
@@ -179,6 +182,28 @@ class Tolerance(Data):
     @approximation.setter
     def approximation(self, value):
         self._approximation = value
+
+    @property
+    def precision(self):
+        if not self._precision:
+            return self.PRECISION
+        return self._precision
+
+    @precision.setter
+    def precision(self, value):
+        if value == 0:
+            raise ValueError("Precision cannot be zero.")
+        self._precision = value
+
+    @property
+    def lineardeflection(self):
+        if not self._lineardeflection:
+            return self.LINEARDEFLECTION
+        return self._lineardeflection
+
+    @lineardeflection.setter
+    def lineardeflection(self, value):
+        self._lineardeflection = value
 
     def tolerance(self, truevalue, rtol, atol):
         """Compute the tolerance for a comparison.

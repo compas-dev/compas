@@ -16,7 +16,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Torus.to_brep()`.
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
-* Added `compas.precision`.
+* Added `compas.tolerance`.
+* Added `compas.tolerance.Tolerance`.
+* Added `compas.tolerance.Tolerance.ABSOLUTE` and `compas.tolerance.Tolerance.absolute`.
+* Added `compas.tolerance.Tolerance.RELATIVE` and `compas.tolerance.Tolerance.relative`.
+* Added `compas.tolerance.Tolerance.ANGULAR` and `compas.tolerance.Tolerance.angular`.
+* Added `compas.tolerance.Tolerance.APPROXIMATION` and `compas.tolerance.Tolerance.approximation`.
+* Added `compas.tolerance.Tolerance.PRECISION` and `compas.tolerance.Tolerance.precision`.
+* Added `compas.tolerance.Tolerance.LINEARDEFLECTION` and `compas.tolerance.Tolerance.lineardeflection`.
+* Added `compas.tolerance.Tolerance.is_zero`.
+* Added `compas.tolerance.Tolerance.is_positive`.
+* Added `compas.tolerance.Tolerance.is_negative`.
+* Added `compas.tolerance.Tolerance.is_between`.
+* Added `compas.tolerance.Tolerance.is_angle_zero`.
+* Added `compas.tolerance.Tolerance.is_close`.
+* Added `compas.tolerance.Tolerance.is_allclose`.
+* Added `compas.tolerance.Tolerance.is_angles_close`.
+* Added `compas.tolerance.Tolerance.geometric_key`.
+* Added `compas.tolerance.Tolerance.format_number`.
+* Added `compas.tolerance.Tolerance.precision_from_tolerance`.
 * Added `compas.scene.Scene`.
 * Added `compas.json_loadz()` and `compas.json_dumpz()` to support ZIP compressed JSON files.
 * Added `compas.datastructures.assembly.delete_part()`.
@@ -88,16 +106,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed plugin selection to fall back to a default implementation if possible.
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 * Fixed `compas_rhino.geometry.RhinoBrep` serialization.
-* Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`. 
+* Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`.
 * The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
 
 ### Removed
 
-* Added `compas_rhino.geometry.RhinoBrepFace.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepEdge.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepLoop.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepTrim.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepVertex.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepFace.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepEdge.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepLoop.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepTrim.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepVertex.data.setter`.
+* Removed `compas.PRECISION`.
+* Removed `compas.set_precision`.
 
 ## [2.0.0-alpha.2] 2023-11-07
 
