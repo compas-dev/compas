@@ -1,25 +1,117 @@
 [
-    {
-        "name": "latest",
-        "version": "unreleased",
-        "url": "https://compas.dev/compas/latest/"
-    },
-    {
-        "name": "v2.0.0-alpha.1",
-        "version": "2.0.0-alpha.1",
-        "url": "https://compas.dev/compas/2.0.0-alpha.1/"
-    },
-    {
-        "name": "v1.17.9 (stable)",
-        "version": "1.17.9",
-        "url": "https://compas.dev/compas/stable/"
-    },
-    {
-        "version": "1.16.0",
-        "url": "https://compas.dev/compas/1.16.0/"
-    },
-    {
-        "version": "1.15.0",
-        "url": "https://compas.dev/compas/1.15.0/"
-    }
+  {
+    "name": "Latest",
+    "version": "latest",
+    "url": "https://compas.dev/compas/latest/"
+  },
+  {
+    "name": "2.0.0-beta.1",
+    "version": "2.0.0-beta.1",
+    "url": "https://compas.dev/compas/2.0.0-beta.1/"
+  },
+  {
+    "name": "1.17.9 (stable)",
+    "version": "1.17.9",
+    "url": "https://compas.dev/compas/1.17.9/"
+  },
+  {
+    "name": "1.16.0",
+    "version": "1.16.0",
+    "url": "https://compas.dev/compas/1.16.0/"
+  },
+  {
+    "name": "1.15.0",
+    "version": "1.15.0",
+    "url": "https://compas.dev/compas/1.15.0/"
+  },
+  {
+    "name": "1.14.1",
+    "version": "1.14.1",
+    "url": "https://compas.dev/compas/1.14.1/"
+  },
+  {
+    "name": "1.13.3",
+    "version": "1.13.3",
+    "url": "https://compas.dev/compas/1.13.3/"
+  },
+  {
+    "name": "1.12.2",
+    "version": "1.12.2",
+    "url": "https://compas.dev/compas/1.12.2/"
+  },
+  {
+    "name": "1.11.1",
+    "version": "1.11.1",
+    "url": "https://compas.dev/compas/1.11.1/"
+  },
+  {
+    "name": "1.10.0",
+    "version": "1.10.0",
+    "url": "https://compas.dev/compas/1.10.0/"
+  },
+  {
+    "name": "1.9.3",
+    "version": "1.9.3",
+    "url": "https://compas.dev/compas/1.9.3/"
+  },
+  {
+    "name": "1.8.1",
+    "version": "1.8.1",
+    "url": "https://compas.dev/compas/1.8.1/"
+  },
+  {
+    "name": "1.7.1",
+    "version": "1.7.1",
+    "url": "https://compas.dev/compas/1.7.1/"
+  },
+  {
+    "name": "1.6.3",
+    "version": "1.6.3",
+    "url": "https://compas.dev/compas/1.6.3/"
+  },
+  {
+    "name": "1.5.0",
+    "version": "1.5.0",
+    "url": "https://compas.dev/compas/1.5.0/"
+  },
+  {
+    "name": "1.4.0",
+    "version": "1.4.0",
+    "url": "https://compas.dev/compas/1.4.0/"
+  },
+  {
+    "name": "1.3.0",
+    "version": "1.3.0",
+    "url": "https://compas.dev/compas/1.3.0/"
+  },
+  {
+    "name": "1.2.1",
+    "version": "1.2.1",
+    "url": "https://compas.dev/compas/1.2.1/"
+  },
+  {
+    "name": "1.1.0",
+    "version": "1.1.0",
+    "url": "https://compas.dev/compas/1.1.0/"
+  },
+  {
+    "name": "1.0.0",
+    "version": "1.0.0",
+    "url": "https://compas.dev/compas/1.0.0/"
+  },
+  {
+    "name": "0.19.3",
+    "version": "0.19.3",
+    "url": "https://compas.dev/compas/0.19.3/"
+  },
+  {
+    "name": "0.18.1",
+    "version": "0.18.1",
+    "url": "https://compas.dev/compas/0.18.1/"
+  },
+  {
+    "name": "0.17.3",
+    "version": "0.17.3",
+    "url": "https://compas.dev/compas/0.17.3/"
+  }
 ]
