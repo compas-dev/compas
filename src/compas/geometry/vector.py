@@ -1,16 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import length_vector
-from compas.geometry import cross_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import dot_vectors
+from compas.geometry import Geometry
 from compas.geometry import angle_vectors
 from compas.geometry import angle_vectors_signed
 from compas.geometry import angles_vectors
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import length_vector
+from compas.geometry import subtract_vectors
 from compas.geometry import transform_vectors
-from compas.geometry import Geometry
+from compas.tolerance import TOL
 
 
 class Vector(Geometry):
@@ -87,6 +88,15 @@ class Vector(Geometry):
             self.x,
             self.y,
             self.z,
+        )
+
+    def __str__(self):
+        return "{0}(x={1:.{4}f}, y={2:.{4}f}, z={3:.{4}f})".format(
+            type(self).__name__,
+            self.x,
+            self.y,
+            self.z,
+            TOL.PRECISION,
         )
 
     def __len__(self):

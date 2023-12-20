@@ -1,22 +1,21 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from compas.tolerance import TOL
+from __future__ import print_function
 
 from compas.geometry import centroid_points
-from compas.geometry import normal_polygon
-from compas.geometry import distance_point_point
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
-from compas.geometry import is_point_on_segment
-from compas.geometry import is_point_on_polyline
-from compas.geometry import is_point_in_triangle
-from compas.geometry import is_point_in_circle
-from compas.geometry import is_point_in_polygon_xy
-from compas.geometry import is_point_in_convex_polygon_xy
+from compas.geometry import distance_point_point
 from compas.geometry import is_point_behind_plane
+from compas.geometry import is_point_in_circle
+from compas.geometry import is_point_in_convex_polygon_xy
+from compas.geometry import is_point_in_polygon_xy
+from compas.geometry import is_point_in_triangle
+from compas.geometry import is_point_on_polyline
+from compas.geometry import is_point_on_segment
+from compas.geometry import normal_polygon
 from compas.geometry import transform_points
+from compas.tolerance import TOL
 
 from .geometry import Geometry
 from .vector import Vector
@@ -123,6 +122,15 @@ class Point(Geometry):
             self.x,
             self.y,
             self.z,
+        )
+
+    def __str__(self):
+        return "{0}(x={1:.{4}f}, y={2:.{4}f}, z={3:.{4}f})".format(
+            type(self).__name__,
+            self.x,
+            self.y,
+            self.z,
+            TOL.PRECISION,
         )
 
     def __len__(self):
