@@ -1052,11 +1052,12 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane : :class:`~compas.geometry.Plane`
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        list(:class:`~compas.geometry.Curve`)
+            Zero or more curves which represent the intersection(s) between the brep and the plane.
 
         """
 
