@@ -22,7 +22,6 @@ Classes
     OFF
     PLY
     STL
-    URDF
     XML
 
 
