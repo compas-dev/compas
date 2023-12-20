@@ -36,3 +36,6 @@ def trimesh_isolines(M, S, N=50):
 
     """
     raise NotImplementedError
+
+
+trimesh_isolines.__pluggable__ = True

@@ -23,3 +23,6 @@ def trimesh_slice(mesh, planes):
 
     """
     raise NotImplementedError
+
+
+trimesh_slice.__pluggable__ = True

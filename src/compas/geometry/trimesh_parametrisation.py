@@ -27,6 +27,9 @@ def trimesh_harmonic(M):
     raise NotImplementedError
 
 
+trimesh_harmonic.__pluggable__ = True
+
+
 @pluggable(category="trimesh")
 def trimesh_lscm(M):
     """Compute the least squares conformal map of a triangle mesh.
@@ -47,3 +50,6 @@ def trimesh_lscm(M):
 
     """
     raise NotImplementedError
+
+
+trimesh_lscm.__pluggable__ = True
