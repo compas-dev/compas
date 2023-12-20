@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1251,14 +1251,15 @@ document.write(`
 <h1>close</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.close">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L58"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/_core/_algebra.py#L1232"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns True if two values are equal within a tolerance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>value1</strong><span class="classifier">float or int</span></dt><dd></dd>
 <dt><strong>value2</strong><span class="classifier">float or int</span></dt><dd></dd>
-<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>The tolerance for comparing values.</p>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>The absolute tolerance for comparing values.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">TOL.absolute</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -1270,6 +1271,16 @@ False otherwise.</p>
 </dl>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 2.0: </span>Will be removed in 2.1
+Use <code class="xref py py-func docutils literal notranslate"><span class="pre">TOL.is_close()</span></code> instead.</p>
+</div>
+<p>The tolerance value used by this function is an absolute tolerance.
+It is more accurate to use a combination of absolute and relative tolerance.
+Therefor, use <code class="xref py py-func docutils literal notranslate"><span class="pre">TOL.is_close()</span></code> instead.</p>
+</div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">close</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.001</span><span class="p">)</span>
 <span class="go">False</span>

@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1251,16 +1251,15 @@ document.write(`
 <h1>meshes_join_and_weld</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.datastructures.meshes_join_and_weld">
-<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">meshes_join_and_weld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/join.py#L94"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">meshes_join_and_weld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/mesh/join.py#L101"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Join and and weld meshes within some precision distance.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>meshes</strong><span class="classifier">list[<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>]</span></dt><dd><p>A list of meshes.</p>
 </dd>
-<dt><strong>precision: str, optional</strong></dt><dd><p>Precision for point comparison in the form of a string formatting specifier.
-For example, floating point precision (<code class="docutils literal notranslate"><span class="pre">'3f'</span></code>), or decimal integer (<code class="docutils literal notranslate"><span class="pre">'d'</span></code>).
-Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.PRECISION</span></code>.</p>
+<dt><strong>precision</strong><span class="classifier">int, optional</span></dt><dd><p>Precision for converting numbers to strings.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">TOL.precision</span></code>.</p>
 </dd>
 <dt><strong>cls</strong><span class="classifier">Type[<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>], optional</span></dt><dd><p>The type of return mesh.</p>
 </dd>

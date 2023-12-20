@@ -62,7 +62,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Network.is_connected" href="compas.datastructures.Network.is_connected.html" />
-    <link rel="prev" title="Network.gkey_key" href="compas.datastructures.Network.gkey_key.html" />
+    <link rel="prev" title="Network.from_pointcloud" href="compas.datastructures.Network.from_pointcloud.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1256,13 +1256,14 @@ document.write(`
 <h1>Network.gkey_node</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Network.gkey_node">
-<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">gkey_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L388"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Network.</span></span><span class="sig-name descname"><span class="pre">gkey_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L389"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision
 to the identifiers of the corresponding nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>precision</strong><span class="classifier">str, optional</span></dt><dd><p>The float precision specifier used in string formatting.</p>
+<dt><strong>precision</strong><span class="classifier">int, optional</span></dt><dd><p>Precision for converting numbers to strings.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">TOL.precision</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -1277,7 +1278,7 @@ to the identifiers of the corresponding nodes.</p>
 <p class="admonition-title">See also</p>
 <dl class="simple">
 <dt><a class="reference internal" href="compas.datastructures.Network.node_gkey.html#compas.datastructures.Network.node_gkey" title="compas.datastructures.Network.node_gkey"><code class="xref py py-meth docutils literal notranslate"><span class="pre">node_gkey()</span></code></a></dt><dd></dd>
-<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.geometric_key()</span></code></dt><dd></dd>
+<dt><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.Tolerance.geometric_key()</span></code></dt><dd></dd>
 </dl>
 </div>
 </dd></dl>

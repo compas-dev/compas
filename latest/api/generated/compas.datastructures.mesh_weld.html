@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1258,7 +1258,8 @@ document.write(`
 <dd class="field-odd"><dl>
 <dt><strong>mesh</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a></span></dt><dd><p>A mesh.</p>
 </dd>
-<dt><strong>precision: str, optional</strong></dt><dd><p>Tolerance distance for welding.</p>
+<dt><strong>precision</strong><span class="classifier">int, optional</span></dt><dd><p>Precision for converting numbers to strings.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">TOL.precision</span></code>.</p>
 </dd>
 <dt><strong>cls</strong><span class="classifier">Type[<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>], optional</span></dt><dd><p>Type of the welded mesh.
 This defaults to the type of the first mesh in the list.</p>

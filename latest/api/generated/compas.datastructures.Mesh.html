@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1429,23 +1429,17 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.from_vertices_and_faces.html#compas.datastructures.Mesh.from_vertices_and_faces" title="compas.datastructures.Mesh.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a></p></td>
 <td><p>Construct a mesh object from a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.gkey_key.html#compas.datastructures.Mesh.gkey_key" title="compas.datastructures.Mesh.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.gkey_vertex.html#compas.datastructures.Mesh.gkey_vertex" title="compas.datastructures.Mesh.gkey_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_vertex</span></code></a></p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.gkey_vertex.html#compas.datastructures.Mesh.gkey_vertex" title="compas.datastructures.Mesh.gkey_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_vertex</span></code></a></p></td>
-<td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.insert_vertex.html#compas.datastructures.Mesh.insert_vertex" title="compas.datastructures.Mesh.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.insert_vertex.html#compas.datastructures.Mesh.insert_vertex" title="compas.datastructures.Mesh.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a></p></td>
 <td><p>Insert a vertex in the specified face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_connected.html#compas.datastructures.Mesh.is_connected" title="compas.datastructures.Mesh.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.is_connected.html#compas.datastructures.Mesh.is_connected" title="compas.datastructures.Mesh.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a></p></td>
 <td><p>Verify that the mesh is connected.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.join.html#compas.datastructures.Mesh.join" title="compas.datastructures.Mesh.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.join.html#compas.datastructures.Mesh.join" title="compas.datastructures.Mesh.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a></p></td>
 <td><p>Add the vertices and faces of another mesh to the current mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.key_gkey.html#compas.datastructures.Mesh.key_gkey" title="compas.datastructures.Mesh.key_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code></a></p></td>
-<td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.merge_faces.html#compas.datastructures.Mesh.merge_faces" title="compas.datastructures.Mesh.merge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_faces</span></code></a></p></td>
 <td><p>Merge two faces of a mesh over their shared edge.</p></td>

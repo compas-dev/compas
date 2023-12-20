@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1251,7 +1251,7 @@ document.write(`
 <h1>STL</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.STL">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">STL</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/stl.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">STL</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/files/stl.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class for working with STL files.</p>
 <dl class="field-list">
@@ -1259,7 +1259,8 @@ document.write(`
 <dd class="field-odd"><dl class="simple">
 <dt><strong>filepath</strong><span class="classifier">path string | file-like object | URL string</span></dt><dd><p>A path, a file-like object or a URL pointing to a file.</p>
 </dd>
-<dt><strong>precision</strong><span class="classifier">str, optional</span></dt><dd><p>A COMPAS precision specification.</p>
+<dt><strong>precision</strong><span class="classifier">int, optional</span></dt><dd><p>Precision for converting numbers to strings.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">TOL.precision</span></code>.</p>
 </dd>
 </dl>
 </dd>

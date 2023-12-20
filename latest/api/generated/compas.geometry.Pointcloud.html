@@ -61,7 +61,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Pointcloud.closest_point" href="compas.geometry.Pointcloud.closest_point.html" />
+    <link rel="next" title="Pointcloud.add" href="compas.geometry.Pointcloud.add.html" />
     <link rel="prev" title="Point.validate_data" href="compas.geometry.Point.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1251,7 +1251,7 @@ document.write(`
 <h1>Pointcloud</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Pointcloud">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Pointcloud</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/pointcloud.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Pointcloud</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/geometry/pointcloud.py#L18"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.geometry.Geometry</span></code></a></p>
 <p>Class for working with pointclouds.</p>
 <dl class="field-list simple">
@@ -1283,23 +1283,38 @@ document.write(`
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.closest_point.html#compas.geometry.Pointcloud.closest_point" title="compas.geometry.Pointcloud.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.add.html#compas.geometry.Pointcloud.add" title="compas.geometry.Pointcloud.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<td><p>Add another pointcloud to this pointcloud.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.closest_point.html#compas.geometry.Pointcloud.closest_point" title="compas.geometry.Pointcloud.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
 <td><p>Compute the closest point on the pointcloud to a given point.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_bounds.html#compas.geometry.Pointcloud.from_bounds" title="compas.geometry.Pointcloud.from_bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bounds</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.closest_points.html#compas.geometry.Pointcloud.closest_points" title="compas.geometry.Pointcloud.closest_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_points</span></code></a></p></td>
+<td><p>Compute the closest point on the pointcloud to a given point.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.difference.html#compas.geometry.Pointcloud.difference" title="compas.geometry.Pointcloud.difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">difference</span></code></a></p></td>
+<td><p>Compute the difference with another pointcloud.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_bounds.html#compas.geometry.Pointcloud.from_bounds" title="compas.geometry.Pointcloud.from_bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bounds</span></code></a></p></td>
 <td><p>Construct a point cloud within a given box.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_box.html#compas.geometry.Pointcloud.from_box" title="compas.geometry.Pointcloud.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_box.html#compas.geometry.Pointcloud.from_box" title="compas.geometry.Pointcloud.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a></p></td>
 <td><p>Construct a point cloud within a given box.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_pcd.html#compas.geometry.Pointcloud.from_pcd" title="compas.geometry.Pointcloud.from_pcd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pcd</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_pcd.html#compas.geometry.Pointcloud.from_pcd" title="compas.geometry.Pointcloud.from_pcd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pcd</span></code></a></p></td>
 <td><p>Construct a pointcloud from a PCD file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_ply.html#compas.geometry.Pointcloud.from_ply" title="compas.geometry.Pointcloud.from_ply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.from_ply.html#compas.geometry.Pointcloud.from_ply" title="compas.geometry.Pointcloud.from_ply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code></a></p></td>
 <td><p>Construct a pointcloud from a PLY file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.subtract.html#compas.geometry.Pointcloud.subtract" title="compas.geometry.Pointcloud.subtract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subtract</span></code></a></p></td>
+<td><p>Subtract another pointcloud from this pointcloud.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.transform.html#compas.geometry.Pointcloud.transform" title="compas.geometry.Pointcloud.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Apply a transformation to the pointcloud.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Pointcloud.union.html#compas.geometry.Pointcloud.union" title="compas.geometry.Pointcloud.union"><code class="xref py py-obj docutils literal notranslate"><span class="pre">union</span></code></a></p></td>
+<td><p>Compute the union with another pointcloud.</p></td>
 </tr>
 </tbody>
 </table>

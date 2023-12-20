@@ -732,7 +732,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infront_plane.html">is_point_infront_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
@@ -1251,7 +1251,7 @@ document.write(`
 <h1>Network</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Network">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L61"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/main/src/compas/datastructures/network/network.py#L62"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Graph.html#compas.datastructures.Graph" title="compas.datastructures.graph.graph.Graph"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.graph.graph.Graph</span></code></a></p>
 <p>Geometric implementation of an edge graph.</p>
 <dl class="field-list simple">
@@ -1336,29 +1336,23 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.from_pointcloud.html#compas.datastructures.Network.from_pointcloud" title="compas.datastructures.Network.from_pointcloud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pointcloud</span></code></a></p></td>
 <td><p>Construct a network from random connections between the points of a pointcloud.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.gkey_key.html#compas.datastructures.Network.gkey_key" title="compas.datastructures.Network.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.gkey_node.html#compas.datastructures.Network.gkey_node" title="compas.datastructures.Network.gkey_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_node</span></code></a></p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the identifiers of the corresponding nodes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.gkey_node.html#compas.datastructures.Network.gkey_node" title="compas.datastructures.Network.gkey_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_node</span></code></a></p></td>
-<td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the identifiers of the corresponding nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.is_connected.html#compas.datastructures.Network.is_connected" title="compas.datastructures.Network.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.is_connected.html#compas.datastructures.Network.is_connected" title="compas.datastructures.Network.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a></p></td>
 <td><p>Verify that the network is connected.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.is_crossed.html#compas.datastructures.Network.is_crossed" title="compas.datastructures.Network.is_crossed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_crossed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.is_crossed.html#compas.datastructures.Network.is_crossed" title="compas.datastructures.Network.is_crossed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_crossed</span></code></a></p></td>
 <td><p>Verify if a network has crossing edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.is_planar.html#compas.datastructures.Network.is_planar" title="compas.datastructures.Network.is_planar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_planar</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.is_planar.html#compas.datastructures.Network.is_planar" title="compas.datastructures.Network.is_planar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_planar</span></code></a></p></td>
 <td><p>Check if the network is planar.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.is_planar_embedding.html#compas.datastructures.Network.is_planar_embedding" title="compas.datastructures.Network.is_planar_embedding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_planar_embedding</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.is_planar_embedding.html#compas.datastructures.Network.is_planar_embedding" title="compas.datastructures.Network.is_planar_embedding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_planar_embedding</span></code></a></p></td>
 <td><p>Verify that a network is embedded in the plane without crossing edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.is_xy.html#compas.datastructures.Network.is_xy" title="compas.datastructures.Network.is_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_xy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.is_xy.html#compas.datastructures.Network.is_xy" title="compas.datastructures.Network.is_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_xy</span></code></a></p></td>
 <td><p>Verify that a network lies in the XY plane.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.key_gkey.html#compas.datastructures.Network.key_gkey" title="compas.datastructures.Network.key_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code></a></p></td>
-<td><p>Returns a dictionary that maps node identifiers to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.laplacian_matrix.html#compas.datastructures.Network.laplacian_matrix" title="compas.datastructures.Network.laplacian_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian_matrix</span></code></a></p></td>
 <td><p>Construct a Laplacian matrix from a Network datastructure.</p></td>
