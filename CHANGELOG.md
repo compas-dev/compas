@@ -91,6 +91,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `color`, `opacity` attributes to `compas.scene.SceneObject`.
 * Added `pointcolor`, `linecolor`, `surfacecolor`, `pointsize`, `linewidth` attributes to `compas.scene.GeometryObject`.
 * Added `compas_rhino.geometry.brep.RhinoBrep.to_meshes()`.
+* Added `compas.geometry.Brep.trimmed()`.
+* Added `compas.geometry.RhinoBrep.slice()`.
 
 ### Changed
 
@@ -109,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`.
 * The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
 * Moved `URDF` parsing from `compas.files` to the `compas_robots` extension (`compas_robots.files.URDF`).
+* Changed signature of `compas.geometry.Brep.slice()`
 
 ### Removed
 
