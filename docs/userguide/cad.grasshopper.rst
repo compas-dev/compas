@@ -30,8 +30,6 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
 
 
 .. figure:: /_images/userguide/cad.grasshopper.gh_verify.jpg
-     :figclass: figure
-     :class: figure-img img-fluid
 
 
 Grasshopper components for COMPAS
@@ -43,8 +41,6 @@ the INFO component.
 
 
 .. figure:: /_images/userguide/cad.grasshopper.ghpython_component.jpg
-     :figclass: figure
-     :class: figure-img img-fluid
 
 
 Reloading changed libraries
