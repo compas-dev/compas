@@ -211,7 +211,7 @@ Functions
     is_point_in_polyhedron
     is_point_in_triangle
     is_point_in_triangle_xy
-    is_point_infront_plane
+    is_point_infrontof_plane
     is_point_on_line
     is_point_on_line_xy
     is_point_on_plane

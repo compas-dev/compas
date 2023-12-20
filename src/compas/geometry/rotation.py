@@ -231,7 +231,7 @@ class Rotation(Transformation):
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = Rotation.from_quaternion(q1)
         >>> q2 = R.quaternion
-        >>> allclose(q1, q2, tol=1e-3)
+        >>> allclose(q1, q2)
         True
 
         """

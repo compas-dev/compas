@@ -4,6 +4,8 @@ from __future__ import print_function
 
 from math import sqrt
 
+from compas.tolerance import TOL
+
 from compas.geometry import cross_vectors
 from compas.geometry import bestfit_plane
 from compas.geometry import Geometry
@@ -351,7 +353,7 @@ class Plane(Geometry):
     # Methods
     # ==========================================================================
 
-    def is_parallel(self, other, tol=1e-06):
+    def is_parallel(self, other, tol=None):
         """Verify if this plane is parallel to another plane.
 
         Parameters
@@ -360,6 +362,7 @@ class Plane(Geometry):
             The other plane.
         tol : float, optional
             Tolerance for the dot product of the normals.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -375,9 +378,9 @@ class Plane(Geometry):
         True
 
         """
-        return abs(self.normal.dot(other.normal)) - 1 < tol
+        return TOL.is_close(self.normal.dot(other.normal), 1, rtol=0, atol=tol)
 
-    def is_perpendicular(self, other, tol=1e-06):
+    def is_perpendicular(self, other, tol=None):
         """Verify if this plane is perpendicular to another plane.
 
         Parameters
@@ -386,6 +389,7 @@ class Plane(Geometry):
             The other plane.
         tol : float, optional
             Tolerance for the dot product of the normals.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -401,11 +405,9 @@ class Plane(Geometry):
         False
 
         """
-        return abs(self.normal.dot(other.normal)) < tol
+        return TOL.is_zero(self.normal.dot(other.normal), tol)
 
-    # move to Point.is_on_plane?
-    # if point.is_on_plane(plane): ...
-    def contains_point(self, point, tol=1e-06):
+    def contains_point(self, point, tol=None):
         """Verify if a given point lies in the plane.
 
         Parameters
@@ -414,6 +416,7 @@ class Plane(Geometry):
             The point.
         tol : float, optional
             Tolerance for the distance from the point to the plane.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -429,7 +432,7 @@ class Plane(Geometry):
 
         """
         vector = self.point - point
-        return abs(self.normal.dot(vector)) < tol
+        return TOL.is_zero(self.normal.dot(vector), tol)
 
     # move to Point.distance_to_plane?
     # point.distance_to_plane(plane)
@@ -542,7 +545,7 @@ class Plane(Geometry):
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(2 * distance)
 
-    def intersection_with_line(self, line, tol=1e-06):
+    def intersection_with_line(self, line, tol=None):
         """Compute the intersection of a plane and a line.
 
         Parameters
@@ -551,6 +554,7 @@ class Plane(Geometry):
             The line.
         tol : float, optional
             Tolerance for the dot product of the line vector and the plane normal.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -566,7 +570,7 @@ class Plane(Geometry):
 
         """
         # The line is parallel to the plane
-        if abs(self.normal.dot(line.vector)) < tol:
+        if TOL.is_zero(self.normal.dot(line.vector), tol):
             return None
 
         t = (self.point - line.start).dot(self.normal) / line.vector.dot(self.normal)
@@ -607,7 +611,7 @@ class Plane(Geometry):
 
         return Line(point, point + direction)
 
-    def intersections_with_curve(self, curve, tol=1e-06):
+    def intersections_with_curve(self, curve, tol=None):
         """Compute the intersection of a plane and a curve.
 
         Parameters
@@ -616,6 +620,7 @@ class Plane(Geometry):
             The curve.
         tol : float, optional
             Tolerance for the dot product of the line vector and the plane normal.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------

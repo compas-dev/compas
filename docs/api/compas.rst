@@ -22,4 +22,5 @@ and can be used independently of CAD systems in any environment that supports Py
     compas.plugins
     compas.rpc
     compas.scene
+    compas.tolerance
     compas.topology

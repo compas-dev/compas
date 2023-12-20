@@ -7,7 +7,7 @@ from collections import defaultdict
 
 import compas
 from compas import _iotools
-from compas.utilities import geometric_key
+from compas.tolerance import TOL
 
 
 class OBJ(object):
@@ -469,8 +469,9 @@ class OBJParser(object):
     ----------
     reader : :class:`OBJReader`
         A OBJ file reader.
-    precision : str
-        COMPAS precision specification for parsing geometric data.
+    precision : int, optional
+        Precision for converting numbers to strings.
+        Default is :attr:`TOL.precision`.
 
     Attributes
     ----------
@@ -523,7 +524,7 @@ class OBJParser(object):
         vertex = OrderedDict()
 
         for i, xyz in enumerate(iter(self.reader.vertices)):
-            key = geometric_key(xyz, self.precision)
+            key = TOL.geometric_key(xyz, self.precision)
             index_key[i] = key
             vertex[key] = xyz
 
@@ -586,11 +587,8 @@ class OBJWriter(object):
         self.author = author
         self.email = email
         self.date = date
-        self.precision = precision or compas.PRECISION
+        self.precision = precision or TOL.precision
         self.unweld = unweld
-        self.vertex_tpl = (
-            "v {0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
-        )
         self.v = sum(mesh.number_of_vertices() for mesh in self.meshes)
         self.f = sum(mesh.number_of_faces() for mesh in self.meshes)
         self.e = sum(mesh.number_of_edges() for mesh in self.meshes)
@@ -610,6 +608,8 @@ class OBJWriter(object):
             self._write_meshes()
 
     def _write_header(self):
+        if not self.file:
+            return
         self.file.write("# OBJ\n")
         self.file.write("# COMPAS\n")
         self.file.write("# version: {}\n".format(compas.__version__))
@@ -624,6 +624,8 @@ class OBJWriter(object):
         self.file.write("\n")
 
     def _write_meshes(self):
+        if not self.file:
+            return
         for index, mesh in enumerate(self.meshes):
             name = mesh.name
             if name == "Mesh":
@@ -637,11 +639,21 @@ class OBJWriter(object):
                 self._v += mesh.number_of_vertices()
 
     def _write_vertices(self, mesh):
+        if not self.file:
+            return
         for key in mesh.vertices():
             x, y, z = mesh.vertex_coordinates(key)
-            self.file.write(self.vertex_tpl.format(x, y, z))
+            self.file.write(
+                "v {0} {1} {2}\n".format(
+                    TOL.format_number(x, self.precision),
+                    TOL.format_number(y, self.precision),
+                    TOL.format_number(z, self.precision),
+                )
+            )
 
     def _write_faces(self, mesh):
+        if not self.file:
+            return
         vertex_index = mesh.vertex_index()
         for face in mesh.faces():
             vertices = mesh.face_vertices(face)
@@ -650,12 +662,20 @@ class OBJWriter(object):
             self.file.write("f {0}\n".format(vertices_str))
 
     def _write_vertices_and_faces(self, mesh):
+        if not self.file:
+            return
         for face in mesh.faces():
             vertices = mesh.face_vertices(face)
             indices = []
             for vertex in vertices:
                 x, y, z = mesh.vertex_coordinates(vertex)
-                self.file.write(self.vertex_tpl.format(x, y, z))
+                self.file.write(
+                    "v {0} {1} {2}\n".format(
+                        TOL.format_number(x, self.precision),
+                        TOL.format_number(y, self.precision),
+                        TOL.format_number(z, self.precision),
+                    )
+                )
                 indices.append(self._v)
                 self._v += 1
             indices_str = " ".join([str(i) for i in indices])

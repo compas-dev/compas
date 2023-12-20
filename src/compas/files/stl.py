@@ -3,11 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import struct
-
-import compas
 from compas import _iotools
 from compas.geometry import Translation
-from compas.utilities import geometric_key
+from compas.tolerance import TOL
 
 
 class STL(object):
@@ -17,8 +15,9 @@ class STL(object):
     ----------
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
-    precision : str, optional
-        A COMPAS precision specification.
+    precision : int, optional
+        Precision for converting numbers to strings.
+        Default is :attr:`TOL.precision`.
 
     Attributes
     ----------
@@ -158,6 +157,9 @@ class STLReader(object):
             self.facets = self._read_solids_ascii()
 
     def _read_solids_ascii(self):
+        if not self.file:
+            return
+
         solids = {}
         facets = []
 
@@ -315,7 +317,7 @@ class STLParser(object):
                 if "keys" in facet:
                     gkey = facet["keys"][i]
                 else:
-                    gkey = geometric_key(xyz, self.precision)
+                    gkey = TOL.geometric_key(xyz, self.precision)
                 if gkey not in gkey_index:
                     gkey_index[gkey] = len(vertices)
                     vertices.append(xyz)
@@ -348,7 +350,7 @@ class STLWriter(object):
         self.filepath = filepath
         self.mesh = mesh
         self.solid_name = solid_name or mesh.name
-        self.precision = precision or compas.PRECISION
+        self.precision = precision
         self.file = None
         self.binary = binary
 
@@ -386,12 +388,18 @@ class STLWriter(object):
                 self._write_binary_faces()
 
     def _write_header(self):
+        if not self.file:
+            return
         self.file.write("solid {}\n".format(self.solid_name))
 
     def _write_footer(self):
+        if not self.file:
+            return
         self.file.write("endsolid {}\n".format(self.solid_name))
 
     def _write_faces(self):
+        if not self.file:
+            return
         vertex_xyz = self._vertex_xyz
         for face in self.mesh.faces():
             normal = list(self.mesh.face_normal(face))
@@ -403,15 +411,21 @@ class STLWriter(object):
             self.file.write("endfacet\n")
 
     def _write_binary_header(self):
+        if not self.file:
+            return
         self.file.write(b"\0" * 80)
 
     def _write_binary_num_faces(self):
+        if not self.file:
+            return
         try:
             self.file.write(struct.pack("<L", self.mesh.number_of_faces()))
         except struct.error:
             raise ValueError("Mesh must have fewer than 4294967295 faces to be written to binary STL.")
 
     def _write_binary_faces(self):
+        if not self.file:
+            return
         vertex_xyz = self._vertex_xyz
         for face in self.mesh.faces():
             normal = list(self.mesh.face_normal(face))

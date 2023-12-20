@@ -5,6 +5,9 @@ from __future__ import division
 from math import pi
 from math import degrees
 from math import acos
+
+from compas.tolerance import TOL
+
 from ._algebra import subtract_vectors
 from ._algebra import subtract_vectors_xy
 from ._algebra import dot_vectors
@@ -14,7 +17,7 @@ from ._algebra import length_vector_xy
 from ._algebra import cross_vectors
 
 
-def angle_vectors(u, v, deg=False, tol=0.0):
+def angle_vectors(u, v, deg=False, tol=None):
     """Compute the smallest angle between two vectors.
 
     Parameters
@@ -26,7 +29,8 @@ def angle_vectors(u, v, deg=False, tol=0.0):
     deg : bool, optional
         If True, returns the angle in degrees.
     tol : float, optional
-        Tolerance for the length of the vectors.
+        The tolerance for comparing values to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -41,7 +45,7 @@ def angle_vectors(u, v, deg=False, tol=0.0):
 
     """
     L = length_vector(u) * length_vector(v)
-    if tol and L < tol:
+    if TOL.is_zero(L, tol):
         return 0
     a = dot_vectors(u, v) / L
     a = max(min(a, 1), -1)
@@ -71,7 +75,7 @@ def angle_vectors(u, v, deg=False, tol=0.0):
     return angle
 
 
-def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
+def angle_vectors_signed(u, v, normal, deg=False, tol=None):
     """Computes the signed angle between two vectors.
 
     It calculates the angle such that rotating vector u about the normal by
@@ -87,8 +91,10 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
         XYZ components of the plane's normal spanned by u and v.
     deg : bool, optional
         If True, returns the angle in degrees.
-    threshold : float, optional
-        The threshold (radians) used to consider if the angle is zero.
+    tol : float, optional
+        The tolerance for comparing values to zero.
+        Default is :attr:`TOL.absolute`.
+
 
     Returns
     -------
@@ -105,9 +111,8 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
     angle = angle_vectors(u, v)
     normal_uv = cross_vectors(u, v)
 
-    if length_vector(normal_uv) > threshold:
-        # check if normal_uv has the same direction as normals
-        if dot_vectors(normal, normal_uv) < -threshold:
+    if not TOL.is_zero(length_vector(normal_uv), tol):
+        if TOL.is_negative(dot_vectors(normal, normal_uv), tol):
             angle *= -1
 
     if deg:
@@ -116,7 +121,7 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
         return angle
 
 
-def angle_vectors_xy(u, v, deg=False, tol=1e-4):
+def angle_vectors_xy(u, v, deg=False, tol=None):
     """Compute the smallest angle between the XY components of two vectors.
 
     Parameters
@@ -128,7 +133,8 @@ def angle_vectors_xy(u, v, deg=False, tol=1e-4):
     deg : bool, optional
         If True, returns the angle in degrees.
     tol : float, optional
-        Tolerance for the length of the vectors.
+        The tolerance for comparing values to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -142,7 +148,7 @@ def angle_vectors_xy(u, v, deg=False, tol=1e-4):
 
     """
     L = length_vector_xy(u) * length_vector_xy(v)
-    if L < tol:
+    if TOL.is_zero(L, tol):
         return 0
     a = dot_vectors_xy(u, v) / L
     a = max(min(a, 1), -1)

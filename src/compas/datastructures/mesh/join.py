@@ -2,8 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.tolerance import TOL
 from compas.utilities import pairwise
-from compas.utilities import geometric_key
 
 
 def mesh_weld(mesh, precision=None, cls=None):
@@ -13,8 +13,9 @@ def mesh_weld(mesh, precision=None, cls=None):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A mesh.
-    precision: str, optional
-        Tolerance distance for welding.
+    precision : int, optional
+        Precision for converting numbers to strings.
+        Default is :attr:`TOL.precision`.
     cls : Type[:class:`compas.datastructures.Mesh`], optional
         Type of the welded mesh.
         This defaults to the type of the first mesh in the list.
@@ -28,17 +29,23 @@ def mesh_weld(mesh, precision=None, cls=None):
     if cls is None:
         cls = type(mesh)
 
-    geo = geometric_key
+    geo = TOL.geometric_key
 
-    key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
-    gkey_key = {geo(xyz, precision): key for key, xyz in key_xyz.items()}
-    gkey_index = {gkey: index for index, gkey in enumerate(gkey_key)}
+    vertex_xyz = {vertex: mesh.vertex_coordinates(vertex) for vertex in mesh.vertices()}
+    gkey_vertex = {geo(xyz, precision): vertex for vertex, xyz in vertex_xyz.items()}
+    gkey_index = {gkey: index for index, gkey in enumerate(gkey_vertex)}
 
-    vertices = [key_xyz[key] for gkey, key in gkey_key.items()]
-    faces = [[gkey_index[geo(key_xyz[key], precision)] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    vertices = [vertex_xyz[vertex] for gkey, vertex in gkey_vertex.items()]
+    faces = []
+    for face in mesh.faces():
+        indices = []
+        for vertex in mesh.face_vertices(face):
+            gkey = geo(vertex_xyz[vertex], precision)
+            indices.append(gkey_index[gkey])
+        faces.append(indices)
 
-    faces[:] = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
-    faces[:] = [face for face in faces if len(face) > 2]  # make sure no face has less than 3 vertices
+    faces[:] = [[u for u, v in pairwise(indices + indices[:1]) if u != v] for indices in faces]
+    faces[:] = [indices for indices in faces if len(indices) > 2]
 
     mesh = cls.from_vertices_and_faces(vertices, faces)
     return mesh
@@ -84,9 +91,9 @@ def meshes_join(meshes, cls=None):
 
     for mesh in meshes:
         offset = len(vertices)
-        key_index = {key: offset + i for i, key in enumerate(mesh.vertices())}
-        vertices += [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-        faces += [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+        vertex_index = {vertex: offset + i for i, vertex in enumerate(mesh.vertices())}
+        vertices += [mesh.vertex_coordinates(vertex) for vertex in mesh.vertices()]
+        faces += [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
 
     return cls.from_vertices_and_faces(vertices, faces)
 
@@ -98,10 +105,9 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
     ----------
     meshes : list[:class:`compas.datastructures.Mesh`]
         A list of meshes.
-    precision: str, optional
-        Precision for point comparison in the form of a string formatting specifier.
-        For example, floating point precision (``'3f'``), or decimal integer (``'d'``).
-        Default is :attr:`compas.PRECISION`.
+    precision : int, optional
+        Precision for converting numbers to strings.
+        Default is :attr:`TOL.precision`.
     cls : Type[:class:`compas.datastructures.Mesh`], optional
         The type of return mesh.
 

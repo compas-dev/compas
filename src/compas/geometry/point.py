@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.tolerance import TOL
+
 from compas.geometry import centroid_points
 from compas.geometry import normal_polygon
 from compas.geometry import distance_point_point
@@ -402,7 +404,7 @@ class Point(Geometry):
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line, tol=1e-6):
+    def on_line(self, line, tol=None):
         """Determine if the point lies on the given line.
 
         Parameters
@@ -411,6 +413,7 @@ class Point(Geometry):
             The line.
         tol : float, optional
             A tolerance value for the distance between the point and the line.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -427,9 +430,9 @@ class Point(Geometry):
         True
 
         """
-        return self.distance_to_line(line) < tol
+        return TOL.is_zero(self.distance_to_line(line), tol)
 
-    def on_segment(self, segment, tol=1e-6):
+    def on_segment(self, segment, tol=None):
         """Determine if the point lies on the given segment.
 
         Parameters
@@ -438,6 +441,7 @@ class Point(Geometry):
             The segment.
         tol : float, optional
             A tolerance value for the distance between the point and the segment.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -481,7 +485,7 @@ class Point(Geometry):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_plane(self, plane, tol=1e-6):
+    def on_plane(self, plane, tol=None):
         """Determine if the point lies on the given plane.
 
         Parameters
@@ -490,6 +494,7 @@ class Point(Geometry):
             The plane.
         tol : float, optional
             A tolerance value for the distance between the point and the plane.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -507,9 +512,9 @@ class Point(Geometry):
         True
 
         """
-        return self.distance_to_plane(plane) < tol
+        return TOL.is_zero(self.distance_to_plane(plane), tol)
 
-    def on_circle(self, circle, tol=1e-6):
+    def on_circle(self, circle, tol=None):
         """Determine if the point lies on the given circle.
 
         Parameters
@@ -518,6 +523,7 @@ class Point(Geometry):
             The circle.
         tol : float, optional
             A tolerance value for the distance between the point and the circle.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -528,9 +534,9 @@ class Point(Geometry):
         """
         if not self.on_plane(circle.plane, tol):
             return False
-        return self.distance_to_point(circle.center) < circle.radius + tol
+        return TOL.is_close(self.distance_to_point(circle.center), circle.radius, rtol=0, atol=tol)
 
-    def on_curve(self, curve, tol=1e-6):
+    def on_curve(self, curve, tol=None):
         """Determine if the point lies on the given curve.
 
         Parameters
@@ -547,7 +553,7 @@ class Point(Geometry):
             False, otherwise.
 
         """
-        return self.distance_to_point(curve.closest_point(self)) < tol
+        return TOL.is_zero(self.distance_to_point(curve.closest_point(self)), tol)
 
     def in_triangle(self, triangle):
         """Determine if the point lies inside the given triangle.

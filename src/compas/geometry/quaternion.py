@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import math
+from compas.tolerance import TOL
 
 from compas.geometry import quaternion_multiply
 from compas.geometry import quaternion_conjugate
@@ -135,13 +135,10 @@ class Quaternion(Geometry):
     def __repr__(self):
         return "{0}({1}, {2}, {3}, {4})".format(type(self).__name__, self.w, self.x, self.y, self.z)
 
-    def __eq__(self, other, tol=1e-05):
+    def __eq__(self, other, tol=None):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
-        for v1, v2 in zip(self, other):
-            if math.fabs(v1 - v2) > tol:
-                return False
-        return True
+        return TOL.is_allclose(self, other, rtol=0, atol=tol)
 
     def __getitem__(self, key):
         if key == 0:
