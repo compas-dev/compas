@@ -1,4 +1,5 @@
 # type: ignore
+import io
 import os
 import compas
 
@@ -8,6 +9,39 @@ except ImportError:
     pass
 else:
     from .utilities import *  # noqa: F401 F403
+
+
+__version__ = "2.0.0-alpha.2"
+
+
+INSTALLABLE_PACKAGES = ["compas", "compas_blender"]
+SUPPORTED_VERSIONS = ["3.3", "3.6", "4.0"]
+DEFAULT_VERSION = "4.0"
+
+INSTALLATION_ARGUMENTS = None
+
+
+__all__ = [
+    "INSTALLABLE_PACKAGES",
+    "SUPPORTED_VERSIONS",
+    "DEFAULT_VERSION",
+    "clear",
+    "redraw",
+]
+
+__all_plugins__ = [
+    "compas_blender.geometry.booleans",
+    "compas_blender.install",
+    "compas_blender.scene",
+]
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# General helpers
+# =============================================================================
+# =============================================================================
+# =============================================================================
 
 
 def clear(guids=None):
@@ -39,14 +73,11 @@ def redraw():
     bpy.ops.wm.redraw_timer(type="DRAW_WIN_SWAP", iterations=1)
 
 
-__version__ = "2.0.0-alpha.2"
-
-
 def _check_blender_version(version):
-    supported_versions = ["2.83", "2.93", "3.1"]
+    supported_versions = SUPPORTED_VERSIONS
 
     if not version:
-        return "2.93"
+        return DEFAULT_VERSION
 
     if version not in supported_versions:
         raise Exception("Unsupported Blender version: {}".format(version))
@@ -54,13 +85,114 @@ def _check_blender_version(version):
     return version
 
 
-def _get_default_blender_installation_path(version):
+def _get_package_path(package):
+    return os.path.abspath(os.path.dirname(package.__file__))
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Bootstrapper
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_bootstrapper_path(install_path):
+    return os.path.join(install_path, "compas_bootstrapper.py")
+
+
+def _get_bootstrapper_data(compas_bootstrapper):
+    data = {}
+
+    if not os.path.exists(compas_bootstrapper):
+        return data
+
+    content = io.open(compas_bootstrapper, encoding="utf8").read()
+    exec(content, data)
+
+    return data
+
+
+def _try_remove_bootstrapper(path):
+    """Try to remove bootstrapper.
+
+    Returns
+    -------
+    bool: True if the operation did not cause errors, False otherwise.
+    """
+
+    bootstrapper = _get_bootstrapper_path(path)
+
+    if os.path.exists(bootstrapper):
+        try:
+            os.remove(bootstrapper)
+            return True
+        except:  # noqa: E722
+            return False
+    return True
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Blender executable
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_blender_executable_path_mac():
+    return "/Applications/Blender.app/Contents/MacOS/Blender"
+
+
+def _get_default_blender_executable_path_windows():
+    raise NotImplementedError
+
+
+def _get_default_blender_executable_path_linux():
+    raise NotImplementedError
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Blender Python
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_blender_python_path_mac(version):
+    return "/Applications/Blender.app/Contents/Resources/{}/python/bin/python3.10".format(version)
+
+
+def _get_default_blender_python_path_windows(version):
+    raise NotImplementedError
+
+
+def _get_default_blender_python_path_linux(version):
+    raise NotImplementedError
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Blender Python site-packages
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_blender_sitepackages_path(version):
     version = _check_blender_version(version)
 
     if compas.OSX:
-        path = _get_default_blender_installation_path_mac(version)
+        path = _get_default_blender_sitepackages_path_mac(version)
     elif compas.WINDOWS:
-        path = _get_default_blender_installation_path_windows(version)
+        path = _get_default_blender_sitepackages_path_windows(version)
+    elif compas.LINUX:
+        path = _get_default_blender_sitepackages_path_linux(version)
     else:
         raise Exception("Unsupported platform.")
 
@@ -70,17 +202,13 @@ def _get_default_blender_installation_path(version):
     return path
 
 
-def _get_default_blender_installation_path_mac(version):
-    return "/Applications/Blender.app/Contents/Resources/{}".format(version)
+def _get_default_blender_sitepackages_path_mac(version):
+    return "/Applications/Blender.app/Contents/Resources/{}/python/lib/python3.10/site-packages".format(version)
 
 
-def _get_default_blender_installation_path_windows(version):
-    return os.path.expandvars("%PROGRAMFILES%/Blender Foundation/Blender {}/{}".format(version, version))
+def _get_default_blender_sitepackages_path_windows(version):
+    raise NotImplementedError
 
 
-__all__ = [name for name in dir() if not name.startswith("_")]
-
-__all_plugins__ = [
-    "compas_blender.geometry.booleans",
-    "compas_blender.scene",
-]
+def _get_default_blender_sitepackages_path_linux(version):
+    raise NotImplementedError
