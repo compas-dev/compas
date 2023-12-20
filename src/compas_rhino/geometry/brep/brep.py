@@ -13,7 +13,6 @@ from compas.geometry import Point
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
-from compas_rhino.conversions import frame_to_rhino
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
