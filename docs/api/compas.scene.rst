@@ -37,7 +37,7 @@ Functions
     :toctree: generated/
     :nosignatures:
 
-    build_scene_object
+    get_sceneobject_cls
     register
 
 
