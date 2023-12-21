@@ -9,9 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino8` as starting point for Rhino8 support.
+
 ### Changed
 
 ### Removed
+
+* Removed `compas_rhino.forms`. Forms will be moved to `compas_ui`.
 
 
 ## [2.0.0-beta.1] 2023-12-20
