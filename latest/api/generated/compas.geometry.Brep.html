@@ -1289,7 +1289,7 @@ document.write(`
 <h1>Brep</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Brep">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Brep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/ec1753f/src/compas/geometry/brep/brep.py#L73"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Brep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/10c8611/src/compas/geometry/brep/brep.py#L73"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>Contains the topological and geometrical information of a Brep shape.</p>
 <p>This class serves as an interface for a Brep and allows instantiating a Brep object depending on the available Backend.
@@ -1500,13 +1500,16 @@ Note: this is not a full implementation of Brep and rather relies on COMPAS’s 
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.trim.html#compas.geometry.Brep.trim" title="compas.geometry.Brep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p>Trim this Brep using the given trimming plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges" title="compas.geometry.Brep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.trimmed.html#compas.geometry.Brep.trimmed" title="compas.geometry.Brep.trimmed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimmed</span></code></a></p></td>
+<td><p>Returns a trimmed copy of this Brep using the given trimming plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges" title="compas.geometry.Brep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
 <td><p>Identify the edges connected to a given vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces" title="compas.geometry.Brep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces" title="compas.geometry.Brep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
 <td><p>Identify the faces connected to a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors" title="compas.geometry.Brep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors" title="compas.geometry.Brep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
 <td><p>Identify the neighbouring vertices of a given vertex.</p></td>
 </tr>
 </tbody>

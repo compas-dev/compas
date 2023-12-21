@@ -59,7 +59,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Brep.vertex_edges" href="compas.geometry.Brep.vertex_edges.html" />
+    <link rel="next" title="Brep.trimmed" href="compas.geometry.Brep.trimmed.html" />
     <link rel="prev" title="Brep.to_viewmesh" href="compas.geometry.Brep.to_viewmesh.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1294,14 +1294,14 @@ document.write(`
 <h1>Brep.trim</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Brep.trim">
-<span class="sig-prename descclassname"><span class="pre">Brep.</span></span><span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trimming_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/ec1753f/src/compas/geometry/brep/brep.py#L869"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Brep.</span></span><span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/10c8611/src/compas/geometry/brep/brep.py#L869"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Trim this Brep using the given trimming plane.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>trimming_plane</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a></span></dt><dd><p>defines the trimming plane</p>
+<dt><strong>plane</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a> or <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a></span></dt><dd><p>Defines the trimming plane.</p>
 </dd>
-<dt><strong>tolerance: float</strong></dt><dd><p>the tolerance to use when trimming</p>
+<dt><strong>tolerance: float</strong></dt><dd><p>The tolerance to use when trimming.</p>
 </dd>
 </dl>
 </dd>

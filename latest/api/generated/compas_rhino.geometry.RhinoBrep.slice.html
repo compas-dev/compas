@@ -59,8 +59,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="RhinoBrep.to_data" href="compas_rhino.geometry.RhinoBrep.to_data.html" />
-    <link rel="prev" title="RhinoBrep.sha256" href="compas_rhino.geometry.RhinoBrep.sha256.html" />
+    <link rel="next" title="RhinoBrep.split" href="compas_rhino.geometry.RhinoBrep.split.html" />
+    <link rel="prev" title="RhinoBrep.from_sphere" href="compas_rhino.geometry.RhinoBrep.from_sphere.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1294,17 +1294,19 @@ document.write(`
 <h1>RhinoBrep.slice</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.slice">
-<span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/ec1753f/src/compas/geometry/brep/brep.py#L1050"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Slice through the BRep with a plane.</p>
+<span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/10c8611/src/compas/../compas_rhino/geometry/brep/brep.py#L467"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Slice through the Brep with a plane.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>plane</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a></span></dt><dd></dd>
+<dt><strong>plane</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a> or <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a></span></dt><dd><p>The plane to slice through the brep.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.BrepFace.html#compas.geometry.BrepFace" title="compas.geometry.BrepFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepFace</span></code></a></dt><dd></dd>
+<dt>list(<a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a>)</dt><dd><p>Zero or more curves which represent the intersection(s) between the brep and the plane.</p>
+</dd>
 </dl>
 </dd>
 </dl>
