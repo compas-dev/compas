@@ -9,6 +9,11 @@ from .color import Color
 class ColorDict(Data):
     """Class representing a dictionary of colors.
 
+    Parameters
+    ----------
+    default : :class:`compas.colors.Color`
+        The default color to use if the requested key is not in the dictionary.
+
     Attributes
     ----------
     default : :class:`compas.colors.Color`
@@ -16,8 +21,8 @@ class ColorDict(Data):
 
     """
 
-    def __init__(self, default, name=None):
-        super(ColorDict, self).__init__(name=name)
+    def __init__(self, default, **kwargs):
+        super(ColorDict, self).__init__(**kwargs)
         self._default = None
         self.default = default
         self._dict = {}

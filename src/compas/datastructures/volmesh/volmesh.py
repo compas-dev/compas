@@ -27,8 +27,9 @@ from compas.geometry import project_point_plane
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
-from compas.utilities import geometric_key
 from compas.utilities import linspace
+
+from compas.tolerance import TOL
 
 from .bbox import volmesh_bounding_box
 from .transformations import volmesh_transform
@@ -353,8 +354,9 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -366,7 +368,7 @@ class VolMesh(HalfFace):
         :meth:`gkey_vertex`
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
         return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}
 
@@ -376,8 +378,9 @@ class VolMesh(HalfFace):
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -389,7 +392,7 @@ class VolMesh(HalfFace):
         :meth:`vertex_gkey`
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
         return {gkey(xyz(vertex), precision): vertex for vertex in self.vertices()}
 

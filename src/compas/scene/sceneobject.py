@@ -4,7 +4,9 @@ from __future__ import print_function
 
 from abc import abstractmethod
 from .descriptors.protocol import DescriptorProtocol
+from .descriptors.color import ColorAttribute
 from .context import clear
+from .context import get_sceneobject_cls
 
 
 class SceneObject(object):
@@ -20,6 +22,12 @@ class SceneObject(object):
     ----------
     guids : list[object]
         The GUIDs of the items drawn in the visualization context.
+    transformation : :class:`compas.geometry.Transformation`
+        The transformation matrix of the scene object.
+    color : :class:`compas.colors.Color`
+        The color of the object.
+    opacity : float
+        The opacity of the object.
 
     node : :class:`compas.scene.scene.SceneObjectNode`
         The node in the scene tree which represents the scene object.
@@ -29,10 +37,18 @@ class SceneObject(object):
     # add this to support the descriptor protocol vor Python versions below 3.6
     __metaclass__ = DescriptorProtocol
 
+    color = ColorAttribute()
+
+    def __new__(cls, item, **kwargs):
+        sceneobject_cls = get_sceneobject_cls(item, **kwargs)
+        return super(SceneObject, cls).__new__(sceneobject_cls)
+
     def __init__(self, item, **kwargs):
         self._item = item
         self._transformation = None
         self._guids = None
+        self.color = kwargs.get("color", self.color)
+        self.opacity = kwargs.get("opacity", 1.0)
         self._node = None
         self.ignore_parent_transformation = kwargs.get('ignore_parent_transformation', False)
 
@@ -66,14 +82,6 @@ class SceneObject(object):
 
     @property
     def transformation(self):
-        """The transformation matrix of the scene object.
-
-        Returns
-        -------
-        :class:`Transformation` or None
-            The transformation matrix.
-
-        """
         return self._transformation
 
     @transformation.setter

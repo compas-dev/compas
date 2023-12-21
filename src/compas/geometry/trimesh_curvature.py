@@ -27,6 +27,9 @@ def trimesh_gaussian_curvature(M):
     raise NotImplementedError
 
 
+trimesh_gaussian_curvature.__pluggable__ = True
+
+
 @pluggable(category="trimesh")
 def trimesh_principal_curvature(M):
     """Compute the principal curvature directions of a triangle mesh.
@@ -49,6 +52,9 @@ def trimesh_principal_curvature(M):
     raise NotImplementedError
 
 
+trimesh_principal_curvature.__pluggable__ = True
+
+
 @pluggable(category="trimesh")
 def trimesh_mean_curvature(M):
     """Compute the discrete mean curvature of a triangle mesh.
@@ -69,3 +75,6 @@ def trimesh_mean_curvature(M):
 
     """
     raise NotImplementedError
+
+
+trimesh_mean_curvature.__pluggable__ = True

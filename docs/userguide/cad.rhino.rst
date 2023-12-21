@@ -1,6 +1,6 @@
-****************
+********************************************************************************
 Working in Rhino
-****************
+********************************************************************************
 
 .. rst-class:: lead
 
@@ -54,21 +54,36 @@ Note that if COMPAS is installed in a ``conda`` environment, you need to activat
     python -m compas_rhino.install
 
 
-Sample Script
-=============
+Verification
+============
 
 To test if the installation was successful, you can run the following script in Rhino.
 
 .. code-block:: python
 
     import compas
-    import compas_rhino
 
     print(compas.__version__)
 
 
 Visualisation
 =============
+
+Visualisation of COMPAS objects in Rhino is handled using viualisation scenes.
+For more information on visualisation scenes, see :doc:`/userguide/basics.visualisation`.
+
+.. code-block:: python
+
+    import compas
+    from compas.datastructures import Mesh
+    from compas.scene import Scene
+
+    mesh = Mesh.from_obj(compas.get('tubemesh.obj'))
+
+    scene = Scene()
+    scene.clear()
+    scene.add(mesh)
+    scene.redraw()
 
 
 Conversions

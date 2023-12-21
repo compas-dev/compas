@@ -34,3 +34,6 @@ def trimesh_geodistance(M, source, method="exact"):
 
     """
     raise NotImplementedError
+
+
+trimesh_geodistance.__pluggable__ = True

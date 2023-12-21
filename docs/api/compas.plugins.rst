@@ -7,6 +7,7 @@ compas.plugins
 
 .. rst-class:: lead
 
+
 COMPAS has an extensible architecture based on plugins that allows to
 customize and extend the functionality of the core framework.
 
@@ -19,6 +20,7 @@ Classes
     :nosignatures:
 
     IncompletePluginImplError
+    PluginDefaultNotAvailableError
     PluginManager
     PluginNotInstalledError
     PluginValidator
@@ -33,3 +35,4 @@ Functions
 
     pluggable
     plugin
+    plugin_manager

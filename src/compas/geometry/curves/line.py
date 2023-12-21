@@ -344,11 +344,9 @@ class Line(Curve):
             Only if ``return_parameter`` is ``True``.
 
         """
-        a = self.start
-        vector = point - a
-        direction = self.direction
-        t = vector.dot(direction)
-        c = a + direction * t
+        vector = point - self.start
+        t = vector.dot(self.vector) / self.length**2
+        closest = self.start + self.vector * t
         if return_parameter:
-            return c, t
-        return c
+            return closest, t
+        return closest

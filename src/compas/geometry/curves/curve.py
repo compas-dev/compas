@@ -587,7 +587,7 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def length(self, precision=1e-8):
+    def length(self, tol=None):
         """Compute the length of the curve.
 
         Parameters
@@ -598,7 +598,7 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def fair(self, tol=1e-3):
+    def fair(self, tol=None):
         raise NotImplementedError
 
     def offset(self):

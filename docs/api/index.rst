@@ -72,6 +72,5 @@ COMPAS geometry and data structures in Rhino, and for basic user inter interacti
     :caption: compas_rhino
 
     compas_rhino.conversions
-    compas_rhino.forms
     compas_rhino.geometry
     compas_rhino.scene

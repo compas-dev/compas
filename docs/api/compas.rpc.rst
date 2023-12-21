@@ -29,4 +29,3 @@ Classes
     RPCClientError
     RPCServerError
     Server
-    XFunc

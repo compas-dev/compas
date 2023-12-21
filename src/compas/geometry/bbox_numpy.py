@@ -11,6 +11,8 @@ from numpy import vstack
 
 from scipy.spatial import ConvexHull
 
+from compas.tolerance import TOL
+
 from compas.numerical import pca_numpy
 from compas.geometry import local_axes
 from compas.geometry import world_to_local_coordinates_numpy
@@ -19,13 +21,17 @@ from compas.geometry import local_to_world_coordinates_numpy
 from .bbox import bounding_box
 
 
-def oriented_bounding_box_numpy(points, tol=1e-12):
+def oriented_bounding_box_numpy(points, tol=None):
     r"""Compute the oriented minimum bounding box of a set of points in 3D space.
 
     Parameters
     ----------
     points : array_like[point]
         XYZ coordinates of the points.
+    tol : float, optional
+        Tolerance for evaluating if the length of the local z-axis is (close to) zero.
+        In that case, the points are essentially 2D and the minimum area rectangle is computed instead.
+        Default is :attr:`TOL.absolute`
 
     Returns
     -------
@@ -84,7 +90,7 @@ def oriented_bounding_box_numpy(points, tol=1e-12):
     mean, vectors, values = pca_numpy(points)
     frame = mean, vectors[0], vectors[1]
 
-    if values[2] < tol:
+    if TOL.is_zero(values[2], tol):
         # the points are essentially 2D
         # therefore compute the minimum area rectangle instead of the minimum volume box
         # also compute the axis aligned bounding box

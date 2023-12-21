@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Added
+
+## Changed
+
+## Removed
+
+
+## [2.0.0-beta.1] 2023-12-20
+
 ### Added
 
 * Added `compas.geometry.Box.to_brep()`.
@@ -16,6 +25,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Torus.to_brep()`.
 * Added `compas.brep.Brep.from_iges()`.
 * Added `compas.brep.Brep.to_iges()`.
+* Added `compas.tolerance`.
+* Added `compas.tolerance.Tolerance`.
+* Added `compas.tolerance.Tolerance.ABSOLUTE` and `compas.tolerance.Tolerance.absolute`.
+* Added `compas.tolerance.Tolerance.RELATIVE` and `compas.tolerance.Tolerance.relative`.
+* Added `compas.tolerance.Tolerance.ANGULAR` and `compas.tolerance.Tolerance.angular`.
+* Added `compas.tolerance.Tolerance.APPROXIMATION` and `compas.tolerance.Tolerance.approximation`.
+* Added `compas.tolerance.Tolerance.PRECISION` and `compas.tolerance.Tolerance.precision`.
+* Added `compas.tolerance.Tolerance.LINEARDEFLECTION` and `compas.tolerance.Tolerance.lineardeflection`.
+* Added `compas.tolerance.Tolerance.is_zero`.
+* Added `compas.tolerance.Tolerance.is_positive`.
+* Added `compas.tolerance.Tolerance.is_negative`.
+* Added `compas.tolerance.Tolerance.is_between`.
+* Added `compas.tolerance.Tolerance.is_angle_zero`.
+* Added `compas.tolerance.Tolerance.is_close`.
+* Added `compas.tolerance.Tolerance.is_allclose`.
+* Added `compas.tolerance.Tolerance.is_angles_close`.
+* Added `compas.tolerance.Tolerance.geometric_key`.
+* Added `compas.tolerance.Tolerance.format_number`.
+* Added `compas.tolerance.Tolerance.precision_from_tolerance`.
 * Added `compas.scene.Scene`.
 * Added `compas.json_loadz()` and `compas.json_dumpz()` to support ZIP compressed JSON files.
 * Added `compas.datastructures.assembly.delete_part()`.
@@ -69,6 +97,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoBrepLoop.native_loop`.
 * Added `compas_rhino.geometry.RhinoBrepTrim.native_trim`.
 * Added `compas_rhino.geometry.RhinoBrepVertex.native_vertex`.
+* Added `color`, `opacity` attributes to `compas.scene.SceneObject`.
+* Added `pointcolor`, `linecolor`, `surfacecolor`, `pointsize`, `linewidth` attributes to `compas.scene.GeometryObject`.
+* Added `compas_rhino.geometry.brep.RhinoBrep.to_meshes()`.
+* Added `compas_blender.`
+* Added `compas.geometry.Brep.trimmed()`.
+* Added `compas.geometry.RhinoBrep.slice()`.
 
 ### Changed
 
@@ -80,18 +114,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `compas.brep` to `compas.geometry.brep`.
 * Updated `compas-actions.docs` workflow to `v3`.
 * `Artists` classes are renamed to `SceneObject` classes and now under `compas.scene`, `compas_rhino.scene`, `compas_ghpython.scene`, `compas_blender.scene`.
-* Context related functions like `register`, `build`, `redraw` and `clear` are moved to `compas.scene.context` from `compas.scene.SceneObject`. 
+* Context related functions like `register`, `build`, `redraw` and `clear` are moved to `compas.scene.context` from `compas.scene.SceneObject`.
 * Changed plugin selection to fall back to a default implementation if possible.
 * Fixed `AttributeError` `_edges` in `compas_rhino.geometry.RhinoBrepLoop.edges`.
 * Fixed `compas_rhino.geometry.RhinoBrep` serialization.
+* Naming convention for `ColorDictAttributes` in `compas.scene.MeshObject`, `compas.scene.NetworkObject` and `compas.scene.VolmeshObject` is changed e.g. from `vertex_color` to `vertexcolor`.
+* The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
+* Changed `compas_blender.install` to use symlinks.
+* Moved `URDF` parsing from `compas.files` to the `compas_robots` extension (`compas_robots.files.URDF`).
+* Changed signature of `compas.geometry.Brep.slice()`
 
 ### Removed
 
-* Added `compas_rhino.geometry.RhinoBrepFace.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepEdge.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepLoop.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepTrim.data.setter`.
-* Added `compas_rhino.geometry.RhinoBrepVertex.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepFace.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepEdge.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepLoop.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepTrim.data.setter`.
+* Removed `compas_rhino.geometry.RhinoBrepVertex.data.setter`.
+* Removed `compas.PRECISION`.
+* Removed `compas.set_precision`.
 
 ## [2.0.0-alpha.2] 2023-11-07
 
@@ -406,7 +447,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas_rhino.artists.VolMeshArtist.draw_edgelabels`.
 * Removed `compas_rhino.artists.VolMeshArtist.draw_facelabels`.
 * Removed `compas_rhino.artists.VolMeshArtist.draw_celllabels`.
-* Removed `compas.robots`.
+* Removed `compas.robots`, replaced with `compas_robots` package.
 * Removed `compas.artists.robotmodelartist`.
 * Removed `compas_blender.artists.robotmodelartist`.
 * Removed `compas_ghpython.artists.robotmodelartist`.

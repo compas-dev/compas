@@ -127,11 +127,11 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         """
         guids = []
 
-        self.node_color = color
+        self.nodecolor = color
 
         for node in nodes or self.network.nodes():  # type: ignore
             name = "{}.node.{}".format(self.network.name, node)  # type: ignore
-            attr = attributes(name=name, color=self.node_color[node], layer=self.layer)  # type: ignore
+            attr = attributes(name=name, color=self.nodecolor[node], layer=self.layer)  # type: ignore
 
             point = point_to_rhino(self.node_xyz[node])
 
@@ -167,12 +167,12 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         guids = []
 
         arrow = "end" if show_direction else None
-        self.edge_color = color
+        self.edgecolor = color
 
         for edge in edges or self.network.edges():  # type: ignore
             u, v = edge
 
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             name = "{}.edge.{}-{}".format(self.network.name, u, v)  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer, arrow=arrow)  # type: ignore
 
@@ -214,11 +214,11 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         """
         guids = []
 
-        self.node_color = color
+        self.nodecolor = color
 
         for node in text:
             name = "{}.node.{}.label".format(self.network.name, node)  # type: ignore
-            attr = attributes(name=name, color=self.node_color[node], layer=self.layer)  # type: ignore
+            attr = attributes(name=name, color=self.nodecolor[node], layer=self.layer)  # type: ignore
 
             point = point_to_rhino(self.node_xyz[node])
 
@@ -258,12 +258,12 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         """
         guids = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for edge in text:
             u, v = edge
 
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             name = "{}.edge.{}-{}.label".format(self.network.name, u, v)  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
@@ -306,11 +306,11 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         """
         guids = []
 
-        self.node_color = color
+        self.nodecolor = color
 
         for node in radius:
             name = "{}.node.{}.sphere".format(self.network.name, node)  # type: ignore
-            color = self.node_color[node]  # type: ignore
+            color = self.nodecolor[node]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             sphere = Sphere.from_point_and_radius(self.node_xyz[node], radius[node])
@@ -344,11 +344,11 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         """
         guids = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for edge in radius:
             name = "{}.edge.{}-{}.pipe".format(self.network.name, *edge)  # type: ignore
-            color = self.edge_color[edge]  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             line = Line(self.node_xyz[edge[0]], self.node_xyz[edge[1]])

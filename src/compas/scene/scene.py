@@ -1,7 +1,7 @@
 from compas.data import Data
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
-from .context import build_scene_object
+from .sceneobject import SceneObject
 from .context import redraw
 from .context import clear
 

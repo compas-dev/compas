@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.tolerance import TOL
+
 from compas.geometry import distance_point_point_xy
 from compas.geometry import distance_point_line_xy
 from compas.geometry import closest_point_on_segment_xy
@@ -193,7 +195,7 @@ def is_polygon_convex_xy(polygon, colinear=False):
 # =============================================================================
 
 
-def is_point_on_line_xy(point, line, tol=1e-6):
+def is_point_on_line_xy(point, line, tol=None):
     """Determine if a point lies on a line on the XY-plane.
 
     Parameters
@@ -203,7 +205,8 @@ def is_point_on_line_xy(point, line, tol=1e-6):
     line : [point, point] | :class:`compas.geometry.Line`
         XY(Z) coordinates of two points defining a line.
     tol : float, optional
-        A tolerance for membership verification.
+        The tolerance for comparing the distance between point and line to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -217,10 +220,10 @@ def is_point_on_line_xy(point, line, tol=1e-6):
     is_point_on_polyline_xy
 
     """
-    return distance_point_line_xy(point, line) <= tol
+    return TOL.is_zero(distance_point_line_xy(point, line), tol)
 
 
-def is_point_on_segment_xy(point, segment, tol=1e-6):
+def is_point_on_segment_xy(point, segment, tol=None):
     """Determine if a point lies on a given line segment on the XY-plane.
 
     Parameters
@@ -230,7 +233,8 @@ def is_point_on_segment_xy(point, segment, tol=1e-6):
     segment : [point, point] | :class:`compas.geometry.Line`
         XY(Z) coordinates of two points defining a segment.
     tol : float, optional
-        A tolerance for membership verification.
+        The tolerance for comparing the distance between point and segment to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -257,13 +261,13 @@ def is_point_on_segment_xy(point, segment, tol=1e-6):
     d_pa = distance_point_point_xy(a, point)
     d_pb = distance_point_point_xy(b, point)
 
-    if d_pa + d_pb <= d_ab + tol:
+    if TOL.is_close(d_pa + d_pb, d_ab, atol=tol):
         return True
 
     return False
 
 
-def is_point_on_polyline_xy(point, polyline, tol=1e-6):
+def is_point_on_polyline_xy(point, polyline, tol=None):
     """Determine if a point is on a polyline on the XY-plane.
 
     Parameters
@@ -273,7 +277,8 @@ def is_point_on_polyline_xy(point, polyline, tol=1e-6):
     polyline : sequence[point] | :class:`compas.geometry.Polyline`
         XY(Z) coordinates of the points of the polyline.
     tol : float, optional
-        The tolerance for membership verification.
+        The tolerance for comparing the distance between point and polyline to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -292,7 +297,7 @@ def is_point_on_polyline_xy(point, polyline, tol=1e-6):
         b = polyline[i + 1]
         c = closest_point_on_segment_xy(point, (a, b))
 
-        if distance_point_point_xy(point, c) <= tol:
+        if TOL.is_zero(distance_point_point_xy(point, c), tol):
             return True
 
     return False
@@ -526,7 +531,7 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
 # =============================================================================
 
 
-def is_intersection_line_line_xy(l1, l2, tol=1e-6):
+def is_intersection_line_line_xy(l1, l2, tol=None):
     """Verifies if two lines intersect on the XY-plane.
 
     Parameters

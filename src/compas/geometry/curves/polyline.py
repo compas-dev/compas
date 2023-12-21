@@ -277,7 +277,7 @@ class Polyline(Curve):
             x += dx
             i += 1
 
-    def parameter_at(self, point, tol=1e-6):
+    def parameter_at(self, point, tol=None):
         """Parameter of the polyline at a specific point.
 
         Parameters
@@ -285,7 +285,8 @@ class Polyline(Curve):
         point : [float, float, float] | :class:`compas.geometry.Point`
             The point on the polyline.
         tol : float, optional
-            A tolerance for membership verification.
+            A tolerance value for verifying that the point is on the polyline.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------

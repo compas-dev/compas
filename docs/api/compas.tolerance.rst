@@ -1,36 +1,38 @@
 
 ********************************************************************************
-compas.files
+compas.tolerance
 ********************************************************************************
 
-.. currentmodule:: compas.files
+.. currentmodule:: compas.tolerance
 
 .. rst-class:: lead
 
 
-This package defines a number of file formats and provides functionality for reading and writing data in these formats.
+The tolerance module provides functionality to deal with tolerances consistently across all other COMPAS packages.
 
 
 Classes
 =======
 
+
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    GLTF
-    OBJ
-    OFF
-    PLY
-    STL
-    XML
+    Tolerance
 
 
 Functions
 =========
 
+
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    prettify_string
+    TOL
+
+
+

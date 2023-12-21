@@ -1,5 +1,6 @@
+********************************************************************************
 User Guide
-==========
+********************************************************************************
 
 .. toctree::
     :maxdepth: 2
@@ -29,7 +30,6 @@ User Guide
     :caption: Tutorial: Advanced
 
     advanced.tolerance
-    advanced.coordinategrids
     advanced.serialisation
     advanced.rpc
     advanced.pluggables

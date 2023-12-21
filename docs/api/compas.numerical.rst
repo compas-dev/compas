@@ -13,10 +13,8 @@ In future versions, this package will disappear,
 and its functionality will be integrated into the geometry and datastructure packages directly.
 
 
-Functions using Numpy
-=====================
-
-In environments where numpy is not available, these functions can still be accessed through RPC.
+Functions
+=========
 
 .. autosummary::
     :toctree: generated/
@@ -36,7 +34,6 @@ In environments where numpy is not available, these functions can still be acces
     normalizerow
     normrow
     nullspace
-    pca_numpy
     pivots
     rank
     rot90
@@ -45,6 +42,18 @@ In environments where numpy is not available, these functions can still be acces
     spsolve_with_known
     stiffness_matrix
     uvw_lengths
+
+
+Functions using Numpy
+=====================
+
+In environments where numpy is not available, these functions can still be accessed through RPC.
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    pca_numpy
 
 
 Pluggables

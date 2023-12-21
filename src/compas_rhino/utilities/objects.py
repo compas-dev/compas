@@ -6,10 +6,10 @@ import json
 
 import compas_rhino
 
-import System
-import Rhino
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
+import System  # type: ignore
+import Rhino  # type: ignore
+import rhinoscriptsyntax as rs  # type: ignore
+import scriptcontext as sc  # type: ignore
 
 find_object = sc.doc.Objects.Find
 
@@ -17,59 +17,6 @@ try:
     purge_object = sc.doc.Objects.Purge
 except AttributeError:
     purge_object = None
-
-
-__all__ = [
-    "find_object",
-    "get_objects",
-    "get_object_layers",
-    "get_object_types",
-    "get_object_names",
-    "get_object_name",
-    "get_object_attributes",
-    "set_object_attributes",
-    "get_object_attributes_from_name",
-    "delete_object",
-    "delete_objects",
-    "purge_objects",
-    "is_curve_line",
-    "is_curve_polyline",
-    "is_curve_polygon",
-    "get_points",
-    "get_curves",
-    "get_lines",
-    "get_polylines",
-    "get_polygons",
-    "get_point_coordinates",
-    "get_line_coordinates",
-    "get_polyline_coordinates",
-    "get_polygon_coordinates",
-    "get_meshes",
-    "get_mesh_face_vertices",
-    "get_mesh_vertex_coordinates",
-    "get_mesh_vertex_colors",
-    "set_mesh_vertex_colors",
-    "get_mesh_vertices_and_faces",
-    "get_mesh_vertex_index",
-    "get_mesh_face_index",
-    "get_mesh_edge_index",
-    "select_object",
-    "select_objects",
-    "select_point",
-    "select_points",
-    "select_curve",
-    "select_curves",
-    "select_line",
-    "select_lines",
-    "select_polyline",
-    "select_polylines",
-    "select_polygon",
-    "select_polygons",
-    "select_surface",
-    "select_surfaces",
-    "select_mesh",
-    "select_meshes",
-]
 
 
 # ==============================================================================

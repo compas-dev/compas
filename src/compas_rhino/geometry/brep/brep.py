@@ -13,11 +13,13 @@ from compas.geometry import Point
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
-from compas_rhino.conversions import frame_to_rhino
+from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import curve_to_compas
 
 from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
@@ -299,6 +301,25 @@ class RhinoBrep(Brep):
         else:
             raise NotImplementedError
 
+    def to_meshes(self, u=16, v=16):
+        """Convert the faces of this Brep shape to meshes.
+
+        Parameters
+        ----------
+        u : int, optional
+            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
+        v : int, optional
+            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
+
+        Returns
+        -------
+        list[:class:`~compas.datastructures.Mesh`]
+
+        """
+        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParamaters.Default)
+        meshes = [mesh_to_compas(m) for m in rg_meshes]
+        return meshes
+
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
 
@@ -314,12 +335,12 @@ class RhinoBrep(Brep):
         """
         self._brep.Transform(transformation_to_rhino(matrix))
 
-    def trim(self, trimming_plane, tolerance=TOLERANCE):
-        """Trim this brep by the given trimming plane
+    def trim(self, plane, tolerance=TOLERANCE):
+        """Trim this brep by the given trimming plane.
 
         Parameters
         ----------
-        trimming_plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
+        plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the frame's normal.
 
         tolerance : float
@@ -330,14 +351,37 @@ class RhinoBrep(Brep):
         None
 
         """
-        if isinstance(trimming_plane, Plane):
-            trimming_plane = Frame.from_plane(trimming_plane)
-        rhino_frame = frame_to_rhino(trimming_plane)
-        results = self._brep.Trim(rhino_frame, tolerance)
+        results = self.trimmed(plane, tolerance)
         if not results:
             raise BrepTrimmingError("Trim operation ended with no result")
 
-        self._brep = results[0].CapPlanarHoles(TOLERANCE)
+        self._brep = results[0].native_brep
+
+    def trimmed(self, plane, tolerance=TOLERANCE):
+        """Returns a trimmed copy of this brep by the given trimming plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
+            The frame or plane to use when trimming. The discarded bit is in the direction of the plane's normal.
+
+        tolerance : float
+            The precision to use for the trimming operation.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        if isinstance(plane, Frame):
+            plane = Plane.from_frame(plane)
+        results = self._brep.Trim(plane_to_rhino(plane), tolerance)
+
+        breps = []
+        for result in results:
+            result.CapPlanarHoles(TOLERANCE)
+            breps.append(RhinoBrep.from_native(result))
+        return breps
 
     @classmethod
     def from_boolean_difference(cls, breps_a, breps_b):
@@ -419,6 +463,26 @@ class RhinoBrep(Brep):
             TOLERANCE,
         )
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
+
+    def slice(self, plane):
+        """Slice through the Brep with a plane.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane` or :class:`~compas.geometry.Frame`
+            The plane to slice through the brep.
+
+        Returns
+        -------
+        list(:class:`~compas.geometry.Curve`)
+            Zero or more curves which represent the intersection(s) between the brep and the plane.
+
+        """
+        if isinstance(plane, Frame):
+            plane = Plane.from_frame(plane)
+        curves = Rhino.Geometry.Brep.CreateContourCurves(self._brep, plane_to_rhino(plane))
+        print("curves:{}".format(curves))
+        return [curve_to_compas(curve) for curve in curves]
 
     def split(self, cutter):
         """Splits a Brep into pieces using a Brep as a cutter.

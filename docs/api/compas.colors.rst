@@ -7,6 +7,7 @@ compas.colors
 
 .. rst-class:: lead
 
+
 This package defines a color and color map class,
 that can be used to work wihth colors in a consistent way across color spaces.
 
@@ -21,6 +22,3 @@ Classes
     Color
     ColorDict
     ColorMap
-
-
-
