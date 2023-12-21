@@ -729,55 +729,158 @@ We will use that structure to explain some of the topological concepts more easi
 <figure class="align-default">
 <img alt="../_images/basics.datastructures.meshes.meshgrid-column3.png" src="../_images/basics.datastructures.meshes.meshgrid-column3.png" />
 </figure>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nbr</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">0 22</span>
+<span class="go">1 13</span>
+<span class="go">2 24</span>
+<span class="go">3 33</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/basics.datastructures.meshes.vertex-neighbours.png" src="../_images/basics.datastructures.meshes.vertex-neighbours.png" />
+</figure>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="mi">23</span><span class="p">)):</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">0 20</span>
+<span class="go">1 11</span>
+<span class="go">2 12</span>
+<span class="go">3 21</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/basics.datastructures.meshes.vertex-faces.png" src="../_images/basics.datastructures.meshes.vertex-faces.png" />
+</figure>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_neighbors</span><span class="p">(</span><span class="mi">21</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nbr</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">0 20</span>
+<span class="go">1 22</span>
+<span class="go">2 23</span>
+<span class="go">3 24</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="_images/userguide/basics.datastructures.meshes.face-neighbours.png" src="_images/userguide/basics.datastructures.meshes.face-neighbours.png" />
+</figure>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edge_loop</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(30, 31)</span>
+<span class="go">(31, 32)</span>
+<span class="go">(32, 33)</span>
+<span class="go">(33, 34)</span>
+<span class="go">(34, 35)</span>
+<span class="go">(35, 36)</span>
+<span class="go">(36, 37)</span>
+<span class="go">(37, 38)</span>
+<span class="go">(38, 39)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/basics.datastructures.meshes.edge-loop.png" src="../_images/basics.datastructures.meshes.edge-loop.png" />
+</figure>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edge_strip</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(20, 30)</span>
+<span class="go">(21, 31)</span>
+<span class="go">(22, 32)</span>
+<span class="go">(23, 33)</span>
+<span class="go">(24, 34)</span>
+<span class="go">(25, 35)</span>
+<span class="go">(26, 36)</span>
+<span class="go">(27, 37)</span>
+<span class="go">(28, 38)</span>
+<span class="go">(29, 39)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/basics.datastructures.meshes.edge-strip.png" src="../_images/basics.datastructures.meshes.edge-strip.png" />
+</figure>
 </section>
 <section id="mesh-geometry">
 <h2>Mesh Geometry</h2>
+<ul class="simple">
+<li><p>vertex_point</p></li>
+<li><p>vertex_area</p></li>
+<li><p>vertex_normal</p></li>
+<li><p>vertex_laplacian</p></li>
+<li><p>vertex_curvature</p></li>
+<li><p>face_area</p></li>
+<li><p>face_normal</p></li>
+<li><p>face_flatness</p></li>
+<li><p>face_circle</p></li>
+<li><p>face_centroid</p></li>
+<li><p>face_polygon</p></li>
+<li><p>edge_vector</p></li>
+<li><p>edge_line</p></li>
+<li><p>edge_midpoint</p></li>
+<li><p>edge_length</p></li>
+<li><p>edge_direction</p></li>
+</ul>
 </section>
 <section id="data-attributes">
 <h2>Data Attributes</h2>
 <p>Additional data can be assigned to vertices, edges, and faces, as vertex/edge/face attributes, and to the overall mesh itself.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_meshgrid</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>It is recommended to register default values for the vertex, edge and face attributes.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">(</span><span class="n">is_fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">update_default_edge_attributes</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">update_default_face_attributes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Attributes can be accessed per element, per group of elements, or for all elements at once.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">)</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[])</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">(</span><span class="n">vertex_degree</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">is_anchor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">edges_attribute</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges_on_boundary</span><span class="p">(),</span> <span class="n">weight</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
+<ul class="simple">
+<li><p>vertex_attribute</p></li>
+<li><p>edge_attribute</p></li>
+<li><p>face_attribute</p></li>
+<li><p>vertex_attributes</p></li>
+<li><p>edge_attributes</p></li>
+<li><p>face_attributes</p></li>
+<li><p>vertices_attribute</p></li>
+<li><p>edges_attribute</p></li>
+<li><p>faces_attribute</p></li>
+<li><p>vertices_attributes</p></li>
+<li><p>edges_attributes</p></li>
+<li><p>faces_attributes</p></li>
+</ul>
 </section>
 <section id="filtering">
 <h2>Filtering</h2>
+<ul class="simple">
+<li><p>vertices_where</p></li>
+<li><p>edges_where</p></li>
+<li><p>faces_where</p></li>
+</ul>
 </section>
 <section id="mesh-serialisation">
 <h2>Mesh Serialisation</h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;mesh.json&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s1">&#39;mesh.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span>
+<span class="go">&lt;Mesh with 121 vertices and 200 faces&gt;</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">to_jsonstring</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_jsonstring</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span>
+<span class="go">&lt;Mesh with 121 vertices and 200 faces&gt;</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mesh&#39;</span><span class="p">:</span> <span class="n">mesh</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;session.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;session.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;mesh&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span>
+<span class="go">&lt;Mesh with 121 vertices and 200 faces&gt;</span>
 </pre></div>
 </div>
 </section>
 <section id="a-simple-example">
 <h2>A Simple Example</h2>
+<ul class="simple">
+<li><p>mesh from obj</p></li>
+<li><p>mesh delete faces</p></li>
+<li><p>mesh remesh</p></li>
+<li><p>mesh dual</p></li>
+<li><p>mesh frame subdivision</p></li>
+<li><p>mesh to FE mesh</p></li>
+</ul>
 </section>
 </section>
 
