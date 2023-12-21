@@ -11,8 +11,6 @@ import os
 import sys
 import ast
 
-import System
-
 import rhinoscriptsyntax as rs
 import Rhino
 import clr
@@ -20,7 +18,7 @@ import clr
 clr.AddReference("Rhino.UI")
 import Rhino.UI  # noqa: E402
 from Rhino.UI.Dialogs import ShowMessageBox  # noqa: E402
-from Rhino.UI.Dialogs import ShowPropertyListBox
+from Rhino.UI.Dialogs import ShowPropertyListBox  # noqa: E402
 
 
 # ==============================================================================
