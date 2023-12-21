@@ -50,8 +50,6 @@ def install(version=None, packages=None, clean=False):
     # this first collects all installable packages from the environment.
     packages = _filter_installable_packages(version, packages)
 
-    print(packages)
-
     results = []
     symlinks_to_install = []
     symlinks_to_uninstall = []
