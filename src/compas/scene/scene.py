@@ -21,6 +21,13 @@ class SceneObjectNode(TreeNode):
     def children_objects(self):
         return [child.object for child in self.children]
 
+    def add_item(self, item, **kwargs):
+        sceneobject = SceneObject(item, **kwargs)
+        node = SceneObjectNode(sceneobject)
+        self.add(node)
+        sceneobject._node = node
+        return sceneobject
+
 
 class SceneTree(Tree):
     def __init__(self, name=None):
@@ -65,7 +72,7 @@ class Scene(Data):
         return self.tree.objects
 
     def add(self, item, parent=None, **kwargs):
-        sceneobject = build_scene_object(item, context=self.context, **kwargs)
+        sceneobject = SceneObject(item, context=self.context, **kwargs)
         self.tree.add_object(sceneobject, parent=parent)
         return sceneobject
 
@@ -74,17 +81,20 @@ class Scene(Data):
         self.tree.remove(node)
 
     def clear(self):
+        clear()
+
+    def clear_objects(self):
         guids = []
-        for sceneobject in self.sceneobjects:
+        for sceneobject in self.objects:
             guids += sceneobject.guids
             sceneobject._guids = None
         clear(guids=guids)
 
     def redraw(self):
-        self.clear()
+        self.clear_objects()
 
         drawn_objects = []
-        for sceneobject in self.sceneobjects:
+        for sceneobject in self.objects:
             drawn_objects += sceneobject.draw()
 
         if drawn_objects:

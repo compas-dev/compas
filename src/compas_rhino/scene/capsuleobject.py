@@ -45,11 +45,9 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
         breps = capsule_to_rhino_brep(self.geometry)
-
-        if self.transformation:
-            transformation = transformation_to_rhino(self.transformation_world)
-            for geometry in breps:
-                geometry.Transform(transformation)
+        transformation = transformation_to_rhino(self.transformation_world)
+        for geometry in breps:
+            geometry.Transform(transformation)
 
         self._guids = [sc.doc.Objects.AddBrep(brep, attr) for brep in breps]
         return self.guids

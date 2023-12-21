@@ -7,6 +7,9 @@ from .descriptors.protocol import DescriptorProtocol
 from .descriptors.color import ColorAttribute
 from .context import clear
 from .context import get_sceneobject_cls
+from compas.geometry import Transformation
+from functools import reduce
+from operator import mul
 
 
 class SceneObject(object):
@@ -45,20 +48,17 @@ class SceneObject(object):
 
     def __init__(self, item, **kwargs):
         self._item = item
-        self._transformation = None
         self._guids = None
+        self._node = None
+        self._frame = kwargs.get("frame", None)
+        self._transformation = kwargs.get("transformation", None)
+        self.name = kwargs.get("name", item.name or item.__class__.__name__)
         self.color = kwargs.get("color", self.color)
         self.opacity = kwargs.get("opacity", 1.0)
-        self._node = None
-        self.ignore_parent_transformation = kwargs.get('ignore_parent_transformation', False)
 
     @property
     def item(self):
         return self._item
-    
-    @property
-    def name(self):
-        return self.item.name
 
     @property
     def guids(self):
@@ -81,6 +81,14 @@ class SceneObject(object):
             return []
 
     @property
+    def frame(self):
+        return self._frame
+
+    @frame.setter
+    def frame(self, frame):
+        self._frame = frame
+
+    @property
     def transformation(self):
         return self._transformation
 
@@ -90,10 +98,28 @@ class SceneObject(object):
 
     @property
     def transformation_world(self):
-        if self.parent:
-            return self.parent.transformation_world * self.transformation
+        frame_stack = []
+        parent = self.parent
+        while parent:
+            if parent.frame:
+                frame_stack.append(parent.frame)
+            parent = parent.parent
+        matrices = [Transformation.from_frame(f) for f in frame_stack]
+        if matrices:
+            transformation_world = reduce(mul, matrices[::-1])
         else:
-            return self.transformation
+            transformation_world = Transformation()
+
+        if self.transformation:
+            transformation_world *= self.transformation
+
+        return transformation_world
+
+    def add(self, item, **kwargs):
+        if self.node:
+            return self.node.add_item(item, **kwargs)
+        else:
+            raise ValueError("Cannot add items to a scene object without a node.")
 
     @abstractmethod
     def draw(self):
