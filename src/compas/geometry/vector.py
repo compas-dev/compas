@@ -96,7 +96,7 @@ class Vector(Geometry):
             self.x,
             self.y,
             self.z,
-            TOL.PRECISION,
+            TOL.precision,
         )
 
     def __len__(self):
