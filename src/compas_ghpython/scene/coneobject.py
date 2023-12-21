@@ -33,10 +33,8 @@ class ConeObject(GHSceneObject, GeometryObject):
 
         """
         brep = conversions.cone_to_rhino_brep(self.geometry)
-
-        if self.transformation:
-            transformation = conversions.transformation_to_rhino(self.transformation)
-            brep.Transform(transformation)
+        transformation = conversions.transformation_to_rhino(self.transformation_world)
+        brep.Transform(transformation)
 
         self._guids = [brep]
         return self.guids

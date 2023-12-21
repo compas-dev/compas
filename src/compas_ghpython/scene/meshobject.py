@@ -59,9 +59,6 @@ class MeshObject(GHSceneObject, BaseMeshObject):
             disjoint=disjoint,
         )
 
-        # if self.transformation:
-        #     geometry.Transform(conversions.transformation_to_rhino(self.transformation))
-
         self._guids = [geometry]
         return self.guids
 

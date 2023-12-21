@@ -56,10 +56,8 @@ class PlaneObject(GHSceneObject, GeometryObject):
         mesh = conversions.vertices_and_faces_to_rhino(vertices, faces)
 
         geometries = [normal, mesh]
-
-        if self.transformation:
-            for geometry in geometries:
-                geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+        for geometry in geometries:
+            geometry.Transform(conversions.transformation_to_rhino(self.transformation_world))
 
         self._guids = geometries
         return self.guids

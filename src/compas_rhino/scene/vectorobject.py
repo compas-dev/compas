@@ -53,10 +53,9 @@ class VectorObject(RhinoSceneObject, GeometryObject):
         end = start + self.geometry
         start_geometry = point_to_rhino(start)
         end_geometry = point_to_rhino(end)
-        if self.transformation:
-            transformation = transformation_to_rhino(self.transformation)
-            start_geometry.Transform(transformation)
-            end_geometry.Transform(transformation)
+        transformation = transformation_to_rhino(self.transformation_world)
+        start_geometry.Transform(transformation)
+        end_geometry.Transform(transformation)
 
         self._guids = [sc.doc.Objects.AddLine(start_geometry, end_geometry, attr)]
         return self.guids

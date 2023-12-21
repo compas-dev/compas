@@ -43,9 +43,7 @@ class PolygonObject(GHSceneObject, GeometryObject):
         faces = self.geometry.faces
 
         geometry = conversions.vertices_and_faces_to_rhino(vertices, faces, color=color)
-
-        if self.transformation:
-            geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+        geometry.Transform(conversions.transformation_to_rhino(self.transformation_world))
 
         self._guids = [geometry]
         return self.guids

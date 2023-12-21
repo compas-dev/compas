@@ -33,8 +33,7 @@ class TorusObject(GHSceneObject, GeometryObject):
 
         """
         brep = conversions.torus_to_rhino_brep(self.geometry)
-        if self.transformation:
-            brep.Transform(conversions.transformation_to_rhino(self.transformation))
+        brep.Transform(conversions.transformation_to_rhino(self.transformation_world))
 
         self._guids = [brep]
         return self.guids

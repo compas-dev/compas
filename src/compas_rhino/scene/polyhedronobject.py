@@ -47,8 +47,7 @@ class PolyhedronObject(RhinoSceneObject, GeometryObject):
         vertices = [list(vertex) for vertex in self.geometry.vertices]
         faces = self.geometry.faces
         geometry = vertices_and_faces_to_rhino(vertices, faces)
-        if self.transformation:
-            geometry.Transform(transformation_to_rhino(self.transformation))
+        geometry.Transform(transformation_to_rhino(self.transformation_world))
 
         self._guids = [sc.doc.Objects.AddMesh(geometry, attr)]
         return self.guids

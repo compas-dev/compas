@@ -49,8 +49,7 @@ class PolygonObject(RhinoSceneObject, GeometryObject):
         vertices = self.geometry.points
         faces = self.geometry.faces
         mesh = vertices_and_faces_to_rhino(vertices, faces)
-        if self.transformation:
-            mesh.Transform(transformation_to_rhino(self.transformation))
+        mesh.Transform(transformation_to_rhino(self.transformation_world))
 
         self._guids = [sc.doc.Objects.AddMesh(mesh, attr)]
         return self.guids

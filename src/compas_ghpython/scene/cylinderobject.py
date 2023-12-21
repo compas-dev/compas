@@ -32,9 +32,7 @@ class CylinderObject(GHSceneObject, GeometryObject):
             List of created Rhino breps.
         """
         geometry = conversions.cylinder_to_rhino_brep(self.geometry)
-
-        if self.transformation:
-            geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+        geometry.Transform(conversions.transformation_to_rhino(self.transformation_world))
 
         self._guids = [geometry]
         return self.guids
