@@ -8,7 +8,7 @@ COMPAS packages can be installed in Blender and used in Blender scripts.
 Blender is also a supported visualisation backend for COMPAS scenes,
 and :mod:`compas_blender` provides functionality for converting COMPAS objects to Blender objects, and vice versa.
 
-.. info::
+.. note::
 
     These instructions are for the latest version of Blender (4.0) and for the current LTS versions (3.3 and 3.6).
 
