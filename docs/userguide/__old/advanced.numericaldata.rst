@@ -1,6 +1,6 @@
-**************
+********************************************************************************
 Numerical Data
-**************
+********************************************************************************
 
 When working with numerical algorithms, the information stored in a data structure
 needs to be converted to lists and/or arrays as input for the algorithm.
