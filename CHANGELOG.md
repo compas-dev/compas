@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed the `__str__` of `compas.geometry.Point` and `compas.geometry.Vector` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
+
 ### Removed
 
 * Removed `compas_rhino.forms`. Forms will be moved to `compas_ui`.
