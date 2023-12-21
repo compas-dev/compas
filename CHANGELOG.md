@@ -101,6 +101,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `pointcolor`, `linecolor`, `surfacecolor`, `pointsize`, `linewidth` attributes to `compas.scene.GeometryObject`.
 * Added `compas_rhino.geometry.brep.RhinoBrep.to_meshes()`.
 * Added `compas_blender.`
+* Added `compas.geometry.Brep.trimmed()`.
+* Added `compas.geometry.RhinoBrep.slice()`.
 
 ### Changed
 
@@ -120,6 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * The building of correct type of `SceneObject` is moved backed to `__new__` of `SceneObject` itself.
 * Changed `compas_blender.install` to use symlinks.
 * Moved `URDF` parsing from `compas.files` to the `compas_robots` extension (`compas_robots.files.URDF`).
+* Changed signature of `compas.geometry.Brep.slice()`
 
 ### Removed
 
