@@ -91,12 +91,11 @@ class Vector(Geometry):
         )
 
     def __str__(self):
-        return "{0}(x={1:.{4}f}, y={2:.{4}f}, z={3:.{4}f})".format(
+        return "{0}(x={1}, y={2}, z={3})".format(
             type(self).__name__,
-            self.x,
-            self.y,
-            self.z,
-            TOL.precision,
+            TOL.format_number(self.x),
+            TOL.format_number(self.y),
+            TOL.format_number(self.z),
         )
 
     def __len__(self):
