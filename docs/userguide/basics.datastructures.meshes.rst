@@ -189,39 +189,118 @@ True
 
 .. figure:: /_images/userguide/basics.datastructures.meshes.meshgrid-column3.png
 
+>>> for i, nbr in enumerate(mesh.vertex_neighbors(23, ordered=True)):
+...     print(i, nbr)
+...
+0 22
+1 13
+2 24
+3 33
+
+.. figure:: /_images/userguide/basics.datastructures.meshes.vertex-neighbours.png
+
+>>> for i, face in enumerate(mesh.vertex_faces(23)):
+...    print(i, face)
+...
+0 20
+1 11
+2 12
+3 21
+
+.. figure:: /_images/userguide/basics.datastructures.meshes.vertex-faces.png
+
+>>> for i, nbr in enumerate(mesh.face_neighbors(21)):
+...     print(i, nbr)
+...
+0 20
+1 22
+2 23
+3 24
+
+.. figure:: /_images/userguide/basics.datastructures.meshes.face-neighbours.png
+
+>>> for edge in mesh.edge_loop((30, 31)):
+...     print(edge)
+...
+(30, 31)
+(31, 32)
+(32, 33)
+(33, 34)
+(34, 35)
+(35, 36)
+(36, 37)
+(37, 38)
+(38, 39)
+
+.. figure:: /_images/userguide/basics.datastructures.meshes.edge-loop.png
+
+>>> for edge in mesh.edge_strip((20, 30)):
+...     print(edge)
+...
+(20, 30)
+(21, 31)
+(22, 32)
+(23, 33)
+(24, 34)
+(25, 35)
+(26, 36)
+(27, 37)
+(28, 38)
+(29, 39)
+
+.. figure:: /_images/userguide/basics.datastructures.meshes.edge-strip.png
 
 Mesh Geometry
 =============
+
+* vertex_point
+* vertex_area
+* vertex_normal
+* vertex_laplacian
+* vertex_curvature
+
+* face_area
+* face_normal
+* face_flatness
+* face_circle
+* face_centroid
+* face_polygon
+
+* edge_vector
+* edge_line
+* edge_midpoint
+* edge_length
+* edge_direction
+
 
 Data Attributes
 ===============
 
 Additional data can be assigned to vertices, edges, and faces, as vertex/edge/face attributes, and to the overall mesh itself.
 
->>> mesh = Mesh.from_meshgrid(dx=10, dy=10, nx=10, ny=10)
+* vertex_attribute
+* edge_attribute
+* face_attribute
 
-It is recommended to register default values for the vertex, edge and face attributes.
+* vertex_attributes
+* edge_attributes
+* face_attributes
 
->>> mesh.update_default_vertex_attributes(is_fixed=False)
->>> mesh.update_default_edge_attributes(weight=1.0)
->>> mesh.update_default_face_attributes(color=None)
+* vertices_attribute
+* edges_attribute
+* faces_attribute
 
-Attributes can be accessed per element, per group of elements, or for all elements at once.
-
->>> mesh.vertex_attribute(0, 'is_fixed')
-False
->>> mesh.vertices_attribute('is_fixed', vertices=[])
-
->>> mesh.vertices_attribute(vertices=mesh.vertices_where(vertex_degree=2), is_anchor=True)
->>> mesh.edges_attribute(edges=mesh.edges_on_boundary(), weight=10.0)
-
->>> 
+* vertices_attributes
+* edges_attributes
+* faces_attributes
 
 
 Filtering
 =========
 
-
+* vertices_where
+* edges_where
+* faces_where
 
 
 Mesh Serialisation
@@ -229,12 +308,28 @@ Mesh Serialisation
 
 >>> mesh.to_json('mesh.json')
 >>> mesh = Mesh.from_json('mesh.json')
+>>> mesh
+<Mesh with 121 vertices and 200 faces>
 
 >>> s = mesh.to_jsonstring()
 >>> mesh = Mesh.from_jsonstring(s)
+>>> mesh
+<Mesh with 121 vertices and 200 faces>
 
->>> session = {}
+>>> session = {'mesh': mesh, 'a': 1, 'b': 2}
+>>> compas.json_dump(session, 'session.json')
+>>> session = compas.json_load('session.json')
+>>> mesh = session['mesh']
+>>> mesh
+<Mesh with 121 vertices and 200 faces>
 
 
 A Simple Example
 ================
+
+* mesh from obj
+* mesh delete faces
+* mesh remesh
+* mesh dual
+* mesh frame subdivision
+* mesh to FE mesh
