@@ -18,7 +18,7 @@ class SceneObjectNode(TreeNode):
         return None
 
     @property
-    def children_objects(self):
+    def child_objects(self):
         return [child.object for child in self.children]
 
     def add_item(self, item, **kwargs):
@@ -52,7 +52,7 @@ class SceneTree(Tree):
     def get_node_from_object(self, sceneobject):
         for node in self.nodes:
             if isinstance(node, SceneObjectNode):
-                if node.object == sceneobject:
+                if node.object is sceneobject:
                     return node
         raise ValueError("Scene object not in scene")
 

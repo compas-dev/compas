@@ -76,7 +76,7 @@ class SceneObject(object):
     @property
     def children(self):
         if self.node:
-            return self.node.children_objects
+            return self.node.child_objects
         else:
             return []
 
