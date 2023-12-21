@@ -7,6 +7,24 @@ from .context import clear
 
 
 class SceneObjectNode(TreeNode):
+    """A node representing a scene object in a scene tree. The SceneObjectNode should only be used internally by the SceneTree.
+
+    Parameters
+    ----------
+    object : :class:`compas.scene.SceneObject`
+        The scene object associated with the node.
+
+    Attributes
+    ----------
+    object : :class:`compas.scene.SceneObject`
+        The scene object associated with the node.
+    parent_object : :class:`compas.scene.SceneObject`
+        The scene object associated with the parent node.
+    child_objects : list[:class:`compas.scene.SceneObject`]
+        The scene objects associated with the child nodes.
+
+    """
+
     def __init__(self, sceneobject):
         super(SceneObjectNode, self).__init__(name=sceneobject.name)
         self.object = sceneobject
@@ -22,6 +40,21 @@ class SceneObjectNode(TreeNode):
         return [child.object for child in self.children]
 
     def add_item(self, item, **kwargs):
+        """Add an child item to the node.
+
+        Parameters
+        ----------
+        item : :class:`compas.data.Data`
+            The item to add.
+        **kwargs : dict
+            Additional keyword arguments to create the scene object for the item.
+
+        Returns
+        -------
+        :class:`compas.scene.SceneObject`
+            The scene object associated with the item.
+
+        """
         sceneobject = SceneObject(item, **kwargs)
         node = SceneObjectNode(sceneobject)
         self.add(node)
@@ -30,6 +63,20 @@ class SceneObjectNode(TreeNode):
 
 
 class SceneTree(Tree):
+    """A tree structure for storing the hierarchy of scene objects in a scene. The SceneTree should only be used internally by the Scene.
+
+    Parameters
+    ----------
+    name : str, optional
+        The name of the tree.
+
+    Attributes
+    ----------
+    objects : list[:class:`compas.scene.SceneObject`]
+        All scene objects in the scene tree.
+
+    """
+
     def __init__(self, name=None):
         super(SceneTree, self).__init__(name=name)
         root = TreeNode(name="root")
@@ -40,6 +87,21 @@ class SceneTree(Tree):
         return [node.object for node in self.nodes if isinstance(node, SceneObjectNode)]
 
     def add_object(self, sceneobject, parent=None):
+        """Add a scene object to the tree.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+            The scene object to add.
+        parent : :class:`compas.scene.SceneObject`, optional
+            The parent scene object.
+
+        Returns
+        -------
+        :class:`compas.scene.SceneObjectNode`
+            The node associated with the scene object.
+
+        """
         node = SceneObjectNode(sceneobject)
         if parent is None:
             self.add(node, parent=self.root)
@@ -48,16 +110,74 @@ class SceneTree(Tree):
             self.add(node, parent=parent_node)
 
         sceneobject._node = node
+        return node
+
+    def remove_object(self, sceneobject):
+        """Remove a scene object from the tree.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+            The scene object to remove.
+
+        """
+        node = self.get_node_from_object(sceneobject)
+        self.remove(node)
 
     def get_node_from_object(self, sceneobject):
+        """Get the node associated with a scene object.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+            The scene object.
+
+        Returns
+        -------
+        :class:`compas.scene.SceneObjectNode`
+            The node associated with the scene object.
+
+        Raises
+        ------
+        ValueError
+            If the scene object is not in the scene tree.
+
+        """
         for node in self.nodes:
             if isinstance(node, SceneObjectNode):
                 if node.object is sceneobject:
                     return node
-        raise ValueError("Scene object not in scene")
+        raise ValueError("Scene object not in scene tree")
 
 
 class Scene(Data):
+    """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
+
+    Parameters
+    ----------
+    name : str, optional
+        The name of the scene.
+    context : str, optional
+        The context in which the scene is visualised. Will be automatically detected if not specified.
+
+    Attributes
+    ----------
+    tree : :class:`compas.scene.SceneTree`
+        The underlying tree data structure of the scene.
+    objects : list[:class:`compas.scene.SceneObject`]
+        All scene objects in the scene.
+
+    Examples
+    --------
+    >>> from compas.scene import Scene
+    >>> from compas.geometry import Box
+    >>> scene = Scene()
+    >>> box = Box.from_width_height_depth(1, 1, 1)
+    >>> scene.add(box)
+    >>> scene.redraw()
+
+    """
+
     def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
         self._tree = SceneTree("Scene")
@@ -72,18 +192,43 @@ class Scene(Data):
         return self.tree.objects
 
     def add(self, item, parent=None, **kwargs):
+        """Add an item to the scene.
+
+        Parameters
+        ----------
+        item : :class:`compas.data.Data`
+            The item to add.
+        parent : :class:`compas.data.Data`, optional
+            The parent item.
+        **kwargs : dict
+            Additional keyword arguments to create the scene object for the item.
+
+        Returns
+        -------
+        :class:`compas.scene.SceneObject`
+            The scene object associated with the item.
+        """
         sceneobject = SceneObject(item, context=self.context, **kwargs)
         self.tree.add_object(sceneobject, parent=parent)
         return sceneobject
 
     def remove(self, sceneobject):
-        node = self._get_node(sceneobject)
-        self.tree.remove(node)
+        """Remove a scene object from the scene.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+            The scene object to remove.
+
+        """
+        self.tree.remove_object(sceneobject)
 
     def clear(self):
+        """Clear the current context of the scene."""
         clear()
 
     def clear_objects(self):
+        """Clear all objects inside the scene."""
         guids = []
         for sceneobject in self.objects:
             guids += sceneobject.guids
@@ -91,6 +236,7 @@ class Scene(Data):
         clear(guids=guids)
 
     def redraw(self):
+        """Redraw the scene."""
         self.clear_objects()
 
         drawn_objects = []
@@ -103,4 +249,5 @@ class Scene(Data):
         return drawn_objects
 
     def print_hierarchy(self):
+        """Print the hierarchy of the scene."""
         self.tree.print_hierarchy()

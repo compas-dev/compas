@@ -19,21 +19,31 @@ class SceneObject(object):
     ----------
     item : Any
         The item which should be visualized using the created SceneObject.
-
+    **kwargs : dict
+        Additional keyword arguments for constructing SceneObject.
 
     Attributes
     ----------
+    item : :class:`compas.data.Data`
+        The item which should be visualized using the created SceneObject.
+    node : :class:`compas.scene.SceneObjectNode`
+        The node in the scene tree which represents the scene object.
     guids : list[object]
         The GUIDs of the items drawn in the visualization context.
+    parent : :class:`compas.scene.SceneObject`
+        The parent scene object.
+    children : list[:class:`compas.scene.SceneObject`]
+        The child scene objects.
+    frame : :class:`compas.geometry.Frame`
+        The local frame of the scene object, in relation to its parent frame.
     transformation : :class:`compas.geometry.Transformation`
-        The transformation matrix of the scene object.
+        The local transformation of the scene object in relation to its frame.
+    transformation_world : :class:`compas.geometry.Transformation`
+        The transformation of the scene object in world coordinates.
     color : :class:`compas.colors.Color`
         The color of the object.
     opacity : float
         The opacity of the object.
-
-    node : :class:`compas.scene.scene.SceneObjectNode`
-        The node in the scene tree which represents the scene object.
 
     """
 
@@ -116,6 +126,25 @@ class SceneObject(object):
         return transformation_world
 
     def add(self, item, **kwargs):
+        """Add a child item to the scene object.
+
+        Parameters
+        ----------
+        item : :class:`compas.data.Data`
+            The item to add.
+        **kwargs : dict
+            Additional keyword arguments to create the scene object for the item.
+
+        Returns
+        -------
+        :class:`compas.scene.SceneObject`
+            The scene object associated with the added item.
+
+        Raises
+        ------
+        ValueError
+            If the scene object does not have an associated scene node.
+        """
         if self.node:
             return self.node.add_item(item, **kwargs)
         else:
