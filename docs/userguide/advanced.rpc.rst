@@ -1,6 +1,8 @@
-****************************
+********************************************************************************
 Remote Procedure Calls (RPC)
-****************************
+********************************************************************************
+
+.. rst-class:: lead
 
 Remote Procedure Calls (``RPC``) is a mechanism to transparently execute code in
 a remote process or computer. This is especially useful in scenarios where COMPAS
