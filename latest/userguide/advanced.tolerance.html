@@ -52,6 +52,7 @@
     <script src="../_static/togglebutton.js"></script>
     <script src="../_static/design-tabs.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'userguide/advanced.tolerance';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
@@ -285,6 +286,10 @@ document.write(`
     </div>
   
 
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
   
 </div>
 
@@ -531,6 +536,102 @@ document.write(`
                   
   <section id="dealing-with-tolerances">
 <h1>Dealing with Tolerances</h1>
+<p class="lead"><a class="reference internal" href="../api/generated/compas.tolerance.Tolerance.html" title="compas.tolerance.Tolerance"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.tolerance.Tolerance</span></code></a> provides a consistent way of dealing with
+tolerances, precision, comparisons, approximations, number formatting, etc. in COMPAS and across COMPAS packages.</p>
+<section id="defaults">
+<h2>Defaults</h2>
+<p>Different tolerance values are used for different checks and comparisons.
+These are the default values:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.tolerance</span> <span class="kn">import</span> <span class="n">Tolerance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">absolute</span>
+<span class="go">1e-09</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">relative</span>
+<span class="go">1e-06</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">angular</span>
+<span class="go">1e-06</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">approximation</span>
+<span class="go">1e-03</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">precision</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</section>
+<section id="comparisons">
+<h2>Comparisons</h2>
+<p>Comparisons of numbers involves two types of tolerances: absolute and relative.
+The absolute tolerance is a fixed value.
+The relative tolerance is relative to the magnitude of the numbers being compared.
+When comparing two numbers the following formula is used:</p>
+<div class="math notranslate nohighlight">
+\[|a - b| \leq relative \cdot |b| + absolute\]</div>
+<p>This means that the relative tolerance dominates the comparison for larger numbers,
+while the absolute tolerance becaomes dominant when numbers are close to zero.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_close</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_close</span><span class="p">(</span><span class="mf">100000.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_close</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_close</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_close</span><span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_close</span><span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</section>
+<section id="zero-positive-negative">
+<h2>Zero, Positive, Negative</h2>
+<p>Comparisons to zero, and checking if a number is positive or negative, are special cases, and only involve the absolute tolerance.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_zero</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_zero</span><span class="p">(</span><span class="mf">1e-9</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_zero</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_zero</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_positive</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_positive</span><span class="p">(</span><span class="mf">1e-9</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_negative</span><span class="p">(</span><span class="o">-</span><span class="mf">1e-8</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">is_negative</span><span class="p">(</span><span class="o">-</span><span class="mf">1e-9</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</section>
+<section id="number-formatting">
+<h2>Number Formatting</h2>
+<p>By default, numbers are formatted (in strings) using the precision value.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">)</span>
+<span class="go">&#39;1.235&#39;</span>
+</pre></div>
+</div>
+<p>To use a precision value based on the tolerance, use <a class="reference internal" href="../api/generated/compas.tolerance.Tolerance.precision_from_tolerance.html" title="compas.tolerance.Tolerance.precision_from_tolerance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.tolerance.Tolerance.precision_from_tolerance()</span></code></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">tol</span><span class="o">.</span><span class="n">precision_from_tolerance</span><span class="p">())</span>
+<span class="go">&#39;1.234560000&#39;</span>
+</pre></div>
+</div>
+<p>Positive precision values are interpreted as the number of digits after the decimal point.
+Negative precision values are interpreted as the number of digits before the decimal point.
+So higher values increase precision, and lower number decrease it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&#39;1.23&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">&#39;1.234560&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&#39;123460&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=-</span><span class="mi">6</span><span class="p">)</span>
+<span class="go">&#39;100000&#39;</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -545,6 +646,23 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defaults">Defaults</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparisons">Comparisons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-positive-negative">Zero, Positive, Negative</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#number-formatting">Number Formatting</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
