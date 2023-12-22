@@ -681,11 +681,70 @@ Edges are identified by a pair (tuple) of two vertex identifiers.</p>
 </pre></div>
 </div>
 </section>
+<section id="vertex-edge-face-attributes">
+<h2>Vertex, Edge, Face Attributes</h2>
+<p>Arbitrary data can be assigned to vertices, edges, and faces, as vertex/edge/face attributes, and to the overall mesh itself.
+To allow for serialisatin of the mesh and all the data associated with it, the data should be JSON serialisable.
+See <span class="xref std std-ref">Mesh Serialisation</span> for more information.</p>
+<p>The functionality is demonstrated here using vertex attributes.
+The mechanism is exactly the same for edges and faces.</p>
+<p>It is good practice to declare default values for the added data attributes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_meshgrid</span><span class="p">(</span><span class="n">dx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get the value of one attribute of one vertex.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+<p>Get the value of multiple attributes of one vertex.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">])</span>
+<span class="go">(None, 0.0)</span>
+</pre></div>
+</div>
+<p>Get the value of one attribute of all vertices.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="go">[None, None, None, ... None]</span>
+</pre></div>
+</div>
+<p>Get the value of multiple attributes of all vertices.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
+<span class="go">[(0.0, False), (0.0, False), (0.0, False), ..., (0.0, False)]</span>
+</pre></div>
+</div>
+<p>Similarly, for a selection of vertices.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">[0.0, 0.0, 0.0, 0.0]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">[(None, False), (None, False), (None, False), (None, False)]</span>
+</pre></div>
+</div>
+<p>Updating attributes is currently only possible one vertex at a time.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>Finally, note that the xyz coordinates of vertices can be accessed and modified using the same functions.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
+<span class="go">(0.0, 0.0, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="go">[0.0, 1.0, 2.0, ..., 9.0]</span>
+</pre></div>
+</div>
+</section>
 <section id="halfedge-data-structure">
 <h2>Halfedge Data Structure</h2>
 <p>The topology of a mesh is stored in a halfedge data structure.
-In this data structure, vertices are connected to other vertices, and faces to other faces via edges.
-An edge has at most two connected faces.
+In this data structure, vertices are connected to other vertices, and faces to other faces, via edges.
+An edge has two connected vertices, and at most two connected faces.
 Each each is split into two halfedges, one for each of the connected faces.
 If an edge has only one connected face, the edge is on the boundary.</p>
 <p>Note that in a mesh constructed using <a class="reference internal" href="../api/generated/compas.datastructures.Mesh.from_meshgrid.html" title="compas.datastructures.Mesh.from_meshgrid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.from_meshgrid()</span></code></a>, the vertices are organised in a specific way.
@@ -729,6 +788,37 @@ We will use that structure to explain some of the topological concepts more easi
 <figure class="align-default">
 <img alt="../_images/basics.datastructures.meshes.meshgrid-column3.png" src="../_images/basics.datastructures.meshes.meshgrid-column3.png" />
 </figure>
+<section id="halfedge-cycles">
+<h3>Halfedge Cycles</h3>
+<p>The vertices of a face of the mesh are ordered in a continuous cycle.
+Every two consecutive vertices are connected by a halfedge of the face.
+Like the vertices, the halfedges of a face form a continuous cycle.
+In a valid halfedge mesh, all the cycle directions are consisten.
+By cycling the faces, each edge is traversed exactly twice,
+in opposite direction, except fo the edges on the boundary.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">halfedge_face</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">==</span> <span class="n">face</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">True</span>
+<span class="go">True</span>
+<span class="go">...</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/basics.datastructures.meshes.cycles.png" src="../_images/basics.datastructures.meshes.cycles.png" />
+</figure>
+<p>Using a combination of the halfedge functions, it is possible to traverse the mesh in a number of ways.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/generated/compas.datastructures.Mesh.face_halfedges.html" title="compas.datastructures.Mesh.face_halfedges"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.face_halfedges()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.datastructures.Mesh.halfedge_face.html" title="compas.datastructures.Mesh.halfedge_face"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.halfedge_face()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.datastructures.Mesh.halfedge_before.html" title="compas.datastructures.Mesh.halfedge_before"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.halfedge_before()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/generated/compas.datastructures.Mesh.halfedge_after.html" title="compas.datastructures.Mesh.halfedge_after"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.halfedge_after()</span></code></a></p></li>
+</ul>
+</section>
+<section id="neighbours">
+<h3>Neighbours</h3>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nbr</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -763,13 +853,14 @@ We will use that structure to explain some of the topological concepts more easi
 </pre></div>
 </div>
 <figure class="align-default">
-<img alt="_images/userguide/basics.datastructures.meshes.face-neighbours.png" src="_images/userguide/basics.datastructures.meshes.face-neighbours.png" />
+<img alt="../_images/basics.datastructures.meshes.face-neighbours.png" src="../_images/basics.datastructures.meshes.face-neighbours.png" />
 </figure>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edge_loop</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">)):</span>
+</section>
+<section id="loops-and-strips">
+<h3>Loops and Strips</h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge_loop</span><span class="p">((</span><span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="go">(30, 31)</span>
-<span class="go">(31, 32)</span>
 <span class="go">(32, 33)</span>
 <span class="go">(33, 34)</span>
 <span class="go">(34, 35)</span>
@@ -777,6 +868,20 @@ We will use that structure to explain some of the topological concepts more easi
 <span class="go">(36, 37)</span>
 <span class="go">(37, 38)</span>
 <span class="go">(38, 39)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edge_loop</span><span class="p">((</span><span class="mi">62</span><span class="p">,</span> <span class="mi">63</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(60, 61)</span>
+<span class="go">(61, 62)</span>
+<span class="go">(62, 63)</span>
+<span class="go">(63, 64)</span>
+<span class="go">(64, 65)</span>
+<span class="go">(65, 66)</span>
+<span class="go">(66, 67)</span>
+<span class="go">(67, 68)</span>
+<span class="go">(68, 69)</span>
 </pre></div>
 </div>
 <figure class="align-default">
@@ -801,6 +906,7 @@ We will use that structure to explain some of the topological concepts more easi
 <img alt="../_images/basics.datastructures.meshes.edge-strip.png" src="../_images/basics.datastructures.meshes.edge-strip.png" />
 </figure>
 </section>
+</section>
 <section id="mesh-geometry">
 <h2>Mesh Geometry</h2>
 <ul class="simple">
@@ -820,24 +926,6 @@ We will use that structure to explain some of the topological concepts more easi
 <li><p>edge_midpoint</p></li>
 <li><p>edge_length</p></li>
 <li><p>edge_direction</p></li>
-</ul>
-</section>
-<section id="data-attributes">
-<h2>Data Attributes</h2>
-<p>Additional data can be assigned to vertices, edges, and faces, as vertex/edge/face attributes, and to the overall mesh itself.</p>
-<ul class="simple">
-<li><p>vertex_attribute</p></li>
-<li><p>edge_attribute</p></li>
-<li><p>face_attribute</p></li>
-<li><p>vertex_attributes</p></li>
-<li><p>edge_attributes</p></li>
-<li><p>face_attributes</p></li>
-<li><p>vertices_attribute</p></li>
-<li><p>edges_attribute</p></li>
-<li><p>faces_attribute</p></li>
-<li><p>vertices_attributes</p></li>
-<li><p>edges_attributes</p></li>
-<li><p>faces_attributes</p></li>
 </ul>
 </section>
 <section id="filtering">
@@ -913,9 +1001,14 @@ We will use that structure to explain some of the topological concepts more easi
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation">Visualisation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vertices-edges-faces">Vertices, Edges, Faces</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#halfedge-data-structure">Halfedge Data Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vertex-edge-face-attributes">Vertex, Edge, Face Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#halfedge-data-structure">Halfedge Data Structure</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#halfedge-cycles">Halfedge Cycles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#neighbours">Neighbours</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loops-and-strips">Loops and Strips</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-geometry">Mesh Geometry</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-attributes">Data Attributes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering">Filtering</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-serialisation">Mesh Serialisation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example">A Simple Example</a></li>
