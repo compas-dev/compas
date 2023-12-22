@@ -150,6 +150,17 @@ class SceneObject(object):
         else:
             raise ValueError("Cannot add items to a scene object without a node.")
 
+    @property
+    def settings(self):
+        return {
+            "name": self.name,
+            "item": str(self.item.guid),
+            "color": self.color,
+            "opacity": self.opacity,
+            "frame": self.frame,
+            "transformation": self.transformation,
+        }
+
     @abstractmethod
     def draw(self):
         """The main drawing method."""
