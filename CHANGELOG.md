@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-
+* Added `viewerinstance ` in  `compas.scene.Scene` to support viewers context detection.
 * Added `compas_rhino8` as starting point for Rhino8 support.
 * Added tutorial for `compas.datastructures.Tree`.
 
