@@ -38,7 +38,7 @@ class SceneObject(object):
         The local frame of the scene object, in relation to its parent frame.
     transformation : :class:`compas.geometry.Transformation`
         The local transformation of the scene object in relation to its frame.
-    transformation_world : :class:`compas.geometry.Transformation`
+    worldtransformation : :class:`compas.geometry.Transformation`
         The transformation of the scene object in world coordinates.
     color : :class:`compas.colors.Color`
         The color of the object.
@@ -81,12 +81,12 @@ class SceneObject(object):
     @property
     def parent(self):
         if self.node:
-            return self.node.parent_object
+            return self.node.parentobject
 
     @property
     def children(self):
         if self.node:
-            return self.node.child_objects
+            return self.node.childobjects
         else:
             return []
 
@@ -107,7 +107,7 @@ class SceneObject(object):
         self._transformation = transformation
 
     @property
-    def transformation_world(self):
+    def worldtransformation(self):
         frame_stack = []
         parent = self.parent
         while parent:
@@ -116,14 +116,14 @@ class SceneObject(object):
             parent = parent.parent
         matrices = [Transformation.from_frame(f) for f in frame_stack]
         if matrices:
-            transformation_world = reduce(mul, matrices[::-1])
+            worldtransformation = reduce(mul, matrices[::-1])
         else:
-            transformation_world = Transformation()
+            worldtransformation = Transformation()
 
         if self.transformation:
-            transformation_world *= self.transformation
+            worldtransformation *= self.transformation
 
-        return transformation_world
+        return worldtransformation
 
     def add(self, item, **kwargs):
         """Add a child item to the scene object.

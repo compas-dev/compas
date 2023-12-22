@@ -88,7 +88,7 @@ class VolMeshObject(SceneObject):
     def vertex_xyz(self):
         if self._vertex_xyz is None:
             points = self.volmesh.vertices_attributes("xyz")  # type: ignore
-            points = transform_points(points, self.transformation_world)
+            points = transform_points(points, self.worldtransformation)
             self._vertex_xyz = dict(zip(self.volmesh.vertices(), points))  # type: ignore
         return self._vertex_xyz
 

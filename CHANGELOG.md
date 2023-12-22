@@ -13,14 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.scene.SceneTree`.
 * Added `compas.scene.SceneObject.node`.
 * Added `compas.scene.SceneObject.frame`.
-* Added `compas.scene.SceneObject.transformation_world`.
+* Added `compas.scene.SceneObject.worldtransformation`.
 * Added `compas.scene.SceneObject.parent`.
 * Added `compas.scene.SceneObject.children`.
 * Added `compas.scene.SceneObject.add()`.
 
 ## Changed
 
-* The `draw` implementations of `compas.scene.SceneObject` will now always use the `transformation_world` of the `SceneObject`.
+* The `draw` implementations of `compas.scene.SceneObject` will now always use the `worldtransformation` of the `SceneObject`.
 
 ## Removed
 

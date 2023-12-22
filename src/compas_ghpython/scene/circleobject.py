@@ -33,7 +33,7 @@ class CircleObject(GHSceneObject, GeometryObject):
 
         """
         circle = conversions.circle_to_rhino(self.geometry)
-        transformation = conversions.transformation_to_rhino(self.transformation_world)
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
         circle.Transform(transformation)
 
         self._guids = [circle]

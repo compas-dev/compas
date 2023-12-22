@@ -18,9 +18,9 @@ class SceneObjectNode(TreeNode):
     ----------
     object : :class:`compas.scene.SceneObject`
         The scene object associated with the node.
-    parent_object : :class:`compas.scene.SceneObject`
+    parentobject : :class:`compas.scene.SceneObject`
         The scene object associated with the parent node.
-    child_objects : list[:class:`compas.scene.SceneObject`]
+    childobjects : list[:class:`compas.scene.SceneObject`]
         The scene objects associated with the child nodes.
 
     """
@@ -30,13 +30,13 @@ class SceneObjectNode(TreeNode):
         self.object = sceneobject
 
     @property
-    def parent_object(self):
+    def parentobject(self):
         if self.parent and isinstance(self.parent, SceneObjectNode):
             return self.parent.object
         return None
 
     @property
-    def child_objects(self):
+    def childobjects(self):
         return [child.object for child in self.children]
 
     def add_item(self, item, **kwargs):

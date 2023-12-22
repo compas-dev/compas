@@ -34,7 +34,7 @@ class EllipseObject(GHSceneObject, GeometryObject):
         """
         ellipse = conversions.ellipse_to_rhino(self.geometry)
         ellipse = ellipse.ToNurbsCurve()
-        ellipse.Transform(conversions.transformation_to_rhino(self.transformation_world))
+        ellipse.Transform(conversions.transformation_to_rhino(self.worldtransformation))
 
         self._guids = [ellipse]
         return self.guids

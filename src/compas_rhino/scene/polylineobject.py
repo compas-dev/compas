@@ -45,7 +45,7 @@ class PolylineObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         geometry = polyline_to_rhino(self.geometry)
-        geometry.Transform(transformation_to_rhino(self.transformation_world))
+        geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddPolyline(geometry, attr)]
         return self.guids

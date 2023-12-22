@@ -44,7 +44,7 @@ class TorusObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         brep = torus_to_rhino_brep(self.geometry)
-        brep.Transform(transformation_to_rhino(self.transformation_world))
+        brep.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddBrep(brep, attr)]
         return self.guids

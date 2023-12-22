@@ -35,7 +35,7 @@ class CurveObject(GHSceneObject, GeometryObject):
 
         """
         geometry = conversions.curve_to_rhino(self.geometry)
-        transformation = conversions.transformation_to_rhino(self.transformation_world)
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
         geometry.Transform(transformation)
 
         self._guids = [geometry]

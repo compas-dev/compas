@@ -88,7 +88,7 @@ class FrameObject(RhinoSceneObject, GeometryObject):
         guids.append(guid)
 
         self.add_to_group("Frame.{}".format(self.geometry.name), guids)
-        transformation = transformation_to_rhino(self.transformation_world)
+        transformation = transformation_to_rhino(self.worldtransformation)
         for guid in guids:
             obj = sc.doc.Objects.Find(guid)
             if obj:

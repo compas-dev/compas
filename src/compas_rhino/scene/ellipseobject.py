@@ -47,7 +47,7 @@ class EllipseObject(RhinoSceneObject, GeometryObject):
 
         ellipse = ellipse_to_rhino(self.geometry)
         ellipse = ellipse.ToNurbsCurve()
-        ellipse.Transform(transformation_to_rhino(self.transformation_world))
+        ellipse.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddCurve(ellipse, attr)]
         return self.guids

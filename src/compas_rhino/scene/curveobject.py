@@ -45,7 +45,7 @@ class CurveObject(RhinoSceneObject, GeometryObject):
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
         geometry = curve_to_rhino(self.geometry)
-        geometry.Transform(transformation_to_rhino(self.transformation_world))
+        geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddCurve(geometry, attr)]
         return self.guids

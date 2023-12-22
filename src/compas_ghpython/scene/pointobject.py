@@ -32,7 +32,7 @@ class PointObject(GHSceneObject, GeometryObject):
             List of created Rhino points.
         """
         geometry = conversions.point_to_rhino(self.geometry)
-        geometry.Transform(conversions.transformation_to_rhino(self.transformation_world))
+        geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))
 
         self._guids = [geometry]
         return self.guids

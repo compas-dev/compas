@@ -53,7 +53,7 @@ class VectorObject(RhinoSceneObject, GeometryObject):
         end = start + self.geometry
         start_geometry = point_to_rhino(start)
         end_geometry = point_to_rhino(end)
-        transformation = transformation_to_rhino(self.transformation_world)
+        transformation = transformation_to_rhino(self.worldtransformation)
         start_geometry.Transform(transformation)
         end_geometry.Transform(transformation)
 

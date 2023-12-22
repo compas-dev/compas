@@ -44,7 +44,7 @@ class PointObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         geometry = point_to_rhino(self.geometry)
-        geometry.Transform(transformation_to_rhino(self.transformation_world))
+        geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddPoint(geometry, attr)]
         return self.guids

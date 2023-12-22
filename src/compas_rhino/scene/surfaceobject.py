@@ -44,6 +44,6 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         surface = surface_to_rhino(self.geometry)
-        surface.Transform(transformation_to_rhino(self.transformation_world))
+        surface.Transform(transformation_to_rhino(self.worldtransformation))
         self._guids = [sc.doc.Objects.AddSurface(surface, attr)]
         return self.guids

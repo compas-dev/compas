@@ -33,7 +33,7 @@ class BoxObject(GHSceneObject, GeometryObject):
 
         """
         box = conversions.box_to_rhino(self.geometry)
-        transformation = conversions.transformation_to_rhino(self.transformation_world)
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
         box.Transform(transformation)
 
         self._guids = [box]

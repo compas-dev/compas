@@ -43,7 +43,7 @@ class PolyhedronObject(GHSceneObject, GeometryObject):
         vertices, faces = self.geometry.to_vertices_and_faces()
 
         geometry = conversions.vertices_and_faces_to_rhino(vertices, faces, color=color)
-        geometry.Transform(conversions.transformation_to_rhino(self.transformation_world))
+        geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))
 
         self._guids = [geometry]
         return self.guids

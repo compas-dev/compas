@@ -186,7 +186,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
             disjoint=disjoint,
         )
 
-        geometry.Transform(transformation_to_rhino(self.transformation_world))
+        geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddMesh(geometry, attr)]
         return self.guids
