@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas_rhino8` as starting point for Rhino8 support.
 * Added tutorial for `compas.datastructures.Tree`.
+* Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed
 
