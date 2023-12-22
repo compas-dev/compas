@@ -1,12 +1,15 @@
 from compas.data import Data
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
-from .sceneobject import SceneObject
-from .context import redraw
+
 from .context import clear
+from .context import redraw
+from .sceneobject import SceneObject
 
 
 class Scene(Data):
+    viewerinstance = None
+
     def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
         self._tree = Tree("Scene")
