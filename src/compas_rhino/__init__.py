@@ -213,6 +213,8 @@ def _get_rhino_managedplugins_path(version):
             "Resources",
             "ManagedPlugIns",
         )
+    else:
+        raise Exception("Unsupported platform")
 
     if not os.path.exists(managedplugins_path):
         raise Exception("The Managed Plug-ins folder does not exist in this location: {}".format(managedplugins_path))
@@ -237,6 +239,9 @@ def _get_rhino_plugins_path(version):
             plugins_path = os.path.join(appdata, "MacPlugIns")
         else:
             plugins_path = os.path.join(appdata, "{}".format(version), "Plug-ins")
+
+    else:
+        raise Exception("Unsupported platform")
 
     if not os.path.exists(plugins_path):
         raise Exception("The plugins folder does not exist in this location: {}".format(plugins_path))
@@ -306,6 +311,9 @@ def _get_rhino_ironpython_lib_path(version):
 
     elif compas.OSX:
         ipy_lib_path = _get_rhino_ironpython_lib_path_mac(version)
+
+    else:
+        raise Exception("Unsupported platform")
 
     if not os.path.exists(ipy_lib_path):
         ipy_lib_path = None
