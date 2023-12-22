@@ -11,11 +11,6 @@ import os
 import sys
 import ast
 
-from compas_rhino.forms import TextForm
-from compas_rhino.forms import ImageForm
-
-import System
-
 import rhinoscriptsyntax as rs
 import Rhino
 import clr
@@ -23,32 +18,7 @@ import clr
 clr.AddReference("Rhino.UI")
 import Rhino.UI  # noqa: E402
 from Rhino.UI.Dialogs import ShowMessageBox  # noqa: E402
-
-try:
-    from compas_rhino.forms import PropertyListForm
-except ImportError:
-    from Rhino.UI.Dialogs import ShowPropertyListBox
-
-
-__all__ = [
-    "wait",
-    "get_tolerance",
-    "toggle_toolbargroup",
-    "pick_point",
-    "browse_for_folder",
-    "browse_for_file",
-    "print_display_on",
-    "display_message",
-    "display_text",
-    "display_image",
-    "display_html",
-    "update_settings",
-    "update_named_values",
-    "screenshot_current_view",
-    "select_folder",
-    "select_file",
-    "unload_modules",
-]
+from Rhino.UI.Dialogs import ShowPropertyListBox  # noqa: E402
 
 
 # ==============================================================================
@@ -201,16 +171,16 @@ def display_message(message):
     return ShowMessageBox(message, "Message")
 
 
-def display_text(text, title="Text", width=800, height=600):
-    if isinstance(text, (list, tuple)):
-        text = "{0}".format(System.Environment.NewLine).join(text)
-    form = TextForm(text, title, width, height)
-    return form.show()
+# def display_text(text, title="Text", width=800, height=600):
+#     if isinstance(text, (list, tuple)):
+#         text = "{0}".format(System.Environment.NewLine).join(text)
+#     form = TextForm(text, title, width, height)
+#     return form.show()
 
 
-def display_image(image, title="Image", width=800, height=600):
-    form = ImageForm(image, title, width, height)
-    return form.show()
+# def display_image(image, title="Image", width=800, height=600):
+#     form = ImageForm(image, title, width, height)
+#     return form.show()
 
 
 def display_html():
@@ -223,15 +193,7 @@ def display_html():
 
 
 def update_named_values(names, values, message="", title="Update named values", evaluate=False):
-    try:
-        dialog = PropertyListForm(names, values)
-    except Exception:
-        values = ShowPropertyListBox(message, title, names, values)
-    else:
-        if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
-            values = dialog.values
-        else:
-            values = None
+    values = ShowPropertyListBox(message, title, names, values)
     if evaluate:
         if values:
             values = list(values)

@@ -9,9 +9,25 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
+if not compas.IPY:
+    from .matrices import network_adjacency_matrix
+    from .matrices import network_connectivity_matrix
+    from .matrices import network_degree_matrix
+    from .matrices import network_laplacian_matrix
+    from .planarity import network_embed_in_plane
+    from .planarity import network_is_planar
+    from .planarity import network_is_planar_embedding
+else:
+    network_adjacency_matrix = None
+    network_connectivity_matrix = None
+    network_degree_matrix = None
+    network_laplacian_matrix = None
+    network_embed_in_plane = None
+    network_is_planar = None
+    network_is_planar_embedding = None
+
 from compas.files import OBJ
 
-from compas.utilities import geometric_key
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Line
@@ -24,6 +40,8 @@ from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
 from compas.datastructures import Graph
+
+from compas.tolerance import TOL
 
 from .operations.split import network_split_edge
 
@@ -69,22 +87,25 @@ class Network(Graph):
     is_crossed = network_is_crossed
     is_xy = network_is_xy
 
-    if not compas.IPY:
-        from .matrices import network_adjacency_matrix
-        from .matrices import network_connectivity_matrix
-        from .matrices import network_degree_matrix
-        from .matrices import network_laplacian_matrix
-        from .planarity import network_embed_in_plane
-        from .planarity import network_is_planar
-        from .planarity import network_is_planar_embedding
-
+    if network_adjacency_matrix:
         adjacency_matrix = network_adjacency_matrix
+
+    if network_connectivity_matrix:
         connectivity_matrix = network_connectivity_matrix
+
+    if network_degree_matrix:
         degree_matrix = network_degree_matrix
+
+    if network_laplacian_matrix:
         laplacian_matrix = network_laplacian_matrix
 
+    if network_embed_in_plane:
         embed_in_plane = network_embed_in_plane
+
+    if network_is_planar:
         is_planar = network_is_planar
+
+    if network_is_planar_embedding:
         is_planar_embedding = network_is_planar_embedding
 
     def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
@@ -158,8 +179,9 @@ class Network(Graph):
         ----------
         lines : list[tuple[list[float, list[float]]]]
             A list of pairs of point coordinates.
-        precision: str, optional
-            The precision of the geometric map that is used to connect the lines.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -178,8 +200,8 @@ class Network(Graph):
         for line in lines:
             sp = line[0]
             ep = line[1]
-            a = geometric_key(sp, precision)
-            b = geometric_key(ep, precision)
+            a = TOL.geometric_key(sp, precision)
+            b = TOL.geometric_key(ep, precision)
             node[a] = sp
             node[b] = ep
             edges.append((a, b))
@@ -345,8 +367,9 @@ class Network(Graph):
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -356,14 +379,12 @@ class Network(Graph):
         See Also
         --------
         :meth:`gkey_node`
-        :func:`compas.geometry.geometric_key`
+        :meth:`compas.Tolerance.geometric_key`
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.node_coordinates
         return {key: gkey(xyz(key), precision) for key in self.nodes()}
-
-    key_gkey = node_gkey
 
     def gkey_node(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
@@ -371,8 +392,9 @@ class Network(Graph):
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -382,14 +404,12 @@ class Network(Graph):
         See Also
         --------
         :meth:`node_gkey`
-        :func:`compas.geometry.geometric_key`
+        :meth:`compas.Tolerance.geometric_key`
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.node_coordinates
         return {gkey(xyz(key), precision): key for key in self.nodes()}
-
-    gkey_key = gkey_node
 
     # --------------------------------------------------------------------------
     # builders

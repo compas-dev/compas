@@ -6,7 +6,6 @@ from abc import abstractmethod
 
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
-from .descriptors.color import ColorAttribute
 from .descriptors.colordict import ColorDictAttribute
 
 
@@ -27,11 +26,11 @@ class MeshObject(SceneObject):
         Defaults to the real coordinates.
     color : :class:`compas.colors.Color`
         The base RGB color of the mesh.
-    vertex_color : :class:`compas.colors.ColorDict`]
+    vertexcolor : :class:`compas.colors.ColorDict`
         Vertex colors.
-    edge_color : :class:`compas.colors.ColorDict`
+    edgecolor : :class:`compas.colors.ColorDict`
         Edge colors.
-    face_color : :class:`compas.colors.ColorDict`
+    facecolor : :class:`compas.colors.ColorDict`
         Face colors.
 
     See Also
@@ -41,17 +40,20 @@ class MeshObject(SceneObject):
 
     """
 
-    color = ColorAttribute(default=None)
-
-    vertex_color = ColorDictAttribute(default=None)
-    edge_color = ColorDictAttribute(default=None)
-    face_color = ColorDictAttribute(default=None)
+    vertexcolor = ColorDictAttribute()
+    edgecolor = ColorDictAttribute()
+    facecolor = ColorDictAttribute()
 
     def __init__(self, mesh, **kwargs):
         super(MeshObject, self).__init__(item=mesh, **kwargs)
         self._mesh = None
         self._vertex_xyz = None
         self.mesh = mesh
+        self.vertexcolor = kwargs.get("vertexcolor", self.color)
+        self.edgecolor = kwargs.get("edgecolor", self.color)
+        self.facecolor = kwargs.get("facecolor", self.color)
+        self.vertexsize = kwargs.get("vertexsize", 1.0)
+        self.edgewidth = kwargs.get("edgewidth", 1.0)
 
     @property
     def mesh(self):

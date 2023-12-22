@@ -150,11 +150,11 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         """
         objects = []
 
-        self.vertex_color = color
+        self.vertexcolor = color
 
         for vertex in vertices or self.volmesh.vertices():  # type: ignore
             name = f"{self.volmesh.name}.vertex.{vertex}"  # type: ignore
-            color = self.vertex_color[vertex]  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
             point = self.volmesh.vertices_attributes("xyz")[vertex]
 
             # there is no such thing as a sphere data block
@@ -191,11 +191,11 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         """
         objects = []
 
-        self.edge_color = color
+        self.edgecolor = color
 
         for u, v in edges or self.volmesh.edges():  # type: ignore
             name = f"{self.volmesh.name}.edge.{u}-{v}"  # type: ignore
-            color = self.edge_color[u, v]  # type: ignore
+            color = self.edgecolor[u, v]  # type: ignore
             curve = conversions.line_to_blender_curve(
                 Line(self.volmesh.vertices_attributes("xyz")[u], self.volmesh.vertices_attributes("xyz")[v])
             )
@@ -234,11 +234,11 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         """
         objects = []
 
-        self.face_color = color
+        self.facecolor = color
 
         for face in faces or self.volmesh.faces():  # type: ignore
             name = f"{self.volmesh.name}.face.{face}"  # type: ignore
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             points = [self.volmesh.vertices_attributes("xyz")[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
             mesh = conversions.polygon_to_blender_mesh(points, name=name)  # type: ignore
 
@@ -276,11 +276,11 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         """
         objects = []
 
-        self.cell_color = color
+        self.cellcolor = color
 
         for cell in cells or self.volmesh.cells():  # type: ignore
             name = f"{self.volmesh.name}.cell.{cell}"  # type: ignore
-            color = self.cell_color[cell]  # type: ignore
+            color = self.cellcolor[cell]  # type: ignore
 
             vertices = self.volmesh.cell_vertices(cell)  # type: ignore
             faces = self.volmesh.cell_faces(cell)  # type: ignore
@@ -420,7 +420,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
     #                 "pos": self.volmesh.vertices_attributes("xyz")[vertex],
     #                 "name": f"{self.volmesh.name}.vertexlabel.{vertex}",
     #                 "text": self.vertex_text[vertex],
-    #                 "color": self.vertex_color[vertex],
+    #                 "color": self.vertexcolor[vertex],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.vertexlabelcollection)
@@ -448,7 +448,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
     #                 "pos": centroid_points([self.volmesh.vertices_attributes("xyz")[u], self.volmesh.vertices_attributes("xyz")[v]]),
     #                 "name": f"{self.volmesh.name}.edgelabel.{u}-{v}",
     #                 "text": self.edge_text[edge],
-    #                 "color": self.edge_color[edge],
+    #                 "color": self.edgecolor[edge],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.edgelabelcollection)
@@ -475,7 +475,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
     #                 "pos": centroid_points([self.volmesh.vertices_attributes("xyz")[vertex] for vertex in self.volmesh.face_vertices(face)]),
     #                 "name": "{}.facelabel.{}".format(self.volmesh.name, face),
     #                 "text": self.face_text[face],
-    #                 "color": self.face_color[face],
+    #                 "color": self.facecolor[face],
     #             }
     #         )
     #     return compas_blender.draw_texts(labels, collection=self.collection)

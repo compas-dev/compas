@@ -4,10 +4,8 @@ from __future__ import division
 
 from abc import abstractmethod
 
-from compas.colors import Color
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
-from .descriptors.color import ColorAttribute
 from .descriptors.colordict import ColorDictAttribute
 
 
@@ -26,18 +24,22 @@ class VolMeshObject(SceneObject):
     vertex_xyz : dict[int, list[float]]
         The view coordinates of the vertices.
         By default, the actual vertex coordinates are used.
-    vertex_color : dict[int, :class:`compas.colors.Color`]
+    vertexcolor : :class:`compas.colors.ColorDict`
         Mapping between vertices and colors.
         Missing vertices get the default vertex color: :attr:`default_vertexcolor`.
-    edge_color : dict[tuple[int, int], :class:`compas.colors.Color`]
+    edgecolor : :class:`compas.colors.ColorDict`
         Mapping between edges and colors.
         Missing edges get the default edge color: :attr:`default_edgecolor`.
-    face_color : dict[int, :class:`compas.colors.Color`]
+    facecolor : :class:`compas.colors.ColorDict`
         Mapping between faces and colors.
         Missing faces get the default face color: :attr:`default_facecolor`.
-    cell_color : dict[int, :class:`compas.colors.Color`]
+    cellcolor : :class:`compas.colors.ColorDict`
         Mapping between cells and colors.
         Missing cells get the default cell color: :attr:`default_facecolor`.
+    vertexsize : float
+        The size of the vertices.
+    edgewidth : float
+        The width of the edges.
 
     See Also
     --------
@@ -46,18 +48,22 @@ class VolMeshObject(SceneObject):
 
     """
 
-    color = ColorAttribute(default=Color.grey().lightened(50))
-
-    vertex_color = ColorDictAttribute(default=Color.white())
-    edge_color = ColorDictAttribute(default=Color.black())
-    face_color = ColorDictAttribute(default=Color.grey().lightened(50))
-    cell_color = ColorDictAttribute(default=Color.grey())
+    vertexcolor = ColorDictAttribute()
+    edgecolor = ColorDictAttribute()
+    facecolor = ColorDictAttribute()
+    cellcolor = ColorDictAttribute()
 
     def __init__(self, volmesh, **kwargs):
         super(VolMeshObject, self).__init__(item=volmesh, **kwargs)
         self._volmesh = None
         self._vertex_xyz = None
         self.volmesh = volmesh
+        self.vertexcolor = kwargs.get("vertexcolor", self.color)
+        self.edgecolor = kwargs.get("edgecolor", self.color)
+        self.facecolor = kwargs.get("facecolor", self.color)
+        self.cellcolor = kwargs.get("cellcolor", self.color)
+        self.vertexsize = kwargs.get("vertexsize", 1.0)
+        self.edgewidth = kwargs.get("edgewidth", 1.0)
 
     @property
     def volmesh(self):

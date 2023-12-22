@@ -1,16 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import length_vector
-from compas.geometry import cross_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import dot_vectors
+from compas.geometry import Geometry
 from compas.geometry import angle_vectors
 from compas.geometry import angle_vectors_signed
 from compas.geometry import angles_vectors
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import length_vector
+from compas.geometry import subtract_vectors
 from compas.geometry import transform_vectors
-from compas.geometry import Geometry
+from compas.tolerance import TOL
 
 
 class Vector(Geometry):
@@ -87,6 +88,14 @@ class Vector(Geometry):
             self.x,
             self.y,
             self.z,
+        )
+
+    def __str__(self):
+        return "{0}(x={1}, y={2}, z={3})".format(
+            type(self).__name__,
+            TOL.format_number(self.x),
+            TOL.format_number(self.y),
+            TOL.format_number(self.z),
         )
 
     def __len__(self):
@@ -736,7 +745,7 @@ class Vector(Geometry):
         """
         return Vector(*cross_vectors(self, other))
 
-    def angle(self, other):
+    def angle(self, other, degrees=False):
         """Compute the smallest angle between this vector and another vector.
 
         Parameters
@@ -757,7 +766,7 @@ class Vector(Geometry):
         True
 
         """
-        return angle_vectors(self, other)
+        return angle_vectors(self, other, deg=degrees)
 
     def angle_signed(self, other, normal):
         """Compute the signed angle between this vector and another vector.

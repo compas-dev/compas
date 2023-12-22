@@ -151,8 +151,8 @@ class TreeNode(Data):
     @property
     def ancestors(self):
         this = self
-        while this:
-            yield this
+        while this.parent:
+            yield this.parent
             this = this.parent
 
     @property

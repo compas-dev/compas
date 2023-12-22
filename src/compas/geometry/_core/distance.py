@@ -6,6 +6,7 @@ from math import fabs
 from math import sqrt
 
 from compas.utilities import pairwise
+from compas.tolerance import TOL
 
 from ._algebra import add_vectors
 from ._algebra import add_vectors_xy
@@ -402,7 +403,7 @@ def distance_point_plane_signed(point, plane):
     return dot_vectors(vector, normal)
 
 
-def distance_line_line(l1, l2, tol=0.0):
+def distance_line_line(l1, l2, tol=None):
     r"""Compute the shortest distance between two lines.
 
     Parameters
@@ -411,6 +412,9 @@ def distance_line_line(l1, l2, tol=0.0):
         Two points defining a line.
     l2 : [point, point] | :class:`compas.geometry.Line`
         Two points defining a line.
+    tol : float, optional
+        The tolerance for comparing values to zero.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -445,7 +449,7 @@ def distance_line_line(l1, l2, tol=0.0):
     ac = subtract_vectors(c, a)
     n = cross_vectors(ab, cd)
     length = length_vector(n)
-    if length <= tol:
+    if TOL.is_zero(length, tol):
         return distance_point_point(closest_point_on_line(l1[0], l2), l1[0])
     n = scale_vector(n, 1.0 / length)
     return fabs(dot_vectors(n, ac))

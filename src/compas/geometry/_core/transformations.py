@@ -944,7 +944,7 @@ def project_points_line_xy(points, line):
 # ==============================================================================
 
 
-def reflect_line_plane(line, plane, tol=1e-6):
+def reflect_line_plane(line, plane, tol=None):
     """Bounce a line of a reflection plane.
 
     Parameters
@@ -954,7 +954,8 @@ def reflect_line_plane(line, plane, tol=1e-6):
     plane : [point, vector] | :class:`compas.geometry.Plane`
         Base point and normal vector of the plane.
     tol : float, optional
-        A tolerance for membership verification.
+        A tolerance for finding the intersection between the line and the plane.
+        Default is :func:`TOL.absolute`.
 
     Returns
     -------
@@ -996,7 +997,7 @@ def reflect_line_plane(line, plane, tol=1e-6):
     return x, mirror_point_line(a, mirror)
 
 
-def reflect_line_triangle(line, triangle, tol=1e-6):
+def reflect_line_triangle(line, triangle, tol=None):
     """Bounce a line of a reflection triangle.
 
     Parameters
@@ -1006,7 +1007,8 @@ def reflect_line_triangle(line, triangle, tol=1e-6):
     triangle : [point, point, point]
         The triangle vertices.
     tol : float, optional
-        A tolerance for membership verification.
+        A tolerance value for finding the intersection between the line and the triangle.
+        Default is :func:`TOL.absolute`.
 
     Returns
     -------

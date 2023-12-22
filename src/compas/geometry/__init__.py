@@ -241,9 +241,10 @@ from ._core.predicates_3 import (
     is_colinear_line_line,
     is_coplanar,
     is_parallel_line_line,
+    is_parallel_vector_vector,
     is_polygon_convex,
     is_point_on_plane,
-    is_point_infront_plane,
+    is_point_infrontof_plane,
     is_point_behind_plane,
     is_point_on_line,
     is_point_on_segment,
@@ -426,7 +427,7 @@ from .brep.brep import (
     BrepOrientation,
     BrepType,
 )
-from .brep.edge import BrepEdge
+from .brep.edge import BrepEdge, CurveType
 from .brep.loop import BrepLoop
 from .brep.face import BrepFace, SurfaceType
 from .brep.vertex import BrepVertex
@@ -441,7 +442,6 @@ __all__ = [
     "BrepEdge",
     "BrepError",
     "BrepFace",
-    "SurfaceType",
     "BrepInvalidError",
     "BrepLoop",
     "BrepOrientation",
@@ -456,6 +456,7 @@ __all__ = [
     "Cone",
     "ConicalSurface",
     "Curve",
+    "CurveType",
     "Cylinder",
     "CylindricalSurface",
     "Ellipse",
@@ -484,6 +485,7 @@ __all__ = [
     "Sphere",
     "SphericalSurface",
     "Surface",
+    "SurfaceType",
     "ToroidalSurface",
     "Torus",
     "Transformation",
@@ -618,6 +620,7 @@ __all__ = [
     "is_coplanar",
     "is_matrix_square",
     "is_parallel_line_line",
+    "is_parallel_vector_vector",
     "is_point_behind_plane",
     "is_point_in_circle",
     "is_point_in_circle_xy",
@@ -626,7 +629,7 @@ __all__ = [
     "is_point_in_polyhedron",
     "is_point_in_triangle",
     "is_point_in_triangle_xy",
-    "is_point_infront_plane",
+    "is_point_infrontof_plane",
     "is_point_on_line",
     "is_point_on_line_xy",
     "is_point_on_plane",

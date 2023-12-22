@@ -125,12 +125,12 @@ class MeshObject(GHSceneObject, BaseMeshObject):
         """
         faces = faces or self.mesh.faces()  # type: ignore
 
-        self.face_color = color
+        self.facecolor = color
 
         meshes = []
 
         for face in faces:
-            color = self.face_color[face]  # type: ignore
+            color = self.facecolor[face]  # type: ignore
             vertices = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
             facet = ngon(len(vertices))
             if facet:

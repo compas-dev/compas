@@ -27,6 +27,9 @@ def delaunay_triangulation(points):
     raise NotImplementedError
 
 
+delaunay_triangulation.__pluggable__ = True
+
+
 @pluggable(category="triangulation")
 def constrained_delaunay_triangulation(boundary, polylines=None, polygons=None):
     """Construct a Delaunay triangulation of set of vertices, constrained to the specified segments.
@@ -55,6 +58,9 @@ def constrained_delaunay_triangulation(boundary, polylines=None, polygons=None):
 
     """
     pass
+
+
+constrained_delaunay_triangulation.__pluggable__ = True
 
 
 @pluggable(category="triangulation")
@@ -90,3 +96,6 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
 
     """
     raise NotImplementedError
+
+
+conforming_delaunay_triangulation.__pluggable__ = True

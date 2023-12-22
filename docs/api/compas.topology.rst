@@ -44,6 +44,3 @@ In environments where numpy is not available, these functions can still be acces
 
     face_adjacency_numpy
     unify_cycles_numpy
-
-
-

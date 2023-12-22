@@ -45,12 +45,6 @@ import compas
 from compas.files._xml.xml_shared import shared_xml_from_file
 from compas.files._xml.xml_shared import shared_xml_from_string
 
-__all__ = [
-    "xml_from_file",
-    "xml_from_string",
-    "prettify_string",
-]
-
 
 if compas.IPY:
     import clr

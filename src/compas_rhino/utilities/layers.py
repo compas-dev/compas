@@ -4,8 +4,8 @@ from __future__ import division
 
 from collections import deque
 
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
+import rhinoscriptsyntax as rs  # type: ignore
+import scriptcontext as sc  # type: ignore
 
 find_object = sc.doc.Objects.Find
 
@@ -13,18 +13,6 @@ try:
     purge_object = sc.doc.Objects.Purge
 except AttributeError:
     purge_object = None
-
-
-__all__ = [
-    "create_layers_from_path",
-    "create_layers_from_paths",
-    "create_layers_from_dict",
-    "create_layers",
-    "clear_layer",
-    "clear_current_layer",
-    "clear_layers",
-    "delete_layers",
-]
 
 
 # ==============================================================================

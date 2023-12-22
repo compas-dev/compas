@@ -14,7 +14,6 @@ from .obj import OBJ, OBJParser, OBJReader, OBJWriter  # noqa: F401
 from .off import OFF, OFFReader, OFFWriter  # noqa: F401
 from .ply import PLY, PLYParser, PLYReader, PLYWriter  # noqa: F401
 from .stl import STL, STLParser, STLReader, STLWriter  # noqa: F401
-from .urdf import URDF, URDFElement, URDFGenericElement, URDFParser  # noqa: F401
 from .xml import XML, XMLElement, XMLReader, XMLWriter, prettify_string  # noqa: F401
 
 __all__ = [
@@ -23,7 +22,6 @@ __all__ = [
     "OFF",
     "PLY",
     "STL",
-    "URDF",
     "XML",
     "prettify_string",
 ]

@@ -866,19 +866,36 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
-    def trim(self, trimming_plane, tolerance):
+    def trim(self, plane, tolerance):
         """Trim this Brep using the given trimming plane.
 
         Parameters
         ----------
-        trimming_plane : :class:`compas.geometry.Frame`
-            defines the trimming plane
+        plane : :class:`~compas.geometry.Plane` or :class:`~compas.geometry.Frame`
+            Defines the trimming plane.
         tolerance: float
-            the tolerance to use when trimming
+            The tolerance to use when trimming.
 
         Returns
         -------
         None
+
+        """
+        raise NotImplementedError
+
+    def trimmed(self, plane, tolerance):
+        """Returns a trimmed copy of this Brep using the given trimming plane.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane` or :class:`~compas.geometry.Frame`
+            Defines the trimming plane.
+        tolerance: float
+            The tolerance to use when trimming.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
 
         """
         raise NotImplementedError
@@ -1052,13 +1069,16 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane : :class:`~compas.geometry.Plane` or :class:`~compas.geometry.Frame`
+            Defines the slicing plane.
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        list(:class:`~compas.geometry.Curve`)
+            Zero or more curves which represent the intersection(s) between the brep and the plane.
 
         """
+        raise NotImplementedError
 
     def split(self, cutter):
         """Slice through the BRep with a plane.

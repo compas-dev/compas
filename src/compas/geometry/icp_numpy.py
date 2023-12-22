@@ -10,6 +10,8 @@ from scipy.spatial.distance import cdist
 from scipy.linalg import svd
 from scipy.linalg import norm
 
+from compas.tolerance import TOL
+
 from compas.numerical import pca_numpy
 from compas.numerical import normrow
 from compas.geometry import transform_points_numpy
@@ -39,7 +41,7 @@ def bestfit_transform(A, B):
     return X
 
 
-def icp_numpy(source, target, tol=1e-3):
+def icp_numpy(source, target, tol=None):
     """Align two point clouds using the Iterative Closest Point (ICP) method.
 
     Parameters
@@ -50,6 +52,7 @@ def icp_numpy(source, target, tol=1e-3):
         The target data.
     tol : float, optional
         Tolerance for finding matches.
+        Default is :attr:`TOL.approximation`.
 
     Returns
     -------
@@ -78,6 +81,8 @@ def icp_numpy(source, target, tol=1e-3):
     from compas.geometry import Transformation
     from compas.geometry import Frame
 
+    tol = tol or TOL.approximation
+
     A = asarray(source)
     B = asarray(target)
 
@@ -93,8 +98,11 @@ def icp_numpy(source, target, tol=1e-3):
     for i in range(20):
         D = cdist(A, B, "euclidean")
         closest = argmin(D, axis=1)
-        if norm(normrow(A - B[closest])) < tol:
+        residual = norm(normrow(A - B[closest]))
+
+        if TOL.is_zero(residual, tol=tol):
             break
+
         X = bestfit_transform(A, B[closest])
         A = transform_points_numpy(A, X)
 

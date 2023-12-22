@@ -2,10 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.tolerance import TOL
+
 from compas.geometry import Point
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join
-from compas.utilities import geometric_key
 from compas.utilities import memoize
 
 from Rhino.Geometry import NurbsSurface as RhinoNurbsSurface  # type: ignore
@@ -229,14 +230,14 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
         segments = curve.Explode()
         a = segments[0].PointAtStart
         b = segments[0].PointAtEnd
-        a_gkey = geometric_key(a)
-        b_gkey = geometric_key(b)
+        a_gkey = TOL.geometric_key(a)
+        b_gkey = TOL.geometric_key(b)
         gkey_xyz[a_gkey] = a
         gkey_xyz[b_gkey] = b
         face = [a_gkey, b_gkey]
         for segment in segments[1:-1]:
             b = segment.PointAtEnd
-            b_gkey = geometric_key(b)
+            b_gkey = TOL.geometric_key(b)
             face.append(b_gkey)
             gkey_xyz[b_gkey] = b
         faces.append(face)

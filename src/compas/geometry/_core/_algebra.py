@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
-from math import fabs
+from compas.tolerance import TOL
 
 
 def vector_average(vector):
@@ -53,73 +53,6 @@ def vector_standard_deviation(vector):
         The standard deviation value.
     """
     return vector_variance(vector) ** 0.5
-
-
-def close(value1, value2, tol=1e-05):
-    """Returns True if two values are equal within a tolerance.
-
-    Parameters
-    ----------
-    value1 : float or int
-    value2 : float or int
-    tol : float, optional
-        The tolerance for comparing values.
-
-    Returns
-    -------
-    bool
-        True if the values are closer than the tolerance.
-        False otherwise.
-
-    Examples
-    --------
-    >>> close(1., 1.001)
-    False
-    >>> close(1., 1.001, tol=1e-2)
-    True
-    """
-    return fabs(value1 - value2) < tol
-
-
-def allclose(l1, l2, tol=1e-05):
-    """Returns True if two lists are element-wise equal within a tolerance.
-
-    Parameters
-    ----------
-    l1 : sequence[float]
-        The first list of values.
-    l2 : sequence[float]
-        The second list of values.
-    tol : float, optional
-        The tolerance for comparing values.
-
-    Returns
-    -------
-    bool
-        True if all corresponding values of the two lists are closer than the tolerance.
-        False otherwise.
-
-    Notes
-    -----
-    The function is similar to NumPy's *allclose* function [1]_.
-
-    References
-    ----------
-    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
-
-    Examples
-    --------
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4])
-    True
-
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
-    False
-
-    """
-
-    if any(not allclose(a, b, tol) if hasattr(a, "__iter__") else fabs(a - b) > tol for a, b in zip(l1, l2)):
-        return False
-    return True
 
 
 def argmax(values):
@@ -1277,3 +1210,106 @@ def orthonormalize_vectors(vectors):
         if any(axis > 1e-10 for axis in e):
             basis.append(normalize_vector(e))
     return basis
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Deprecated
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def close(value1, value2, tol=1e-05):
+    """Returns True if two values are equal within a tolerance.
+
+    Parameters
+    ----------
+    value1 : float or int
+    value2 : float or int
+    tol : float, optional
+        The absolute tolerance for comparing values.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if the values are closer than the tolerance.
+        False otherwise.
+
+    Warnings
+    --------
+    .. deprecated:: 2.0
+        Will be removed in 2.1
+        Use :func:`TOL.is_close` instead.
+
+    The tolerance value used by this function is an absolute tolerance.
+    It is more accurate to use a combination of absolute and relative tolerance.
+    Therefor, use :func:`TOL.is_close` instead.
+
+    Examples
+    --------
+    >>> close(1., 1.001)
+    False
+    >>> close(1., 1.001, tol=1e-2)
+    True
+    """
+    return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
+
+
+def allclose(l1, l2, tol=None):
+    """Returns True if two lists are element-wise equal within a tolerance.
+
+    Parameters
+    ----------
+    l1 : sequence[float]
+        The first list of values.
+    l2 : sequence[float]
+        The second list of values.
+    tol : float, optional
+        The absolute tolerance for comparing values.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if all corresponding values of the two lists are closer than the tolerance.
+        False otherwise.
+
+    Warnings
+    --------
+    .. deprecated:: 2.0
+        Will be removed in 2.1
+        Use :func:`TOL.is_close` instead.
+
+    The tolerance value used by this function is an absolute tolerance.
+    It is more accurate to use a combination of absolute and relative tolerance.
+    Therefor, use :func:`TOL.is_allclose` instead.
+
+    Notes
+    -----
+    The function is similar to NumPy's *allclose* function [1]_.
+
+    References
+    ----------
+    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
+
+    Examples
+    --------
+    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4])
+    True
+
+    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
+    False
+
+    """
+    return TOL.is_allclose(l1, l2, atol=tol)

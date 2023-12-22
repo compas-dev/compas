@@ -1,9 +1,5 @@
 import math
-
-from ._algebra import allclose
-
-
-ATOL = 1e-6  # absolute tolerance
+from compas.tolerance import TOL
 
 
 def quaternion_norm(q):
@@ -58,13 +54,14 @@ def quaternion_unitize(q):
 
     """
     n = quaternion_norm(q)
-    if allclose([n], [0.0], ATOL):
+
+    if TOL.is_zero(n):
         raise ValueError("The given quaternion has zero length.")
-    else:
-        return [x / n for x in q]
+
+    return [x / n for x in q]
 
 
-def quaternion_is_unit(q, tol=ATOL):
+def quaternion_is_unit(q, tol=None):
     """Checks if a quaternion is unit-length.
 
     Parameters
@@ -72,7 +69,8 @@ def quaternion_is_unit(q, tol=ATOL):
     q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
         Quaternion or sequence of four floats ``[w, x, y, z]``.
     tol : float, optional
-        Requested decimal precision.
+        The tolerance for comparing the quaternion norm to 1.
+        Default is :attr:`TOL.absolute`.
 
     Returns
     -------
@@ -90,7 +88,7 @@ def quaternion_is_unit(q, tol=ATOL):
 
     """
     n = quaternion_norm(q)
-    return allclose([n], [1.0], tol)
+    return TOL.is_close(n, 1.0, rtol=0.0, atol=tol)
 
 
 def quaternion_multiply(r, q):
