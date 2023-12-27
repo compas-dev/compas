@@ -44,10 +44,8 @@ class VectorObject(GHSceneObject, GeometryObject):
         end = start + self.geometry
 
         geometry = conversions.line_to_rhino([start, end])
-
-        if self.transformation:
-            transformation = conversions.transformation_to_rhino(self.transformation)
-            geometry.Transform(transformation)
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
+        geometry.Transform(transformation)
 
         self._guids = [geometry]
         return self.guids

@@ -5,6 +5,7 @@ from compas.scene import context
 from compas.scene import register
 from compas.scene import SceneObject
 from compas.scene import NoSceneObjectContextError
+from compas.data import Data
 
 
 if not compas.IPY:
@@ -37,7 +38,7 @@ class FakeSubSceneObject(SceneObject):
         pass
 
 
-class FakeItem(object):
+class FakeItem(Data):
     pass
 
 

@@ -10,16 +10,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Added `viewerinstance ` in  `compas.scene.Scene` to support viewers context detection.
 * Added `compas_rhino8` as starting point for Rhino8 support.
+* Added `compas.scene.SceneObjectNode`.
+* Added `compas.scene.SceneTree`.
+* Added `compas.scene.SceneObject.node`.
+* Added `compas.scene.SceneObject.frame`.
+* Added `compas.scene.SceneObject.worldtransformation`.
+* Added `compas.scene.SceneObject.parent`.
+* Added `compas.scene.SceneObject.children`.
+* Added `compas.scene.SceneObject.add()`.
 * Added tutorial for `compas.datastructures.Tree`.
 
 ### Changed
 
 * Changed the `__str__` of `compas.geometry.Point` and `compas.geometry.Vector` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
+* The `draw` implementations of `compas.scene.SceneObject` will now always use the `worldtransformation` of the `SceneObject`.
 
 ### Removed
 
 * Removed `compas_rhino.forms`. Forms will be moved to `compas_ui`.
-
 
 ## [2.0.0-beta.1] 2023-12-20
 

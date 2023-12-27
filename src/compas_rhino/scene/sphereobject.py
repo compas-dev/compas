@@ -44,8 +44,7 @@ class SphereObject(RhinoSceneObject, GeometryObject):
         color = Color.coerce(color) or self.color
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
         geometry = sphere_to_rhino(self.geometry)
-        if self.transformation:
-            geometry.Transform(transformation_to_rhino(self.transformation))
+        geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddSphere(geometry, attr)]
         return self.guids
