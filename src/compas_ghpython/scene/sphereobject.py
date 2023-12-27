@@ -33,9 +33,7 @@ class SphereObject(GHSceneObject, GeometryObject):
 
         """
         geometry = conversions.sphere_to_rhino(self.geometry)
-
-        if self.transformation:
-            geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+        geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))
 
         self._guids = [geometry]
         return self.guids

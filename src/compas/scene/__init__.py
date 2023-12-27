@@ -23,6 +23,8 @@ from .context import get_sceneobject_cls
 from .context import register
 
 from .scene import Scene
+from .scene import SceneObjectNode
+from .scene import SceneTree
 
 __all__ = [
     "SceneObjectNotRegisteredError",
@@ -33,6 +35,8 @@ __all__ = [
     "GeometryObject",
     "VolMeshObject",
     "Scene",
+    "SceneObjectNode",
+    "SceneTree",
     "clear",
     "redraw",
     "register_scene_objects",
