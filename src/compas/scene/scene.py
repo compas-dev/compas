@@ -34,9 +34,14 @@ class SceneObjectNode(TreeNode):
     @property
     def data(self):
         return {
-            "object": self.object.settings,
+            "item": str(self.object.item.guid),
+            "settings": self.object.settings,
             "children": [child.data for child in self.children],
         }
+
+    @classmethod
+    def from_data(cls, data):
+        raise TypeError("SceneObjectNode cannot be created from data. Use SceneTree.from_data instead.")
 
     @property
     def name(self):
@@ -208,15 +213,16 @@ class Scene(Data):
     @classmethod
     def from_data(cls, data):
         scene = cls(data["name"])
+        items = {str(item.guid): item for item in data["items"]}
 
-        def add(node, parent):
+        def add(node, parent, items):
             for child_node in node["children"]:
-                object_settings = child_node["object"]
-                item = next(item for item in data["items"] if str(item.guid) == object_settings["item"])
-                sceneobject = parent.add(item, **object_settings)
-                add(child_node, sceneobject)
+                guid = child_node["item"]
+                settings = child_node["settings"]
+                sceneobject = parent.add(items[guid], **settings)
+                add(child_node, sceneobject, items)
 
-        add(data["tree"]["root"], scene)
+        add(data["tree"]["root"], scene, items)
 
         return scene
 

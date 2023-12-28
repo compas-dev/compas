@@ -44,6 +44,8 @@ class SceneObject(object):
         The color of the object.
     opacity : float
         The opacity of the object.
+    settings : dict
+        The settings including necessary attributes for reconstructing the scene object.
 
     """
 
@@ -154,7 +156,6 @@ class SceneObject(object):
     def settings(self):
         return {
             "name": self.name,
-            "item": str(self.item.guid),
             "color": self.color,
             "opacity": self.opacity,
             "frame": self.frame,
