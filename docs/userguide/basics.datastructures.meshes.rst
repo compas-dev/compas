@@ -142,12 +142,72 @@ Lists of vertices, edges, and faces have to be constructed explicitly.
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ..., 80]
 
 
+Vertex, Edge, Face Attributes
+=============================
+
+Arbitrary data can be assigned to vertices, edges, and faces, as vertex/edge/face attributes, and to the overall mesh itself.
+To allow for serialisatin of the mesh and all the data associated with it, the data should be JSON serialisable.
+See :ref:`Mesh Serialisation` for more information.
+
+The functionality is demonstrated here using vertex attributes.
+The mechanism is exactly the same for edges and faces.
+
+It is good practice to declare default values for the added data attributes.
+
+>>> mesh = Mesh.from_meshgrid(dx=10, dy=10, nx=10, ny=10)
+>>> mesh.update_default_vertex_attributes(a=None, b=0.0, c=False)
+
+Get the value of one attribute of one vertex.
+
+>>> mesh.vertex_attribute(0, 'a')
+None
+
+Get the value of multiple attributes of one vertex.
+
+>>> mesh.vertex_attributes(0, ['a', 'b'])
+(None, 0.0)
+
+Get the value of one attribute of all vertices.
+
+>>> mesh.vertices_attribute('a')
+[None, None, None, ... None]
+
+Get the value of multiple attributes of all vertices.
+
+>>> mesh.vertices_attributes(['b', 'c'])
+[(0.0, False), (0.0, False), (0.0, False), ..., (0.0, False)]
+
+Similarly, for a selection of vertices.
+
+>>> mesh.vertices_attribute('b', vertices=[0, 1, 2, 3])
+[0.0, 0.0, 0.0, 0.0]
+
+>>> mesh.vertices_attributes(['a', 'c'], vertices=[0, 1, 2, 3])
+[(None, False), (None, False), (None, False), (None, False)]
+
+Updating attributes is currently only possible one vertex at a time.
+
+>>> mesh.vertex_attribute(0, 'a', (1.0, 0.0, 0.0))
+
+>>> for vertex in mesh.vertices():
+...     if mesh.vertex_degree(vertex) == 2:
+...         mesh.vertex_attribute(vertex, 'a', (1.0, 0.0, 0.0))
+...
+
+Finally, note that the xyz coordinates of vertices can be accessed and modified using the same functions.
+
+>>> mesh.vertex_attributes(0, 'xyz')
+(0.0, 0.0, 0.0)
+>>> mesh.vertices_attribute('x')
+[0.0, 1.0, 2.0, ..., 9.0]
+
+
 Halfedge Data Structure
 =======================
 
 The topology of a mesh is stored in a halfedge data structure.
-In this data structure, vertices are connected to other vertices, and faces to other faces via edges.
-An edge has at most two connected faces.
+In this data structure, vertices are connected to other vertices, and faces to other faces, via edges.
+An edge has two connected vertices, and at most two connected faces.
 Each each is split into two halfedges, one for each of the connected faces.
 If an edge has only one connected face, the edge is on the boundary.
 
@@ -189,6 +249,39 @@ True
 
 .. figure:: /_images/userguide/basics.datastructures.meshes.meshgrid-column3.png
 
+
+Halfedge Cycles
+---------------
+
+The vertices of a face of the mesh are ordered in a continuous cycle.
+Every two consecutive vertices are connected by a halfedge of the face.
+Like the vertices, the halfedges of a face form a continuous cycle.
+In a valid halfedge mesh, all the cycle directions are consisten.
+By cycling the faces, each edge is traversed exactly twice,
+in opposite direction, except fo the edges on the boundary.
+
+>>> for face in mesh.faces():
+...     for edge in mesh.face_halfedges(face):
+...         print(mesh.halfedge_face(edge) == face)
+...
+True
+True
+...
+True
+
+.. figure:: /_images/userguide/basics.datastructures.meshes.cycles.png
+
+Using a combination of the halfedge functions, it is possible to traverse the mesh in a number of ways.
+
+* :meth:`compas.datastructures.Mesh.face_halfedges`
+* :meth:`compas.datastructures.Mesh.halfedge_face`
+* :meth:`compas.datastructures.Mesh.halfedge_before`
+* :meth:`compas.datastructures.Mesh.halfedge_after`
+
+
+Neighbours
+----------
+
 >>> for i, nbr in enumerate(mesh.vertex_neighbors(23, ordered=True)):
 ...     print(i, nbr)
 ...
@@ -219,11 +312,13 @@ True
 
 .. figure:: /_images/userguide/basics.datastructures.meshes.face-neighbours.png
 
->>> for edge in mesh.edge_loop((30, 31)):
+
+Loops and Strips
+----------------
+
+>>> for edge in mesh.halfedge_loop((32, 33)):
 ...     print(edge)
 ...
-(30, 31)
-(31, 32)
 (32, 33)
 (33, 34)
 (34, 35)
@@ -231,6 +326,19 @@ True
 (36, 37)
 (37, 38)
 (38, 39)
+
+>>> for edge in mesh.edge_loop((62, 63)):
+...     print(edge)
+...
+(60, 61)
+(61, 62)
+(62, 63)
+(63, 64)
+(64, 65)
+(65, 66)
+(66, 67)
+(67, 68)
+(68, 69)
 
 .. figure:: /_images/userguide/basics.datastructures.meshes.edge-loop.png
 
@@ -271,28 +379,6 @@ Mesh Geometry
 * edge_midpoint
 * edge_length
 * edge_direction
-
-
-Data Attributes
-===============
-
-Additional data can be assigned to vertices, edges, and faces, as vertex/edge/face attributes, and to the overall mesh itself.
-
-* vertex_attribute
-* edge_attribute
-* face_attribute
-
-* vertex_attributes
-* edge_attributes
-* face_attributes
-
-* vertices_attribute
-* edges_attribute
-* faces_attribute
-
-* vertices_attributes
-* edges_attributes
-* faces_attributes
 
 
 Filtering
