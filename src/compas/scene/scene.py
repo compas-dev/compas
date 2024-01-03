@@ -178,7 +178,9 @@ class Scene(Data):
     >>> scene.redraw()
 
     """
+
     viewerinstance = None
+
     def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
         self._tree = SceneTree("Scene")
