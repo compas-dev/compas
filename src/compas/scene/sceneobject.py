@@ -26,6 +26,8 @@ class SceneObject(object):
     ----------
     item : :class:`compas.data.Data`
         The item which should be visualized using the created SceneObject.
+    name : str
+        The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.
     node : :class:`compas.scene.SceneObjectNode`
         The node in the scene tree which represents the scene object.
     guids : list[object]
