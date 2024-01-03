@@ -154,13 +154,18 @@ class SceneObject(object):
 
     @property
     def settings(self):
-        return {
+        settings = {
             "name": self.name,
             "color": self.color,
             "opacity": self.opacity,
-            "frame": self.frame,
-            "transformation": self.transformation,
         }
+
+        if self.frame:
+            settings["frame"] = self.frame
+        if self.transformation:
+            settings["transformation"] = self.transformation
+
+        return settings
 
     @abstractmethod
     def draw(self):
