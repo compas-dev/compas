@@ -52,6 +52,8 @@ class NetworkObject(SceneObject):
         self.edgecolor = kwargs.get("edgecolor", self.color)
         self.nodesize = kwargs.get("nodesize", 1.0)
         self.edgewidth = kwargs.get("edgewidth", 1.0)
+        self.show_nodes = kwargs.get("show_nodes", True)
+        self.show_edges = kwargs.get("show_edges", True)
 
     @property
     def network(self):

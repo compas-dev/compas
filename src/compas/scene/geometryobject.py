@@ -43,3 +43,6 @@ class GeometryObject(SceneObject):
         self.surfacecolor = kwargs.get("surfacecolor", self.color)
         self.pointsize = kwargs.get("pointsize", 1.0)
         self.linewidth = kwargs.get("linewidth", 1.0)
+        self.show_points = kwargs.get("show_points", False)
+        self.show_lines = kwargs.get("show_lines", True)
+        self.show_faces = kwargs.get("show_faces", True)

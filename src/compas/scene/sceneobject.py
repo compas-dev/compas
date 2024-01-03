@@ -46,6 +46,8 @@ class SceneObject(object):
         The color of the object.
     opacity : float
         The opacity of the object.
+    show : bool
+        Flag for showing or hiding the object.
     settings : dict
         The settings including necessary attributes for reconstructing the scene object.
 
@@ -69,6 +71,7 @@ class SceneObject(object):
         self.name = kwargs.get("name", item.name or item.__class__.__name__)
         self.color = kwargs.get("color", self.color)
         self.opacity = kwargs.get("opacity", 1.0)
+        self.show = kwargs.get("show", True)
 
     @property
     def item(self):
@@ -160,6 +163,7 @@ class SceneObject(object):
             "name": self.name,
             "color": self.color,
             "opacity": self.opacity,
+            "show": self.show,
         }
 
         if self.frame:
