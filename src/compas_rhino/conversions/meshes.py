@@ -265,7 +265,7 @@ def mesh_to_compas(rhinomesh, cls=None):
             y=float(vertex.Y),
             z=float(vertex.Z),
             normal=vector_to_compas(normal),
-            color=Color(color.R, color.G, color.B) if color else None,
+            color=Color.from_rgb255(int(color.R), int(color.G), int(color.B)) if color else None,
         )
 
     facenormals = rhinomesh.FaceNormals
