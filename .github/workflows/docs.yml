@@ -6,12 +6,12 @@ on:
       - main
     tags:
       - 'v*'
-  pull_request:
-    branches:
-      - main
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   docs:
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
     runs-on: ubuntu-latest
     steps:
       - uses: compas-dev/compas-actions.docs@v3
