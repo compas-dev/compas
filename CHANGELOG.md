@@ -138,6 +138,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_blender.install` to use symlinks.
 * Moved `URDF` parsing from `compas.files` to the `compas_robots` extension (`compas_robots.files.URDF`).
 * Changed signature of `compas.geometry.Brep.slice()`
+* Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
 
 ### Removed
 
