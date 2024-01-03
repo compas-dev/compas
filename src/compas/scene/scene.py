@@ -204,10 +204,11 @@ class Scene(Data):
 
     @property
     def data(self):
+        items = {str(object.item.guid): object.item for object in self.objects}
         return {
             "name": self.name,
             "tree": self.tree.data,
-            "items": [object.item for object in self.objects],
+            "items": list(items.values()),
         }
 
     @classmethod
