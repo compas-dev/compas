@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.scene.SceneObject.children`.
 * Added `compas.scene.SceneObject.add()`.
 * Added tutorial for `compas.datastructures.Tree`.
+* Added Serialisation capability to `compas.scene.Scene`.
 
 ### Changed
 
