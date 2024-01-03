@@ -26,6 +26,8 @@ class SceneObject(object):
     ----------
     item : :class:`compas.data.Data`
         The item which should be visualized using the created SceneObject.
+    name : str
+        The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.
     node : :class:`compas.scene.SceneObjectNode`
         The node in the scene tree which represents the scene object.
     guids : list[object]
@@ -44,6 +46,8 @@ class SceneObject(object):
         The color of the object.
     opacity : float
         The opacity of the object.
+    settings : dict
+        The settings including necessary attributes for reconstructing the scene object.
 
     """
 
@@ -149,6 +153,21 @@ class SceneObject(object):
             return self.node.add_item(item, **kwargs)
         else:
             raise ValueError("Cannot add items to a scene object without a node.")
+
+    @property
+    def settings(self):
+        settings = {
+            "name": self.name,
+            "color": self.color,
+            "opacity": self.opacity,
+        }
+
+        if self.frame:
+            settings["frame"] = self.frame
+        if self.transformation:
+            settings["transformation"] = self.transformation
+
+        return settings
 
     @abstractmethod
     def draw(self):

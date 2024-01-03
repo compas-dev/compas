@@ -16,6 +16,8 @@ class SceneObjectNode(TreeNode):
 
     Attributes
     ----------
+    name : str
+        The name of the node, same as the underlying scene object.
     object : :class:`compas.scene.SceneObject`
         The scene object associated with the node.
     parentobject : :class:`compas.scene.SceneObject`
@@ -26,8 +28,25 @@ class SceneObjectNode(TreeNode):
     """
 
     def __init__(self, sceneobject):
-        super(SceneObjectNode, self).__init__(name=sceneobject.name)
+        super(SceneObjectNode, self).__init__()
         self.object = sceneobject
+
+    @property
+    def data(self):
+        return {
+            "item": str(self.object.item.guid),
+            "settings": self.object.settings,
+            "children": [child.data for child in self.children],
+        }
+
+    @classmethod
+    def from_data(cls, data):
+        raise TypeError("SceneObjectNode cannot be created from data. Use SceneTree.from_data instead.")
+
+    @property
+    def name(self):
+        if self.object:
+            return self.object.name
 
     @property
     def parentobject(self):
@@ -182,6 +201,31 @@ class Scene(Data):
         super(Scene, self).__init__(name)
         self._tree = SceneTree("Scene")
         self.context = context
+
+    @property
+    def data(self):
+        items = {str(object.item.guid): object.item for object in self.objects}
+        return {
+            "name": self.name,
+            "tree": self.tree.data,
+            "items": list(items.values()),
+        }
+
+    @classmethod
+    def from_data(cls, data):
+        scene = cls(data["name"])
+        items = {str(item.guid): item for item in data["items"]}
+
+        def add(node, parent, items):
+            for child_node in node["children"]:
+                guid = child_node["item"]
+                settings = child_node["settings"]
+                sceneobject = parent.add(items[guid], **settings)
+                add(child_node, sceneobject, items)
+
+        add(data["tree"]["root"], scene, items)
+
+        return scene
 
     @property
     def tree(self):
