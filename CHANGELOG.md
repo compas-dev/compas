@@ -20,6 +20,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.scene.SceneObject.add()`.
 * Added tutorial for `compas.datastructures.Tree`.
 * Added Serialisation capability to `compas.scene.Scene`.
+* Added `show` flag to `compas.scene.SceneObject`.
+* Added `show_points` flag to `compas.scene.GeometryObject`.
+* Added `show_lines` flag to `compas.scene.GeometryObject`.
+* Added `show_surfaces` flag to `compas.scene.GeometryObject`.
+* Added `show_vertices` flag to `compas.scene.MeshObject`.
+* Added `show_edges` flag to `compas.scene.MeshObject`.
+* Added `show_faces` flag to `compas.scene.MeshObject`.
+* Added `show_nodes` flag to `compas.scene.NetworkObject`.
+* Added `show_edges` flag to `compas.scene.NetworkObject`.
+* Added `show_vertices` flag to `compas.scene.VolMeshObject`.
+* Added `show_edges` flag to `compas.scene.VolMeshObject`.
+* Added `show_faces` flag to `compas.scene.VolMeshObject`.
+* Added `show_cells` flag to `compas.scene.VolMeshObject`.
 
 ### Changed
 

@@ -41,7 +41,7 @@ class SceneObjectNode(TreeNode):
 
     @classmethod
     def from_data(cls, data):
-        raise TypeError("SceneObjectNode cannot be created from data. Use SceneTree.from_data instead.")
+        raise TypeError("SceneObjectNode cannot be created from data. Use Scene.from_data instead.")
 
     @property
     def name(self):
@@ -167,6 +167,10 @@ class SceneTree(Tree):
                 if node.object is sceneobject:
                     return node
         raise ValueError("Scene object not in scene tree")
+
+    @classmethod
+    def from_data(cls, data):
+        raise TypeError("SceneTree cannot be created from data. Use Scene.from_data instead.")
 
 
 class Scene(Data):
