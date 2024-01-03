@@ -1289,7 +1289,7 @@ document.write(`
 <h1>SceneObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.SceneObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/27e92b8/src/compas/scene/sceneobject.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d124e6c/src/compas/scene/sceneobject.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for all scene objects.</p>
 <dl class="field-list">
@@ -1304,6 +1304,8 @@ document.write(`
 <dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
 <dt><strong>item</strong><span class="classifier"><a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a></span></dt><dd><p>The item which should be visualized using the created SceneObject.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str</span></dt><dd><p>The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.</p>
 </dd>
 <dt><strong>node</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scene.SceneObjectNode</span></code></span></dt><dd><p>The node in the scene tree which represents the scene object.</p>
 </dd>
@@ -1322,6 +1324,8 @@ document.write(`
 <dt><strong>color</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a></span></dt><dd><p>The color of the object.</p>
 </dd>
 <dt><strong>opacity</strong><span class="classifier">float</span></dt><dd><p>The opacity of the object.</p>
+</dd>
+<dt><strong>settings</strong><span class="classifier">dict</span></dt><dd><p>The settings including necessary attributes for reconstructing the scene object.</p>
 </dd>
 </dl>
 </dd>
