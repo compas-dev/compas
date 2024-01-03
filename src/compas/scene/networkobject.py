@@ -76,8 +76,7 @@ class NetworkObject(SceneObject):
     def node_xyz(self):
         if self._node_xyz is None:
             points = self.network.nodes_attributes("xyz")  # type: ignore
-            if self.transformation:
-                points = transform_points(points, self.transformation)
+            points = transform_points(points, self.worldtransformation)
             self._node_xyz = dict(zip(self.network.nodes(), points))  # type: ignore
         return self._node_xyz
 

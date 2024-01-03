@@ -46,10 +46,8 @@ class BoxObject(RhinoSceneObject, GeometryObject):
         attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
 
         geometry = box_to_rhino(self.geometry)
-
-        if self.transformation:
-            transformation = transformation_to_rhino(self.transformation)
-            geometry.Transform(transformation)
+        transformation = transformation_to_rhino(self.worldtransformation)
+        geometry.Transform(transformation)
 
         self._guids = [sc.doc.Objects.AddBox(geometry, attr)]
         return self.guids

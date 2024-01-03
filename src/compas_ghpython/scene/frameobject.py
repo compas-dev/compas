@@ -60,9 +60,8 @@ class FrameObject(GHSceneObject, GeometryObject):
         geometries.append(conversions.line_to_rhino([origin, y]))
         geometries.append(conversions.line_to_rhino([origin, z]))
 
-        if self.transformation:
-            for geometry in geometries:
-                geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+        for geometry in geometries:
+            geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))
 
         self._guids = geometries
         return self.guids

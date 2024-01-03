@@ -61,13 +61,12 @@ class PlaneObject(RhinoSceneObject, GeometryObject):
         mesh = vertices_and_faces_to_rhino(vertices, faces)
         guids.append(sc.doc.Objects.AddMesh(mesh))
 
-        if self.transformation:
-            transformation = transformation_to_rhino(self.transformation)
-            for guid in guids:
-                obj = sc.doc.Objects.Find(guid)
-                if obj:
-                    obj.Geometry.Transform(transformation)
-                    obj.CommitChanges()
+        transformation = transformation_to_rhino(self.worldtransformation)
+        for guid in guids:
+            obj = sc.doc.Objects.Find(guid)
+            if obj:
+                obj.Geometry.Transform(transformation)
+                obj.CommitChanges()
 
         self._guids = guids
         return self.guids

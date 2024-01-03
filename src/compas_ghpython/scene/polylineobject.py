@@ -33,9 +33,7 @@ class PolylineObject(GHSceneObject, GeometryObject):
 
         """
         geometry = conversions.polyline_to_rhino_curve(self.geometry)
-
-        if self.transformation:
-            geometry.Transform(conversions.transformation_to_rhino(self.transformation))
+        geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))
 
         self._guids = [geometry]
         return self.guids

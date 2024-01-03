@@ -33,10 +33,8 @@ class BrepObject(GHSceneObject, GeometryObject):
 
         """
         brep = conversions.brep_to_rhino(self.geometry)
-
-        if self.transformation:
-            transformation = conversions.transformation_to_rhino(self.transformation)
-            brep.Transform(transformation)
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
+        brep.Transform(transformation)
 
         self._guids = [brep]
         return self.guids
