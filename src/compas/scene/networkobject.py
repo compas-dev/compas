@@ -36,7 +36,7 @@ class NetworkObject(SceneObject):
         Flag for showing or hiding the nodes. Default is ``True``.
     show_edges : bool
         Flag for showing or hiding the edges. Default is ``True``.
-        
+
     See Also
     --------
     :class:`compas.scene.MeshObject`
