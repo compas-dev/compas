@@ -47,7 +47,7 @@ class SceneObject(object):
     opacity : float
         The opacity of the object.
     show : bool
-        Flag for showing or hiding the object.
+        Flag for showing or hiding the object. Default is ``True``.
     settings : dict
         The settings including necessary attributes for reconstructing the scene object.
 

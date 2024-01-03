@@ -32,6 +32,16 @@ class MeshObject(SceneObject):
         Edge colors.
     facecolor : :class:`compas.colors.ColorDict`
         Face colors.
+    vertexsize : float
+        The size of the vertices. Default is ``1.0``.
+    edgewidth : float
+        The width of the edges. Default is ``1.0``.
+    show_vertices : bool
+        Flag for showing or hiding the vertices. Default is ``False``.
+    show_edges : bool
+        Flag for showing or hiding the edges. Default is ``True``.
+    show_faces : bool
+        Flag for showing or hiding the faces. Default is ``True``.
 
     See Also
     --------
