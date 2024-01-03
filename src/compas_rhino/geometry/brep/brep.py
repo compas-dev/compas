@@ -316,7 +316,7 @@ class RhinoBrep(Brep):
         list[:class:`~compas.datastructures.Mesh`]
 
         """
-        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParamaters.Default)
+        rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParameters.Default)
         meshes = [mesh_to_compas(m) for m in rg_meshes]
         return meshes
 
