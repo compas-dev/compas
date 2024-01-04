@@ -682,17 +682,17 @@ from .planarity import network_is_crossed  # noqa: E402
 from .planarity import network_is_xy  # noqa: E402
 
 Network.complement = network_complement  # type: ignore
-Network.is_connected = network_is_connected  # type: ignore
-Network.shortest_path = network_shortest_path  # type: ignore
-Network.split_edge = network_split_edge  # type: ignore
-Network.smooth = network_smooth_centroid  # type: ignore
-Network.transform = network_transform  # type: ignore
-Network.transformed = network_transformed  # type: ignore
-Network.find_cycles = network_find_cycles  # type: ignore
 Network.count_crossings = network_count_crossings  # type: ignore
 Network.find_crossings = network_find_crossings  # type: ignore
+Network.find_cycles = network_find_cycles  # type: ignore
+Network.is_connected = network_is_connected  # type: ignore
 Network.is_crossed = network_is_crossed  # type: ignore
 Network.is_xy = network_is_xy  # type: ignore
+Network.shortest_path = network_shortest_path  # type: ignore
+Network.smooth = network_smooth_centroid  # type: ignore
+Network.split_edge = network_split_edge  # type: ignore
+Network.transform = network_transform  # type: ignore
+Network.transformed = network_transformed  # type: ignore
 
 if not compas.IPY:
     from .matrices import network_adjacency_matrix
@@ -706,7 +706,7 @@ if not compas.IPY:
     Network.adjacency_matrix = network_adjacency_matrix  # type: ignore
     Network.connectivity_matrix = network_connectivity_matrix  # type: ignore
     Network.degree_matrix = network_degree_matrix  # type: ignore
-    Network.laplacian_matrix = network_laplacian_matrix  # type: ignore
     Network.embed_in_plane = network_embed_in_plane  # type: ignore
     Network.is_planar = network_is_planar  # type: ignore
     Network.is_planar_embedding = network_is_planar_embedding  # type: ignore
+    Network.laplacian_matrix = network_laplacian_matrix  # type: ignore
