@@ -56,7 +56,7 @@ class VolMesh(HalfFace):
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
-        **kwargs,
+        **kwargs
     ):
         _default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
@@ -75,7 +75,7 @@ class VolMesh(HalfFace):
             default_edge_attributes=_default_edge_attributes,
             default_face_attributes=_default_face_attributes,
             default_cell_attributes=_default_cell_attributes,
-            **kwargs,
+            **kwargs
         )
 
     def __str__(self):
