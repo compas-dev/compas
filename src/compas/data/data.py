@@ -74,7 +74,7 @@ class Data(object):
 
     def __init__(self, name=None):
         self._guid = None
-        self._name = None
+        self.attributes = {}
         if name:
             self.name = name
 
@@ -95,13 +95,15 @@ class Data(object):
             "dtype": self.dtype,
             "data": self.data,
         }
+        if self.attributes:
+            state["attrs"] = self.attributes
         if minimal:
             return state
         state["guid"] = str(self.guid)
         return state
 
     @classmethod
-    def __jsonload__(cls, data, guid=None):
+    def __jsonload__(cls, data, guid=None, attrs=None):
         """Construct an object of this type from the provided data to support COMPAS JSON serialization.
 
         Parameters
@@ -110,6 +112,8 @@ class Data(object):
             The raw Python data representing the object.
         guid : str, optional
             The GUID of the object.
+        attrs : dict, optional
+            The additional attributes of the object.
 
         Returns
         -------
@@ -119,6 +123,8 @@ class Data(object):
         obj = cls.from_data(data)
         if guid is not None:
             obj._guid = UUID(guid)
+        if attrs is not None:
+            obj.attributes.update(attrs)
         return obj
 
     def __getstate__(self):
@@ -130,6 +136,9 @@ class Data(object):
         self.__dict__.update(state["__dict__"])
         if "guid" in state:
             self._guid = UUID(state["guid"])
+        # could be that this is already taken care of by the first line
+        if "attrs" in state:
+            self.attributes.update(state["attrs"])
 
     @property
     def dtype(self):
@@ -161,13 +170,11 @@ class Data(object):
 
     @property
     def name(self):
-        if not self._name:
-            self._name = self.__class__.__name__
-        return self._name
+        return self.attributes.get("name") or self.__class__.__name__
 
     @name.setter
     def name(self, name):
-        self._name = name
+        self.attributes["name"] = name
 
     @classmethod
     def from_data(cls, data):  # type: (dict) -> Data
@@ -211,8 +218,16 @@ class Data(object):
         :class:`compas.data.Data`
             An instance of this object type if the data contained in the file has the correct schema.
 
+        Raises
+        ------
+        TypeError
+            If the data in the file is not a :class:`compas.data.Data`.
+
         """
-        return compas.json_load(filepath)
+        data = compas.json_load(filepath)
+        if not isinstance(data, cls):
+            raise TypeError("The data in the file is not a {}.".format(cls))
+        return data
 
     def to_json(self, filepath, pretty=False):
         """Convert an object to its native data representation and save it to a JSON file.
@@ -227,6 +242,48 @@ class Data(object):
 
         """
         compas.json_dump(self, filepath, pretty=pretty)
+
+    @classmethod
+    def from_jsonstring(cls, string):  # type: (...) -> Data
+        """Construct an object of this type from a JSON string.
+
+        Parameters
+        ----------
+        string : str
+            The JSON string.
+
+        Returns
+        -------
+        :class:`compas.data.Data`
+            An instance of this object type if the data contained in the string has the correct schema.
+
+        Raises
+        ------
+        TypeError
+            If the data in the string is not a :class:`compas.data.Data`.
+
+        """
+        data = compas.json_loads(string)
+        if not isinstance(data, cls):
+            raise TypeError("The data in the string is not a {}.".format(cls))
+        return data
+
+    def to_jsonstring(self, pretty=False):
+        """Convert an object to its native data representation and save it to a JSON string.
+
+        Parameters
+        ----------
+        pretty : bool, optional
+            If True, the JSON string will be pretty printed.
+            Defaults to False.
+
+        Returns
+        -------
+        str
+            The JSON string.
+
+        """
+        return compas.json_dumps(self, pretty=pretty)
 
     def copy(self, cls=None):  # type: (...) -> D
         """Make an independent copy of the data object.
@@ -245,7 +302,9 @@ class Data(object):
         """
         if not cls:
             cls = type(self)
-        return cls.from_data(deepcopy(self.data))  # type: ignore
+        obj = cls.from_data(deepcopy(self.data))
+        obj.attributes = deepcopy(self.attributes)
+        return obj  # type: ignore
 
     def sha256(self, as_string=False):
         """Compute a hash of the data for comparison during version control using the sha256 algorithm.

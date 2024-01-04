@@ -231,11 +231,12 @@ class DataDecoder(json.JSONDecoder):
 
         data = o["data"]
         guid = o.get("guid")
+        attrs = o.get("attrs")
 
         # Kick-off from_data from a rebuilt Python dictionary instead of the C# data type
         if IDictionary and isinstance(o, IDictionary[str, object]):
             data = {key: data[key] for key in data.Keys}
 
-        obj = cls.__jsonload__(data, guid)
+        obj = cls.__jsonload__(data, guid, attrs)
 
         return obj
