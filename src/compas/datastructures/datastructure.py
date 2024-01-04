@@ -7,6 +7,3 @@ from compas.data import Data
 
 class Datastructure(Data):
     """Base class for all data structures."""
-
-    def __init__(self, **kwargs):
-        super(Datastructure, self).__init__(**kwargs)

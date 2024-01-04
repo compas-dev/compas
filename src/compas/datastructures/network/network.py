@@ -9,25 +9,8 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
-if not compas.IPY:
-    from .matrices import network_adjacency_matrix
-    from .matrices import network_connectivity_matrix
-    from .matrices import network_degree_matrix
-    from .matrices import network_laplacian_matrix
-    from .planarity import network_embed_in_plane
-    from .planarity import network_is_planar
-    from .planarity import network_is_planar_embedding
-else:
-    network_adjacency_matrix = None
-    network_connectivity_matrix = None
-    network_degree_matrix = None
-    network_laplacian_matrix = None
-    network_embed_in_plane = None
-    network_is_planar = None
-    network_is_planar_embedding = None
-
+from compas.tolerance import TOL
 from compas.files import OBJ
-
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Line
@@ -38,25 +21,7 @@ from compas.geometry import midpoint_line
 from compas.geometry import normalize_vector
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
-
 from compas.datastructures import Graph
-
-from compas.tolerance import TOL
-
-from .operations.split import network_split_edge
-
-from .combinatorics import network_is_connected
-from .complementarity import network_complement
-from .duality import network_find_cycles
-from .transformations import network_transform
-from .transformations import network_transformed
-from .traversal import network_shortest_path
-from .smoothing import network_smooth_centroid
-
-from .planarity import network_count_crossings
-from .planarity import network_find_crossings
-from .planarity import network_is_crossed
-from .planarity import network_is_xy
 
 
 class Network(Graph):
@@ -64,51 +29,16 @@ class Network(Graph):
 
     Parameters
     ----------
-    name: str, optional
-        The name of the datastructure.
     default_node_attributes: dict, optional
         Default values for node attributes.
     default_edge_attributes: dict, optional
         Default values for edge attributes.
+    **kwargs : dict, optional
+        Additional attributes to add to the network.
 
     """
 
-    complement = network_complement
-    is_connected = network_is_connected
-    shortest_path = network_shortest_path
-    split_edge = network_split_edge
-    smooth = network_smooth_centroid
-    transform = network_transform
-    transformed = network_transformed
-    find_cycles = network_find_cycles
-
-    count_crossings = network_count_crossings
-    find_crossings = network_find_crossings
-    is_crossed = network_is_crossed
-    is_xy = network_is_xy
-
-    if network_adjacency_matrix:
-        adjacency_matrix = network_adjacency_matrix
-
-    if network_connectivity_matrix:
-        connectivity_matrix = network_connectivity_matrix
-
-    if network_degree_matrix:
-        degree_matrix = network_degree_matrix
-
-    if network_laplacian_matrix:
-        laplacian_matrix = network_laplacian_matrix
-
-    if network_embed_in_plane:
-        embed_in_plane = network_embed_in_plane
-
-    if network_is_planar:
-        is_planar = network_is_planar
-
-    if network_is_planar_embedding:
-        is_planar_embedding = network_is_planar_embedding
-
-    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, **kwargs):
         _default_node_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
         if default_node_attributes:
@@ -116,9 +46,7 @@ class Network(Graph):
         if default_edge_attributes:
             _default_edge_attributes.update(default_edge_attributes)
         super(Network, self).__init__(
-            name=name or "Network",
-            default_node_attributes=_default_node_attributes,
-            default_edge_attributes=_default_edge_attributes,
+            default_node_attributes=_default_node_attributes, default_edge_attributes=_default_edge_attributes, **kwargs
         )
 
     def __str__(self):
@@ -734,3 +662,51 @@ class Network(Graph):
         """
         a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
+
+
+# =============================================================================
+# Add additional methods
+# =============================================================================
+
+from .operations.split import network_split_edge  # noqa: E402
+from .combinatorics import network_is_connected  # noqa: E402
+from .complementarity import network_complement  # noqa: E402
+from .duality import network_find_cycles  # noqa: E402
+from .transformations import network_transform  # noqa: E402
+from .transformations import network_transformed  # noqa: E402
+from .traversal import network_shortest_path  # noqa: E402
+from .smoothing import network_smooth_centroid  # noqa: E402
+from .planarity import network_count_crossings  # noqa: E402
+from .planarity import network_find_crossings  # noqa: E402
+from .planarity import network_is_crossed  # noqa: E402
+from .planarity import network_is_xy  # noqa: E402
+
+Network.complement = network_complement  # type: ignore
+Network.is_connected = network_is_connected  # type: ignore
+Network.shortest_path = network_shortest_path  # type: ignore
+Network.split_edge = network_split_edge  # type: ignore
+Network.smooth = network_smooth_centroid  # type: ignore
+Network.transform = network_transform  # type: ignore
+Network.transformed = network_transformed  # type: ignore
+Network.find_cycles = network_find_cycles  # type: ignore
+Network.count_crossings = network_count_crossings  # type: ignore
+Network.find_crossings = network_find_crossings  # type: ignore
+Network.is_crossed = network_is_crossed  # type: ignore
+Network.is_xy = network_is_xy  # type: ignore
+
+if not compas.IPY:
+    from .matrices import network_adjacency_matrix
+    from .matrices import network_connectivity_matrix
+    from .matrices import network_degree_matrix
+    from .matrices import network_laplacian_matrix
+    from .planarity import network_embed_in_plane
+    from .planarity import network_is_planar
+    from .planarity import network_is_planar_embedding
+
+    Network.adjacency_matrix = network_adjacency_matrix  # type: ignore
+    Network.connectivity_matrix = network_connectivity_matrix  # type: ignore
+    Network.degree_matrix = network_degree_matrix  # type: ignore
+    Network.laplacian_matrix = network_laplacian_matrix  # type: ignore
+    Network.embed_in_plane = network_embed_in_plane  # type: ignore
+    Network.is_planar = network_is_planar  # type: ignore
+    Network.is_planar_embedding = network_is_planar_embedding  # type: ignore
