@@ -122,7 +122,7 @@ class HalfFace(Datastructure):
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
-        **kwargs,
+        **kwargs
     ):
         super(HalfFace, self).__init__(**kwargs)
         self._max_vertex = -1

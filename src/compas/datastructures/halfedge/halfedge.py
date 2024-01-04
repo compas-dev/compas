@@ -99,11 +99,7 @@ class HalfEdge(Datastructure):
     }
 
     def __init__(
-        self,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
-        **kwargs,
+        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
     ):
         super(HalfEdge, self).__init__(**kwargs)
         self._max_vertex = -1

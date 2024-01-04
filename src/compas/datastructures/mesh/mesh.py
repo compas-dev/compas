@@ -58,14 +58,14 @@ class Mesh(HalfEdge):
 
     Parameters
     ----------
-    name: str, optional
-        The name of the datastructure.
     default_vertex_attributes: dict[str, Any], optional
         Default values for vertex attributes.
     default_edge_attributes: dict[str, Any], optional
         Default values for edge attributes.
     default_face_attributes: dict[str, Any], optional
         Default values for face attributes.
+    **kwargs : dict, optional
+        Additional attributes to add to the mesh object.
 
     Examples
     --------
@@ -80,11 +80,7 @@ class Mesh(HalfEdge):
     """
 
     def __init__(
-        self,
-        name=None,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
+        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
     ):
         _default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
@@ -96,10 +92,10 @@ class Mesh(HalfEdge):
         if default_face_attributes:
             _default_face_attributes.update(default_face_attributes)
         super(Mesh, self).__init__(
-            name=name or "Mesh",
             default_vertex_attributes=_default_vertex_attributes,
             default_edge_attributes=_default_edge_attributes,
             default_face_attributes=_default_face_attributes,
+            **kwargs
         )
 
     def __str__(self):
