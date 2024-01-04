@@ -72,9 +72,9 @@ class Data(object):
 
     DATASCHEMA = {}
 
-    def __init__(self, name=None):
+    def __init__(self, name=None, **kwargs):
         self._guid = None
-        self.attributes = {}
+        self.attributes = kwargs or {}
         if name:
             self.name = name
 
