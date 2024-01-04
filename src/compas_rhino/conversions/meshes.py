@@ -261,11 +261,11 @@ def mesh_to_compas(rhinomesh, cls=None):
 
     for vertex, normal, color in zip(rhinomesh.Vertices, rhinomesh.Normals, vertexcolors):
         mesh.add_vertex(
-            x=vertex.X,
-            y=vertex.Y,
-            z=vertex.Z,
+            x=float(vertex.X),
+            y=float(vertex.Y),
+            z=float(vertex.Z),
             normal=vector_to_compas(normal),
-            color=Color(color.R, color.G, color.B) if color else None,
+            color=Color.from_rgb255(int(color.R), int(color.G), int(color.B)) if color else None,
         )
 
     facenormals = rhinomesh.FaceNormals

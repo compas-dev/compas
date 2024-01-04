@@ -37,9 +37,17 @@ class VolMeshObject(SceneObject):
         Mapping between cells and colors.
         Missing cells get the default cell color: :attr:`default_facecolor`.
     vertexsize : float
-        The size of the vertices.
+        The size of the vertices. Default is ``1.0``.
     edgewidth : float
-        The width of the edges.
+        The width of the edges. Default is ``1.0``.
+    show_vertices : bool
+        Flag for showing or hiding the vertices. Default is ``False``.
+    show_edges : bool
+        Flag for showing or hiding the edges. Default is ``True``.
+    show_faces : bool
+        Flag for showing or hiding the faces. Default is ``True``.
+    show_cells : bool
+        Flag for showing or hiding the cells. Default is ``True``.
 
     See Also
     --------
@@ -64,6 +72,10 @@ class VolMeshObject(SceneObject):
         self.cellcolor = kwargs.get("cellcolor", self.color)
         self.vertexsize = kwargs.get("vertexsize", 1.0)
         self.edgewidth = kwargs.get("edgewidth", 1.0)
+        self.show_vertices = kwargs.get("show_vertices", False)
+        self.show_edges = kwargs.get("show_edges", True)
+        self.show_faces = kwargs.get("show_faces", True)
+        self.show_cells = kwargs.get("show_cells", True)
 
     @property
     def volmesh(self):

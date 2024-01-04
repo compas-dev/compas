@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-
+* Added `viewerinstance` in `compas.scene.Scene` to support viewers context detection.
 * Added `compas_rhino8` as starting point for Rhino8 support.
 * Added `compas.scene.SceneObjectNode`.
 * Added `compas.scene.SceneTree`.
@@ -20,6 +20,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.scene.SceneObject.add()`.
 * Added tutorial for `compas.datastructures.Tree`.
 * Added Serialisation capability to `compas.scene.Scene`.
+* Added `show` flag to `compas.scene.SceneObject`.
+* Added `show_points` flag to `compas.scene.GeometryObject`.
+* Added `show_lines` flag to `compas.scene.GeometryObject`.
+* Added `show_surfaces` flag to `compas.scene.GeometryObject`.
+* Added `show_vertices` flag to `compas.scene.MeshObject`.
+* Added `show_edges` flag to `compas.scene.MeshObject`.
+* Added `show_faces` flag to `compas.scene.MeshObject`.
+* Added `show_nodes` flag to `compas.scene.NetworkObject`.
+* Added `show_edges` flag to `compas.scene.NetworkObject`.
+* Added `show_vertices` flag to `compas.scene.VolMeshObject`.
+* Added `show_edges` flag to `compas.scene.VolMeshObject`.
+* Added `show_faces` flag to `compas.scene.VolMeshObject`.
+* Added `show_cells` flag to `compas.scene.VolMeshObject`.
 * Added `compas.data.Data.to_jsonstring` and `compas.data.Data.from_jsonstring`.
 * Added `compas.data.Data.attributes`.
 
@@ -28,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed the `__str__` of `compas.geometry.Point` and `compas.geometry.Vector` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
 * Changed `docs` Workflow to only be triggered on review approval in pull requests.
 * Changed `draw` implementations of `compas.scene.SceneObject` to always use the `worldtransformation` of the `SceneObject`.
+* Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
+* Fixed `TypeErrorException` when serializing a `Mesh` which has been converted from Rhino.
+* Fixed color conversions in `compas_rhion.conversions.mesh_to_compas`.
 * Changed `compas.data.Data.name` to be stored in `compas.data.Data.attributes`.
 * Changed `compas.data.Data.__jsondump__` to include `compas.data.Data.attributes` if the dict is not empty.
 * Changed `compas.data.Data.__jsonload__` to update `compas.data.Data.attributes` if the attribute dict is provided.
@@ -145,7 +161,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_blender.install` to use symlinks.
 * Moved `URDF` parsing from `compas.files` to the `compas_robots` extension (`compas_robots.files.URDF`).
 * Changed signature of `compas.geometry.Brep.slice()`
-* Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
 
 ### Removed
 

@@ -151,7 +151,7 @@ class DataEncoder(json.JSONEncoder):
                 return None
 
         if dotnet_support:
-            if isinstance(o, System.Decimal):
+            if isinstance(o, (System.Decimal, System.Double, System.Single)):
                 return float(o)
 
         return super(DataEncoder, self).default(o)

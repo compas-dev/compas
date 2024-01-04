@@ -1,9 +1,10 @@
 from compas.data import Data
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
-from .sceneobject import SceneObject
-from .context import redraw
+
 from .context import clear
+from .context import redraw
+from .sceneobject import SceneObject
 
 
 class SceneObjectNode(TreeNode):
@@ -41,7 +42,7 @@ class SceneObjectNode(TreeNode):
 
     @classmethod
     def from_data(cls, data):
-        raise TypeError("SceneObjectNode cannot be created from data. Use SceneTree.from_data instead.")
+        raise TypeError("SceneObjectNode cannot be created from data. Use Scene.from_data instead.")
 
     @property
     def name(self):
@@ -168,6 +169,10 @@ class SceneTree(Tree):
                     return node
         raise ValueError("Scene object not in scene tree")
 
+    @classmethod
+    def from_data(cls, data):
+        raise TypeError("SceneTree cannot be created from data. Use Scene.from_data instead.")
+
 
 class Scene(Data):
     """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
@@ -196,6 +201,8 @@ class Scene(Data):
     >>> scene.redraw()
 
     """
+
+    viewerinstance = None
 
     def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
