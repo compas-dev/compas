@@ -13,10 +13,8 @@ class TreeNode(Data):
 
     Parameters
     ----------
-    name : str, optional
-        The name of the tree ndoe.
-    attributes : dict[str, Any], optional
-        User-defined attributes of the datastructure.
+    **kwargs : dict[str, Any], optional
+        User-defined attributes of the tree node.
 
     Attributes
     ----------
@@ -49,10 +47,8 @@ class TreeNode(Data):
         "required": ["attributes", "children"],
     }
 
-    def __init__(self, name=None, attributes=None):
-        super(TreeNode, self).__init__(name=name)
-        if attributes:
-            self.attributes.update(attributes)
+    def __init__(self, **kwargs):
+        super(TreeNode, self).__init__(**kwargs)
         self._parent = None
         self._children = []
         self._tree = None
@@ -96,7 +92,7 @@ class TreeNode(Data):
 
     @classmethod
     def from_data(cls, data):
-        node = cls(attributes=data["attributes"])
+        node = cls(**data["attributes"])
         for child in data["children"]:
             node.add(cls.from_data(child))
         return node
@@ -208,10 +204,8 @@ class Tree(Datastructure):
 
     Parameters
     ----------
-    name : str, optional
-        The name of the datastructure.
-    attributes : dict[str, Any], optional
-        User-defined attributes of the datastructure.
+    **kwargs : dict[str, Any], optional
+        User-defined attributes of the tree.
 
     Attributes
     ----------
@@ -253,10 +247,8 @@ class Tree(Datastructure):
         "required": ["root", "attributes"],
     }
 
-    def __init__(self, name=None, attributes=None):
-        super(Tree, self).__init__(name=name)
-        if attributes:
-            self.attributes.update(attributes)
+    def __init__(self, **kwargs):
+        super(Tree, self).__init__(**kwargs)
         self._root = None
 
     @property
@@ -268,7 +260,7 @@ class Tree(Datastructure):
 
     @classmethod
     def from_data(cls, data):
-        tree = cls(attributes=data["attributes"])
+        tree = cls(**data["attributes"])
         root = TreeNode.from_data(data["root"])
         tree.add(root)
         return tree
