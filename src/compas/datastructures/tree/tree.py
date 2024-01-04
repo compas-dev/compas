@@ -81,11 +81,16 @@ class TreeNode(Data):
         if self.is_root:
             return self._tree
         else:
-            return self.parent.tree
+            return self.parent.tree  # type: ignore
 
     @property
     def data(self):
         return {
+            # this duplicates the behaviour of the Data class
+            # but it is necessary to make the tree serializable
+            # however, it only duplicates the attributes if the node is serialized independently
+            # perhaps this should not be possible
+            # in this sense, the node is a prototype of an independen graph node, or mesh vertex
             "attributes": self.attributes,
             "children": [child.data for child in self.children],
         }
@@ -242,9 +247,8 @@ class Tree(Datastructure):
         "type": "object",
         "properties": {
             "root": TreeNode.DATASCHEMA,
-            "attributes": {"type": "object"},
         },
-        "required": ["root", "attributes"],
+        "required": ["root"],
     }
 
     def __init__(self, **kwargs):
@@ -254,13 +258,12 @@ class Tree(Datastructure):
     @property
     def data(self):
         return {
-            "root": self.root.data,
-            "attributes": self.attributes,
+            "root": self.root.data,  # type: ignore
         }
 
     @classmethod
     def from_data(cls, data):
-        tree = cls(**data["attributes"])
+        tree = cls()
         root = TreeNode.from_data(data["root"])
         tree.add(root)
         return tree
@@ -308,7 +311,7 @@ class Tree(Datastructure):
                 raise ValueError("The tree already has a root node, remove it first.")
 
             self._root = node
-            node._tree = self
+            node._tree = self  # type: ignore
 
         else:
             # add the node as a child of the parent node
