@@ -49,10 +49,8 @@ class TreeNode(Data):
         "required": ["attributes", "children"],
     }
 
-    def __init__(self, name=None, attributes=None):
-        super(TreeNode, self).__init__(name=name)
-        if attributes:
-            self.attributes.update(attributes)
+    def __init__(self, **kwargs):
+        super(TreeNode, self).__init__(**kwargs)
         self._parent = None
         self._children = []
         self._tree = None
@@ -253,10 +251,8 @@ class Tree(Datastructure):
         "required": ["root", "attributes"],
     }
 
-    def __init__(self, name=None, attributes=None):
-        super(Tree, self).__init__(name=name)
-        if attributes:
-            self.attributes.update(attributes)
+    def __init__(self, **kwargs):
+        super(Tree, self).__init__(**kwargs)
         self._root = None
 
     @property
