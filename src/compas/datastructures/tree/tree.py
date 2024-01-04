@@ -20,10 +20,6 @@ class TreeNode(Data):
 
     Attributes
     ----------
-    name : str
-        The name of the datastructure.
-    attributes : dict[str, Any]
-        User-defined attributes of the datastructure.
     parent : :class:`compas.datastructures.TreeNode`
         The parent node of the tree node.
     children : list[:class:`compas.datastructures.TreeNode`]
@@ -47,16 +43,16 @@ class TreeNode(Data):
         "type": "object",
         "$recursiveAnchor": True,
         "properties": {
-            "name": {"type": "string"},
             "attributes": {"type": "object"},
             "children": {"type": "array", "items": {"$recursiveRef": "#"}},
         },
-        "required": ["name", "attributes", "children"],
+        "required": ["attributes", "children"],
     }
 
     def __init__(self, name=None, attributes=None):
         super(TreeNode, self).__init__(name=name)
-        self.attributes = attributes or {}
+        if attributes:
+            self.attributes.update(attributes)
         self._parent = None
         self._children = []
         self._tree = None
@@ -94,14 +90,13 @@ class TreeNode(Data):
     @property
     def data(self):
         return {
-            "name": self.name,
             "attributes": self.attributes,
             "children": [child.data for child in self.children],
         }
 
     @classmethod
     def from_data(cls, data):
-        node = cls(data["name"], data["attributes"])
+        node = cls(attributes=data["attributes"])
         for child in data["children"]:
             node.add(cls.from_data(child))
         return node
@@ -220,10 +215,6 @@ class Tree(Datastructure):
 
     Attributes
     ----------
-    name : str
-        The name of the datastructure.
-    attributes : dict[str, Any]
-        User-defined attributes of the datastructure.
     root : :class:`compas.datastructures.TreeNode`
         The root node of the tree.
     nodes : generator[:class:`compas.datastructures.TreeNode`]
@@ -256,29 +247,28 @@ class Tree(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "name": {"type": "string"},
             "root": TreeNode.DATASCHEMA,
             "attributes": {"type": "object"},
         },
-        "required": ["name", "root", "attributes"],
+        "required": ["root", "attributes"],
     }
 
     def __init__(self, name=None, attributes=None):
         super(Tree, self).__init__(name=name)
-        self.attributes.update(attributes or {})
+        if attributes:
+            self.attributes.update(attributes)
         self._root = None
 
     @property
     def data(self):
         return {
-            "name": self.name,
             "root": self.root.data,
             "attributes": self.attributes,
         }
 
     @classmethod
     def from_data(cls, data):
-        tree = cls(data["name"], data["attributes"])
+        tree = cls(attributes=data["attributes"])
         root = TreeNode.from_data(data["root"])
         tree.add(root)
         return tree
