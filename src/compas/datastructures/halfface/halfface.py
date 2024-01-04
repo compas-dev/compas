@@ -24,8 +24,6 @@ class HalfFace(Datastructure):
 
     Parameters
     ----------
-    name: str, optional
-        The name of the graph.
     default_vertex_attributes: dict[str, Any], optional
         Default values for vertex attributes.
     default_edge_attributes: dict[str, Any], optional
@@ -34,6 +32,8 @@ class HalfFace(Datastructure):
         Default values for face attributes.
     default_cell_attributes: dict[str, Any], optional
         Default values for cell attributes.
+    **kwargs : dict, optional
+        Additional attributes for the data structure itself.
 
     Attributes
     ----------
@@ -57,7 +57,6 @@ class HalfFace(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -102,7 +101,6 @@ class HalfFace(Datastructure):
             "max_cell": {"type": "number", "minimum": -1},
         },
         "required": [
-            "attributes",
             "dva",
             "dea",
             "dfa",
@@ -120,13 +118,13 @@ class HalfFace(Datastructure):
 
     def __init__(
         self,
-        name=None,
         default_vertex_attributes=None,
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
+        **kwargs,
     ):
-        super(HalfFace, self).__init__(name=name)
+        super(HalfFace, self).__init__(**kwargs)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -181,7 +179,6 @@ class HalfFace(Datastructure):
             _cell[c] = faces
 
         return {
-            "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
@@ -209,8 +206,6 @@ class HalfFace(Datastructure):
             default_face_attributes=dfa,
             default_cell_attributes=dca,
         )
-
-        halfface.attributes.update(data.get("attributes") or {})
 
         vertex = data.get("vertex") or {}
         cell = data.get("cell") or {}
