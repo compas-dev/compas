@@ -12,12 +12,7 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
-if not compas.IPY:
-    from .bbox_numpy import mesh_oriented_bounding_box_numpy
-    from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
-else:
-    mesh_oriented_bounding_box_numpy = None
-    mesh_oriented_bounding_box_xy_numpy = None
+from compas.tolerance import TOL
 
 from compas.files import OBJ
 from compas.files import OFF
@@ -57,30 +52,6 @@ from compas.utilities import window
 
 from compas.datastructures import HalfEdge
 
-from compas.tolerance import TOL
-
-from .operations.collapse import mesh_collapse_edge
-from .operations.split import mesh_split_edge
-from .operations.split import mesh_split_face
-from .operations.split import mesh_split_strip
-from .operations.merge import mesh_merge_faces
-
-from .bbox import mesh_bounding_box
-from .bbox import mesh_bounding_box_xy
-from .combinatorics import mesh_is_connected
-from .combinatorics import mesh_connected_components
-from .duality import mesh_dual
-from .orientation import mesh_face_adjacency
-from .orientation import mesh_flip_cycles
-from .orientation import mesh_unify_cycles
-from .slice import mesh_slice_plane
-from .smoothing import mesh_smooth_centroid
-from .smoothing import mesh_smooth_area
-from .subdivision import mesh_subdivide
-from .transformations import mesh_transform
-from .transformations import mesh_transformed
-from .triangulation import mesh_quads_to_triangles
-
 
 class Mesh(HalfEdge):
     """Geometric implementation of a half edge data structure for polygon meshses.
@@ -107,33 +78,6 @@ class Mesh(HalfEdge):
     True
 
     """
-
-    bounding_box = mesh_bounding_box
-    bounding_box_xy = mesh_bounding_box_xy
-    collapse_edge = mesh_collapse_edge
-    connected_components = mesh_connected_components
-    dual = mesh_dual
-    face_adjacency = mesh_face_adjacency
-    flip_cycles = mesh_flip_cycles
-    is_connected = mesh_is_connected
-    merge_faces = mesh_merge_faces
-    slice_plane = mesh_slice_plane
-    smooth_centroid = mesh_smooth_centroid
-    smooth_area = mesh_smooth_area
-    split_edge = mesh_split_edge
-    split_face = mesh_split_face
-    split_strip = mesh_split_strip
-    subdivide = mesh_subdivide
-    transform = mesh_transform
-    transformed = mesh_transformed
-    unify_cycles = mesh_unify_cycles
-    quads_to_triangles = mesh_quads_to_triangles
-
-    if mesh_oriented_bounding_box_numpy:
-        obb_numpy = mesh_oriented_bounding_box_numpy
-
-    if mesh_oriented_bounding_box_xy_numpy:
-        obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy
 
     def __init__(
         self,
@@ -1679,7 +1623,7 @@ class Mesh(HalfEdge):
         while special:
             start = special.pop()
             nbrs = []
-            # find all neighbors of the current spacial vertex
+            # find all neighbors of the current special vertex
             # that are on the mesh boundary
             for nbr in self.vertex_neighbors(start):
                 face = self.halfedge_face((start, nbr))
@@ -1774,3 +1718,60 @@ class Mesh(HalfEdge):
             if faces:
                 facegroups.append(faces)
         return facegroups
+
+
+# =============================================================================
+# Additional methods for the mesh class
+# =============================================================================
+
+
+from .operations.collapse import mesh_collapse_edge  # noqa: E402
+from .operations.split import mesh_split_edge  # noqa: E402
+from .operations.split import mesh_split_face  # noqa: E402
+from .operations.split import mesh_split_strip  # noqa: E402
+from .operations.merge import mesh_merge_faces  # noqa: E402
+
+from .bbox import mesh_bounding_box  # noqa: E402
+from .bbox import mesh_bounding_box_xy  # noqa: E402
+from .combinatorics import mesh_is_connected  # noqa: E402
+from .combinatorics import mesh_connected_components  # noqa: E402
+from .duality import mesh_dual  # noqa: E402
+from .orientation import mesh_face_adjacency  # noqa: E402
+from .orientation import mesh_flip_cycles  # noqa: E402
+from .orientation import mesh_unify_cycles  # noqa: E402
+from .slice import mesh_slice_plane  # noqa: E402
+from .smoothing import mesh_smooth_centroid  # noqa: E402
+from .smoothing import mesh_smooth_area  # noqa: E402
+from .subdivision import mesh_subdivide  # noqa: E402
+from .transformations import mesh_transform  # noqa: E402
+from .transformations import mesh_transformed  # noqa: E402
+from .triangulation import mesh_quads_to_triangles  # noqa: E402
+
+
+Mesh.bounding_box = mesh_bounding_box  # type: ignore
+Mesh.bounding_box_xy = mesh_bounding_box_xy  # type: ignore
+Mesh.collapse_edge = mesh_collapse_edge  # type: ignore
+Mesh.connected_components = mesh_connected_components  # type: ignore
+Mesh.dual = mesh_dual  # type: ignore
+Mesh.face_adjacency = mesh_face_adjacency  # type: ignore
+Mesh.flip_cycles = mesh_flip_cycles  # type: ignore
+Mesh.is_connected = mesh_is_connected  # type: ignore
+Mesh.merge_faces = mesh_merge_faces  # type: ignore
+Mesh.slice_plane = mesh_slice_plane  # type: ignore
+Mesh.smooth_centroid = mesh_smooth_centroid  # type: ignore
+Mesh.smooth_area = mesh_smooth_area  # type: ignore
+Mesh.split_edge = mesh_split_edge  # type: ignore
+Mesh.split_face = mesh_split_face  # type: ignore
+Mesh.split_strip = mesh_split_strip  # type: ignore
+Mesh.subdivide = mesh_subdivide  # type: ignore
+Mesh.transform = mesh_transform  # type: ignore
+Mesh.transformed = mesh_transformed  # type: ignore
+Mesh.unify_cycles = mesh_unify_cycles  # type: ignore
+Mesh.quads_to_triangles = mesh_quads_to_triangles  # type: ignore
+
+if not compas.IPY:
+    from .bbox_numpy import mesh_oriented_bounding_box_numpy
+    from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
+
+    Mesh.obb_numpy = mesh_oriented_bounding_box_numpy  # type: ignore
+    Mesh.obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy  # type: ignore
