@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `show_edges` flag to `compas.scene.VolMeshObject`.
 * Added `show_faces` flag to `compas.scene.VolMeshObject`.
 * Added `show_cells` flag to `compas.scene.VolMeshObject`.
+* Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed
 

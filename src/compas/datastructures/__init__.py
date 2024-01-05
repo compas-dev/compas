@@ -165,6 +165,7 @@ from .assembly.part import Feature, GeometricFeature, ParametricFeature, Part
 from .cell_network.cell_network import CellNetwork
 
 from .tree.tree import Tree, TreeNode
+from .tree.hashtree import HashTree, HashNode
 
 __all__ = [
     "Datastructure",
@@ -280,6 +281,8 @@ __all__ = [
     # Trees
     "Tree",
     "TreeNode",
+    "HashTree",
+    "HashNode",
 ]
 
 if not compas.IPY:
