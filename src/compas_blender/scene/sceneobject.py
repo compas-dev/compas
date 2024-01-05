@@ -177,11 +177,9 @@ class BlenderSceneObject(SceneObject):
 
         """
         if transformation:
-            if self.transformation:
-                transformation = self.transformation * transformation
-            obj.matrix_world = conversions.transformation_to_blender(transformation)
-        elif self.transformation:
-            obj.matrix_world = conversions.transformation_to_blender(self.transformation)
+            obj.transformation = transformation
+
+        obj.matrix_world = conversions.transformation_to_blender(self.worldtransformation)
 
     # =============================================================================
     # Collections

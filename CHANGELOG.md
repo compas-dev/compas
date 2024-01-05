@@ -8,19 +8,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-
+* Added `viewerinstance` in `compas.scene.Scene` to support viewers context detection.
 * Added `compas_rhino8` as starting point for Rhino8 support.
+* Added `compas.scene.SceneObjectNode`.
+* Added `compas.scene.SceneTree`.
+* Added `compas.scene.SceneObject.node`.
+* Added `compas.scene.SceneObject.frame`.
+* Added `compas.scene.SceneObject.worldtransformation`.
+* Added `compas.scene.SceneObject.parent`.
+* Added `compas.scene.SceneObject.children`.
+* Added `compas.scene.SceneObject.add()`.
 * Added tutorial for `compas.datastructures.Tree`.
+* Added Serialisation capability to `compas.scene.Scene`.
+* Added `show` flag to `compas.scene.SceneObject`.
+* Added `show_points` flag to `compas.scene.GeometryObject`.
+* Added `show_lines` flag to `compas.scene.GeometryObject`.
+* Added `show_surfaces` flag to `compas.scene.GeometryObject`.
+* Added `show_vertices` flag to `compas.scene.MeshObject`.
+* Added `show_edges` flag to `compas.scene.MeshObject`.
+* Added `show_faces` flag to `compas.scene.MeshObject`.
+* Added `show_nodes` flag to `compas.scene.NetworkObject`.
+* Added `show_edges` flag to `compas.scene.NetworkObject`.
+* Added `show_vertices` flag to `compas.scene.VolMeshObject`.
+* Added `show_edges` flag to `compas.scene.VolMeshObject`.
+* Added `show_faces` flag to `compas.scene.VolMeshObject`.
+* Added `show_cells` flag to `compas.scene.VolMeshObject`.
 * Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed
 
 * Changed the `__str__` of `compas.geometry.Point` and `compas.geometry.Vector` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
+* In pull requests, `docs` Workflow are now only triggered on review approval.
+* The `draw` implementations of `compas.scene.SceneObject` will now always use the `worldtransformation` of the `SceneObject`.
+* Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
+* Fixed `TypeErrorException` when serializing a `Mesh` which has been converted from Rhino.
+* Fixed color conversions in `compas_rhion.conversions.mesh_to_compas`.
 
 ### Removed
 
 * Removed `compas_rhino.forms`. Forms will be moved to `compas_ui`.
-
 
 ## [2.0.0-beta.1] 2023-12-20
 

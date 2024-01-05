@@ -33,11 +33,9 @@ class CapsuleObject(GHSceneObject, GeometryObject):
 
         """
         breps = conversions.capsule_to_rhino_brep(self.geometry)
-
-        if self.transformation:
-            transformation = conversions.transformation_to_rhino(self.transformation)
-            for geometry in breps:
-                geometry.Transform(transformation)
+        transformation = conversions.transformation_to_rhino(self.transformation)
+        for geometry in breps:
+            geometry.Transform(transformation)
 
         self._guids = breps
         return self.guids

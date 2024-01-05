@@ -28,6 +28,12 @@ class GeometryObject(SceneObject):
         The size of the points.
     linewidth : float
         The width of the lines or curves.
+    show_points : bool
+        Flag for showing or hiding the points. Default is ``False``.
+    show_lines : bool
+        Flag for showing or hiding the lines or curves. Default is ``True``.
+    show_surfaces : bool
+        Flag for showing or hiding the surfaces. Default is ``True``.
 
     """
 
@@ -43,3 +49,6 @@ class GeometryObject(SceneObject):
         self.surfacecolor = kwargs.get("surfacecolor", self.color)
         self.pointsize = kwargs.get("pointsize", 1.0)
         self.linewidth = kwargs.get("linewidth", 1.0)
+        self.show_points = kwargs.get("show_points", False)
+        self.show_lines = kwargs.get("show_lines", True)
+        self.show_surfaces = kwargs.get("show_surfaces", True)

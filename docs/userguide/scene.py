@@ -74,7 +74,7 @@ scene.add(volmesh)
 
 x = 0
 y = 0
-for obj in scene.sceneobjects:
+for obj in scene.objects:
     obj.transformation = Translation.from_vector([x, y, 0])
     x += 5
     if x > 20:

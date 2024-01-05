@@ -1,10 +1,12 @@
-from compas.plugins import pluggable
+import inspect
+from collections import defaultdict
+
+import compas
 from compas.plugins import PluginValidator
+from compas.plugins import pluggable
+
 from .exceptions import NoSceneObjectContextError
 from .exceptions import SceneObjectNotRegisteredError
-import inspect
-import compas
-from collections import defaultdict
 
 ITEM_SCENEOBJECT = defaultdict(dict)
 
@@ -62,15 +64,9 @@ def is_viewer_open():
     bool
 
     """
-    # TODO: implement [without introducing compas_view2 as a dependency..?]
-    # make the viewer app a singleton
-    # check for the exitence of an instance of the singleton
-    # if the instance exists, return True
-    # in this case, the viewer is the current context
-    # to do this without introducing compas_view2 as a dependency,
-    # creating the singleton instance should modify a class attribute of the SceneObject
-    # (or potentially a module level attribute of compas itself)
-    return False
+    from compas.scene import Scene
+
+    return Scene.viewerinstance is not None
 
 
 def _detect_current_context():

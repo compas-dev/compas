@@ -29,9 +29,13 @@ class NetworkObject(SceneObject):
     edgecolor : :class:`compas.colors.ColorDict`
         Mapping between edges and colors.
     nodesize : float
-        The size of the nodes.
+        The size of the nodes. Default is ``1.0``.
     edgewidth : float
-        The width of the edges.
+        The width of the edges. Default is ``1.0``.
+    show_nodes : bool
+        Flag for showing or hiding the nodes. Default is ``True``.
+    show_edges : bool
+        Flag for showing or hiding the edges. Default is ``True``.
 
     See Also
     --------
@@ -52,6 +56,8 @@ class NetworkObject(SceneObject):
         self.edgecolor = kwargs.get("edgecolor", self.color)
         self.nodesize = kwargs.get("nodesize", 1.0)
         self.edgewidth = kwargs.get("edgewidth", 1.0)
+        self.show_nodes = kwargs.get("show_nodes", True)
+        self.show_edges = kwargs.get("show_edges", True)
 
     @property
     def network(self):
@@ -76,8 +82,7 @@ class NetworkObject(SceneObject):
     def node_xyz(self):
         if self._node_xyz is None:
             points = self.network.nodes_attributes("xyz")  # type: ignore
-            if self.transformation:
-                points = transform_points(points, self.transformation)
+            points = transform_points(points, self.worldtransformation)
             self._node_xyz = dict(zip(self.network.nodes(), points))  # type: ignore
         return self._node_xyz
 
