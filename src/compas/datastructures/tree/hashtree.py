@@ -1,5 +1,6 @@
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
+from compas.data import Data
 from compas.data import json_dumps
 import hashlib
 
@@ -165,13 +166,10 @@ class HashTree(Tree):
 
     @classmethod
     def from_object(cls, obj):
-        """Construct a HashTree from a COMPAS object."""
-        raise NotImplementedError
-
-    @classmethod
-    def from_scene(cls, scene):
-        """Construct a HashTree from a COMPAS scene."""
-        raise NotImplementedError
+        """Construct a HashTree from a COMPAS data object."""
+        if not isinstance(obj, Data):
+            raise TypeError("The object must be a COMPAS data object.")
+        return cls.from_dict(obj.data)
 
     def node_signature(self, node, parent_path=""):
         """Compute the SHA256 signature of a node. The computed nodes are cached in `self.signatures` dictionary.
