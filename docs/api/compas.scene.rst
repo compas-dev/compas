@@ -23,7 +23,6 @@ Classes
     GeometryObject
     MeshObject
     NetworkObject
-    NoSceneObjectContextError
     Scene
     SceneObject
     SceneObjectNotRegisteredError

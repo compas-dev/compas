@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from abc import abstractmethod
-
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
 from .descriptors.colordict import ColorDictAttribute
@@ -90,7 +88,6 @@ class NetworkObject(SceneObject):
     def node_xyz(self, node_xyz):
         self._node_xyz = node_xyz
 
-    @abstractmethod
     def draw_nodes(self, nodes=None, color=None, text=None):
         """Draw the nodes of the network.
 
@@ -115,7 +112,6 @@ class NetworkObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
         """Draw the edges of the network.
 
@@ -138,6 +134,10 @@ class NetworkObject(SceneObject):
             The identifiers of the objects representing the edges in the visualization context.
 
         """
+        raise NotImplementedError
+
+    def draw(self):
+        """Draw the network."""
         raise NotImplementedError
 
     def clear_nodes(self):

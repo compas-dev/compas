@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from abc import abstractmethod
-
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
 from .descriptors.colordict import ColorDictAttribute
@@ -108,7 +106,6 @@ class VolMeshObject(SceneObject):
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
 
-    @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):
         """Draw the vertices of the mesh.
 
@@ -133,7 +130,6 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
         """Draw the edges of the mesh.
 
@@ -158,7 +154,6 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_faces(self, faces=None, color=None, text=None):
         """Draw the faces of the mesh.
 
@@ -183,7 +178,6 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_cells(self, cells=None, color=None, text=None):
         """Draw the cells of the mesh.
 
@@ -206,6 +200,10 @@ class VolMeshObject(SceneObject):
             The identifiers of the objects representing the cells in the visualization context.
 
         """
+        raise NotImplementedError
+
+    def draw(self):
+        """Draw the volmesh."""
         raise NotImplementedError
 
     def clear_vertices(self):

@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from abc import abstractmethod
-
 from compas.geometry import transform_points
 from .sceneobject import SceneObject
 from .descriptors.colordict import ColorDictAttribute
@@ -99,7 +97,6 @@ class MeshObject(SceneObject):
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
 
-    @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):
         """Draw the vertices of the mesh.
 
@@ -124,7 +121,6 @@ class MeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
         """Draw the edges of the mesh.
 
@@ -149,7 +145,6 @@ class MeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_faces(self, faces=None, color=None, text=None):
         """Draw the faces of the mesh.
 
@@ -187,6 +182,16 @@ class MeshObject(SceneObject):
 
         """
         return self.draw(*args, **kwargs)
+
+    def draw(self):
+        """draw the mesh.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
 
     def clear(self):
         """Clear all components of the mesh.
