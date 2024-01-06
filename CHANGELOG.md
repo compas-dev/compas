@@ -36,8 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Changed names: `degree_u` to `u_degree`, and `degree_v` to  `v_degree` to align the naming.
-otherwise, the program would raise unexpected param error.
+* Changed names in `NURBSSurface`: `degree_u` to `u_degree`, and `degree_v` to  `v_degree` to align the naming.
 * Changed the `__str__` of `compas.geometry.Point` and `compas.geometry.Vector` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
 * In pull requests, `docs` Workflow are now only triggered on review approval.
 * The `draw` implementations of `compas.scene.SceneObject` will now always use the `worldtransformation` of the `SceneObject`.
