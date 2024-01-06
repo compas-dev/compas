@@ -212,8 +212,8 @@ class NurbsSurface(Surface):
         knots_v,
         mults_u,
         mults_v,
-        degree_u,
-        degree_v,
+        u_degree,
+        v_degree,
         is_periodic_u=False,
         is_periodic_v=False,
     ):
@@ -233,9 +233,9 @@ class NurbsSurface(Surface):
             Multiplicity of the knots in the U direction.
         mults_v : list[int]
             Multiplicity of the knots in the V direction.
-        degree_u : int
+        u_degree : int
             Degree in the U direction.
-        degree_v : int
+        v_degree : int
             Degree in the V direction.
 
         Returns
@@ -251,23 +251,23 @@ class NurbsSurface(Surface):
             knots_v,
             mults_u,
             mults_v,
-            degree_u,
-            degree_v,
+            u_degree,
+            v_degree,
             is_periodic_u=is_periodic_u,
             is_periodic_v=is_periodic_v,
         )
 
     @classmethod
-    def from_points(cls, points, degree_u=3, degree_v=3):
+    def from_points(cls, points, u_degree=3, v_degree=3):
         """Construct a NURBS surface from control points.
 
         Parameters
         ----------
         points : list[list[[float, float, float] | :class:`compas.geometry.Point`]]
             The control points.
-        degree_u : int
+        u_degree : int
             Degree in the U direction.
-        degree_v : int
+        v_degree : int
             Degree in the V direction.
 
         Returns
@@ -275,7 +275,7 @@ class NurbsSurface(Surface):
         :class:`compas.geometry.NurbsSurface`
 
         """
-        return new_nurbssurface_from_points(cls, points, degree_u=degree_u, degree_v=degree_v)
+        return new_nurbssurface_from_points(cls, points, u_degree=u_degree, v_degree=v_degree)
 
     @classmethod
     def from_meshgrid(cls, nu=10, nv=10):
