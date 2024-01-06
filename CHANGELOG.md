@@ -42,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
 * Fixed `TypeErrorException` when serializing a `Mesh` which has been converted from Rhino.
 * Fixed color conversions in `compas_rhion.conversions.mesh_to_compas`.
+* Fixed double downloading of STL files caused by binary/ascii detection.
+* Improved download speed of STL files when running in IronPython by switching to a .NET-based downloadd.
 
 ### Removed
 

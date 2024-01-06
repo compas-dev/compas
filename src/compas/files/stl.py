@@ -114,24 +114,26 @@ class STLReader(object):
 
         """
         is_binary = False
-        with _iotools.open_file(self.filepath, "rb") as file:
-            line = file.readline().strip()
+
+        with _iotools.open_file(self.filepath, "rb") as self.file:
+            line = self.file.readline().strip()
             if b"solid" in line:
                 is_binary = False
             else:
                 is_binary = True
-        try:
-            if not is_binary:
-                self._read_ascii()
-            else:
+            try:
+                if not is_binary:
+                    with _iotools.open_file(self.filepath, "r") as self.file:
+                        self._read_ascii()
+                else:
+                    self._read_binary()
+            except Exception:
+                # raise if it was already detected as binary, but failed anyway
+                if is_binary:
+                    raise
+                # else, ascii parsing failed, try binary
+                is_binary = True
                 self._read_binary()
-        except Exception:
-            # raise if it was already detected as binary, but failed anyway
-            if is_binary:
-                raise
-            # else, ascii parsing failed, try binary
-            is_binary = True
-            self._read_binary()
 
     # ==========================================================================
     # ascii
@@ -151,10 +153,8 @@ class STLReader(object):
     # ==========================================================================
 
     def _read_ascii(self):
-        with _iotools.open_file(self.filepath, "r") as file:
-            self.file = file
-            self.file.seek(0)
-            self.facets = self._read_solids_ascii()
+        self.file.seek(0)
+        self.facets = self._read_solids_ascii()
 
     def _read_solids_ascii(self):
         if not self.file:
@@ -233,11 +233,9 @@ class STLReader(object):
         return struct.unpack("<I", bytes_)[0]
 
     def _read_binary(self):
-        with _iotools.open_file(self.filepath, "rb") as file:
-            self.file = file
-            self.file.seek(0)
-            self.header = self._read_header_binary()
-            self.facets = self._read_facets_binary()
+        self.file.seek(0)
+        self.header = self._read_header_binary()
+        self.facets = self._read_facets_binary()
 
     def _read_header_binary(self):
         bytes_ = self.file.read(80)
