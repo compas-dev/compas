@@ -1289,24 +1289,18 @@ document.write(`
 <h1>TreeNode</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.TreeNode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">TreeNode</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/datastructures/tree/tree.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">TreeNode</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/datastructures/tree/tree.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>A node of a tree data structure.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the tree ndoe.</p>
-</dd>
-<dt><strong>attributes</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>User-defined attributes of the datastructure.</p>
+<dt><strong>**kwargs</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>User-defined attributes of the tree node.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>name</strong><span class="classifier">str</span></dt><dd><p>The name of the datastructure.</p>
-</dd>
-<dt><strong>attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>User-defined attributes of the datastructure.</p>
-</dd>
 <dt><strong>parent</strong><span class="classifier"><a class="reference internal" href="#compas.datastructures.TreeNode" title="compas.datastructures.TreeNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.TreeNode</span></code></a></span></dt><dd><p>The parent node of the tree node.</p>
 </dd>
 <dt><strong>children</strong><span class="classifier">list[<a class="reference internal" href="#compas.datastructures.TreeNode" title="compas.datastructures.TreeNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.TreeNode</span></code></a>]</span></dt><dd><p>The children of the tree node.</p>
@@ -1355,14 +1349,20 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.from_json.html#compas.datastructures.TreeNode.from_json" title="compas.datastructures.TreeNode.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.sha256.html#compas.datastructures.TreeNode.sha256" title="compas.datastructures.TreeNode.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.from_jsonstring.html#compas.datastructures.TreeNode.from_jsonstring" title="compas.datastructures.TreeNode.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.sha256.html#compas.datastructures.TreeNode.sha256" title="compas.datastructures.TreeNode.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.to_data.html#compas.datastructures.TreeNode.to_data" title="compas.datastructures.TreeNode.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.to_data.html#compas.datastructures.TreeNode.to_data" title="compas.datastructures.TreeNode.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.to_json.html#compas.datastructures.TreeNode.to_json" title="compas.datastructures.TreeNode.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.to_json.html#compas.datastructures.TreeNode.to_json" title="compas.datastructures.TreeNode.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.to_jsonstring.html#compas.datastructures.TreeNode.to_jsonstring" title="compas.datastructures.TreeNode.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.TreeNode.validate_data.html#compas.datastructures.TreeNode.validate_data" title="compas.datastructures.TreeNode.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>

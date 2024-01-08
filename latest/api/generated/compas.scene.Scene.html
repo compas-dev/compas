@@ -1289,7 +1289,7 @@ document.write(`
 <h1>Scene</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.Scene">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">Scene</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/scene/scene.py#L177"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">Scene</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/scene/scene.py#L177"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>A scene is a container for hierarchical scene objects which are to be visualised in a given context.</p>
 <dl class="field-list simple">
@@ -1359,14 +1359,20 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.from_json.html#compas.scene.Scene.from_json" title="compas.scene.Scene.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.sha256.html#compas.scene.Scene.sha256" title="compas.scene.Scene.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.from_jsonstring.html#compas.scene.Scene.from_jsonstring" title="compas.scene.Scene.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.sha256.html#compas.scene.Scene.sha256" title="compas.scene.Scene.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.to_data.html#compas.scene.Scene.to_data" title="compas.scene.Scene.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.to_data.html#compas.scene.Scene.to_data" title="compas.scene.Scene.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.to_json.html#compas.scene.Scene.to_json" title="compas.scene.Scene.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.to_json.html#compas.scene.Scene.to_json" title="compas.scene.Scene.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.to_jsonstring.html#compas.scene.Scene.to_jsonstring" title="compas.scene.Scene.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.validate_data.html#compas.scene.Scene.validate_data" title="compas.scene.Scene.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>

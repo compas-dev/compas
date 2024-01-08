@@ -1289,14 +1289,12 @@ document.write(`
 <h1>HalfFace</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.HalfFace">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">HalfFace</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/datastructures/halfface/halfface.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">HalfFace</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/datastructures/halfface/halfface.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" title="compas.datastructures.datastructure.Datastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></a></p>
 <p>Base half-face data structure for representing volumetric meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>name: str, optional</strong></dt><dd><p>The name of the graph.</p>
-</dd>
 <dt><strong>default_vertex_attributes: dict[str, Any], optional</strong></dt><dd><p>Default values for vertex attributes.</p>
 </dd>
 <dt><strong>default_edge_attributes: dict[str, Any], optional</strong></dt><dd><p>Default values for edge attributes.</p>
@@ -1304,6 +1302,8 @@ document.write(`
 <dt><strong>default_face_attributes: dict[str, Any], optional</strong></dt><dd><p>Default values for face attributes.</p>
 </dd>
 <dt><strong>default_cell_attributes: dict[str, Any], optional</strong></dt><dd><p>Default values for cell attributes.</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional attributes for the data structure itself.</p>
 </dd>
 </dl>
 </dd>
@@ -1635,14 +1635,20 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_json.html#compas.datastructures.HalfFace.from_json" title="compas.datastructures.HalfFace.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.sha256.html#compas.datastructures.HalfFace.sha256" title="compas.datastructures.HalfFace.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.from_jsonstring.html#compas.datastructures.HalfFace.from_jsonstring" title="compas.datastructures.HalfFace.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.sha256.html#compas.datastructures.HalfFace.sha256" title="compas.datastructures.HalfFace.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_data.html#compas.datastructures.HalfFace.to_data" title="compas.datastructures.HalfFace.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_data.html#compas.datastructures.HalfFace.to_data" title="compas.datastructures.HalfFace.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_json.html#compas.datastructures.HalfFace.to_json" title="compas.datastructures.HalfFace.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_json.html#compas.datastructures.HalfFace.to_json" title="compas.datastructures.HalfFace.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.to_jsonstring.html#compas.datastructures.HalfFace.to_jsonstring" title="compas.datastructures.HalfFace.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfFace.validate_data.html#compas.datastructures.HalfFace.validate_data" title="compas.datastructures.HalfFace.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>

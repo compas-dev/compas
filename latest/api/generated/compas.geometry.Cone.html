@@ -1289,7 +1289,7 @@ document.write(`
 <h1>Cone</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Cone">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Cone</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/geometry/shapes/cone.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Cone</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/geometry/shapes/cone.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.shapes.shape.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
 <p>A cone is defined by a frame, radius, and height.</p>
 <p>The cone is oriented along the z-axis of the frame.
@@ -1388,26 +1388,32 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.from_json.html#compas.geometry.Cone.from_json" title="compas.geometry.Cone.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.rotate.html#compas.geometry.Cone.rotate" title="compas.geometry.Cone.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.from_jsonstring.html#compas.geometry.Cone.from_jsonstring" title="compas.geometry.Cone.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.rotate.html#compas.geometry.Cone.rotate" title="compas.geometry.Cone.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
 <td><p>Rotate the shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.rotated.html#compas.geometry.Cone.rotated" title="compas.geometry.Cone.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.rotated.html#compas.geometry.Cone.rotated" title="compas.geometry.Cone.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
 <td><p>Returns a rotated copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.scale.html#compas.geometry.Cone.scale" title="compas.geometry.Cone.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.scale.html#compas.geometry.Cone.scale" title="compas.geometry.Cone.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.scaled.html#compas.geometry.Cone.scaled" title="compas.geometry.Cone.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.scaled.html#compas.geometry.Cone.scaled" title="compas.geometry.Cone.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
 <td><p>Returns a scaled copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.sha256.html#compas.geometry.Cone.sha256" title="compas.geometry.Cone.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.sha256.html#compas.geometry.Cone.sha256" title="compas.geometry.Cone.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_data.html#compas.geometry.Cone.to_data" title="compas.geometry.Cone.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_data.html#compas.geometry.Cone.to_data" title="compas.geometry.Cone.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_json.html#compas.geometry.Cone.to_json" title="compas.geometry.Cone.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_json.html#compas.geometry.Cone.to_json" title="compas.geometry.Cone.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_jsonstring.html#compas.geometry.Cone.to_jsonstring" title="compas.geometry.Cone.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_polyhedron.html#compas.geometry.Cone.to_polyhedron" title="compas.geometry.Cone.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>

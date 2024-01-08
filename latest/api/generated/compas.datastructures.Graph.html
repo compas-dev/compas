@@ -1289,17 +1289,17 @@ document.write(`
 <h1>Graph</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Graph">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Graph</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/datastructures/graph/graph.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Graph</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/datastructures/graph/graph.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" title="compas.datastructures.datastructure.Datastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></a></p>
 <p>Base graph data structure for describing the topological relationships between nodes connected by edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the datastructure.</p>
-</dd>
 <dt><strong>default_node_attributes</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>Default values for node attributes.</p>
 </dd>
 <dt><strong>default_edge_attributes</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>Default values for edge attributes.</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional keyword arguments are passed to the base class, and will be stored in the <code class="xref py py-attr docutils literal notranslate"><span class="pre">attributes</span></code> attribute.</p>
 </dd>
 </dl>
 </dd>
@@ -1313,8 +1313,6 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>General attributes of the data structure that are included in the data representation and serialization.</p>
-</dd>
 <dt><strong>default_node_attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>dictionary containing default values for the attributes of nodes.
 It is recommended to add a default to this dictionary using <a class="reference internal" href="compas.datastructures.Graph.update_default_node_attributes.html#compas.datastructures.Graph.update_default_node_attributes" title="compas.datastructures.Graph.update_default_node_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_node_attributes()</span></code></a>
 for every node attribute used in the data structure.</p>
@@ -1496,14 +1494,20 @@ for every edge attribute used in the data structure.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_json.html#compas.datastructures.Graph.from_json" title="compas.datastructures.Graph.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.sha256.html#compas.datastructures.Graph.sha256" title="compas.datastructures.Graph.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_jsonstring.html#compas.datastructures.Graph.from_jsonstring" title="compas.datastructures.Graph.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.sha256.html#compas.datastructures.Graph.sha256" title="compas.datastructures.Graph.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_data.html#compas.datastructures.Graph.to_data" title="compas.datastructures.Graph.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_data.html#compas.datastructures.Graph.to_data" title="compas.datastructures.Graph.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_json.html#compas.datastructures.Graph.to_json" title="compas.datastructures.Graph.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_json.html#compas.datastructures.Graph.to_json" title="compas.datastructures.Graph.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_jsonstring.html#compas.datastructures.Graph.to_jsonstring" title="compas.datastructures.Graph.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_data.html#compas.datastructures.Graph.validate_data" title="compas.datastructures.Graph.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>

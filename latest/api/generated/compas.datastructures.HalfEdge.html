@@ -1289,19 +1289,19 @@ document.write(`
 <h1>HalfEdge</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.HalfEdge">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">HalfEdge</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/datastructures/halfedge/halfedge.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">HalfEdge</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/datastructures/halfedge/halfedge.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.Datastructure.html#compas.datastructures.Datastructure" title="compas.datastructures.datastructure.Datastructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></a></p>
 <p>Base half-edge data structure for representing the topology of open oor closed surface meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>name: str, optional</strong></dt><dd><p>The name of the datastructure.</p>
-</dd>
 <dt><strong>default_vertex_attributes: dict, optional</strong></dt><dd><p>Default values for vertex attributes.</p>
 </dd>
 <dt><strong>default_edge_attributes: dict, optional</strong></dt><dd><p>Default values for edge attributes.</p>
 </dd>
 <dt><strong>default_face_attributes: dict, optional</strong></dt><dd><p>Default values for face attributes.</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional attributes to add to the data structure.</p>
 </dd>
 </dl>
 </dd>
@@ -1625,14 +1625,20 @@ for every face attribute used in the data structure.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.from_json.html#compas.datastructures.HalfEdge.from_json" title="compas.datastructures.HalfEdge.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.sha256.html#compas.datastructures.HalfEdge.sha256" title="compas.datastructures.HalfEdge.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.from_jsonstring.html#compas.datastructures.HalfEdge.from_jsonstring" title="compas.datastructures.HalfEdge.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.sha256.html#compas.datastructures.HalfEdge.sha256" title="compas.datastructures.HalfEdge.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.to_data.html#compas.datastructures.HalfEdge.to_data" title="compas.datastructures.HalfEdge.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.to_data.html#compas.datastructures.HalfEdge.to_data" title="compas.datastructures.HalfEdge.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.to_json.html#compas.datastructures.HalfEdge.to_json" title="compas.datastructures.HalfEdge.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.to_json.html#compas.datastructures.HalfEdge.to_json" title="compas.datastructures.HalfEdge.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.to_jsonstring.html#compas.datastructures.HalfEdge.to_jsonstring" title="compas.datastructures.HalfEdge.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.HalfEdge.validate_data.html#compas.datastructures.HalfEdge.validate_data" title="compas.datastructures.HalfEdge.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>

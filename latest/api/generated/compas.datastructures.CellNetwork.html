@@ -1289,7 +1289,7 @@ document.write(`
 <h1>CellNetwork</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.CellNetwork">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">CellNetwork</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/datastructures/cell_network/cell_network.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">CellNetwork</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/datastructures/cell_network/cell_network.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.datastructures.HalfFace.html#compas.datastructures.HalfFace" title="compas.datastructures.halfface.halfface.HalfFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalfFace</span></code></a></p>
 <p>Geometric implementation of a data structure for a collection of mixed topologic entities such as cells, faces, edges and nodes.</p>
 <dl class="field-list simple">
@@ -1616,89 +1616,95 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.from_json.html#compas.datastructures.CellNetwork.from_json" title="compas.datastructures.CellNetwork.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_adjacent_halfface.html#compas.datastructures.CellNetwork.halfface_adjacent_halfface" title="compas.datastructures.CellNetwork.halfface_adjacent_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_adjacent_halfface</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.from_jsonstring.html#compas.datastructures.CellNetwork.from_jsonstring" title="compas.datastructures.CellNetwork.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_adjacent_halfface.html#compas.datastructures.CellNetwork.halfface_adjacent_halfface" title="compas.datastructures.CellNetwork.halfface_adjacent_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_adjacent_halfface</span></code></a></p></td>
 <td><p>Return the halfface adjacent to the halfface across the halfedge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_cell.html#compas.datastructures.CellNetwork.halfface_cell" title="compas.datastructures.CellNetwork.halfface_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_cell</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_cell.html#compas.datastructures.CellNetwork.halfface_cell" title="compas.datastructures.CellNetwork.halfface_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_cell</span></code></a></p></td>
 <td><p>The cell to which the halfface belongs to.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_halfedges.html#compas.datastructures.CellNetwork.halfface_halfedges" title="compas.datastructures.CellNetwork.halfface_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_halfedges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_halfedges.html#compas.datastructures.CellNetwork.halfface_halfedges" title="compas.datastructures.CellNetwork.halfface_halfedges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_halfedges</span></code></a></p></td>
 <td><p>The halfedges of a halfface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_manifold_neighborhood.html#compas.datastructures.CellNetwork.halfface_manifold_neighborhood" title="compas.datastructures.CellNetwork.halfface_manifold_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighborhood</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_manifold_neighborhood.html#compas.datastructures.CellNetwork.halfface_manifold_neighborhood" title="compas.datastructures.CellNetwork.halfface_manifold_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighborhood</span></code></a></p></td>
 <td><p>Return the halfface neighborhood of a halfface across their edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_manifold_neighbors.html#compas.datastructures.CellNetwork.halfface_manifold_neighbors" title="compas.datastructures.CellNetwork.halfface_manifold_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighbors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_manifold_neighbors.html#compas.datastructures.CellNetwork.halfface_manifold_neighbors" title="compas.datastructures.CellNetwork.halfface_manifold_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_manifold_neighbors</span></code></a></p></td>
 <td><p>Return the halfface neighbors of a halfface that are on the same manifold.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_opposite_cell.html#compas.datastructures.CellNetwork.halfface_opposite_cell" title="compas.datastructures.CellNetwork.halfface_opposite_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_cell</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_opposite_cell.html#compas.datastructures.CellNetwork.halfface_opposite_cell" title="compas.datastructures.CellNetwork.halfface_opposite_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_cell</span></code></a></p></td>
 <td><p>The cell to which the opposite halfface belongs to.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_opposite_halfface.html#compas.datastructures.CellNetwork.halfface_opposite_halfface" title="compas.datastructures.CellNetwork.halfface_opposite_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_halfface</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_opposite_halfface.html#compas.datastructures.CellNetwork.halfface_opposite_halfface" title="compas.datastructures.CellNetwork.halfface_opposite_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_halfface</span></code></a></p></td>
 <td><p>The opposite face of a face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_vertex_ancestor.html#compas.datastructures.CellNetwork.halfface_vertex_ancestor" title="compas.datastructures.CellNetwork.halfface_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_ancestor</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_vertex_ancestor.html#compas.datastructures.CellNetwork.halfface_vertex_ancestor" title="compas.datastructures.CellNetwork.halfface_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_ancestor</span></code></a></p></td>
 <td><p>Return the vertex before the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_vertex_descendent.html#compas.datastructures.CellNetwork.halfface_vertex_descendent" title="compas.datastructures.CellNetwork.halfface_vertex_descendent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_descendent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_vertex_descendent.html#compas.datastructures.CellNetwork.halfface_vertex_descendent" title="compas.datastructures.CellNetwork.halfface_vertex_descendent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_descendent</span></code></a></p></td>
 <td><p>Return the vertex after the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_vertices.html#compas.datastructures.CellNetwork.halfface_vertices" title="compas.datastructures.CellNetwork.halfface_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halfface_vertices.html#compas.datastructures.CellNetwork.halfface_vertices" title="compas.datastructures.CellNetwork.halfface_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertices</span></code></a></p></td>
 <td><p>The vertices of a halfface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halffaces.html#compas.datastructures.CellNetwork.halffaces" title="compas.datastructures.CellNetwork.halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halffaces.html#compas.datastructures.CellNetwork.halffaces" title="compas.datastructures.CellNetwork.halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces</span></code></a></p></td>
 <td><p>Iterate over the halffaces of the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halffaces_on_boundaries.html#compas.datastructures.CellNetwork.halffaces_on_boundaries" title="compas.datastructures.CellNetwork.halffaces_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_on_boundaries</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.halffaces_on_boundaries.html#compas.datastructures.CellNetwork.halffaces_on_boundaries" title="compas.datastructures.CellNetwork.halffaces_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_on_boundaries</span></code></a></p></td>
 <td><p>Find the faces on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.has_edge.html#compas.datastructures.CellNetwork.has_edge" title="compas.datastructures.CellNetwork.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.has_edge.html#compas.datastructures.CellNetwork.has_edge" title="compas.datastructures.CellNetwork.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
 <td><p>Verify that the volmesh contains a directed edge (u, v).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.has_halfface.html#compas.datastructures.CellNetwork.has_halfface" title="compas.datastructures.CellNetwork.has_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfface</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.has_halfface.html#compas.datastructures.CellNetwork.has_halfface" title="compas.datastructures.CellNetwork.has_halfface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfface</span></code></a></p></td>
 <td><p>Verify that a face is part of the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.has_vertex.html#compas.datastructures.CellNetwork.has_vertex" title="compas.datastructures.CellNetwork.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.has_vertex.html#compas.datastructures.CellNetwork.has_vertex" title="compas.datastructures.CellNetwork.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a></p></td>
 <td><p>Verify that a vertex is in the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.index_vertex.html#compas.datastructures.CellNetwork.index_vertex" title="compas.datastructures.CellNetwork.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.index_vertex.html#compas.datastructures.CellNetwork.index_vertex" title="compas.datastructures.CellNetwork.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a></p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in the vertex dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_cell_on_boundary.html#compas.datastructures.CellNetwork.is_cell_on_boundary" title="compas.datastructures.CellNetwork.is_cell_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cell_on_boundary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_cell_on_boundary.html#compas.datastructures.CellNetwork.is_cell_on_boundary" title="compas.datastructures.CellNetwork.is_cell_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cell_on_boundary</span></code></a></p></td>
 <td><p>Verify that a cell is on the boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_edge_on_boundary.html#compas.datastructures.CellNetwork.is_edge_on_boundary" title="compas.datastructures.CellNetwork.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_edge_on_boundary.html#compas.datastructures.CellNetwork.is_edge_on_boundary" title="compas.datastructures.CellNetwork.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a></p></td>
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_valid.html#compas.datastructures.CellNetwork.is_valid" title="compas.datastructures.CellNetwork.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_valid.html#compas.datastructures.CellNetwork.is_valid" title="compas.datastructures.CellNetwork.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a></p></td>
 <td><p>Verify that the volmesh is valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_vertex_on_boundary.html#compas.datastructures.CellNetwork.is_vertex_on_boundary" title="compas.datastructures.CellNetwork.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.is_vertex_on_boundary.html#compas.datastructures.CellNetwork.is_vertex_on_boundary" title="compas.datastructures.CellNetwork.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a></p></td>
 <td><p>Verify that a vertex is on a boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_cells.html#compas.datastructures.CellNetwork.number_of_cells" title="compas.datastructures.CellNetwork.number_of_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cells</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_cells.html#compas.datastructures.CellNetwork.number_of_cells" title="compas.datastructures.CellNetwork.number_of_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cells</span></code></a></p></td>
 <td><p>Count the number of faces in the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_edges.html#compas.datastructures.CellNetwork.number_of_edges" title="compas.datastructures.CellNetwork.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_edges.html#compas.datastructures.CellNetwork.number_of_edges" title="compas.datastructures.CellNetwork.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
 <td><p>Count the number of edges in the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_faces.html#compas.datastructures.CellNetwork.number_of_faces" title="compas.datastructures.CellNetwork.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_faces.html#compas.datastructures.CellNetwork.number_of_faces" title="compas.datastructures.CellNetwork.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a></p></td>
 <td><p>Count the number of faces in the volmesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_vertices.html#compas.datastructures.CellNetwork.number_of_vertices" title="compas.datastructures.CellNetwork.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.number_of_vertices.html#compas.datastructures.CellNetwork.number_of_vertices" title="compas.datastructures.CellNetwork.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a></p></td>
 <td><p>Count the number of vertices in the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.remove_unused_vertices.html#compas.datastructures.CellNetwork.remove_unused_vertices" title="compas.datastructures.CellNetwork.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.remove_unused_vertices.html#compas.datastructures.CellNetwork.remove_unused_vertices" title="compas.datastructures.CellNetwork.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a></p></td>
 <td><p>Remove all unused vertices from the volmesh object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.sha256.html#compas.datastructures.CellNetwork.sha256" title="compas.datastructures.CellNetwork.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.sha256.html#compas.datastructures.CellNetwork.sha256" title="compas.datastructures.CellNetwork.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.to_data.html#compas.datastructures.CellNetwork.to_data" title="compas.datastructures.CellNetwork.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.to_data.html#compas.datastructures.CellNetwork.to_data" title="compas.datastructures.CellNetwork.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.to_json.html#compas.datastructures.CellNetwork.to_json" title="compas.datastructures.CellNetwork.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.to_json.html#compas.datastructures.CellNetwork.to_json" title="compas.datastructures.CellNetwork.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.to_jsonstring.html#compas.datastructures.CellNetwork.to_jsonstring" title="compas.datastructures.CellNetwork.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.CellNetwork.unset_cell_attribute.html#compas.datastructures.CellNetwork.unset_cell_attribute" title="compas.datastructures.CellNetwork.unset_cell_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_cell_attribute</span></code></a></p></td>
 <td><p>Unset the attribute of a cell.</p></td>

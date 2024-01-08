@@ -1289,7 +1289,7 @@ document.write(`
 <h1>Projection</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Projection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Projection</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/geometry/projection.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Projection</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/geometry/projection.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.transformation.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a></p>
 <p>Class representing a projection transformation.</p>
 <dl class="field-list simple">
@@ -1365,29 +1365,35 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_json.html#compas.geometry.Projection.from_json" title="compas.geometry.Projection.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_list.html#compas.geometry.Projection.from_list" title="compas.geometry.Projection.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_jsonstring.html#compas.geometry.Projection.from_jsonstring" title="compas.geometry.Projection.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_list.html#compas.geometry.Projection.from_list" title="compas.geometry.Projection.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
 <td><p>Creates a transformation from a list of 16 numbers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_matrix.html#compas.geometry.Projection.from_matrix" title="compas.geometry.Projection.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_matrix.html#compas.geometry.Projection.from_matrix" title="compas.geometry.Projection.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
 <td><p>Creates a transformation from a list[list[float]] object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.inverse.html#compas.geometry.Projection.inverse" title="compas.geometry.Projection.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.inverse.html#compas.geometry.Projection.inverse" title="compas.geometry.Projection.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a></p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.invert.html#compas.geometry.Projection.invert" title="compas.geometry.Projection.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.invert.html#compas.geometry.Projection.invert" title="compas.geometry.Projection.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
 <td><p>Invert this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.inverted.html#compas.geometry.Projection.inverted" title="compas.geometry.Projection.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.inverted.html#compas.geometry.Projection.inverted" title="compas.geometry.Projection.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.sha256.html#compas.geometry.Projection.sha256" title="compas.geometry.Projection.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.sha256.html#compas.geometry.Projection.sha256" title="compas.geometry.Projection.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.to_data.html#compas.geometry.Projection.to_data" title="compas.geometry.Projection.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.to_data.html#compas.geometry.Projection.to_data" title="compas.geometry.Projection.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.to_json.html#compas.geometry.Projection.to_json" title="compas.geometry.Projection.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.to_json.html#compas.geometry.Projection.to_json" title="compas.geometry.Projection.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.to_jsonstring.html#compas.geometry.Projection.to_jsonstring" title="compas.geometry.Projection.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.transpose.html#compas.geometry.Projection.transpose" title="compas.geometry.Projection.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a></p></td>
 <td><p>Transpose the matrix of this transformation.</p></td>

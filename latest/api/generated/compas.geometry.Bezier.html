@@ -1289,7 +1289,7 @@ document.write(`
 <h1>Bezier</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Bezier">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Bezier</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/724a637/src/compas/geometry/curves/bezier.py#L119"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Bezier</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eb45611/src/compas/geometry/curves/bezier.py#L119"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.curves.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a></p>
 <p>A Bezier curve is defined by control points and a degree.</p>
 <p>A Bezier curve of degree <code class="docutils literal notranslate"><span class="pre">n</span></code> is a linear combination of <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">+</span> <span class="pre">1</span></code> Bernstein
@@ -1390,50 +1390,56 @@ This is always the world coordinate system.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.from_json.html#compas.geometry.Bezier.from_json" title="compas.geometry.Bezier.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.from_obj.html#compas.geometry.Bezier.from_obj" title="compas.geometry.Bezier.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.from_jsonstring.html#compas.geometry.Bezier.from_jsonstring" title="compas.geometry.Bezier.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.from_obj.html#compas.geometry.Bezier.from_obj" title="compas.geometry.Bezier.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Load a curve from an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.from_step.html#compas.geometry.Bezier.from_step" title="compas.geometry.Bezier.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.from_step.html#compas.geometry.Bezier.from_step" title="compas.geometry.Bezier.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Load a curve from a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.length.html#compas.geometry.Bezier.length" title="compas.geometry.Bezier.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.length.html#compas.geometry.Bezier.length" title="compas.geometry.Bezier.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a></p></td>
 <td><p>Compute the length of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.offset.html#compas.geometry.Bezier.offset" title="compas.geometry.Bezier.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.offset.html#compas.geometry.Bezier.offset" title="compas.geometry.Bezier.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.reverse.html#compas.geometry.Bezier.reverse" title="compas.geometry.Bezier.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.reverse.html#compas.geometry.Bezier.reverse" title="compas.geometry.Bezier.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a></p></td>
 <td><p>Reverse the parametrisation of the curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.reversed.html#compas.geometry.Bezier.reversed" title="compas.geometry.Bezier.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.reversed.html#compas.geometry.Bezier.reversed" title="compas.geometry.Bezier.reversed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reversed</span></code></a></p></td>
 <td><p>Reverse a copy of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.rotate.html#compas.geometry.Bezier.rotate" title="compas.geometry.Bezier.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.rotate.html#compas.geometry.Bezier.rotate" title="compas.geometry.Bezier.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
 <td><p>Rotate the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.rotated.html#compas.geometry.Bezier.rotated" title="compas.geometry.Bezier.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.rotated.html#compas.geometry.Bezier.rotated" title="compas.geometry.Bezier.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
 <td><p>Returns a rotated copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.scale.html#compas.geometry.Bezier.scale" title="compas.geometry.Bezier.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.scale.html#compas.geometry.Bezier.scale" title="compas.geometry.Bezier.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.scaled.html#compas.geometry.Bezier.scaled" title="compas.geometry.Bezier.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.scaled.html#compas.geometry.Bezier.scaled" title="compas.geometry.Bezier.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
 <td><p>Returns a scaled copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.sha256.html#compas.geometry.Bezier.sha256" title="compas.geometry.Bezier.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.sha256.html#compas.geometry.Bezier.sha256" title="compas.geometry.Bezier.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.smooth.html#compas.geometry.Bezier.smooth" title="compas.geometry.Bezier.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.smooth.html#compas.geometry.Bezier.smooth" title="compas.geometry.Bezier.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.split.html#compas.geometry.Bezier.split" title="compas.geometry.Bezier.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.split.html#compas.geometry.Bezier.split" title="compas.geometry.Bezier.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.to_data.html#compas.geometry.Bezier.to_data" title="compas.geometry.Bezier.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.to_data.html#compas.geometry.Bezier.to_data" title="compas.geometry.Bezier.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.to_json.html#compas.geometry.Bezier.to_json" title="compas.geometry.Bezier.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.to_json.html#compas.geometry.Bezier.to_json" title="compas.geometry.Bezier.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Bezier.to_jsonstring.html#compas.geometry.Bezier.to_jsonstring" title="compas.geometry.Bezier.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Bezier.to_obj.html#compas.geometry.Bezier.to_obj" title="compas.geometry.Bezier.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the curve geometry to an OBJ file.</p></td>
