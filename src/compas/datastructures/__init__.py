@@ -77,13 +77,11 @@ from .mesh.conway import (
     mesh_conway_zip,
 )
 from .mesh.remesh import trimesh_remesh
-from .mesh.slice import mesh_slice_plane
 from .mesh.smoothing import mesh_smooth_area, mesh_smooth_centerofmass, mesh_smooth_centroid
 from .mesh.subdivision import trimesh_subdivide_loop
 
 if not compas.IPY:
     from .mesh.matrices import (
-        mesh_face_matrix,
         trimesh_cotangent_laplacian_matrix,
         trimesh_vertexarea_matrix,
     )
@@ -161,7 +159,6 @@ __all__ = [
     "mesh_conway_truncate",
     "mesh_conway_zip",
     "mesh_insert_vertex_on_edge",
-    "mesh_slice_plane",
     "mesh_smooth_area",
     "mesh_smooth_centerofmass",
     "mesh_smooth_centroid",
@@ -198,7 +195,6 @@ if not compas.IPY:
         "network_degree_matrix",
         "network_laplacian_matrix",
         # Meshes
-        "mesh_face_matrix",
         "trimesh_cotangent_laplacian_matrix",
         "trimesh_smooth_laplacian_cotangent",
         "trimesh_vertexarea_matrix",

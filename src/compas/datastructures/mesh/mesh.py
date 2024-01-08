@@ -66,8 +66,8 @@ from .operations.split import mesh_split_strip
 from .subdivision import mesh_subdivide
 
 from .duality import mesh_dual
+from .slice import mesh_slice_plane
 
-# from .slice import mesh_slice_plane
 # from .smoothing import mesh_smooth_centroid
 # from .smoothing import mesh_smooth_area
 
@@ -105,6 +105,7 @@ class Mesh(HalfEdge):
     split_strip = mesh_split_strip
     subdivided = mesh_subdivide
     dual = mesh_dual
+    slice = mesh_slice_plane
 
     def __init__(
         self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
@@ -2150,8 +2151,62 @@ class Mesh(HalfEdge):
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
         return degree_matrix(adjacency, rtype=rtype)
 
+    def face_matrix(self, rtype="array"):
+        r"""Compute the face matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The face matrix.
+
+        Notes
+        -----
+        The face matrix represents the relationship between faces and vertices.
+        Each row of the matrix represents a face. Each column represents a vertex.
+        The matrix is filled with zeros except where a relationship between a vertex
+        and a face exist.
+
+        .. math::
+
+            F_{ij} =
+            \begin{cases}
+                1 & \text{if vertex j is part of face i} \\
+                0 & \text{otherwise}
+            \end{cases}
+
+        The face matrix can for example be used to compute the centroids of all
+        faces of a mesh.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_polyhedron(6)
+        >>> F = mesh.face_matrix()
+        >>> type(F)
+        <class 'numpy.ndarray'>
+
+        >>> from numpy import allclose
+        >>> xyz = asarray(mesh.vertices_attributes('xyz'))
+        >>> F = mesh.face_matrix(mesh, rtype='csr')
+        >>> c1 = F.dot(xyz) / F.sum(axis=1)
+        >>> c2 = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
+        >>> allclose(c1, c2)
+        True
+
+        """
+        from compas.topology import face_matrix
+
+        vertex_index = self.vertex_index()
+        faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
+        return face_matrix(faces, rtype=rtype)
+
     def laplacian_matrix(self, rtype="array"):
-        """Compute the Laplacian matrix of the mesh.
+        r"""Compute the Laplacian matrix of the mesh.
 
         Parameters
         ----------
@@ -2162,6 +2217,43 @@ class Mesh(HalfEdge):
         -------
         array-like
             The Laplacian matrix.
+
+        Notes
+        -----
+        The :math:`n \times n` uniform Laplacian matrix :math:`\mathbf{L}` of a mesh
+        with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
+        follows [1]_
+
+        .. math::
+
+            \mathbf{L}_{ij} =
+            \begin{cases}
+                -1               & i = j \\
+                \frac{1}{deg(i)} & (i, j) \in \mathbf{E} \\
+                0                & \text{otherwise}
+            \end{cases}
+
+        with :math:`deg(i)` the degree of vertex :math:`i`.
+
+        Therefore, the uniform Laplacian of a vertex :math:`\mathbf{v}_{i}` points to
+        the centroid of its neighboring vertices.
+
+        References
+        ----------
+        .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
+            `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_polyhedron(6)
+        >>> L = mesh.laplacian_matrix(mesh, rtype='array')
+        >>> type(L)
+        <class 'numpy.ndarray'>
+
+        >>> xyz = asarray(mesh.vertices_attributes('xyz'))
+        >>> L = mesh.laplacian_matrix(mesh)
+        >>> d = L.dot(xyz)
 
         """
         from compas.topology import laplacian_matrix
