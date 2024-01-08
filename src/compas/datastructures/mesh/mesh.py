@@ -1130,7 +1130,7 @@ class Mesh(HalfEdge):
 
         return offset
 
-    def thicken(self, thickness=1.0, both=True):
+    def thickened(self, thickness=1.0, both=True):
         """Generate a thicknened mesh.
 
         Parameters
@@ -1192,7 +1192,7 @@ class Mesh(HalfEdge):
     # perhaps there should be
     # * from_vertices_and_faces
     # * from_points_and_faces
-    def explode(self):
+    def exploded(self):
         """Explode the mesh into its connected components.
 
         Returns
