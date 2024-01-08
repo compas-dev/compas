@@ -31,18 +31,12 @@ from compas.utilities import linspace
 
 from compas.tolerance import TOL
 
-from .bbox import volmesh_bounding_box
-from .transformations import volmesh_transform
-from .transformations import volmesh_transformed
-
 
 class VolMesh(HalfFace):
     """Geometric implementation of a face data structure for volumetric meshes.
 
     Parameters
     ----------
-    name: str, optional
-        The name of the data structure.
     default_vertex_attributes: dict, optional
         Default values for vertex attributes.
     default_edge_attributes: dict, optional
@@ -51,20 +45,18 @@ class VolMesh(HalfFace):
         Default values for face attributes.
     default_cell_attributes: dict, optional
         Default values for cell attributes.
+    **kwargs : dict, optional
+        Additional attributes to add to the volmesh object.
 
     """
 
-    bounding_box = volmesh_bounding_box
-    transform = volmesh_transform
-    transformed = volmesh_transformed
-
     def __init__(
         self,
-        name=None,
         default_vertex_attributes=None,
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
+        **kwargs
     ):
         _default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
@@ -79,11 +71,11 @@ class VolMesh(HalfFace):
         if default_cell_attributes:
             _default_cell_attributes.update(default_cell_attributes)
         super(VolMesh, self).__init__(
-            name=name or "VolMesh",
             default_vertex_attributes=_default_vertex_attributes,
             default_edge_attributes=_default_edge_attributes,
             default_face_attributes=_default_face_attributes,
             default_cell_attributes=_default_cell_attributes,
+            **kwargs
         )
 
     def __str__(self):
@@ -1047,3 +1039,18 @@ class VolMesh(HalfFace):
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Polyhedron(vertices, faces)
+
+
+# =============================================================================
+# Additional methods for the volmesh class
+# =============================================================================
+
+
+from .bbox import volmesh_bounding_box  # noqa: E402
+from .transformations import volmesh_transform  # noqa: E402
+from .transformations import volmesh_transformed  # noqa: E402
+
+
+VolMesh.bounding_box = volmesh_bounding_box  # type: ignore
+VolMesh.transform = volmesh_transform  # type: ignore
+VolMesh.transformed = volmesh_transformed  # type: ignore

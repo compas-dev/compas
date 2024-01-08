@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 * Added `viewerinstance` in `compas.scene.Scene` to support viewers context detection.
 * Added `compas_rhino8` as starting point for Rhino8 support.
 * Added `compas.scene.SceneObjectNode`.
@@ -33,19 +34,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `show_edges` flag to `compas.scene.VolMeshObject`.
 * Added `show_faces` flag to `compas.scene.VolMeshObject`.
 * Added `show_cells` flag to `compas.scene.VolMeshObject`.
+* Added `compas.data.Data.to_jsonstring` and `compas.data.Data.from_jsonstring`.
+* Added `compas.data.Data.attributes`.
 
 ### Changed
 
 * Changed the `__str__` of `compas.geometry.Point` and `compas.geometry.Vector` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
-* In pull requests, `docs` Workflow are now only triggered on review approval.
-* The `draw` implementations of `compas.scene.SceneObject` will now always use the `worldtransformation` of the `SceneObject`.
+* Changed `docs` Workflow to only be triggered on review approval in pull requests.
+* Changed `draw` implementations of `compas.scene.SceneObject` to always use the `worldtransformation` of the `SceneObject`.
 * Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
 * Fixed `TypeErrorException` when serializing a `Mesh` which has been converted from Rhino.
 * Fixed color conversions in `compas_rhion.conversions.mesh_to_compas`.
+* Changed `compas.data.Data.name` to be stored in `compas.data.Data.attributes`.
+* Changed `compas.data.Data.__jsondump__` to include `compas.data.Data.attributes` if the dict is not empty.
+* Changed `compas.data.Data.__jsonload__` to update `compas.data.Data.attributes` if the attribute dict is provided.
+* Changed `compas.datastructures.Graph` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Changed `compas.datastructures.Network` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Changed `compas.datastructures.Halfedge` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Changed `compas.datastructures.Mesh` to take additional `**kwargs`, instead of only `name=None` specifically.
 
 ### Removed
 
 * Removed `compas_rhino.forms`. Forms will be moved to `compas_ui`.
+* Removed `compas.datastructures.Datastructure.attributes` and `compas.datastructures.Datastructure.name` (moved to `compas.data.Data`).
+* Removed `attributes` from `compas.datastructures.Graph.data`.
+* Removed `attributes` from `compas.datastructures.Network.data`.
+* Removed `attributes` from `compas.datastructures.Halfedge.data`.
+* Removed `attributes` from `compas.datastructures.Mesh.data`.
 
 ## [2.0.0-beta.1] 2023-12-20
 

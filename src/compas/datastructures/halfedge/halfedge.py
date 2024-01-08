@@ -18,14 +18,14 @@ class HalfEdge(Datastructure):
 
     Parameters
     ----------
-    name: str, optional
-        The name of the datastructure.
     default_vertex_attributes: dict, optional
         Default values for vertex attributes.
     default_edge_attributes: dict, optional
         Default values for edge attributes.
     default_face_attributes: dict, optional
         Default values for face attributes.
+    **kwargs : dict, optional
+        Additional attributes to add to the data structure.
 
     Attributes
     ----------
@@ -53,7 +53,6 @@ class HalfEdge(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -87,7 +86,6 @@ class HalfEdge(Datastructure):
             "max_face": {"type": "integer", "minimum": -1},
         },
         "required": [
-            "attributes",
             "dva",
             "dea",
             "dfa",
@@ -101,13 +99,9 @@ class HalfEdge(Datastructure):
     }
 
     def __init__(
-        self,
-        name=None,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
+        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
     ):
-        super(HalfEdge, self).__init__(name=name)
+        super(HalfEdge, self).__init__(**kwargs)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex = {}
@@ -136,7 +130,6 @@ class HalfEdge(Datastructure):
     @property
     def data(self):
         return {
-            "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
@@ -155,7 +148,6 @@ class HalfEdge(Datastructure):
         dea = data.get("dea") or {}
 
         halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea)
-        halfedge.attributes.update(data.get("attributes") or {})
 
         vertex = data.get("vertex") or {}
         face = data.get("face") or {}
