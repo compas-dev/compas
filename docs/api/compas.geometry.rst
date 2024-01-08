@@ -359,6 +359,7 @@ In environments where numpy is not available, these functions can still be acces
     local_to_world_coordinates_numpy
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
+    pca_numpy
     transform_points_numpy
     transform_vectors_numpy
     trimesh_descent_numpy
