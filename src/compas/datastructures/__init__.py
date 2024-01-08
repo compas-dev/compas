@@ -54,17 +54,13 @@ if not compas.IPY:
 # Meshes
 # =============================================================================
 
-from .mesh.operations.collapse import mesh_collapse_edge, trimesh_collapse_edge
+from .mesh.operations.collapse import trimesh_collapse_edge
 from .mesh.operations.insert import mesh_add_vertex_to_face_edge, mesh_insert_vertex_on_edge
-from .mesh.operations.merge import mesh_merge_faces
-from .mesh.operations.split import mesh_split_edge, mesh_split_face, mesh_split_strip, trimesh_split_edge
+from .mesh.operations.split import trimesh_split_edge
 from .mesh.operations.substitute import mesh_substitute_vertex_in_faces
 from .mesh.operations.swap import trimesh_swap_edge
 from .mesh.operations.weld import mesh_unweld_edges, mesh_unweld_vertices
 
-from .mesh.bbox import mesh_bounding_box, mesh_bounding_box_xy  # this needs to be moved to geometry
-from .mesh.clean import mesh_delete_duplicate_vertices
-from .mesh.combinatorics import mesh_connected_components, mesh_is_connected
 from .mesh.conway import (
     mesh_conway_ambo,
     mesh_conway_bevel,
@@ -80,66 +76,23 @@ from .mesh.conway import (
     mesh_conway_truncate,
     mesh_conway_zip,
 )
-from .mesh.curvature import trimesh_gaussian_curvature, trimesh_mean_curvature  # this needs to be moved to geometry
-from .mesh.duality import mesh_dual
-from .mesh.explode import mesh_disconnected_faces, mesh_disconnected_vertices, mesh_explode
-from .mesh.geometry import trimesh_face_circle  # this needs to be moved to geometry
-from .mesh.join import mesh_weld, meshes_join, meshes_join_and_weld  # used by offset
-from .mesh.orientation import mesh_face_adjacency, mesh_flip_cycles, mesh_unify_cycles  # used by offset
-from .mesh.offset import mesh_offset, mesh_thicken
-from .mesh.planarisation import mesh_flatness, mesh_planarize_faces  # this needs to be moved to geometry
 from .mesh.remesh import trimesh_remesh
 from .mesh.slice import mesh_slice_plane
 from .mesh.smoothing import mesh_smooth_area, mesh_smooth_centerofmass, mesh_smooth_centroid
-from .mesh.subdivision import (
-    mesh_subdivide,
-    mesh_subdivide_catmullclark,
-    mesh_subdivide_corner,
-    mesh_subdivide_doosabin,
-    mesh_subdivide_frames,
-    mesh_subdivide_quad,
-    mesh_subdivide_tri,
-    trimesh_subdivide_loop,
-)
-from .mesh.transformations import mesh_transform, mesh_transformed  # this needs to be moved to geometry
-from .mesh.triangulation import mesh_quads_to_triangles
+from .mesh.subdivision import trimesh_subdivide_loop
 
 if not compas.IPY:
     from .mesh.matrices import (
-        mesh_adjacency_matrix,
-        mesh_connectivity_matrix,
-        mesh_degree_matrix,
         mesh_face_matrix,
-        mesh_laplacian_matrix,
         trimesh_cotangent_laplacian_matrix,
         trimesh_vertexarea_matrix,
     )
 
-    from .mesh.bbox_numpy import (
-        mesh_oriented_bounding_box_numpy,
-        mesh_oriented_bounding_box_xy_numpy,
-    )  # this needs to be moved to geometry
-    from .mesh.contours_numpy import mesh_isolines_numpy, mesh_contours_numpy  # this needs to be moved to geometry
-    from .mesh.descent_numpy import trimesh_descent  # this needs to be moved to geometry
-    from .mesh.geodesics_numpy import mesh_geodesic_distances_numpy
-    from .mesh.pull_numpy import trimesh_pull_points_numpy  # this needs to be moved to geometry
     from .mesh.smoothing_numpy import trimesh_smooth_laplacian_cotangent
-    from .mesh.transformations_numpy import (
-        mesh_transform_numpy,
-        mesh_transformed_numpy,
-    )  # this needs to be moved to geometry
-    from .mesh.trimesh_samplepoints_numpy import trimesh_samplepoints_numpy
 
 # =============================================================================
 # Halffaces
 # =============================================================================
-
-# =============================================================================
-# Volmeshes
-# =============================================================================
-
-from .volmesh.bbox import volmesh_bounding_box  # this needs to be moved to geometry
-from .volmesh.transformations import volmesh_transform, volmesh_transformed  # this needs to be moved to geometry
 
 # =============================================================================
 # Volmeshes
@@ -151,19 +104,14 @@ from .volmesh.transformations import volmesh_transform, volmesh_transformed  # t
 
 from .graph.graph import Graph
 from .network.network import Network
-
 from .halfedge.halfedge import HalfEdge
 from .mesh.mesh import Mesh
-
 from .halfface.halfface import HalfFace
 from .volmesh.volmesh import VolMesh
-
 from .assembly.exceptions import AssemblyError, FeatureError
 from .assembly.assembly import Assembly
 from .assembly.part import Feature, GeometricFeature, ParametricFeature, Part
-
 from .cell_network.cell_network import CellNetwork
-
 from .tree.tree import Tree, TreeNode
 
 __all__ = [
@@ -199,10 +147,6 @@ __all__ = [
     # Meshes
     "Mesh",
     "mesh_add_vertex_to_face_edge",
-    "mesh_bounding_box_xy",
-    "mesh_bounding_box",
-    "mesh_collapse_edge",
-    "mesh_connected_components",
     "mesh_conway_ambo",
     "mesh_conway_bevel",
     "mesh_conway_dual",
@@ -216,48 +160,15 @@ __all__ = [
     "mesh_conway_snub",
     "mesh_conway_truncate",
     "mesh_conway_zip",
-    "mesh_delete_duplicate_vertices",
-    "mesh_disconnected_faces",
-    "mesh_disconnected_vertices",
-    "mesh_dual",
-    "mesh_explode",
-    "mesh_face_adjacency",
-    "mesh_flatness",
-    "mesh_flip_cycles",
     "mesh_insert_vertex_on_edge",
-    "mesh_is_connected",
-    "mesh_merge_faces",
-    "mesh_offset",
-    "mesh_planarize_faces",
-    "mesh_quads_to_triangles",
     "mesh_slice_plane",
     "mesh_smooth_area",
     "mesh_smooth_centerofmass",
     "mesh_smooth_centroid",
-    "mesh_split_edge",
-    "mesh_split_face",
-    "mesh_split_strip",
-    "mesh_subdivide_catmullclark",
-    "mesh_subdivide_corner",
-    "mesh_subdivide_doosabin",
-    "mesh_subdivide_frames",
-    "mesh_subdivide_quad",
-    "mesh_subdivide_tri",
-    "mesh_subdivide",
     "mesh_substitute_vertex_in_faces",
-    "mesh_thicken",
-    "mesh_transform",
-    "mesh_transformed",
-    "mesh_unify_cycles",
     "mesh_unweld_edges",
     "mesh_unweld_vertices",
-    "mesh_weld",
-    "meshes_join_and_weld",
-    "meshes_join",
     "trimesh_collapse_edge",
-    "trimesh_face_circle",
-    "trimesh_gaussian_curvature",
-    "trimesh_mean_curvature",
     "trimesh_remesh",
     "trimesh_split_edge",
     "trimesh_subdivide_loop",
@@ -266,9 +177,6 @@ __all__ = [
     "HalfFace",
     # Volumetric Meshes
     "VolMesh",
-    "volmesh_bounding_box",
-    "volmesh_transform",
-    "volmesh_transformed",
     # Assemblies
     "Assembly",
     "Part",
@@ -290,22 +198,8 @@ if not compas.IPY:
         "network_degree_matrix",
         "network_laplacian_matrix",
         # Meshes
-        "mesh_adjacency_matrix",
-        "mesh_connectivity_matrix",
-        "mesh_contours_numpy",
-        "mesh_degree_matrix",
         "mesh_face_matrix",
-        "mesh_geodesic_distances_numpy",
-        "mesh_isolines_numpy",
-        "mesh_laplacian_matrix",
-        "mesh_oriented_bounding_box_numpy",
-        "mesh_oriented_bounding_box_xy_numpy",
-        "mesh_transform_numpy",
-        "mesh_transformed_numpy",
         "trimesh_cotangent_laplacian_matrix",
-        "trimesh_descent",
-        "trimesh_pull_points_numpy",
-        "trimesh_samplepoints_numpy",
         "trimesh_smooth_laplacian_cotangent",
         "trimesh_vertexarea_matrix",
     ]

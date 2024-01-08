@@ -45,12 +45,31 @@ from compas.geometry import subtract_vectors
 from compas.geometry import sum_vectors
 from compas.geometry import midpoint_line
 from compas.geometry import vector_average
+from compas.geometry import bounding_box
+from compas.geometry import oriented_bounding_box
+from compas.geometry import transform_points
 
 from compas.utilities import linspace
 from compas.utilities import pairwise
 from compas.utilities import window
 
+from compas.topology import breadth_first_traverse
+from compas.topology import face_adjacency
+
 from compas.datastructures import HalfEdge
+
+from .operations.collapse import mesh_collapse_edge
+from .operations.merge import mesh_merge_faces
+from .operations.split import mesh_split_edge
+from .operations.split import mesh_split_face
+from .operations.split import mesh_split_strip
+from .subdivision import mesh_subdivide
+
+from .duality import mesh_dual
+
+# from .slice import mesh_slice_plane
+# from .smoothing import mesh_smooth_centroid
+# from .smoothing import mesh_smooth_area
 
 
 class Mesh(HalfEdge):
@@ -79,6 +98,14 @@ class Mesh(HalfEdge):
 
     """
 
+    collapse_edge = mesh_collapse_edge
+    merge_faces = mesh_merge_faces
+    split_edge = mesh_split_edge
+    split_face = mesh_split_face
+    split_strip = mesh_split_strip
+    subdivided = mesh_subdivide
+    dual = mesh_dual
+
     def __init__(
         self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
     ):
@@ -101,14 +128,6 @@ class Mesh(HalfEdge):
     def __str__(self):
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # customisation
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # special properties
-    # --------------------------------------------------------------------------
 
     # --------------------------------------------------------------------------
     # from/to
@@ -718,6 +737,70 @@ class Mesh(HalfEdge):
     # builders
     # --------------------------------------------------------------------------
 
+    # rename this to "add"
+    # and add an alias
+    def join(self, other, weld=False, precision=None):
+        """Add the vertices and faces of another mesh to the current mesh.
+
+        Parameters
+        ----------
+        other : :class:`compas.datastructures.Mesh`
+            The other mesh.
+        weld : bool, optional
+            If True, weld close vertices after joining.
+            Default is False.
+        precision : int, optional
+            The precision used for welding.
+            Default is :attr:`TOL.precision`.
+
+        Returns
+        -------
+        None
+            The mesh is modified in place.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box
+        >>> from compas.geometry import Translation
+        >>> from compas.datastructures import Mesh
+        >>> a = Box.from_width_height_depth(1, 1, 1)
+        >>> b = Box.from_width_height_depth(1, 1, 1)
+        >>> T = Translation.from_vector([2, 0, 0])
+        >>> b.transform(T)
+        >>> a = Mesh.from_shape(a)
+        >>> b = Mesh.from_shape(b)
+        >>> a.number_of_vertices()
+        8
+        >>> a.number_of_faces()
+        6
+        >>> b.number_of_vertices()
+        8
+        >>> b.number_of_faces()
+        6
+        >>> a.join(b)
+        >>> a.number_of_vertices()
+        16
+        >>> a.number_of_faces()
+        12
+
+        """
+        self.default_vertex_attributes.update(other.default_vertex_attributes)
+        self.default_edge_attributes.update(other.default_edge_attributes)
+        self.default_face_attributes.update(other.default_face_attributes)
+
+        vertex_old_new = {}
+
+        for vertex, attr in other.vertices(True):
+            key = self.add_vertex(attr_dict=attr)
+            vertex_old_new[vertex] = key
+
+        for face, attr in other.faces(True):
+            vertices = [vertex_old_new[key] for key in other.face_vertices(face)]
+            self.add_face(vertices, attr_dict=attr)
+
+        if weld:
+            self.weld(precision=precision)
+
     # --------------------------------------------------------------------------
     # modifiers
     # --------------------------------------------------------------------------
@@ -756,88 +839,173 @@ class Mesh(HalfEdge):
             return w, fkeys
         return w
 
-    def join(self, other):
-        """Add the vertices and faces of another mesh to the current mesh.
+    # --------------------------------------------------------------------------
+    # cleanup
+    # --------------------------------------------------------------------------
+
+    def weld(self, precision=None):
+        """Weld vertices that are closer than a given precision.
 
         Parameters
         ----------
-        other : :class:`compas.datastructures.Mesh`
-            The other mesh.
+        precision : int, optional
+            The precision of the geometric map that is used to connect the lines.
+            Defaults to the value of :attr:`compas.PRECISION`.
 
         Returns
         -------
         None
             The mesh is modified in place.
 
+        """
+        self.remove_duplicate_vertices(precision=precision)
+
+    def remove_duplicate_vertices(self, precision=None):
+        """Remove all duplicate vertices and clean up any affected faces.
+
+        Parameters
+        ----------
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
+
+        Returns
+        -------
+        None
+            The mesh is modified in-place.
+
         Examples
         --------
-        >>> from compas.geometry import Box
-        >>> from compas.geometry import Translation
+        >>> import compas
         >>> from compas.datastructures import Mesh
-        >>> a = Box.from_width_height_depth(1, 1, 1)
-        >>> b = Box.from_width_height_depth(1, 1, 1)
-        >>> T = Translation.from_vector([2, 0, 0])
-        >>> b.transform(T)
-        >>> a = Mesh.from_shape(a)
-        >>> b = Mesh.from_shape(b)
-        >>> a.number_of_vertices()
-        8
-        >>> a.number_of_faces()
-        6
-        >>> b.number_of_vertices()
-        8
-        >>> b.number_of_faces()
-        6
-        >>> a.join(b)
-        >>> a.number_of_vertices()
-        16
-        >>> a.number_of_faces()
-        12
+        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        >>> mesh.number_of_vertices()
+        36
+        >>> for x, y, z in mesh.vertices_attributes('xyz', keys=list(mesh.vertices())[:5]):
+        ...     mesh.add_vertex(x=x, y=y, z=z)
+        ...
+        38
+        39
+        40
+        >>> mesh.number_of_vertices()
+        41
+        >>> mesh.remove_duplicate_vertices()
+        >>> mesh.number_of_vertices()
+        36
 
         """
-        self.default_vertex_attributes.update(other.default_vertex_attributes)
-        self.default_edge_attributes.update(other.default_edge_attributes)
-        self.default_face_attributes.update(other.default_face_attributes)
-        vertex_old_new = {}
-        for vertex, attr in other.vertices(True):
-            key = self.add_vertex(attr_dict=attr)
-            vertex_old_new[vertex] = key
-        for face, attr in other.faces(True):
-            vertices = [vertex_old_new[key] for key in other.face_vertices(face)]
-            self.add_face(vertices, attr_dict=attr)
+        vertex_gkey = {}
+        for vertex in self.vertices():
+            gkey = TOL.geometric_key(self.vertex_coordinates(vertex), precision=precision)
+            vertex_gkey[vertex] = gkey
 
-    # --------------------------------------------------------------------------
-    # accessors
-    # --------------------------------------------------------------------------
+        gkey_vertex = {gkey: vertex for vertex, gkey in iter(vertex_gkey.items())}
 
-    # --------------------------------------------------------------------------
-    # attributes
-    # --------------------------------------------------------------------------
+        for boundary in self.vertices_on_boundaries():
+            for vertex in boundary:
+                gkey = TOL.geometric_key(self.vertex_coordinates(vertex), precision=precision)
+                gkey_vertex[gkey] = vertex
 
-    # --------------------------------------------------------------------------
-    # mesh info
-    # --------------------------------------------------------------------------
+        for vertex in list(self.vertices()):
+            test = gkey_vertex[vertex_gkey[vertex]]
+            if test != vertex:
+                del self.vertex[vertex]
+                del self.halfedge[vertex]
+                for u in self.halfedge:
+                    nbrs = list(self.halfedge[u].keys())
+                    for v in nbrs:
+                        if v == vertex:
+                            del self.halfedge[u][v]
 
-    # def genus(self):
-    #     """Calculate the genus.
+        for face in self.faces():
+            seen = set()
+            vertices = []
+            for vertex in [gkey_vertex[vertex_gkey[vertex]] for vertex in self.face_vertices(face)]:
+                if vertex not in seen:
+                    seen.add(vertex)
+                    vertices.append(vertex)
+            self.face[face] = vertices
+            for u, v in self.face_halfedges(face):
+                self.halfedge[u][v] = face
+                if u not in self.halfedge[v]:
+                    self.halfedge[v][u] = None
 
-    #     Returns
-    #     -------
-    #     int
-    #         The genus.
+    # only reason this is here is because of the potential angles check
+    def quads_to_triangles(self, check_angles=False):
+        """Convert all quadrilateral faces to triangles by adding a diagonal edge.
 
-    #     References
-    #     ----------
-    #     .. [1] Wolfram MathWorld. *Genus*.
-    #            Available at: http://mathworld.wolfram.com/Genus.html.
-    #     """
-    #     X = self.euler()
-    #     # each boundary must be taken into account as if it was one face
-    #     B = len(self.boundaries())
-    #     if self.is_orientable():
-    #         return (2 - (X + B)) / 2
-    #     else:
-    #         return 2 - (X + B)
+        Parameters
+        ----------
+        check_angles : bool, optional
+            Flag indicating that the angles of the quads should be checked to choose the best diagonal.
+
+        Returns
+        -------
+        None
+            The mesh is modified in place.
+
+        """
+        for face in list(self.faces()):
+            attr = self.face_attributes(face)
+            vertices = self.face_vertices(face)
+            if len(vertices) == 4:
+                a, b, c, d = vertices
+                t1, t2 = self.split_face(face, b, d)
+                self.face_attributes(t1, names=attr.keys(), values=attr.values())  # type: ignore
+                self.face_attributes(t2, names=attr.keys(), values=attr.values())  # type: ignore
+                # self.facedata[t1] = attr.copy()
+                # self.facedata[t2] = attr.copy()
+                if face in self.facedata:
+                    del self.facedata[face]
+
+    # only reason this is here and not on the halfedge is because of the spatial tree
+    def unify_cycles(self, root=None):
+        """Unify the cycles of the mesh.
+
+        Returns
+        -------
+        None
+            The mesh is modified in place.
+
+        """
+
+        def unify(node, nbr):
+            # find the common edge
+            for u, v in self.face_halfedges(nbr):
+                if u in self.face[node] and v in self.face[node]:
+                    # node and nbr have edge u-v in common
+                    i = self.face[node].index(u)
+                    j = self.face[node].index(v)
+                    if i == j - 1 or (j == 0 and u == self.face[node][-1]):
+                        # if the traversal of a neighboring halfedge
+                        # is in the same direction
+                        # flip the neighbor
+                        self.face[nbr][:] = self.face[nbr][::-1]
+                        return
+
+        if root is None:
+            root = self.face_sample(size=1)[0]
+
+        index_face = {index: face for index, face in enumerate(self.faces())}
+        points = self.vertices_attributes("xyz")
+        faces = [self.face_vertices(face) for face in self.faces()]
+
+        adj = face_adjacency(points, faces)
+        adjacency = {}
+        for face in adj:
+            adjacency[index_face[face]] = [index_face[nbr] for nbr in adj[face]]
+
+        visited = breadth_first_traverse(adjacency, root, unify)
+
+        if len(list(visited)) != self.number_of_faces():
+            raise Exception("Not all faces were visited.")
+
+        self.halfedge = {key: {} for key in self.vertices()}
+        for fkey in self.faces():
+            for u, v in self.face_halfedges(fkey):
+                self.halfedge[u][v] = fkey
+                if u not in self.halfedge[v]:
+                    self.halfedge[v][u] = None
 
     # --------------------------------------------------------------------------
     # vertex topology
@@ -897,6 +1065,150 @@ class Mesh(HalfEdge):
             sum_vectors([scale_vector(self.face_normal(fkey), self.face_area(fkey)) for fkey in self.faces()]),
             1.0 / self.area(),
         )
+
+    def aabb(self):
+        """Calculate the axis aligned bounding box of the mesh.
+
+        Returns
+        -------
+        list[[float, float, float]]
+            XYZ coordinates of 8 points defining a box.
+
+        """
+        xyz = self.vertices_attributes("xyz")
+        return bounding_box(xyz)
+
+    def obb(self):
+        """Calculate the oriented bounding box of the mesh.
+
+        Returns
+        -------
+        list[[float, float, float]]
+            XYZ coordinates of 8 points defining a box.
+
+        """
+        xyz = self.vertices_attributes("xyz")
+        return oriented_bounding_box(xyz)
+
+    def offset(self, distance=1.0):
+        """Generate an offset mesh.
+
+        Parameters
+        ----------
+        distance : float, optional
+            The offset distance.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            The offset mesh.
+
+        Notes
+        -----
+        If the offset distance is a positive value, the offset is in the direction of the vertex normal.
+        If the value is negative, the offset is in the opposite direction.
+        In both cases, the orientation of the offset mesh is the same as the orientation of the original.
+
+        In areas with high degree of curvature, the offset mesh can have self-intersections.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh, mesh_offset
+        >>> from compas.geometry import distance_point_point as dist
+        >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
+        >>> mesh.offset()
+        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
+
+        """
+        offset = self.copy()
+
+        for vertex in offset.vertices():
+            normal = self.vertex_normal(vertex)
+            xyz = self.vertex_coordinates(vertex)
+            offset.vertex_attributes(vertex, "xyz", add_vectors(xyz, scale_vector(normal, distance)))
+
+        return offset
+
+    def thicken(self, thickness=1.0, both=True):
+        """Generate a thicknened mesh.
+
+        Parameters
+        ----------
+        thickness : float, optional
+            The mesh thickness.
+            This should be a positive value.
+        both : bool, optional
+            If true, the mesh is thickened on both sides of the original.
+            Otherwise, the mesh is thickened on the side of the positive normal.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            The thickened mesh.
+
+        Raises
+        ------
+        ValueError
+            If `thickness` is not a positive number.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
+        >>> mesh.thicken(mesh)
+        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
+
+        """
+        if thickness <= 0:
+            raise ValueError("Thickness should be a positive number.")
+
+        if both:
+            mesh_top = self.offset(+0.5 * thickness)
+            mesh_bottom = self.offset(-0.5 * thickness)
+        else:
+            mesh_top = self.offset(thickness)
+            mesh_bottom = self.copy()
+
+        # flip bottom part
+        mesh_bottom.flip_cycles()
+
+        # join parts
+        thickened_mesh = mesh_top.join(mesh_bottom)
+
+        # close boundaries
+        n = thickened_mesh.number_of_vertices() / 2
+
+        edges_on_boundary = [edge for boundary in list(thickened_mesh.edges_on_boundaries()) for edge in boundary]
+
+        for u, v in edges_on_boundary:
+            if u < n and v < n:
+                thickened_mesh.add_face([u, v, v + n, u + n])
+
+        return thickened_mesh
+
+    # the only reason this function is here and not in halfedge
+    # is because "from_vertices_and_faces" doesn't accept general vertex data
+    # perhaps there should be
+    # * from_vertices_and_faces
+    # * from_points_and_faces
+    def explode(self):
+        """Explode the mesh into its connected components.
+
+        Returns
+        -------
+        list[:class:`compas.datastructures.Mesh`]
+            The list of the meshes from the exploded mesh parts.
+
+        """
+        cls = type(self)
+        meshes = []
+        for part in self.connected_faces():
+            vertexkeys = list(set([vertex for face in part for vertex in self.face_vertices(face)]))
+            vertices = self.vertices_attributes("xyz", keys=vertexkeys)
+            vertex_index = {vertex: index for index, vertex in enumerate(vertexkeys)}
+            faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in part]
+            meshes.append(cls.from_vertices_and_faces(vertices, faces))
+        return meshes
 
     # --------------------------------------------------------------------------
     # vertex geometry
@@ -1538,6 +1850,7 @@ class Mesh(HalfEdge):
     # boundary
     # --------------------------------------------------------------------------
 
+    # move this to the halfedge class
     def vertices_on_boundary(self):
         """Find the vertices on the longest boundary.
 
@@ -1715,59 +2028,144 @@ class Mesh(HalfEdge):
                 facegroups.append(faces)
         return facegroups
 
+    # --------------------------------------------------------------------------
+    # transformations
+    # --------------------------------------------------------------------------
 
-# =============================================================================
-# Additional methods for the mesh class
-# =============================================================================
+    def transform(self, T):
+        """Transform the mesh.
 
+        Parameters
+        ----------
+        T : :class:`Transformation`
+            The transformation used to transform the mesh.
 
-from .operations.collapse import mesh_collapse_edge  # noqa: E402
-from .operations.split import mesh_split_edge  # noqa: E402
-from .operations.split import mesh_split_face  # noqa: E402
-from .operations.split import mesh_split_strip  # noqa: E402
-from .operations.merge import mesh_merge_faces  # noqa: E402
+        Returns
+        -------
+        None
+            The mesh is modified in-place.
 
-from .bbox import mesh_bounding_box  # noqa: E402
-from .bbox import mesh_bounding_box_xy  # noqa: E402
-from .combinatorics import mesh_is_connected  # noqa: E402
-from .combinatorics import mesh_connected_components  # noqa: E402
-from .duality import mesh_dual  # noqa: E402
-from .orientation import mesh_face_adjacency  # noqa: E402
-from .orientation import mesh_flip_cycles  # noqa: E402
-from .orientation import mesh_unify_cycles  # noqa: E402
-from .slice import mesh_slice_plane  # noqa: E402
-from .smoothing import mesh_smooth_centroid  # noqa: E402
-from .smoothing import mesh_smooth_area  # noqa: E402
-from .subdivision import mesh_subdivide  # noqa: E402
-from .transformations import mesh_transform  # noqa: E402
-from .transformations import mesh_transformed  # noqa: E402
-from .triangulation import mesh_quads_to_triangles  # noqa: E402
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import matrix_from_axis_and_angle
+        >>> mesh = Mesh.from_polyhedron(6)
+        >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
+        >>> mesh.transform(T)
 
+        """
+        points = transform_points(self.vertices_attributes("xyz"), T)
+        for vertex, point in zip(self.vertices(), points):
+            self.vertex_attributes(vertex, "xyz", point)
 
-Mesh.bounding_box = mesh_bounding_box  # type: ignore
-Mesh.bounding_box_xy = mesh_bounding_box_xy  # type: ignore
-Mesh.collapse_edge = mesh_collapse_edge  # type: ignore
-Mesh.connected_components = mesh_connected_components  # type: ignore
-Mesh.dual = mesh_dual  # type: ignore
-Mesh.face_adjacency = mesh_face_adjacency  # type: ignore
-Mesh.flip_cycles = mesh_flip_cycles  # type: ignore
-Mesh.is_connected = mesh_is_connected  # type: ignore
-Mesh.merge_faces = mesh_merge_faces  # type: ignore
-Mesh.slice_plane = mesh_slice_plane  # type: ignore
-Mesh.smooth_centroid = mesh_smooth_centroid  # type: ignore
-Mesh.smooth_area = mesh_smooth_area  # type: ignore
-Mesh.split_edge = mesh_split_edge  # type: ignore
-Mesh.split_face = mesh_split_face  # type: ignore
-Mesh.split_strip = mesh_split_strip  # type: ignore
-Mesh.subdivide = mesh_subdivide  # type: ignore
-Mesh.transform = mesh_transform  # type: ignore
-Mesh.transformed = mesh_transformed  # type: ignore
-Mesh.unify_cycles = mesh_unify_cycles  # type: ignore
-Mesh.quads_to_triangles = mesh_quads_to_triangles  # type: ignore
+    def transform_numpy(self, T):
+        """Transform the mesh.
 
-if not compas.IPY:
-    from .bbox_numpy import mesh_oriented_bounding_box_numpy
-    from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
+        Parameters
+        ----------
+        T : :class:`numpy.ndarray`
+            The transformation used to transform the mesh.
 
-    Mesh.obb_numpy = mesh_oriented_bounding_box_numpy  # type: ignore
-    Mesh.obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy  # type: ignore
+        Returns
+        -------
+        None
+            The mesh is modified in-place.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import matrix_from_axis_and_angle_numpy
+        >>> mesh = Mesh.from_polyhedron(6)
+        >>> T = matrix_from_axis_and_angle_numpy([0, 0, 1], math.pi / 4)
+        >>> mesh.transform_numpy(T)
+
+        """
+        from compas.geometry import transform_points_numpy
+
+        points = transform_points_numpy(self.vertices_attributes("xyz"), T)
+        for vertex, point in zip(self.vertices(), points):
+            self.vertex_attributes(vertex, "xyz", point)
+
+    # --------------------------------------------------------------------------
+    # matrices
+    # --------------------------------------------------------------------------
+
+    def adjacency_matrix(self, rtype="array"):
+        """Compute the adjacency matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The adjacency matrix.
+
+        """
+        from compas.topology import adjacency_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return adjacency_matrix(adjacency, rtype=rtype)
+
+    def connectivity_matrix(self, rtype="array"):
+        """Compute the connectivity matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The connectivity matrix.
+
+        """
+        from compas.topology import connectivity_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return connectivity_matrix(adjacency, rtype=rtype)
+
+    def degree_matrix(self, rtype="array"):
+        """Compute the degree matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The degree matrix.
+
+        """
+        from compas.topology import degree_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return degree_matrix(adjacency, rtype=rtype)
+
+    def laplacian_matrix(self, rtype="array"):
+        """Compute the Laplacian matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The Laplacian matrix.
+
+        """
+        from compas.topology import laplacian_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return laplacian_matrix(adjacency, rtype=rtype)

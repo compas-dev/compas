@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import array
 from numpy import cross
 from numpy import bincount
@@ -17,7 +13,7 @@ from scipy.sparse.linalg import splu
 from compas.numerical import normrow
 from compas.numerical import normalizerow
 
-from .matrices import trimesh_cotangent_laplacian_matrix
+from ..datastructures.mesh.matrices import trimesh_cotangent_laplacian_matrix
 
 
 def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):

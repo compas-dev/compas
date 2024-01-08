@@ -4,8 +4,6 @@ Package containing topological algorithms for traversal, connectivity, combinato
 
 from __future__ import absolute_import
 
-import compas
-
 from .traversal import (
     depth_first_ordering,
     breadth_first_ordering,
@@ -19,13 +17,8 @@ from .traversal import (
 )
 from .combinatorics import vertex_coloring, connected_components
 from .orientation import face_adjacency, unify_cycles
-from .connectivity import adjacency_from_edges
-
-if compas.RHINO:
-    from .orientation_rhino import face_adjacency_rhino, unify_cycles_rhino
-
-if not compas.IPY:
-    from .orientation_numpy import face_adjacency_numpy, unify_cycles_numpy
+from .connectivity import vertex_adjacency_from_edges
+from .matrices import adjacency_matrix, degree_matrix, connectivity_matrix, laplacian_matrix, face_matrix
 
 
 __all__ = [
@@ -42,17 +35,10 @@ __all__ = [
     "connected_components",
     "face_adjacency",
     "unify_cycles",
-    "adjacency_from_edges",
+    "vertex_adjacency_from_edges",
+    "adjacency_matrix",
+    "degree_matrix",
+    "connectivity_matrix",
+    "laplacian_matrix",
+    "face_matrix",
 ]
-
-if compas.RHINO:
-    __all__ += [
-        "face_adjacency_rhino",
-        "unify_cycles_rhino",
-    ]
-
-if not compas.IPY:
-    __all__ += [
-        "face_adjacency_numpy",
-        "unify_cycles_numpy",
-    ]

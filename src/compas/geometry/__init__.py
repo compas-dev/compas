@@ -345,6 +345,7 @@ from .trimesh_remeshing import (
 from .trimesh_slicing import trimesh_slice
 
 if not compas.IPY:
+    from .pca_numpy import pca_numpy
     from .bbox_numpy import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
@@ -699,6 +700,7 @@ __all__ = [
     "oriented_bounding_box",
     "orthonormalize_axes",
     "orthonormalize_vectors",
+    "pca_numpy",
     "power_vector",
     "power_vectors",
     "project_point_line",

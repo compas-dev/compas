@@ -15,10 +15,10 @@ from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
 from compas.numerical import normrow
-from compas.numerical import adjacency_matrix
-from compas.numerical import degree_matrix
-from compas.numerical import connectivity_matrix
-from compas.numerical import face_matrix
+from compas.topology import adjacency_matrix
+from compas.topology import degree_matrix
+from compas.topology import connectivity_matrix
+from compas.topology import face_matrix
 
 
 def mesh_adjacency_matrix(mesh, rtype="array"):

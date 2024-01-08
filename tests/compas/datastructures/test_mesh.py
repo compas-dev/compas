@@ -5,7 +5,6 @@ import compas
 
 
 from compas.datastructures import Mesh
-from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
@@ -72,7 +71,10 @@ def _hexagongrid():
     for i in range(2):
         T = Translation.from_vector([i * (xmax - xmin), ymax - ymin, 0])
         meshes.append(mesh.transformed(T))
-    mesh = meshes_join_and_weld(meshes)
+    mesh = meshes[0]
+    for other in meshes[1:]:
+        mesh.join(other)
+    mesh.weld()
     return mesh
 
 

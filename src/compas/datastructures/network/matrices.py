@@ -2,10 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.numerical import adjacency_matrix
-from compas.numerical import degree_matrix
-from compas.numerical import connectivity_matrix
-from compas.numerical import laplacian_matrix
+from compas.topology import adjacency_matrix
+from compas.topology import degree_matrix
+from compas.topology import connectivity_matrix
+from compas.topology import laplacian_matrix
 
 
 def _return_matrix(M, rtype):

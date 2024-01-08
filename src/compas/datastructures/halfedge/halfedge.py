@@ -4,6 +4,9 @@ from __future__ import print_function
 
 from random import sample
 
+from compas.topology import breadth_first_traverse
+from compas.topology import connected_components
+
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
@@ -528,6 +531,28 @@ class HalfEdge(Datastructure):
                     del self.halfedge[u]
 
     cull_vertices = remove_unused_vertices
+
+    def flip_cycles(self):
+        """Flip the cycle directions of all faces.
+
+        Returns
+        -------
+        None
+            The mesh is modified in place.
+
+        Notes
+        -----
+        This function does not care about the directions being unified or not. It
+        just reverses whatever direction it finds.
+
+        """
+        self.halfedge = {key: {} for key in self.vertices()}
+        for fkey in self.faces():
+            self.face[fkey][:] = self.face[fkey][::-1]
+            for u, v in self.face_halfedges(fkey):
+                self.halfedge[u][v] = fkey
+                if u not in self.halfedge[v]:
+                    self.halfedge[v][u] = None
 
     # --------------------------------------------------------------------------
     # Accessors
@@ -1970,6 +1995,25 @@ class HalfEdge(Datastructure):
                 return False
         return True
 
+    def is_connected(self):
+        """Verify that the mesh is connected.
+
+        Returns
+        -------
+        bool
+            True if the mesh is not empty and has no naked edges.
+            False otherwise.
+
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+
+        """
+        if not self.vertex:
+            return False
+        nodes = breadth_first_traverse(self.adjacency, self.vertex_sample(size=1)[0])
+        return len(nodes) == self.number_of_vertices()
+
     def euler(self):
         """Calculate the Euler characteristic.
 
@@ -1987,6 +2031,34 @@ class HalfEdge(Datastructure):
         E = self.number_of_edges()
         F = self.number_of_faces()
         return V - E + F
+
+    # --------------------------------------------------------------------------
+    # Components
+    # --------------------------------------------------------------------------
+
+    def connected_vertices(self):
+        """Find groups of connected vertices.
+
+        Returns
+        -------
+        list[list[int]]
+            Groups of connected vertices.
+
+        """
+        return connected_components(self.adjacency)
+
+    def connected_faces(self):
+        """Find groups of connected faces.
+
+        Returns
+        -------
+        list[list[int]]
+            Groups of connected faces.
+
+        """
+        # return connected_components(self.face_adjacency)
+        parts = self.connected_vertices()
+        return [set([face for vertex in part for face in self.vertex_faces(vertex)]) for part in parts]
 
     # --------------------------------------------------------------------------
     # Vertex topology

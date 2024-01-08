@@ -21,11 +21,9 @@ and can be used independently of CAD systems in any environment that supports Py
     compas.datastructures
     compas.files
     compas.geometry
-    compas.numerical
     compas.plugins
     compas.rpc
     compas.scene
-    compas.topology
 
 
 compas_blender

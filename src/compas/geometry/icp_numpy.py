@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 import numpy as np
 from numpy import asarray
 from numpy import argmin
@@ -12,8 +8,8 @@ from scipy.linalg import norm
 
 from compas.tolerance import TOL
 
-from compas.numerical import pca_numpy
 from compas.numerical import normrow
+from compas.geometry import pca_numpy
 from compas.geometry import transform_points_numpy
 
 

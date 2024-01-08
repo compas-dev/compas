@@ -26,6 +26,8 @@ from compas.geometry import normalize_vector
 from compas.geometry import project_point_plane
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
+from compas.geometry import bounding_box
+from compas.geometry import transform_points
 
 from compas.utilities import linspace
 
@@ -410,6 +412,18 @@ class VolMesh(HalfFace):
 
         """
         return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()]))
+
+    def aabb(self):
+        """Calculate the axis aligned bounding box of the mesh.
+
+        Returns
+        -------
+        list[[float, float, float]]
+            XYZ coordinates of 8 points defining a box.
+
+        """
+        xyz = self.vertices_attributes("xyz")
+        return bounding_box(xyz)
 
     # --------------------------------------------------------------------------
     # vertex geometry
@@ -1040,17 +1054,32 @@ class VolMesh(HalfFace):
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Polyhedron(vertices, faces)
 
+    # --------------------------------------------------------------------------
+    # transformations
+    # --------------------------------------------------------------------------
 
-# =============================================================================
-# Additional methods for the volmesh class
-# =============================================================================
+    def transform(self, T):
+        """Transform the mesh.
 
+        Parameters
+        ----------
+        T : :class:`Transformation`
+            The transformation used to transform the mesh.
 
-from .bbox import volmesh_bounding_box  # noqa: E402
-from .transformations import volmesh_transform  # noqa: E402
-from .transformations import volmesh_transformed  # noqa: E402
+        Returns
+        -------
+        None
+            The mesh is modified in-place.
 
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import matrix_from_axis_and_angle
+        >>> mesh = Mesh.from_polyhedron(6)
+        >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
+        >>> mesh.transform(T)
 
-VolMesh.bounding_box = volmesh_bounding_box  # type: ignore
-VolMesh.transform = volmesh_transform  # type: ignore
-VolMesh.transformed = volmesh_transformed  # type: ignore
+        """
+        points = transform_points(self.vertices_attributes("xyz"), T)
+        for vertex, point in zip(self.vertices(), points):
+            self.vertex_attributes(vertex, "xyz", point)
