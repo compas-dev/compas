@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `show_cells` flag to `compas.scene.VolMeshObject`.
 * Added `compas.data.Data.to_jsonstring` and `compas.data.Data.from_jsonstring`.
 * Added `compas.data.Data.attributes`.
+* Added optional param `working_directory` to `compas.rpc.Proxy` to be able to start services defined in random locations.
 
 ### Changed
 
@@ -52,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.datastructures.Network` to take additional `**kwargs`, instead of only `name=None` specifically.
 * Changed `compas.datastructures.Halfedge` to take additional `**kwargs`, instead of only `name=None` specifically.
 * Changed `compas.datastructures.Mesh` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Moved registration of `ping` and `remote_shutdown` of the RPC server to `compas.rpc.Server.__init__()`.
+* Moved `FileWatcherService` to `compas.rpc.services.watcher` so it can be reused.
 
 ### Removed
 
