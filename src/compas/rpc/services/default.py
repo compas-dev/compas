@@ -27,10 +27,6 @@ def start_service(port=1753, autoreload=True, **kwargs):
     address = host, port
     server = Server(address)
 
-    # register a few utility functions
-    # server.register_function(server.ping)
-    # server.register_function(server.remote_shutdown)
-
     # register an instance of the default service
     # the default service extends the base service
     # which implements a dispatcher protocol

@@ -59,7 +59,7 @@ class Proxy(object):
     path : str, optional
         Path to the folder containing the module to be proxied.
         This is useful for cases where the module to be proxied is not on the PYTHONPATH.
-    cwd : str, optional
+    working_directory : str, optional
         Current working directory for the process that will be started to run the server.
         This is useful for cases where a custom service is used and the service is not on the PYTHONPATH.
 
@@ -115,7 +115,7 @@ class Proxy(object):
         autoreload=True,
         capture_output=True,
         path=None,
-        cwd=None,
+        working_directory=None,
     ):
         self._package = None
         self._python = compas._os.select_python(python)
@@ -127,7 +127,7 @@ class Proxy(object):
         self._function = None
         self._profile = None
         self._path = path
-        self._cwd = cwd
+        self._working_directory = working_directory
 
         self.service = service
         self.package = package
@@ -301,8 +301,8 @@ class Proxy(object):
             if self.capture_output:
                 kwargs["stdout"] = PIPE
                 kwargs["stderr"] = PIPE
-            if self._cwd:
-                kwargs["cwd"] = self._cwd
+            if self._working_directory:
+                kwargs["cwd"] = self._working_directory
 
             self._process = Popen(args, **kwargs)
 
