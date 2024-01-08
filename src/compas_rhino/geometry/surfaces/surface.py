@@ -88,12 +88,12 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        corners : list(:class:`~compas.geometry.Point`)
+        corners : list(:class:`compas.geometry.Point`)
             4 points in 3d space to represent the corners of the planar surface.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
@@ -105,12 +105,12 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        sphere : :class:`~compas.geometry.Sphere`
+        sphere : :class:`compas.geometry.Sphere`
             The surface's geometry.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         sphere = sphere_to_rhino(sphere)
@@ -123,12 +123,12 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        cylinder : :class:`~compas.geometry.Cylinder`
+        cylinder : :class:`compas.geometry.Cylinder`
             The surface's geometry.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         cylinder = cylinder_to_rhino(cylinder)
@@ -141,12 +141,12 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        torus : :class:`~compas.geometry.Torus`
+        torus : :class:`compas.geometry.Torus`
             The surface's geometry.
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         raise NotImplementedError
@@ -162,7 +162,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoSurface`
+        :class:`compas_rhino.geometry.RhinoSurface`
 
         """
         curve = cls()
@@ -180,7 +180,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoSurface`
+        :class:`compas_rhino.geometry.RhinoSurface`
 
         """
         plane = plane_to_rhino(plane)
@@ -194,7 +194,7 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        frame : :class:`~compas.geometry.Frame`
+        frame : :class:`compas.geometry.Frame`
             A frame with point at the center of the wanted plannar surface and
             x and y axes the direction of u and v respectively.
         u_interval : tuple(float, float)
@@ -230,7 +230,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoSurface`
+        :class:`compas_rhino.geometry.RhinoSurface`
 
         """
         cls = type(self)
@@ -243,7 +243,7 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation`
+        T : :class:`compas.geometry.Transformation`
             A COMPAS transformation.
 
         Returns
@@ -262,7 +262,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoCurve`
+        :class:`compas_rhino.geometry.RhinoCurve`
 
         """
         curve = self.rhino_surface.IsoCurve(1, u)  # type: ignore
@@ -277,7 +277,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoCurve`
+        :class:`compas_rhino.geometry.RhinoCurve`
 
         """
         curve = self.rhino_surface.IsoCurve(0, v)  # type: ignore
@@ -293,7 +293,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
 
         """
         point = self.rhino_surface.PointAt(u, v)  # type: ignore
@@ -334,7 +334,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas.geometry.Frame`
+        :class:`compas.geometry.Frame`
 
         """
         result, plane = self.rhino_surface.FrameAt(u, v)  # type: ignore
@@ -350,16 +350,16 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The test point.
         return_parameters : bool, optional
             If True, return the UV parameters of the closest point as tuple in addition to the point location.
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             If `return_parameters` is False.
-        :class:`~compas.geometry.Point`, (float, float)
+        :class:`compas.geometry.Point`, (float, float)
             If `return_parameters` is True.
 
         """
@@ -382,7 +382,7 @@ class RhinoSurface(Surface):
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
 
         """
         box = self.rhino_surface.GetBoundingBox(optimal)  # type: ignore
@@ -393,11 +393,11 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        line : :class:`~compas.geometry.Curve`
+        line : :class:`compas.geometry.Curve`
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
 
         """
         intersections = Rhino.Geometry.Intersect.Intersection.CurveSurface(

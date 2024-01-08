@@ -2,9 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+try:
+    from typing import Type  # noqa: F401
+except ImportError:
+    pass
+
 import json
 import platform
 
+from .data import Data  # noqa: F401
 from .exceptions import DecoderError
 
 IDictionary = None
@@ -16,8 +22,8 @@ if "ironpython" == platform.python_implementation().lower():
     dotnet_support = True
 
     try:
-        import System
-        from System.Collections.Generic import IDictionary
+        import System  # type: ignore
+        from System.Collections.Generic import IDictionary  # type: ignore
     except:  # noqa: E722
         pass
 
@@ -29,7 +35,7 @@ except (ImportError, SyntaxError):
     numpy_support = False
 
 
-def cls_from_dtype(dtype):
+def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
@@ -40,7 +46,7 @@ def cls_from_dtype(dtype):
 
     Returns
     -------
-    :class:`~compas.base.Base`
+    :class:`compas.data.Data`
 
     Raises
     ------
@@ -64,7 +70,7 @@ class DataEncoder(json.JSONEncoder):
 
     * Numpy objects to their Python equivalents;
     * iterables to lists; and
-    * :class:`~compas.data.Data` objects,
+    * :class:`compas.data.Data` objects,
       such as geometric primitives and shapes, data structures, robots, ...,
       to a dict with the following structure: ``{'dtype': o.dtype, 'value': o.data}``
 
@@ -78,11 +84,10 @@ class DataEncoder(json.JSONEncoder):
     Explicit use case.
 
     >>> import json
-    >>> import compas
     >>> from compas.data import DataEncoder
     >>> from compas.geometry import Point
     >>> point = Point(0, 0, 0)
-    >>> with open(compas.get('point.json'), 'w') as f:
+    >>> with open('point.json', 'w') as f:
     ...     json.dump(point, f, cls=DataEncoder)
     ...
 
@@ -91,7 +96,7 @@ class DataEncoder(json.JSONEncoder):
     >>> from compas.data import json_dump
     >>> from compas.geometry import Point
     >>> point = Point(0, 0, 0)
-    >>> json_dump(point, compas.get('point.json'))
+    >>> json_dump(point, 'point.json')
 
     """
 
@@ -146,7 +151,7 @@ class DataEncoder(json.JSONEncoder):
                 return None
 
         if dotnet_support:
-            if isinstance(o, System.Decimal):
+            if isinstance(o, (System.Decimal, System.Double, System.Single)):
                 return float(o)
 
         return super(DataEncoder, self).default(o)
@@ -156,7 +161,7 @@ class DataDecoder(json.JSONDecoder):
     """Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.
 
     The decoder hooks into the JSON deserialisation process
-    to reconstruct :class:`~compas.data.Data` objects,
+    to reconstruct :class:`compas.data.Data` objects,
     such as geometric primitives and shapes, data structures, robots, ...,
     from the serialized data when possible.
 
@@ -176,16 +181,15 @@ class DataDecoder(json.JSONDecoder):
     Explicit use case.
 
     >>> import json
-    >>> import compas
     >>> from compas.data import DataDecoder
-    >>> with open(compas.get('point.json'), 'r') as f:
+    >>> with open('point.json', 'r') as f:
     ...     point = json.load(f, cls=DataDecoder)
     ...
 
     Implicit use case.
 
     >>> from compas.data import json_load
-    >>> point = json_load(compas.get('point.json'))
+    >>> point = json_load('point.json')
 
     """
 
@@ -227,11 +231,12 @@ class DataDecoder(json.JSONDecoder):
 
         data = o["data"]
         guid = o.get("guid")
+        attrs = o.get("attrs")
 
         # Kick-off from_data from a rebuilt Python dictionary instead of the C# data type
         if IDictionary and isinstance(o, IDictionary[str, object]):
             data = {key: data[key] for key in data.Keys}
 
-        obj = cls.__jsonload__(data, guid)
+        obj = cls.__jsonload__(data, guid, attrs)
 
         return obj

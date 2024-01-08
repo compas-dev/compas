@@ -15,17 +15,15 @@ class Graph(Datastructure):
 
     Parameters
     ----------
-    name : str, optional
-        The name of the datastructure.
     default_node_attributes : dict[str, Any], optional
         Default values for node attributes.
     default_edge_attributes : dict[str, Any], optional
         Default values for edge attributes.
+    **kwargs : dict, optional
+        Additional keyword arguments are passed to the base class, and will be stored in the :attr:`attributes` attribute.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure that are included in the data representation and serialization.
     default_node_attributes : dict[str, Any]
         dictionary containing default values for the attributes of nodes.
         It is recommended to add a default to this dictionary using :meth:`update_default_node_attributes`
@@ -44,7 +42,6 @@ class Graph(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "dna": {"type": "object"},
             "dea": {"type": "object"},
             "node": {
@@ -61,7 +58,6 @@ class Graph(Datastructure):
             "max_node": {"type": "integer", "minimum": -1},
         },
         "required": [
-            "attributes",
             "dna",
             "dea",
             "node",
@@ -70,8 +66,8 @@ class Graph(Datastructure):
         ],
     }
 
-    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
-        super(Graph, self).__init__(name=name)
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, **kwargs):
+        super(Graph, self).__init__(**kwargs)
         self._max_node = -1
         self.node = {}
         self.edge = {}
@@ -94,7 +90,6 @@ class Graph(Datastructure):
     @property
     def data(self):
         data = {
-            "attributes": self.attributes,
             "dna": self.default_node_attributes,
             "dea": self.default_edge_attributes,
             "node": {},
@@ -119,7 +114,6 @@ class Graph(Datastructure):
         edge = data.get("edge") or {}
 
         graph = cls(default_node_attributes=dna, default_edge_attributes=dea)
-        graph.attributes.update(data.get("attributes") or {})
 
         for node, attr in iter(node.items()):
             node = literal_eval(node)
@@ -154,7 +148,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        :class:`~compas.datastructures.Graph`
+        :class:`compas.datastructures.Graph`
 
         See Also
         --------
@@ -180,7 +174,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        :class:`~compas.datastructures.Graph`
+        :class:`compas.datastructures.Graph`
 
         See Also
         --------

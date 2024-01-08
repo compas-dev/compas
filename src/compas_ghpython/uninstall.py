@@ -6,6 +6,7 @@ import glob
 import os
 
 import compas
+import compas.plugins
 from compas_ghpython.components import uninstall_userobjects
 
 

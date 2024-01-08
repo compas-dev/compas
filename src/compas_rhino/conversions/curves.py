@@ -19,6 +19,7 @@ from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas.geometry import Polyline
 from compas.geometry import Arc
+from compas.geometry import NurbsCurve
 
 from .exceptions import ConversionError
 
@@ -68,7 +69,7 @@ def line_to_rhino(line):
 
     Parameters
     ----------
-    line : :class:`~compas.geometry.Line`
+    line : :class:`compas.geometry.Line`
 
     Returns
     -------
@@ -83,7 +84,7 @@ def line_to_rhino_curve(line):
 
     Parameters
     ----------
-    line : :class:`~compas.geometry.Line`
+    line : :class:`compas.geometry.Line`
 
     Returns
     -------
@@ -98,7 +99,7 @@ def polyline_to_rhino(polyline, tol=None):
 
     Parameters
     ----------
-    polyline : :class:`~compas.geometry.Polyline`
+    polyline : :class:`compas.geometry.Polyline`
 
     Returns
     -------
@@ -116,7 +117,7 @@ def polyline_to_rhino_curve(polyline):
 
     Parameters
     ----------
-    polyline : :class:`~compas.geometry.Polyline`
+    polyline : :class:`compas.geometry.Polyline`
 
     Returns
     -------
@@ -131,7 +132,7 @@ def circle_to_rhino(circle):
 
     Parameters
     ----------
-    circle : :class:`~compas.geometry.Circle`
+    circle : :class:`compas.geometry.Circle`
 
     Returns
     -------
@@ -146,7 +147,7 @@ def circle_to_rhino_curve(circle):
 
     Parameters
     ----------
-    circle : :class:`~compas.geometry.Circle`
+    circle : :class:`compas.geometry.Circle`
 
     Returns
     -------
@@ -161,7 +162,7 @@ def ellipse_to_rhino(ellipse):
 
     Parameters
     ----------
-    ellipse : :class:`~compas.geometry.Ellipse`
+    ellipse : :class:`compas.geometry.Ellipse`
 
     Returns
     -------
@@ -176,7 +177,7 @@ def ellipse_to_rhino_curve(ellipse):
 
     Parameters
     ----------
-    ellipse : :class:`~compas.geometry.Ellipse`
+    ellipse : :class:`compas.geometry.Ellipse`
 
     Returns
     -------
@@ -191,7 +192,7 @@ def arc_to_rhino(arc):
 
     Parameters
     ----------
-    arc : :class:`~compas.geometry.Arc`
+    arc : :class:`compas.geometry.Arc`
         The COMPAS Arc to convert.
 
     Returns
@@ -210,7 +211,7 @@ def curve_to_rhino(curve):
 
     Parameters
     ----------
-    curve : :class:`~compas.geometry.Curve`
+    curve : :class:`compas.geometry.Curve`
 
     Returns
     -------
@@ -234,7 +235,7 @@ def line_to_compas(line):
 
     Returns
     -------
-    :class:`~compas.geometry.Line`
+    :class:`compas.geometry.Line`
 
     """
     return Line(point_to_compas(line.From), point_to_compas(line.To))
@@ -249,7 +250,7 @@ def circle_to_compas(circle):
 
     Returns
     -------
-    :class:`~compas.geometry.Circle`
+    :class:`compas.geometry.Circle`
 
     """
     frame = plane_to_compas(circle.Plane)
@@ -265,7 +266,7 @@ def ellipse_to_compas(ellipse):
 
     Returns
     -------
-    :class:`~compas.geometry.Ellipse`
+    :class:`compas.geometry.Ellipse`
 
     """
     frame = plane_to_compas(ellipse.Plane)
@@ -281,7 +282,7 @@ def polyline_to_compas(polyline):
 
     Returns
     -------
-    :class:`~compas.geometry.Polyline`
+    :class:`compas.geometry.Polyline`
 
     """
     return Polyline([point_to_compas(point) for point in polyline])
@@ -297,7 +298,7 @@ def arc_to_compas(arc):
 
     Returns
     -------
-    :class:`~compas.geometry.Arc`
+    :class:`compas.geometry.Arc`
 
     """
     frame = plane_to_compas_frame(arc.Plane)
@@ -316,7 +317,7 @@ def curve_to_compas_line(curve):
 
     Returns
     -------
-    :class:`~compas.geometry.Line`
+    :class:`compas.geometry.Line`
 
     """
     if isinstance(curve, RhinoObject):
@@ -333,7 +334,7 @@ def curve_to_compas_circle(curve):
 
     Returns
     -------
-    :class:`~compas.geometry.Circle`
+    :class:`compas.geometry.Circle`
 
     Raises
     ------
@@ -358,7 +359,7 @@ def curve_to_compas_ellipse(curve):
 
     Returns
     -------
-    :class:`~compas.geometry.Ellipse`
+    :class:`compas.geometry.Ellipse`
 
     Raises
     ------
@@ -383,7 +384,7 @@ def curve_to_compas_polyline(curve):
 
     Returns
     -------
-    :class:`~compas.geometry.Polyline`
+    :class:`compas.geometry.Polyline`
 
     Raises
     ------
@@ -439,3 +440,26 @@ def curve_to_compas_data(curve):
         "degree": degree,
         "is_periodic": is_periodic,
     }
+
+
+def curve_to_compas(curve):
+    """Convert a Rhino (Nurbs) curve to a COMPAS curve.
+
+    Parameters
+    ----------
+    curve : :rhino:`Rhino.Geometry.Curve`
+
+    Returns
+    -------
+    :class:`compas.geometry.NurbsCurve`
+
+    Raises
+    ------
+    ConversionError
+        If the curve cannot be converted to a COMPAS curve.
+
+    """
+    if isinstance(curve, RhinoObject):
+        curve = curve.Geometry
+    nurbs = curve.ToNurbsCurve()
+    return NurbsCurve.from_native(nurbs)

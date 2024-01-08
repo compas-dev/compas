@@ -9,9 +9,8 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
+from compas.tolerance import TOL
 from compas.files import OBJ
-
-from compas.utilities import geometric_key
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Line
@@ -22,23 +21,7 @@ from compas.geometry import midpoint_line
 from compas.geometry import normalize_vector
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
-
 from compas.datastructures import Graph
-
-from .operations.split import network_split_edge
-
-from .combinatorics import network_is_connected
-from .complementarity import network_complement
-from .duality import network_find_cycles
-from .transformations import network_transform
-from .transformations import network_transformed
-from .traversal import network_shortest_path
-from .smoothing import network_smooth_centroid
-
-from .planarity import network_count_crossings
-from .planarity import network_find_crossings
-from .planarity import network_is_crossed
-from .planarity import network_is_xy
 
 
 class Network(Graph):
@@ -46,48 +29,16 @@ class Network(Graph):
 
     Parameters
     ----------
-    name: str, optional
-        The name of the datastructure.
     default_node_attributes: dict, optional
         Default values for node attributes.
     default_edge_attributes: dict, optional
         Default values for edge attributes.
+    **kwargs : dict, optional
+        Additional attributes to add to the network.
 
     """
 
-    complement = network_complement
-    is_connected = network_is_connected
-    shortest_path = network_shortest_path
-    split_edge = network_split_edge
-    smooth = network_smooth_centroid
-    transform = network_transform
-    transformed = network_transformed
-    find_cycles = network_find_cycles
-
-    count_crossings = network_count_crossings
-    find_crossings = network_find_crossings
-    is_crossed = network_is_crossed
-    is_xy = network_is_xy
-
-    if not compas.IPY:
-        from .matrices import network_adjacency_matrix
-        from .matrices import network_connectivity_matrix
-        from .matrices import network_degree_matrix
-        from .matrices import network_laplacian_matrix
-        from .planarity import network_embed_in_plane
-        from .planarity import network_is_planar
-        from .planarity import network_is_planar_embedding
-
-        adjacency_matrix = network_adjacency_matrix
-        connectivity_matrix = network_connectivity_matrix
-        degree_matrix = network_degree_matrix
-        laplacian_matrix = network_laplacian_matrix
-
-        embed_in_plane = network_embed_in_plane
-        is_planar = network_is_planar
-        is_planar_embedding = network_is_planar_embedding
-
-    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, **kwargs):
         _default_node_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
         if default_node_attributes:
@@ -95,9 +46,7 @@ class Network(Graph):
         if default_edge_attributes:
             _default_edge_attributes.update(default_edge_attributes)
         super(Network, self).__init__(
-            name=name or "Network",
-            default_node_attributes=_default_node_attributes,
-            default_edge_attributes=_default_edge_attributes,
+            default_node_attributes=_default_node_attributes, default_edge_attributes=_default_edge_attributes, **kwargs
         )
 
     def __str__(self):
@@ -129,7 +78,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also
@@ -158,12 +107,13 @@ class Network(Graph):
         ----------
         lines : list[tuple[list[float, list[float]]]]
             A list of pairs of point coordinates.
-        precision: str, optional
-            The precision of the geometric map that is used to connect the lines.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also
@@ -178,8 +128,8 @@ class Network(Graph):
         for line in lines:
             sp = line[0]
             ep = line[1]
-            a = geometric_key(sp, precision)
-            b = geometric_key(ep, precision)
+            a = TOL.geometric_key(sp, precision)
+            b = TOL.geometric_key(ep, precision)
             node[a] = sp
             node[b] = ep
             edges.append((a, b))
@@ -205,7 +155,7 @@ class Network(Graph):
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also
@@ -234,14 +184,14 @@ class Network(Graph):
 
         Parameters
         ----------
-        cloud : :class:`~compas.geometry.Pointcloud`
+        cloud : :class:`compas.geometry.Pointcloud`
             A pointcloud object.
         degree : int, optional
             The number of connections per node.
 
         Returns
         -------
-        :class:`~compas.datastructures.Network`
+        :class:`compas.datastructures.Network`
             A network object.
 
         See Also
@@ -345,8 +295,9 @@ class Network(Graph):
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -356,14 +307,12 @@ class Network(Graph):
         See Also
         --------
         :meth:`gkey_node`
-        :func:`compas.geometry.geometric_key`
+        :meth:`compas.Tolerance.geometric_key`
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.node_coordinates
         return {key: gkey(xyz(key), precision) for key in self.nodes()}
-
-    key_gkey = node_gkey
 
     def gkey_node(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
@@ -371,8 +320,9 @@ class Network(Graph):
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -382,14 +332,12 @@ class Network(Graph):
         See Also
         --------
         :meth:`node_gkey`
-        :func:`compas.geometry.geometric_key`
+        :meth:`compas.Tolerance.geometric_key`
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.node_coordinates
         return {gkey(xyz(key), precision): key for key in self.nodes()}
-
-    gkey_key = gkey_node
 
     # --------------------------------------------------------------------------
     # builders
@@ -714,3 +662,51 @@ class Network(Graph):
         """
         a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
+
+
+# =============================================================================
+# Add additional methods
+# =============================================================================
+
+from .operations.split import network_split_edge  # noqa: E402
+from .combinatorics import network_is_connected  # noqa: E402
+from .complementarity import network_complement  # noqa: E402
+from .duality import network_find_cycles  # noqa: E402
+from .transformations import network_transform  # noqa: E402
+from .transformations import network_transformed  # noqa: E402
+from .traversal import network_shortest_path  # noqa: E402
+from .smoothing import network_smooth_centroid  # noqa: E402
+from .planarity import network_count_crossings  # noqa: E402
+from .planarity import network_find_crossings  # noqa: E402
+from .planarity import network_is_crossed  # noqa: E402
+from .planarity import network_is_xy  # noqa: E402
+
+Network.complement = network_complement  # type: ignore
+Network.count_crossings = network_count_crossings  # type: ignore
+Network.find_crossings = network_find_crossings  # type: ignore
+Network.find_cycles = network_find_cycles  # type: ignore
+Network.is_connected = network_is_connected  # type: ignore
+Network.is_crossed = network_is_crossed  # type: ignore
+Network.is_xy = network_is_xy  # type: ignore
+Network.shortest_path = network_shortest_path  # type: ignore
+Network.smooth = network_smooth_centroid  # type: ignore
+Network.split_edge = network_split_edge  # type: ignore
+Network.transform = network_transform  # type: ignore
+Network.transformed = network_transformed  # type: ignore
+
+if not compas.IPY:
+    from .matrices import network_adjacency_matrix
+    from .matrices import network_connectivity_matrix
+    from .matrices import network_degree_matrix
+    from .matrices import network_laplacian_matrix
+    from .planarity import network_embed_in_plane
+    from .planarity import network_is_planar
+    from .planarity import network_is_planar_embedding
+
+    Network.adjacency_matrix = network_adjacency_matrix  # type: ignore
+    Network.connectivity_matrix = network_connectivity_matrix  # type: ignore
+    Network.degree_matrix = network_degree_matrix  # type: ignore
+    Network.embed_in_plane = network_embed_in_plane  # type: ignore
+    Network.is_planar = network_is_planar  # type: ignore
+    Network.is_planar_embedding = network_is_planar_embedding  # type: ignore
+    Network.laplacian_matrix = network_laplacian_matrix  # type: ignore

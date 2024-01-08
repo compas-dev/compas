@@ -9,9 +9,6 @@ import compas_rhino
 from compas._os import remove_symlink
 
 
-__all__ = ["uninstall_plugin"]
-
-
 def uninstall_plugin(plugin, version=None):
     """Uninstall a Rhino Python Command Plugin.
 
@@ -77,7 +74,6 @@ def uninstall_plugin(plugin, version=None):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     import argparse
 
     parser = argparse.ArgumentParser()

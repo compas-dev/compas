@@ -132,7 +132,7 @@ def vertices_and_faces_to_rhino(
 
     Parameters
     ----------
-    vertices : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    vertices : list[[float, float, float] | :class:`compas.geometry.Point`]
         A list of point locations.
     faces : list[list[int]]
         A list of faces as lists of indices into `vertices`.
@@ -241,7 +241,7 @@ def mesh_to_compas(rhinomesh, cls=None):
     ----------
     rhinomesh : :class:`Rhino.Geometry.Mesh`
         A Rhino mesh object.
-    cls: :class:`~compas.datastructures.Mesh`, optional
+    cls: :class:`compas.datastructures.Mesh`, optional
         The mesh type.
 
     Returns
@@ -255,25 +255,29 @@ def mesh_to_compas(rhinomesh, cls=None):
     mesh.default_vertex_attributes.update(normal=None, color=None)
     mesh.default_face_attributes.update(normal=None)
 
-    for vertex, normal, color in zip(rhinomesh.Vertices, rhinomesh.Normals, rhinomesh.VertexColors):
+    vertexcolors = rhinomesh.VertexColors
+    if not vertexcolors:
+        vertexcolors = [None] * rhinomesh.Vertices.Count
+
+    for vertex, normal, color in zip(rhinomesh.Vertices, rhinomesh.Normals, vertexcolors):
         mesh.add_vertex(
-            x=vertex.X,
-            y=vertex.Y,
-            z=vertex.Z,
+            x=float(vertex.X),
+            y=float(vertex.Y),
+            z=float(vertex.Z),
             normal=vector_to_compas(normal),
-            color=Color(
-                color.R,
-                color.G,
-                color.B,
-            ),
+            color=Color.from_rgb255(int(color.R), int(color.G), int(color.B)) if color else None,
         )
 
-    for face, normal in zip(rhinomesh.Faces, rhinomesh.FaceNormals):
+    facenormals = rhinomesh.FaceNormals
+    if not facenormals:
+        facenormals = [None] * rhinomesh.Faces.Count
+
+    for face, normal in zip(rhinomesh.Faces, facenormals):
         if face.IsTriangle:
             vertices = [face.A, face.B, face.C]
         else:
             vertices = [face.A, face.B, face.C, face.D]
-        mesh.add_face(vertices, normal=vector_to_compas(normal))
+        mesh.add_face(vertices, normal=vector_to_compas(normal) if normal else None)
 
     for key in rhinomesh.UserDictionary:
         mesh.attributes[key] = rhinomesh.UserDictionary[key]

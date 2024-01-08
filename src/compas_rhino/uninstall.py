@@ -12,11 +12,6 @@ import compas_rhino
 from compas_rhino.install import _run_post_execution_steps
 from compas_rhino.install import installable_rhino_packages
 
-__all__ = [
-    "uninstall",
-    "after_rhino_uninstall",
-]
-
 
 def uninstall(version=None, packages=None):
     """Uninstall COMPAS from Rhino.
@@ -178,7 +173,7 @@ def _filter_installed_packages(version, packages):
 
         # No info, fall back to installable packages list
         if packages is None:
-            packages = list(itertools.chain.from_iterable(installable_rhino_packages()))
+            packages = list(itertools.chain.from_iterable(installable_rhino_packages()))  # type: ignore
 
     # Handle legacy install
     if ipylib_path:
@@ -228,7 +223,6 @@ def after_rhino_uninstall(uninstalled_packages):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     import argparse
 
     parser = argparse.ArgumentParser()

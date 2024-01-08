@@ -1,3 +1,7 @@
+"""
+Package containing topological algorithms for traversal, connectivity, combinatorics, etc.
+"""
+
 from __future__ import absolute_import
 
 import compas

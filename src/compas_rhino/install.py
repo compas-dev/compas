@@ -12,7 +12,6 @@ import compas_rhino
 import compas._os
 import compas.plugins
 
-__all__ = ["install", "installable_rhino_packages", "after_rhino_install"]
 
 INSTALLED_VERSION = None
 
@@ -344,7 +343,7 @@ def _filter_installable_packages(version, packages):
 
     if not packages:
         # Flatten list of results (resulting from collect_all pluggable)
-        packages = sorted(set(itertools.chain.from_iterable(installable_rhino_packages())))
+        packages = sorted(set(itertools.chain.from_iterable(installable_rhino_packages())))  # type: ignore
     elif "compas_ghpython" in packages and ghpython_incompatible:
         print("Skipping installation of compas_ghpython since it's not supported for Rhino 5 for Mac")
 
@@ -359,7 +358,6 @@ def _filter_installable_packages(version, packages):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     import argparse
 
     parser = argparse.ArgumentParser()

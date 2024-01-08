@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
-from math import fabs
+from compas.tolerance import TOL
 
 
 def vector_average(vector):
@@ -11,7 +11,7 @@ def vector_average(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         List of values.
 
     Returns
@@ -27,7 +27,7 @@ def vector_variance(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         List of values.
 
     Returns
@@ -44,7 +44,7 @@ def vector_standard_deviation(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         List of values.
 
     Returns
@@ -53,73 +53,6 @@ def vector_standard_deviation(vector):
         The standard deviation value.
     """
     return vector_variance(vector) ** 0.5
-
-
-def close(value1, value2, tol=1e-05):
-    """Returns True if two values are equal within a tolerance.
-
-    Parameters
-    ----------
-    value1 : float or int
-    value2 : float or int
-    tol : float, optional
-        The tolerance for comparing values.
-
-    Returns
-    -------
-    bool
-        True if the values are closer than the tolerance.
-        False otherwise.
-
-    Examples
-    --------
-    >>> close(1., 1.001)
-    False
-    >>> close(1., 1.001, tol=1e-2)
-    True
-    """
-    return fabs(value1 - value2) < tol
-
-
-def allclose(l1, l2, tol=1e-05):
-    """Returns True if two lists are element-wise equal within a tolerance.
-
-    Parameters
-    ----------
-    l1 : sequence[float]
-        The first list of values.
-    l2 : sequence[float]
-        The second list of values.
-    tol : float, optional
-        The tolerance for comparing values.
-
-    Returns
-    -------
-    bool
-        True if all corresponding values of the two lists are closer than the tolerance.
-        False otherwise.
-
-    Notes
-    -----
-    The function is similar to NumPy's *allclose* function [1]_.
-
-    References
-    ----------
-    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
-
-    Examples
-    --------
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4])
-    True
-
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
-    False
-
-    """
-
-    if any(not allclose(a, b, tol) if hasattr(a, "__iter__") else fabs(a - b) > tol for a, b in zip(l1, l2)):
-        return False
-    return True
 
 
 def argmax(values):
@@ -193,7 +126,7 @@ def sum_vectors(vectors, axis=0):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
     axis : int, optional
         If ``axis == 0``, the sum is taken per column.
@@ -224,7 +157,7 @@ def norm_vector(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
 
     Returns
@@ -250,7 +183,7 @@ def norm_vectors(vectors):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors
 
     Returns
@@ -272,7 +205,7 @@ def length_vector(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
 
     Returns
@@ -297,7 +230,7 @@ def length_vector_xy(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
 
     Returns
@@ -325,7 +258,7 @@ def length_vector_sqrd(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
 
     Returns
@@ -347,7 +280,7 @@ def length_vector_sqrd_xy(vector):
 
     Parameters
     ----------
-    vector : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
 
     Returns
@@ -383,7 +316,7 @@ def scale_vector(vector, factor):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
     factor : float
         The scaling factor.
@@ -411,7 +344,7 @@ def scale_vector_xy(vector, factor):
 
     Parameters
     ----------
-    vector : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
     scale : float
         Scale factor.
@@ -435,7 +368,7 @@ def scale_vectors(vectors, factor):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
     factor : float
         The scaling factor.
@@ -458,7 +391,7 @@ def scale_vectors_xy(vectors, factor):
 
     Parameters
     ----------
-    vectors : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
     factor : float
         The scaling factor.
@@ -481,7 +414,7 @@ def normalize_vector(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
 
     Returns
@@ -505,7 +438,7 @@ def normalize_vector_xy(vector):
 
     Parameters
     ----------
-    vector : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) components of the vector.
 
     Returns
@@ -529,7 +462,7 @@ def normalize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -550,7 +483,7 @@ def normalize_vectors_xy(vectors):
 
     Parameters
     ----------
-    vectors : sequence[[float, float] or [float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -571,7 +504,7 @@ def power_vector(vector, power):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
     power : int, float
         The power to which to raise the vector.
@@ -594,7 +527,7 @@ def power_vectors(vectors, power):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
     power : int, float
         The power to which to raise the vectors.
@@ -617,7 +550,7 @@ def square_vector(vector):
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`~compas.geometry.Vector`
+    vector : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
 
     Returns
@@ -638,7 +571,7 @@ def square_vectors(vectors):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -666,9 +599,9 @@ def add_vectors(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the second vector.
 
     Returns
@@ -685,9 +618,9 @@ def add_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) components of the second vector.
 
     Returns
@@ -708,9 +641,9 @@ def subtract_vectors(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the second vector.
 
     Returns
@@ -731,9 +664,9 @@ def subtract_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         The XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         The XY(Z) components of the second vector.
 
     Returns
@@ -754,9 +687,9 @@ def multiply_vectors(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         The XYZ components of the first vector.
-    v : l[float, float, float] | :class:`~compas.geometry.Vector`
+    v : l[float, float, float] | :class:`compas.geometry.Vector`
         The XYZ components of the second vector.
 
     Returns
@@ -777,9 +710,9 @@ def multiply_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         The XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         The XY(Z) components of the second vector.
 
     Returns
@@ -800,9 +733,9 @@ def divide_vectors(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         The XYZ components of the first vector.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         The XYZ components of the second vector.
 
     Returns
@@ -823,9 +756,9 @@ def divide_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         The XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         The XY(Z) components of the second vector.
 
     Returns
@@ -851,9 +784,9 @@ def cross_vectors(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the second vector.
 
     Returns
@@ -908,9 +841,9 @@ def cross_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) coordinates of the first vector.
-    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) coordinates of the second vector.
 
     Returns
@@ -939,9 +872,9 @@ def dot_vectors(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the second vector.
 
     Returns
@@ -963,9 +896,9 @@ def dot_vectors_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) coordinates of the first vector.
-    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XY(Z) coordinates of the second vector.
 
     Returns
@@ -993,9 +926,9 @@ def vector_component(u, v):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
-    v : [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the direction.
 
     Returns
@@ -1032,9 +965,9 @@ def vector_component_xy(u, v):
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the vector.
-    v : [float, float] or [float, float, float] | :class:`~compas.geometry.Vector`
+    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
         XYZ components of the direction.
 
     Returns
@@ -1077,7 +1010,7 @@ def transpose_matrix(M):
 
     Parameters
     ----------
-    M : list[list[float]] | :class:`~compas.geometry.Transformation`
+    M : list[list[float]] | :class:`compas.geometry.Transformation`
         The matrix to be transposed.
 
     Returns
@@ -1094,9 +1027,9 @@ def multiply_matrices(A, B):
 
     Parameters
     ----------
-    A : list[list[float]] | :class:`~compas.geometry.Transformation`
+    A : list[list[float]] | :class:`compas.geometry.Transformation`
         The first matrix.
-    B : list[list[float]] | :class:`~compas.geometry.Transformation`
+    B : list[list[float]] | :class:`compas.geometry.Transformation`
         The second matrix.
 
     Returns
@@ -1145,9 +1078,9 @@ def multiply_matrix_vector(A, b):
 
     Parameters
     ----------
-    A : list[list[float]] | :class:`~compas.geometry.Transformation`
+    A : list[list[float]] | :class:`compas.geometry.Transformation`
         The matrix.
-    b : [float, float, float] | :class:`~compas.geometry.Vector`
+    b : [float, float, float] | :class:`compas.geometry.Vector`
         The vector.
 
     Returns
@@ -1195,7 +1128,7 @@ def homogenize_vectors(vectors, w=1.0):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
     w : float, optional
         Homogenisation parameter.
@@ -1226,7 +1159,7 @@ def dehomogenize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         A list of vectors.
 
     Returns
@@ -1247,7 +1180,7 @@ def orthonormalize_vectors(vectors):
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`~compas.geometry.Vector`]
+    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
         The set of vectors to othonormalize.
 
     Returns
@@ -1277,3 +1210,106 @@ def orthonormalize_vectors(vectors):
         if any(axis > 1e-10 for axis in e):
             basis.append(normalize_vector(e))
     return basis
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Deprecated
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def close(value1, value2, tol=1e-05):
+    """Returns True if two values are equal within a tolerance.
+
+    Parameters
+    ----------
+    value1 : float or int
+    value2 : float or int
+    tol : float, optional
+        The absolute tolerance for comparing values.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if the values are closer than the tolerance.
+        False otherwise.
+
+    Warnings
+    --------
+    .. deprecated:: 2.0
+        Will be removed in 2.1
+        Use :func:`TOL.is_close` instead.
+
+    The tolerance value used by this function is an absolute tolerance.
+    It is more accurate to use a combination of absolute and relative tolerance.
+    Therefor, use :func:`TOL.is_close` instead.
+
+    Examples
+    --------
+    >>> close(1., 1.001)
+    False
+    >>> close(1., 1.001, tol=1e-2)
+    True
+    """
+    return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
+
+
+def allclose(l1, l2, tol=None):
+    """Returns True if two lists are element-wise equal within a tolerance.
+
+    Parameters
+    ----------
+    l1 : sequence[float]
+        The first list of values.
+    l2 : sequence[float]
+        The second list of values.
+    tol : float, optional
+        The absolute tolerance for comparing values.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    bool
+        True if all corresponding values of the two lists are closer than the tolerance.
+        False otherwise.
+
+    Warnings
+    --------
+    .. deprecated:: 2.0
+        Will be removed in 2.1
+        Use :func:`TOL.is_close` instead.
+
+    The tolerance value used by this function is an absolute tolerance.
+    It is more accurate to use a combination of absolute and relative tolerance.
+    Therefor, use :func:`TOL.is_allclose` instead.
+
+    Notes
+    -----
+    The function is similar to NumPy's *allclose* function [1]_.
+
+    References
+    ----------
+    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
+
+    Examples
+    --------
+    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4])
+    True
+
+    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
+    False
+
+    """
+    return TOL.is_allclose(l1, l2, atol=tol)

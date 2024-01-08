@@ -12,6 +12,8 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
+from compas.tolerance import TOL
+
 from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
@@ -45,34 +47,10 @@ from compas.geometry import midpoint_line
 from compas.geometry import vector_average
 
 from compas.utilities import linspace
-
-from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
 
 from compas.datastructures import HalfEdge
-
-from .operations.collapse import mesh_collapse_edge
-from .operations.split import mesh_split_edge
-from .operations.split import mesh_split_face
-from .operations.split import mesh_split_strip
-from .operations.merge import mesh_merge_faces
-
-from .bbox import mesh_bounding_box
-from .bbox import mesh_bounding_box_xy
-from .combinatorics import mesh_is_connected
-from .combinatorics import mesh_connected_components
-from .duality import mesh_dual
-from .orientation import mesh_face_adjacency
-from .orientation import mesh_flip_cycles
-from .orientation import mesh_unify_cycles
-from .slice import mesh_slice_plane
-from .smoothing import mesh_smooth_centroid
-from .smoothing import mesh_smooth_area
-from .subdivision import mesh_subdivide
-from .transformations import mesh_transform
-from .transformations import mesh_transformed
-from .triangulation import mesh_quads_to_triangles
 
 
 class Mesh(HalfEdge):
@@ -80,14 +58,14 @@ class Mesh(HalfEdge):
 
     Parameters
     ----------
-    name: str, optional
-        The name of the datastructure.
     default_vertex_attributes: dict[str, Any], optional
         Default values for vertex attributes.
     default_edge_attributes: dict[str, Any], optional
         Default values for edge attributes.
     default_face_attributes: dict[str, Any], optional
         Default values for face attributes.
+    **kwargs : dict, optional
+        Additional attributes to add to the mesh object.
 
     Examples
     --------
@@ -101,40 +79,8 @@ class Mesh(HalfEdge):
 
     """
 
-    bounding_box = mesh_bounding_box
-    bounding_box_xy = mesh_bounding_box_xy
-    collapse_edge = mesh_collapse_edge
-    connected_components = mesh_connected_components
-    dual = mesh_dual
-    face_adjacency = mesh_face_adjacency
-    flip_cycles = mesh_flip_cycles
-    is_connected = mesh_is_connected
-    merge_faces = mesh_merge_faces
-    slice_plane = mesh_slice_plane
-    smooth_centroid = mesh_smooth_centroid
-    smooth_area = mesh_smooth_area
-    split_edge = mesh_split_edge
-    split_face = mesh_split_face
-    split_strip = mesh_split_strip
-    subdivide = mesh_subdivide
-    transform = mesh_transform
-    transformed = mesh_transformed
-    unify_cycles = mesh_unify_cycles
-    quads_to_triangles = mesh_quads_to_triangles
-
-    if not compas.IPY:
-        from .bbox_numpy import mesh_oriented_bounding_box_numpy
-        from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
-
-        obb_numpy = mesh_oriented_bounding_box_numpy
-        obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy
-
     def __init__(
-        self,
-        name=None,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
+        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
     ):
         _default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         _default_edge_attributes = {}
@@ -146,10 +92,10 @@ class Mesh(HalfEdge):
         if default_face_attributes:
             _default_face_attributes.update(default_face_attributes)
         super(Mesh, self).__init__(
-            name=name or "Mesh",
             default_vertex_attributes=_default_vertex_attributes,
             default_edge_attributes=_default_edge_attributes,
             default_face_attributes=_default_face_attributes,
+            **kwargs
         )
 
     def __str__(self):
@@ -169,7 +115,7 @@ class Mesh(HalfEdge):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_obj(cls, filepath, precision=None):
+    def from_obj(cls, filepath, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in an OBJ file.
 
         Parameters
@@ -181,7 +127,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         Notes
@@ -208,6 +154,7 @@ class Mesh(HalfEdge):
         if edges:
             lines = [(vertices[u], vertices[v], 0) for u, v in edges]
             return cls.from_lines(lines)
+        return cls()
 
     def to_obj(self, filepath, precision=None, unweld=False, **kwargs):
         """Write the mesh to an OBJ file.
@@ -236,7 +183,7 @@ class Mesh(HalfEdge):
         obj.write(self, unweld=unweld, **kwargs)
 
     @classmethod
-    def from_ply(cls, filepath, precision=None):
+    def from_ply(cls, filepath, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in a PLY file.
 
         Parameters
@@ -246,7 +193,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -273,7 +220,7 @@ class Mesh(HalfEdge):
         ply.write(self, **kwargs)
 
     @classmethod
-    def from_stl(cls, filepath, precision=None):
+    def from_stl(cls, filepath, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in a STL file.
 
         Parameters
@@ -285,7 +232,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -324,7 +271,7 @@ class Mesh(HalfEdge):
         stl.write(self, binary=binary, **kwargs)
 
     @classmethod
-    def from_off(cls, filepath):
+    def from_off(cls, filepath):  # type: (...) -> Mesh
         """Construct a mesh object from the data described in a OFF file.
 
         Parameters
@@ -334,7 +281,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -361,7 +308,7 @@ class Mesh(HalfEdge):
         off.write(self, **kwargs)
 
     @classmethod
-    def from_lines(cls, lines, delete_boundary_face=False, precision=None):
+    def from_lines(cls, lines, delete_boundary_face=False, precision=None):  # type: (...) -> Mesh
         """Construct a mesh object from a list of lines described by start and end point coordinates.
 
         Parameters
@@ -378,7 +325,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -406,7 +353,7 @@ class Mesh(HalfEdge):
         return [self.edge_coordinates(edge) for edge in self.edges()]
 
     @classmethod
-    def from_polylines(cls, boundary_polylines, other_polylines):
+    def from_polylines(cls, boundary_polylines, other_polylines):  # type: (...) -> Mesh
         """Construct mesh from polylines.
 
         Based on construction from_lines,
@@ -425,41 +372,54 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
-        corner_vertices = [
-            geometric_key(xyz)
-            for polyline in boundary_polylines + other_polylines
-            for xyz in [polyline[0], polyline[-1]]
-        ]
-        boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
-        mesh = cls.from_lines(
-            [(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)]
-        )
-        # remove the vertices that are not from the polyline extremities and the faces with all their vertices on the boundary
-        vertex_keys = [
-            vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
-        ]
-        vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
-        vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
+        corners = []
+        for polyline in boundary_polylines + other_polylines:
+            corners.append(TOL.geometric_key(polyline[0]))
+            corners.append(TOL.geometric_key(polyline[-1]))
+
+        boundary = []
+        for polyline in boundary_polylines:
+            for xyz in polyline:
+                boundary.append(TOL.geometric_key(xyz))
+
+        lines = []
+        for polyline in boundary_polylines + other_polylines:
+            for u, v in pairwise(polyline):
+                lines.append((u, v))
+
+        mesh = cls.from_lines(lines)
+
+        # remove the vertices that are not from the polyline extremities
+        # and the faces with all their vertices on the boundary
+
+        internal = []
+        for vertex in mesh.vertices():
+            if TOL.geometric_key(mesh.vertex_coordinates(vertex)) in corners:
+                internal.append(vertex)
+
+        vertices = [mesh.vertex_coordinates(vertex) for vertex in internal]
+        vertex_index = {vertex: index for index, vertex in enumerate(internal)}
+
         faces = []
-        for fkey in mesh.faces():
-            if sum(
-                [
-                    geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices
-                    for vkey in mesh.face_vertices(fkey)
-                ]
-            ):
-                faces.append(
-                    [
-                        vertex_map[vkey]
-                        for vkey in mesh.face_vertices(fkey)
-                        if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices
-                    ]
-                )
-        mesh.cull_vertices()
+        for face in mesh.faces():
+            notonboundary = []
+            for vertex in mesh.face_vertices(face):
+                gkey = TOL.geometric_key(mesh.vertex_coordinates(vertex))
+                if gkey not in boundary:
+                    notonboundary.append(vertex)
+
+            if len(notonboundary):
+                indices = []
+                for vertex in mesh.face_vertices(face):
+                    gkey = TOL.geometric_key(mesh.vertex_coordinates(vertex))
+                    if gkey in corners:
+                        indices.append(vertex_index[vertex])
+                faces.append(indices)
+
         return cls.from_vertices_and_faces(vertices, faces)
 
     def to_polylines(self):
@@ -474,7 +434,7 @@ class Mesh(HalfEdge):
         raise NotImplementedError
 
     @classmethod
-    def from_vertices_and_faces(cls, vertices, faces):
+    def from_vertices_and_faces(cls, vertices, faces):  # type: (...) -> Mesh
         """Construct a mesh object from a list of vertices and faces.
 
         Parameters
@@ -488,7 +448,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -556,7 +516,7 @@ class Mesh(HalfEdge):
         return vertices, faces
 
     @classmethod
-    def from_polyhedron(cls, f):
+    def from_polyhedron(cls, f):  # type: (...) -> Mesh
         """Construct a mesh from a platonic solid.
 
         Parameters
@@ -566,7 +526,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -574,19 +534,19 @@ class Mesh(HalfEdge):
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
-    def from_shape(cls, shape, **kwargs):
+    def from_shape(cls, shape, **kwargs):  # type: (...) -> Mesh
         """Construct a mesh from a primitive shape.
 
         Parameters
         ----------
-        shape : :class:`~compas.geometry.Shape`
+        shape : :class:`compas.geometry.Shape`
             The input shape to generate a mesh from.
         **kwargs : dict[str, Any], optional
             Optional keyword arguments to be passed on to :meth:`compas.geometry.Shape.to_vertices_and_faces`.
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -596,7 +556,7 @@ class Mesh(HalfEdge):
         return mesh
 
     @classmethod
-    def from_points(cls, points, boundary=None, holes=None):
+    def from_points(cls, points, boundary=None, holes=None):  # type: (...) -> Mesh
         """Construct a mesh from a delaunay triangulation of a set of points.
 
         Parameters
@@ -607,7 +567,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -628,7 +588,7 @@ class Mesh(HalfEdge):
         raise NotImplementedError
 
     @classmethod
-    def from_polygons(cls, polygons, precision=None):
+    def from_polygons(cls, polygons, precision=None):  # type: (...) -> Mesh
         """Construct a mesh from a series of polygons.
 
         Parameters
@@ -636,13 +596,13 @@ class Mesh(HalfEdge):
         polygons : list[list[float]]
             A list of polygons, with each polygon defined as an ordered list of
             XYZ coordinates of its corners.
-        precision: str, optional
-            The precision of the geometric map that is used to connect the lines.
-            Defaults to :attr:`compas.PRECISION`.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -651,7 +611,7 @@ class Mesh(HalfEdge):
         for points in polygons:
             face = []
             for xyz in points:
-                gkey = geometric_key(xyz, precision=precision)
+                gkey = TOL.geometric_key(xyz, precision=precision)
                 gkey_xyz[gkey] = xyz
                 face.append(gkey)
             faces.append(face)
@@ -672,7 +632,7 @@ class Mesh(HalfEdge):
         return [self.face_coordinates(fkey) for fkey in self.faces()]
 
     @classmethod
-    def from_meshgrid(cls, dx, nx, dy=None, ny=None):
+    def from_meshgrid(cls, dx, nx, dy=None, ny=None):  # type: (...) -> Mesh
         """Create a mesh from faces and vertices on a regular grid.
 
         Parameters
@@ -690,7 +650,7 @@ class Mesh(HalfEdge):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
             A mesh object.
 
         """
@@ -714,15 +674,15 @@ class Mesh(HalfEdge):
     # helpers
     # --------------------------------------------------------------------------
 
-    def key_gkey(self, precision=None):
+    def vertex_gkey(self, precision=None):
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
-            Defaults to the value of :attr:`compas.PRECISION`.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -730,19 +690,19 @@ class Mesh(HalfEdge):
             A dictionary of key-geometric key pairs.
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
         return {key: gkey(xyz(key), precision) for key in self.vertices()}
 
-    def gkey_key(self, precision=None):
+    def gkey_vertex(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
         Parameters
         ----------
-        precision : str, optional
-            The float precision specifier used in string formatting.
-            Defaults to the value of :attr:`compas.PRECISION`.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
 
         Returns
         -------
@@ -750,12 +710,9 @@ class Mesh(HalfEdge):
             A dictionary of geometric key-key pairs.
 
         """
-        gkey = geometric_key
+        gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
         return {gkey(xyz(key), precision): key for key in self.vertices()}
-
-    vertex_gkey = key_gkey
-    gkey_vertex = gkey_key
 
     # --------------------------------------------------------------------------
     # builders
@@ -804,7 +761,7 @@ class Mesh(HalfEdge):
 
         Parameters
         ----------
-        other : :class:`~compas.datastructures.Mesh`
+        other : :class:`compas.datastructures.Mesh`
             The other mesh.
 
         Returns
@@ -1662,7 +1619,7 @@ class Mesh(HalfEdge):
         while special:
             start = special.pop()
             nbrs = []
-            # find all neighbors of the current spacial vertex
+            # find all neighbors of the current special vertex
             # that are on the mesh boundary
             for nbr in self.vertex_neighbors(start):
                 face = self.halfedge_face((start, nbr))
@@ -1757,3 +1714,60 @@ class Mesh(HalfEdge):
             if faces:
                 facegroups.append(faces)
         return facegroups
+
+
+# =============================================================================
+# Additional methods for the mesh class
+# =============================================================================
+
+
+from .operations.collapse import mesh_collapse_edge  # noqa: E402
+from .operations.split import mesh_split_edge  # noqa: E402
+from .operations.split import mesh_split_face  # noqa: E402
+from .operations.split import mesh_split_strip  # noqa: E402
+from .operations.merge import mesh_merge_faces  # noqa: E402
+
+from .bbox import mesh_bounding_box  # noqa: E402
+from .bbox import mesh_bounding_box_xy  # noqa: E402
+from .combinatorics import mesh_is_connected  # noqa: E402
+from .combinatorics import mesh_connected_components  # noqa: E402
+from .duality import mesh_dual  # noqa: E402
+from .orientation import mesh_face_adjacency  # noqa: E402
+from .orientation import mesh_flip_cycles  # noqa: E402
+from .orientation import mesh_unify_cycles  # noqa: E402
+from .slice import mesh_slice_plane  # noqa: E402
+from .smoothing import mesh_smooth_centroid  # noqa: E402
+from .smoothing import mesh_smooth_area  # noqa: E402
+from .subdivision import mesh_subdivide  # noqa: E402
+from .transformations import mesh_transform  # noqa: E402
+from .transformations import mesh_transformed  # noqa: E402
+from .triangulation import mesh_quads_to_triangles  # noqa: E402
+
+
+Mesh.bounding_box = mesh_bounding_box  # type: ignore
+Mesh.bounding_box_xy = mesh_bounding_box_xy  # type: ignore
+Mesh.collapse_edge = mesh_collapse_edge  # type: ignore
+Mesh.connected_components = mesh_connected_components  # type: ignore
+Mesh.dual = mesh_dual  # type: ignore
+Mesh.face_adjacency = mesh_face_adjacency  # type: ignore
+Mesh.flip_cycles = mesh_flip_cycles  # type: ignore
+Mesh.is_connected = mesh_is_connected  # type: ignore
+Mesh.merge_faces = mesh_merge_faces  # type: ignore
+Mesh.slice_plane = mesh_slice_plane  # type: ignore
+Mesh.smooth_centroid = mesh_smooth_centroid  # type: ignore
+Mesh.smooth_area = mesh_smooth_area  # type: ignore
+Mesh.split_edge = mesh_split_edge  # type: ignore
+Mesh.split_face = mesh_split_face  # type: ignore
+Mesh.split_strip = mesh_split_strip  # type: ignore
+Mesh.subdivide = mesh_subdivide  # type: ignore
+Mesh.transform = mesh_transform  # type: ignore
+Mesh.transformed = mesh_transformed  # type: ignore
+Mesh.unify_cycles = mesh_unify_cycles  # type: ignore
+Mesh.quads_to_triangles = mesh_quads_to_triangles  # type: ignore
+
+if not compas.IPY:
+    from .bbox_numpy import mesh_oriented_bounding_box_numpy
+    from .bbox_numpy import mesh_oriented_bounding_box_xy_numpy
+
+    Mesh.obb_numpy = mesh_oriented_bounding_box_numpy  # type: ignore
+    Mesh.obb_xy_numpy = mesh_oriented_bounding_box_xy_numpy  # type: ignore

@@ -34,10 +34,10 @@ class Surface(Geometry):
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
         The local coordinate system of the surface.
         Default is the world coordinate system.
-    transformation : :class:`~compas.geometry.Transformation`, read-only
+    transformation : :class:`compas.geometry.Transformation`, read-only
         The transformation from the surface's local coordinate system to the world coordinate system.
     domain_u : tuple[float, float], read-only
         The parameter domain of the surface in the U direction.
@@ -160,7 +160,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Surface`
+        :class:`compas.geometry.Surface`
 
         """
         raise NotImplementedError
@@ -176,7 +176,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Surface`
+        :class:`compas.geometry.Surface`
 
         """
         raise NotImplementedError
@@ -192,7 +192,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Surface`
+        :class:`compas.geometry.Surface`
 
         """
         return new_surface_from_plane(cls, plane, *args, **kwargs)
@@ -247,7 +247,10 @@ class Surface(Geometry):
 
         vertices = [
             self.point_at(i, j)
-            for i, j in product(linspace(domain_u[0], domain_u[1], nu + 1), linspace(domain_v[0], domain_v[1], nv + 1))
+            for i, j in product(
+                linspace(domain_u[0], domain_u[1], nu + 1),
+                linspace(domain_v[0], domain_v[1], nv + 1),
+            )
         ]
         faces = [
             [
@@ -282,7 +285,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        list[list[:class:`~compas.geometry.Point`]]
+        list[list[:class:`compas.geometry.Point`]]
 
         """
         vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
@@ -313,7 +316,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        list[list[:class:`~compas.geometry.Point`]]
+        list[list[:class:`compas.geometry.Point`]]
 
         """
         vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
@@ -385,7 +388,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.datastructures.Mesh`
+        :class:`compas.datastructures.Mesh`
 
         """
         raise NotImplementedError
@@ -410,7 +413,7 @@ class Surface(Geometry):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation`
+        T : :class:`compas.geometry.Transformation`
             The transformation.
 
         Returns
@@ -431,7 +434,7 @@ class Surface(Geometry):
     # Methods
     # ==============================================================================
 
-    def u_space(self, n=10):
+    def space_u(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the U direction.
 
         Parameters
@@ -447,7 +450,7 @@ class Surface(Geometry):
         umin, umax = self.domain_u
         return linspace(umin, umax, n)
 
-    def v_space(self, n=10):
+    def space_v(self, n=10):
         """Compute evenly spaced parameters over the surface domain in the V direction.
 
         Parameters
@@ -463,7 +466,7 @@ class Surface(Geometry):
         vmin, vmax = self.domain_v
         return linspace(vmin, vmax, n)
 
-    def u_isocurve(self, u):
+    def isocurve_u(self, u):
         """Compute the isoparametric curve at parameter u.
 
         Parameters
@@ -472,12 +475,12 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Curve`
+        :class:`compas.geometry.Curve`
 
         """
         raise NotImplementedError
 
-    def v_isocurve(self, v):
+    def isocurve_v(self, v):
         """Compute the isoparametric curve at parameter v.
 
         Parameters
@@ -486,7 +489,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas_occ.geometry.Curve`
+        :class:`compas_occ.geometry.Curve`
 
         """
         raise NotImplementedError
@@ -496,7 +499,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        list[:class:`~compas.geometry.Curve`]
+        list[:class:`compas.geometry.Curve`]
 
         """
         raise NotImplementedError
@@ -512,7 +515,7 @@ class Surface(Geometry):
             The size of the grid in the V direction.
 
         """
-        return [self.point_at(i, j) for i, j in product(self.u_space(nu), self.v_space(nv))]
+        return [self.point_at(i, j) for i, j in product(self.space_u(nu), self.space_v(nv))]
 
     def point_at(self, u, v):
         """Compute a point on the surface.
@@ -524,7 +527,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
 
         """
         raise NotImplementedError
@@ -539,7 +542,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
 
         """
         raise NotImplementedError
@@ -554,7 +557,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
 
         """
         raise NotImplementedError
@@ -569,7 +572,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Frame`
+        :class:`compas.geometry.Frame`
 
         """
         raise NotImplementedError
@@ -590,7 +593,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Point` | tuple[:class:`~compas.geometry.Point`, tuple[float, float]]
+        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, tuple[float, float]]
             If `return_parameters` is False, the nearest point on the surface.
             If `return_parameters` is True, the UV parameters in addition to the nearest point on the surface.
 
@@ -607,7 +610,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
 
         """
         raise NotImplementedError
@@ -621,7 +624,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
 
         """
         raise NotImplementedError
@@ -631,11 +634,11 @@ class Surface(Geometry):
 
         Parameters
         ----------
-        line : :class:`~compas.geometry.Line`
+        line : :class:`compas.geometry.Line`
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
 
         """
         raise NotImplementedError
@@ -645,11 +648,11 @@ class Surface(Geometry):
 
         Parameters
         ----------
-        line : :class:`~compas.geometry.Curve`
+        line : :class:`compas.geometry.Curve`
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
 
         """
         raise NotImplementedError
@@ -659,11 +662,11 @@ class Surface(Geometry):
 
         Parameters
         ----------
-        plane : :class:`~compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane`
 
         Returns
         -------
-        list[:class:`~compas.geometry.Curve`]
+        list[:class:`compas.geometry.Curve`]
 
         """
         raise NotImplementedError
@@ -680,7 +683,7 @@ class Surface(Geometry):
 
     #     Returns
     #     -------
-    #     :class:`~compas.geometry.NurbsSurface`
+    #     :class:`compas.geometry.NurbsSurface`
 
     #     """
     #     raise NotImplementedError

@@ -596,7 +596,6 @@ if not compas.IPY:
         "graph",
         [
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -604,7 +603,6 @@ if not compas.IPY:
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -612,7 +610,6 @@ if not compas.IPY:
                 "max_node": 0,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -628,7 +625,6 @@ if not compas.IPY:
         "graph",
         [
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -636,42 +632,30 @@ if not compas.IPY:
                 "max_node": -2,
             },
             {
-                "dna": {},
                 "dea": {},
                 "node": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
-                "dea": {},
-                "node": {},
-                "edge": {},
-                "max_node": -1,
-            },
-            {
-                "attributes": {},
                 "dna": {},
                 "node": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},

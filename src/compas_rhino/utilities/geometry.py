@@ -2,12 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import rhinoscriptsyntax as rs
-
-
-__all__ = [
-    "uv_points_from_surface",
-]
+import rhinoscriptsyntax as rs  # type: ignore
 
 
 def uv_points_from_surface(srf, u_div, v_div):

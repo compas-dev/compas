@@ -4,15 +4,9 @@ from __future__ import print_function
 
 import xml.etree.ElementTree as ET
 from compas import _iotools
-from compas.files._xml.xml_cpython import (
-    prettify_string,
-)  # doesn't need special handling for pre-3.8 so we just import
+from compas.files._xml.xml_cpython import prettify_string  # noqa: F401
 
-__all__ = [
-    "xml_from_file",
-    "xml_from_string",
-    "prettify_string",
-]
+# doesn't need special handling for pre-3.8 so we just import
 
 
 def xml_from_file(source, tree_parser=None):

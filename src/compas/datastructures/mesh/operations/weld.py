@@ -15,7 +15,7 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
     fkey : int
         The identifier of a face.
@@ -53,7 +53,7 @@ def mesh_unweld_edges(mesh, edges):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh.
     edges: list[tuple[int, int]]
         List of edges as tuples of vertex keys.

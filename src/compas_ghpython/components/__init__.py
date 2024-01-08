@@ -1,3 +1,6 @@
+"""
+This package provides a small set of functions to easily install and uninstall user-defined GH Components.
+"""
 from __future__ import absolute_import
 
 import glob

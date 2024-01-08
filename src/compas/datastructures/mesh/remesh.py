@@ -27,7 +27,7 @@ def trimesh_remesh(
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A triangle mesh.
     target : float
         The target length for the mesh edges.

@@ -4,20 +4,20 @@ from __future__ import division
 
 from compas.geometry import Frame
 from compas.geometry import Polyhedron
-from compas.brep import Brep
+from compas.geometry import Brep
 from compas.datastructures import Datastructure
 from compas.data import Data
 
 
 class Feature(Data):
-    """Base class for a feature which may be applied to a :class:`~compas.datastructures.Part`."""
+    """Base class for a feature which may be applied to a :class:`compas.datastructures.Part`."""
 
     def apply(self, part):
         """Apply this Feature to the given part.
 
         Parameters
         ----------
-        part : :class:`~compas.datastructures.Part`
+        part : :class:`compas.datastructures.Part`
             The part onto which this feature should be applied.
 
         """
@@ -25,7 +25,7 @@ class Feature(Data):
 
 
 class GeometricFeature(Feature):
-    """Base class for geometric feature which may be applied to a :class:`~compas.datastructures.Part`.
+    """Base class for geometric feature which may be applied to a :class:`compas.datastructures.Part`.
 
     Applies a binary operation on Part's current geometry and the feature's.
 
@@ -76,7 +76,7 @@ class GeometricFeature(Feature):
 
 
 class ParametricFeature(Feature):
-    """Base class for Features that may be applied to the parametric definition of a :class:`~compas.datastructures.Part`.
+    """Base class for Features that may be applied to the parametric definition of a :class:`compas.datastructures.Part`.
 
     Examples
     --------
@@ -104,7 +104,7 @@ class ParametricFeature(Feature):
 
         Parameters
         ----------
-        part : :class:`~compas.datastructures.Part`
+        part : :class:`compas.datastructures.Part`
             The part onto which this feature has been previously applied and should now be reverted.
 
         """
@@ -117,12 +117,12 @@ class ParametricFeature(Feature):
 
         Parameters
         ----------
-        feature : :class:`~compas.datastructures.ParametricFeature`
+        feature : :class:`compas.datastructures.ParametricFeature`
             Another compatible ParametricFeature whose effect should be accumulated with this one's.
 
         Returns
         -------
-        :class:`~compas.datastructures.ParametricFeatures`
+        :class:`compas.datastructures.ParametricFeatures`
 
         """
         raise NotImplementedError
@@ -136,7 +136,7 @@ class Part(Datastructure):
     name : str, optional
         The name of the part.
         The name will be stored in :attr:`Part.attributes`.
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the part.
 
     Attributes
@@ -145,9 +145,9 @@ class Part(Datastructure):
         General data structure attributes that will be included in the data dict and serialization.
     key : int or str
         The identifier of the part in the connectivity graph of the parent assembly.
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
         The local coordinate system of the part.
-    features : list(:class:`~compas.datastructures.Feature`)
+    features : list(:class:`compas.datastructures.Feature`)
         The features added to the base shape of the part's geometry.
 
     """
@@ -193,7 +193,7 @@ class Part(Datastructure):
         """
         Returns a transformed copy of the part's geometry.
 
-        The returned type can be drawn with an Artist.
+        The returned type can be drawn with a scene object.
 
         Parameters
         ----------
@@ -202,7 +202,7 @@ class Part(Datastructure):
 
         Returns
         -------
-        :class:`~compas.geometry.Geometry`
+        :class:`compas.geometry.Geometry`
 
         """
         raise NotImplementedError
@@ -215,7 +215,7 @@ class Part(Datastructure):
 
         Parameters
         ----------
-        feature : :class:`~compas.assembly.Feature`
+        feature : :class:`compas.assembly.Feature`
             The feature to add
         apply : :bool:
             If True, feature is also applied. Otherwise, feature is only added and user must call `apply_features`.

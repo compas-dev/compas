@@ -2,10 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.tolerance import TOL
+
 from compas.geometry import Point
 from compas.datastructures import Mesh
 from compas.datastructures import meshes_join
-from compas.utilities import geometric_key
 from compas.utilities import memoize
 
 from Rhino.Geometry import NurbsSurface as RhinoNurbsSurface  # type: ignore
@@ -26,7 +27,7 @@ def surface_to_rhino(surface):
 
     Parameters
     ----------
-    surface : :class:`~compas.geometry.Surface`
+    surface : :class:`compas.geometry.Surface`
         A COMPAS surface.
 
     Returns
@@ -152,7 +153,7 @@ def surface_to_compas(surface):
 
     Returns
     -------
-    :class:`~compas.geometry.Surface`
+    :class:`compas.geometry.Surface`
 
     """
     from compas_rhino.geometry import RhinoNurbsSurface
@@ -170,7 +171,7 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
 
     Parameters
     ----------
-    cls : :class:`~compas.datastructures.Mesh`, optional
+    cls : :class:`compas.datastructures.Mesh`, optional
         The type of COMPAS mesh.
     facefilter : callable, optional
         A filter for selection which Brep faces to include.
@@ -184,14 +185,14 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
 
     Returns
     -------
-    :class:`~compas.datastructures.Mesh`
+    :class:`compas.datastructures.Mesh`
         The resulting mesh.
 
     Examples
     --------
     >>> import compas_rhino
     >>> from compas_rhino.geometry import RhinoSurface
-    >>> from compas_rhino.artists import MeshArtist
+    >>> from compas.scene import Scene
 
     >>> def facefilter(face):
     ...     success, w, h = face.GetSurfaceSize()
@@ -205,9 +206,9 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
     >>> surf = RhinoSurface.from_guid(guid)
     >>> mesh = surf.to_compas(facefilter=facefilter)
 
-    >>> artist = MeshArtist(mesh, layer="Blocks")
-    >>> artist.clear_layer()
-    >>> artist.draw()
+    >>> scene = Scene()
+    >>> scene.add(mesh, layer="Blocks")
+    >>> scene.redraw()
 
     """
     if not surface.HasBrepForm:
@@ -229,14 +230,14 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
         segments = curve.Explode()
         a = segments[0].PointAtStart
         b = segments[0].PointAtEnd
-        a_gkey = geometric_key(a)
-        b_gkey = geometric_key(b)
+        a_gkey = TOL.geometric_key(a)
+        b_gkey = TOL.geometric_key(b)
         gkey_xyz[a_gkey] = a
         gkey_xyz[b_gkey] = b
         face = [a_gkey, b_gkey]
         for segment in segments[1:-1]:
             b = segment.PointAtEnd
-            b_gkey = geometric_key(b)
+            b_gkey = TOL.geometric_key(b)
             face.append(b_gkey)
             gkey_xyz[b_gkey] = b
         faces.append(face)
@@ -289,12 +290,12 @@ def surface_to_compas_quadmesh(surface, nu, nv=None, weld=False, facefilter=None
         If provided, the filter should return True or False per face.
         A very simple filter that includes all faces is ``def facefilter(face): return True``.
         Default parameter value is None in which case all faces are included.
-    cls: :class:`~compas.geometry.Mesh`, optional
+    cls: :class:`compas.geometry.Mesh`, optional
         The type of COMPAS mesh.
 
     Returns
     -------
-    :class:`~compas.geometry.Mesh`
+    :class:`compas.geometry.Mesh`
 
     """
     nv = nv or nu

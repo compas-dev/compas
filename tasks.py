@@ -29,7 +29,7 @@ ns.configure(
         "ghuser": {
             "source_dir": "src/compas_ghpython/components",
             "target_dir": "src/compas_ghpython/components/ghuser",
-            "prefix": "(COMPAS)",
+            "prefix": "COMPAS: ",
         },
     }
 )

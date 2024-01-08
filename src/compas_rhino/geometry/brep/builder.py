@@ -1,11 +1,11 @@
-import Rhino
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import Rhino  # type: ignore
 
 from compas.geometry import BrepInvalidError
 from compas_rhino.conversions import point_to_rhino
-
-__all__ = [
-    "_RhinoBrepBuilder",
-]
 
 TOLERANCE = 1e-6
 
@@ -14,14 +14,14 @@ class _RhinoLoopBuilder(object):
     """Builds a Brep loop.
 
     Parameters
-    ==========
+    ----------
     loop : :rhino:`Rhino.Geometry.BrepLoop`
         The loop currently being constructed.
     brep : :rhino:`Rhino.Geometry.Brep`
         The parent brep object.
 
     Attributes
-    ==========
+    ----------
     result : :rhino: Rhino.Geometry.BrepTrim
         The created loop.
 
@@ -35,7 +35,7 @@ class _RhinoLoopBuilder(object):
         """Add trim to the new Brep.
 
         Parameters
-        ==========
+        ----------
         curve : :rhino:`Rhino.Geometry.NurbsCurve`
             The curve representing the geometry of this trim.
         edge_index : int
@@ -46,7 +46,7 @@ class _RhinoLoopBuilder(object):
             The iso status of this trim.
 
         Returns
-        =======
+        -------
         :rhino:`Rhino.Geometry.BrepTrim`
             The newly added BrepTrim instance.
 
@@ -73,14 +73,14 @@ class _RhinoFaceBuilder(object):
     Serves as context for reconstructing the loop elements associated with this face.
 
     Parameters
-    ==========
+    ----------
     face : :rhino:`Rhino.Geometry.BrepFace`
         The face currently being constructed.
     brep : :rhino:`Rhino.Geometry.Brep`
         The parent brep.
 
     Attributes
-    ==========
+    ----------
     result : :rhino:`Rhino.Geometry.BrepFace`
         The resulting BrepFace.
 
@@ -100,12 +100,12 @@ class _RhinoFaceBuilder(object):
         Returns a new builder to be used by all the trims of the newly added loop.
 
         Parameters
-        ==========
+        ----------
         loop_type : :rhino:`Rhino.Geometry.BrepLoopType`
             The enumeration value representing the type of this loop.
 
         Returns
-        =======
+        -------
         :class:`compas_rhino.geometry.RhinoLoopBuilder`
 
         """
@@ -117,7 +117,7 @@ class _RhinoBrepBuilder(object):
     """Reconstructs a Rhino.Geometry.Brep from COMPAS types
 
     Attributes
-    ==========
+    ----------
     result : :rhino:`Rhino.Geometry.Brep`
         The Brep resulting from the reconstruction, if successful.
 
@@ -136,7 +136,7 @@ class _RhinoBrepBuilder(object):
     def add_vertex(self, point):
         """Add vertext to a new Brep
 
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
 
         Returns
         -------
@@ -148,7 +148,7 @@ class _RhinoBrepBuilder(object):
     def add_edge(self, edge_curve, start_vertex, end_vertex):
         """Add edge to the new Brep
 
-        edge_curve : :class:`~compas_rhino.geometry.RhinoNurbsCurve`
+        edge_curve : :class:`compas_rhino.geometry.RhinoNurbsCurve`
         start_vertex: int
             index of the vertex at the start of this edge
         end_vertex: int
@@ -170,12 +170,12 @@ class _RhinoBrepBuilder(object):
         Returns a new builder to be used by all the loops related to his new face to add themselves.
 
         Parameters
-        ==========
+        ----------
         surface : :rhino:`Rhino.Geometry.Surface`
             The surface of this face.
 
         Returns
-        =======
+        -------
         :class:`compas_rhino.geometry.RhinoFaceBuilder`
 
         """

@@ -1,3 +1,8 @@
+"""
+This package defines the core data structures of the COMPAS framework.
+The data structures provide a structured way of storing and accessing data on individual components of both topological and geometrical objects.
+"""
+
 from __future__ import absolute_import
 
 import compas
@@ -161,16 +166,11 @@ from .cell_network.cell_network import CellNetwork
 
 from .tree.tree import Tree, TreeNode
 
-BaseNetwork = Network
-BaseMesh = Mesh
-BaseVolMesh = VolMesh
-
 __all__ = [
     "Datastructure",
     # Graphs
     "Graph",
     # Networks
-    "BaseNetwork",
     "CellNetwork",
     "Network",
     "network_complement",
@@ -197,7 +197,6 @@ __all__ = [
     # HalfEdge
     "HalfEdge",
     # Meshes
-    "BaseMesh",
     "Mesh",
     "mesh_add_vertex_to_face_edge",
     "mesh_bounding_box_xy",
@@ -266,7 +265,6 @@ __all__ = [
     # HalfFace
     "HalfFace",
     # Volumetric Meshes
-    "BaseVolMesh",
     "VolMesh",
     "volmesh_bounding_box",
     "volmesh_transform",

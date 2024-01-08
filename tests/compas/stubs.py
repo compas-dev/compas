@@ -8,7 +8,7 @@ from donttest_api_stability import get_names_in_module
 
 def compas_api():
     modules = [
-        "compas.artists",
+        "compas.scene",
         "compas.data",
         "compas.datastructures",
         "compas.files",

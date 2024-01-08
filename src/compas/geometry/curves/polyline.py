@@ -26,24 +26,24 @@ class Polyline(Curve):
 
     Parameters
     ----------
-    points : list[[float, float, float] | :class:`~compas.geometry.Point`]
+    points : list[[float, float, float] | :class:`compas.geometry.Point`]
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`, read-only
+    frame : :class:`compas.geometry.Frame`, read-only
         The frame of the spatial coordinates of the polyline.
         This is always the world XY frame.
-    points : list[:class:`~compas.geometry.Point`]
+    points : list[:class:`compas.geometry.Point`]
         The points of the polyline.
-    lines : list[:class:`~compas.geometry.Line`], read-only
+    lines : list[:class:`compas.geometry.Line`], read-only
         The lines of the polyline.
     length : float, read-only
         The length of the polyline.
-    start : :class:`~compas.geometry.Point`, read-only
+    start : :class:`compas.geometry.Point`, read-only
         The start point of the polyline.
-    end : :class:`~compas.geometry.Point`, read-only
+    end : :class:`compas.geometry.Point`, read-only
         The end point of the polyline.
     is_selfintersecting : bool, read-only
         True if the polyline is self-intersecting.
@@ -181,7 +181,7 @@ class Polyline(Curve):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Examples
@@ -207,7 +207,7 @@ class Polyline(Curve):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point to append.
 
         """
@@ -221,7 +221,7 @@ class Polyline(Curve):
         ----------
         i : int
             The index of the insertion point.
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point to insert.
 
         """
@@ -240,7 +240,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             The point on the polyline.
 
         Examples
@@ -277,15 +277,16 @@ class Polyline(Curve):
             x += dx
             i += 1
 
-    def parameter_at(self, point, tol=1e-6):
+    def parameter_at(self, point, tol=None):
         """Parameter of the polyline at a specific point.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The point on the polyline.
         tol : float, optional
-            A tolerance for membership verification.
+            A tolerance value for verifying that the point is on the polyline.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -321,7 +322,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The tangent vector at the specified parameter.
 
         Examples
@@ -358,11 +359,11 @@ class Polyline(Curve):
 
         Parameters
         ----------
-        point: [float, float, float] | :class:`~compas.geometry.Point`
+        point: [float, float, float] | :class:`compas.geometry.Point`
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
 
         """
         for line in self.lines:
@@ -380,7 +381,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        list[:class:`~compas.geometry.Polyline`]
+        list[:class:`compas.geometry.Polyline`]
 
         """
         corner_ids = []
@@ -424,7 +425,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
 
         """
         corner_ids = []
@@ -448,7 +449,7 @@ class Polyline(Curve):
         Returns
         -------
         list
-            list[:class:`~compas.geometry.Point`]
+            list[:class:`compas.geometry.Point`]
 
         Examples
         --------
@@ -475,7 +476,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
 
         Notes
         -----
@@ -539,7 +540,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        list[:class:`~compas.geometry.Polyline`]
+        list[:class:`compas.geometry.Polyline`]
 
         Examples
         --------
@@ -600,7 +601,7 @@ class Polyline(Curve):
         Returns
         -------
         list
-            list[:class:`~compas.geometry.Polyline`]
+            list[:class:`compas.geometry.Polyline`]
 
         Examples
         --------
@@ -637,9 +638,11 @@ class Polyline(Curve):
         try:
             start, end = length
             self.points[0] = self.points[0] + self.lines[0].vector.unitized().scaled(-start)
+            self._lines = None
         except TypeError:
             start = end = length
         self.points[-1] = self.points[-1] + self.lines[-1].vector.unitized().scaled(end)
+        self._lines = None
 
     def extended(self, length):
         """Returns a copy of this polyline extended by a given length.
@@ -652,7 +655,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyline`
+        :class:`compas.geometry.Polyline`
 
         """
         crv = self.copy()
@@ -701,6 +704,7 @@ class Polyline(Curve):
             else:
                 self.points[-1] = line.start + line.vector.unitized().scaled(total_length - end)
                 break
+        self._lines = None
 
     def shortened(self, length):
         """Returns a copy of this polyline shortened by a given length.
@@ -713,7 +717,7 @@ class Polyline(Curve):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyline`
+        :class:`compas.geometry.Polyline`
 
         """
         crv = self.copy()

@@ -8,7 +8,7 @@ def is_collapse_legal(mesh, edge, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh.
     edge : tuple[int, int]
         The identifier of the edge.
@@ -76,7 +76,7 @@ def mesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     edge : tuple[int, int]
         The identifier of the edge.
@@ -222,7 +222,7 @@ def trimesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     edge : tuple[int, int]
         The identifier of the edge.

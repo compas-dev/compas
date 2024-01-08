@@ -1,21 +1,3 @@
-"""
-************
-compas_rhino
-************
-
-.. currentmodule:: compas_rhino
-
-.. toctree::
-    :maxdepth: 1
-
-    compas_rhino.artists
-    compas_rhino.conduits
-    compas_rhino.conversions
-    compas_rhino.forms
-    compas_rhino.geometry
-    compas_rhino.utilities
-
-"""
 from __future__ import absolute_import
 
 import io
@@ -29,7 +11,7 @@ if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = "2.0.0-alpha.1"
+__version__ = "2.0.0-beta.1"
 
 
 PURGE_ON_DELETE = True
@@ -59,10 +41,11 @@ __all__ = [
 
 __all_plugins__ = [
     "compas_rhino.geometry.booleans",
-    "compas_rhino.geometry.trimesh",
+    "compas_rhino.geometry.trimesh_curvature",
+    "compas_rhino.geometry.trimesh_slicing",
     "compas_rhino.install",
     "compas_rhino.uninstall",
-    "compas_rhino.artists",
+    "compas_rhino.scene",
     "compas_rhino.geometry.curves",
     "compas_rhino.geometry.surfaces",
     "compas_rhino.geometry.brep",
@@ -74,8 +57,9 @@ __all_plugins__ = [
 # =============================================================================
 
 
-def clear():
-    guids = get_objects()  # noqa: F405
+def clear(guids=None):
+    if guids is None:
+        guids = get_objects()  # noqa: F405
     delete_objects(guids, purge=True)  # noqa: F405
 
 
@@ -229,6 +213,8 @@ def _get_rhino_managedplugins_path(version):
             "Resources",
             "ManagedPlugIns",
         )
+    else:
+        raise Exception("Unsupported platform")
 
     if not os.path.exists(managedplugins_path):
         raise Exception("The Managed Plug-ins folder does not exist in this location: {}".format(managedplugins_path))
@@ -253,6 +239,9 @@ def _get_rhino_plugins_path(version):
             plugins_path = os.path.join(appdata, "MacPlugIns")
         else:
             plugins_path = os.path.join(appdata, "{}".format(version), "Plug-ins")
+
+    else:
+        raise Exception("Unsupported platform")
 
     if not os.path.exists(plugins_path):
         raise Exception("The plugins folder does not exist in this location: {}".format(plugins_path))
@@ -322,6 +311,9 @@ def _get_rhino_ironpython_lib_path(version):
 
     elif compas.OSX:
         ipy_lib_path = _get_rhino_ironpython_lib_path_mac(version)
+
+    else:
+        raise Exception("Unsupported platform")
 
     if not os.path.exists(ipy_lib_path):
         ipy_lib_path = None

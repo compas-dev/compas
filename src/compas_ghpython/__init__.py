@@ -1,17 +1,3 @@
-"""
-********************************************************************************
-compas_ghpython
-********************************************************************************
-
-.. currentmodule:: compas_ghpython
-
-.. toctree::
-    :maxdepth: 1
-
-    compas_ghpython.artists
-    compas_ghpython.utilities
-
-"""
 import io
 import os
 import urllib
@@ -20,7 +6,7 @@ import zipfile
 import compas
 import compas_rhino
 
-__version__ = "2.0.0-alpha.1"
+__version__ = "2.0.0-beta.1"
 
 if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
@@ -34,7 +20,7 @@ __all__ = [
 __all_plugins__ = [
     "compas_ghpython.install",
     "compas_ghpython.uninstall",
-    "compas_ghpython.artists",
+    "compas_ghpython.scene",
 ]
 
 

@@ -10,7 +10,7 @@ def mesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     edge : tuple[int, int]
         The identifier of the edge to split.
@@ -86,7 +86,7 @@ def trimesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh.
     edge : tuple[int, int]
         The identifier of the edge to split.
@@ -163,7 +163,7 @@ def mesh_split_face(mesh, fkey, u, v):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         Instance of a mesh
     fkey : int
         The face key.
@@ -231,7 +231,7 @@ def mesh_split_strip(mesh, edge):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         The input mesh.
     edge : tuple[int, int]
         The edge identifying the strip.

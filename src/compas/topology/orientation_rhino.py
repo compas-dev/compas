@@ -2,9 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from Rhino.Geometry import RTree
-from Rhino.Geometry import Sphere
-from Rhino.Geometry import Point3d
+from Rhino.Geometry import RTree  # type: ignore
+from Rhino.Geometry import Sphere  # type: ignore
+from Rhino.Geometry import Point3d  # type: ignore
 
 from compas.utilities import pairwise
 from compas.geometry import centroid_points
@@ -16,7 +16,7 @@ def unify_cycles_rhino(vertices, faces, root=0):
 
     Parameters
     ----------
-    vertices : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    vertices : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         A list of vertex coordinates.
     faces : sequence[sequence[int]]
         A list of faces with each face defined by a list of indices into the list of vertices.
@@ -30,7 +30,7 @@ def unify_cycles_rhino(vertices, faces, root=0):
 
     Raises
     ------
-    AssertionError
+    Exception
         If not all faces were visited.
 
     Notes
@@ -64,7 +64,10 @@ def unify_cycles_rhino(vertices, faces, root=0):
 
     adj = face_adjacency_rhino(vertices, faces)
     visited = breadth_first_traverse(adj, root, unify)
-    assert len(list(visited)) == len(faces), "Not all faces were visited"
+
+    if len(list(visited)) != len(faces):
+        raise Exception("Not all faces were visited")
+
     return faces
 
 
@@ -73,7 +76,7 @@ def face_adjacency_rhino(xyz, faces):
 
     Parameters
     ----------
-    xyz : sequence[[float, float, float] | :class:`~compas.geometry.Point`]
+    xyz : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         The coordinates of the face vertices.
     faces : sequence[sequence[int]]
         A list of faces with each face defined by a list of indices into the list of xyz coordinates.

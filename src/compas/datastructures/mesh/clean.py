@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.utilities import geometric_key
+from compas.tolerance import TOL
 
 
 def mesh_delete_duplicate_vertices(mesh, precision=None):
@@ -10,12 +10,11 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 
     Parameters
     ----------
-    mesh : :class:`~compas.datastructures.Mesh`
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
-    precision : str, optional
-        Precision for point comparison in the form of a string formatting specifier.
-        For example, floating point precision (``'3f'``), or decimal integer (``'d'``).
-        Default is :attr:`compas.PRECISION`.
+    precision : int, optional
+        Precision for converting numbers to strings.
+        Default is :attr:`TOL.precision`.
 
     Returns
     -------
@@ -44,29 +43,33 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
     36
 
     """
-    key_gkey = {key: geometric_key(mesh.vertex_attributes(key, "xyz"), precision=precision) for key in mesh.vertices()}
-    gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
+    vertex_gkey = {}
+    for vertex in mesh.vertices():
+        gkey = TOL.geometric_key(mesh.vertex_attributes(vertex, "xyz"), precision=precision)
+        vertex_gkey[vertex] = gkey
 
-    for key in list(mesh.vertices()):
-        test = gkey_key[key_gkey[key]]
-        if test != key:
-            del mesh.vertex[key]
-            del mesh.halfedge[key]
+    gkey_vertex = {gkey: vertex for vertex, gkey in iter(vertex_gkey.items())}
+
+    for vertex in list(mesh.vertices()):
+        test = gkey_vertex[vertex_gkey[vertex]]
+        if test != vertex:
+            del mesh.vertex[vertex]
+            del mesh.halfedge[vertex]
             for u in mesh.halfedge:
                 nbrs = list(mesh.halfedge[u].keys())
                 for v in nbrs:
-                    if v == key:
+                    if v == vertex:
                         del mesh.halfedge[u][v]
 
-    for fkey in mesh.faces():
+    for face in mesh.faces():
         seen = set()
-        face = []
-        for key in [gkey_key[key_gkey[key]] for key in mesh.face_vertices(fkey)]:
-            if key not in seen:
-                seen.add(key)
-                face.append(key)
-        mesh.face[fkey] = face
-        for u, v in mesh.face_halfedges(fkey):
-            mesh.halfedge[u][v] = fkey
+        vertices = []
+        for vertex in [gkey_vertex[vertex_gkey[vertex]] for vertex in mesh.face_vertices(face)]:
+            if vertex not in seen:
+                seen.add(vertex)
+                vertices.append(vertex)
+        mesh.face[face] = vertices
+        for u, v in mesh.face_halfedges(face):
+            mesh.halfedge[u][v] = face
             if u not in mesh.halfedge[v]:
                 mesh.halfedge[v][u] = None

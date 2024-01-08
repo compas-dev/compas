@@ -1,20 +1,21 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from compas.geometry import centroid_points
-from compas.geometry import normal_polygon
-from compas.geometry import distance_point_point
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
-from compas.geometry import is_point_on_segment
-from compas.geometry import is_point_on_polyline
-from compas.geometry import is_point_in_triangle
-from compas.geometry import is_point_in_circle
-from compas.geometry import is_point_in_polygon_xy
-from compas.geometry import is_point_in_convex_polygon_xy
+from compas.geometry import distance_point_point
 from compas.geometry import is_point_behind_plane
+from compas.geometry import is_point_in_circle
+from compas.geometry import is_point_in_convex_polygon_xy
+from compas.geometry import is_point_in_polygon_xy
+from compas.geometry import is_point_in_triangle
+from compas.geometry import is_point_on_polyline
+from compas.geometry import is_point_on_segment
+from compas.geometry import normal_polygon
 from compas.geometry import transform_points
+from compas.tolerance import TOL
 
 from .geometry import Geometry
 from .vector import Vector
@@ -116,11 +117,19 @@ class Point(Geometry):
         self.z = z
 
     def __repr__(self):
-        return "{0}({1}, {2}, z={3})".format(
+        return "{0}(x={1}, y={2}, z={3})".format(
             type(self).__name__,
             self.x,
             self.y,
             self.z,
+        )
+
+    def __str__(self):
+        return "{0}(x={1}, y={2}, z={3})".format(
+            type(self).__name__,
+            TOL.format_number(self.x),
+            TOL.format_number(self.y),
+            TOL.format_number(self.z),
         )
 
     def __len__(self):
@@ -254,7 +263,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             The other point.
 
         Returns
@@ -277,7 +286,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        line : [point, point] | :class:`~compas.geometry.Line`
+        line : [point, point] | :class:`compas.geometry.Line`
             The line.
 
         Returns
@@ -301,7 +310,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        plane : [point, vector] | :class:`~compas.geometry.Plane`
+        plane : [point, vector] | :class:`compas.geometry.Plane`
             The plane.
 
         Returns
@@ -337,7 +346,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+        polygon : sequence[point] | :class:`compas.geometry.Polygon`
             The polygon.
 
         Returns
@@ -374,7 +383,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polygon : sequence[point] | :class:`~compas.geometry.Polygon`
+        polygon : sequence[point] | :class:`compas.geometry.Polygon`
             The polygon.
 
         Returns
@@ -402,15 +411,16 @@ class Point(Geometry):
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line, tol=1e-6):
+    def on_line(self, line, tol=None):
         """Determine if the point lies on the given line.
 
         Parameters
         ----------
-        line : [point, point] | :class:`~compas.geometry.Line`
+        line : [point, point] | :class:`compas.geometry.Line`
             The line.
         tol : float, optional
             A tolerance value for the distance between the point and the line.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -427,17 +437,18 @@ class Point(Geometry):
         True
 
         """
-        return self.distance_to_line(line) < tol
+        return TOL.is_zero(self.distance_to_line(line), tol)
 
-    def on_segment(self, segment, tol=1e-6):
+    def on_segment(self, segment, tol=None):
         """Determine if the point lies on the given segment.
 
         Parameters
         ----------
-        segment : [point, point] | :class:`~compas.geometry.Line`
+        segment : [point, point] | :class:`compas.geometry.Line`
             The segment.
         tol : float, optional
             A tolerance value for the distance between the point and the segment.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -461,7 +472,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polyline : sequence[point] | :class:`~compas.geometry.Polyline`
+        polyline : sequence[point] | :class:`compas.geometry.Polyline`
             The polyline.
 
         Returns
@@ -481,15 +492,16 @@ class Point(Geometry):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_plane(self, plane, tol=1e-6):
+    def on_plane(self, plane, tol=None):
         """Determine if the point lies on the given plane.
 
         Parameters
         ----------
-        plane : :class:`~compas.geometry.Plane`
+        plane : :class:`compas.geometry.Plane`
             The plane.
         tol : float, optional
             A tolerance value for the distance between the point and the plane.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -507,17 +519,18 @@ class Point(Geometry):
         True
 
         """
-        return self.distance_to_plane(plane) < tol
+        return TOL.is_zero(self.distance_to_plane(plane), tol)
 
-    def on_circle(self, circle, tol=1e-6):
+    def on_circle(self, circle, tol=None):
         """Determine if the point lies on the given circle.
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
             The circle.
         tol : float, optional
             A tolerance value for the distance between the point and the circle.
+            Default is :attr:`TOL.absolute`.
 
         Returns
         -------
@@ -528,14 +541,14 @@ class Point(Geometry):
         """
         if not self.on_plane(circle.plane, tol):
             return False
-        return self.distance_to_point(circle.center) < circle.radius + tol
+        return TOL.is_close(self.distance_to_point(circle.center), circle.radius, rtol=0, atol=tol)
 
-    def on_curve(self, curve, tol=1e-6):
+    def on_curve(self, curve, tol=None):
         """Determine if the point lies on the given curve.
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`compas.geometry.Curve`
             The curve.
         tol : float, optional
             A tolerance value for the distance between the point and the curve.
@@ -547,14 +560,14 @@ class Point(Geometry):
             False, otherwise.
 
         """
-        return self.distance_to_point(curve.closest_point(self)) < tol
+        return TOL.is_zero(self.distance_to_point(curve.closest_point(self)), tol)
 
     def in_triangle(self, triangle):
         """Determine if the point lies inside the given triangle.
 
         Parameters
         ----------
-        triangle : [point, point, point] | :class:`~compas.geometry.Polygon`
+        triangle : [point, point, point] | :class:`compas.geometry.Polygon`
             The triangle.
 
         Returns
@@ -579,7 +592,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
             The circle.
 
         Returns
@@ -610,7 +623,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polyhedron : [vertices, faces] | :class:`~compas.geometry.Polyhedron`
+        polyhedron : [vertices, faces] | :class:`compas.geometry.Polyhedron`
             The polyhedron.
 
         Returns
@@ -634,7 +647,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation matrix.
 
         Examples

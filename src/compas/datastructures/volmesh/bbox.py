@@ -6,17 +6,12 @@ from __future__ import print_function
 from compas.geometry import bounding_box
 
 
-__all__ = [
-    "volmesh_bounding_box",
-]
-
-
 def volmesh_bounding_box(volmesh):
     """Compute the (axis aligned) bounding box of a volmesh.
 
     Parameters
     ----------
-    volmesh : :class:`~compas.datastructures.VolMesh`
+    volmesh : :class:`compas.datastructures.VolMesh`
         The volmesh data structure.
 
     Returns

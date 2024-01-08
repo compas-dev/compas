@@ -115,7 +115,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
     Attributes
     ----------
-    points: list[list[:class:`~compas.geometry.Point`]]
+    points: list[list[:class:`compas.geometry.Point`]]
         The control points of the surface.
     weights: list[list[float]]
         The weights of the control points.
@@ -202,7 +202,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
             The constructed surface.
 
         """
@@ -313,7 +313,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Parameters
         ----------
-        points : list[list[:class:`~compas.geometry.Point`]]
+        points : list[list[:class:`compas.geometry.Point`]]
             The control points.
         weights : list[list[float]]
             The weights of the control points.
@@ -332,7 +332,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         surface = cls()
@@ -347,7 +347,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Parameters
         ----------
-        points : list[list[:class:`~compas.geometry.Point`]]
+        points : list[list[:class:`compas.geometry.Point`]]
             The control points.
         degree_u : int
             Degree in the U direction.
@@ -356,7 +356,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         # this of course depends on the order in which the points are given.
@@ -378,12 +378,12 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Parameters
         ----------
-        curve1 : :class:`~compas.geometry.NurbsCurve`
-        curve2 : :class:`~compas.geometry.NurbsCurve`
+        curve1 : :class:`compas.geometry.NurbsCurve`
+        curve2 : :class:`compas.geometry.NurbsCurve`
 
         Returns
         -------
-        :class:`~compas_rhino.geometry.RhinoNurbsSurface`
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
         surface = cls()

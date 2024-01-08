@@ -9,9 +9,10 @@ from math import pi
 from itertools import product
 
 from compas.geometry import angle_vectors_xy
-from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
+
+from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 
 
 def network_embed_in_plane_proxy(data, fixed=None, straightline=True):
@@ -27,7 +28,7 @@ def network_is_crossed(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -71,7 +72,7 @@ def network_count_crossings(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -92,7 +93,7 @@ def network_find_crossings(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -127,7 +128,7 @@ def network_is_xy(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -152,7 +153,7 @@ def network_is_planar(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -189,7 +190,7 @@ def network_is_planar_embedding(network):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network object.
 
     Returns
@@ -207,7 +208,7 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
 
     Parameters
     ----------
-    network : :class:`~compas.datastructures.Network`
+    network : :class:`compas.datastructures.Network`
         A network object.
     fixed : [hashable, hashable], optional
         Two fixed points.

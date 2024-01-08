@@ -3,16 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import rhinoscriptsyntax as rs
-
-
-__all__ = [
-    "get_document_basename",
-    "get_document_filename",
-    "get_document_extension",
-    "get_document_filepath",
-    "get_document_dirname",
-]
+import rhinoscriptsyntax as rs  # type: ignore
 
 
 def get_document_basename():

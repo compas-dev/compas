@@ -25,42 +25,42 @@ class Capsule(Shape):
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`, optional
-        The local coordinate system, or "frame", of the capsule.
-        Default is ``None``, in which case the world coordinate system is used.
-    radius : float, optional
+    radius : float
         The radius of the capsule.
-    height : float, optional
+    height : float
         The height of the capsule along the z-axis of the frame.
         Half of the capsule is above the XY plane of the frame, the other half below.
+    frame : :class:`compas.geometry.Frame`, optional
+        The local coordinate system, or "frame", of the capsule.
+        Default is ``None``, in which case the world coordinate system is used.
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
-        The local coordinate system of the capsule.
-        The capsule is oriented along the local z-axis.
-    transformation : :class:`~compas.geometry.Transformation`
-        The transformation of the capsule to global coordinates.
-    radius : float
-        The radius of the base circle of the capsule.
-    height : float
-        The height of the capsule.
-    axis : :class:`~compas.geometry.Line`, read-only
+    area : float, read-only
+        The surface area of the capsule.
+    axis : :class:`compas.geometry.Line`, read-only
         The central axis of the capsule.
-    base : :class:`~compas.geometry.Point`, read-only
+    base : :class:`compas.geometry.Point`, read-only
         The base point of the capsule.
         The base point is at the origin of the local coordinate system.
-    plane : :class:`~compas.geometry.Plane`, read-only
-        The plane of the capsule.
-        The base point of the plane is at the origin of the local coordinate system.
-        The normal of the plane is in the direction of the z-axis of the local coordinate system.
-    circle : :class:`~compas.geometry.Circle`, read-only
+    circle : :class:`compas.geometry.Circle`, read-only
         The base circle of the capsule.
         The center of the circle is at the origin of the local coordinate system.
     diameter : float, read-only
         The diameter of the base circle of the capsule.
-    area : float, read-only
-        The surface area of the capsule.
+    frame : :class:`compas.geometry.Frame`
+        The local coordinate system of the capsule.
+        The capsule is oriented along the local z-axis.
+    height : float
+        The height of the capsule.
+    plane : :class:`compas.geometry.Plane`, read-only
+        The plane of the capsule.
+        The base point of the plane is at the origin of the local coordinate system.
+        The normal of the plane is in the direction of the z-axis of the local coordinate system.
+    radius : float
+        The radius of the base circle of the capsule.
+    transformation : :class:`compas.geometry.Transformation`
+        The transformation of the capsule to global coordinates.
     volume : float, read-only
         The volume of the capsule.
 
@@ -185,19 +185,19 @@ class Capsule(Shape):
     # ==========================================================================
 
     @classmethod
-    def from_line_and_radius(cls, line, radius):
+    def from_line_and_radius(cls, line, radius):  # type: (...) -> Capsule
         """Construct a capsule from a line and a radius.
 
         Parameters
         ----------
-        line : :class:`~compas.geometry.Line`
+        line : :class:`compas.geometry.Line`
             The line.
         radius : float
             The radius.
 
         Returns
         -------
-        :class:`~compas.geometry.Capsule`
+        :class:`compas.geometry.Capsule`
             The constructed capsule.
 
         See Also
@@ -214,19 +214,19 @@ class Capsule(Shape):
         return cls(frame=frame, radius=radius, height=line.length)
 
     @classmethod
-    def from_circle_and_height(cls, circle, height):
+    def from_circle_and_height(cls, circle, height):  # type: (...) -> Capsule
         """Construct a capsule from a circle and a height.
 
         Parameters
         ----------
-        circle : :class:`~compas.geometry.Circle`
+        circle : :class:`compas.geometry.Circle`
             The circle.
         height : float
             The height.
 
         Returns
         -------
-        :class:`~compas.geometry.Capsule`
+        :class:`compas.geometry.Capsule`
             The constructed capsule.
 
         See Also
@@ -265,6 +265,11 @@ class Capsule(Shape):
         list[list[float]], list[list[int]]
             A list of vertex locations, and a list of faces,
             with each face defined as a list of indices into the list of vertices.
+
+        Raises
+        ------
+        ValueError
+            If the value for ``u`` or ``v`` is smaller than 3.
 
         """
         if u < 3:
@@ -334,6 +339,16 @@ class Capsule(Shape):
 
         return vertices, faces
 
+    def to_brep(self):
+        """Returns a BRep representation of the capsule.
+
+        Returns
+        -------
+        :class:`compas.brep.Brep`
+
+        """
+        raise NotImplementedError
+
     # =============================================================================
     # Transformations
     # =============================================================================
@@ -363,7 +378,7 @@ class Capsule(Shape):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The point.
         tol : float, optional
             The tolerance for the test.
@@ -373,6 +388,10 @@ class Capsule(Shape):
         bool
             True if the point is inside the capsule.
             False otherwise.
+
+        See Also
+        --------
+        contains_points
 
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
@@ -406,7 +425,7 @@ class Capsule(Shape):
 
         Parameters
         ----------
-        points : list of :class:`~compas.geometry.Point`
+        points : list of :class:`compas.geometry.Point`
             The points.
         tol : float, optional
             The tolerance for the test.
@@ -416,6 +435,10 @@ class Capsule(Shape):
         list of bool
             For each point, True if the point is inside the capsule.
             False otherwise.
+
+        See Also
+        --------
+        contains_point
 
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)

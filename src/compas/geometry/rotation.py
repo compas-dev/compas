@@ -41,13 +41,13 @@ class Rotation(Transformation):
 
     Attributes
     ----------
-    quaternion : :class:`~compas.geometry.Quaternion`, read-only
+    quaternion : :class:`compas.geometry.Quaternion`, read-only
         The quaternion from the rotation.
-    axis_and_angle : tuple[:class:`~compas.geometry.Vector`, float], read-only
+    axis_and_angle : tuple[:class:`compas.geometry.Vector`, float], read-only
         The axis and the angle of the rotation.
-    axis_angle_vector : :class:`~compas.geometry.Vector`, read-only
+    axis_angle_vector : :class:`compas.geometry.Vector`, read-only
         The axis-angle vector of the rotation.
-    basis_vectors : tuple[:class:`~compas.geometry.Vector`, :class:`~compas.geometry.Vector`], read-only
+    basis_vectors : tuple[:class:`compas.geometry.Vector`, :class:`compas.geometry.Vector`], read-only
         The basis vectors of the rotation.
 
     Raises
@@ -113,16 +113,16 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        axis : [float, float, float] | :class:`~compas.geometry.Vector`
+        axis : [float, float, float] | :class:`compas.geometry.Vector`
             Three numbers that represent the axis of rotation.
         angle : float
             The rotation angle in radians.
-        point : [float, float, float] | :class:`~compas.geometry.Point`
+        point : [float, float, float] | :class:`compas.geometry.Point`
             A point to perform a rotation around an origin other than [0, 0, 0].
 
         Returns
         -------
-        :class:`~compas.geometry.Rotation`
+        :class:`compas.geometry.Rotation`
 
         Notes
         -----
@@ -150,14 +150,14 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        xaxis : [float, float, float] | :class:`~compas.geometry.Vector`
+        xaxis : [float, float, float] | :class:`compas.geometry.Vector`
             The x-axis of the frame.
-        yaxis : [float, float, float] | :class:`~compas.geometry.Vector`
+        yaxis : [float, float, float] | :class:`compas.geometry.Vector`
             The y-axis of the frame.
 
         Returns
         -------
-        :class:`~compas.geometry.Rotation`
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------
@@ -184,12 +184,12 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        frame : [point, vector, vector] | :class:`~compas.geometry.Frame`
+        frame : [point, vector, vector] | :class:`compas.geometry.Frame`
             A frame describing the targeted Cartesian coordinate system.
 
         Returns
         -------
-        :class:`~compas.geometry.Rotation`
+        :class:`compas.geometry.Rotation`
 
         Notes
         -----
@@ -218,12 +218,12 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        quaternion : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        quaternion : [float, float, float, float] | :class:`compas.geometry.Quaternion`
             Four numbers that represents the four coefficient values of a quaternion.
 
         Returns
         -------
-        :class:`~compas.geometry.Rotation`
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------
@@ -231,7 +231,7 @@ class Rotation(Transformation):
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = Rotation.from_quaternion(q1)
         >>> q2 = R.quaternion
-        >>> allclose(q1, q2, tol=1e-3)
+        >>> allclose(q1, q2)
         True
 
         """
@@ -244,14 +244,14 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        axis_angle_vector : [float, float, float] | :class:`~compas.geometry.Vector`
+        axis_angle_vector : [float, float, float] | :class:`compas.geometry.Vector`
             Three numbers that represent the axis of rotation and angle of rotation through the vector's magnitude.
-        point : [float, float, float] | :class:`~compas.geometry.Point`, optional
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
             A point to perform a rotation around an origin other than [0, 0, 0].
 
         Returns
         -------
-        :class:`~compas.geometry.Rotation`
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------
@@ -290,7 +290,7 @@ class Rotation(Transformation):
 
         Returns
         -------
-        :class:`~compas.geometry.Rotation`
+        :class:`compas.geometry.Rotation`
 
         Examples
         --------

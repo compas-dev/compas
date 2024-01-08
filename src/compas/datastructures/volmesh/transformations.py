@@ -5,20 +5,14 @@ from __future__ import division
 from compas.geometry import transform_points
 
 
-__all__ = [
-    "volmesh_transform",
-    "volmesh_transformed",
-]
-
-
 def volmesh_transform(volmesh, transformation):
     """Transform a mesh.
 
     Parameters
     ----------
-    volmesh : :class:`~compas.datastructures.VolMesh`
+    volmesh : :class:`compas.datastructures.VolMesh`
         The volmesh.
-    transformation : :class:`~compas.geometry.Transformation`
+    transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
     Returns
@@ -50,14 +44,14 @@ def volmesh_transformed(volmesh, transformation):
 
     Parameters
     ----------
-    volmesh : :class:`~compas.datastructures.VolMesh`
+    volmesh : :class:`compas.datastructures.VolMesh`
         The volmesh.
-    transformation : :class:`~compas.geometry.Transformation`
+    transformation : :class:`compas.geometry.Transformation`
         The transformation.
 
     Returns
     -------
-    :class:`~compas.datastructures.VolMesh`
+    :class:`compas.datastructures.VolMesh`
         A transformed independent copy of `volmesh`.
 
     Notes

@@ -22,7 +22,7 @@ class Curve(Geometry):
 
     Parameters
     ----------
-    frame : :class:`~compas.geometry.Frame`, optional
+    frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the curve.
         Default is the world coordinate system.
     name : str, optional
@@ -30,11 +30,11 @@ class Curve(Geometry):
 
     Attributes
     ----------
-    frame : :class:`~compas.geometry.Frame`
+    frame : :class:`compas.geometry.Frame`
         The frame of the curve.
-    transformation : :class:`~compas.geometry.Transformation`, read-only
+    transformation : :class:`compas.geometry.Transformation`, read-only
         The transformation from the local coordinate system of the curve (:attr:`frame`) to the world coordinate system.
-    plane : :class:`~compas.geometry.Plane`, read-only
+    plane : :class:`compas.geometry.Plane`, read-only
         The plane of the curve.
     dimension : int, read-only
         The spatial dimension of the curve.
@@ -142,7 +142,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Curve`
+        :class:`compas.geometry.Curve`
 
         """
         raise NotImplementedError
@@ -158,7 +158,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Curve`
+        :class:`compas.geometry.Curve`
 
         """
         raise NotImplementedError
@@ -213,7 +213,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[:class:`~compas.geometry.Point`]
+        list[:class:`compas.geometry.Point`]
 
         """
         domain = domain or self.domain
@@ -235,7 +235,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Polyline`
+        :class:`compas.geometry.Polyline`
 
         """
         from compas.geometry import Polyline
@@ -254,7 +254,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Polygon`
+        :class:`compas.geometry.Polygon`
 
         Raises
         ------
@@ -279,7 +279,7 @@ class Curve(Geometry):
 
         Parameters
         ----------
-        T : :class:`~compas.geometry.Transformation` | list[list[float]]
+        T : :class:`compas.geometry.Transformation` | list[list[float]]
             The transformation.
 
         Returns
@@ -311,7 +311,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Point`
+        :class:`compas.geometry.Point`
             the corresponding point on the curve.
 
         Raises
@@ -336,7 +336,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The corresponding normal vector.
 
         Raises
@@ -361,7 +361,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The corresponding tangent vector.
 
         Raises
@@ -386,7 +386,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Frame`
+        :class:`compas.geometry.Frame`
             The corresponding local frame.
 
         Raises
@@ -416,7 +416,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Vector`
+        :class:`compas.geometry.Vector`
             The corresponding curvature vector.
 
         Raises
@@ -454,7 +454,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Curve`
+        :class:`compas.geometry.Curve`
 
         See Also
         --------
@@ -496,7 +496,7 @@ class Curve(Geometry):
 
     #     Returns
     #     -------
-    #     list[:class:`~compas.geometry.Point`]
+    #     list[:class:`compas.geometry.Point`]
     #         Points along the curve.
 
     #     See Also
@@ -511,14 +511,14 @@ class Curve(Geometry):
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point : :class:`compas.geometry.Point`
             The test point.
         return_parameter : bool, optional
             If True, the parameter corresponding to the closest point should be returned in addition to the point.
 
         Returns
         -------
-        :class:`~compas.geometry.Point` | tuple[:class:`~compas.geometry.Point`, float]
+        :class:`compas.geometry.Point` | tuple[:class:`compas.geometry.Point`, float]
             If `return_parameter` is False (default), only the closest point is returned.
             If `return_parameter` is True, the closest point and the corresponding parameter are returned.
 
@@ -539,7 +539,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[:class:`~compas.geometry.Point`]]
+        list[float] | tuple[list[float], list[:class:`compas.geometry.Point`]]
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
@@ -565,7 +565,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[:class:`~compas.geometry.Point`]]
+        list[float] | tuple[list[float], list[:class:`compas.geometry.Point`]]
             If `return_points` is False, the parameters of the discretisation.
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
@@ -582,12 +582,12 @@ class Curve(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Box`
+        :class:`compas.geometry.Box`
 
         """
         raise NotImplementedError
 
-    def length(self, precision=1e-8):
+    def length(self, tol=None):
         """Compute the length of the curve.
 
         Parameters
@@ -598,7 +598,7 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def fair(self, tol=1e-3):
+    def fair(self, tol=None):
         raise NotImplementedError
 
     def offset(self):

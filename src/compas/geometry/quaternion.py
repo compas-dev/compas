@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import math
+from compas.tolerance import TOL
 
 from compas.geometry import quaternion_multiply
 from compas.geometry import quaternion_conjugate
@@ -135,13 +135,10 @@ class Quaternion(Geometry):
     def __repr__(self):
         return "{0}({1}, {2}, {3}, {4})".format(type(self).__name__, self.w, self.x, self.y, self.z)
 
-    def __eq__(self, other, tol=1e-05):
+    def __eq__(self, other, tol=None):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
-        for v1, v2 in zip(self, other):
-            if math.fabs(v1 - v2) > tol:
-                return False
-        return True
+        return TOL.is_allclose(self, other, rtol=0, atol=tol)
 
     def __getitem__(self, key):
         if key == 0:
@@ -242,12 +239,12 @@ class Quaternion(Geometry):
 
         Parameters
         ----------
-        other : [float, float, float, float] | :class:`~compas.geometry.Quaternion`
+        other : [float, float, float, float] | :class:`compas.geometry.Quaternion`
             A Quaternion.
 
         Returns
         -------
-        :class:`~compas.geometry.Quaternion`
+        :class:`compas.geometry.Quaternion`
             The product :math:`P = R * Q` of this quaternion (R) multiplied by other quaternion (Q).
 
         Notes
@@ -279,11 +276,11 @@ class Quaternion(Geometry):
 
         Parameters
         ----------
-        frame : :class:`~compas.geometry.Frame`
+        frame : :class:`compas.geometry.Frame`
 
         Returns
         -------
-        :class:`~compas.geometry.Quaternion`
+        :class:`compas.geometry.Quaternion`
             The new quaternion.
 
         Examples
@@ -310,7 +307,7 @@ class Quaternion(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Quaternion`
+        :class:`compas.geometry.Quaternion`
             The new quaternion.
 
         Examples
@@ -330,11 +327,11 @@ class Quaternion(Geometry):
 
         Parameters
         ----------
-        R : :class:`~compas.geometry.Rotation`
+        R : :class:`compas.geometry.Rotation`
 
         Returns
         -------
-        :class:`~compas.geometry.Quaternion`
+        :class:`compas.geometry.Quaternion`
             The new quaternion.
 
         Examples
@@ -376,7 +373,7 @@ class Quaternion(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Quaternion`
+        :class:`compas.geometry.Quaternion`
 
         Examples
         --------
@@ -417,7 +414,7 @@ class Quaternion(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Quaternion`
+        :class:`compas.geometry.Quaternion`
             A quaternion in canonic form.
 
         Examples
@@ -457,7 +454,7 @@ class Quaternion(Geometry):
 
         Returns
         -------
-        :class:`~compas.geometry.Quaternion`
+        :class:`compas.geometry.Quaternion`
             The conjugated quaternion.
 
         Examples

@@ -66,7 +66,6 @@ class Mapping(object):
 
 
 class MutableMapping(Mapping):
-
     __slots__ = ()
 
     """A MutableMapping is a generic container for associating

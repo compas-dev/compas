@@ -176,15 +176,14 @@ class XFunc(object):
     is based on Numpy and Scipy. This implementation is not directly available in
     Rhino because Numpy and Scipy are not available for IronPython.
 
-    With :class:`~compas.utilities.XFunc`, :func:`compas.numerical.fd_numpy` can be easily
+    With :class:`compas.utilities.XFunc`, :func:`compas.numerical.fd_numpy` can be easily
     wrapped in an external process and called as if it would be directly available.
 
     .. code-block:: python
 
         import compas
-        import compas_rhino
 
-        from compas_rhino.artists import MeshArtist
+        from compas.scene import Scene
         from compas.datastructures import Mesh
         from compas.utilities import XFunc
 
@@ -213,9 +212,9 @@ class XFunc(object):
             attr['y'] = xyz[vertex][1]
             attr['z'] = xyz[vertex][2]
 
-        artist = MeshArtist(mesh)
-        artist.draw_vertices()
-        artist.draw_edges()
+        scene = Scene()
+        scene.add(mesh)
+        scene.redraw()
 
     """
 
