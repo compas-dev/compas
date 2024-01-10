@@ -4,4 +4,4 @@ networkx >= 3.0
 numpy >= 1.15.4
 scipy >= 1.1
 typing_extensions
-watchdog
+watchdog; sys_platform != 'emscripten'
