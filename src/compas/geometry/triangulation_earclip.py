@@ -1,4 +1,4 @@
-class Ear:
+class Ear(object):
     """Represents an Ear of a polygon. An Ear is a triangle formed by three consecutive vertices of the polygon."""
 
     def __init__(self, points, indexes, ind):
