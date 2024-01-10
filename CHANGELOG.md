@@ -50,6 +50,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Mesh.exploded`.
 * Added `compas.datastructures.Mesh.adjacency_matrix`, `compas.datastructures.Mesh.connectivity_matrix`, `compas.datastructures.Mesh.degree_matrix`, `compas.datastructures.Mesh.laplacian_matrix`.
 * Added `compas.topology.vertex_adjacency_from_edges`, `compas.topology.vertex_adjacency_from_faces`, `compas.topology.edges_from_faces`, `compas.topology.faces_from_edges`.
+* Added `compas.datastructures.Network.split_edge`, `compas.datastructures.Network.join_edges`.
+* Added `compas.datastructures.Network.smooth`.
+* Added `compas.datastructures.Network.is_crossed`, `compas.datastructures.Network.is_xy`, `compas.datastructures.Network.is_planar`, `compas.datastructures.Network.is_planar_embedding`, `compas.datastructures.Network.count_crossings`, `compas.datastructures.Network.find_crossings`, `compas.datastructures.Network.embed_in_plane`.
+* Added `compas.datastructures.Network.find_cycles`.
+* Added `compas.datastructures.Network.shortest_path`.
+* Added `compas.datastructures.Network.transform`.
+* Added `compas.datastructures.Graph.is_connected`.
+* Added `compas.datastructures.Graph.adjacency_matrix`, `compas.datastructures.Graph.connectivity_matrix`, `compas.datastructures.Graph.degree_matrix`, `compas.datastructures.Graph.laplacian_matrix`.
 
 ### Changed
 
@@ -72,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `compas.numerical.pca_numpy` to `compas.geometry.pca_numpy`.
 * Moved `compas.numerical.scalafield_contours` to `compas.geometry.scalarfield_contours`.
 * Moved `compas.numerical.matrices` to `compas.topology.matrices`.
+* Moved `compas.numerical.linalg` to `compas.geometry.linalg`.
 
 ### Removed
 
@@ -100,6 +109,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.datastructures.volmesh_transform` and `compas.datastructures.volmesh_transformed`.
 * Removed `compas.topology.unify_cycles_numpy` and `compas.topology.face_adjacency_numpy`.
 * Removed `compas.topology.unify_cycles_rhino` and `compas.topology.face_adjacency_rhino`.
+* Removed `compas.datastructures.network_is_connected`.
+* Removed `compas.datastructures.network_complement`.
+* Removed `compas.datastructures.network_disconnected_nodes`, `compas.datastructures.network_disconnected_edges`, `compas.datastructures.network_explode`.
+* Removed `compas.datastructures.network_adjacency_matrix`, `compas.datastructures.network_connectivity_matrix`, `compas.datastructures.network_degree_matrix`, `compas.datastructures.network_laplacian_matrix`.
+* Removed `compas.datastructures.network_transform`, `compas.datastructures.network_transformed`.
+* Removed `compas.datastructures.network_shortest_path`.
+* Removed `compas.numerical`.
 
 ## [2.0.0-beta.1] 2023-12-20
 

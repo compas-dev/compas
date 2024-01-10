@@ -243,6 +243,7 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
     edges = [(u, v) for u, v in network.edges() if not network.is_leaf(u) and not network.is_leaf(v)]
 
     is_embedded = False
+    pos = {}
 
     count = 100
     while count:
@@ -254,6 +255,9 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
         count -= 1
 
     if not is_embedded:
+        return False
+
+    if not pos:
         return False
 
     if fixed:

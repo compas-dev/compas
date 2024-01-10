@@ -10,7 +10,7 @@ from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
-from compas.numerical import normrow
+from .linalg import normrow
 
 
 def trimesh_edge_cotangent(mesh, edge):

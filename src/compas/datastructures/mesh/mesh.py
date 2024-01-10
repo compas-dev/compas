@@ -63,13 +63,15 @@ from .operations.merge import mesh_merge_faces
 from .operations.split import mesh_split_edge
 from .operations.split import mesh_split_face
 from .operations.split import mesh_split_strip
-from .subdivision import mesh_subdivide
+from .operations.weld import mesh_unweld_edges
+from .operations.weld import mesh_unweld_vertices
 
+from .subdivision import mesh_subdivide
 from .duality import mesh_dual
 from .slice import mesh_slice_plane
 
-# from .smoothing import mesh_smooth_centroid
-# from .smoothing import mesh_smooth_area
+from .smoothing import mesh_smooth_centroid
+from .smoothing import mesh_smooth_area
 
 
 class Mesh(HalfEdge):
@@ -106,6 +108,13 @@ class Mesh(HalfEdge):
     subdivided = mesh_subdivide
     dual = mesh_dual
     slice = mesh_slice_plane
+    # split
+    # trim
+    unweld_vertices = mesh_unweld_vertices
+    unweld_edges = mesh_unweld_edges
+
+    smooth_centroid = mesh_smooth_centroid
+    smooth_area = mesh_smooth_area
 
     def __init__(
         self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
@@ -350,11 +359,10 @@ class Mesh(HalfEdge):
 
         """
         from compas.datastructures import Network
-        from compas.datastructures import network_find_cycles
 
         network = Network.from_lines(lines, precision=precision)
         vertices = network.to_points()
-        faces = network_find_cycles(network)
+        faces = network.find_cycles()
         mesh = cls.from_vertices_and_faces(vertices, faces)
         if delete_boundary_face:
             mesh.delete_face(0)
@@ -576,7 +584,7 @@ class Mesh(HalfEdge):
         return mesh
 
     @classmethod
-    def from_points(cls, points, boundary=None, holes=None):  # type: (...) -> Mesh
+    def from_points(cls, points):  # type: (...) -> Mesh
         """Construct a mesh from a delaunay triangulation of a set of points.
 
         Parameters
@@ -591,10 +599,10 @@ class Mesh(HalfEdge):
             A mesh object.
 
         """
-        from compas.geometry import delaunay_from_points
+        from compas.geometry import delaunay_triangulation
 
-        faces = delaunay_from_points(points, boundary=boundary, holes=holes)
-        return cls.from_vertices_and_faces(points, faces)
+        vertices, faces = delaunay_triangulation(points)
+        return cls.from_vertices_and_faces(vertices, faces)
 
     def to_points(self):
         """Convert the mesh to a collection of points.
@@ -678,15 +686,16 @@ class Mesh(HalfEdge):
         ny = ny or nx
 
         vertices = [[x, y, 0.0] for x, y in product(linspace(0, dx, nx + 1), linspace(0, dy, ny + 1))]
-        faces = [
-            [
-                i * (ny + 1) + j,
-                (i + 1) * (ny + 1) + j,
-                (i + 1) * (ny + 1) + j + 1,
-                i * (ny + 1) + j + 1,
-            ]
-            for i, j in product(range(nx), range(ny))
-        ]
+        faces = []
+        for i, j in product(range(nx), range(ny)):
+            faces.append(
+                [
+                    i * (ny + 1) + j,
+                    (i + 1) * (ny + 1) + j,
+                    (i + 1) * (ny + 1) + j + 1,
+                    i * (ny + 1) + j + 1,
+                ]
+            )
 
         return cls.from_vertices_and_faces(vertices, faces)
 
@@ -1090,126 +1099,6 @@ class Mesh(HalfEdge):
         """
         xyz = self.vertices_attributes("xyz")
         return oriented_bounding_box(xyz)
-
-    def offset(self, distance=1.0):
-        """Generate an offset mesh.
-
-        Parameters
-        ----------
-        distance : float, optional
-            The offset distance.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-            The offset mesh.
-
-        Notes
-        -----
-        If the offset distance is a positive value, the offset is in the direction of the vertex normal.
-        If the value is negative, the offset is in the opposite direction.
-        In both cases, the orientation of the offset mesh is the same as the orientation of the original.
-
-        In areas with high degree of curvature, the offset mesh can have self-intersections.
-
-        Examples
-        --------
-        >>> from compas.datastructures import Mesh, mesh_offset
-        >>> from compas.geometry import distance_point_point as dist
-        >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-        >>> mesh.offset()
-        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
-
-        """
-        offset = self.copy()
-
-        for vertex in offset.vertices():
-            normal = self.vertex_normal(vertex)
-            xyz = self.vertex_coordinates(vertex)
-            offset.vertex_attributes(vertex, "xyz", add_vectors(xyz, scale_vector(normal, distance)))
-
-        return offset
-
-    def thickened(self, thickness=1.0, both=True):
-        """Generate a thicknened mesh.
-
-        Parameters
-        ----------
-        thickness : float, optional
-            The mesh thickness.
-            This should be a positive value.
-        both : bool, optional
-            If true, the mesh is thickened on both sides of the original.
-            Otherwise, the mesh is thickened on the side of the positive normal.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-            The thickened mesh.
-
-        Raises
-        ------
-        ValueError
-            If `thickness` is not a positive number.
-
-        Examples
-        --------
-        >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-        >>> mesh.thicken(mesh)
-        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
-
-        """
-        if thickness <= 0:
-            raise ValueError("Thickness should be a positive number.")
-
-        if both:
-            mesh_top = self.offset(+0.5 * thickness)
-            mesh_bottom = self.offset(-0.5 * thickness)
-        else:
-            mesh_top = self.offset(thickness)
-            mesh_bottom = self.copy()
-
-        # flip bottom part
-        mesh_bottom.flip_cycles()
-
-        # join parts
-        thickened_mesh = mesh_top.join(mesh_bottom)
-
-        # close boundaries
-        n = thickened_mesh.number_of_vertices() / 2
-
-        edges_on_boundary = [edge for boundary in list(thickened_mesh.edges_on_boundaries()) for edge in boundary]
-
-        for u, v in edges_on_boundary:
-            if u < n and v < n:
-                thickened_mesh.add_face([u, v, v + n, u + n])
-
-        return thickened_mesh
-
-    # the only reason this function is here and not in halfedge
-    # is because "from_vertices_and_faces" doesn't accept general vertex data
-    # perhaps there should be
-    # * from_vertices_and_faces
-    # * from_points_and_faces
-    def exploded(self):
-        """Explode the mesh into its connected components.
-
-        Returns
-        -------
-        list[:class:`compas.datastructures.Mesh`]
-            The list of the meshes from the exploded mesh parts.
-
-        """
-        cls = type(self)
-        meshes = []
-        for part in self.connected_faces():
-            vertexkeys = list(set([vertex for face in part for vertex in self.face_vertices(face)]))
-            vertices = self.vertices_attributes("xyz", keys=vertexkeys)
-            vertex_index = {vertex: index for index, vertex in enumerate(vertexkeys)}
-            faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in part]
-            meshes.append(cls.from_vertices_and_faces(vertices, faces))
-        return meshes
 
     # --------------------------------------------------------------------------
     # vertex geometry
@@ -1851,183 +1740,22 @@ class Mesh(HalfEdge):
     # boundary
     # --------------------------------------------------------------------------
 
-    # move this to the halfedge class
-    def vertices_on_boundary(self):
-        """Find the vertices on the longest boundary.
-
-        Returns
-        -------
-        list[int]
-            The vertices of the longest boundary.
-
-        """
-        boundaries = self.vertices_on_boundaries()
-        return boundaries[0] if boundaries else []
-
-    def edges_on_boundary(self):
-        """Find the edges on the longest boundary.
-
-        Returns
-        -------
-        list[tuple[int, int]]
-            The edges of the longest boundary.
-
-        """
-        boundaries = self.edges_on_boundaries()
-        return boundaries[0] if boundaries else []
-
-    def faces_on_boundary(self):
-        """Find the faces on the longest boundary.
-
-        Returns
-        -------
-        list[int]
-            The faces on the longest boundary.
-
-        """
-        boundaries = self.faces_on_boundaries()
-        return boundaries[0] if boundaries else []
-
     def vertices_on_boundaries(self):
-        """Find the vertices on all boundaries of the mesh.
+        """Find the vertices on the boundaries of the mesh.
 
         Returns
         -------
         list[list[int]]
             A list of vertex keys per boundary.
+            The longest boundary is returned first.
 
         """
-        # all boundary vertices
-        vertices_set = set()
-        for key, nbrs in iter(self.halfedge.items()):
-            for nbr, face in iter(nbrs.items()):
-                if face is None:
-                    vertices_set.add(key)
-                    vertices_set.add(nbr)
-        vertices_all = list(vertices_set)
 
-        # return an empty list if there are no boundary vertices
-        if not vertices_all:
-            return []
+        def length(boundary):
+            return sum(self.edge_length(u, v) for u, v in pairwise(boundary + boundary[:1]))  # type: ignore
 
-        # init container for boundary groups
-        boundaries = []
-
-        # identify *special* vertices
-        # these vertices are non-manifold
-        # and should be processed differently
-        special = []
-        for key in vertices_all:
-            count = 0
-            for nbr in self.vertex_neighbors(key):
-                face = self.halfedge_face((key, nbr))
-                if face is None:
-                    count += 1
-                    if count > 1:
-                        if key not in special:
-                            special.append(key)
-
-        superspecial = special[:]
-
-        # process the special vertices first
-        while special:
-            start = special.pop()
-            nbrs = []
-            # find all neighbors of the current special vertex
-            # that are on the mesh boundary
-            for nbr in self.vertex_neighbors(start):
-                face = self.halfedge_face((start, nbr))
-                if face is None:
-                    nbrs.append(nbr)
-            # for normal mesh vertices
-            # there should be only 1 boundary neighbor
-            # for special vertices there are more and they all have to be processed
-            while nbrs:
-                vertex = nbrs.pop()
-                vertices = [start, vertex]
-                while True:
-                    # this is a *super* special case
-                    if vertex in superspecial:
-                        boundaries.append(vertices)
-                        break
-                    # find the boundary loop for the current starting halfedge
-                    for nbr in self.vertex_neighbors(vertex):
-                        if nbr == vertices[-2]:
-                            continue
-                        face = self.halfedge_face((vertex, nbr))
-                        if face is None:
-                            vertices.append(nbr)
-                            vertex = nbr
-                            break
-                    if vertex == start:
-                        boundaries.append(vertices)
-                        break
-                # remove any neighbors that might be part of an already identified boundary
-                nbrs = [vertex for vertex in nbrs if vertex not in vertices]
-
-        # remove all boundary vertices that were already identified
-        vertices_all = [vertex for vertex in vertices_all if all(vertex not in vertices for vertices in boundaries)]
-
-        # process the remaining boundary vertices if any
-        if vertices_all:
-            key = vertices_all[0]
-            while vertices_all:
-                vertices = [key]
-                start = key
-                while True:
-                    for nbr in self.vertex_neighbors(key):
-                        face = self.halfedge_face((key, nbr))
-                        if face is None:
-                            vertices.append(nbr)
-                            key = nbr
-                            break
-                    if key == start:
-                        boundaries.append(vertices)
-                        vertices_all = [x for x in vertices_all if x not in vertices]
-                        break
-                if vertices_all:
-                    key = vertices_all[0]
-
-        # return the boundary groups in order of the length of the group
-        return sorted(boundaries, key=lambda vertices: len(vertices))[::-1]
-
-    def edges_on_boundaries(self):
-        """Find the edges on all boundaries of the mesh.
-
-        Returns
-        -------
-        list[list[tuple[int, int]]]
-            A list of edges per boundary.
-
-        """
-        vertexgroups = self.vertices_on_boundaries()
-        edgegroups = []
-        for vertices in vertexgroups:
-            edgegroups.append(list(pairwise(vertices)))
-        return edgegroups
-
-    def faces_on_boundaries(self):
-        """Find the faces on all boundaries of the mesh.
-
-        Returns
-        -------
-        list[list[int]]
-            lists of faces, grouped and sorted per boundary.
-
-        """
-        vertexgroups = self.vertices_on_boundaries()
-        facegroups = []
-        for vertices in vertexgroups:
-            temp = [self.halfedge_face((v, u)) for u, v in pairwise(vertices)]
-            faces = []
-            for face in temp:
-                if face is None:
-                    continue
-                if face not in faces and all(face not in group for group in facegroups):
-                    faces.append(face)
-            if faces:
-                facegroups.append(faces)
-        return facegroups
+        boundaries = super(Mesh, self).vertices_on_boundaries()
+        return sorted(boundaries, key=length)
 
     # --------------------------------------------------------------------------
     # transformations
@@ -2088,176 +1816,125 @@ class Mesh(HalfEdge):
             self.vertex_attributes(vertex, "xyz", point)
 
     # --------------------------------------------------------------------------
-    # matrices
+    # other methods
     # --------------------------------------------------------------------------
 
-    def adjacency_matrix(self, rtype="array"):
-        """Compute the adjacency matrix of the mesh.
+    def offset(self, distance=1.0):
+        """Generate an offset mesh.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
-            Format of the result.
+        distance : float, optional
+            The offset distance.
 
         Returns
         -------
-        array-like
-            The adjacency matrix.
-
-        """
-        from compas.topology import adjacency_matrix
-
-        vertex_index = self.vertex_index()
-        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
-        return adjacency_matrix(adjacency, rtype=rtype)
-
-    def connectivity_matrix(self, rtype="array"):
-        """Compute the connectivity matrix of the mesh.
-
-        Parameters
-        ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
-            Format of the result.
-
-        Returns
-        -------
-        array-like
-            The connectivity matrix.
-
-        """
-        from compas.topology import connectivity_matrix
-
-        vertex_index = self.vertex_index()
-        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
-        return connectivity_matrix(adjacency, rtype=rtype)
-
-    def degree_matrix(self, rtype="array"):
-        """Compute the degree matrix of the mesh.
-
-        Parameters
-        ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
-            Format of the result.
-
-        Returns
-        -------
-        array-like
-            The degree matrix.
-
-        """
-        from compas.topology import degree_matrix
-
-        vertex_index = self.vertex_index()
-        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
-        return degree_matrix(adjacency, rtype=rtype)
-
-    def face_matrix(self, rtype="array"):
-        r"""Compute the face matrix of the mesh.
-
-        Parameters
-        ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
-            Format of the result.
-
-        Returns
-        -------
-        array-like
-            The face matrix.
+        :class:`compas.datastructures.Mesh`
+            The offset mesh.
 
         Notes
         -----
-        The face matrix represents the relationship between faces and vertices.
-        Each row of the matrix represents a face. Each column represents a vertex.
-        The matrix is filled with zeros except where a relationship between a vertex
-        and a face exist.
+        If the offset distance is a positive value, the offset is in the direction of the vertex normal.
+        If the value is negative, the offset is in the opposite direction.
+        In both cases, the orientation of the offset mesh is the same as the orientation of the original.
 
-        .. math::
+        In areas with high degree of curvature, the offset mesh can have self-intersections.
 
-            F_{ij} =
-            \begin{cases}
-                1 & \text{if vertex j is part of face i} \\
-                0 & \text{otherwise}
-            \end{cases}
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh, mesh_offset
+        >>> from compas.geometry import distance_point_point as dist
+        >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
+        >>> mesh.offset()
+        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
 
-        The face matrix can for example be used to compute the centroids of all
-        faces of a mesh.
+        """
+        offset = self.copy()
+
+        for vertex in offset.vertices():
+            normal = self.vertex_normal(vertex)
+            xyz = self.vertex_coordinates(vertex)
+            offset.vertex_attributes(vertex, "xyz", add_vectors(xyz, scale_vector(normal, distance)))
+
+        return offset
+
+    def thickened(self, thickness=1.0, both=True):
+        """Generate a thicknened mesh.
+
+        Parameters
+        ----------
+        thickness : float, optional
+            The mesh thickness.
+            This should be a positive value.
+        both : bool, optional
+            If true, the mesh is thickened on both sides of the original.
+            Otherwise, the mesh is thickened on the side of the positive normal.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+            The thickened mesh.
+
+        Raises
+        ------
+        ValueError
+            If `thickness` is not a positive number.
 
         Examples
         --------
         >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_polyhedron(6)
-        >>> F = mesh.face_matrix()
-        >>> type(F)
-        <class 'numpy.ndarray'>
-
-        >>> from numpy import allclose
-        >>> xyz = asarray(mesh.vertices_attributes('xyz'))
-        >>> F = mesh.face_matrix(mesh, rtype='csr')
-        >>> c1 = F.dot(xyz) / F.sum(axis=1)
-        >>> c2 = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
-        >>> allclose(c1, c2)
-        True
+        >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
+        >>> mesh.thicken(mesh)
+        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
 
         """
-        from compas.topology import face_matrix
+        if thickness <= 0:
+            raise ValueError("Thickness should be a positive number.")
 
-        vertex_index = self.vertex_index()
-        faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
-        return face_matrix(faces, rtype=rtype)
+        if both:
+            mesh_top = self.offset(+0.5 * thickness)
+            mesh_bottom = self.offset(-0.5 * thickness)
+        else:
+            mesh_top = self.offset(thickness)
+            mesh_bottom = self.copy()
 
-    def laplacian_matrix(self, rtype="array"):
-        r"""Compute the Laplacian matrix of the mesh.
+        # flip bottom part
+        mesh_bottom.flip_cycles()
 
-        Parameters
-        ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
-            Format of the result.
+        # join parts
+        thickened_mesh = mesh_top.join(mesh_bottom)
+
+        # close boundaries
+        n = thickened_mesh.number_of_vertices() / 2
+
+        edges_on_boundary = [edge for boundary in list(thickened_mesh.edges_on_boundaries()) for edge in boundary]
+
+        for u, v in edges_on_boundary:
+            if u < n and v < n:
+                thickened_mesh.add_face([u, v, v + n, u + n])
+
+        return thickened_mesh
+
+    # the only reason this function is here and not in halfedge
+    # is because "from_vertices_and_faces" doesn't accept general vertex data
+    # perhaps there should be
+    # * from_vertices_and_faces
+    # * from_points_and_faces
+    def exploded(self):
+        """Explode the mesh into its connected components.
 
         Returns
         -------
-        array-like
-            The Laplacian matrix.
-
-        Notes
-        -----
-        The :math:`n \times n` uniform Laplacian matrix :math:`\mathbf{L}` of a mesh
-        with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
-        follows [1]_
-
-        .. math::
-
-            \mathbf{L}_{ij} =
-            \begin{cases}
-                -1               & i = j \\
-                \frac{1}{deg(i)} & (i, j) \in \mathbf{E} \\
-                0                & \text{otherwise}
-            \end{cases}
-
-        with :math:`deg(i)` the degree of vertex :math:`i`.
-
-        Therefore, the uniform Laplacian of a vertex :math:`\mathbf{v}_{i}` points to
-        the centroid of its neighboring vertices.
-
-        References
-        ----------
-        .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
-            `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
-
-        Examples
-        --------
-        >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_polyhedron(6)
-        >>> L = mesh.laplacian_matrix(mesh, rtype='array')
-        >>> type(L)
-        <class 'numpy.ndarray'>
-
-        >>> xyz = asarray(mesh.vertices_attributes('xyz'))
-        >>> L = mesh.laplacian_matrix(mesh)
-        >>> d = L.dot(xyz)
+        list[:class:`compas.datastructures.Mesh`]
+            The list of the meshes from the exploded mesh parts.
 
         """
-        from compas.topology import laplacian_matrix
-
-        vertex_index = self.vertex_index()
-        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
-        return laplacian_matrix(adjacency, rtype=rtype)
+        cls = type(self)
+        meshes = []
+        for part in self.connected_faces():
+            vertexkeys = list(set([vertex for face in part for vertex in self.face_vertices(face)]))
+            vertices = self.vertices_attributes("xyz", keys=vertexkeys)
+            vertex_index = {vertex: index for index, vertex in enumerate(vertexkeys)}
+            faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in part]
+            meshes.append(cls.from_vertices_and_faces(vertices, faces))
+        return meshes
