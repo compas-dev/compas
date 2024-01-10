@@ -180,17 +180,18 @@ def test_from_polyhedron():
 
 
 def test_from_points():
-    points = [
-        [1.0, 0.0, 3.0],
-        [1.0, 1.25, 0.0],
-        [1.5, 0.5, 0.0],
-        [1.0, 10.75, 0.2],
-        [1.0, 1.0, 4.0],
-    ]
-    mesh = Mesh.from_points(points)
-    assert mesh.number_of_faces() == 3
-    assert mesh.number_of_vertices() == 5
-    assert mesh.number_of_edges() == 7
+    if not compas.IPY:
+        points = [
+            [1.0, 0.0, 3.0],
+            [1.0, 1.25, 0.0],
+            [1.5, 0.5, 0.0],
+            [1.0, 10.75, 0.2],
+            [1.0, 1.0, 4.0],
+        ]
+        mesh = Mesh.from_points(points)
+        assert mesh.number_of_faces() == 3
+        assert mesh.number_of_vertices() == 5
+        assert mesh.number_of_edges() == 7
 
 
 def test_from_ploygons():
