@@ -81,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `compas.numerical.scalafield_contours` to `compas.geometry.scalarfield_contours`.
 * Moved `compas.numerical.matrices` to `compas.topology.matrices`.
 * Moved `compas.numerical.linalg` to `compas.geometry.linalg`.
+* Changed `watchdog` dependency to be only required for platforms other than `emscripten`.
 
 ### Removed
 
