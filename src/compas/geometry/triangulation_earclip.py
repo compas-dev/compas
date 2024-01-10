@@ -121,7 +121,7 @@ class Ear(object):
         return [self.prew, self.index, self.next]
 
 
-class Earcut:
+class Earcut(object):
     """A class for triangulating points forming a polygon using the Ear-cutting algorithm."""
 
     def __init__(self, points):
