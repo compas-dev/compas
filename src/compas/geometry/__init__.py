@@ -323,7 +323,6 @@ from .triangulation_delaunay import (
     constrained_delaunay_triangulation,
     delaunay_triangulation,
 )
-from .triangulation_delaunay_none import delaunay_from_points
 from .triangulation_earclip import earclip_polygon
 from .trimesh_curvature import (
     trimesh_mean_curvature,
@@ -345,6 +344,7 @@ from .trimesh_remeshing import (
 from .trimesh_slicing import trimesh_slice
 
 if not compas.IPY:
+    from .pca_numpy import pca_numpy
     from .bbox_numpy import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
@@ -358,7 +358,6 @@ if not compas.IPY:
     )
     from .hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
     from .icp_numpy import icp_numpy
-    from .triangulation_delaunay_numpy import delaunay_from_points_numpy, voronoi_from_points_numpy
     from .trimesh_gradient_numpy import trimesh_gradient_numpy
     from .trimesh_descent_numpy import trimesh_descent_numpy
 
@@ -563,8 +562,6 @@ __all__ = [
     "cross_vectors_xy",
     "decompose_matrix",
     "dehomogenize_vectors",
-    "delaunay_from_points",
-    "delaunay_from_points",
     "delaunay_triangulation",
     "discrete_coons_patch",
     "distance_line_line",
@@ -699,6 +696,7 @@ __all__ = [
     "oriented_bounding_box",
     "orthonormalize_axes",
     "orthonormalize_vectors",
+    "pca_numpy",
     "power_vector",
     "power_vectors",
     "project_point_line",
@@ -777,7 +775,6 @@ if not compas.IPY:
         "convex_hull_xy_numpy",
         "dehomogenize_and_unflatten_frames_numpy",
         "dehomogenize_numpy",
-        "delaunay_from_points_numpy",
         "homogenize_and_flatten_frames_numpy",
         "homogenize_numpy",
         "icp_numpy",
@@ -788,6 +785,5 @@ if not compas.IPY:
         "transform_vectors_numpy",
         "trimesh_descent_numpy",
         "trimesh_gradient_numpy",
-        "voronoi_from_points_numpy",
         "world_to_local_coordinates_numpy",
     ]

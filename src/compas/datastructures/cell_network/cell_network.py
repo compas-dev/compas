@@ -916,7 +916,6 @@ class CellNetwork(HalfFace):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
-
         """
 
         faces = list(set(faces))

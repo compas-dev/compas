@@ -49,6 +49,9 @@ def get_grasshopper_managedplugin_path(version):
     elif compas.OSX:
         gh_managedplugin_path = os.path.join(managedplugins, "GrasshopperPlugin.rhp")
 
+    else:
+        raise NotImplementedError
+
     if not os.path.exists(gh_managedplugin_path):
         raise Exception(
             "The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path)
@@ -87,7 +90,7 @@ def fetch_ghio_lib(target_folder="temp"):
     ghio_dll = "GH_IO.dll"
     filename = "lib/net48/" + ghio_dll
 
-    response = urllib.request.urlopen("https://www.nuget.org/api/v2/package/Grasshopper/")
+    response = urllib.request.urlopen("https://www.nuget.org/api/v2/package/Grasshopper/")  # type: ignore
     dst_file = os.path.join(target_folder, ghio_dll)
     zip_file = zipfile.ZipFile(io.BytesIO(response.read()))
 

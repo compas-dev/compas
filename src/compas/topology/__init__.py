@@ -4,8 +4,6 @@ Package containing topological algorithms for traversal, connectivity, combinato
 
 from __future__ import absolute_import
 
-import compas
-
 from .traversal import (
     depth_first_ordering,
     breadth_first_ordering,
@@ -19,40 +17,42 @@ from .traversal import (
 )
 from .combinatorics import vertex_coloring, connected_components
 from .orientation import face_adjacency, unify_cycles
-from .connectivity import adjacency_from_edges
-
-if compas.RHINO:
-    from .orientation_rhino import face_adjacency_rhino, unify_cycles_rhino
-
-if not compas.IPY:
-    from .orientation_numpy import face_adjacency_numpy, unify_cycles_numpy
+from .connectivity import (
+    vertex_adjacency_from_edges,
+    vertex_adjacency_from_faces,
+    edges_from_faces,
+    faces_from_edges,
+)
+from .matrices import (
+    adjacency_matrix,
+    degree_matrix,
+    connectivity_matrix,
+    laplacian_matrix,
+    face_matrix,
+)
 
 
 __all__ = [
-    "depth_first_ordering",
+    "adjacency_matrix",
+    "astar_lightest_path",
+    "astar_shortest_path",
     "breadth_first_ordering",
     "breadth_first_traverse",
     "breadth_first_paths",
-    "shortest_path",
-    "astar_lightest_path",
-    "astar_shortest_path",
+    "connected_components",
+    "connectivity_matrix",
+    "degree_matrix",
+    "depth_first_ordering",
     "dijkstra_distances",
     "dijkstra_path",
-    "vertex_coloring",
-    "connected_components",
+    "edges_from_faces",
     "face_adjacency",
+    "face_matrix",
+    "faces_from_edges",
+    "laplacian_matrix",
+    "shortest_path",
     "unify_cycles",
-    "adjacency_from_edges",
+    "vertex_adjacency_from_edges",
+    "vertex_adjacency_from_faces",
+    "vertex_coloring",
 ]
-
-if compas.RHINO:
-    __all__ += [
-        "face_adjacency_rhino",
-        "unify_cycles_rhino",
-    ]
-
-if not compas.IPY:
-    __all__ += [
-        "face_adjacency_numpy",
-        "unify_cycles_numpy",
-    ]
