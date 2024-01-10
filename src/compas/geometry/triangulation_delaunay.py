@@ -29,7 +29,7 @@ def delaunay_triangulation(points):
 
     xyz = asarray(points)
     d = Delaunay(xyz[:, 0:2])
-    return d.simplices
+    return xyz, d.simplices
 
 
 delaunay_triangulation.__pluggable__ = True
