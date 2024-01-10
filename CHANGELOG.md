@@ -55,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.datastructures.Mesh` to take additional `**kwargs`, instead of only `name=None` specifically.
 * Moved registration of `ping` and `remote_shutdown` of the RPC server to `compas.rpc.Server.__init__()`.
 * Moved `FileWatcherService` to `compas.rpc.services.watcher` so it can be reused.
-* Changed `compas.geometry.earclip_polygon` algorithm because there current one does not work in several cases.
+* Changed `compas.geometry.earclip_polygon` algorithm because the current one does not work in several cases.
 
 ### Removed
 
