@@ -1752,10 +1752,10 @@ class Mesh(HalfEdge):
         """
 
         def length(boundary):
-            return sum(self.edge_length(u, v) for u, v in pairwise(boundary + boundary[:1]))  # type: ignore
+            return sum(self.edge_length(edge) for edge in pairwise(boundary + boundary[:1]))  # type: ignore
 
         boundaries = super(Mesh, self).vertices_on_boundaries()
-        return sorted(boundaries, key=length)
+        return sorted(boundaries, key=length, reverse=True)
 
     # --------------------------------------------------------------------------
     # transformations
