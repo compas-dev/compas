@@ -33,7 +33,12 @@ def trimesh_geodistance(M, source, method="exact"):
     >>>
 
     """
-    raise NotImplementedError
+    from .trimesh_geodistance_numpy import trimesh_geodesic_distances_numpy
+
+    if method == "exact":
+        raise NotImplementedError
+
+    return trimesh_geodesic_distances_numpy(M, [source])
 
 
 trimesh_geodistance.__pluggable__ = True

@@ -4,6 +4,10 @@ from __future__ import division
 
 from random import sample
 from ast import literal_eval
+from itertools import combinations
+
+from compas.topology import breadth_first_traverse
+from compas.topology import connected_components
 
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import NodeAttributeView
@@ -573,6 +577,34 @@ class Graph(Datastructure):
 
         """
         return len(list(self.edges()))
+
+    def is_connected(self):
+        """Verify that the network is connected.
+
+
+        Returns
+        -------
+        bool
+            True, if the network is connected.
+            False, otherwise.
+
+        Notes
+        -----
+        A network is connected if for every two vertices a path exists connecting them.
+
+        Examples
+        --------
+        >>> import compas
+        >>> from compas.datastructures import Network
+        >>> network = Network.from_obj(compas.get('lines.obj'))
+        >>> network.is_connected()
+        True
+
+        """
+        if self.number_of_nodes() == 0:
+            return False
+        nodes = breadth_first_traverse(self.adjacency, self.node_sample(size=1)[0])
+        return len(nodes) == self.number_of_nodes()
 
     # --------------------------------------------------------------------------
     # Accessors
@@ -1542,7 +1574,7 @@ class Graph(Datastructure):
         """
         return len(self.neighbors_in(key))
 
-    def connected_edges(self, key):
+    def node_edges(self, key):
         """Return the edges connected to a node.
 
         Parameters
@@ -1592,3 +1624,191 @@ class Graph(Datastructure):
         if directed:
             return u in self.edge and v in self.edge[u]
         return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
+
+    # --------------------------------------------------------------------------
+    # Other Methods
+    # --------------------------------------------------------------------------
+
+    def connected_nodes(self):
+        """Get groups of connected nodes.
+
+        Returns
+        -------
+        list[list[hashable]]
+
+        See Also
+        --------
+        :meth:`connected_edges`
+
+        """
+        return connected_components(self.adjacency)
+
+    def connected_edges(self):
+        """Get groups of connected edges.
+
+        Returns
+        -------
+        list[list[tuple[hashable, hashable]]]
+
+        See Also
+        --------
+        :meth:`connected_nodes`
+
+        """
+        return [[(u, v) for u in nodes for v in self.neighbors(u) if u < v] for nodes in self.connected_nodes()]
+
+    def exploded(self):
+        """Explode the graph into its connected components.
+
+        Returns
+        -------
+        list[:class:`compas.datastructures.Graph`]
+
+        """
+        cls = type(self)
+        graphs = []
+        for nodes in self.connected_nodes():
+            edges = [(u, v) for u in nodes for v in self.neighbors(u) if u < v]
+            graph = cls(
+                default_node_attributes=self.default_node_attributes,
+                default_edge_attributes=self.default_edge_attributes,
+            )
+            for node in nodes:
+                graph.add_node(node, attr_dict=self.node_attributes(node))
+            for u, v in edges:
+                graph.add_edge(u, v, attr_dict=self.edge_attributes((u, v)))
+            graphs.append(graph)
+        return graphs
+
+    def complement(self):
+        """Generate the complement of a graph.
+
+        The complement of a graph G is the graph H with the same vertices
+        but whose edges consists of the edges not present in the graph G [1]_.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            The complement graph.
+
+        References
+        ----------
+        .. [1] Wolfram MathWorld. *Graph complement*.
+            Available at: http://mathworld.wolfram.com/GraphComplement.html.
+
+        Examples
+        --------
+        >>> import compas
+        >>> from compas.datastructures import Network
+        >>> network = Network.from_obj(compas.get('lines.obj'))
+        >>> complement = network.complement()
+        >>> any(complement.has_edge(u, v, directed=False) for u, v in network.edges())
+        False
+
+        """
+        cls = type(self)
+
+        graph = cls(
+            default_node_attributes=self.default_node_attributes,
+            default_edge_attributes=self.default_edge_attributes,
+        )
+        for node in self.nodes():
+            graph.add_node(node, attr_dict=self.node_attributes(node))
+
+        for u, v in combinations(self.nodes(), 2):
+            if not self.has_edge((u, v), directed=False):
+                graph.add_edge(u, v, attr_dict=self.edge_attributes((u, v)))
+
+        return graph
+
+    # --------------------------------------------------------------------------
+    # Matrices
+    # --------------------------------------------------------------------------
+
+    def adjacency_matrix(self, rtype="array"):
+        """Creates a node adjacency matrix from a Network datastructure.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed adjacency matrix.
+
+        """
+        from compas.topology import adjacency_matrix
+
+        node_index = self.node_index()
+        adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
+        return adjacency_matrix(adjacency, rtype=rtype)
+
+    def connectivity_matrix(self, rtype="array"):
+        """Creates a connectivity matrix from a Network datastructure.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed connectivity matrix.
+
+        """
+        from compas.topology import connectivity_matrix
+
+        node_index = self.node_index()
+        edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
+        return connectivity_matrix(edges, rtype=rtype)
+
+    def degree_matrix(self, rtype="array"):
+        """Creates a degree matrix from a Network datastructure.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed degree matrix.
+
+        """
+        from compas.topology import degree_matrix
+
+        node_index = self.node_index()
+        adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
+        return degree_matrix(adjacency, rtype=rtype)
+
+    def laplacian_matrix(self, normalize=False, rtype="array"):
+        """Creates a Laplacian matrix from a Network datastructure.
+
+        Parameters
+        ----------
+        normalize : bool, optional
+            If True, normalize the entries such that the value on the diagonal is 1.
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed Laplacian matrix.
+
+        Notes
+        -----
+        ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the node.
+        Therefore ``c = xyz - d``. By changing the signs in the laplacian, the dsiplacement
+        vectors could be used in a more natural way ``c = xyz + d``.
+
+        """
+        from compas.topology import laplacian_matrix
+
+        node_index = self.node_index()
+        edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
+        return laplacian_matrix(edges, normalize=normalize, rtype=rtype)

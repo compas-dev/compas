@@ -16,6 +16,8 @@ shapes, general polygons and polyhedrons, boundary representations (B-reps), and
 Classes
 =======
 
+
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -80,6 +82,8 @@ Classes
 
 Functions
 =========
+
+
 
 .. autosummary::
     :toctree: generated/
@@ -148,8 +152,6 @@ Functions
     cross_vectors_xy
     decompose_matrix
     dehomogenize_vectors
-    delaunay_from_points
-    delaunay_from_points
     discrete_coons_patch
     distance_line_line
     distance_point_line
@@ -352,18 +354,17 @@ In environments where numpy is not available, these functions can still be acces
     convex_hull_xy_numpy
     dehomogenize_and_unflatten_frames_numpy
     dehomogenize_numpy
-    delaunay_from_points_numpy
     homogenize_and_flatten_frames_numpy
     homogenize_numpy
     icp_numpy
     local_to_world_coordinates_numpy
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
+    pca_numpy
     transform_points_numpy
     transform_vectors_numpy
     trimesh_descent_numpy
     trimesh_gradient_numpy
-    voronoi_from_points_numpy
     world_to_local_coordinates_numpy
 
 
@@ -402,3 +403,6 @@ Pluggables are functions that don't have an actual implementation, but receive a
     trimesh_remesh_along_isoline
     trimesh_remesh_constrained
     trimesh_slice
+
+
+

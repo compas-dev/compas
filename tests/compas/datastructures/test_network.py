@@ -137,19 +137,13 @@ def test_add_node():
 
 
 def test_non_planar(k5_network, non_planar_network):
-    # On IronPython, we completely skip adding the is_planar method because it depends on c-extensions (networkx)
-    if not hasattr(k5_network, "is_planar"):
-        return
-
-    assert k5_network.is_planar() is not True
-    assert non_planar_network.is_planar() is not True
+    if not compas.IPY:
+        assert k5_network.is_planar() is not True
+        assert non_planar_network.is_planar() is not True
 
 
 def test_planar(k5_network, planar_network):
-    # On IronPython, we completely skip adding the is_planar method because it depends on c-extensions (networkx)
-    if not hasattr(k5_network, "is_planar"):
-        return
-
-    k5_network.delete_edge(("a", "b"))  # Delete (a, b) edge to make K5 planar
-    assert k5_network.is_planar() is True
-    assert planar_network.is_planar() is True
+    if not compas.IPY:
+        k5_network.delete_edge(("a", "b"))  # Delete (a, b) edge to make K5 planar
+        assert k5_network.is_planar() is True
+        assert planar_network.is_planar() is True

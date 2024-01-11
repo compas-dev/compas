@@ -24,7 +24,12 @@ def delaunay_triangulation(points):
     >>>
 
     """
-    raise NotImplementedError
+    from numpy import asarray
+    from scipy.spatial import Delaunay
+
+    xyz = asarray(points)
+    d = Delaunay(xyz[:, 0:2])
+    return xyz, d.simplices
 
 
 delaunay_triangulation.__pluggable__ = True

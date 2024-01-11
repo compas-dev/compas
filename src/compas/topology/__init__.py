@@ -19,40 +19,48 @@ from .traversal import (
 )
 from .combinatorics import vertex_coloring, connected_components
 from .orientation import face_adjacency, unify_cycles
-from .connectivity import adjacency_from_edges
-
-if compas.RHINO:
-    from .orientation_rhino import face_adjacency_rhino, unify_cycles_rhino
+from .connectivity import (
+    vertex_adjacency_from_edges,
+    vertex_adjacency_from_faces,
+    edges_from_faces,
+    faces_from_edges,
+)
 
 if not compas.IPY:
-    from .orientation_numpy import face_adjacency_numpy, unify_cycles_numpy
+    from .matrices import (
+        adjacency_matrix,
+        degree_matrix,
+        connectivity_matrix,
+        laplacian_matrix,
+        face_matrix,
+    )
 
 
 __all__ = [
-    "depth_first_ordering",
+    "astar_lightest_path",
+    "astar_shortest_path",
     "breadth_first_ordering",
     "breadth_first_traverse",
     "breadth_first_paths",
-    "shortest_path",
-    "astar_lightest_path",
-    "astar_shortest_path",
+    "connected_components",
+    "depth_first_ordering",
     "dijkstra_distances",
     "dijkstra_path",
-    "vertex_coloring",
-    "connected_components",
+    "edges_from_faces",
     "face_adjacency",
+    "faces_from_edges",
+    "shortest_path",
     "unify_cycles",
-    "adjacency_from_edges",
+    "vertex_adjacency_from_edges",
+    "vertex_adjacency_from_faces",
+    "vertex_coloring",
 ]
-
-if compas.RHINO:
-    __all__ += [
-        "face_adjacency_rhino",
-        "unify_cycles_rhino",
-    ]
 
 if not compas.IPY:
     __all__ += [
-        "face_adjacency_numpy",
-        "unify_cycles_numpy",
+        "adjacency_matrix",
+        "degree_matrix",
+        "connectivity_matrix",
+        "laplacian_matrix",
+        "face_matrix",
     ]

@@ -9,13 +9,13 @@ from numpy import clip
 from numpy import finfo
 
 
-def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
+def trimesh_samplepoints_numpy(M, num_points=1000, return_normals=False):
     """Compute sample points on a triangle mesh surface.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A triangle mesh data structure.
+    M : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[[int, int, int]]]
+        A mesh represented by a list of vertices and a list of faces.
     num_points : int, optional
         The number of sample points.
     return_normals : bool, optional
@@ -44,24 +44,27 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
 
     Compute sample points.
 
-    >>> samples_pts, pts_normals = trimesh_samplepoints_numpy(hypar, 1000, True)
+    >>> samples_pts, pts_normals = trimesh_samplepoints_numpy(hypar.to_vertices_and_faces(), 1000, True)
     >>> # the x,y,z of sample points would be the following
     >>> x, y, z = samples_pts[:,0], samples_pts[:,1], samples_pts[:,2]
     >>> # the sample points added normal vector would be the following
     >>> X, Y, Z = x + pts_normals[:,0] , y + pts_normals[:,1] , z + pts_normals[:,2]
 
     """
-    if mesh.is_empty():
-        raise ValueError("Mesh is empty.")
-    if not mesh.is_trimesh():
-        raise ValueError("Mesh is not trimesh.")
-    if not mesh.is_valid():
-        raise ValueError("Mesh is invalid.")
+    # if mesh.is_empty():
+    #     raise ValueError("Mesh is empty.")
+    # if not mesh.is_trimesh():
+    #     raise ValueError("Mesh is not trimesh.")
+    # if not mesh.is_valid():
+    #     raise ValueError("Mesh is invalid.")
 
     # (1)  Prepare data for computing
-    vertex_index = mesh.vertex_index()
-    vertices = mesh.vertices_attributes("xyz")
-    faces = [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
+    # vertex_index = mesh.vertex_index()
+    # vertices = mesh.vertices_attributes("xyz")
+    # faces = [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
+
+    vertices, faces = M
+
     V = array(vertices, dtype=float64)
     F = array(faces, dtype=int)
 
@@ -73,8 +76,8 @@ def trimesh_samplepoints_numpy(mesh, num_points=1000, return_normals=False):
     area_list_norm = area_list / area_list.sum()
 
     # (2) Sample num_points of times on a mesh face regarding its weight of area
-    faces_idx = list(range(mesh.number_of_faces()))
-    samples_faces_idx = choice(faces_idx, num_points, p=area_list_norm)
+    faces_idx = list(range(F.shape[0]))
+    samples_faces_idx = choice(faces_idx, num_points, p=area_list_norm)  # type: ignore
 
     # (3) Barycentric Coordinate for Surface Sampling
     faces_vertices = V[F]

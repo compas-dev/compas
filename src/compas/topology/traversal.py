@@ -5,7 +5,7 @@ from __future__ import division
 try:
     from queue import PriorityQueue
 except ImportError:
-    from Queue import PriorityQueue
+    from Queue import PriorityQueue  # type: ignore
 
 from collections import deque
 
