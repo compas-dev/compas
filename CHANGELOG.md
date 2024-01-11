@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved `FileWatcherService` to `compas.rpc.services.watcher` so it can be reused.
 * Changed `compas.geometry.earclip_polygon` algorithm because the current one does not work in several cases.
 * Changed the docstrings in `compas.geometry.earclip_polygon` are corrected. The orientation to the XY Frame has been removed since it is handled by the `polygon.to_vertices_and_faces` method. Additionally, the test_polygon.py file has been modified with a new test for the ear_clip called `test_polygon_to_vertices_and_faces`. The `object` has been added to all `Ear` classes.
+* Changed the docstrings in `compas.geometry.earclip_polygon` is merged back, meaning the polygon is transformed to XY frame.
 
 ### Removed
 

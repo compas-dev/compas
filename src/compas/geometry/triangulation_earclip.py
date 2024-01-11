@@ -244,9 +244,7 @@ class Earcut(object):
 
 def earclip_polygon(polygon):
     """Triangulate a polygon using the ear clipping method.
-    For polygons oriented in 3D (not on XY Frame) use polygon.to_vertices_and_faces(True) instead.
-    Because it runs the same algorithm after orienting the polygon to XY Frame.
-    The polygon is assumed to be planar and non-self-intersecting.
+    The polygon is assumed to be planar and non-self-intersecting and position on XY plane.
     The winding direction is checked. If the polygon is not oriented counter-clockwise, it is reversed.
 
     Parameters
@@ -267,8 +265,13 @@ def earclip_polygon(polygon):
         If no more ears were found for triangulation.
 
     """
-    # cast polygon to points or copy points
-    points = list(polygon)
+
+    # Orient the copy of polygon points to XY plane.
+    from compas.geometry import Plane, Frame, Transformation  # Avoid circular import.
+
+    frame = Frame.from_plane(Plane(polygon.points[0], polygon.normal))
+    xform = Transformation.from_frame_to_frame(frame, Frame.worldXY())
+    points = [point.transformed(xform) for point in polygon.points]
 
     # Check polygon winding by signed area of all current and next points pairs.
     sum_val = 0.0
