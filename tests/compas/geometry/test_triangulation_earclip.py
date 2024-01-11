@@ -1,9 +1,8 @@
 import pytest
-import compas
+import compas.geometry
 
 
 def test_earclip_polygon_triangle():
-
     points = [
         [0, 0, 0],
         [1, 0, 0],
@@ -16,7 +15,6 @@ def test_earclip_polygon_triangle():
 
 
 def test_earclip_polygon_square():
-
     points = [
         [0, 0, 0],
         [1, 0, 0],
@@ -30,7 +28,6 @@ def test_earclip_polygon_square():
 
 
 def test_earclip_polygon_wrong_winding():
-
     points = [
         [332.639635, -3824, 1435.771272],
         [422.117559, -3301, 1563.558991],
