@@ -6,7 +6,6 @@ from compas.tolerance import TOL
 
 from compas.geometry import Point
 from compas.datastructures import Mesh
-from compas.datastructures import meshes_join
 from compas.utilities import memoize
 
 from Rhino.Geometry import NurbsSurface as RhinoNurbsSurface  # type: ignore
@@ -333,4 +332,7 @@ def surface_to_compas_quadmesh(surface, nu, nv=None, weld=False, facefilter=None
 
         meshes.append(cls.from_polygons(quads))
 
-    return meshes_join(meshes, cls=cls)
+    mesh = meshes[0]
+    for other in meshes[1:]:
+        mesh.join(other)
+    return mesh

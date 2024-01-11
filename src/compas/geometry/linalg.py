@@ -267,7 +267,7 @@ def rref(A, tol=None):
                 if lead_pos == num_cols:
                     return
         # swap the row with the nonzero lead with the current row
-        U[[i, r]] = U[[r, i]]
+        U[[i, r]] = U[[r, i]]  # type: ignore
         # "normalize" the values of the row
         lead_val = U[r][lead_pos]
         U[r] = U[r] / lead_val
@@ -408,7 +408,7 @@ def uvw_lengths(C, X):
 
     Examples
     --------
-    >>> from compas.numerical import connectivity_matrix
+    >>> from compas.topology import connectivity_matrix
     >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
     >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
     >>> uvw_lengths(C, X)

@@ -5,7 +5,6 @@ import compas
 
 
 from compas.datastructures import Mesh
-from compas.datastructures import meshes_join_and_weld
 from compas.geometry import Box
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
@@ -72,7 +71,10 @@ def _hexagongrid():
     for i in range(2):
         T = Translation.from_vector([i * (xmax - xmin), ymax - ymin, 0])
         meshes.append(mesh.transformed(T))
-    mesh = meshes_join_and_weld(meshes)
+    mesh = meshes[0]
+    for other in meshes[1:]:
+        mesh.join(other)
+    mesh.weld()
     return mesh
 
 
@@ -178,17 +180,18 @@ def test_from_polyhedron():
 
 
 def test_from_points():
-    points = [
-        [1.0, 0.0, 3.0],
-        [1.0, 1.25, 0.0],
-        [1.5, 0.5, 0.0],
-        [1.0, 10.75, 0.2],
-        [1.0, 1.0, 4.0],
-    ]
-    mesh = Mesh.from_points(points)
-    assert mesh.number_of_faces() == 3
-    assert mesh.number_of_vertices() == 5
-    assert mesh.number_of_edges() == 7
+    if not compas.IPY:
+        points = [
+            [1.0, 0.0, 3.0],
+            [1.0, 1.25, 0.0],
+            [1.5, 0.5, 0.0],
+            [1.0, 10.75, 0.2],
+            [1.0, 1.0, 4.0],
+        ]
+        mesh = Mesh.from_points(points)
+        assert mesh.number_of_faces() == 3
+        assert mesh.number_of_vertices() == 5
+        assert mesh.number_of_edges() == 7
 
 
 def test_from_ploygons():

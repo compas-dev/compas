@@ -13,7 +13,7 @@ from scipy.spatial import ConvexHull
 
 from compas.tolerance import TOL
 
-from compas.numerical import pca_numpy
+from compas.geometry import pca_numpy
 from compas.geometry import local_axes
 from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy

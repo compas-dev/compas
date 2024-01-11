@@ -4,6 +4,9 @@ from __future__ import print_function
 
 from random import sample
 
+from compas.topology import breadth_first_traverse
+from compas.topology import connected_components
+
 from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
@@ -528,6 +531,28 @@ class HalfEdge(Datastructure):
                     del self.halfedge[u]
 
     cull_vertices = remove_unused_vertices
+
+    def flip_cycles(self):
+        """Flip the cycle directions of all faces.
+
+        Returns
+        -------
+        None
+            The mesh is modified in place.
+
+        Notes
+        -----
+        This function does not care about the directions being unified or not. It
+        just reverses whatever direction it finds.
+
+        """
+        self.halfedge = {key: {} for key in self.vertices()}
+        for fkey in self.faces():
+            self.face[fkey][:] = self.face[fkey][::-1]
+            for u, v in self.face_halfedges(fkey):
+                self.halfedge[u][v] = fkey
+                if u not in self.halfedge[v]:
+                    self.halfedge[v][u] = None
 
     # --------------------------------------------------------------------------
     # Accessors
@@ -1970,6 +1995,25 @@ class HalfEdge(Datastructure):
                 return False
         return True
 
+    def is_connected(self):
+        """Verify that the mesh is connected.
+
+        Returns
+        -------
+        bool
+            True if the mesh is not empty and has no naked edges.
+            False otherwise.
+
+        See Also
+        --------
+        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+
+        """
+        if not self.vertex:
+            return False
+        nodes = breadth_first_traverse(self.adjacency, self.vertex_sample(size=1)[0])
+        return len(nodes) == self.number_of_vertices()
+
     def euler(self):
         """Calculate the Euler characteristic.
 
@@ -1987,6 +2031,34 @@ class HalfEdge(Datastructure):
         E = self.number_of_edges()
         F = self.number_of_faces()
         return V - E + F
+
+    # --------------------------------------------------------------------------
+    # Components
+    # --------------------------------------------------------------------------
+
+    def connected_vertices(self):
+        """Find groups of connected vertices.
+
+        Returns
+        -------
+        list[list[int]]
+            Groups of connected vertices.
+
+        """
+        return connected_components(self.adjacency)
+
+    def connected_faces(self):
+        """Find groups of connected faces.
+
+        Returns
+        -------
+        list[list[int]]
+            Groups of connected faces.
+
+        """
+        # return connected_components(self.face_adjacency)
+        parts = self.connected_vertices()
+        return [set([face for vertex in part for face in self.vertex_faces(vertex)]) for part in parts]
 
     # --------------------------------------------------------------------------
     # Vertex topology
@@ -2847,3 +2919,360 @@ class HalfEdge(Datastructure):
         """
         strip = self.halfedge_strip(edge)
         return [self.halfedge_face(edge) for edge in strip]
+
+    # --------------------------------------------------------------------------
+    # boundaries
+    # --------------------------------------------------------------------------
+
+    def vertices_on_boundary(self):
+        """Find the vertices on the longest boundary.
+
+        Returns
+        -------
+        list[int]
+            The vertices of the longest boundary.
+
+        """
+        boundaries = self.vertices_on_boundaries()
+        return boundaries[0] if boundaries else []
+
+    def edges_on_boundary(self):
+        """Find the edges on the longest boundary.
+
+        Returns
+        -------
+        list[tuple[int, int]]
+            The edges of the longest boundary.
+
+        """
+        boundaries = self.edges_on_boundaries()
+        return boundaries[0] if boundaries else []
+
+    def faces_on_boundary(self):
+        """Find the faces on the longest boundary.
+
+        Returns
+        -------
+        list[int]
+            The faces on the longest boundary.
+
+        """
+        boundaries = self.faces_on_boundaries()
+        return boundaries[0] if boundaries else []
+
+    def vertices_on_boundaries(self):
+        """Find the vertices on all boundaries of the mesh.
+
+        Returns
+        -------
+        list[list[int]]
+            A list of vertex keys per boundary.
+            The boundary with the most vertices is returned first.
+
+        """
+        # all boundary vertices
+        vertices_set = set()
+        for key, nbrs in iter(self.halfedge.items()):
+            for nbr, face in iter(nbrs.items()):
+                if face is None:
+                    vertices_set.add(key)
+                    vertices_set.add(nbr)
+        vertices_all = list(vertices_set)
+
+        # return an empty list if there are no boundary vertices
+        if not vertices_all:
+            return []
+
+        # init container for boundary groups
+        boundaries = []
+
+        # identify *special* vertices
+        # these vertices are non-manifold
+        # and should be processed differently
+        special = []
+        for key in vertices_all:
+            count = 0
+            for nbr in self.vertex_neighbors(key):
+                face = self.halfedge_face((key, nbr))
+                if face is None:
+                    count += 1
+                    if count > 1:
+                        if key not in special:
+                            special.append(key)
+
+        superspecial = special[:]
+
+        # process the special vertices first
+        while special:
+            start = special.pop()
+            nbrs = []
+            # find all neighbors of the current special vertex
+            # that are on the mesh boundary
+            for nbr in self.vertex_neighbors(start):
+                face = self.halfedge_face((start, nbr))
+                if face is None:
+                    nbrs.append(nbr)
+            # for normal mesh vertices
+            # there should be only 1 boundary neighbor
+            # for special vertices there are more and they all have to be processed
+            while nbrs:
+                vertex = nbrs.pop()
+                vertices = [start, vertex]
+                while True:
+                    # this is a *super* special case
+                    if vertex in superspecial:
+                        boundaries.append(vertices)
+                        break
+                    # find the boundary loop for the current starting halfedge
+                    for nbr in self.vertex_neighbors(vertex):
+                        if nbr == vertices[-2]:
+                            continue
+                        face = self.halfedge_face((vertex, nbr))
+                        if face is None:
+                            vertices.append(nbr)
+                            vertex = nbr
+                            break
+                    if vertex == start:
+                        boundaries.append(vertices)
+                        break
+                # remove any neighbors that might be part of an already identified boundary
+                nbrs = [vertex for vertex in nbrs if vertex not in vertices]
+
+        # remove all boundary vertices that were already identified
+        vertices_all = [vertex for vertex in vertices_all if all(vertex not in vertices for vertices in boundaries)]
+
+        # process the remaining boundary vertices if any
+        if vertices_all:
+            key = vertices_all[0]
+            while vertices_all:
+                vertices = [key]
+                start = key
+                while True:
+                    for nbr in self.vertex_neighbors(key):
+                        face = self.halfedge_face((key, nbr))
+                        if face is None:
+                            vertices.append(nbr)
+                            key = nbr
+                            break
+                    if key == start:
+                        boundaries.append(vertices)
+                        vertices_all = [x for x in vertices_all if x not in vertices]
+                        break
+                if vertices_all:
+                    key = vertices_all[0]
+
+        # return the boundary groups in order of the length of the group
+        return sorted(boundaries, key=lambda vertices: len(vertices), reverse=True)
+
+    def edges_on_boundaries(self):
+        """Find the edges on all boundaries of the mesh.
+
+        Returns
+        -------
+        list[list[tuple[int, int]]]
+            A list of edges per boundary.
+
+        """
+        vertexgroups = self.vertices_on_boundaries()
+        edgegroups = []
+        for vertices in vertexgroups:
+            edgegroups.append(list(pairwise(vertices)))
+        return edgegroups
+
+    def faces_on_boundaries(self):
+        """Find the faces on all boundaries of the mesh.
+
+        Returns
+        -------
+        list[list[int]]
+            lists of faces, grouped and sorted per boundary.
+
+        """
+        vertexgroups = self.vertices_on_boundaries()
+        facegroups = []
+        for vertices in vertexgroups:
+            temp = [self.halfedge_face((v, u)) for u, v in pairwise(vertices)]
+            faces = []
+            for face in temp:
+                if face is None:
+                    continue
+                if face not in faces and all(face not in group for group in facegroups):
+                    faces.append(face)
+            if faces:
+                facegroups.append(faces)
+        return facegroups
+
+    # --------------------------------------------------------------------------
+    # matrices
+    # --------------------------------------------------------------------------
+
+    def adjacency_matrix(self, rtype="array"):
+        """Compute the adjacency matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The adjacency matrix.
+
+        """
+        from compas.topology import adjacency_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return adjacency_matrix(adjacency, rtype=rtype)
+
+    def connectivity_matrix(self, rtype="array"):
+        """Compute the connectivity matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The connectivity matrix.
+
+        """
+        from compas.topology import connectivity_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return connectivity_matrix(adjacency, rtype=rtype)
+
+    def degree_matrix(self, rtype="array"):
+        """Compute the degree matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The degree matrix.
+
+        """
+        from compas.topology import degree_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return degree_matrix(adjacency, rtype=rtype)
+
+    def face_matrix(self, rtype="array"):
+        r"""Compute the face matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The face matrix.
+
+        Notes
+        -----
+        The face matrix represents the relationship between faces and vertices.
+        Each row of the matrix represents a face. Each column represents a vertex.
+        The matrix is filled with zeros except where a relationship between a vertex
+        and a face exist.
+
+        .. math::
+
+            F_{ij} =
+            \begin{cases}
+                1 & \text{if vertex j is part of face i} \\
+                0 & \text{otherwise}
+            \end{cases}
+
+        The face matrix can for example be used to compute the centroids of all
+        faces of a mesh.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_polyhedron(6)
+        >>> F = mesh.face_matrix()
+        >>> type(F)
+        <class 'numpy.ndarray'>
+
+        >>> from numpy import allclose
+        >>> xyz = asarray(mesh.vertices_attributes('xyz'))
+        >>> F = mesh.face_matrix(mesh, rtype='csr')
+        >>> c1 = F.dot(xyz) / F.sum(axis=1)
+        >>> c2 = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
+        >>> allclose(c1, c2)
+        True
+
+        """
+        from compas.topology import face_matrix
+
+        vertex_index = self.vertex_index()
+        faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
+        return face_matrix(faces, rtype=rtype)
+
+    def laplacian_matrix(self, rtype="array"):
+        r"""Compute the Laplacian matrix of the mesh.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array-like
+            The Laplacian matrix.
+
+        Notes
+        -----
+        The :math:`n \times n` uniform Laplacian matrix :math:`\mathbf{L}` of a mesh
+        with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
+        follows [1]_
+
+        .. math::
+
+            \mathbf{L}_{ij} =
+            \begin{cases}
+                -1               & i = j \\
+                \frac{1}{deg(i)} & (i, j) \in \mathbf{E} \\
+                0                & \text{otherwise}
+            \end{cases}
+
+        with :math:`deg(i)` the degree of vertex :math:`i`.
+
+        Therefore, the uniform Laplacian of a vertex :math:`\mathbf{v}_{i}` points to
+        the centroid of its neighboring vertices.
+
+        References
+        ----------
+        .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
+            `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_polyhedron(6)
+        >>> L = mesh.laplacian_matrix(mesh, rtype='array')
+        >>> type(L)
+        <class 'numpy.ndarray'>
+
+        >>> xyz = asarray(mesh.vertices_attributes('xyz'))
+        >>> L = mesh.laplacian_matrix(mesh)
+        >>> d = L.dot(xyz)
+
+        """
+        from compas.topology import laplacian_matrix
+
+        vertex_index = self.vertex_index()
+        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
+        return laplacian_matrix(adjacency, rtype=rtype)

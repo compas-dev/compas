@@ -19,6 +19,3 @@ Functions
 
     install_userobjects
     uninstall_userobjects
-
-
-
