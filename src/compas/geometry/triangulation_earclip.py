@@ -1,32 +1,31 @@
 class Ear(object):
-    """Represents an Ear of a polygon. An Ear is a triangle formed by three consecutive vertices of the polygon."""
+    """Represents an Ear of a polygon. An Ear is a triangle formed by three consecutive vertices of the polygon.
+
+    Parameters
+    ----------
+    points : list
+        List of points representing the polygon.
+    indexes : list
+        List of indices of the points representing the polygon.
+    ind : int
+        Index of the vertex of the Ear triangle.
+
+    Attributes
+    ----------
+    index : int
+        Index of the vertex of the Ear triangle.
+    coords : list
+        Coordinates of the vertex of the Ear triangle.
+    next : int
+        Index of the next vertex of the Ear triangle.
+    prew : int
+        Index of the previous vertex of the Ear triangle.
+    neighbour_coords : list
+        Coordinates of the next and previous vertices of the Ear triangle.
+
+    """
 
     def __init__(self, points, indexes, ind):
-        """Initialize an Ear instance.
-
-        Parameters
-        ----------
-        points : list
-            List of points representing the polygon.
-        indexes : list
-            List of indices of the points representing the polygon.
-        ind : int
-            Index of the vertex of the Ear triangle.
-
-        Attributes
-        ----------
-        index : int
-            Index of the vertex of the Ear triangle.
-        coords : list
-            Coordinates of the vertex of the Ear triangle.
-        next : int
-            Index of the next vertex of the Ear triangle.
-        prew : int
-            Index of the previous vertex of the Ear triangle.
-        neighbour_coords : list
-            Coordinates of the next and previous vertices of the Ear triangle.
-
-        """
         self.index = ind
         self.coords = points[ind]
         length = len(indexes)
@@ -43,7 +42,8 @@ class Ear(object):
 
         Returns
         -------
-        bool : True, if the point is inside the triangle, False otherwise.
+        bool
+            True, if the point is inside the triangle, False otherwise.
 
         """
         p1 = self.coords
@@ -66,7 +66,8 @@ class Ear(object):
 
         Returns
         -------
-        bool : True, if the point is a vertex of the Ear triangle, False otherwise.
+        bool
+            True, if the point is a vertex of the Ear triangle, False otherwise.
 
         """
         if p == self.coords or p in self.neighbour_coords:
@@ -78,7 +79,8 @@ class Ear(object):
 
         Returns
         -------
-        bool: True if the Ear triangle is valid, False otherwise.
+        bool
+            True if the Ear triangle is valid, False otherwise.
 
         """
 
@@ -98,7 +100,8 @@ class Ear(object):
 
         Returns
         -------
-        bool: True if the Ear triangle is convex, False otherwise.
+        bool
+            True if the Ear triangle is convex, False otherwise.
 
         """
         a = self.neighbour_coords[0]
@@ -115,37 +118,37 @@ class Ear(object):
 
         Returns
         -------
-        list: List of vertex indices forming the Ear triangle.
+        list
+            List of vertex indices forming the Ear triangle.
 
         """
         return [self.prew, self.index, self.next]
 
 
 class Earcut(object):
-    """A class for triangulating points forming a polygon using the Ear-cutting algorithm."""
+    """A class for triangulating points forming a polygon using the Ear-cutting algorithm.
+
+    Parameters
+    ----------
+    points : list
+        List of points representing the polygon.
+
+    Attributes
+    ----------
+    vertices : list
+        List of points representing the polygon.
+    ears : list
+        List of Ear objects representing the Ears of the polygon.
+    neighbours : list
+        List of indices of the neighbouring vertices.
+    triangles : list
+        List of triangles forming the triangulation of the polygon.
+    length : int
+        Number of vertices of the polygon.
+
+    """
 
     def __init__(self, points):
-        """Initialize an Earcut instance with the input points.
-
-        Parameters
-        ----------
-        points : list
-            List of points representing the polygon.
-
-        Attributes
-        ----------
-        vertices : list
-            List of points representing the polygon.
-        ears : list
-            List of Ear objects representing the Ears of the polygon.
-        neighbours : list
-            List of indices of the neighbouring vertices.
-        triangles : list
-            List of triangles forming the triangulation of the polygon.
-        length : int
-            Number of vertices of the polygon.
-
-        """
         self.vertices = points
         self.ears = []
         self.neighbours = []
@@ -241,7 +244,9 @@ class Earcut(object):
 
 def earclip_polygon(polygon):
     """Triangulate a polygon using the ear clipping method.
-    The polygon is assumed to be planar and non-self-intersecting and position on XY plane.
+    For polygons oriented in 3D (not on XY Frame) use polygon.to_vertices_and_faces(True) instead.
+    Because it runs the same algorithm after orienting the polygon to XY Frame.
+    The polygon is assumed to be planar and non-self-intersecting.
     The winding direction is checked. If the polygon is not oriented counter-clockwise, it is reversed.
 
     Parameters
@@ -262,13 +267,8 @@ def earclip_polygon(polygon):
         If no more ears were found for triangulation.
 
     """
-
-    # Orient the copy of polygon points to XY plane.
-    from compas.geometry import Plane, Frame, Transformation  # Avoid circular import.
-
-    frame = Frame.from_plane(Plane(polygon.points[0], polygon.normal))
-    xform = Transformation.from_frame_to_frame(frame, Frame.worldXY())
-    points = [point.transformed(xform) for point in polygon.points]
+    # cast polygon to points or copy points
+    points = list(polygon)
 
     # Check polygon winding by signed area of all current and next points pairs.
     sum_val = 0.0
