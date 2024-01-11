@@ -11,8 +11,8 @@ compas.datastructures
 This package defines the core data structures of the COMPAS framework.
 The data structures provide a structured way of storing and accessing data on individual components of both topological and geometrical objects.
 
-Main Classes
-============
+Classes
+=======
 
 .. toctree::
     :maxdepth: 1
@@ -20,21 +20,9 @@ Main Classes
 
     compas.datastructures.Network
     compas.datastructures.Mesh
-
-
-Other Classes
-=============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Datastructure
-    Feature
-    GeometricFeature
-    ParametricFeature
-    Part
-    TreeNode
+    compas.datastructures.CellNetwork
+    compas.datastructures.Tree
+    compas.datastructures.Assembly
 
 
 Exceptions
