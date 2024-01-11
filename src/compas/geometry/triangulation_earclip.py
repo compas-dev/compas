@@ -202,7 +202,7 @@ class Earcut(object):
             If no more Ears were found for triangulation.
 
         """
-        
+
         if self.length < 3:
             raise ValueError("Polygon must have at least 3 vertices.")
         elif self.length == 3:
