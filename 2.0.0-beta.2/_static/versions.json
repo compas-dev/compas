@@ -1,0 +1,20 @@
+[
+    {
+        "name": "latest",
+        "version": "unreleased",
+        "url": "https://compas.dev/compas/latest/"
+    },
+    {
+        "name": "v1.17.6 (stable)",
+        "version": "1.17.6",
+        "url": "https://compas.dev/compas/1.17.6/"
+    },
+    {
+        "version": "1.16.0",
+        "url": "https://compas.dev/compas/1.16.0/"
+    },
+    {
+        "version": "1.15.0",
+        "url": "https://compas.dev/compas/1.15.0/"
+    }
+]
