@@ -611,7 +611,7 @@ class Mesh(Datastructure):
 
     @classmethod
     def from_meshgrid(cls, dx, nx, dy=None, ny=None):  # type: (...) -> Mesh
-        """Create a mesh from faces and vertices on a regular grid.
+        """Construct a mesh from faces and vertices on a regular grid.
 
         Parameters
         ----------
@@ -986,7 +986,7 @@ class Mesh(Datastructure):
         return {gkey(xyz(key), precision): key for key in self.vertices()}
 
     # --------------------------------------------------------------------------
-    # Builders
+    # Builders & Modifiers
     # --------------------------------------------------------------------------
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
@@ -1168,10 +1168,6 @@ class Mesh(Datastructure):
 
         if weld:
             self.weld(precision=precision)
-
-    # --------------------------------------------------------------------------
-    # Modifiers
-    # --------------------------------------------------------------------------
 
     def delete_vertex(self, key):
         """Delete a vertex from the mesh and everything that is attached to it.
