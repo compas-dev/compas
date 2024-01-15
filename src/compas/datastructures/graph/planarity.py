@@ -15,11 +15,11 @@ from compas.geometry import subtract_vectors_xy
 from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 
 
-def graph_embed_in_plane_proxy(data, fixed=None, straightline=True):
+def graph_embed_in_plane_proxy(data, fixed=None):
     from compas.datastructures import Graph
 
     graph = Graph.from_data(data)
-    graph_embed_in_plane(graph, fixed=fixed, straightline=straightline)
+    graph_embed_in_plane(graph, fixed=fixed)
     return graph.to_data()
 
 
@@ -181,8 +181,7 @@ def graph_is_planar(graph):
         print("NetworkX is not installed.")
         raise
 
-    nxgraph = graph.to_networkx()
-    return nx.is_planar(nxgraph)
+    return nx.is_planar(graph.to_networkx())
 
 
 def graph_is_planar_embedding(graph):
@@ -203,7 +202,7 @@ def graph_is_planar_embedding(graph):
     return graph_is_planar(graph) and graph_is_xy(graph) and not graph_is_crossed(graph)
 
 
-def graph_embed_in_plane(graph, fixed=None, straightline=True):
+def graph_embed_in_plane(graph, fixed=None):
     """Embed the graph in the plane.
 
     Parameters
@@ -212,8 +211,6 @@ def graph_embed_in_plane(graph, fixed=None, straightline=True):
         A graph object.
     fixed : [hashable, hashable], optional
         Two fixed points.
-    straightline : bool, optional
-        If True, embed using straight lines only.
 
     Returns
     -------
@@ -247,8 +244,7 @@ def graph_embed_in_plane(graph, fixed=None, straightline=True):
 
     count = 100
     while count:
-        graph = nx.Graph(edges)
-        pos = nx.spring_layout(graph, iterations=100, scale=max(xspan, yspan))
+        pos = nx.spring_layout(nx.Graph(edges), iterations=100, scale=max(xspan, yspan))
         if not _are_edges_crossed(edges, pos):
             is_embedded = True
             break

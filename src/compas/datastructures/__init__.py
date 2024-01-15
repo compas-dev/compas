@@ -14,10 +14,6 @@ from .datastructure import Datastructure
 from .graph.planarity import graph_embed_in_plane_proxy  # noqa: F401
 
 # =============================================================================
-# Halfedges
-# =============================================================================
-
-# =============================================================================
 # Meshes
 # =============================================================================
 
@@ -52,7 +48,6 @@ from .mesh.subdivision import trimesh_subdivide_loop  # noqa: F401
 # =============================================================================
 
 from .graph.graph import Graph
-from .halfedge.halfedge import HalfEdge
 from .mesh.mesh import Mesh
 from .halfface.halfface import HalfFace
 from .volmesh.volmesh import VolMesh
@@ -67,8 +62,6 @@ Network = Graph
 __all__ = [
     "Datastructure",
     "CellNetwork",
-    "Graph",
-    "HalfEdge",
     "Mesh",
     "HalfFace",
     "VolMesh",
