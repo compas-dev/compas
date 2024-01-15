@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.datastructures import HalfFace
 from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.geometry import Line
@@ -19,6 +18,8 @@ from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
 from compas.geometry import volume_polyhedron
 from compas.topology import face_adjacency
+
+from .halfface import HalfFace
 
 
 class CellNetwork(HalfFace):

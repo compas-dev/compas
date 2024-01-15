@@ -49,7 +49,6 @@ from .mesh.subdivision import trimesh_subdivide_loop  # noqa: F401
 
 from .graph.graph import Graph
 from .mesh.mesh import Mesh
-from .halfface.halfface import HalfFace
 from .volmesh.volmesh import VolMesh
 from .assembly.exceptions import AssemblyError, FeatureError
 from .assembly.assembly import Assembly
@@ -63,7 +62,6 @@ __all__ = [
     "Datastructure",
     "CellNetwork",
     "Mesh",
-    "HalfFace",
     "VolMesh",
     "Assembly",
     "Part",

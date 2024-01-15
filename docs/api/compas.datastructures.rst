@@ -20,6 +20,7 @@ Classes
 
     compas.datastructures.Graph
     compas.datastructures.Mesh
+    compas.datastructures.VolMesh
     compas.datastructures.CellNetwork
     compas.datastructures.Tree
     compas.datastructures.Assembly

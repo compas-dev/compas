@@ -15,11 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Merged `compas.datastructures.Halfedge` into `compas.datastructures.Mesh`.
 * Merged `compas.datastructures.Network` into `compas.datastructures.Graph`.
+* Merged `compas.datastructures.Halfface` into `compas.datastructures.VolMesh`.
 
 ### Removed
 
 * Removed `compas.datastructures.Network`.
 * Removed `compas.datastructures.Halfedge`.
+* Removed `compas.datastructures.Halfface`.
 
 ## [2.0.0-beta.2] 2024-01-12
 
