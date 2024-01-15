@@ -1,13 +1,12 @@
-from compas.datastructures import Graph
 from compas.datastructures import Mesh
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.geometry import Box, Frame
 from compas.topology import astar_shortest_path
 from compas.topology.traversal import astar_lightest_path
 
 
 def test_astar_shortest_path():
-    n = Network()
+    n = Graph()
     a = n.add_node(x=1, y=2, z=0)
     b = n.add_node(x=3, y=1, z=0)
     n.add_edge(a, b)
@@ -16,7 +15,7 @@ def test_astar_shortest_path():
 
 
 def test_astar_shortest_path_cycle():
-    n = Network()
+    n = Graph()
     a = n.add_node(x=1, y=0, z=0)
     b = n.add_node(x=2, y=0, z=0)
     c = n.add_node(x=3, y=0, z=0)
@@ -32,7 +31,7 @@ def test_astar_shortest_path_cycle():
 
 
 def test_astar_shortest_path_disconnected():
-    n = Network()
+    n = Graph()
     a = n.add_node(x=1, y=0, z=0)
     b = n.add_node(x=2, y=0, z=0)
     c = n.add_node(x=3, y=0, z=0)

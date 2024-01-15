@@ -30,7 +30,7 @@ Classes
     GHSceneObject
     LineObject
     MeshObject
-    NetworkObject
+    GraphObject
     PointObject
     PolygonObject
     PolyhedronObject

@@ -27,7 +27,7 @@ def vertex_coloring(adjacency):
     Notes
     -----
     This algorithms works on any data structure that can be interpreted as a graph, e.g.
-    networks, meshes, volmeshes, etc..
+    graphs, meshes, volmeshes, etc..
 
     For more info, see [1]_.
 
@@ -38,17 +38,17 @@ def vertex_coloring(adjacency):
 
     Warnings
     --------
-    This is a greedy algorithm, so it might be slow for large networks.
+    This is a greedy algorithm, so it might be slow for large graphs.
 
     Examples
     --------
     >>> import compas
-    >>> from compas.datastructures import Network
-    >>> network = Network.from_obj(compas.get('lines.obj'))
-    >>> key_color = vertex_coloring(network.adjacency)
-    >>> key = network.get_any_node()
+    >>> from compas.datastructures import Graph
+    >>> graph = Graph.from_obj(compas.get('lines.obj'))
+    >>> key_color = vertex_coloring(graph.adjacency)
+    >>> key = graph.get_any_node()
     >>> color = key_color[key]
-    >>> any(key_color[nbr] == color for nbr in network.neighbors(key))
+    >>> any(key_color[nbr] == color for nbr in graph.neighbors(key))
     False
 
     """

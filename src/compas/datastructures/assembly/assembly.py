@@ -24,7 +24,7 @@ class Assembly(Datastructure):
 
     See Also
     --------
-    :class:`compas.datastructures.Network`
+    :class:`compas.datastructures.Graph`
     :class:`compas.datastructures.Mesh`
     :class:`compas.datastructures.VolMesh`
 

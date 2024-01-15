@@ -3,7 +3,7 @@ import tempfile
 
 import compas
 from compas.datastructures import Mesh
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 from compas.geometry import Box
 from compas.geometry import Frame
@@ -42,8 +42,8 @@ def test_json_xform():
     assert before.guid == after.guid
 
 
-def test_json_network():
-    before = Network()
+def test_json_graph():
+    before = Graph()
     a = before.add_node()
     b = before.add_node()
     before.add_edge(a, b)

@@ -9,7 +9,7 @@ import compas_rhino
 from compas.geometry import Line
 from compas.geometry import Cylinder
 from compas.geometry import Sphere
-from compas.scene import NetworkObject as BaseNetworkObject
+from compas.scene import GraphObject as BaseGraphObject
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
@@ -18,20 +18,20 @@ from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 
 
-class NetworkObject(RhinoSceneObject, BaseNetworkObject):
-    """Scene object for drawing network data structures.
+class GraphObject(RhinoSceneObject, BaseGraphObject):
+    """Scene object for drawing graph data structures.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A COMPAS network.
+    graph : :class:`compas.datastructures.Graph`
+        A COMPAS graph.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, network, **kwargs):
-        super(NetworkObject, self).__init__(network=network, **kwargs)
+    def __init__(self, graph, **kwargs):
+        super(GraphObject, self).__init__(graph=graph, **kwargs)
 
     # ==========================================================================
     # clear
@@ -45,7 +45,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.*".format(self.network.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.*".format(self.graph.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_nodes(self):
@@ -56,7 +56,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.node.*".format(self.network.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.node.*".format(self.graph.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     def clear_edges(self):
@@ -67,7 +67,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.network.name))  # type: ignore
+        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.graph.name))  # type: ignore
         compas_rhino.delete_objects(guids, purge=True)
 
     # ==========================================================================
@@ -81,7 +81,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         nodecolor=None,
         edgecolor=None,
     ):
-        """Draw the network using the chosen visualisation settings.
+        """Draw the graph using the chosen visualisation settings.
 
         Parameters
         ----------
@@ -129,8 +129,8 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
 
         self.nodecolor = color
 
-        for node in nodes or self.network.nodes():  # type: ignore
-            name = "{}.node.{}".format(self.network.name, node)  # type: ignore
+        for node in nodes or self.graph.nodes():  # type: ignore
+            name = "{}.node.{}".format(self.graph.name, node)  # type: ignore
             attr = attributes(name=name, color=self.nodecolor[node], layer=self.layer)  # type: ignore
 
             point = point_to_rhino(self.node_xyz[node])
@@ -169,11 +169,11 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         arrow = "end" if show_direction else None
         self.edgecolor = color
 
-        for edge in edges or self.network.edges():  # type: ignore
+        for edge in edges or self.graph.edges():  # type: ignore
             u, v = edge
 
             color = self.edgecolor[edge]  # type: ignore
-            name = "{}.edge.{}-{}".format(self.network.name, u, v)  # type: ignore
+            name = "{}.edge.{}-{}".format(self.graph.name, u, v)  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer, arrow=arrow)  # type: ignore
 
             line = Line(self.node_xyz[u], self.node_xyz[v])
@@ -217,7 +217,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         self.nodecolor = color
 
         for node in text:
-            name = "{}.node.{}.label".format(self.network.name, node)  # type: ignore
+            name = "{}.node.{}.label".format(self.graph.name, node)  # type: ignore
             attr = attributes(name=name, color=self.nodecolor[node], layer=self.layer)  # type: ignore
 
             point = point_to_rhino(self.node_xyz[node])
@@ -264,7 +264,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
             u, v = edge
 
             color = self.edgecolor[edge]  # type: ignore
-            name = "{}.edge.{}-{}.label".format(self.network.name, u, v)  # type: ignore
+            name = "{}.edge.{}-{}.label".format(self.graph.name, u, v)  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
             line = Line(self.node_xyz[u], self.node_xyz[v])
@@ -287,7 +287,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
     # =============================================================================
 
     def draw_spheres(self, radius, color=None, group=None):
-        """Draw spheres at the vertices of the network.
+        """Draw spheres at the vertices of the graph.
 
         Parameters
         ----------
@@ -309,7 +309,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         self.nodecolor = color
 
         for node in radius:
-            name = "{}.node.{}.sphere".format(self.network.name, node)  # type: ignore
+            name = "{}.node.{}.sphere".format(self.graph.name, node)  # type: ignore
             color = self.nodecolor[node]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
@@ -325,7 +325,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         return guids
 
     def draw_pipes(self, radius, color=None, group=None):
-        """Draw pipes around the edges of the network.
+        """Draw pipes around the edges of the graph.
 
         Parameters
         ----------
@@ -347,7 +347,7 @@ class NetworkObject(RhinoSceneObject, BaseNetworkObject):
         self.edgecolor = color
 
         for edge in radius:
-            name = "{}.edge.{}-{}.pipe".format(self.network.name, *edge)  # type: ignore
+            name = "{}.edge.{}-{}.pipe".format(self.graph.name, *edge)  # type: ignore
             color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 

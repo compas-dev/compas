@@ -12,7 +12,7 @@ from .exceptions import SceneObjectNotRegisteredError
 from .exceptions import NoSceneObjectContextError
 from .sceneobject import SceneObject
 from .meshobject import MeshObject
-from .networkobject import NetworkObject
+from .graphobject import GraphObject
 from .geometryobject import GeometryObject
 from .volmeshobject import VolMeshObject
 
@@ -31,7 +31,7 @@ __all__ = [
     "NoSceneObjectContextError",
     "SceneObject",
     "MeshObject",
-    "NetworkObject",
+    "GraphObject",
     "GeometryObject",
     "VolMeshObject",
     "Scene",

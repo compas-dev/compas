@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from compas.datastructures import HalfFace
 from compas.datastructures import Mesh
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Polygon
@@ -1227,17 +1227,18 @@ class CellNetwork(HalfFace):
     # --------------------------------------------------------------------------
 
     def to_network(self):
-        """Convert the cell network to a network.
+        """Convert the cell network to a graph.
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
-            A network object.
+        :class:`compas.datastructures.Graph`
+            A graph object.
+
         """
-        network = Network()
+        graph = Graph()
         for vertex, attr in self.vertices(data=True):
             x, y, z = self.vertex_coordinates(vertex)
-            network.add_node(key=vertex, x=x, y=y, z=z, attr_dict=attr)
+            graph.add_node(key=vertex, x=x, y=y, z=z, attr_dict=attr)
         for (u, v), attr in self.edges(data=True):
-            network.add_edge(u, v, attr_dict=attr)
-        return network
+            graph.add_edge(u, v, attr_dict=attr)
+        return graph

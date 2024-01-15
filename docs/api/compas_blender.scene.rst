@@ -29,7 +29,7 @@ Classes
     FrameObject
     LineObject
     MeshObject
-    NetworkObject
+    GraphObject
     PointObject
     PointcloudObject
     PolygonObject

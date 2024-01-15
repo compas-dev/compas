@@ -149,14 +149,13 @@ Topology
     ~CellNetwork.halfface_opposite_cell
     ~CellNetwork.halfface_opposite_halfface
     ~CellNetwork.halfface_vertex_ancestor
-    ~CellNetwork.halfface_vertex_descendant
+    ~CellNetwork.halfface_vertex_descendent
     ~CellNetwork.halfface_vertices
     ~CellNetwork.has_edge
     ~CellNetwork.has_halfface
     ~CellNetwork.has_vertex
     ~CellNetwork.is_cell_on_boundary
     ~CellNetwork.is_edge_on_boundary
-    ~CellNetwork.is_halfedge_on_boundary
     ~CellNetwork.is_halfface_on_boundary
     ~CellNetwork.is_valid
     ~CellNetwork.is_vertex_on_boundary

@@ -125,7 +125,7 @@ def connectivity_matrix(edges, rtype="array"):
 
     Notes
     -----
-    The connectivity matrix encodes how edges in a network are connected
+    The connectivity matrix encodes how edges in a graph are connected
     together. Each row represents an edge and has 1 and -1 inserted into the
     columns for the start and end nodes.
 
@@ -273,7 +273,7 @@ def laplacian_matrix(edges, normalize=False, rtype="array"):
 
 
 # def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
-#     r"""Creates a network's nodal mass matrix.
+#     r"""Creates a graph's nodal mass matrix.
 
 #     Parameters
 #     ----------
