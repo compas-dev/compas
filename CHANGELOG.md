@@ -11,7 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Merged `compas.datastructures.Graph` into `compas.datastructures.Network`.
+
 ### Removed
+
+* Removed `compas.datastructures.Graph`
 
 ## [2.0.0-beta.2] 2024-01-12
 
