@@ -209,7 +209,7 @@ def test_graph_default_edge_attributes():
 # ==============================================================================
 
 
-def test_network_to_networkx():
+def test_graph_to_networkx():
     if compas.IPY:
         return
 

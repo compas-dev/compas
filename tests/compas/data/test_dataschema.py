@@ -618,7 +618,7 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_graphalid(graph):
+    def test_schema_graph_valid(graph):
         Graph.validate_data(graph)
 
     @pytest.mark.parametrize(

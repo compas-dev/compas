@@ -196,7 +196,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`from_graphx`
+        :meth:`from_networkx`
 
         """
         graph = cls()
