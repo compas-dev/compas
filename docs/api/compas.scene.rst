@@ -22,7 +22,7 @@ Classes
 
     GeometryObject
     MeshObject
-    NetworkObject
+    GraphObject
     NoSceneObjectContextError
     Scene
     SceneObject

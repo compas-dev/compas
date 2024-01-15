@@ -12,13 +12,13 @@ from compas.geometry import is_ccw_xy
 PI2 = 2.0 * pi
 
 
-def network_find_cycles(network, breakpoints=None):
-    """Find the faces of a network.
+def graph_find_cycles(graph, breakpoints=None):
+    """Find the faces of a graph.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        The network object.
+    graph : :class:`compas.datastructures.Graph`
+        The graph object.
     breakpoints : list, optional
         The vertices at which to break the found faces.
 
@@ -32,75 +32,75 @@ def network_find_cycles(network, breakpoints=None):
     Warnings
     --------
     This algorithms is essentially a wall follower (a type of maze-solving algorithm).
-    It relies on the geometry of the network to be repesented as a planar,
+    It relies on the geometry of the graph to be repesented as a planar,
     straight-line embedding. It determines an ordering of the neighboring vertices
-    around each vertex, and then follows the *walls* of the network, always
+    around each vertex, and then follows the *walls* of the graph, always
     taking turns in the same direction.
 
     """
     if not breakpoints:
         breakpoints = []
 
-    for u, v in network.edges():
-        network.adjacency[u][v] = None
-        network.adjacency[v][u] = None
+    for u, v in graph.edges():
+        graph.adjacency[u][v] = None
+        graph.adjacency[v][u] = None
 
-    network_sort_neighbors(network)
+    graph_sort_neighbors(graph)
 
-    leaves = list(network.leaves())
+    leaves = list(graph.leaves())
     if leaves:
-        key_xy = list(zip(leaves, network.nodes_attributes("xy", keys=leaves)))
+        key_xy = list(zip(leaves, graph.nodes_attributes("xy", keys=leaves)))
     else:
-        key_xy = list(zip(network.nodes(), network.nodes_attributes("xy")))
+        key_xy = list(zip(graph.nodes(), graph.nodes_attributes("xy")))
     u = sorted(key_xy, key=lambda x: (x[1][1], x[1][0]))[0][0]
 
     cycles = {}
     found = {}
     ckey = 0
 
-    v = network_node_find_first_neighbor(network, u)
-    cycle = network_find_edge_cycle(network, (u, v))
+    v = graph_node_find_first_neighbor(graph, u)
+    cycle = graph_find_edge_cycle(graph, (u, v))
     frozen = frozenset(cycle)
     found[frozen] = ckey
     cycles[ckey] = cycle
     for a, b in pairwise(cycle + cycle[:1]):
-        network.adjacency[a][b] = ckey
+        graph.adjacency[a][b] = ckey
     ckey += 1
 
-    for u, v in network.edges():
-        if network.adjacency[u][v] is None:
-            cycle = network_find_edge_cycle(network, (u, v))
+    for u, v in graph.edges():
+        if graph.adjacency[u][v] is None:
+            cycle = graph_find_edge_cycle(graph, (u, v))
             frozen = frozenset(cycle)
             if frozen not in found:
                 found[frozen] = ckey
                 cycles[ckey] = cycle
                 ckey += 1
             for a, b in pairwise(cycle + cycle[:1]):
-                network.adjacency[a][b] = found[frozen]
-        if network.adjacency[v][u] is None:
-            cycle = network_find_edge_cycle(network, (v, u))
+                graph.adjacency[a][b] = found[frozen]
+        if graph.adjacency[v][u] is None:
+            cycle = graph_find_edge_cycle(graph, (v, u))
             frozen = frozenset(cycle)
             if frozen not in found:
                 found[frozen] = ckey
                 cycles[ckey] = cycle
                 ckey += 1
             for a, b in pairwise(cycle + cycle[:1]):
-                network.adjacency[a][b] = found[frozen]
+                graph.adjacency[a][b] = found[frozen]
 
     cycles = _break_cycles(cycles, breakpoints)
     return cycles
 
 
-def network_node_find_first_neighbor(network, key):
-    nbrs = network.neighbors(key)
+def graph_node_find_first_neighbor(graph, key):
+    nbrs = graph.neighbors(key)
     if len(nbrs) == 1:
         return nbrs[0]
     ab = [-1.0, -1.0, 0.0]
-    a = network.node_coordinates(key, "xyz")
+    a = graph.node_coordinates(key, "xyz")
     b = [a[0] + ab[0], a[1] + ab[1], 0]
     angles = []
     for nbr in nbrs:
-        c = network.node_coordinates(nbr, "xyz")
+        c = graph.node_coordinates(nbr, "xyz")
         ac = [c[0] - a[0], c[1] - a[1], 0]
         alpha = angle_vectors(ab, ac)
         if is_ccw_xy(a, b, c, True):
@@ -109,14 +109,14 @@ def network_node_find_first_neighbor(network, key):
     return nbrs[angles.index(min(angles))]
 
 
-def network_sort_neighbors(network, ccw=True):
+def graph_sort_neighbors(graph, ccw=True):
     sorted_neighbors = {}
-    xyz = {key: network.node_coordinates(key) for key in network.nodes()}
-    for key in network.nodes():
-        nbrs = network.neighbors(key)
+    xyz = {key: graph.node_coordinates(key) for key in graph.nodes()}
+    for key in graph.nodes():
+        nbrs = graph.neighbors(key)
         sorted_neighbors[key] = node_sort_neighbors(key, nbrs, xyz, ccw=ccw)
     for key, nbrs in sorted_neighbors.items():
-        network.node_attribute(key, "neighbors", nbrs[::-1])
+        graph.node_attribute(key, "neighbors", nbrs[::-1])
     return sorted_neighbors
 
 
@@ -149,12 +149,12 @@ def node_sort_neighbors(key, nbrs, xyz, ccw=True):
     return ordered
 
 
-def network_find_edge_cycle(network, edge):
+def graph_find_edge_cycle(graph, edge):
     u, v = edge
     cycle = [u]
     while True:
         cycle.append(v)
-        nbrs = network.node_attribute(v, "neighbors")
+        nbrs = graph.node_attribute(v, "neighbors")
         nbr = nbrs[nbrs.index(u) - 1]
         u, v = v, nbr
         if v == cycle[0]:

@@ -28,7 +28,7 @@ from compas.geometry import Vector
 from compas.geometry import Brep
 
 from compas.datastructures import Mesh
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 
 from .sceneobject import GHSceneObject
@@ -42,7 +42,7 @@ from .ellipseobject import EllipseObject
 from .frameobject import FrameObject
 from .lineobject import LineObject
 from .meshobject import MeshObject
-from .networkobject import NetworkObject
+from .graphobject import GraphObject
 from .planeobject import PlaneObject
 from .pointobject import PointObject
 from .polygonobject import PolygonObject
@@ -78,7 +78,7 @@ def register_scene_objects():
     register(Frame, FrameObject, context="Grasshopper")
     register(Line, LineObject, context="Grasshopper")
     register(Mesh, MeshObject, context="Grasshopper")
-    register(Network, NetworkObject, context="Grasshopper")
+    register(Graph, GraphObject, context="Grasshopper")
     register(Plane, PlaneObject, context="Grasshopper")
     register(Point, PointObject, context="Grasshopper")
     register(Polygon, PolygonObject, context="Grasshopper")
@@ -105,7 +105,7 @@ __all__ = [
     "FrameObject",
     "LineObject",
     "MeshObject",
-    "NetworkObject",
+    "GraphObject",
     "PlaneObject",
     "PointObject",
     "PolygonObject",

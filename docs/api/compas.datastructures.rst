@@ -18,7 +18,7 @@ Classes
     :maxdepth: 1
     :titlesonly:
 
-    compas.datastructures.Network
+    compas.datastructures.Graph
     compas.datastructures.Mesh
     compas.datastructures.CellNetwork
     compas.datastructures.Tree

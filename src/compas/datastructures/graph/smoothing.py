@@ -5,15 +5,15 @@ from __future__ import division
 from compas.geometry import centroid_points
 
 
-def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
-    """Smooth a network by moving every free node to the centroid of its neighbors.
+def graph_smooth_centroid(graph, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
+    """Smooth a graph by moving every free node to the centroid of its neighbors.
 
     Parameters
     ----------
-    network : Mesh
-        A network object.
+    graph : Mesh
+        A graph object.
     fixed : list, optional
-        The fixed nodes of the network.
+        The fixed nodes of the graph.
     kmax : int, optional
         The maximum number of iterations.
     damping : float, optional
@@ -41,15 +41,15 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=0.5, callback
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: network.node_coordinates(key) for key in network.nodes()}
+        key_xyz = {key: graph.node_coordinates(key) for key in graph.nodes()}
 
-        for key, attr in network.nodes(True):
+        for key, attr in graph.nodes(True):
             if key in fixed:
                 continue
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.neighbors(key)])
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in graph.neighbors(key)])
 
             attr["x"] += damping * (cx - x)
             attr["y"] += damping * (cy - y)

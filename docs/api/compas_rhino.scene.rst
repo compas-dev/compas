@@ -30,7 +30,7 @@ Classes
     FrameObject
     LineObject
     MeshObject
-    NetworkObject
+    GraphObject
     PlaneObject
     PointObject
     PolygonObject

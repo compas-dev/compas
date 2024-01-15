@@ -40,7 +40,7 @@ def depth_first_ordering(adjacency, root):
 
     Notes
     -----
-    Return all nodes of a connected component containing `root` of a network
+    Return all nodes of a connected component containing `root` of a graph
     represented by an adjacency dictionary.
 
     This implementation uses a "to visit" stack. The principle of a stack
@@ -59,7 +59,7 @@ def depth_first_ordering(adjacency, root):
     stack, the entire structure has been traversed.
 
     Note that this returns a depth-first spanning tree of a connected component
-    of the network.
+    of the graph.
 
     """
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
@@ -167,7 +167,7 @@ def breadth_first_ordering(adjacency, root):
     the list of nodes to visit.
 
     By appending the neighbors to the end of the list of nodes to visit,
-    and by visiting the nodes at the start of the list first, the network is
+    and by visiting the nodes at the start of the list first, the graph is
     traversed in *breadth-first* order.
 
     """
@@ -313,7 +313,7 @@ def breadth_first_tree(adjacency, root):
 
 
 def shortest_path(adjacency, root, goal):
-    """Find the shortest path between two vertices of a network.
+    """Find the shortest path between two vertices of a graph.
 
     Parameters
     ----------
@@ -448,8 +448,8 @@ def astar_shortest_path(graph, root, goal):
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Network` | :class:`compas.datastructures.Mesh`
-        A network or mesh data structure.
+    graph : :class:`compas.datastructures.Graph` | :class:`compas.datastructures.Mesh`
+        A graph or mesh data structure.
     root : hashable
         The identifier of the starting node.
     goal : hashable

@@ -9,21 +9,21 @@ from .sceneobject import SceneObject
 from .descriptors.colordict import ColorDictAttribute
 
 
-class NetworkObject(SceneObject):
-    """Scene object for drawing network data structures.
+class GraphObject(SceneObject):
+    """Scene object for drawing graph data structures.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A COMPAS network.
+    graph : :class:`compas.datastructures.Graph`
+        A COMPAS graph.
 
     Attributes
     ----------
-    network : :class:`compas.datastructures.Network`
-        The COMPAS network associated with the scene object.
+    graph : :class:`compas.datastructures.Graph`
+        The COMPAS graph associated with the scene object.
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
-        The default view coordinates are the actual coordinates of the nodes of the network.
+        The default view coordinates are the actual coordinates of the nodes of the graph.
     nodecolor : :class:`compas.colors.ColorDict`
         Mapping between nodes and RGB color values.
     edgecolor : :class:`compas.colors.ColorDict`
@@ -47,11 +47,11 @@ class NetworkObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, network, **kwargs):
-        super(NetworkObject, self).__init__(item=network, **kwargs)
-        self._network = None
+    def __init__(self, graph, **kwargs):
+        super(GraphObject, self).__init__(item=graph, **kwargs)
+        self._graph = None
         self._node_xyz = None
-        self.network = network
+        self.graph = graph
         self.nodecolor = kwargs.get("nodecolor", self.color)
         self.edgecolor = kwargs.get("edgecolor", self.color)
         self.nodesize = kwargs.get("nodesize", 1.0)
@@ -60,12 +60,12 @@ class NetworkObject(SceneObject):
         self.show_edges = kwargs.get("show_edges", True)
 
     @property
-    def network(self):
-        return self._network
+    def graph(self):
+        return self._graph
 
-    @network.setter
-    def network(self, network):
-        self._network = network
+    @graph.setter
+    def graph(self, graph):
+        self._graph = graph
         self._transformation = None
         self._node_xyz = None
 
@@ -81,9 +81,9 @@ class NetworkObject(SceneObject):
     @property
     def node_xyz(self):
         if self._node_xyz is None:
-            points = self.network.nodes_attributes("xyz")  # type: ignore
+            points = self.graph.nodes_attributes("xyz")  # type: ignore
             points = transform_points(points, self.worldtransformation)
-            self._node_xyz = dict(zip(self.network.nodes(), points))  # type: ignore
+            self._node_xyz = dict(zip(self.graph.nodes(), points))  # type: ignore
         return self._node_xyz
 
     @node_xyz.setter
@@ -92,7 +92,7 @@ class NetworkObject(SceneObject):
 
     @abstractmethod
     def draw_nodes(self, nodes=None, color=None, text=None):
-        """Draw the nodes of the network.
+        """Draw the nodes of the graph.
 
         Parameters
         ----------
@@ -117,7 +117,7 @@ class NetworkObject(SceneObject):
 
     @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
-        """Draw the edges of the network.
+        """Draw the edges of the graph.
 
         Parameters
         ----------
@@ -141,7 +141,7 @@ class NetworkObject(SceneObject):
         raise NotImplementedError
 
     def clear_nodes(self):
-        """Clear the nodes of the network.
+        """Clear the nodes of the graph.
 
         Returns
         -------
@@ -151,7 +151,7 @@ class NetworkObject(SceneObject):
         raise NotImplementedError
 
     def clear_edges(self):
-        """Clear the edges of the network.
+        """Clear the edges of the graph.
 
         Returns
         -------
@@ -161,7 +161,7 @@ class NetworkObject(SceneObject):
         raise NotImplementedError
 
     def clear(self):
-        """Clear the nodes and the edges of the network.
+        """Clear the nodes and the edges of the graph.
 
         Returns
         -------

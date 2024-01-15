@@ -15,40 +15,40 @@ from compas.geometry import subtract_vectors_xy
 from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 
 
-def network_embed_in_plane_proxy(data, fixed=None, straightline=True):
-    from compas.datastructures import Network
+def graph_embed_in_plane_proxy(data, fixed=None, straightline=True):
+    from compas.datastructures import Graph
 
-    network = Network.from_data(data)
-    network_embed_in_plane(network, fixed=fixed, straightline=straightline)
-    return network.to_data()
+    graph = Graph.from_data(data)
+    graph_embed_in_plane(graph, fixed=fixed, straightline=straightline)
+    return graph.to_data()
 
 
-def network_is_crossed(network):
-    """Verify if a network has crossing edges.
+def graph_is_crossed(graph):
+    """Verify if a graph has crossing edges.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A network object.
+    graph : :class:`compas.datastructures.Graph`
+        A graph object.
 
     Returns
     -------
     bool
-        True if the network has at least one pair of crossing edges.
+        True if the graph has at least one pair of crossing edges.
         False otherwise.
 
     Notes
     -----
-    This algorithm assumes that the network lies in the XY plane.
+    This algorithm assumes that the graph lies in the XY plane.
 
     """
-    for (u1, v1), (u2, v2) in product(network.edges(), network.edges()):
+    for (u1, v1), (u2, v2) in product(graph.edges(), graph.edges()):
         if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
             continue
-        a = network.node_attributes(u1, "xy")
-        b = network.node_attributes(v1, "xy")
-        c = network.node_attributes(u2, "xy")
-        d = network.node_attributes(v2, "xy")
+        a = graph.node_attributes(u1, "xy")
+        b = graph.node_attributes(v1, "xy")
+        c = graph.node_attributes(u2, "xy")
+        d = graph.node_attributes(v2, "xy")
         if is_intersection_segment_segment_xy((a, b), (c, d)):
             return True
     return False
@@ -67,13 +67,13 @@ def _are_edges_crossed(edges, vertices):
     return False
 
 
-def network_count_crossings(network):
-    """Count the number of crossings (pairs of crossing edges) in the network.
+def graph_count_crossings(graph):
+    """Count the number of crossings (pairs of crossing edges) in the graph.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A network object.
+    graph : :class:`compas.datastructures.Graph`
+        A graph object.
 
     Returns
     -------
@@ -82,19 +82,19 @@ def network_count_crossings(network):
 
     Notes
     -----
-    This algorithm assumes that the network lies in the XY plane.
+    This algorithm assumes that the graph lies in the XY plane.
 
     """
-    return len(network_find_crossings(network))
+    return len(graph_find_crossings(graph))
 
 
-def network_find_crossings(network):
-    """Identify all pairs of crossing edges in a network.
+def graph_find_crossings(graph):
+    """Identify all pairs of crossing edges in a graph.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A network object.
+    graph : :class:`compas.datastructures.Graph`
+        A graph object.
 
     Returns
     -------
@@ -103,33 +103,33 @@ def network_find_crossings(network):
 
     Notes
     -----
-    This algorithm assumes that the network lies in the XY plane.
+    This algorithm assumes that the graph lies in the XY plane.
 
     """
     crossings = set()
-    for (u1, v1), (u2, v2) in product(network.edges(), network.edges()):
+    for (u1, v1), (u2, v2) in product(graph.edges(), graph.edges()):
         if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
             continue
         if ((u1, v1), (u2, v2)) in crossings:
             continue
         if ((u2, v2), (u1, v1)) in crossings:
             continue
-        a = network.node_attributes(u1, "xy")
-        b = network.node_attributes(v1, "xy")
-        c = network.node_attributes(u2, "xy")
-        d = network.node_attributes(v2, "xy")
+        a = graph.node_attributes(u1, "xy")
+        b = graph.node_attributes(v1, "xy")
+        c = graph.node_attributes(u2, "xy")
+        d = graph.node_attributes(v2, "xy")
         if is_intersection_segment_segment_xy((a, b), (c, d)):
             crossings.add(((u1, v1), (u2, v2)))
     return list(crossings)
 
 
-def network_is_xy(network):
-    """Verify that a network lies in the XY plane.
+def graph_is_xy(graph):
+    """Verify that a graph lies in the XY plane.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A network object.
+    graph : :class:`compas.datastructures.Graph`
+        A graph object.
 
     Returns
     -------
@@ -139,27 +139,27 @@ def network_is_xy(network):
 
     """
     z = None
-    for key in network.nodes():
+    for key in graph.nodes():
         if z is None:
-            z = network.node_attribute(key, "z") or 0.0
+            z = graph.node_attribute(key, "z") or 0.0
         else:
-            if z != network.node_attribute(key, "z") or 0.0:
+            if z != graph.node_attribute(key, "z") or 0.0:
                 return False
     return True
 
 
-def network_is_planar(network):
-    """Check if the network is planar.
+def graph_is_planar(graph):
+    """Check if the graph is planar.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A network object.
+    graph : :class:`compas.datastructures.Graph`
+        A graph object.
 
     Returns
     -------
     bool
-        True if the network is planar.
+        True if the graph is planar.
         False otherwise.
 
     Raises
@@ -169,8 +169,8 @@ def network_is_planar(network):
 
     Notes
     -----
-    A network is planar if it can be drawn in the plane without crossing edges.
-    If a network is planar, it can be shown that an embedding of the network in
+    A graph is planar if it can be drawn in the plane without crossing edges.
+    If a graph is planar, it can be shown that an embedding of the graph in
     the plane exists, and, furthermore, that straight-line embedding in the plane
     exists.
 
@@ -181,35 +181,35 @@ def network_is_planar(network):
         print("NetworkX is not installed.")
         raise
 
-    nxgraph = network.to_networkx()
+    nxgraph = graph.to_networkx()
     return nx.is_planar(nxgraph)
 
 
-def network_is_planar_embedding(network):
-    """Verify that a network is embedded in the plane without crossing edges.
+def graph_is_planar_embedding(graph):
+    """Verify that a graph is embedded in the plane without crossing edges.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A network object.
+    graph : :class:`compas.datastructures.Graph`
+        A graph object.
 
     Returns
     -------
     bool
-        True if the network is embedded in the plane without crossing edges.
+        True if the graph is embedded in the plane without crossing edges.
         Fase otherwise.
 
     """
-    return network_is_planar(network) and network_is_xy(network) and not network_is_crossed(network)
+    return graph_is_planar(graph) and graph_is_xy(graph) and not graph_is_crossed(graph)
 
 
-def network_embed_in_plane(network, fixed=None, straightline=True):
-    """Embed the network in the plane.
+def graph_embed_in_plane(graph, fixed=None, straightline=True):
+    """Embed the graph in the plane.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A network object.
+    graph : :class:`compas.datastructures.Graph`
+        A graph object.
     fixed : [hashable, hashable], optional
         Two fixed points.
     straightline : bool, optional
@@ -233,14 +233,14 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
         print("NetworkX is not installed. Get NetworkX at https://networkx.github.io/.")
         raise
 
-    x = network.nodes_attribute("x")
-    y = network.nodes_attribute("y")
+    x = graph.nodes_attribute("x")
+    y = graph.nodes_attribute("y")
     xmin, xmax = min(x), max(x)
     ymin, ymax = min(y), max(y)
     xspan = xmax - xmin
     yspan = ymax - ymin
 
-    edges = [(u, v) for u, v in network.edges() if not network.is_leaf(u) and not network.is_leaf(v)]
+    edges = [(u, v) for u, v in graph.edges() if not graph.is_leaf(u) and not graph.is_leaf(v)]
 
     is_embedded = False
     pos = {}
@@ -262,8 +262,8 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
 
     if fixed:
         a, b = fixed
-        p0 = network.node_attributes(a, "xy")
-        p1 = network.node_attributes(b, "xy")
+        p0 = graph.node_attributes(a, "xy")
+        p1 = graph.node_attributes(b, "xy")
         p2 = pos[b]
         vec0 = subtract_vectors_xy(p1, p0)
         vec1 = subtract_vectors_xy(pos[b], pos[a])
@@ -290,9 +290,9 @@ def network_embed_in_plane(network, fixed=None, straightline=True):
             pos[key][0] += t[0]
             pos[key][1] += t[1]
 
-    # update network node coordinates
-    for key in network.nodes():
+    # update graph node coordinates
+    for key in graph.nodes():
         if key in pos:
-            network.node_attributes(key, "xy", pos[key])
+            graph.node_attributes(key, "xy", pos[key])
 
     return True

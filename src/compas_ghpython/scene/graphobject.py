@@ -4,27 +4,27 @@ from __future__ import division
 
 from compas_rhino import conversions
 
-from compas.scene import NetworkObject as BaseNetworkObject
+from compas.scene import GraphObject as BaseGraphObject
 from .sceneobject import GHSceneObject
 
 
-class NetworkObject(GHSceneObject, BaseNetworkObject):
-    """Scene object for drawing network data structures.
+class GraphObject(GHSceneObject, BaseGraphObject):
+    """Scene object for drawing graph data structures.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A COMPAS network.
+    graph : :class:`compas.datastructures.Graph`
+        A COMPAS graph.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, network, **kwargs):
-        super(NetworkObject, self).__init__(network=network, **kwargs)
+    def __init__(self, graph, **kwargs):
+        super(GraphObject, self).__init__(graph=graph, **kwargs)
 
     def draw(self):
-        """Draw the entire network with default color settings.
+        """Draw the entire graph with default color settings.
 
         Returns
         -------
@@ -50,7 +50,7 @@ class NetworkObject(GHSceneObject, BaseNetworkObject):
         """
         points = []
 
-        for node in nodes or self.network.nodes():  # type: ignore
+        for node in nodes or self.graph.nodes():  # type: ignore
             points.append(conversions.point_to_rhino(self.node_xyz[node]))
 
         return points
@@ -71,7 +71,7 @@ class NetworkObject(GHSceneObject, BaseNetworkObject):
         """
         lines = []
 
-        for edge in edges or self.network.edges():  # type: ignore
+        for edge in edges or self.graph.edges():  # type: ignore
             lines.append(conversions.line_to_rhino((self.node_xyz[edge[0]], self.node_xyz[edge[1]])))
 
         return lines

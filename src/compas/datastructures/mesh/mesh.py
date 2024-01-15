@@ -358,11 +358,11 @@ class Mesh(HalfEdge):
             A mesh object.
 
         """
-        from compas.datastructures import Network
+        from compas.datastructures import Graph
 
-        network = Network.from_lines(lines, precision=precision)
-        vertices = network.to_points()
-        faces = network.find_cycles()
+        graph = Graph.from_lines(lines, precision=precision)
+        vertices = graph.to_points()
+        faces = graph.find_cycles()
         mesh = cls.from_vertices_and_faces(vertices, faces)
         if delete_boundary_face:
             mesh.delete_face(0)

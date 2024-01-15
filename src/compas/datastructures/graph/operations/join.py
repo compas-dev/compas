@@ -6,20 +6,20 @@ from compas.tolerance import TOL
 from compas.utilities import pairwise
 
 
-def network_join_edges(network, key):
+def graph_join_edges(graph, key):
     """Join the edges incidental on the given node, if there are exactly two incident edges.
 
     Parameters
     ----------
-    network : :class:`compas.geometry.Network`
-        A network data structure.
+    graph : :class:`compas.geometry.Graph`
+        A graph data structure.
     key : hashable
         The node identifier.
 
     Returns
     -------
     None
-        The network is modified in place.
+        The graph is modified in place.
 
     Notes
     -----
@@ -28,39 +28,39 @@ def network_join_edges(network, key):
     Therefore, the new edge has only default edge attributes.
 
     """
-    nbrs = network.vertex_neighbors(key)
+    nbrs = graph.vertex_neighbors(key)
     if len(nbrs) != 2:
         return
     a, b = nbrs
-    if a in network.edge[key]:
-        del network.edge[key][a]
+    if a in graph.edge[key]:
+        del graph.edge[key][a]
     else:
-        del network.edge[a][key]
-    del network.halfedge[key][a]
-    del network.halfedge[a][key]
-    if b in network.edge[key]:
-        del network.edge[key][b]
+        del graph.edge[a][key]
+    del graph.halfedge[key][a]
+    del graph.halfedge[a][key]
+    if b in graph.edge[key]:
+        del graph.edge[key][b]
     else:
-        del network.edge[b][key]
-    del network.halfedge[key][b]
-    del network.halfedge[b][key]
-    del network.vertex[key]
-    del network.halfedge[key]
-    del network.edge[key]
+        del graph.edge[b][key]
+    del graph.halfedge[key][b]
+    del graph.halfedge[b][key]
+    del graph.vertex[key]
+    del graph.halfedge[key]
+    del graph.edge[key]
     # set attributes based on average of two joining edges?
-    network.add_edge((a, b))
+    graph.add_edge((a, b))
 
 
-def network_polylines(network, splits=None):
-    """Join network edges into polylines.
+def graph_polylines(graph, splits=None):
+    """Join graph edges into polylines.
 
-    The polylines stop at points with a valency different from 2 in the network of line.
+    The polylines stop at points with a valency different from 2 in the graph of line.
     Optional splits can be included.
 
     Parameters
     ----------
-    network : Network
-        A network.
+    graph : Graph
+        A graph.
     splits : sequence[[float, float, float] | :class:`compas.geometry.Point`], optional
         List of point coordinates for polyline splits.
 
@@ -76,7 +76,7 @@ def network_polylines(network, splits=None):
     where a ... f are different point coordinates.
     This will result in the following polylines (a, b, c), (c, d) and (c, e, f).
 
-    >>> from compas.datastructures import Network
+    >>> from compas.datastructures import Graph
     >>> a = [0., 0., 0.]
     >>> b = [1., 0., 0.]
     >>> c = [2., 0., 0.]
@@ -84,8 +84,8 @@ def network_polylines(network, splits=None):
     >>> e = [3., 0., 0.]
     >>> f = [4., 0., 0.]
     >>> lines = [(a, b), (b, c), (c, d), (c, e), (e, f)]
-    >>> network = Network.from_lines(lines)
-    >>> len(network_polylines(network)) == 3
+    >>> graph = Graph.from_lines(lines)
+    >>> len(graph_polylines(graph)) == 3
     True
 
     """
@@ -95,7 +95,7 @@ def network_polylines(network, splits=None):
     stop_geom_keys = set([TOL.geometric_key(xyz) for xyz in splits])
 
     polylines = []
-    edges_to_visit = set(network.edges())
+    edges_to_visit = set(graph.edges())
 
     # initiate a polyline from an unvisited edge
     while len(edges_to_visit) > 0:
@@ -105,18 +105,18 @@ def network_polylines(network, splits=None):
         while polyline[0] != polyline[-1]:
             # ... or until both end are non-two-valent vertices
             if (
-                len(network.neighbors(polyline[-1])) != 2
-                or TOL.geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
+                len(graph.neighbors(polyline[-1])) != 2
+                or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys
             ):
                 polyline = list(reversed(polyline))
                 if (
-                    len(network.neighbors(polyline[-1])) != 2
-                    or TOL.geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys
+                    len(graph.neighbors(polyline[-1])) != 2
+                    or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys
                 ):
                     break
 
             # add next edge
-            polyline.append([nbr for nbr in network.neighbors(polyline[-1]) if nbr != polyline[-2]][0])
+            polyline.append([nbr for nbr in graph.neighbors(polyline[-1]) if nbr != polyline[-2]][0])
 
         # delete polyline edges from the list of univisted edges
         for u, v in pairwise(polyline):
@@ -127,4 +127,4 @@ def network_polylines(network, splits=None):
 
         polylines.append(polyline)
 
-    return [[network.node_coordinates(vkey) for vkey in polyline] for polyline in polylines]
+    return [[graph.node_coordinates(vkey) for vkey in polyline] for polyline in polylines]

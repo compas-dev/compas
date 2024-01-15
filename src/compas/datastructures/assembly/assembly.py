@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.datastructures import Datastructure
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from .exceptions import AssemblyError
 
 
@@ -19,12 +19,12 @@ class Assembly(Datastructure):
     ----------
     attributes : dict[str, Any]
         General attributes of the data structure that will be included in the data dict and serialization.
-    network : :class:`compas.datastructures.Network`
-        The network that is used under the hood to store the parts and their connections.
+    graph : :class:`compas.datastructures.Graph`
+        The graph that is used under the hood to store the parts and their connections.
 
     See Also
     --------
-    :class:`compas.datastructures.Network`
+    :class:`compas.datastructures.Graph`
     :class:`compas.datastructures.Mesh`
     :class:`compas.datastructures.VolMesh`
 
@@ -34,21 +34,21 @@ class Assembly(Datastructure):
         "type": "object",
         "properties": {
             "attributes": {"type": "object"},
-            "network": Network.DATASCHEMA,
+            "graph": Graph.DATASCHEMA,
         },
-        "required": ["network"],
+        "required": ["graph"],
     }
 
     def __init__(self, name=None, **kwargs):
         super(Assembly, self).__init__()
         self.attributes = {"name": name or "Assembly"}
         self.attributes.update(kwargs)
-        self.network = Network()
+        self.graph = Graph()
         self._parts = {}
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
-        return tpl.format(self.network.number_of_nodes(), self.network.number_of_edges())
+        return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
 
     # ==========================================================================
     # Data
@@ -58,14 +58,14 @@ class Assembly(Datastructure):
     def data(self):
         return {
             "attributes": self.attributes,
-            "network": self.network.data,
+            "graph": self.graph.data,
         }
 
     @classmethod
     def from_data(cls, data):
         assembly = cls()
         assembly.attributes.update(data["attributes"] or {})
-        assembly.network = Network.from_data(data["network"])
+        assembly.graph = Graph.from_data(data["graph"])
         assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
         return assembly
 
@@ -107,12 +107,12 @@ class Assembly(Datastructure):
         Returns
         -------
         int | str
-            The identifier of the part in the current assembly network.
+            The identifier of the part in the current assembly graph.
 
         """
         if part.guid in self._parts:
             raise AssemblyError("Part already added to the assembly")
-        key = self.network.add_node(key=key, part=part, **kwargs)
+        key = self.graph.add_node(key=key, part=part, **kwargs)
         part.key = key
         self._parts[part.guid] = part.key
         return key
@@ -143,9 +143,9 @@ class Assembly(Datastructure):
         error_msg = "Both parts have to be added to the assembly before a connection can be created."
         if a.key is None or b.key is None:
             raise AssemblyError(error_msg)
-        if not self.network.has_node(a.key) or not self.network.has_node(b.key):
+        if not self.graph.has_node(a.key) or not self.graph.has_node(b.key):
             raise AssemblyError(error_msg)
-        return self.network.add_edge(a.key, b.key, **kwargs)
+        return self.graph.add_edge(a.key, b.key, **kwargs)
 
     def delete_part(self, part):
         """Remove a part  from the assembly.
@@ -161,7 +161,7 @@ class Assembly(Datastructure):
 
         """
         del self._parts[part.guid]
-        self.network.delete_node(key=part.key)
+        self.graph.delete_node(key=part.key)
 
     def delete_connection(self, edge):
         """Delete a connection between two parts.
@@ -176,7 +176,7 @@ class Assembly(Datastructure):
         None
 
         """
-        self.network.delete_edge(edge=edge)
+        self.graph.delete_edge(edge=edge)
 
     def parts(self):
         """The parts of the assembly.
@@ -187,8 +187,8 @@ class Assembly(Datastructure):
             The individual parts of the assembly.
 
         """
-        for node in self.network.nodes():
-            yield self.network.node_attribute(node, "part")
+        for node in self.graph.nodes():
+            yield self.graph.node_attribute(node, "part")
 
     def connections(self, data=False):
         """Iterate over the connections between the parts.
@@ -205,7 +205,7 @@ class Assembly(Datastructure):
             If `data` is True, the next connector identifier and its attributes as a ((u, v), attr) tuple.
 
         """
-        return self.network.edges(data)
+        return self.graph.edges(data)
 
     def find(self, guid):
         """Find a part in the assembly by its GUID.
@@ -228,7 +228,7 @@ class Assembly(Datastructure):
         if key is None:
             return None
 
-        return self.network.node_attribute(key, "part")
+        return self.graph.node_attribute(key, "part")
 
     def find_by_key(self, key):
         """Find a part in the assembly by its key.
@@ -245,7 +245,7 @@ class Assembly(Datastructure):
             or None if the part can't be found.
 
         """
-        if key not in self.network.node:
+        if key not in self.graph.node:
             return None
 
-        return self.network.node_attribute(key, "part")
+        return self.graph.node_attribute(key, "part")

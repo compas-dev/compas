@@ -7,7 +7,7 @@ Datastructures
     :titlesonly:
     :caption: Data Structures
 
-    basics.datastructures.networks
+    basics.datastructures.graphs
     basics.datastructures.meshes
     basics.datastructures.cells
     basics.datastructures.trees

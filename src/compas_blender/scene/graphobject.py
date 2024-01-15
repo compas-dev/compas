@@ -8,28 +8,28 @@ from typing import Union
 import bpy  # type: ignore
 
 import compas_blender
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.colors import Color
 from compas.geometry import Line
 
-from compas.scene import NetworkObject as BaseSceneObject
+from compas.scene import GraphObject as BaseSceneObject
 from .sceneobject import BlenderSceneObject
 
 from compas_blender import conversions
 
 
-class NetworkObject(BlenderSceneObject, BaseSceneObject):
-    """Scene object for drawing network data structures in Blender.
+class GraphObject(BlenderSceneObject, BaseSceneObject):
+    """Scene object for drawing graph data structures in Blender.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
-        A COMPAS network.
+    graph : :class:`compas.datastructures.Graph`
+        A COMPAS graph.
 
     """
 
-    def __init__(self, network: Network, **kwargs: Any):
-        super().__init__(network=network, **kwargs)
+    def __init__(self, graph: Graph, **kwargs: Any):
+        super().__init__(graph=graph, **kwargs)
         self.nodeobjects = []
         self.edgeobjects = []
 
@@ -88,7 +88,7 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
         nodecolor: Optional[Union[Color, Dict[int, Color]]] = None,
         edgecolor: Optional[Union[Color, Dict[Tuple[int, int], Color]]] = None,
     ) -> list[bpy.types.Object]:
-        """Draw the network.
+        """Draw the graph.
 
         Parameters
         ----------
@@ -142,10 +142,10 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
 
         self.nodecolor = color
 
-        for node in nodes or self.network.nodes():  # type: ignore
-            name = f"{self.network.name}.node.{node}"  # type: ignore
+        for node in nodes or self.graph.nodes():  # type: ignore
+            name = f"{self.graph.name}.node.{node}"  # type: ignore
             color = self.nodecolor[node]  # type: ignore
-            point = self.network.nodes_attributes("xyz")[node]  # type: ignore
+            point = self.graph.nodes_attributes("xyz")[node]  # type: ignore
 
             # there is no such thing as a sphere data block
             bpy.ops.mesh.primitive_uv_sphere_add(location=point, radius=radius, segments=u, ring_count=v)
@@ -183,11 +183,11 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
 
         self.edgecolor = color
 
-        for u, v in edges or self.network.edges():  # type: ignore
-            name = f"{self.network.name}.edge.{u}-{v}"  # type: ignore
+        for u, v in edges or self.graph.edges():  # type: ignore
+            name = f"{self.graph.name}.edge.{u}-{v}"  # type: ignore
             color = self.edgecolor[u, v]  # type: ignore
             curve = conversions.line_to_blender_curve(
-                Line(self.network.nodes_attributes("xyz")[u], self.network.nodes_attributes("xyz")[v])
+                Line(self.graph.nodes_attributes("xyz")[u], self.graph.nodes_attributes("xyz")[v])
             )
 
             obj = self.create_object(curve, name=name)
@@ -219,8 +219,8 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
     #     for node in self.node_text:
     #         labels.append(
     #             {
-    #                 "pos": self.network.nodes_attributes("xyz")[node],
-    #                 "name": f"{self.network.name}.nodelabel.{node}",
+    #                 "pos": self.graph.nodes_attributes("xyz")[node],
+    #                 "name": f"{self.graph.name}.nodelabel.{node}",
     #                 "text": self.node_text[node],
     #                 "color": self.nodecolor[node],
     #             }
@@ -247,8 +247,8 @@ class NetworkObject(BlenderSceneObject, BaseSceneObject):
     #         u, v = edge
     #         labels.append(
     #             {
-    #                 "pos": centroid_points([self.network.nodes_attributes("xyz")[u], self.network.nodes_attributes("xyz")[v]]),
-    #                 "name": f"{self.network.name}.edgelabel.{u}-{v}",
+    #                 "pos": centroid_points([self.graph.nodes_attributes("xyz")[u], self.graph.nodes_attributes("xyz")[v]]),
+    #                 "name": f"{self.graph.name}.edgelabel.{u}-{v}",
     #                 "text": self.edge_text[edge],
     #                 "color": self.edgecolor[edge],
     #             }

@@ -34,21 +34,21 @@ from compas.datastructures.datastructure import Datastructure
 from compas.datastructures.attributes import NodeAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
 
-from .operations.split import network_split_edge
-from .operations.join import network_join_edges
+from .operations.split import graph_split_edge
+from .operations.join import graph_join_edges
 
-from .planarity import network_is_crossed
-from .planarity import network_is_planar
-from .planarity import network_is_planar_embedding
-from .planarity import network_is_xy
-from .planarity import network_count_crossings
-from .planarity import network_find_crossings
-from .planarity import network_embed_in_plane
-from .smoothing import network_smooth_centroid
-from .duality import network_find_cycles
+from .planarity import graph_is_crossed
+from .planarity import graph_is_planar
+from .planarity import graph_is_planar_embedding
+from .planarity import graph_is_xy
+from .planarity import graph_count_crossings
+from .planarity import graph_find_crossings
+from .planarity import graph_embed_in_plane
+from .smoothing import graph_smooth_centroid
+from .duality import graph_find_cycles
 
 
-class Network(Datastructure):
+class Graph(Datastructure):
     """Data structure for describing the relationships between nodes connected by edges.
 
     Parameters
@@ -58,7 +58,7 @@ class Network(Datastructure):
     default_edge_attributes: dict, optional
         Default values for edge attributes.
     **kwargs : dict, optional
-        Additional attributes to add to the network.
+        Additional attributes to add to the graph.
 
     Attributes
     ----------
@@ -100,22 +100,22 @@ class Network(Datastructure):
         ],
     }
 
-    split_edge = network_split_edge
-    join_edges = network_join_edges
-    smooth = network_smooth_centroid
+    split_edge = graph_split_edge
+    join_edges = graph_join_edges
+    smooth = graph_smooth_centroid
 
-    is_crossed = network_is_crossed
-    is_planar = network_is_planar
-    is_planar_embedding = network_is_planar_embedding
-    is_xy = network_is_xy
-    count_crossings = network_count_crossings
-    find_crossings = network_find_crossings
-    embed_in_plane = network_embed_in_plane
+    is_crossed = graph_is_crossed
+    is_planar = graph_is_planar
+    is_planar_embedding = graph_is_planar_embedding
+    is_xy = graph_is_xy
+    count_crossings = graph_count_crossings
+    find_crossings = graph_find_crossings
+    embed_in_plane = graph_embed_in_plane
 
-    find_cycles = network_find_cycles
+    find_cycles = graph_find_cycles
 
     def __init__(self, default_node_attributes=None, default_edge_attributes=None, **kwargs):
-        super(Network, self).__init__(**kwargs)
+        super(Graph, self).__init__(**kwargs)
         self._max_node = -1
         self.node = {}
         self.edge = {}
@@ -128,7 +128,7 @@ class Network(Datastructure):
             self.default_edge_attributes.update(default_edge_attributes)
 
     def __str__(self):
-        tpl = "<Network with {} nodes, {} edges>"
+        tpl = "<Graph with {} nodes, {} edges>"
         return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
@@ -196,7 +196,7 @@ class Network(Datastructure):
 
         See Also
         --------
-        :meth:`from_networkx`
+        :meth:`from_graphx`
 
         """
         graph = cls()
@@ -239,7 +239,7 @@ class Network(Datastructure):
 
     @classmethod
     def from_obj(cls, filepath, precision=None):
-        """Construct a network from the data contained in an OBJ file.
+        """Construct a graph from the data contained in an OBJ file.
 
         Parameters
         ----------
@@ -250,8 +250,8 @@ class Network(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
-            A network object.
+        :class:`compas.datastructures.Graph`
+            A graph object.
 
         See Also
         --------
@@ -260,20 +260,20 @@ class Network(Datastructure):
         :class:`compas.files.OBJ`
 
         """
-        network = cls()
+        graph = cls()
         obj = OBJ(filepath, precision)
         obj.read()
         nodes = obj.vertices
         edges = obj.lines
         for i, (x, y, z) in enumerate(nodes):  # type: ignore
-            network.add_node(i, x=x, y=y, z=z)
+            graph.add_node(i, x=x, y=y, z=z)
         for edge in edges:  # type: ignore
-            network.add_edge(*edge)
-        return network
+            graph.add_edge(*edge)
+        return graph
 
     @classmethod
     def from_lines(cls, lines, precision=None):
-        """Construct a network from a set of lines represented by their start and end point coordinates.
+        """Construct a graph from a set of lines represented by their start and end point coordinates.
 
         Parameters
         ----------
@@ -285,8 +285,8 @@ class Network(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
-            A network object.
+        :class:`compas.datastructures.Graph`
+            A graph object.
 
         See Also
         --------
@@ -294,7 +294,7 @@ class Network(Datastructure):
         :meth:`from_obj`, :meth:`from_nodes_and_edges`, :meth:`from_pointcloud`
 
         """
-        network = cls()
+        graph = cls()
         edges = []
         node = {}
         for line in lines:
@@ -308,16 +308,16 @@ class Network(Datastructure):
         key_index = dict((k, i) for i, k in enumerate(iter(node)))
         for key, xyz in iter(node.items()):
             i = key_index[key]
-            network.add_node(i, x=xyz[0], y=xyz[1], z=xyz[2])
+            graph.add_node(i, x=xyz[0], y=xyz[1], z=xyz[2])
         for u, v in edges:
             i = key_index[u]
             j = key_index[v]
-            network.add_edge(i, j)
-        return network
+            graph.add_edge(i, j)
+        return graph
 
     @classmethod
     def from_nodes_and_edges(cls, nodes, edges):
-        """Construct a network from nodes and edges.
+        """Construct a graph from nodes and edges.
 
         Parameters
         ----------
@@ -327,8 +327,8 @@ class Network(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
-            A network object.
+        :class:`compas.datastructures.Graph`
+            A graph object.
 
         See Also
         --------
@@ -336,23 +336,23 @@ class Network(Datastructure):
         :meth:`from_obj`, :meth:`from_lines`, :meth:`from_pointcloud`
 
         """
-        network = cls()
+        graph = cls()
 
         if isinstance(nodes, Mapping):
             for key, (x, y, z) in nodes.items():
-                network.add_node(key, x=x, y=y, z=z)
+                graph.add_node(key, x=x, y=y, z=z)
         else:
             for i, (x, y, z) in enumerate(nodes):
-                network.add_node(i, x=x, y=y, z=z)
+                graph.add_node(i, x=x, y=y, z=z)
 
         for u, v in edges:
-            network.add_edge(u, v)
+            graph.add_edge(u, v)
 
-        return network
+        return graph
 
     @classmethod
     def from_pointcloud(cls, cloud, degree=3):
-        """Construct a network from random connections between the points of a pointcloud.
+        """Construct a graph from random connections between the points of a pointcloud.
 
         Parameters
         ----------
@@ -363,8 +363,8 @@ class Network(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Network`
-            A network object.
+        :class:`compas.datastructures.Graph`
+            A graph object.
 
         See Also
         --------
@@ -372,20 +372,20 @@ class Network(Datastructure):
         :meth:`from_obj`, :meth:`from_lines`, :meth:`from_nodes_and_edges`
 
         """
-        network = cls()
+        graph = cls()
         for x, y, z in cloud:
-            network.add_node(x=x, y=y, z=z)
-        for u in network.nodes():
-            for v in network.node_sample(size=degree):
-                network.add_edge(u, v)
-        return network
+            graph.add_node(x=x, y=y, z=z)
+        for u in graph.nodes():
+            for v in graph.node_sample(size=degree):
+                graph.add_edge(u, v)
+        return graph
 
     # --------------------------------------------------------------------------
     # Converters
     # --------------------------------------------------------------------------
 
     def to_obj(self):
-        """Write the network to an OBJ file.
+        """Write the graph to an OBJ file.
 
         Parameters
         ----------
@@ -405,12 +405,12 @@ class Network(Datastructure):
         raise NotImplementedError
 
     def to_points(self):
-        """Return the coordinates of the network.
+        """Return the coordinates of the graph.
 
         Returns
         -------
         list[list[float]]
-            A list with the coordinates of the vertices of the network.
+            A list with the coordinates of the vertices of the graph.
 
         See Also
         --------
@@ -421,7 +421,7 @@ class Network(Datastructure):
         return [self.node_coordinates(key) for key in self.nodes()]
 
     def to_lines(self):
-        """Return the lines of the network as pairs of start and end point coordinates.
+        """Return the lines of the graph as pairs of start and end point coordinates.
 
         Returns
         -------
@@ -437,7 +437,7 @@ class Network(Datastructure):
         return [self.edge_coordinates(edge) for edge in self.edges()]
 
     def to_nodes_and_edges(self):
-        """Return the nodes and edges of a network.
+        """Return the nodes and edges of a graph.
 
         Returns
         -------
@@ -488,7 +488,7 @@ class Network(Datastructure):
     # --------------------------------------------------------------------------
 
     def clear(self):
-        """Clear all the network data.
+        """Clear all the graph data.
 
         Returns
         -------
@@ -802,7 +802,7 @@ class Network(Datastructure):
                     del self.adjacency[u][v]
 
     def delete_edge(self, edge):
-        """Delete an edge from the network.
+        """Delete an edge from the graph.
 
         Parameters
         ----------
@@ -889,25 +889,25 @@ class Network(Datastructure):
         return len(list(self.edges()))
 
     def is_connected(self):
-        """Verify that the network is connected.
+        """Verify that the graph is connected.
 
 
         Returns
         -------
         bool
-            True, if the network is connected.
+            True, if the graph is connected.
             False, otherwise.
 
         Notes
         -----
-        A network is connected if for every two vertices a path exists connecting them.
+        A graph is connected if for every two vertices a path exists connecting them.
 
         Examples
         --------
         >>> import compas
-        >>> from compas.datastructures import Network
-        >>> network = Network.from_obj(compas.get('lines.obj'))
-        >>> network.is_connected()
+        >>> from compas.datastructures import Graph
+        >>> graph = Graph.from_obj(compas.get('lines.obj'))
+        >>> graph.is_connected()
         True
 
         """
@@ -921,7 +921,7 @@ class Network(Datastructure):
     # --------------------------------------------------------------------------
 
     def nodes(self, data=False):
-        """Iterate over the nodes of the network.
+        """Iterate over the nodes of the graph.
 
         Parameters
         ----------
@@ -1057,7 +1057,7 @@ class Network(Datastructure):
                     yield key
 
     def edges(self, data=False):
-        """Iterate over the edges of the network.
+        """Iterate over the edges of the graph.
 
         Parameters
         ----------
@@ -1676,7 +1676,7 @@ class Network(Datastructure):
     # --------------------------------------------------------------------------
 
     def has_node(self, key):
-        """Verify if a specific node is present in the network.
+        """Verify if a specific node is present in the graph.
 
         Parameters
         ----------
@@ -1721,7 +1721,7 @@ class Network(Datastructure):
         return self.degree(key) == 1
 
     def leaves(self):
-        """Return all leaves of the network.
+        """Return all leaves of the graph.
 
         Returns
         -------
@@ -1933,7 +1933,7 @@ class Network(Datastructure):
     # --------------------------------------------------------------------------
 
     def has_edge(self, edge, directed=True):
-        """Verify if the network contains a specific edge.
+        """Verify if the graph contains a specific edge.
 
         Parameters
         ----------
@@ -2254,7 +2254,7 @@ class Network(Datastructure):
     # --------------------------------------------------------------------------
 
     def transform(self, transformation):
-        """Transform all nodes of the network.
+        """Transform all nodes of the graph.
 
         Parameters
         ----------
@@ -2345,10 +2345,10 @@ class Network(Datastructure):
         Examples
         --------
         >>> import compas
-        >>> from compas.datastructures import Network
-        >>> network = Network.from_obj(compas.get('lines.obj'))
-        >>> complement = network.complement()
-        >>> any(complement.has_edge(u, v, directed=False) for u, v in network.edges())
+        >>> from compas.datastructures import Graph
+        >>> graph = Graph.from_obj(compas.get('lines.obj'))
+        >>> complement = graph.complement()
+        >>> any(complement.has_edge(u, v, directed=False) for u, v in graph.edges())
         False
 
         """
@@ -2372,7 +2372,7 @@ class Network(Datastructure):
     # --------------------------------------------------------------------------
 
     def adjacency_matrix(self, rtype="array"):
-        """Creates a node adjacency matrix from a Network datastructure.
+        """Creates a node adjacency matrix from a Graph datastructure.
 
         Parameters
         ----------
@@ -2392,7 +2392,7 @@ class Network(Datastructure):
         return adjacency_matrix(adjacency, rtype=rtype)
 
     def connectivity_matrix(self, rtype="array"):
-        """Creates a connectivity matrix from a Network datastructure.
+        """Creates a connectivity matrix from a Graph datastructure.
 
         Parameters
         ----------
@@ -2412,7 +2412,7 @@ class Network(Datastructure):
         return connectivity_matrix(edges, rtype=rtype)
 
     def degree_matrix(self, rtype="array"):
-        """Creates a degree matrix from a Network datastructure.
+        """Creates a degree matrix from a Graph datastructure.
 
         Parameters
         ----------
@@ -2432,7 +2432,7 @@ class Network(Datastructure):
         return degree_matrix(adjacency, rtype=rtype)
 
     def laplacian_matrix(self, normalize=False, rtype="array"):
-        """Creates a Laplacian matrix from a Network datastructure.
+        """Creates a Laplacian matrix from a Graph datastructure.
 
         Parameters
         ----------

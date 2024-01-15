@@ -118,7 +118,7 @@ def create_layers_from_paths(names, separator="::"):
     * COMPAS
       * Datastructures
         * Mesh
-        * Network
+        * Graph
       * Geometry
         * Point
         * Vector
@@ -127,7 +127,7 @@ def create_layers_from_paths(names, separator="::"):
 
         create_layers_from_paths([
             "COMPAS::Datastructures::Mesh",
-            "COMPAS::Datastructures::Network",
+            "COMPAS::Datastructures::Graph",
             "COMPAS::Geometry::Point",
             "COMPAS::Geometry::Vector",
         ])
@@ -158,7 +158,7 @@ def create_layers_from_dict(layers):
         layers = {'COMPAS', {'layers': {
             'Datastructures': {'color': (255, 0, 0), 'layers': {
                 'Mesh': {},
-                'Network': {}
+                'Graph': {}
             }},
             'Geometry': {'color': (0, 0, 255),'layers': {
                 'Point': {},
@@ -307,11 +307,11 @@ def delete_layers(layers):
     --------
     .. code-block:: python
 
-        layers = {'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}, 'Network': {}}}}}}
+        layers = {'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}, 'Graph': {}}}}}}
 
         create_layers(layers)
 
-        delete_layers(['COMPAS::Datastructures::Network'])
+        delete_layers(['COMPAS::Datastructures::Graph'])
         delete_layers({'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}}}}}})
 
     """

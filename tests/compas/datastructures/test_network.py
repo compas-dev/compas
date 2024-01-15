@@ -5,7 +5,7 @@ import random
 import pytest
 
 import compas
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.geometry import Pointcloud
 
 # ==============================================================================
@@ -16,42 +16,42 @@ BASE_FOLDER = os.path.dirname(__file__)
 
 
 @pytest.fixture
-def network():
+def graph():
     edges = [(0, 1), (0, 2), (0, 3), (0, 4)]
-    network = Network()
+    graph = Graph()
     for u, v in edges:
-        network.add_edge(u, v)
-    return network
+        graph.add_edge(u, v)
+    return graph
 
 
 @pytest.fixture
-def planar_network():
-    return Network.from_obj(os.path.join(BASE_FOLDER, "fixtures", "planar.obj"))
+def planar_graph():
+    return Graph.from_obj(os.path.join(BASE_FOLDER, "fixtures", "planar.obj"))
 
 
 @pytest.fixture
-def non_planar_network():
-    return Network.from_obj(os.path.join(BASE_FOLDER, "fixtures", "non-planar.obj"))
+def non_planar_graph():
+    return Graph.from_obj(os.path.join(BASE_FOLDER, "fixtures", "non-planar.obj"))
 
 
 @pytest.fixture
-def k5_network():
-    network = Network()
-    network.add_edge("a", "b")
-    network.add_edge("a", "c")
-    network.add_edge("a", "d")
-    network.add_edge("a", "e")
+def k5_graph():
+    graph = Graph()
+    graph.add_edge("a", "b")
+    graph.add_edge("a", "c")
+    graph.add_edge("a", "d")
+    graph.add_edge("a", "e")
 
-    network.add_edge("b", "c")
-    network.add_edge("b", "d")
-    network.add_edge("b", "e")
+    graph.add_edge("b", "c")
+    graph.add_edge("b", "d")
+    graph.add_edge("b", "e")
 
-    network.add_edge("c", "d")
-    network.add_edge("c", "e")
+    graph.add_edge("c", "d")
+    graph.add_edge("c", "e")
 
-    network.add_edge("d", "e")
+    graph.add_edge("d", "e")
 
-    return network
+    return graph
 
 
 # ==============================================================================
@@ -70,20 +70,20 @@ def k5_network():
         compas.get("grid_irregular.obj"),
     ],
 )
-def test_network_from_obj(filepath):
-    network = Network.from_obj(filepath)
-    assert network.number_of_nodes() > 0
-    assert network.number_of_edges() > 0
-    assert len(list(network.nodes())) == network._max_node + 1
-    assert network.is_connected()
+def test_graph_from_obj(filepath):
+    graph = Graph.from_obj(filepath)
+    assert graph.number_of_nodes() > 0
+    assert graph.number_of_edges() > 0
+    assert len(list(graph.nodes())) == graph._max_node + 1
+    assert graph.is_connected()
 
 
-def test_network_from_pointcloud():
+def test_graph_from_pointcloud():
     cloud = Pointcloud.from_bounds(random.random(), random.random(), random.random(), random.randint(10, 100))
-    network = Network.from_pointcloud(cloud=cloud, degree=3)
-    assert network.number_of_nodes() == len(cloud)
-    for node in network.nodes():
-        assert network.degree(node) >= 3
+    graph = Graph.from_pointcloud(cloud=cloud, degree=3)
+    assert graph.number_of_nodes() == len(cloud)
+    for node in graph.nodes():
+        assert graph.degree(node) >= 3
 
 
 # ==============================================================================
@@ -91,30 +91,30 @@ def test_network_from_pointcloud():
 # ==============================================================================
 
 
-def test_network_data1(network):
-    other = Network.from_data(json.loads(json.dumps(network.data)))
+def test_graph_data1(graph):
+    other = Graph.from_data(json.loads(json.dumps(graph.data)))
 
-    assert network.data == other.data
-    assert network.default_node_attributes == other.default_node_attributes
-    assert network.default_edge_attributes == other.default_edge_attributes
-    assert network.number_of_nodes() == other.number_of_nodes()
-    assert network.number_of_edges() == other.number_of_edges()
+    assert graph.data == other.data
+    assert graph.default_node_attributes == other.default_node_attributes
+    assert graph.default_edge_attributes == other.default_edge_attributes
+    assert graph.number_of_nodes() == other.number_of_nodes()
+    assert graph.number_of_edges() == other.number_of_edges()
 
     if not compas.IPY:
-        assert Network.validate_data(network.data)
-        assert Network.validate_data(other.data)
+        assert Graph.validate_data(graph.data)
+        assert Graph.validate_data(other.data)
 
 
-def test_network_data2():
+def test_graph_data2():
     cloud = Pointcloud.from_bounds(random.random(), random.random(), random.random(), random.randint(10, 100))
-    network = Network.from_pointcloud(cloud=cloud, degree=3)
-    other = Network.from_data(json.loads(json.dumps(network.data)))
+    graph = Graph.from_pointcloud(cloud=cloud, degree=3)
+    other = Graph.from_data(json.loads(json.dumps(graph.data)))
 
-    assert network.data == other.data
+    assert graph.data == other.data
 
     if not compas.IPY:
-        assert Network.validate_data(network.data)
-        assert Network.validate_data(other.data)
+        assert Graph.validate_data(graph.data)
+        assert Graph.validate_data(other.data)
 
 
 # ==============================================================================
@@ -131,11 +131,11 @@ def test_network_data2():
 
 
 def test_add_node():
-    network = Network()
-    assert network.add_node(1) == 1
-    assert network.add_node("1", x=0, y=0, z=0) == "1"
-    assert network.add_node(2) == 2
-    assert network.add_node(0, x=1) == 0
+    graph = Graph()
+    assert graph.add_node(1) == 1
+    assert graph.add_node("1", x=0, y=0, z=0) == "1"
+    assert graph.add_node(2) == 2
+    assert graph.add_node(0, x=1) == 0
 
 
 # ==============================================================================
@@ -143,23 +143,23 @@ def test_add_node():
 # ==============================================================================
 
 
-def test_network_invalid_edge_delete():
-    network = Network()
-    node = network.add_node()
-    edge = network.add_edge(node, node)
-    network.delete_edge(edge)
-    assert network.has_edge(edge) is False
+def test_graph_invalid_edge_delete():
+    graph = Graph()
+    node = graph.add_node()
+    edge = graph.add_edge(node, node)
+    graph.delete_edge(edge)
+    assert graph.has_edge(edge) is False
 
 
-def test_network_opposite_direction_edge_delete():
-    network = Network()
-    node_a = network.add_node()
-    node_b = network.add_node()
-    edge_a = network.add_edge(node_a, node_b)
-    edge_b = network.add_edge(node_b, node_a)
-    network.delete_edge(edge_a)
-    assert network.has_edge(edge_a) is False
-    assert network.has_edge(edge_b) is True
+def test_graph_opposite_direction_edge_delete():
+    graph = Graph()
+    node_a = graph.add_node()
+    node_b = graph.add_node()
+    edge_a = graph.add_edge(node_a, node_b)
+    edge_b = graph.add_edge(node_b, node_a)
+    graph.delete_edge(edge_a)
+    assert graph.has_edge(edge_a) is False
+    assert graph.has_edge(edge_b) is True
 
 
 # ==============================================================================
@@ -167,18 +167,18 @@ def test_network_opposite_direction_edge_delete():
 # ==============================================================================
 
 
-def test_network_node_sample(network):
-    for node in network.node_sample():
-        assert network.has_node(node)
-    for node in network.node_sample(size=network.number_of_nodes()):
-        assert network.has_node(node)
+def test_graph_node_sample(graph):
+    for node in graph.node_sample():
+        assert graph.has_node(node)
+    for node in graph.node_sample(size=graph.number_of_nodes()):
+        assert graph.has_node(node)
 
 
-def test_network_edge_sample(network):
-    for edge in network.edge_sample():
-        assert network.has_edge(edge)
-    for edge in network.edge_sample(size=network.number_of_edges()):
-        assert network.has_edge(edge)
+def test_graph_edge_sample(graph):
+    for edge in graph.edge_sample():
+        assert graph.has_edge(edge)
+    for edge in graph.edge_sample(size=graph.number_of_edges()):
+        assert graph.has_edge(edge)
 
 
 # ==============================================================================
@@ -186,22 +186,22 @@ def test_network_edge_sample(network):
 # ==============================================================================
 
 
-def test_network_default_node_attributes():
-    network = Network(name="test", default_node_attributes={"a": 1, "b": 2})
-    for node in network.nodes():
-        assert network.node_attribute(node, name="a") == 1
-        assert network.node_attribute(node, name="b") == 2
-        network.node_attribute(node, name="a", value=3)
-        assert network.node_attribute(node, name="a") == 3
+def test_graph_default_node_attributes():
+    graph = Graph(name="test", default_node_attributes={"a": 1, "b": 2})
+    for node in graph.nodes():
+        assert graph.node_attribute(node, name="a") == 1
+        assert graph.node_attribute(node, name="b") == 2
+        graph.node_attribute(node, name="a", value=3)
+        assert graph.node_attribute(node, name="a") == 3
 
 
-def test_network_default_edge_attributes():
-    network = Network(name="test", default_edge_attributes={"a": 1, "b": 2})
-    for edge in network.edges():
-        assert network.edge_attribute(edge, name="a") == 1
-        assert network.edge_attribute(edge, name="b") == 2
-        network.edge_attribute(edge, name="a", value=3)
-        assert network.edge_attribute(edge, name="a") == 3
+def test_graph_default_edge_attributes():
+    graph = Graph(name="test", default_edge_attributes={"a": 1, "b": 2})
+    for edge in graph.edges():
+        assert graph.edge_attribute(edge, name="a") == 1
+        assert graph.edge_attribute(edge, name="b") == 2
+        graph.edge_attribute(edge, name="a", value=3)
+        assert graph.edge_attribute(edge, name="a") == 3
 
 
 # ==============================================================================
@@ -213,7 +213,7 @@ def test_network_to_networkx():
     if compas.IPY:
         return
 
-    g = Network()
+    g = Graph()
     g.attributes["name"] = "DiGraph"
     g.attributes["val"] = (0, 0, 0)
     g.add_node(0)
@@ -225,8 +225,8 @@ def test_network_to_networkx():
 
     nxg = g.to_networkx()
 
-    assert nxg.graph["name"] == "DiGraph", "Network attributes must be preserved"  # type: ignore
-    assert nxg.graph["val"] == (0, 0, 0), "Network attributes must be preserved"  # type: ignore
+    assert nxg.graph["name"] == "DiGraph", "Graph attributes must be preserved"  # type: ignore
+    assert nxg.graph["val"] == (0, 0, 0), "Graph attributes must be preserved"  # type: ignore
     assert set(nxg.nodes()) == set(g.nodes()), "Node sets must match"
     assert nxg.nodes[1]["weight"] == 1.2, "Node attributes must be preserved"
     assert nxg.nodes[1]["height"] == "test", "Node attributes must be preserved"
@@ -235,13 +235,13 @@ def test_network_to_networkx():
     assert set(nxg.edges()) == set(((0, 1), (1, 2))), "Edge sets must match"
     assert nxg.edges[0, 1]["attr_value"] == 10, "Edge attributes must be preserved"
 
-    g2 = Network.from_networkx(nxg)
+    g2 = Graph.from_networkx(nxg)
 
     assert g.number_of_nodes() == g2.number_of_nodes()
     assert g.number_of_edges() == g2.number_of_edges()
     assert g2.edge_attribute((0, 1), "attr_value") == 10
-    assert g2.attributes["name"] == "DiGraph", "Network attributes must be preserved"
-    assert g2.attributes["val"] == (0, 0, 0), "Network attributes must be preserved"
+    assert g2.attributes["name"] == "DiGraph", "Graph attributes must be preserved"
+    assert g2.attributes["val"] == (0, 0, 0), "Graph attributes must be preserved"
 
 
 # ==============================================================================
@@ -249,14 +249,14 @@ def test_network_to_networkx():
 # ==============================================================================
 
 
-def test_non_planar(k5_network, non_planar_network):
+def test_non_planar(k5_graph, non_planar_graph):
     if not compas.IPY:
-        assert k5_network.is_planar() is not True
-        assert non_planar_network.is_planar() is not True
+        assert k5_graph.is_planar() is not True
+        assert non_planar_graph.is_planar() is not True
 
 
-def test_planar(k5_network, planar_network):
+def test_planar(k5_graph, planar_graph):
     if not compas.IPY:
-        k5_network.delete_edge(("a", "b"))  # Delete (a, b) edge to make K5 planar
-        assert k5_network.is_planar() is True
-        assert planar_network.is_planar() is True
+        k5_graph.delete_edge(("a", "b"))  # Delete (a, b) edge to make K5 planar
+        assert k5_graph.is_planar() is True
+        assert planar_graph.is_planar() is True

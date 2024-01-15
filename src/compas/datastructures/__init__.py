@@ -11,11 +11,7 @@ from .datastructure import Datastructure
 # Graphs
 # =============================================================================
 
-# =============================================================================
-# Networks
-# =============================================================================
-
-from .network.planarity import network_embed_in_plane_proxy  # noqa: F401
+from .graph.planarity import graph_embed_in_plane_proxy  # noqa: F401
 
 # =============================================================================
 # Halfedges
@@ -55,7 +51,7 @@ from .mesh.subdivision import trimesh_subdivide_loop  # noqa: F401
 # Class APIs
 # =============================================================================
 
-from .network.network import Network
+from .graph.graph import Graph
 from .halfedge.halfedge import HalfEdge
 from .mesh.mesh import Mesh
 from .halfface.halfface import HalfFace
@@ -66,10 +62,12 @@ from .assembly.part import Feature, GeometricFeature, ParametricFeature, Part
 from .cell_network.cell_network import CellNetwork
 from .tree.tree import Tree, TreeNode
 
+Network = Graph
+
 __all__ = [
     "Datastructure",
     "CellNetwork",
-    "Network",
+    "Graph",
     "HalfEdge",
     "Mesh",
     "HalfFace",

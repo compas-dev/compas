@@ -12,7 +12,7 @@ from .drawing import (
     draw_pipes,
     draw_spheres,
     draw_mesh,
-    draw_network,
+    draw_graph,
     draw_circles,
     draw_brep,
 )
@@ -31,7 +31,7 @@ __all__ = [
     "draw_pipes",
     "draw_spheres",
     "draw_mesh",
-    "draw_network",
+    "draw_graph",
     "draw_circles",
     "draw_brep",
     "list_to_ghtree",
