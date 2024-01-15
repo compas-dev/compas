@@ -20,7 +20,7 @@ from compas.geometry import Sphere
 from compas.geometry import Torus
 from compas.geometry import Pointcloud
 
-from compas.datastructures import Graph
+from compas.datastructures import Network
 from compas.datastructures import HalfEdge
 
 if not compas.IPY:
@@ -593,7 +593,7 @@ if not compas.IPY:
             Pointcloud.validate_data(pointcloud)
 
     @pytest.mark.parametrize(
-        "graph",
+        "network",
         [
             {
                 "dna": {},
@@ -618,11 +618,11 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_graph_valid(graph):
-        Graph.validate_data(graph)
+    def test_schema_network_valid(network):
+        Network.validate_data(network)
 
     @pytest.mark.parametrize(
-        "graph",
+        "network",
         [
             {
                 "dna": {},
@@ -663,9 +663,9 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_graph_invalid(graph):
+    def test_schema_network_invalid(network):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            Graph.validate_data(graph)
+            Network.validate_data(network)
 
     @pytest.mark.parametrize(
         "halfedge",

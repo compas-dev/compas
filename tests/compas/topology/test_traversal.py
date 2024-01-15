@@ -1,4 +1,3 @@
-from compas.datastructures import Graph
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.geometry import Box, Frame
@@ -49,7 +48,7 @@ def test_astar_shortest_path_mesh():
 
 
 def test_astar_lightest_path():
-    g = Graph()
+    g = Network()
     for i in range(4):
         g.add_node(i)
     g.add_edge(0, 1)
