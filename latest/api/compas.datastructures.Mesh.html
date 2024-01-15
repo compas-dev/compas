@@ -1120,9 +1120,9 @@ document.write(`
 <h1>Mesh</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Mesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/b1e8303/src/compas/datastructures/mesh/mesh.py#L77"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HalfEdge</span></code></p>
-<p>Geometric implementation of a half edge data structure for polygon meshses.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Mesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/eed49fe/src/compas/datastructures/mesh/mesh.py#L82"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></p>
+<p>Data structure for representing open or closed surface meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -1147,6 +1147,26 @@ document.write(`
 <span class="go">True</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>General attributes of the data structure that are included in the data representation and serialization.</p>
+</dd>
+<dt><strong>default_vertex_attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>Dictionary containing default values for the attributes of vertices.
+It is recommended to add a default to this dictionary using <a class="reference internal" href="generated/compas.datastructures.Mesh.update_default_vertex_attributes.html" title="compas.datastructures.Mesh.update_default_vertex_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_vertex_attributes()</span></code></a>
+for every vertex attribute used in the data structure.</p>
+</dd>
+<dt><strong>default_edge_attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>Dictionary containing default values for the attributes of edges.
+It is recommended to add a default to this dictionary using <a class="reference internal" href="generated/compas.datastructures.Mesh.update_default_edge_attributes.html" title="compas.datastructures.Mesh.update_default_edge_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_edge_attributes()</span></code></a>
+for every edge attribute used in the data structure.</p>
+</dd>
+<dt><strong>default_face_attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>Dictionary contnaining default values for the attributes of faces.
+It is recommended to add a default to this dictionary using <a class="reference internal" href="generated/compas.datastructures.Mesh.update_default_face_attributes.html" title="compas.datastructures.Mesh.update_default_face_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_face_attributes()</span></code></a>
+for every face attribute used in the data structure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <section id="methods">
@@ -1162,7 +1182,7 @@ document.write(`
 <td><p>Construct a mesh object from a list of lines described by start and end point coordinates.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.Mesh.from_meshgrid.html" title="compas.datastructures.Mesh.from_meshgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_meshgrid</span></code></a></p></td>
-<td><p>Create a mesh from faces and vertices on a regular grid.</p></td>
+<td><p>Construct a mesh from faces and vertices on a regular grid.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.Mesh.from_obj.html" title="compas.datastructures.Mesh.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a></p></td>
 <td><p>Construct a mesh object from the data described in an OBJ file.</p></td>
@@ -1342,7 +1362,7 @@ document.write(`
 <td><p>Iterate over the vertices of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.datastructures.Mesh.vertices_on_boundaries.html" title="compas.datastructures.Mesh.vertices_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundaries</span></code></a></p></td>
-<td><p>Find the vertices on the boundaries of the mesh.</p></td>
+<td><p>Find the vertices on all boundaries of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.datastructures.Mesh.vertices_on_boundary.html" title="compas.datastructures.Mesh.vertices_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundary</span></code></a></p></td>
 <td><p>Find the vertices on the longest boundary.</p></td>
