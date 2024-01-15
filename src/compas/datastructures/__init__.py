@@ -52,6 +52,7 @@ from .mesh.subdivision import trimesh_subdivide_loop  # noqa: F401
 # =============================================================================
 
 from .graph.graph import Graph
+from .network.network import Network
 from .halfedge.halfedge import HalfEdge
 from .mesh.mesh import Mesh
 from .halfface.halfface import HalfFace
@@ -67,7 +68,7 @@ Network = Graph
 __all__ = [
     "Datastructure",
     "CellNetwork",
-    "Graph",
+    "Network",
     "HalfEdge",
     "Mesh",
     "HalfFace",
