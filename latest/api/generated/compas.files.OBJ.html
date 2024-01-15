@@ -451,7 +451,7 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas.datastructures.html">compas.datastructures</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Network.html">Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Graph.html">Graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Mesh.html">Mesh</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.CellNetwork.html">CellNetwork</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Tree.html">Tree</a></li>
@@ -843,7 +843,7 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas.scene.html">compas.scene</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.GeometryObject.html">GeometryObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.MeshObject.html">MeshObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.scene.NetworkObject.html">NetworkObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.GraphObject.html">GraphObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.NoSceneObjectContextError.html">NoSceneObjectContextError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.Scene.html">Scene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.SceneObject.html">SceneObject</a></li>
@@ -897,7 +897,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.FrameObject.html">FrameObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.MeshObject.html">MeshObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.NetworkObject.html">NetworkObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.GraphObject.html">GraphObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PointObject.html">PointObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PointcloudObject.html">PointcloudObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolygonObject.html">PolygonObject</a></li>
@@ -930,7 +930,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.GHSceneObject.html">GHSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.MeshObject.html">MeshObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.NetworkObject.html">NetworkObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.GraphObject.html">GraphObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.PointObject.html">PointObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.PolygonObject.html">PolygonObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.PolyhedronObject.html">PolyhedronObject</a></li>
@@ -1042,7 +1042,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.FrameObject.html">FrameObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.MeshObject.html">MeshObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.NetworkObject.html">NetworkObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.GraphObject.html">GraphObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.PlaneObject.html">PlaneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.PointObject.html">PointObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.PolygonObject.html">PolygonObject</a></li>
@@ -1120,7 +1120,7 @@ document.write(`
 <h1>OBJ</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.files.OBJ">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OBJ</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/020c29c/src/compas/files/obj.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.files.</span></span><span class="sig-name descname"><span class="pre">OBJ</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/b1e8303/src/compas/files/obj.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class for working with OBJ files.</p>
 <p>Currently, reading is only supported for polygonal geometry.
