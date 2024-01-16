@@ -746,11 +746,11 @@ class Box(Shape):
         return results
 
     def has_collision(self, other):
-        """Verify if this box collides with another box.
+        """Verify if box collides with another box.
 
         Parameters
         ----------
-        box : :class:`compas.geometry.Box`
+        other : :class:`compas.geometry.Box`
             The other box.
 
         Returns
