@@ -806,7 +806,7 @@ class Mesh(Datastructure):
         -----
         STL files only support triangle faces.
         It is the user's responsibility to convert all faces of a mesh to triangles.
-        For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.
+        For example, with :meth:`compas.datastructures.Mesh.quads_to_triangles`.
 
         """
         stl = STL(filepath, precision)
