@@ -59,8 +59,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="CellNetwork.has_halfface" href="compas.datastructures.CellNetwork.has_halfface.html" />
-    <link rel="prev" title="CellNetwork.halfface_vertices" href="compas.datastructures.CellNetwork.halfface_vertices.html" />
+    <link rel="next" title="CellNetwork.edge_direction" href="compas.datastructures.CellNetwork.edge_direction.html" />
+    <link rel="prev" title="CellNetwork.edge_faces" href="compas.datastructures.CellNetwork.edge_faces.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1126,12 +1126,14 @@ document.write(`
 <h1>CellNetwork.has_edge</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.CellNetwork.has_edge">
-<span class="sig-prename descclassname"><span class="pre">CellNetwork.</span></span><span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/72f737a/src/compas/datastructures/cell_network/halfface.py#L2416"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Verify that the volmesh contains a directed edge (u, v).</p>
+<span class="sig-prename descclassname"><span class="pre">CellNetwork.</span></span><span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/e246434/src/compas/datastructures/cell_network/cell_network.py#L2228"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Verify that the cell network contains a directed edge (u, v).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>edge</strong><span class="classifier">tuple[int, int]</span></dt><dd><p>The identifier of the edge.</p>
+</dd>
+<dt><strong>directed</strong><span class="classifier">bool, optional</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the direction of the edge should be taken into account.</p>
 </dd>
 </dl>
 </dd>

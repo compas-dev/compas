@@ -59,7 +59,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="CellNetwork.add_halfface" href="compas.datastructures.CellNetwork.add_halfface.html" />
+    <link rel="next" title="CellNetwork.add_face" href="compas.datastructures.CellNetwork.add_face.html" />
     <link rel="prev" title="CellNetwork.add_cell" href="compas.datastructures.CellNetwork.add_cell.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1126,14 +1126,14 @@ document.write(`
 <h1>CellNetwork.add_edge</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.CellNetwork.add_edge">
-<span class="sig-prename descclassname"><span class="pre">CellNetwork.</span></span><span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/72f737a/src/compas/datastructures/cell_network/cell_network.py#L188"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">CellNetwork.</span></span><span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/e246434/src/compas/datastructures/cell_network/cell_network.py#L514"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add an edge and specify its attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>u</strong><span class="classifier">hashable</span></dt><dd><p>The identifier of the first node of the edge.</p>
+<dt><strong>u</strong><span class="classifier">int</span></dt><dd><p>The identifier of the first node of the edge.</p>
 </dd>
-<dt><strong>v</strong><span class="classifier">hashable</span></dt><dd><p>The identifier of the second node of the edge.</p>
+<dt><strong>v</strong><span class="classifier">int</span></dt><dd><p>The identifier of the second node of the edge.</p>
 </dd>
 <dt><strong>attr_dict</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>A dictionary of edge attributes.</p>
 </dd>
@@ -1143,17 +1143,20 @@ document.write(`
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>tuple[hashable, hashable]</dt><dd><p>The identifier of the edge.</p>
+<dt>tuple[int, int]</dt><dd><p>The identifier of the edge.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt>ValueError</dt><dd><p>If either of the nodes of the edge does not exist.</p>
+<dt>ValueError</dt><dd><p>If either of the vertices of the edge does not exist.</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Edges can be added independently from faces or cells.
+However, whenever a face is added all edges of that face are added as well.</p>
 </dd></dl>
 
 </section>
