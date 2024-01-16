@@ -744,3 +744,52 @@ class Box(Shape):
             results[index] = True
 
         return results
+
+    def has_collision(self, other):
+        """Verify if this box collides with another box.
+
+        Parameters
+        ----------
+        box : :class:`compas.geometry.Box`
+            The other box.
+
+        Returns
+        -------
+        bool
+            True if the two boxes collide.
+            False otherwise.
+
+        """
+        # get separation plane
+        def GetSeparatingPlane(RPos, axis, self, other):
+            return abs(RPos.dot(axis)) > (
+                abs((self.frame.xaxis * self.width * 0.5).dot(axis))
+                + abs((self.frame.yaxis * self.depth * 0.5).dot(axis))
+                + abs((self.frame.zaxis * self.height * 0.5).dot(axis))
+                + abs((other.frame.xaxis * other.width * 0.5).dot(axis))
+                + abs((other.frame.yaxis * other.depth * 0.5).dot(axis))
+                + abs((other.frame.zaxis * other.height * 0.5).dot(axis))
+            )
+
+        # compute the obb collision
+        RPos = other.frame.point - self.frame.point
+
+        result = not (
+            GetSeparatingPlane(RPos, self.frame.xaxis, self, other)
+            or GetSeparatingPlane(RPos, self.frame.yaxis, self, other)
+            or GetSeparatingPlane(RPos, self.frame.zaxis, self, other)
+            or GetSeparatingPlane(RPos, other.frame.xaxis, self, other)
+            or GetSeparatingPlane(RPos, other.frame.yaxis, self, other)
+            or GetSeparatingPlane(RPos, other.frame.zaxis, self, other)
+            or GetSeparatingPlane(RPos, self.frame.xaxis.cross(other.frame.xaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.xaxis.cross(other.frame.yaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.xaxis.cross(other.frame.zaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.yaxis.cross(other.frame.xaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.yaxis.cross(other.frame.yaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.yaxis.cross(other.frame.zaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.zaxis.cross(other.frame.xaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.zaxis.cross(other.frame.yaxis), self, other)
+            or GetSeparatingPlane(RPos, self.frame.zaxis.cross(other.frame.zaxis), self, other)
+        )
+
+        return result
