@@ -2316,7 +2316,7 @@ class CellNetwork(Datastructure):
     #     u, v = edge
     #     return None in self._plane[u][v].values()
 
-    def isolated_edges(self):
+    def edges_wo_face(self):
         """Find the edges that are not part of a face.
 
         Returns
@@ -2965,7 +2965,7 @@ class CellNetwork(Datastructure):
                 cells.append(cell)
         return cells
 
-    def isolated_faces(self):
+    def faces_wo_cell(self):
         """Find the faces that are not part of a cell.
 
         Returns
