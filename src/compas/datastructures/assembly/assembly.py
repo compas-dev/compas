@@ -29,7 +29,7 @@ class Assembly(Datastructure):
     """
 
     # rename this to JSONSCHEMA
-    # validation should happen after the application of __before_json__
+    # validation should happen after the application of __before_jsondump__
     JSONSCHEMA = {
         "type": "object",
         "properties": {
@@ -57,8 +57,8 @@ class Assembly(Datastructure):
             "graph": self.graph.__data__,
         }
 
-    def __before_json__(self, data):
-        data["graph"] = self.graph.__before_json__(data["graph"])
+    def __before_jsondump__(self, data):
+        data["graph"] = self.graph.__before_jsondump__(data["graph"])
         return data
 
     @classmethod

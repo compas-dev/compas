@@ -195,7 +195,7 @@ class Mesh(Datastructure):
             "max_face": self._max_face,
         }
 
-    def __before_json__(self, data):
+    def __before_jsondump__(self, data):
         data["vertices"] = {str(vertex): attr for vertex, attr in data["vertices"].items()}
         data["faces"] = {str(face): vertices for face, vertices in data["faces"].items()}
         data["facedata"] = {str(face): attr for face, attr in data["facedata"].items()}

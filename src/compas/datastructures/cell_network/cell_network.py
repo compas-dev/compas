@@ -163,10 +163,10 @@ class CellNetwork(Datastructure):
     @property
     def __data__(self):
         return {
-            "dva": self.default_vertex_attributes,
-            "dea": self.default_edge_attributes,
-            "dfa": self.default_face_attributes,
-            "dca": self.default_cell_attributes,
+            "default_vertex_attributes": self.default_vertex_attributes,
+            "default_edge_attributes": self.default_edge_attributes,
+            "default_face_attributes": self.default_face_attributes,
+            "default_cell_attributes": self.default_cell_attributes,
             "vertices": self._vertex,
             "edges": self._edge,
             "faces": self._face,
@@ -178,7 +178,7 @@ class CellNetwork(Datastructure):
             "max_cell": self._max_cell,
         }
 
-    def __before_json__(self, data):
+    def __before_jsondump__(self, data):
         cell = {}
         for c in data["cells"]:
             faces = set()

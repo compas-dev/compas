@@ -87,7 +87,7 @@ class Data(object):
         """
         state = {
             "dtype": self.__dtype__,
-            "data": self.__before_json__(self.__data__),
+            "data": self.__before_jsondump__(self.__data__),
         }
         if minimal:
             return state
@@ -96,7 +96,7 @@ class Data(object):
         state["guid"] = str(self.guid)
         return state
 
-    def __before_json__(self, data):
+    def __before_jsondump__(self, data):
         """Transform the data to make it suitable for serialisation.
 
         Parameters
@@ -139,7 +139,7 @@ class Data(object):
 
     @classmethod
     def __before_init__(cls, data):
-        """Transform the data to match the schema of the object.
+        """Transform the data after loading from JSON to match the input of the object constructor.
 
         Parameters
         ----------

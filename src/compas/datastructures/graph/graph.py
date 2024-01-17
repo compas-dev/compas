@@ -122,7 +122,7 @@ class Graph(Datastructure):
             "max_node": self._max_node,
         }
 
-    def __before_json__(self, data):
+    def __before_jsondump__(self, data):
         nodes = data["nodes"] or {}
         edges = data["edges"] or {}
         data["nodes"] = {}
