@@ -224,7 +224,7 @@ class VolMesh(Datastructure):
             default_vertex_attributes=dva,
             default_edge_attributes=dea,
             default_face_attributes=dfa,
-            default_cell_attributes=dca
+            default_cell_attributes=dca,
         )
 
         vertex = data["vertex"] or {}
