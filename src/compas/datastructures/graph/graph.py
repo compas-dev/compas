@@ -76,8 +76,8 @@ class Graph(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "dna": {"type": "object"},
-            "dea": {"type": "object"},
+            "default_node_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
             "node": {
                 "type": "object",
                 "additionalProperties": {"type": "object"},
@@ -92,8 +92,8 @@ class Graph(Datastructure):
             "max_node": {"type": "integer", "minimum": -1},
         },
         "required": [
-            "dna",
-            "dea",
+            "default_node_attributes",
+            "default_edge_attributes",
             "node",
             "edge",
             "max_node",
@@ -126,6 +126,12 @@ class Graph(Datastructure):
             self.default_node_attributes.update(default_node_attributes)
         if default_edge_attributes:
             self.default_edge_attributes.update(default_edge_attributes)
+        if nodes:
+            for attr in nodes:
+                self.add_node(**attr)
+        if edges:
+            for (u, v), attr in edges:
+                self.add_edge(u, v, **attr)
 
     def __str__(self):
         tpl = "<Graph with {} nodes, {} edges>"
@@ -136,47 +142,47 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     @property
-    def data(self):
-        data = {
-            "dna": self.default_node_attributes,
-            "dea": self.default_edge_attributes,
+    def __data__(self):
+        return {
+            "default_node_attributes": self.default_node_attributes,
+            "default_edge_attributes": self.default_edge_attributes,
             "node": {},
             "edge": {},
             "max_node": self._max_node,
         }
+
+    def __preserialisation__(self, data):
         for key in self.node:
             data["node"][repr(key)] = self.node[key]
+
         for u in self.edge:
             ru = repr(u)
             data["edge"][ru] = {}
             for v in self.edge[u]:
                 rv = repr(v)
                 data["edge"][ru][rv] = self.edge[u][v]
+
         return data
 
     @classmethod
-    def from_data(cls, data):
-        dna = data.get("dna") or {}
-        dea = data.get("dea") or {}
+    def __preconstruction__(cls, data):
+        _node = data["node"] or {}
+        _edge = data["edge"] or {}
+        data["node"] = {}
+        data["edge"] = {}
 
-        node = data["node"] or {}
-        edge = data["edge"] or {}
-
-        graph = cls(default_node_attributes=dna, default_edge_attributes=dea)
-
-        for node, attr in iter(node.items()):
+        for node, attr in iter(_node.items()):
             node = literal_eval(node)
-            graph.add_node(key=node, attr_dict=attr)
+            data["node"][node] = attr
 
-        for u, nbrs in iter(edge.items()):
+        for u, nbrs in iter(_edge.items()):
             u = literal_eval(u)
+            data["edge"].setdefault(u, {})
             for v, attr in iter(nbrs.items()):
                 v = literal_eval(v)
-                graph.add_edge(u, v, attr_dict=attr)
+                data["edge"][u][v] = attr
 
-        graph._max_node = data.get("max_node", graph._max_node)
-
-        return graph
+        return data
 
     # --------------------------------------------------------------------------
     # Constructors

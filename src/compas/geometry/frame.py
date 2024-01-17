@@ -135,11 +135,11 @@ class Frame(Geometry):
     # ==========================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         return {
-            "point": self.point.data,
-            "xaxis": self.xaxis.data,
-            "yaxis": self.yaxis.data,
+            "point": self.point.__data__,
+            "xaxis": self.xaxis.__data__,
+            "yaxis": self.yaxis.__data__,
         }
 
     # ==========================================================================

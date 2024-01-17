@@ -219,12 +219,12 @@ class Point(Geometry):
     # ==========================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         return list(self)
 
     @classmethod
-    def from_data(cls, data):
-        return cls(*data)
+    def __preconstruction__(cls, data):
+        return {"x": data[0], "y": data[1], "z": data[2]}
 
     # ==========================================================================
     # Properties
