@@ -561,11 +561,11 @@ class CellNetwork(Datastructure):
         # but I leave this to you as you have a better overview
 
         if v not in self._edge[u]:
-             self._edge[v][u] = {}
+            self._edge[v][u] = {}
         if v not in self._plane[u]:
-             self._plane[u][v] = {}
+            self._plane[u][v] = {}
         if u not in self._plane[v]:
-             self._plane[v][u] = {}
+            self._plane[v][u] = {}
 
         return u, v
 
@@ -2046,7 +2046,7 @@ class CellNetwork(Datastructure):
         attr = self._edge.get(u, {}).get(v, {})
 
         if value is not None:
-            attr.update({name : value})
+            attr.update({name: value})
             self._edge[u][v] = attr
             return
         if name in attr:
@@ -2978,7 +2978,7 @@ class CellNetwork(Datastructure):
         return list(faces)
 
     # @Romana: this logic only makes sense for a face belonging to a cell
-    # # yep, if the face is not belonging to a cell, it returns False, which is correct
+    # # yep, if the face is not belonging to a cell, it returns False, which is correct
     def is_face_on_boundary(self, face):
         """Verify that a face is on the boundary.
 
