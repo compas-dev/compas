@@ -36,10 +36,10 @@ class Pointcloud(Geometry):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "items": Point.DATASCHEMA, "minItems": 1},
+            "points": {"type": "array", "items": Point.JSONSCHEMA, "minItems": 1},
         },
         "required": ["points"],
     }

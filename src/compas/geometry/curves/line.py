@@ -65,14 +65,21 @@ class Line(Curve):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "start": Point.DATASCHEMA,
-            "end": Point.DATASCHEMA,
+            "start": Point.JSONSCHEMA,
+            "end": Point.JSONSCHEMA,
         },
         "required": ["start", "end"],
     }
+
+    @property
+    def __data__(self):
+        return {
+            "start": self.start.__data__,
+            "end": self.end.__data__,
+        }
 
     # overwriting the __new__ method is necessary
     # to avoid triggering the plugin mechanism of the base curve class
@@ -122,14 +129,6 @@ class Line(Curve):
             return self.start == other[0] and self.end == other[1]
         except Exception:
             return False
-
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"start": self.start.data, "end": self.end.data}
 
     # ==========================================================================
     # properties

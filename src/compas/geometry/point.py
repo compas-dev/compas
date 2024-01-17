@@ -100,12 +100,20 @@ class Point(Geometry):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "array",
         "minItems": 3,
         "maxItems": 3,
         "items": {"type": "number"},
     }
+
+    @property
+    def __data__(self):
+        return list(self)
+
+    @classmethod
+    def __before_init__(cls, data):
+        return {"x": data[0], "y": data[1], "z": data[2]}
 
     def __init__(self, x, y, z=0.0, **kwargs):
         super(Point, self).__init__(**kwargs)
@@ -213,18 +221,6 @@ class Point(Geometry):
         self.y **= n
         self.z **= n
         return self
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def __data__(self):
-        return list(self)
-
-    @classmethod
-    def __preconstruction__(cls, data):
-        return {"x": data[0], "y": data[1], "z": data[2]}
 
     # ==========================================================================
     # Properties

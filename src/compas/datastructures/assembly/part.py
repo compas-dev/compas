@@ -152,12 +152,12 @@ class Part(Datastructure):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "attributes": {"type": "object"},
             "key": {"type": ["integer", "string"]},
-            "frame": Frame.DATASCHEMA,
+            "frame": Frame.JSONSCHEMA,
             "features": {"type": "array"},
         },
         "required": ["key", "frame"],

@@ -77,7 +77,7 @@ class Transformation(Data):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "matrix": {

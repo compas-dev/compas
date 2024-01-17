@@ -23,12 +23,12 @@ class ConicalSurface(Surface):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "radius": {"type": "number", "minimum": 0},
             "height": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
+            "frame": Frame.JSONSCHEMA,
         },
         "required": ["radius", "height", "frame"],
     }

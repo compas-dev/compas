@@ -25,11 +25,11 @@ class CylindricalSurface(Surface):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "radius": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
+            "frame": Frame.JSONSCHEMA,
         },
         "required": ["radius", "frame"],
     }

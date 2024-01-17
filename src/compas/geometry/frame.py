@@ -71,15 +71,23 @@ class Frame(Geometry):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "point": Point.DATASCHEMA,
-            "xaxis": Vector.DATASCHEMA,
-            "yaxis": Vector.DATASCHEMA,
+            "point": Point.JSONSCHEMA,
+            "xaxis": Vector.JSONSCHEMA,
+            "yaxis": Vector.JSONSCHEMA,
         },
         "required": ["point", "xaxis", "yaxis"],
     }
+
+    @property
+    def __data__(self):
+        return {
+            "point": self.point.__data__,
+            "xaxis": self.xaxis.__data__,
+            "yaxis": self.yaxis.__data__,
+        }
 
     def __init__(self, point, xaxis=None, yaxis=None, **kwargs):
         super(Frame, self).__init__(**kwargs)
@@ -129,18 +137,6 @@ class Frame(Geometry):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return TOL.is_allclose(self, other, atol=tol)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def __data__(self):
-        return {
-            "point": self.point.__data__,
-            "xaxis": self.xaxis.__data__,
-            "yaxis": self.yaxis.__data__,
-        }
 
     # ==========================================================================
     # Properties

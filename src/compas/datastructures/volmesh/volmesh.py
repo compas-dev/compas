@@ -75,7 +75,7 @@ class VolMesh(Datastructure):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "dva": {"type": "object"},

@@ -169,7 +169,7 @@ class Polyhedron(Geometry):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "vertices": {

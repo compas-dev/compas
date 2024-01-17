@@ -37,7 +37,7 @@ class TreeNode(Data):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "$recursiveAnchor": True,
         "properties": {
@@ -239,10 +239,10 @@ class Tree(Datastructure):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "root": TreeNode.DATASCHEMA,
+            "root": TreeNode.JSONSCHEMA,
         },
         "required": ["root"],
     }

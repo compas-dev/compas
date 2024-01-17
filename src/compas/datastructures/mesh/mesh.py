@@ -120,18 +120,31 @@ class Mesh(Datastructure):
 
     """
 
-    DATASCHEMA = {
+    collapse_edge = mesh_collapse_edge
+    merge_faces = mesh_merge_faces
+    split_edge = mesh_split_edge
+    split_face = mesh_split_face
+    split_strip = mesh_split_strip
+    subdivided = mesh_subdivide
+    dual = mesh_dual
+    slice = mesh_slice_plane
+    unweld_vertices = mesh_unweld_vertices
+    unweld_edges = mesh_unweld_edges
+    smooth_centroid = mesh_smooth_centroid
+    smooth_area = mesh_smooth_area
+
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "dva": {"type": "object"},
-            "dea": {"type": "object"},
-            "dfa": {"type": "object"},
-            "vertex": {
+            "default_vertex_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
+            "default_face_attributes": {"type": "object"},
+            "vertices": {
                 "type": "object",
                 "patternProperties": {"^[0-9]+$": {"type": "object"}},
                 "additionalProperties": False,
             },
-            "face": {
+            "faces": {
                 "type": "object",
                 "patternProperties": {
                     "^[0-9]+$": {
@@ -156,11 +169,11 @@ class Mesh(Datastructure):
             "max_face": {"type": "integer", "minimum": -1},
         },
         "required": [
-            "dva",
-            "dea",
-            "dfa",
-            "vertex",
-            "face",
+            "default_vertex_attributes",
+            "default_edge_attributes",
+            "default_face_attributes",
+            "vertices",
+            "faces",
             "facedata",
             "edgedata",
             "max_vertex",
@@ -168,36 +181,59 @@ class Mesh(Datastructure):
         ],
     }
 
-    collapse_edge = mesh_collapse_edge
-    merge_faces = mesh_merge_faces
-    split_edge = mesh_split_edge
-    split_face = mesh_split_face
-    split_strip = mesh_split_strip
-    subdivided = mesh_subdivide
-    dual = mesh_dual
-    slice = mesh_slice_plane
-    # split
-    # trim
-    unweld_vertices = mesh_unweld_vertices
-    unweld_edges = mesh_unweld_edges
+    @property
+    def __data__(self):
+        return {
+            "default_vertex_attributes": self.default_vertex_attributes,
+            "default_edge_attributes": self.default_edge_attributes,
+            "default_face_attributes": self.default_face_attributes,
+            "vertices": {str(vertex): attr for vertex, attr in self.vertex.items()},
+            "faces": {str(face): vertices for face, vertices in self.face.items()},
+            "facedata": {str(face): attr for face, attr in self.facedata.items()},
+            "edgedata": self.edgedata,
+            "max_vertex": self._max_vertex,
+            "max_face": self._max_face,
+        }
 
-    smooth_centroid = mesh_smooth_centroid
-    smooth_area = mesh_smooth_area
+    def __before_json__(self, data):
+        data["vertices"] = {str(vertex): attr for vertex, attr in data["vertices"].items()}
+        data["faces"] = {str(face): vertices for face, vertices in data["faces"].items()}
+        data["facedata"] = {str(face): attr for face, attr in data["facedata"].items()}
+        return data
+
+    @classmethod
+    def __before_init__(cls, data):
+        data["vertices"] = {int(key): attr for key, attr in data["vertices"].items()}
+        data["faces"] = {int(key): vertices for key, vertices in data["faces"].items()}
+        data["facedata"] = {int(key): attr for key, attr in data["facedata"].items()}
+        return data
 
     def __init__(
-        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, name=None
+        self,
+        vertices=None,
+        faces=None,
+        edgedata=None,
+        facedata=None,
+        default_vertex_attributes=None,
+        default_edge_attributes=None,
+        default_face_attributes=None,
+        max_vertex=-1,
+        max_face=-1,
+        name=None,
     ):
         super(Mesh, self).__init__(name=name)
-        self._max_vertex = -1
-        self._max_face = -1
+
+        self._max_vertex = max_vertex
+        self._max_face = max_face
         self.vertex = {}
         self.halfedge = {}
         self.face = {}
         self.facedata = {}
-        self.edgedata = {}
+        self.edgedata = edgedata or {}
         self.default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
+
         if default_vertex_attributes:
             self.default_vertex_attributes.update(default_vertex_attributes)
         if default_edge_attributes:
@@ -205,55 +241,21 @@ class Mesh(Datastructure):
         if default_face_attributes:
             self.default_face_attributes.update(default_face_attributes)
 
+        if vertices:
+            for vertex in vertices:
+                attr = vertices[vertex] or {}
+                self.add_vertex(key=vertex, attr_dict=attr)
+
+        if faces:
+            facedata = facedata or {}
+            for face in faces:
+                vertices = faces[face]
+                attr = facedata.get(face) or {}
+                self.add_face(vertices, fkey=face, attr_dict=attr)
+
     def __str__(self):
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        return {
-            "dva": self.default_vertex_attributes,
-            "dea": self.default_edge_attributes,
-            "dfa": self.default_face_attributes,
-            "vertex": {str(vertex): attr for vertex, attr in self.vertex.items()},
-            "face": {str(face): vertices for face, vertices in self.face.items()},
-            "facedata": {str(face): attr for face, attr in self.facedata.items()},
-            "edgedata": self.edgedata,
-            "max_vertex": self._max_vertex,
-            "max_face": self._max_face,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        dva = data.get("dva") or {}
-        dfa = data.get("dfa") or {}
-        dea = data.get("dea") or {}
-
-        halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea)
-
-        vertex = data["vertex"] or {}
-        face = data["face"] or {}
-
-        facedata = data.get("facedata") or {}
-        edgedata = data.get("edgedata") or {}
-
-        for key, attr in iter(vertex.items()):
-            halfedge.add_vertex(key=key, attr_dict=attr)
-
-        for fkey, vertices in iter(face.items()):
-            attr = facedata.get(fkey) or {}
-            halfedge.add_face(vertices, fkey=fkey, attr_dict=attr)
-
-        halfedge.edgedata = edgedata
-
-        halfedge._max_vertex = data.get("max_vertex", halfedge._max_vertex)
-        halfedge._max_face = data.get("max_face", halfedge._max_face)
-
-        return halfedge
 
     # --------------------------------------------------------------------------
     # Properties

@@ -65,10 +65,10 @@ class NurbsSurface(Surface):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "items": {"type": "array", "items": Point.DATASCHEMA}},
+            "points": {"type": "array", "items": {"type": "array", "items": Point.JSONSCHEMA}},
             "weights": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
             "knots_u": {"type": "array", "items": {"type": "number"}},
             "knots_v": {"type": "array", "items": {"type": "number"}},

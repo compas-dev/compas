@@ -85,14 +85,25 @@ class Circle(Conic):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "frame": Frame.DATASCHEMA,
+            "frame": Frame.JSONSCHEMA,
             "radius": {"type": "number", "minimum": 0},
         },
         "required": ["frame", "radius"],
     }
+
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __before_init__(cls, data):
+        data["frame"] = Frame(**data["frame"])
 
     def __init__(self, radius, frame=None, **kwargs):
         super(Circle, self).__init__(frame=frame, **kwargs)
@@ -113,18 +124,6 @@ class Circle(Conic):
         except Exception:
             return False
         return self.frame == other_frame and self.radius == other_radius
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"radius": self.radius, "frame": self.frame.data}
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(radius=data["radius"], frame=Frame.from_data(data["frame"]))
 
     # ==========================================================================
     # Properties

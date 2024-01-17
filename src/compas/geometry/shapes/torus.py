@@ -63,12 +63,12 @@ class Torus(Shape):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "radius_axis": {"type": "number", "minimum": 0},
             "radius_pipe": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
+            "frame": Frame.JSONSCHEMA,
         },
         "required": ["radius_axis", "radius_pipe", "frame"],
     }

@@ -160,13 +160,19 @@ class Bezier(Curve):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA},
+            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
         },
         "required": ["points"],
     }
+
+    @property
+    def __data__(self):
+        return {
+            "points": [point.__data__ for point in self.points],
+        }
 
     # overwriting the __new__ method is necessary
     # to avoid triggering the plugin mechanism of the base curve class
@@ -182,14 +188,6 @@ class Bezier(Curve):
 
     def __repr__(self):
         return "{0}(points={1!r})".format(type(self).__name__, self.points)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties

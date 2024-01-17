@@ -80,9 +80,9 @@ class Polygon(Geometry):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
-        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA}},
+        "properties": {"points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA}},
         "required": ["points"],
     }
 

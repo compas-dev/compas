@@ -101,13 +101,13 @@ class Box(Shape):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "xsize": {"type": "number", "minimum": 0},
             "ysize": {"type": "number", "minimum": 0},
             "zsize": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
+            "frame": Frame.JSONSCHEMA,
         },
         "additionalProperties": False,
         "minProperties": 4,

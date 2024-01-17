@@ -106,12 +106,12 @@ class Ellipse(Conic):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "major": {"type": "number", "minimum": 0},
             "minor": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
+            "frame": Frame.JSONSCHEMA,
         },
         "required": ["frame", "major", "minor"],
     }

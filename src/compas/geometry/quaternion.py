@@ -110,7 +110,7 @@ class Quaternion(Geometry):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "w": {"type": "number"},

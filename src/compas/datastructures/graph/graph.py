@@ -73,16 +73,28 @@ class Graph(Datastructure):
 
     """
 
-    DATASCHEMA = {
+    split_edge = graph_split_edge
+    join_edges = graph_join_edges
+    smooth = graph_smooth_centroid
+    is_crossed = graph_is_crossed
+    is_planar = graph_is_planar
+    is_planar_embedding = graph_is_planar_embedding
+    is_xy = graph_is_xy
+    count_crossings = graph_count_crossings
+    find_crossings = graph_find_crossings
+    embed_in_plane = graph_embed_in_plane
+    find_cycles = graph_find_cycles
+
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "default_node_attributes": {"type": "object"},
             "default_edge_attributes": {"type": "object"},
-            "node": {
+            "nodes": {
                 "type": "object",
                 "additionalProperties": {"type": "object"},
             },
-            "edge": {
+            "edges": {
                 "type": "object",
                 "additionalProperties": {
                     "type": "object",
@@ -94,95 +106,89 @@ class Graph(Datastructure):
         "required": [
             "default_node_attributes",
             "default_edge_attributes",
-            "node",
-            "edge",
+            "nodes",
+            "edges",
             "max_node",
         ],
     }
-
-    split_edge = graph_split_edge
-    join_edges = graph_join_edges
-    smooth = graph_smooth_centroid
-
-    is_crossed = graph_is_crossed
-    is_planar = graph_is_planar
-    is_planar_embedding = graph_is_planar_embedding
-    is_xy = graph_is_xy
-    count_crossings = graph_count_crossings
-    find_crossings = graph_find_crossings
-    embed_in_plane = graph_embed_in_plane
-
-    find_cycles = graph_find_cycles
-
-    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None):
-        super(Graph, self).__init__(name=None)
-        self._max_node = -1
-        self.node = {}
-        self.edge = {}
-        self.adjacency = {}
-        self.default_node_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
-        self.default_edge_attributes = {}
-        if default_node_attributes:
-            self.default_node_attributes.update(default_node_attributes)
-        if default_edge_attributes:
-            self.default_edge_attributes.update(default_edge_attributes)
-        if nodes:
-            for attr in nodes:
-                self.add_node(**attr)
-        if edges:
-            for (u, v), attr in edges:
-                self.add_edge(u, v, **attr)
-
-    def __str__(self):
-        tpl = "<Graph with {} nodes, {} edges>"
-        return tpl.format(self.number_of_nodes(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
 
     @property
     def __data__(self):
         return {
             "default_node_attributes": self.default_node_attributes,
             "default_edge_attributes": self.default_edge_attributes,
-            "node": {},
-            "edge": {},
+            "nodes": self.node,
+            "edges": self.edge,
             "max_node": self._max_node,
         }
 
-    def __preserialisation__(self, data):
-        for key in self.node:
-            data["node"][repr(key)] = self.node[key]
-
-        for u in self.edge:
+    def __before_json__(self, data):
+        nodes = data["nodes"] or {}
+        edges = data["edges"] or {}
+        data["nodes"] = {}
+        data["edges"] = {}
+        for key in nodes:
+            data["nodes"][repr(key)] = nodes[key]
+        for u in edges:
             ru = repr(u)
-            data["edge"][ru] = {}
-            for v in self.edge[u]:
+            data["edges"][ru] = {}
+            for v in edges[u]:
                 rv = repr(v)
-                data["edge"][ru][rv] = self.edge[u][v]
-
+                data["edges"][ru][rv] = edges[u][v]
         return data
 
     @classmethod
-    def __preconstruction__(cls, data):
-        _node = data["node"] or {}
-        _edge = data["edge"] or {}
-        data["node"] = {}
-        data["edge"] = {}
-
-        for node, attr in iter(_node.items()):
+    def __before_init__(cls, data):
+        nodes = data["nodes"] or {}
+        edges = data["edges"] or {}
+        data["nodes"] = {}
+        data["edges"] = {}
+        for node, attr in iter(nodes.items()):
             node = literal_eval(node)
-            data["node"][node] = attr
-
-        for u, nbrs in iter(_edge.items()):
+            data["nodes"][node] = attr
+        for u, nbrs in iter(edges.items()):
             u = literal_eval(u)
-            data["edge"].setdefault(u, {})
+            data["edges"].setdefault(u, {})
             for v, attr in iter(nbrs.items()):
                 v = literal_eval(v)
-                data["edge"][u][v] = attr
-
+                data["edges"][u][v] = attr
         return data
+
+    def __init__(
+        self,
+        nodes=None,
+        edges=None,
+        default_node_attributes=None,
+        default_edge_attributes=None,
+        max_node=-1,
+        name=None,
+    ):
+        super(Graph, self).__init__(name=name)
+        self._max_node = max_node
+        self.node = {}
+        self.edge = {}
+        self.adjacency = {}
+        self.default_node_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
+        self.default_edge_attributes = {}
+
+        if default_node_attributes:
+            self.default_node_attributes.update(default_node_attributes)
+        if default_edge_attributes:
+            self.default_edge_attributes.update(default_edge_attributes)
+
+        if nodes:
+            for node in nodes:
+                attr = nodes[node]
+                self.add_node(node, attr_dict=attr)
+        if edges:
+            for u in edges:
+                for v in edges[u]:
+                    attr = edges[u][v]
+                    self.add_edge(u, v, attr_dict=attr)
+
+    def __str__(self):
+        tpl = "<Graph with {} nodes, {} edges>"
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     # --------------------------------------------------------------------------
     # Constructors

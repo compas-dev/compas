@@ -73,10 +73,10 @@ class NurbsCurve(Curve):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA},
+            "points": {"type": "array", "minItems": 2, "items": Point.JSONSCHEMA},
             "weights": {"type": "array", "items": {"type": "number"}},
             "knots": {"type": "array", "items": {"type": "number"}},
             "multiplicities": {"type": "array", "items": {"type": "integer"}},

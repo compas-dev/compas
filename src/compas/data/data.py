@@ -64,7 +64,7 @@ class Data(object):
 
     """
 
-    DATASCHEMA = {}
+    JSONSCHEMA = {}
 
     def __init__(self, name=None):
         self._guid = None
@@ -87,7 +87,7 @@ class Data(object):
         """
         state = {
             "dtype": self.__dtype__,
-            "data": self.__preserialisation__(self.__data__),
+            "data": self.__before_json__(self.__data__),
         }
         if minimal:
             return state
@@ -96,7 +96,7 @@ class Data(object):
         state["guid"] = str(self.guid)
         return state
 
-    def __preserialisation__(self, data):
+    def __before_json__(self, data):
         """Transform the data to make it suitable for serialisation.
 
         Parameters
@@ -129,8 +129,7 @@ class Data(object):
         object
 
         """
-        data = cls.__preconstruction__(data)
-        data["name"] = name
+        data = cls.__before_init__(data)
         obj = cls(**data)
         if guid is not None:
             obj._guid = UUID(guid)
@@ -139,7 +138,7 @@ class Data(object):
         return obj
 
     @classmethod
-    def __preconstruction__(cls, data):
+    def __before_init__(cls, data):
         """Transform the data to match the schema of the object.
 
         Parameters
@@ -215,34 +214,6 @@ class Data(object):
     @name.setter
     def name(self, name):
         self._name = name
-
-    # @classmethod
-    # def from_data(cls, data):  # type: (dict) -> Data
-    #     """Construct an object of this type from the provided data.
-
-    #     Parameters
-    #     ----------
-    #     data : dict
-    #         The data dictionary.
-
-    #     Returns
-    #     -------
-    #     :class:`compas.data.Data`
-    #         An instance of this object type if the data contained in the dict has the correct schema.
-
-    #     """
-    #     return cls(**data)
-
-    # def to_data(self):
-    #     """Convert an object to its native data representation.
-
-    #     Returns
-    #     -------
-    #     dict
-    #         The data representation of the object as described by the schema.
-
-    #     """
-    #     return self.data
 
     @classmethod
     def from_json(cls, filepath):  # type: (...) -> Data
@@ -342,7 +313,7 @@ class Data(object):
         """
         if not cls:
             cls = type(self)
-        obj = cls(**cls.__preconstruction__(deepcopy(self.__data__)))
+        obj = cls(**cls.__before_init__(deepcopy(self.__data__)))
         obj.name = self.name
         return obj  # type: ignore
 
@@ -396,6 +367,6 @@ class Data(object):
         """
         from jsonschema import Draft202012Validator
 
-        validator = Draft202012Validator(cls.DATASCHEMA)  # type: ignore
+        validator = Draft202012Validator(cls.JSONSCHEMA)  # type: ignore
         validator.validate(data)
         return data

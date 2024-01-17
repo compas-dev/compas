@@ -20,7 +20,7 @@ def dataclass_dataschema(cls):  # type: (...) -> dict
         The JSON schema.
 
     """
-    return cls.DATASCHEMA
+    return cls.JSONSCHEMA
 
 
 def dataclass_typeschema(cls):  # type: (...) -> dict

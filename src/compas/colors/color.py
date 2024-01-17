@@ -141,7 +141,7 @@ class Color(Data):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
             "red": {"type": "number", "minimum": 0.0, "maximum": 1.0},
@@ -152,8 +152,12 @@ class Color(Data):
         "required": ["red", "green", "blue", "alpha"],
     }
 
-    def __init__(self, red, green, blue, alpha=1.0, **kwargs):
-        super(Color, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
+
+    def __init__(self, red, green, blue, alpha=1.0, name=None):
+        super(Color, self).__init__(name=name)
         self._r = 1.0
         self._g = 1.0
         self._b = 1.0
@@ -183,14 +187,6 @@ class Color(Data):
 
     def __eq__(self, other):
         return all(a == b for a, b in zip(self, other))
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
     # --------------------------------------------------------------------------
     # Properties

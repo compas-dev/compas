@@ -44,14 +44,21 @@ class Plane(Geometry):
 
     """
 
-    DATASCHEMA = {
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "point": Point.DATASCHEMA,
-            "normal": Vector.DATASCHEMA,
+            "point": Point.JSONSCHEMA,
+            "normal": Vector.JSONSCHEMA,
         },
         "required": ["point", "normal"],
     }
+
+    @property
+    def __data__(self):
+        return {
+            "point": self.point.__data__,
+            "normal": self.normal.__data__,
+        }
 
     def __init__(self, point, normal, **kwargs):
         super(Plane, self).__init__(**kwargs)
@@ -91,17 +98,6 @@ class Plane(Geometry):
 
     def __eq__(self, other):
         return self.point == other[0] and self.normal == other[1]
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "point": self.point.data,
-            "normal": self.normal.data,
-        }
 
     # ==========================================================================
     # Properties

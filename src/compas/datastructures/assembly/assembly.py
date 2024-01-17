@@ -28,18 +28,20 @@ class Assembly(Datastructure):
 
     """
 
-    DATASCHEMA = {
+    # rename this to JSONSCHEMA
+    # validation should happen after the application of __before_json__
+    JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "graph": Graph.DATASCHEMA,
+            "graph": Graph.JSONSCHEMA,
         },
         "required": ["graph"],
     }
 
-    def __init__(self, name=None):
+    def __init__(self, graph=None, name=None):
         super(Assembly, self).__init__(name=name)
-        self.graph = Graph()
-        self._parts = {}
+        self.graph = graph or Graph()
+        self._parts = {part.guid: part.key for part in self.parts()}  # type: ignore
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
@@ -50,17 +52,19 @@ class Assembly(Datastructure):
     # ==========================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         return {
-            "graph": self.graph.data,
+            "graph": self.graph.__data__,
         }
 
+    def __before_json__(self, data):
+        data["graph"] = self.graph.__before_json__(data["graph"])
+        return data
+
     @classmethod
-    def from_data(cls, data):
-        assembly = cls()
-        assembly.graph = Graph.from_data(data["graph"])
-        assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
-        return assembly
+    def __before_init__(cls, data):
+        data["graph"] = Graph(Graph.__before_init__(data["graph"]))
+        return data
 
     # ==========================================================================
     # Constructors
