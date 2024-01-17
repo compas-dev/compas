@@ -205,8 +205,8 @@ class Tree(Datastructure):
 
     Parameters
     ----------
-    **kwargs : dict[str, Any], optional
-        User-defined attributes of the tree.
+    name : str, optional
+        The name of the tree.
 
     Attributes
     ----------
@@ -247,8 +247,8 @@ class Tree(Datastructure):
         "required": ["root"],
     }
 
-    def __init__(self, **kwargs):
-        super(Tree, self).__init__(**kwargs)
+    def __init__(self, name=None):
+        super(Tree, self).__init__(name=name)
         self._root = None
 
     @property

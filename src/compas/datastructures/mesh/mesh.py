@@ -84,19 +84,17 @@ class Mesh(Datastructure):
 
     Parameters
     ----------
-    default_vertex_attributes: dict[str, Any], optional
+    default_vertex_attributes : dict[str, Any], optional
         Default values for vertex attributes.
-    default_edge_attributes: dict[str, Any], optional
+    default_edge_attributes : dict[str, Any], optional
         Default values for edge attributes.
-    default_face_attributes: dict[str, Any], optional
+    default_face_attributes : dict[str, Any], optional
         Default values for face attributes.
-    **kwargs : dict, optional
-        Additional attributes to add to the mesh.
+    name : str, optional
+        Then name of the mesh.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure which will be included in the data representation.
     default_vertex_attributes : dict[str, Any]
         Dictionary containing default values for the attributes of vertices.
         It is recommended to add a default to this dictionary using :meth:`update_default_vertex_attributes`
@@ -125,7 +123,6 @@ class Mesh(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -188,9 +185,9 @@ class Mesh(Datastructure):
     smooth_area = mesh_smooth_area
 
     def __init__(
-        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
+        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, name=None
     ):
-        super(Mesh, self).__init__(**kwargs)
+        super(Mesh, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex = {}
@@ -219,7 +216,6 @@ class Mesh(Datastructure):
     @property
     def data(self):
         return {
-            "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
@@ -236,9 +232,8 @@ class Mesh(Datastructure):
         dva = data.get("dva") or {}
         dfa = data.get("dfa") or {}
         dea = data.get("dea") or {}
-        attributes = data.get("attributes") or {}
 
-        halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea, **attributes)
+        halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea)
 
         vertex = data["vertex"] or {}
         face = data["face"] or {}

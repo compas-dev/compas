@@ -51,28 +51,26 @@ class VolMesh(Datastructure):
 
     Parameters
     ----------
-    default_vertex_attributes: dict, optional
+    default_vertex_attributes : dict, optional
         Default values for vertex attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes : dict, optional
         Default values for edge attributes.
-    default_face_attributes: dict, optional
+    default_face_attributes : dict, optional
         Default values for face attributes.
-    default_cell_attributes: dict, optional
+    default_cell_attributes : dict, optional
         Default values for cell attributes.
-    **kwargs : dict, optional
-        Additional attributes to add to the volmesh object.
+    name : str, optional
+        The name of the volmesh.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure which will be included in the data representation.
     default_vertex_attributes : dict[str, Any]
         Default attributes of the vertices.
-    default_edge_attributes: dict[str, Any]
+    default_edge_attributes : dict[str, Any]
         Default values for edge attributes.
-    default_face_attributes: dict[str, Any]
+    default_face_attributes : dict[str, Any]
         Default values for face attributes.
-    default_cell_attributes: dict[str, Any]
+    default_cell_attributes : dict[str, Any]
         Default values for cell attributes.
 
     """
@@ -80,7 +78,6 @@ class VolMesh(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -145,9 +142,9 @@ class VolMesh(Datastructure):
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
-        **kwargs
+        name=None,
     ):
-        super(VolMesh, self).__init__(**kwargs)
+        super(VolMesh, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -202,7 +199,6 @@ class VolMesh(Datastructure):
             _cell[c] = faces
 
         return {
-            "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
@@ -224,14 +220,11 @@ class VolMesh(Datastructure):
         dfa = data.get("dfa") or {}
         dca = data.get("dca") or {}
 
-        attributes = data.get("attributes") or {}
-
         halfface = cls(
             default_vertex_attributes=dva,
             default_edge_attributes=dea,
             default_face_attributes=dfa,
-            default_cell_attributes=dca,
-            **attributes
+            default_cell_attributes=dca
         )
 
         vertex = data["vertex"] or {}

@@ -237,6 +237,6 @@ class DataDecoder(json.JSONDecoder):
         if IDictionary and isinstance(o, IDictionary[str, object]):
             data = {key: data[key] for key in data.Keys}
 
-        obj = cls.__jsonload__(data, guid, name)
+        obj = cls.__jsonload__(data, guid=guid, name=name)
 
         return obj

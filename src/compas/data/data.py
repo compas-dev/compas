@@ -39,12 +39,6 @@ class Data(object):
 
     Attributes
     ----------
-    dtype : str, read-only
-        The type of the object in the form of a fully qualified module name and a class name, separated by a forward slash ("/").
-        For example: ``"compas.datastructures/Mesh"``.
-    data : dict
-        The representation of the object as a dictionary containing only built-in Python data types.
-        The structure of the dict is described by the data schema.
     guid : str, read-only
         The globally unique identifier of the object.
         The guid is generated with ``uuid.uuid4()``.
@@ -97,7 +91,8 @@ class Data(object):
         }
         if minimal:
             return state
-        state["name"] = self.name
+        if self._name is not None:
+            state["name"] = self._name
         state["guid"] = str(self.guid)
         return state
 

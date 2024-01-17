@@ -53,17 +53,15 @@ class Graph(Datastructure):
 
     Parameters
     ----------
-    default_node_attributes: dict, optional
+    default_node_attributes : dict, optional
         Default values for node attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes : dict, optional
         Default values for edge attributes.
-    **kwargs : dict, optional
-        Additional attributes.
+    name : str, optional
+        The name of the graph.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure which will be included in the data representation.
     default_node_attributes : dict[str, Any]
         dictionary containing default values for the attributes of nodes.
         It is recommended to add a default to this dictionary using :meth:`update_default_node_attributes`
@@ -78,7 +76,6 @@ class Graph(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "dna": {"type": "object"},
             "dea": {"type": "object"},
             "node": {
@@ -117,8 +114,8 @@ class Graph(Datastructure):
 
     find_cycles = graph_find_cycles
 
-    def __init__(self, default_node_attributes=None, default_edge_attributes=None, **kwargs):
-        super(Graph, self).__init__(**kwargs)
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None):
+        super(Graph, self).__init__(name=None)
         self._max_node = -1
         self.node = {}
         self.edge = {}
@@ -141,7 +138,6 @@ class Graph(Datastructure):
     @property
     def data(self):
         data = {
-            "attributes": self.attributes,
             "dna": self.default_node_attributes,
             "dea": self.default_edge_attributes,
             "node": {},
@@ -162,12 +158,11 @@ class Graph(Datastructure):
     def from_data(cls, data):
         dna = data.get("dna") or {}
         dea = data.get("dea") or {}
-        attributes = data.get("attributes") or {}
 
         node = data["node"] or {}
         edge = data["edge"] or {}
 
-        graph = cls(default_node_attributes=dna, default_edge_attributes=dea, **attributes)
+        graph = cls(default_node_attributes=dna, default_edge_attributes=dea)
 
         for node, attr in iter(node.items()):
             node = literal_eval(node)
@@ -234,7 +229,6 @@ class Graph(Datastructure):
         """
         g = cls()
         g.name = graph.graph.get("name")
-        g.attributes.update(graph.graph)
 
         for node in graph.nodes():
             g.add_node(node, **graph.nodes[node])
@@ -481,7 +475,6 @@ class Graph(Datastructure):
 
         G = nx.DiGraph()
         G.graph["name"] = self.name  # type: ignore
-        G.graph.update(self.attributes)  # type: ignore
 
         for node, attr in self.nodes(data=True):
             G.add_node(node, **attr)  # type: ignore

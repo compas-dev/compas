@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `compas.dtastructures.Network` as alias of `compas.datastructures.Graph`.
+* Added `compas.data.Data.name` and included it in serialisation in case `compas.data.Data._name is not None`.
 
 ### Changed
 
@@ -22,6 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.datastructures.Network`.
 * Removed `compas.datastructures.Halfedge`.
 * Removed `compas.datastructures.Halfface`.
+* Removed `compas.data.Data.attributes`.
+* Removed `compas.data.Datastructure.attributes`.
+* Removed `attributes` from `compas.datastructures.Assembly.data`.
+* Removed `attributes` from `compas.datastructures.CellNetwork.data`.
+* Removed `attributes` from `compas.datastructures.Graph.data`.
+* Removed `attributes` from `compas.datastructures.Mesh.data`.
+* Removed `attributes` from `compas.datastructures.Tree.data`.
+* Removed `attributes` from `compas.datastructures.VolMesh.data`.
 
 ## [2.0.0-beta.2] 2024-01-12
 

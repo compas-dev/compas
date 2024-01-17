@@ -52,13 +52,11 @@ class CellNetwork(Datastructure):
         Default values for face attributes.
     default_cell_attributes: dict, optional
         Default values for cell attributes.
-    **kwargs : dict, optional
-        Additional attributes for the data structure itself.
+    name : str, optional
+        The name of the cell network.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure which will be included in the data representation.
     default_vertex_attributes : dict[str, Any]
         Default attributes of the vertices.
     default_edge_attributes: dict[str, Any]
@@ -85,7 +83,6 @@ class CellNetwork(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -169,9 +166,9 @@ class CellNetwork(Datastructure):
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
-        **kwargs
+        name=None,
     ):
-        super(CellNetwork, self).__init__(**kwargs)
+        super(CellNetwork, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -233,7 +230,6 @@ class CellNetwork(Datastructure):
             cell[c] = sorted(list(faces))
 
         return {
-            "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
@@ -256,14 +252,11 @@ class CellNetwork(Datastructure):
         dfa = data.get("dfa") or {}
         dca = data.get("dca") or {}
 
-        attributes = data.get("attributes") or {}
-
         cell_network = cls(
             default_vertex_attributes=dva,
             default_edge_attributes=dea,
             default_face_attributes=dfa,
             default_cell_attributes=dca,
-            **attributes
         )
 
         vertex = data["vertex"] or {}
