@@ -84,19 +84,17 @@ class Mesh(Datastructure):
 
     Parameters
     ----------
-    default_vertex_attributes: dict[str, Any], optional
+    default_vertex_attributes : dict[str, Any], optional
         Default values for vertex attributes.
-    default_edge_attributes: dict[str, Any], optional
+    default_edge_attributes : dict[str, Any], optional
         Default values for edge attributes.
-    default_face_attributes: dict[str, Any], optional
+    default_face_attributes : dict[str, Any], optional
         Default values for face attributes.
-    **kwargs : dict, optional
-        Additional attributes to add to the mesh object.
+    name : str, optional
+        Then name of the mesh.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure that are included in the data representation and serialization.
     default_vertex_attributes : dict[str, Any]
         Dictionary containing default values for the attributes of vertices.
         It is recommended to add a default to this dictionary using :meth:`update_default_vertex_attributes`
@@ -187,9 +185,9 @@ class Mesh(Datastructure):
     smooth_area = mesh_smooth_area
 
     def __init__(
-        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, **kwargs
+        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, name=None
     ):
-        super(Mesh, self).__init__(**kwargs)
+        super(Mesh, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex = {}
@@ -237,8 +235,9 @@ class Mesh(Datastructure):
 
         halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea)
 
-        vertex = data.get("vertex") or {}
-        face = data.get("face") or {}
+        vertex = data["vertex"] or {}
+        face = data["face"] or {}
+
         facedata = data.get("facedata") or {}
         edgedata = data.get("edgedata") or {}
 

@@ -49,6 +49,7 @@ class TreeNode(Data):
 
     def __init__(self, **kwargs):
         super(TreeNode, self).__init__(**kwargs)
+        self.attributes = kwargs
         self._parent = None
         self._children = []
         self._tree = None
@@ -86,11 +87,6 @@ class TreeNode(Data):
     @property
     def data(self):
         return {
-            # this duplicates the behaviour of the Data class
-            # but it is necessary to make the tree serializable
-            # however, it only duplicates the attributes if the node is serialized independently
-            # perhaps this should not be possible
-            # in this sense, the node is a prototype of an independen graph node, or mesh vertex
             "attributes": self.attributes,
             "children": [child.data for child in self.children],
         }
@@ -209,8 +205,8 @@ class Tree(Datastructure):
 
     Parameters
     ----------
-    **kwargs : dict[str, Any], optional
-        User-defined attributes of the tree.
+    name : str, optional
+        The name of the tree.
 
     Attributes
     ----------
@@ -251,8 +247,8 @@ class Tree(Datastructure):
         "required": ["root"],
     }
 
-    def __init__(self, **kwargs):
-        super(Tree, self).__init__(**kwargs)
+    def __init__(self, name=None):
+        super(Tree, self).__init__(name=name)
         self._root = None
 
     @property

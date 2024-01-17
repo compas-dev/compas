@@ -39,12 +39,6 @@ class Data(object):
 
     Attributes
     ----------
-    dtype : str, read-only
-        The type of the object in the form of a fully qualified module name and a class name, separated by a forward slash ("/").
-        For example: ``"compas.datastructures/Mesh"``.
-    data : dict
-        The representation of the object as a dictionary containing only built-in Python data types.
-        The structure of the dict is described by the data schema.
     guid : str, read-only
         The globally unique identifier of the object.
         The guid is generated with ``uuid.uuid4()``.
@@ -72,9 +66,9 @@ class Data(object):
 
     DATASCHEMA = {}
 
-    def __init__(self, name=None, **kwargs):
+    def __init__(self, name=None):
         self._guid = None
-        self.attributes = kwargs or {}
+        self._name = None
         if name:
             self.name = name
 
@@ -95,15 +89,15 @@ class Data(object):
             "dtype": self.dtype,
             "data": self.data,
         }
-        if self.attributes:
-            state["attrs"] = self.attributes
         if minimal:
             return state
+        if self._name is not None:
+            state["name"] = self._name
         state["guid"] = str(self.guid)
         return state
 
     @classmethod
-    def __jsonload__(cls, data, guid=None, attrs=None):
+    def __jsonload__(cls, data, guid=None, name=None):
         """Construct an object of this type from the provided data to support COMPAS JSON serialization.
 
         Parameters
@@ -112,8 +106,8 @@ class Data(object):
             The raw Python data representing the object.
         guid : str, optional
             The GUID of the object.
-        attrs : dict, optional
-            The additional attributes of the object.
+        name : str, optional
+            The name of the object.
 
         Returns
         -------
@@ -123,8 +117,8 @@ class Data(object):
         obj = cls.from_data(data)
         if guid is not None:
             obj._guid = UUID(guid)
-        if attrs is not None:
-            obj.attributes.update(attrs)
+        if name is not None:
+            obj.name = name
         return obj
 
     def __getstate__(self):
@@ -136,9 +130,8 @@ class Data(object):
         self.__dict__.update(state["__dict__"])
         if "guid" in state:
             self._guid = UUID(state["guid"])
-        # could be that this is already taken care of by the first line
-        if "attrs" in state:
-            self.attributes.update(state["attrs"])
+        if "name" in state:
+            self.name = state["name"]
 
     @property
     def dtype(self):
@@ -170,11 +163,11 @@ class Data(object):
 
     @property
     def name(self):
-        return self.attributes.get("name") or self.__class__.__name__
+        return self._name or self.__class__.__name__
 
     @name.setter
     def name(self, name):
-        self.attributes["name"] = name
+        self._name = name
 
     @classmethod
     def from_data(cls, data):  # type: (dict) -> Data
@@ -303,7 +296,7 @@ class Data(object):
         if not cls:
             cls = type(self)
         obj = cls.from_data(deepcopy(self.data))
-        obj.attributes = deepcopy(self.attributes)
+        obj.name = self.name
         return obj  # type: ignore
 
     def sha256(self, as_string=False):

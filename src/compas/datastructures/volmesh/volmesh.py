@@ -51,28 +51,26 @@ class VolMesh(Datastructure):
 
     Parameters
     ----------
-    default_vertex_attributes: dict, optional
+    default_vertex_attributes : dict, optional
         Default values for vertex attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes : dict, optional
         Default values for edge attributes.
-    default_face_attributes: dict, optional
+    default_face_attributes : dict, optional
         Default values for face attributes.
-    default_cell_attributes: dict, optional
+    default_cell_attributes : dict, optional
         Default values for cell attributes.
-    **kwargs : dict, optional
-        Additional attributes to add to the volmesh object.
+    name : str, optional
+        The name of the volmesh.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure which will be included in the data representation.
     default_vertex_attributes : dict[str, Any]
         Default attributes of the vertices.
-    default_edge_attributes: dict[str, Any]
+    default_edge_attributes : dict[str, Any]
         Default values for edge attributes.
-    default_face_attributes: dict[str, Any]
+    default_face_attributes : dict[str, Any]
         Default values for face attributes.
-    default_cell_attributes: dict[str, Any]
+    default_cell_attributes : dict[str, Any]
         Default values for cell attributes.
 
     """
@@ -127,7 +125,6 @@ class VolMesh(Datastructure):
             "dva",
             "dea",
             "dfa",
-            "dca",
             "vertex",
             "cell",
             "edge_data",
@@ -145,9 +142,9 @@ class VolMesh(Datastructure):
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
-        **kwargs
+        name=None,
     ):
-        super(Datastructure, self).__init__(**kwargs)
+        super(VolMesh, self).__init__(name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -230,8 +227,9 @@ class VolMesh(Datastructure):
             default_cell_attributes=dca,
         )
 
-        vertex = data.get("vertex") or {}
-        cell = data.get("cell") or {}
+        vertex = data["vertex"] or {}
+        cell = data["cell"] or {}
+
         edge_data = data.get("edge_data") or {}
         face_data = data.get("face_data") or {}
         cell_data = data.get("cell_data") or {}

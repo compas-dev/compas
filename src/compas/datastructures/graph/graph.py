@@ -53,12 +53,12 @@ class Graph(Datastructure):
 
     Parameters
     ----------
-    default_node_attributes: dict, optional
+    default_node_attributes : dict, optional
         Default values for node attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes : dict, optional
         Default values for edge attributes.
-    **kwargs : dict, optional
-        Additional attributes to add to the graph.
+    name : str, optional
+        The name of the graph.
 
     Attributes
     ----------
@@ -114,8 +114,8 @@ class Graph(Datastructure):
 
     find_cycles = graph_find_cycles
 
-    def __init__(self, default_node_attributes=None, default_edge_attributes=None, **kwargs):
-        super(Graph, self).__init__(**kwargs)
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None):
+        super(Graph, self).__init__(name=None)
         self._max_node = -1
         self.node = {}
         self.edge = {}
@@ -158,8 +158,9 @@ class Graph(Datastructure):
     def from_data(cls, data):
         dna = data.get("dna") or {}
         dea = data.get("dea") or {}
-        node = data.get("node") or {}
-        edge = data.get("edge") or {}
+
+        node = data["node"] or {}
+        edge = data["edge"] or {}
 
         graph = cls(default_node_attributes=dna, default_edge_attributes=dea)
 
@@ -227,7 +228,7 @@ class Graph(Datastructure):
 
         """
         g = cls()
-        g.attributes.update(graph.graph)
+        g.name = graph.graph.get("name")
 
         for node in graph.nodes():
             g.add_node(node, **graph.nodes[node])
@@ -473,7 +474,7 @@ class Graph(Datastructure):
         import networkx as nx
 
         G = nx.DiGraph()
-        G.graph.update(self.attributes)  # type: ignore
+        G.graph["name"] = self.name  # type: ignore
 
         for node, attr in self.nodes(data=True):
             G.add_node(node, **attr)  # type: ignore
