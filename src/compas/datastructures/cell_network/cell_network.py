@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# from itertools import product
 from random import sample
 
 from compas.datastructures import Mesh
@@ -28,8 +27,6 @@ from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
 from compas.geometry import volume_polyhedron
-
-# from compas.topology import face_adjacency
 from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
 from compas.geometry import project_point_plane
@@ -37,9 +34,6 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import bounding_box
 
-# from compas.geometry import transform_points
-
-# from compas.utilities import linspace
 from compas.utilities import pairwise
 
 from compas.tolerance import TOL
@@ -91,6 +85,7 @@ class CellNetwork(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -98,6 +93,28 @@ class CellNetwork(Datastructure):
             "vertex": {
                 "type": "object",
                 "patternProperties": {"^[0-9]+$": {"type": "object"}},
+                "additionalProperties": False,
+            },
+            "edge": {
+                "type": "object",
+                "patternProperties": {
+                    "^[0-9]+$": {
+                        "type": "object",
+                        "patternProperties": {"^[0-9]+$": {"type": "object"}},
+                        "additionalProperties": False,
+                    }
+                },
+                "additionalProperties": False,
+            },
+            "face": {
+                "type": "object",
+                "patternProperties": {
+                    "^[0-9]+$": {
+                        "type": "array",
+                        "items": {"type": "integer", "minimum": 0},
+                        "minItems": 3,
+                    }
+                },
                 "additionalProperties": False,
             },
             "cell": {
@@ -113,11 +130,6 @@ class CellNetwork(Datastructure):
                         },
                     }
                 },
-                "additionalProperties": False,
-            },
-            "edge_data": {
-                "type": "object",
-                "patternProperties": {"^\\([0-9]+, [0-9]+\\)$": {"type": "object"}},
                 "additionalProperties": False,
             },
             "face_data": {
@@ -140,8 +152,9 @@ class CellNetwork(Datastructure):
             "dfa",
             "dca",
             "vertex",
+            "edge",
+            "face",
             "cell",
-            "edge_data",
             "face_data",
             "cell_data",
             "max_vertex",
@@ -158,7 +171,7 @@ class CellNetwork(Datastructure):
         default_cell_attributes=None,
         **kwargs
     ):
-        super(Datastructure, self).__init__(**kwargs)
+        super(CellNetwork, self).__init__(**kwargs)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -243,19 +256,20 @@ class CellNetwork(Datastructure):
         dfa = data.get("dfa") or {}
         dca = data.get("dca") or {}
 
+        attributes = data.get("attributes") or {}
+
         cell_network = cls(
             default_vertex_attributes=dva,
             default_edge_attributes=dea,
             default_face_attributes=dfa,
             default_cell_attributes=dca,
+            **attributes
         )
 
-        cell_network.attributes.update(data.get("attributes") or {})
-
-        vertex = data.get("vertex") or {}
-        edge = data.get("edge") or {}
-        face = data.get("face") or {}
-        cell = data.get("cell") or {}
+        vertex = data["vertex"] or {}
+        edge = data["edge"] or {}
+        face = data["face"] or {}
+        cell = data["cell"] or {}
 
         for key, attr in iter(vertex.items()):
             cell_network.add_vertex(key=key, attr_dict=attr)

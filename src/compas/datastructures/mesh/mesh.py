@@ -91,12 +91,12 @@ class Mesh(Datastructure):
     default_face_attributes: dict[str, Any], optional
         Default values for face attributes.
     **kwargs : dict, optional
-        Additional attributes to add to the mesh object.
+        Additional attributes to add to the mesh.
 
     Attributes
     ----------
     attributes : dict[str, Any]
-        General attributes of the data structure that are included in the data representation and serialization.
+        General attributes of the data structure which will be included in the data representation.
     default_vertex_attributes : dict[str, Any]
         Dictionary containing default values for the attributes of vertices.
         It is recommended to add a default to this dictionary using :meth:`update_default_vertex_attributes`
@@ -125,6 +125,7 @@ class Mesh(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -218,6 +219,7 @@ class Mesh(Datastructure):
     @property
     def data(self):
         return {
+            "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
@@ -234,11 +236,13 @@ class Mesh(Datastructure):
         dva = data.get("dva") or {}
         dfa = data.get("dfa") or {}
         dea = data.get("dea") or {}
+        attributes = data.get("attributes") or {}
 
-        halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea)
+        halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea, **attributes)
 
-        vertex = data.get("vertex") or {}
-        face = data.get("face") or {}
+        vertex = data["vertex"] or {}
+        face = data["face"] or {}
+
         facedata = data.get("facedata") or {}
         edgedata = data.get("edgedata") or {}
 

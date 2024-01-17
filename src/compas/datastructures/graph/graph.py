@@ -58,10 +58,12 @@ class Graph(Datastructure):
     default_edge_attributes: dict, optional
         Default values for edge attributes.
     **kwargs : dict, optional
-        Additional attributes to add to the graph.
+        Additional attributes.
 
     Attributes
     ----------
+    attributes : dict[str, Any]
+        General attributes of the data structure which will be included in the data representation.
     default_node_attributes : dict[str, Any]
         dictionary containing default values for the attributes of nodes.
         It is recommended to add a default to this dictionary using :meth:`update_default_node_attributes`
@@ -76,6 +78,7 @@ class Graph(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "dna": {"type": "object"},
             "dea": {"type": "object"},
             "node": {
@@ -138,6 +141,7 @@ class Graph(Datastructure):
     @property
     def data(self):
         data = {
+            "attributes": self.attributes,
             "dna": self.default_node_attributes,
             "dea": self.default_edge_attributes,
             "node": {},
@@ -158,10 +162,12 @@ class Graph(Datastructure):
     def from_data(cls, data):
         dna = data.get("dna") or {}
         dea = data.get("dea") or {}
-        node = data.get("node") or {}
-        edge = data.get("edge") or {}
+        attributes = data.get("attributes") or {}
 
-        graph = cls(default_node_attributes=dna, default_edge_attributes=dea)
+        node = data["node"] or {}
+        edge = data["edge"] or {}
+
+        graph = cls(default_node_attributes=dna, default_edge_attributes=dea, **attributes)
 
         for node, attr in iter(node.items()):
             node = literal_eval(node)
@@ -227,6 +233,7 @@ class Graph(Datastructure):
 
         """
         g = cls()
+        g.name = graph.graph.get("name")
         g.attributes.update(graph.graph)
 
         for node in graph.nodes():
@@ -473,6 +480,7 @@ class Graph(Datastructure):
         import networkx as nx
 
         G = nx.DiGraph()
+        G.graph["name"] = self.name  # type: ignore
         G.graph.update(self.attributes)  # type: ignore
 
         for node, attr in self.nodes(data=True):

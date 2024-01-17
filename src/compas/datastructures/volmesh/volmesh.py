@@ -80,6 +80,7 @@ class VolMesh(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "dva": {"type": "object"},
             "dea": {"type": "object"},
             "dfa": {"type": "object"},
@@ -127,7 +128,6 @@ class VolMesh(Datastructure):
             "dva",
             "dea",
             "dfa",
-            "dca",
             "vertex",
             "cell",
             "edge_data",
@@ -147,7 +147,7 @@ class VolMesh(Datastructure):
         default_cell_attributes=None,
         **kwargs
     ):
-        super(Datastructure, self).__init__(**kwargs)
+        super(VolMesh, self).__init__(**kwargs)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -202,6 +202,7 @@ class VolMesh(Datastructure):
             _cell[c] = faces
 
         return {
+            "attributes": self.attributes,
             "dva": self.default_vertex_attributes,
             "dea": self.default_edge_attributes,
             "dfa": self.default_face_attributes,
@@ -223,15 +224,19 @@ class VolMesh(Datastructure):
         dfa = data.get("dfa") or {}
         dca = data.get("dca") or {}
 
+        attributes = data.get("attributes") or {}
+
         halfface = cls(
             default_vertex_attributes=dva,
             default_edge_attributes=dea,
             default_face_attributes=dfa,
             default_cell_attributes=dca,
+            **attributes
         )
 
-        vertex = data.get("vertex") or {}
-        cell = data.get("cell") or {}
+        vertex = data["vertex"] or {}
+        cell = data["cell"] or {}
+
         edge_data = data.get("edge_data") or {}
         face_data = data.get("face_data") or {}
         cell_data = data.get("cell_data") or {}

@@ -214,7 +214,7 @@ def test_graph_to_networkx():
         return
 
     g = Graph()
-    g.attributes["name"] = "DiGraph"
+    g.name = "DiGraph"
     g.attributes["val"] = (0, 0, 0)
     g.add_node(0)
     g.add_node(1, weight=1.2, height="test")
@@ -240,7 +240,7 @@ def test_graph_to_networkx():
     assert g.number_of_nodes() == g2.number_of_nodes()
     assert g.number_of_edges() == g2.number_of_edges()
     assert g2.edge_attribute((0, 1), "attr_value") == 10
-    assert g2.attributes["name"] == "DiGraph", "Graph attributes must be preserved"
+    assert g2.name == "DiGraph", "Graph attributes must be preserved"
     assert g2.attributes["val"] == (0, 0, 0), "Graph attributes must be preserved"
 
 

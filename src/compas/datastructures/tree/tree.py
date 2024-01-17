@@ -49,6 +49,7 @@ class TreeNode(Data):
 
     def __init__(self, **kwargs):
         super(TreeNode, self).__init__(**kwargs)
+        self.attributes = kwargs
         self._parent = None
         self._children = []
         self._tree = None
@@ -86,11 +87,6 @@ class TreeNode(Data):
     @property
     def data(self):
         return {
-            # this duplicates the behaviour of the Data class
-            # but it is necessary to make the tree serializable
-            # however, it only duplicates the attributes if the node is serialized independently
-            # perhaps this should not be possible
-            # in this sense, the node is a prototype of an independen graph node, or mesh vertex
             "attributes": self.attributes,
             "children": [child.data for child in self.children],
         }
