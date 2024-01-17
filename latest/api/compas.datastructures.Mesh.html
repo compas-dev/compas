@@ -1121,19 +1121,19 @@ document.write(`
 <h1>Mesh</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Mesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/e246434/src/compas/datastructures/mesh/mesh.py#L82"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Mesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/18c1b46/src/compas/datastructures/mesh/mesh.py#L82"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></p>
 <p>Data structure for representing open or closed surface meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>default_vertex_attributes: dict[str, Any], optional</strong></dt><dd><p>Default values for vertex attributes.</p>
+<dt><strong>default_vertex_attributes</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>Default values for vertex attributes.</p>
 </dd>
-<dt><strong>default_edge_attributes: dict[str, Any], optional</strong></dt><dd><p>Default values for edge attributes.</p>
+<dt><strong>default_edge_attributes</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>Default values for edge attributes.</p>
 </dd>
-<dt><strong>default_face_attributes: dict[str, Any], optional</strong></dt><dd><p>Default values for face attributes.</p>
+<dt><strong>default_face_attributes</strong><span class="classifier">dict[str, Any], optional</span></dt><dd><p>Default values for face attributes.</p>
 </dd>
-<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional attributes to add to the mesh object.</p>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>Then name of the mesh.</p>
 </dd>
 </dl>
 </dd>
@@ -1151,8 +1151,6 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>General attributes of the data structure that are included in the data representation and serialization.</p>
-</dd>
 <dt><strong>default_vertex_attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>Dictionary containing default values for the attributes of vertices.
 It is recommended to add a default to this dictionary using <a class="reference internal" href="generated/compas.datastructures.Mesh.update_default_vertex_attributes.html" title="compas.datastructures.Mesh.update_default_vertex_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_vertex_attributes()</span></code></a>
 for every vertex attribute used in the data structure.</p>
