@@ -167,6 +167,7 @@ class CellNetwork(Datastructure):
         self._face = {}
         self._plane = {}
         self._cell = {}
+        self._edge_data = {}
         self._face_data = {}
         self._cell_data = {}
         self.default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
@@ -556,13 +557,15 @@ class CellNetwork(Datastructure):
         # @Romana
         # should the data not be added to this edge as well?
         # if that is the case, should we not store the data in an edge_data dict to avoid duplication?
-        # if v not in self._edge[u]:
-        #     self._edge[v][u] = {}
+        # True, but then _edge does not hold anything, we could also store the attr right here.
+        # but I leave this to you as you have a better overview
 
-        # if v not in self._plane[u]:
-        #     self._plane[u][v] = {}
-        # if u not in self._plane[v]:
-        #     self._plane[v][u] = {}
+        if v not in self._edge[u]:
+             self._edge[v][u] = {}
+        if v not in self._plane[u]:
+             self._plane[u][v] = {}
+        if u not in self._plane[v]:
+             self._plane[v][u] = {}
 
         return u, v
 
@@ -661,6 +664,8 @@ class CellNetwork(Datastructure):
 
         Raises
         ------
+        ValueError
+            If something is wrong with the passed faces.
         TypeError
             If the provided cell key is not an integer.
 
@@ -679,35 +684,19 @@ class CellNetwork(Datastructure):
         # 0. Check if all the faces have been added
         for face in faces:
             if face not in self._face:
-                raise Exception("Face {} does not exist.".format(face))
-
-        # @Romana
-        # i think this is implicitly checked by the next step
-
-        # # 1. Check if the faces form a closed cell
-        # #    Note: We cannot use mesh.is_closed() here because it only works if the faces are unified
-        # if any(len(edge_faces) != 2 for _, edge_faces in self.edge_face_adjacency(faces).items()):
-        #     print("Cannot add cell, faces {} do not form a closed cell.".format(faces))
-        #     return
+                raise ValueError("Face {} does not exist.".format(face))
 
         # 2. Check if the faces can be unified
         mesh = self.faces_to_mesh(faces, data=False)
         try:
             mesh.unify_cycles()
         except Exception:
-            # @Romana
-            # should we not throw an exception here?
-            print("Cannot add cell, faces {} can not be unified.".format(faces))
-            return
-
-        # @Romana: should it not be the other way around?
-        # a polyhedron has poisitve volume if the faces point outwards
-        # the faces of the cell however should point inwards
+            raise ValueError("Cannot add cell, faces {} can not be unified.".format(faces))
 
         # 3. Check if the faces are oriented correctly
-        #    If the volume of the polyhedron is negative, we need to flip the faces
+        # If the volume of the polyhedron is positive, we need to flip the faces to point inwards
         volume = volume_polyhedron(mesh.to_vertices_and_faces())
-        if volume < 0:
+        if volume > 0:
             mesh.flip_cycles()
 
         if ckey is None:
@@ -2054,9 +2043,11 @@ class CellNetwork(Datastructure):
             raise KeyError(edge)
 
         u, v = edge
-        attr = self._edge[u][v]
+        attr = self._edge.get(u, {}).get(v, {})
+
         if value is not None:
-            attr[name] = value
+            attr.update({name : value})
+            self._edge[u][v] = attr
             return
         if name in attr:
             return attr[name]
@@ -2987,6 +2978,7 @@ class CellNetwork(Datastructure):
         return list(faces)
 
     # @Romana: this logic only makes sense for a face belonging to a cell
+    # # yep, if the face is not belonging to a cell, it returns False, which is correct
     def is_face_on_boundary(self, face):
         """Verify that a face is on the boundary.
 
