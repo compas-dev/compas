@@ -28,7 +28,7 @@ from .scene import SceneTree
 from compas.plugins import plugin
 from compas.geometry import Geometry
 from compas.datastructures import Mesh
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 
 
@@ -36,7 +36,7 @@ from compas.datastructures import VolMesh
 def register_scene_objects_base():
     register(Geometry, GeometryObject, context=None)
     register(Mesh, MeshObject, context=None)
-    register(Network, NetworkObject, context=None)
+    register(Graph, GraphObject, context=None)
     register(VolMesh, VolMeshObject, context=None)
 
 
