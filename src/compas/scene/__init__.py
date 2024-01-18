@@ -11,7 +11,7 @@ from __future__ import division
 from .exceptions import SceneObjectNotRegisteredError
 from .sceneobject import SceneObject
 from .meshobject import MeshObject
-from .networkobject import NetworkObject
+from .graphobject import GraphObject
 from .geometryobject import GeometryObject
 from .volmeshobject import VolMeshObject
 
@@ -44,7 +44,7 @@ __all__ = [
     "SceneObjectNotRegisteredError",
     "SceneObject",
     "MeshObject",
-    "NetworkObject",
+    "GraphObject",
     "GeometryObject",
     "VolMeshObject",
     "Scene",

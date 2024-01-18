@@ -101,7 +101,7 @@
 #         for name in compas_api[packmod]:
 #             if name in [
 #                 "BaseMesh",
-#                 "BaseNetwork",
+#                 "BaseGraph",
 #                 "BaseVolMesh",
 #                 "Datastructure",
 #                 "Graph",

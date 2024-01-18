@@ -8,14 +8,68 @@ from compas.data import Data
 class Datastructure(Data):
     """Base class for all data structures."""
 
-    def __init__(self, name=None, **kwargs):
-        super(Datastructure, self).__init__(**kwargs)
-        self.attributes = {"name": name or self.__class__.__name__}
+    def transform(self, transformation):
+        """Transforms the data structure.
 
-    @property
-    def name(self):
-        return self.attributes.get("name") or self.__class__.__name__
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the data structure.
 
-    @name.setter
-    def name(self, value):
-        self.attributes["name"] = value
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
+    def transformed(self, transformation):
+        """Returns a transformed copy of this data structure.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the copy.
+
+        Returns
+        -------
+        Datastructure
+            The transformed copy.
+
+        """
+        datastructure = self.copy()
+        datastructure.transform(transformation)
+        return datastructure
+
+    def transform_numpy(self, transformation):
+        """Transforms the data structure.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the data structure.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
+    def transformed_numpy(self, transformation):
+        """Returns a transformed copy of this data structure.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the copy.
+
+        Returns
+        -------
+        Datastructure
+            The transformed copy.
+
+        """
+        datastructure = self.copy()
+        datastructure.transform_numpy(transformation)
+        return datastructure

@@ -356,7 +356,7 @@ class STLWriter(object):
 
     @property
     def _vertex_xyz(self):
-        bbox = self.mesh.bounding_box()
+        bbox = self.mesh.aabb()
         xmin, ymin, zmin = bbox[0]
         if not self.binary and (xmin < 0 or ymin < 0 or zmin < 0):
             T = Translation.from_vector([-xmin, -ymin, -zmin])

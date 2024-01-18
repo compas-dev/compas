@@ -21,7 +21,7 @@ from compas.geometry import Torus
 from compas.geometry import Pointcloud
 
 from compas.datastructures import Graph
-from compas.datastructures import HalfEdge
+from compas.datastructures import Mesh
 
 if not compas.IPY:
     import jsonschema.exceptions
@@ -596,7 +596,6 @@ if not compas.IPY:
         "graph",
         [
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -604,7 +603,6 @@ if not compas.IPY:
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -612,7 +610,6 @@ if not compas.IPY:
                 "max_node": 0,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -628,7 +625,6 @@ if not compas.IPY:
         "graph",
         [
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -636,42 +632,30 @@ if not compas.IPY:
                 "max_node": -2,
             },
             {
-                "dna": {},
                 "dea": {},
                 "node": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
-                "dea": {},
-                "node": {},
-                "edge": {},
-                "max_node": -1,
-            },
-            {
-                "attributes": {},
                 "dna": {},
                 "node": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
                 "dna": {},
                 "dea": {},
                 "node": {},
@@ -684,7 +668,7 @@ if not compas.IPY:
             Graph.validate_data(graph)
 
     @pytest.mark.parametrize(
-        "halfedge",
+        "mesh",
         [
             {
                 "attributes": {},
@@ -772,11 +756,11 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_halfedge_valid(halfedge):
-        HalfEdge.validate_data(halfedge)
+    def test_schema_mesh_valid(mesh):
+        Mesh.validate_data(mesh)
 
     @pytest.mark.parametrize(
-        "halfedge",
+        "mesh",
         [
             {
                 "attributes": {},
@@ -828,12 +812,12 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_halfedge_invalid(halfedge):
+    def test_schema_mesh_invalid(mesh):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            HalfEdge.validate_data(halfedge)
+            Mesh.validate_data(mesh)
 
     @pytest.mark.parametrize(
-        "halfedge",
+        "mesh",
         [
             {
                 "attributes": {},
@@ -861,6 +845,6 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_halfedge_failing(halfedge):
+    def test_schema_mesh_failing(mesh):
         with pytest.raises(TypeError):
-            HalfEdge.validate_data(halfedge)
+            Mesh.validate_data(mesh)

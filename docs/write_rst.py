@@ -1,5 +1,5 @@
 # from pathlib import Path
-from compas import geometry as module
+from compas import datastructures as module
 
 TPL = """
 ********************************************************************************

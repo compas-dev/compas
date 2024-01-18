@@ -49,7 +49,7 @@ class VolMeshObject(SceneObject):
 
     See Also
     --------
-    :class:`compas.scene.NetworkObject`
+    :class:`compas.scene.GraphObject`
     :class:`compas.scene.MeshObject`
 
     """

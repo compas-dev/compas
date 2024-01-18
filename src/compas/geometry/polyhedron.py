@@ -418,7 +418,7 @@ class Polyhedron(Geometry):
         from itertools import combinations
         from numpy import asarray
         from scipy.spatial import HalfspaceIntersection, ConvexHull  # type: ignore
-        from compas.datastructures import Mesh, mesh_merge_faces
+        from compas.datastructures import Mesh
         from compas.geometry import length_vector, dot_vectors, cross_vectors
 
         halfspaces = asarray(halfspaces, dtype=float)
@@ -435,7 +435,7 @@ class Polyhedron(Geometry):
                 if length_vector(cross_vectors(na, nb)) < 1e-6:
                     to_merge.append([a, b])
         for faces in to_merge:
-            mesh_merge_faces(mesh, faces)
+            mesh.merge_faces(faces)
         vertices, faces = mesh.to_vertices_and_faces()
         return cls(vertices, faces)
 

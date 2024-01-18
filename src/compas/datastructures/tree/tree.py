@@ -13,17 +13,11 @@ class TreeNode(Data):
 
     Parameters
     ----------
-    name : str, optional
-        The name of the tree ndoe.
-    attributes : dict[str, Any], optional
-        User-defined attributes of the datastructure.
+    **kwargs : dict[str, Any], optional
+        User-defined attributes of the tree node.
 
     Attributes
     ----------
-    name : str
-        The name of the datastructure.
-    attributes : dict[str, Any]
-        User-defined attributes of the datastructure.
     parent : :class:`compas.datastructures.TreeNode`
         The parent node of the tree node.
     children : list[:class:`compas.datastructures.TreeNode`]
@@ -47,16 +41,15 @@ class TreeNode(Data):
         "type": "object",
         "$recursiveAnchor": True,
         "properties": {
-            "name": {"type": "string"},
             "attributes": {"type": "object"},
             "children": {"type": "array", "items": {"$recursiveRef": "#"}},
         },
-        "required": ["name", "attributes", "children"],
+        "required": ["attributes", "children"],
     }
 
-    def __init__(self, name=None, attributes=None):
-        super(TreeNode, self).__init__(name=name)
-        self.attributes = attributes or {}
+    def __init__(self, **kwargs):
+        super(TreeNode, self).__init__(**kwargs)
+        self.attributes = kwargs
         self._parent = None
         self._children = []
         self._tree = None
@@ -89,19 +82,18 @@ class TreeNode(Data):
         if self.is_root:
             return self._tree
         else:
-            return self.parent.tree
+            return self.parent.tree  # type: ignore
 
     @property
     def data(self):
         return {
-            "name": self.name,
             "attributes": self.attributes,
             "children": [child.data for child in self.children],
         }
 
     @classmethod
     def from_data(cls, data):
-        node = cls(data["name"], data["attributes"])
+        node = cls(**data["attributes"])
         for child in data["children"]:
             node.add(cls.from_data(child))
         return node
@@ -214,16 +206,10 @@ class Tree(Datastructure):
     Parameters
     ----------
     name : str, optional
-        The name of the datastructure.
-    attributes : dict[str, Any], optional
-        User-defined attributes of the datastructure.
+        The name of the tree.
 
     Attributes
     ----------
-    name : str
-        The name of the datastructure.
-    attributes : dict[str, Any]
-        User-defined attributes of the datastructure.
     root : :class:`compas.datastructures.TreeNode`
         The root node of the tree.
     nodes : generator[:class:`compas.datastructures.TreeNode`]
@@ -256,29 +242,24 @@ class Tree(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "name": {"type": "string"},
             "root": TreeNode.DATASCHEMA,
-            "attributes": {"type": "object"},
         },
-        "required": ["name", "root", "attributes"],
+        "required": ["root"],
     }
 
-    def __init__(self, name=None, attributes=None):
+    def __init__(self, name=None):
         super(Tree, self).__init__(name=name)
-        self.attributes.update(attributes or {})
         self._root = None
 
     @property
     def data(self):
         return {
-            "name": self.name,
-            "root": self.root.data,
-            "attributes": self.attributes,
+            "root": self.root.data,  # type: ignore
         }
 
     @classmethod
     def from_data(cls, data):
-        tree = cls(data["name"], data["attributes"])
+        tree = cls()
         root = TreeNode.from_data(data["root"])
         tree.add(root)
         return tree
@@ -326,7 +307,7 @@ class Tree(Datastructure):
                 raise ValueError("The tree already has a root node, remove it first.")
 
             self._root = node
-            node._tree = self
+            node._tree = self  # type: ignore
 
         else:
             # add the node as a child of the parent node

@@ -43,6 +43,11 @@ class Server(SimpleXMLRPCServer):
 
     """
 
+    def __init__(self, address, *args, **kwargs):
+        super(Server, self).__init__(address, *args, **kwargs)
+        self.register_function(self.ping)
+        self.register_function(self.remote_shutdown)
+
     def ping(self):
         """Simple function used to check if a remote server can be reached.
 

@@ -1,0 +1,99 @@
+import numpy as np
+
+from scipy.sparse import spdiags
+from scipy.sparse.linalg import splu
+
+from .linalg import normrow
+from .linalg import normalizerow
+
+from compas.datastructures import trimesh_cotangent_laplacian_matrix
+
+
+def trimesh_geodesic_distances_numpy(mesh, sources, m=1.0):
+    """Compute geodesic from the vertices of a mesh to given source vertices.
+
+    Parameters
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        A mesh instance.
+    sources : list[int]
+        A list of vertex identifiers from which the distances should be calculated.
+    m : float, optional
+        ?
+
+    Returns
+    -------
+    array
+        Distance values.
+
+    """
+    Lc = trimesh_cotangent_laplacian_matrix(mesh)
+
+    vertex_index = mesh.vertex_index()
+    vertices = mesh.vertices_attributes("xyz")
+    faces = [[vertex_index[vertex] for vertex in mesh.face_vertices(face)] for face in mesh.faces()]
+
+    V = np.array(vertices)
+    F = np.array(faces, dtype=int)
+
+    e01 = V[F[:, 1]] - V[F[:, 0]]
+    e12 = V[F[:, 2]] - V[F[:, 1]]
+    e20 = V[F[:, 0]] - V[F[:, 2]]
+
+    normal = np.cross(e01, e12)
+    A2 = normrow(normal)
+    A3 = A2.ravel() / 6
+
+    VA = np.zeros(V.shape[0])
+    for i in (0, 1, 2):
+        b = np.bincount(F[:, i], A3)
+        VA[: len(b)] += b
+    VA = spdiags(VA, 0, V.shape[0], V.shape[0])
+
+    h = np.mean([normrow(e01), normrow(e12), normrow(e20)])
+    t = m * h**2
+
+    u0 = np.zeros(V.shape[0])
+    u0[sources] = 1.0
+
+    # A = VA - t * Lc
+    # print(A.sum(axis=1))
+
+    u = splu((VA - t * Lc).tocsc()).solve(u0)
+
+    unit = normal / A2
+
+    unit_e01 = np.cross(unit, e01)
+    unit_e12 = np.cross(unit, e12)
+    unit_e20 = np.cross(unit, e20)
+
+    grad_u = (unit_e01 * u[F[:, 2], None] + unit_e12 * u[F[:, 0], None] + unit_e20 * u[F[:, 1], None]) / A2
+
+    X = -grad_u / normrow(grad_u)
+
+    div_X = np.zeros(V.shape[0])
+
+    for i1, i2, i3 in [(0, 1, 2), (1, 2, 0), (2, 0, 1)]:
+        v1 = F[:, i1]
+        v2 = F[:, i2]
+        v3 = F[:, i3]
+
+        e1 = V[v2] - V[v1]
+        e2 = V[v3] - V[v1]
+        e0 = V[v3] - V[v2]
+
+        a = 1 / np.tan(np.arccos(np.sum(normalizerow(-e2) * normalizerow(-e0), axis=1)))
+        b = 1 / np.tan(np.arccos(np.sum(normalizerow(-e1) * normalizerow(+e0), axis=1)))
+
+        div_X += np.bincount(
+            v1,
+            0.5 * (a * np.sum(e1 * X, axis=1) + b * np.sum(e2 * X, axis=1)),
+            minlength=V.shape[0],
+        )
+
+    # print(Lc.sum(axis=1))
+
+    phi = splu(Lc.tocsc()).solve(div_X)  # type: ignore
+    phi -= phi.min()
+
+    return phi
