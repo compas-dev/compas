@@ -1120,7 +1120,7 @@ document.write(`
 <h1>CylindricalSurface</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.CylindricalSurface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">CylindricalSurface</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/surfaces/cylindrical.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">CylindricalSurface</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/surfaces/cylindrical.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Surface.html#compas.geometry.Surface" title="compas.geometry.surfaces.surface.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a></p>
 <p>A cylindrical surface is defined by a radius and a local coordinate system.</p>
 <dl class="field-list">
@@ -1129,6 +1129,8 @@ document.write(`
 <dt><strong>radius</strong><span class="classifier">float</span></dt><dd><p>The radius of the cylinder.</p>
 </dd>
 <dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a></span></dt><dd><p>The local coordinate system of the cylinder.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the surface.</p>
 </dd>
 </dl>
 </dd>
@@ -1139,19 +1141,16 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.frame_at.html#compas.geometry.CylindricalSurface.frame_at" title="compas.geometry.CylindricalSurface.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Compute the frame at a point on the surface at the given parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.from_data.html#compas.geometry.CylindricalSurface.from_data" title="compas.geometry.CylindricalSurface.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.from_plane_and_radius.html#compas.geometry.CylindricalSurface.from_plane_and_radius" title="compas.geometry.CylindricalSurface.from_plane_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radius</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.from_plane_and_radius.html#compas.geometry.CylindricalSurface.from_plane_and_radius" title="compas.geometry.CylindricalSurface.from_plane_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_radius</span></code></a></p></td>
 <td><p>Construct a cylindrical surface from a plane and a radius.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.from_three_points.html#compas.geometry.CylindricalSurface.from_three_points" title="compas.geometry.CylindricalSurface.from_three_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_three_points</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.from_three_points.html#compas.geometry.CylindricalSurface.from_three_points" title="compas.geometry.CylindricalSurface.from_three_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_three_points</span></code></a></p></td>
 <td><p>Construct a cylindrical from three points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.normal_at.html#compas.geometry.CylindricalSurface.normal_at" title="compas.geometry.CylindricalSurface.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.normal_at.html#compas.geometry.CylindricalSurface.normal_at" title="compas.geometry.CylindricalSurface.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
 <td><p>Compute the normal at a point on the surface at the given parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.point_at.html#compas.geometry.CylindricalSurface.point_at" title="compas.geometry.CylindricalSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.point_at.html#compas.geometry.CylindricalSurface.point_at" title="compas.geometry.CylindricalSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Compute a point on the surface at the given parameters.</p></td>
 </tr>
 </tbody>
@@ -1237,49 +1236,46 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_brep.html#compas.geometry.CylindricalSurface.to_brep" title="compas.geometry.CylindricalSurface.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Convert the surface to a BREP representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_data.html#compas.geometry.CylindricalSurface.to_data" title="compas.geometry.CylindricalSurface.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_json.html#compas.geometry.CylindricalSurface.to_json" title="compas.geometry.CylindricalSurface.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_json.html#compas.geometry.CylindricalSurface.to_json" title="compas.geometry.CylindricalSurface.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_jsonstring.html#compas.geometry.CylindricalSurface.to_jsonstring" title="compas.geometry.CylindricalSurface.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_jsonstring.html#compas.geometry.CylindricalSurface.to_jsonstring" title="compas.geometry.CylindricalSurface.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_mesh.html#compas.geometry.CylindricalSurface.to_mesh" title="compas.geometry.CylindricalSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_mesh.html#compas.geometry.CylindricalSurface.to_mesh" title="compas.geometry.CylindricalSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
 <td><p>Convert the surface to a mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_polyhedron.html#compas.geometry.CylindricalSurface.to_polyhedron" title="compas.geometry.CylindricalSurface.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_polyhedron.html#compas.geometry.CylindricalSurface.to_polyhedron" title="compas.geometry.CylindricalSurface.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the surface to a polyhedron.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_quads.html#compas.geometry.CylindricalSurface.to_quads" title="compas.geometry.CylindricalSurface.to_quads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_quads</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_quads.html#compas.geometry.CylindricalSurface.to_quads" title="compas.geometry.CylindricalSurface.to_quads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_quads</span></code></a></p></td>
 <td><p>Convert the surface to a list of quads.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_step.html#compas.geometry.CylindricalSurface.to_step" title="compas.geometry.CylindricalSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_step.html#compas.geometry.CylindricalSurface.to_step" title="compas.geometry.CylindricalSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the surface geometry to a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_tesselation.html#compas.geometry.CylindricalSurface.to_tesselation" title="compas.geometry.CylindricalSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_tesselation.html#compas.geometry.CylindricalSurface.to_tesselation" title="compas.geometry.CylindricalSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
 <td><p>Convert the surface to a triangle mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_triangles.html#compas.geometry.CylindricalSurface.to_triangles" title="compas.geometry.CylindricalSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_triangles.html#compas.geometry.CylindricalSurface.to_triangles" title="compas.geometry.CylindricalSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
 <td><p>Convert the surface to a list of triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_vertices_and_faces.html#compas.geometry.CylindricalSurface.to_vertices_and_faces" title="compas.geometry.CylindricalSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.to_vertices_and_faces.html#compas.geometry.CylindricalSurface.to_vertices_and_faces" title="compas.geometry.CylindricalSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Convert the surface to a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.transform.html#compas.geometry.CylindricalSurface.transform" title="compas.geometry.CylindricalSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.transform.html#compas.geometry.CylindricalSurface.transform" title="compas.geometry.CylindricalSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.transformed.html#compas.geometry.CylindricalSurface.transformed" title="compas.geometry.CylindricalSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.transformed.html#compas.geometry.CylindricalSurface.transformed" title="compas.geometry.CylindricalSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.translate.html#compas.geometry.CylindricalSurface.translate" title="compas.geometry.CylindricalSurface.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.translate.html#compas.geometry.CylindricalSurface.translate" title="compas.geometry.CylindricalSurface.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.translated.html#compas.geometry.CylindricalSurface.translated" title="compas.geometry.CylindricalSurface.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.translated.html#compas.geometry.CylindricalSurface.translated" title="compas.geometry.CylindricalSurface.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.validate_data.html#compas.geometry.CylindricalSurface.validate_data" title="compas.geometry.CylindricalSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.CylindricalSurface.validate_data.html#compas.geometry.CylindricalSurface.validate_data" title="compas.geometry.CylindricalSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

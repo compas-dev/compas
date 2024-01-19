@@ -1120,7 +1120,7 @@ document.write(`
 <h1>Shear</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Shear">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Shear</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/shear.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Shear</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/shear.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.transformation.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a></p>
 <p>Class representing a shear transformation.</p>
 <p>A point P is transformed by the shear matrix into P” such that
@@ -1133,6 +1133,8 @@ of P onto the shear plane.</p>
 <dt><strong>matrix</strong><span class="classifier">list[list[float]], optional</span></dt><dd><p>A 4x4 matrix (or similar) representing a shear transformation.</p>
 </dd>
 <dt><strong>check</strong><span class="classifier">bool, optional</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the provided matrix will be checked for validity.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the transformation.</p>
 </dd>
 </dl>
 </dd>
@@ -1179,44 +1181,38 @@ of P onto the shear plane.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_change_of_basis.html#compas.geometry.Shear.from_change_of_basis" title="compas.geometry.Shear.from_change_of_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_change_of_basis</span></code></a></p></td>
 <td><p>Construct a change of basis transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_data.html#compas.geometry.Shear.from_data" title="compas.geometry.Shear.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_euler_angles.html#compas.geometry.Shear.from_euler_angles" title="compas.geometry.Shear.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_euler_angles.html#compas.geometry.Shear.from_euler_angles" title="compas.geometry.Shear.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a></p></td>
 <td><p>Construct a transformation from a rotation represented by Euler angles.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_frame.html#compas.geometry.Shear.from_frame" title="compas.geometry.Shear.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_frame.html#compas.geometry.Shear.from_frame" title="compas.geometry.Shear.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a></p></td>
 <td><p>Construct a transformation from world XY to frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_frame_to_frame.html#compas.geometry.Shear.from_frame_to_frame" title="compas.geometry.Shear.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_frame_to_frame.html#compas.geometry.Shear.from_frame_to_frame" title="compas.geometry.Shear.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a></p></td>
 <td><p>Construct a transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_json.html#compas.geometry.Shear.from_json" title="compas.geometry.Shear.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_json.html#compas.geometry.Shear.from_json" title="compas.geometry.Shear.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_jsonstring.html#compas.geometry.Shear.from_jsonstring" title="compas.geometry.Shear.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_jsonstring.html#compas.geometry.Shear.from_jsonstring" title="compas.geometry.Shear.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_list.html#compas.geometry.Shear.from_list" title="compas.geometry.Shear.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_list.html#compas.geometry.Shear.from_list" title="compas.geometry.Shear.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a></p></td>
 <td><p>Creates a transformation from a list of 16 numbers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.from_matrix.html#compas.geometry.Shear.from_matrix" title="compas.geometry.Shear.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.from_matrix.html#compas.geometry.Shear.from_matrix" title="compas.geometry.Shear.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
 <td><p>Creates a transformation from a list[list[float]] object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.inverse.html#compas.geometry.Shear.inverse" title="compas.geometry.Shear.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.inverse.html#compas.geometry.Shear.inverse" title="compas.geometry.Shear.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a></p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.invert.html#compas.geometry.Shear.invert" title="compas.geometry.Shear.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.invert.html#compas.geometry.Shear.invert" title="compas.geometry.Shear.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
 <td><p>Invert this transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.inverted.html#compas.geometry.Shear.inverted" title="compas.geometry.Shear.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.inverted.html#compas.geometry.Shear.inverted" title="compas.geometry.Shear.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.sha256.html#compas.geometry.Shear.sha256" title="compas.geometry.Shear.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.sha256.html#compas.geometry.Shear.sha256" title="compas.geometry.Shear.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shear.to_data.html#compas.geometry.Shear.to_data" title="compas.geometry.Shear.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shear.to_json.html#compas.geometry.Shear.to_json" title="compas.geometry.Shear.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>

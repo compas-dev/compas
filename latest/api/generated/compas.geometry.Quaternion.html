@@ -1121,7 +1121,7 @@ document.write(`
 <h1>Quaternion</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Quaternion">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Quaternion</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/quaternion.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Quaternion</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/quaternion.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>A quaternion is defined by 4 components, X, Y, Z, and W.</p>
 <dl class="field-list simple">
@@ -1129,7 +1129,13 @@ document.write(`
 <dd class="field-odd"><dl class="simple">
 <dt><strong>w</strong><span class="classifier">float</span></dt><dd><p>The scalar (real) part of a quaternion.</p>
 </dd>
-<dt><strong>x, y, z</strong><span class="classifier">float</span></dt><dd><p>Components of the vector (complex, imaginary) part of a quaternion.</p>
+<dt><strong>x</strong><span class="classifier">float</span></dt><dd><p>X component of the vector (complex, imaginary) part of a quaternion.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">float</span></dt><dd><p>Y component of the vector (complex, imaginary) part of a quaternion.</p>
+</dd>
+<dt><strong>z</strong><span class="classifier">float</span></dt><dd><p>Z component of the vector (complex, imaginary) part of a quaternion.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the transformation.</p>
 </dd>
 </dl>
 </dd>
@@ -1255,32 +1261,26 @@ False otherwise.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.copy.html#compas.geometry.Quaternion.copy" title="compas.geometry.Quaternion.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_data.html#compas.geometry.Quaternion.from_data" title="compas.geometry.Quaternion.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_json.html#compas.geometry.Quaternion.from_json" title="compas.geometry.Quaternion.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_json.html#compas.geometry.Quaternion.from_json" title="compas.geometry.Quaternion.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_jsonstring.html#compas.geometry.Quaternion.from_jsonstring" title="compas.geometry.Quaternion.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_jsonstring.html#compas.geometry.Quaternion.from_jsonstring" title="compas.geometry.Quaternion.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.rotate.html#compas.geometry.Quaternion.rotate" title="compas.geometry.Quaternion.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.rotate.html#compas.geometry.Quaternion.rotate" title="compas.geometry.Quaternion.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
 <td><p>Rotate the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.rotated.html#compas.geometry.Quaternion.rotated" title="compas.geometry.Quaternion.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.rotated.html#compas.geometry.Quaternion.rotated" title="compas.geometry.Quaternion.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
 <td><p>Returns a rotated copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.scale.html#compas.geometry.Quaternion.scale" title="compas.geometry.Quaternion.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.scale.html#compas.geometry.Quaternion.scale" title="compas.geometry.Quaternion.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.scaled.html#compas.geometry.Quaternion.scaled" title="compas.geometry.Quaternion.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.scaled.html#compas.geometry.Quaternion.scaled" title="compas.geometry.Quaternion.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
 <td><p>Returns a scaled copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.sha256.html#compas.geometry.Quaternion.sha256" title="compas.geometry.Quaternion.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.sha256.html#compas.geometry.Quaternion.sha256" title="compas.geometry.Quaternion.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_data.html#compas.geometry.Quaternion.to_data" title="compas.geometry.Quaternion.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.to_json.html#compas.geometry.Quaternion.to_json" title="compas.geometry.Quaternion.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>

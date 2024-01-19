@@ -426,7 +426,6 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.compare.html">Tolerance.compare</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.format_number.html">Tolerance.format_number</a></li>
-<li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.from_data.html">Tolerance.from_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.geometric_key.html">Tolerance.geometric_key</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.is_allclose.html">Tolerance.is_allclose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.is_angle_zero.html">Tolerance.is_angle_zero</a></li>
@@ -446,7 +445,6 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.from_json.html">Tolerance.from_json</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.from_jsonstring.html">Tolerance.from_jsonstring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.sha256.html">Tolerance.sha256</a></li>
-<li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.to_data.html">Tolerance.to_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.to_json.html">Tolerance.to_json</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.to_jsonstring.html">Tolerance.to_jsonstring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compas.tolerance.Tolerance.validate_data.html">Tolerance.validate_data</a></li>
@@ -508,13 +506,15 @@ document.write(`
 <h1>Tolerance</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.tolerance.Tolerance">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.tolerance.</span></span><span class="sig-name descname"><span class="pre">Tolerance</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/tolerance.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.tolerance.</span></span><span class="sig-name descname"><span class="pre">Tolerance</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/tolerance.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Tolerance settings for geometric operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>unit</strong><span class="classifier">{“M”, “MM”}, optional</span></dt><dd><p>The unit of the tolerance settings.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the tolerance settings.</p>
 </dd>
 </dl>
 </dd>
@@ -570,43 +570,40 @@ Therefore, the higher the number the higher the precision.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.format_number.html#compas.tolerance.Tolerance.format_number" title="compas.tolerance.Tolerance.format_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format_number</span></code></a></p></td>
 <td><p>Format a number as a string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.from_data.html#compas.tolerance.Tolerance.from_data" title="compas.tolerance.Tolerance.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.geometric_key.html#compas.tolerance.Tolerance.geometric_key" title="compas.tolerance.Tolerance.geometric_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometric_key</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.geometric_key.html#compas.tolerance.Tolerance.geometric_key" title="compas.tolerance.Tolerance.geometric_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometric_key</span></code></a></p></td>
 <td><p>Compute the geometric key of a point.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_allclose.html#compas.tolerance.Tolerance.is_allclose" title="compas.tolerance.Tolerance.is_allclose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_allclose</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_allclose.html#compas.tolerance.Tolerance.is_allclose" title="compas.tolerance.Tolerance.is_allclose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_allclose</span></code></a></p></td>
 <td><p>Check if two lists of values are element-wise close enough to be considered equal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_angle_zero.html#compas.tolerance.Tolerance.is_angle_zero" title="compas.tolerance.Tolerance.is_angle_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_angle_zero</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_angle_zero.html#compas.tolerance.Tolerance.is_angle_zero" title="compas.tolerance.Tolerance.is_angle_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_angle_zero</span></code></a></p></td>
 <td><p>Check if an angle is close enough to zero to be considered zero.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_angles_close.html#compas.tolerance.Tolerance.is_angles_close" title="compas.tolerance.Tolerance.is_angles_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_angles_close</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_angles_close.html#compas.tolerance.Tolerance.is_angles_close" title="compas.tolerance.Tolerance.is_angles_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_angles_close</span></code></a></p></td>
 <td><p>Check if two angles are close enough to be considered equal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_between.html#compas.tolerance.Tolerance.is_between" title="compas.tolerance.Tolerance.is_between"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_between</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_between.html#compas.tolerance.Tolerance.is_between" title="compas.tolerance.Tolerance.is_between"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_between</span></code></a></p></td>
 <td><p>Check if a value is between two other values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_close.html#compas.tolerance.Tolerance.is_close" title="compas.tolerance.Tolerance.is_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_close</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_close.html#compas.tolerance.Tolerance.is_close" title="compas.tolerance.Tolerance.is_close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_close</span></code></a></p></td>
 <td><p>Check if two values are close enough to be considered equal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_negative.html#compas.tolerance.Tolerance.is_negative" title="compas.tolerance.Tolerance.is_negative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_negative</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_negative.html#compas.tolerance.Tolerance.is_negative" title="compas.tolerance.Tolerance.is_negative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_negative</span></code></a></p></td>
 <td><p>Check if a value can be considered a strictly negative number.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_positive.html#compas.tolerance.Tolerance.is_positive" title="compas.tolerance.Tolerance.is_positive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_positive</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_positive.html#compas.tolerance.Tolerance.is_positive" title="compas.tolerance.Tolerance.is_positive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_positive</span></code></a></p></td>
 <td><p>Check if a value can be considered a strictly positive number.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_zero.html#compas.tolerance.Tolerance.is_zero" title="compas.tolerance.Tolerance.is_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_zero</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.is_zero.html#compas.tolerance.Tolerance.is_zero" title="compas.tolerance.Tolerance.is_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_zero</span></code></a></p></td>
 <td><p>Check if a value is close enough to zero to be considered zero.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.precision_from_tolerance.html#compas.tolerance.Tolerance.precision_from_tolerance" title="compas.tolerance.Tolerance.precision_from_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precision_from_tolerance</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.precision_from_tolerance.html#compas.tolerance.Tolerance.precision_from_tolerance" title="compas.tolerance.Tolerance.precision_from_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precision_from_tolerance</span></code></a></p></td>
 <td><p>Compute the precision from a given tolerance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.reset.html#compas.tolerance.Tolerance.reset" title="compas.tolerance.Tolerance.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.reset.html#compas.tolerance.Tolerance.reset" title="compas.tolerance.Tolerance.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
 <td><p>Reset all precision settings to their default values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.tolerance.html#compas.tolerance.Tolerance.tolerance" title="compas.tolerance.Tolerance.tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.tolerance.html#compas.tolerance.Tolerance.tolerance" title="compas.tolerance.Tolerance.tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span></code></a></p></td>
 <td><p>Compute the tolerance for a comparison.</p></td>
 </tr>
 </tbody>
@@ -629,16 +626,13 @@ Therefore, the higher the number the higher the precision.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.sha256.html#compas.tolerance.Tolerance.sha256" title="compas.tolerance.Tolerance.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.to_data.html#compas.tolerance.Tolerance.to_data" title="compas.tolerance.Tolerance.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.to_json.html#compas.tolerance.Tolerance.to_json" title="compas.tolerance.Tolerance.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.to_json.html#compas.tolerance.Tolerance.to_json" title="compas.tolerance.Tolerance.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.to_jsonstring.html#compas.tolerance.Tolerance.to_jsonstring" title="compas.tolerance.Tolerance.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.to_jsonstring.html#compas.tolerance.Tolerance.to_jsonstring" title="compas.tolerance.Tolerance.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.validate_data.html#compas.tolerance.Tolerance.validate_data" title="compas.tolerance.Tolerance.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.validate_data.html#compas.tolerance.Tolerance.validate_data" title="compas.tolerance.Tolerance.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

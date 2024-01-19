@@ -1120,7 +1120,7 @@ document.write(`
 <h1>Capsule</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Capsule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Capsule</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/shapes/capsule.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Capsule</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/shapes/capsule.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.shapes.shape.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
 <p>A capsule is defined by a frame, radius, and height.</p>
 <p>The capsule is oriented along the z-axis of the frame.
@@ -1136,6 +1136,8 @@ Half of the capsule is above the XY plane of the frame, the other half below.</p
 </dd>
 <dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>, optional</span></dt><dd><p>The local coordinate system, or “frame”, of the capsule.
 Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the world coordinate system is used.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the shape.</p>
 </dd>
 </dl>
 </dd>
@@ -1192,19 +1194,16 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.from_circle_and_height.html#compas.geometry.Capsule.from_circle_and_height" title="compas.geometry.Capsule.from_circle_and_height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circle_and_height</span></code></a></p></td>
 <td><p>Construct a capsule from a circle and a height.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.from_data.html#compas.geometry.Capsule.from_data" title="compas.geometry.Capsule.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.from_line_and_radius.html#compas.geometry.Capsule.from_line_and_radius" title="compas.geometry.Capsule.from_line_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_line_and_radius</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.from_line_and_radius.html#compas.geometry.Capsule.from_line_and_radius" title="compas.geometry.Capsule.from_line_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_line_and_radius</span></code></a></p></td>
 <td><p>Construct a capsule from a line and a radius.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.scale.html#compas.geometry.Capsule.scale" title="compas.geometry.Capsule.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.scale.html#compas.geometry.Capsule.scale" title="compas.geometry.Capsule.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the capsule.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_brep.html#compas.geometry.Capsule.to_brep" title="compas.geometry.Capsule.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_brep.html#compas.geometry.Capsule.to_brep" title="compas.geometry.Capsule.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Returns a BRep representation of the capsule.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_vertices_and_faces.html#compas.geometry.Capsule.to_vertices_and_faces" title="compas.geometry.Capsule.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_vertices_and_faces.html#compas.geometry.Capsule.to_vertices_and_faces" title="compas.geometry.Capsule.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Returns a list of vertices and faces.</p></td>
 </tr>
 </tbody>
@@ -1236,31 +1235,28 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.sha256.html#compas.geometry.Capsule.sha256" title="compas.geometry.Capsule.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_data.html#compas.geometry.Capsule.to_data" title="compas.geometry.Capsule.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_json.html#compas.geometry.Capsule.to_json" title="compas.geometry.Capsule.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_json.html#compas.geometry.Capsule.to_json" title="compas.geometry.Capsule.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_jsonstring.html#compas.geometry.Capsule.to_jsonstring" title="compas.geometry.Capsule.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_jsonstring.html#compas.geometry.Capsule.to_jsonstring" title="compas.geometry.Capsule.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_polyhedron.html#compas.geometry.Capsule.to_polyhedron" title="compas.geometry.Capsule.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.to_polyhedron.html#compas.geometry.Capsule.to_polyhedron" title="compas.geometry.Capsule.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.transform.html#compas.geometry.Capsule.transform" title="compas.geometry.Capsule.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.transform.html#compas.geometry.Capsule.transform" title="compas.geometry.Capsule.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.transformed.html#compas.geometry.Capsule.transformed" title="compas.geometry.Capsule.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.transformed.html#compas.geometry.Capsule.transformed" title="compas.geometry.Capsule.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.translate.html#compas.geometry.Capsule.translate" title="compas.geometry.Capsule.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.translate.html#compas.geometry.Capsule.translate" title="compas.geometry.Capsule.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.translated.html#compas.geometry.Capsule.translated" title="compas.geometry.Capsule.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.translated.html#compas.geometry.Capsule.translated" title="compas.geometry.Capsule.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Capsule.validate_data.html#compas.geometry.Capsule.validate_data" title="compas.geometry.Capsule.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Capsule.validate_data.html#compas.geometry.Capsule.validate_data" title="compas.geometry.Capsule.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

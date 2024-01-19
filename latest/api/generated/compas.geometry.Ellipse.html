@@ -59,7 +59,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Ellipse.from_data" href="compas.geometry.Ellipse.from_data.html" />
+    <link rel="next" title="Ellipse.from_plane_major_minor" href="compas.geometry.Ellipse.from_plane_major_minor.html" />
     <link rel="prev" title="CylindricalSurface.validate_data" href="compas.geometry.CylindricalSurface.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1120,7 +1120,7 @@ document.write(`
 <h1>Ellipse</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Ellipse">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Ellipse</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/curves/ellipse.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Ellipse</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/curves/ellipse.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Conic</span></code></p>
 <p>An ellipse is a curve defined by a coordinate system and a major and minor axis.</p>
 <p>The centre of the ellipse is at the origin of the coordinate system.
@@ -1137,6 +1137,8 @@ Moving along the ellipse in the parameter direction corresponds to moving counte
 </dd>
 <dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>, optional</span></dt><dd><p>The local coordinate system of the ellipse.
 The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the ellipse is constructed in the XY plane of the world coordinate system.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the ellipse.</p>
 </dd>
 </dl>
 </dd>
@@ -1220,22 +1222,19 @@ and passes through a point at a distance <code class="docutils literal notransla
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.from_data.html#compas.geometry.Ellipse.from_data" title="compas.geometry.Ellipse.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.from_plane_major_minor.html#compas.geometry.Ellipse.from_plane_major_minor" title="compas.geometry.Ellipse.from_plane_major_minor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_major_minor</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.from_plane_major_minor.html#compas.geometry.Ellipse.from_plane_major_minor" title="compas.geometry.Ellipse.from_plane_major_minor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_major_minor</span></code></a></p></td>
 <td><p>Construct a ellipse from a point and major and minor axis lengths.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.from_point_major_minor.html#compas.geometry.Ellipse.from_point_major_minor" title="compas.geometry.Ellipse.from_point_major_minor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_major_minor</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.from_point_major_minor.html#compas.geometry.Ellipse.from_point_major_minor" title="compas.geometry.Ellipse.from_point_major_minor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_major_minor</span></code></a></p></td>
 <td><p>Construct a ellipse from a point and major and minor axis lengths.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.normal_at.html#compas.geometry.Ellipse.normal_at" title="compas.geometry.Ellipse.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.normal_at.html#compas.geometry.Ellipse.normal_at" title="compas.geometry.Ellipse.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
 <td><p>Compute the normal at a specific parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.point_at.html#compas.geometry.Ellipse.point_at" title="compas.geometry.Ellipse.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.point_at.html#compas.geometry.Ellipse.point_at" title="compas.geometry.Ellipse.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Compute the point at a specific parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.tangent_at.html#compas.geometry.Ellipse.tangent_at" title="compas.geometry.Ellipse.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.tangent_at.html#compas.geometry.Ellipse.tangent_at" title="compas.geometry.Ellipse.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
 <td><p>Compute the tangent at a specific parameter.</p></td>
 </tr>
 </tbody>
@@ -1315,46 +1314,43 @@ and passes through a point at a distance <code class="docutils literal notransla
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.split.html#compas.geometry.Ellipse.split" title="compas.geometry.Ellipse.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_data.html#compas.geometry.Ellipse.to_data" title="compas.geometry.Ellipse.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_json.html#compas.geometry.Ellipse.to_json" title="compas.geometry.Ellipse.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_json.html#compas.geometry.Ellipse.to_json" title="compas.geometry.Ellipse.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_jsonstring.html#compas.geometry.Ellipse.to_jsonstring" title="compas.geometry.Ellipse.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_jsonstring.html#compas.geometry.Ellipse.to_jsonstring" title="compas.geometry.Ellipse.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_obj.html#compas.geometry.Ellipse.to_obj" title="compas.geometry.Ellipse.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_obj.html#compas.geometry.Ellipse.to_obj" title="compas.geometry.Ellipse.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the curve geometry to an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_points.html#compas.geometry.Ellipse.to_points" title="compas.geometry.Ellipse.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_points.html#compas.geometry.Ellipse.to_points" title="compas.geometry.Ellipse.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
 <td><p>Convert the curve to a list of points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_polygon.html#compas.geometry.Ellipse.to_polygon" title="compas.geometry.Ellipse.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_polygon.html#compas.geometry.Ellipse.to_polygon" title="compas.geometry.Ellipse.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
 <td><p>Convert the curve to a polygon.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_polyline.html#compas.geometry.Ellipse.to_polyline" title="compas.geometry.Ellipse.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_polyline.html#compas.geometry.Ellipse.to_polyline" title="compas.geometry.Ellipse.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
 <td><p>Convert the curve to a polyline.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_step.html#compas.geometry.Ellipse.to_step" title="compas.geometry.Ellipse.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.to_step.html#compas.geometry.Ellipse.to_step" title="compas.geometry.Ellipse.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the curve geometry to a STP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.transform.html#compas.geometry.Ellipse.transform" title="compas.geometry.Ellipse.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.transform.html#compas.geometry.Ellipse.transform" title="compas.geometry.Ellipse.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.transformed.html#compas.geometry.Ellipse.transformed" title="compas.geometry.Ellipse.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.transformed.html#compas.geometry.Ellipse.transformed" title="compas.geometry.Ellipse.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.translate.html#compas.geometry.Ellipse.translate" title="compas.geometry.Ellipse.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.translate.html#compas.geometry.Ellipse.translate" title="compas.geometry.Ellipse.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.translated.html#compas.geometry.Ellipse.translated" title="compas.geometry.Ellipse.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.translated.html#compas.geometry.Ellipse.translated" title="compas.geometry.Ellipse.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.trim.html#compas.geometry.Ellipse.trim" title="compas.geometry.Ellipse.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.trim.html#compas.geometry.Ellipse.trim" title="compas.geometry.Ellipse.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Ellipse.validate_data.html#compas.geometry.Ellipse.validate_data" title="compas.geometry.Ellipse.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Ellipse.validate_data.html#compas.geometry.Ellipse.validate_data" title="compas.geometry.Ellipse.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

@@ -1120,7 +1120,7 @@ document.write(`
 <h1>DataEncoder</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.data.DataEncoder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">DataEncoder</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/data/encoders.py#L66"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">DataEncoder</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/data/encoders.py#L66"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">JSONEncoder</span></code></p>
 <p>Data encoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.</p>
 <p>The encoder adds the following conversions to the JSON serialisation process:</p>
@@ -1129,7 +1129,7 @@ document.write(`
 <li><p>iterables to lists; and</p></li>
 <li><p><a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a> objects,
 such as geometric primitives and shapes, data structures, robots, …,
-to a dict with the following structure: <code class="docutils literal notranslate"><span class="pre">{'dtype':</span> <span class="pre">o.dtype,</span> <span class="pre">'value':</span> <span class="pre">o.data}</span></code></p></li>
+to a dict with the following structure: <code class="docutils literal notranslate"><span class="pre">{'dtype':</span> <span class="pre">o.__dtype__,</span> <span class="pre">'data':</span> <span class="pre">o.__data__}</span></code></p></li>
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>

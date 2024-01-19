@@ -1120,7 +1120,7 @@ document.write(`
 <h1>DataDecoder</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.data.DataDecoder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">DataDecoder</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/data/encoders.py#L160"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.data.</span></span><span class="sig-name descname"><span class="pre">DataDecoder</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/data/encoders.py#L160"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">JSONDecoder</span></code></p>
 <p>Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.</p>
 <p>The decoder hooks into the JSON deserialisation process
@@ -1129,9 +1129,9 @@ such as geometric primitives and shapes, data structures, robots, …,
 from the serialized data when possible.</p>
 <p>The reconstruction is possible if</p>
 <ul class="simple">
-<li><p>the serialized data has the following structure: <code class="docutils literal notranslate"><span class="pre">{&quot;dtype&quot;:</span> <span class="pre">&quot;...&quot;,</span> <span class="pre">'value':</span> <span class="pre">{...}}</span></code>;</p></li>
+<li><p>the serialized data has the following structure: <code class="docutils literal notranslate"><span class="pre">{&quot;dtype&quot;:</span> <span class="pre">&quot;...&quot;,</span> <span class="pre">'data':</span> <span class="pre">{...}}</span></code>;</p></li>
 <li><p>a class can be imported into the current scope from the info in <code class="docutils literal notranslate"><span class="pre">o[&quot;dtype&quot;]</span></code>; and</p></li>
-<li><p>the imported class has a method <code class="docutils literal notranslate"><span class="pre">from_data</span></code>.</p></li>
+<li><p>the imported class has a method <code class="docutils literal notranslate"><span class="pre">__from_data__</span></code>.</p></li>
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>

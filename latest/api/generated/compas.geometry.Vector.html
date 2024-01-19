@@ -1120,7 +1120,7 @@ document.write(`
 <h1>Vector</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Vector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Vector</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/vector.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Vector</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/vector.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>A vector is defined by XYZ components and a homogenisation factor.</p>
 <dl class="field-list simple">
@@ -1131,6 +1131,8 @@ document.write(`
 <dt><strong>y</strong><span class="classifier">float</span></dt><dd><p>The Y component of the vector.</p>
 </dd>
 <dt><strong>z</strong><span class="classifier">float</span></dt><dd><p>The Z component of the vector.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the vector.</p>
 </dd>
 </dl>
 </dd>
@@ -1219,46 +1221,43 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.dot_vectors.html#compas.geometry.Vector.dot_vectors" title="compas.geometry.Vector.dot_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot_vectors</span></code></a></p></td>
 <td><p>Compute the dot product of two lists of vectors.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.from_data.html#compas.geometry.Vector.from_data" title="compas.geometry.Vector.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.from_start_end.html#compas.geometry.Vector.from_start_end" title="compas.geometry.Vector.from_start_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_start_end</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.from_start_end.html#compas.geometry.Vector.from_start_end" title="compas.geometry.Vector.from_start_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_start_end</span></code></a></p></td>
 <td><p>Construct a vector from start and end points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.invert.html#compas.geometry.Vector.invert" title="compas.geometry.Vector.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.invert.html#compas.geometry.Vector.invert" title="compas.geometry.Vector.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
 <td><p>Invert the direction of this vector</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.inverted.html#compas.geometry.Vector.inverted" title="compas.geometry.Vector.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.inverted.html#compas.geometry.Vector.inverted" title="compas.geometry.Vector.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
 <td><p>Returns a inverted copy of this vector</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.length_vectors.html#compas.geometry.Vector.length_vectors" title="compas.geometry.Vector.length_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_vectors</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.length_vectors.html#compas.geometry.Vector.length_vectors" title="compas.geometry.Vector.length_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_vectors</span></code></a></p></td>
 <td><p>Compute the length of multiple vectors.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.scale.html#compas.geometry.Vector.scale" title="compas.geometry.Vector.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.scale.html#compas.geometry.Vector.scale" title="compas.geometry.Vector.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale this vector by a factor n.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.scaled.html#compas.geometry.Vector.scaled" title="compas.geometry.Vector.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.scaled.html#compas.geometry.Vector.scaled" title="compas.geometry.Vector.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
 <td><p>Returns a scaled copy of this vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.sum_vectors.html#compas.geometry.Vector.sum_vectors" title="compas.geometry.Vector.sum_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum_vectors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.sum_vectors.html#compas.geometry.Vector.sum_vectors" title="compas.geometry.Vector.sum_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum_vectors</span></code></a></p></td>
 <td><p>Compute the sum of multiple vectors.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.transform.html#compas.geometry.Vector.transform" title="compas.geometry.Vector.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.transform.html#compas.geometry.Vector.transform" title="compas.geometry.Vector.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform this vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.transform_collection.html#compas.geometry.Vector.transform_collection" title="compas.geometry.Vector.transform_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.transform_collection.html#compas.geometry.Vector.transform_collection" title="compas.geometry.Vector.transform_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code></a></p></td>
 <td><p>Transform a collection of vector objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.transformed.html#compas.geometry.Vector.transformed" title="compas.geometry.Vector.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.transformed.html#compas.geometry.Vector.transformed" title="compas.geometry.Vector.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Return a transformed copy of this vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.transformed_collection.html#compas.geometry.Vector.transformed_collection" title="compas.geometry.Vector.transformed_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.transformed_collection.html#compas.geometry.Vector.transformed_collection" title="compas.geometry.Vector.transformed_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code></a></p></td>
 <td><p>Create a collection of transformed vectors.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.unitize.html#compas.geometry.Vector.unitize" title="compas.geometry.Vector.unitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitize</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.unitize.html#compas.geometry.Vector.unitize" title="compas.geometry.Vector.unitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitize</span></code></a></p></td>
 <td><p>Scale this vector to unit length.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.unitized.html#compas.geometry.Vector.unitized" title="compas.geometry.Vector.unitized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitized</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.unitized.html#compas.geometry.Vector.unitized" title="compas.geometry.Vector.unitized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitized</span></code></a></p></td>
 <td><p>Returns a unitized copy of this vector.</p></td>
 </tr>
 </tbody>
@@ -1284,22 +1283,19 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.sha256.html#compas.geometry.Vector.sha256" title="compas.geometry.Vector.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.to_data.html#compas.geometry.Vector.to_data" title="compas.geometry.Vector.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.to_json.html#compas.geometry.Vector.to_json" title="compas.geometry.Vector.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.to_json.html#compas.geometry.Vector.to_json" title="compas.geometry.Vector.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.to_jsonstring.html#compas.geometry.Vector.to_jsonstring" title="compas.geometry.Vector.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.to_jsonstring.html#compas.geometry.Vector.to_jsonstring" title="compas.geometry.Vector.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.translate.html#compas.geometry.Vector.translate" title="compas.geometry.Vector.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.translate.html#compas.geometry.Vector.translate" title="compas.geometry.Vector.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.translated.html#compas.geometry.Vector.translated" title="compas.geometry.Vector.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.translated.html#compas.geometry.Vector.translated" title="compas.geometry.Vector.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Vector.validate_data.html#compas.geometry.Vector.validate_data" title="compas.geometry.Vector.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Vector.validate_data.html#compas.geometry.Vector.validate_data" title="compas.geometry.Vector.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

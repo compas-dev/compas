@@ -1120,7 +1120,7 @@ document.write(`
 <h1>PlanarSurface</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.PlanarSurface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">PlanarSurface</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/surfaces/planar.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">PlanarSurface</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/surfaces/planar.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Surface.html#compas.geometry.Surface" title="compas.geometry.surfaces.surface.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a></p>
 <p>A planar surface is defined by a local coordinate system and a size.</p>
 <dl class="field-list">
@@ -1133,6 +1133,8 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 </dd>
 <dt><strong>ysize</strong><span class="classifier">float, optional</span></dt><dd><p>The size of the surface in the local Y-direction.</p>
 </dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the surface.</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1142,19 +1144,16 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.frame_at.html#compas.geometry.PlanarSurface.frame_at" title="compas.geometry.PlanarSurface.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
 <td><p>Construct a frame at a point on the planar surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.from_data.html#compas.geometry.PlanarSurface.from_data" title="compas.geometry.PlanarSurface.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.from_plane_and_size.html#compas.geometry.PlanarSurface.from_plane_and_size" title="compas.geometry.PlanarSurface.from_plane_and_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_size</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.from_plane_and_size.html#compas.geometry.PlanarSurface.from_plane_and_size" title="compas.geometry.PlanarSurface.from_plane_and_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_size</span></code></a></p></td>
 <td><p>Construct a planar surface from a plane and x and y sizes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.normal_at.html#compas.geometry.PlanarSurface.normal_at" title="compas.geometry.PlanarSurface.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.normal_at.html#compas.geometry.PlanarSurface.normal_at" title="compas.geometry.PlanarSurface.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
 <td><p>Construct the normal at a point on the planar surface.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.point_at.html#compas.geometry.PlanarSurface.point_at" title="compas.geometry.PlanarSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.point_at.html#compas.geometry.PlanarSurface.point_at" title="compas.geometry.PlanarSurface.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Construct a point on the planar surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_plane.html#compas.geometry.PlanarSurface.to_plane" title="compas.geometry.PlanarSurface.to_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_plane</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_plane.html#compas.geometry.PlanarSurface.to_plane" title="compas.geometry.PlanarSurface.to_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_plane</span></code></a></p></td>
 <td><p>Convert the planar surface to a plane.</p></td>
 </tr>
 </tbody>
@@ -1240,49 +1239,46 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_brep.html#compas.geometry.PlanarSurface.to_brep" title="compas.geometry.PlanarSurface.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Convert the surface to a BREP representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_data.html#compas.geometry.PlanarSurface.to_data" title="compas.geometry.PlanarSurface.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_json.html#compas.geometry.PlanarSurface.to_json" title="compas.geometry.PlanarSurface.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_json.html#compas.geometry.PlanarSurface.to_json" title="compas.geometry.PlanarSurface.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_jsonstring.html#compas.geometry.PlanarSurface.to_jsonstring" title="compas.geometry.PlanarSurface.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_jsonstring.html#compas.geometry.PlanarSurface.to_jsonstring" title="compas.geometry.PlanarSurface.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_mesh.html#compas.geometry.PlanarSurface.to_mesh" title="compas.geometry.PlanarSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_mesh.html#compas.geometry.PlanarSurface.to_mesh" title="compas.geometry.PlanarSurface.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
 <td><p>Convert the surface to a mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_polyhedron.html#compas.geometry.PlanarSurface.to_polyhedron" title="compas.geometry.PlanarSurface.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_polyhedron.html#compas.geometry.PlanarSurface.to_polyhedron" title="compas.geometry.PlanarSurface.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the surface to a polyhedron.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_quads.html#compas.geometry.PlanarSurface.to_quads" title="compas.geometry.PlanarSurface.to_quads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_quads</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_quads.html#compas.geometry.PlanarSurface.to_quads" title="compas.geometry.PlanarSurface.to_quads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_quads</span></code></a></p></td>
 <td><p>Convert the surface to a list of quads.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_step.html#compas.geometry.PlanarSurface.to_step" title="compas.geometry.PlanarSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_step.html#compas.geometry.PlanarSurface.to_step" title="compas.geometry.PlanarSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the surface geometry to a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_tesselation.html#compas.geometry.PlanarSurface.to_tesselation" title="compas.geometry.PlanarSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_tesselation.html#compas.geometry.PlanarSurface.to_tesselation" title="compas.geometry.PlanarSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
 <td><p>Convert the surface to a triangle mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_triangles.html#compas.geometry.PlanarSurface.to_triangles" title="compas.geometry.PlanarSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_triangles.html#compas.geometry.PlanarSurface.to_triangles" title="compas.geometry.PlanarSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
 <td><p>Convert the surface to a list of triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_vertices_and_faces.html#compas.geometry.PlanarSurface.to_vertices_and_faces" title="compas.geometry.PlanarSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.to_vertices_and_faces.html#compas.geometry.PlanarSurface.to_vertices_and_faces" title="compas.geometry.PlanarSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Convert the surface to a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.transform.html#compas.geometry.PlanarSurface.transform" title="compas.geometry.PlanarSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.transform.html#compas.geometry.PlanarSurface.transform" title="compas.geometry.PlanarSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.transformed.html#compas.geometry.PlanarSurface.transformed" title="compas.geometry.PlanarSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.transformed.html#compas.geometry.PlanarSurface.transformed" title="compas.geometry.PlanarSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.translate.html#compas.geometry.PlanarSurface.translate" title="compas.geometry.PlanarSurface.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.translate.html#compas.geometry.PlanarSurface.translate" title="compas.geometry.PlanarSurface.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.translated.html#compas.geometry.PlanarSurface.translated" title="compas.geometry.PlanarSurface.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.translated.html#compas.geometry.PlanarSurface.translated" title="compas.geometry.PlanarSurface.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.validate_data.html#compas.geometry.PlanarSurface.validate_data" title="compas.geometry.PlanarSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.PlanarSurface.validate_data.html#compas.geometry.PlanarSurface.validate_data" title="compas.geometry.PlanarSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

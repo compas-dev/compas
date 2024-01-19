@@ -60,7 +60,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Hyperbola.from_data" href="compas.geometry.Hyperbola.from_data.html" />
+    <link rel="next" title="Hyperbola.normal_at" href="compas.geometry.Hyperbola.normal_at.html" />
     <link rel="prev" title="Geometry.validate_data" href="compas.geometry.Geometry.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1121,7 +1121,7 @@ document.write(`
 <h1>Hyperbola</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Hyperbola">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Hyperbola</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/90cfd64/src/compas/geometry/curves/hyperbola.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Hyperbola</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/03f29e6/src/compas/geometry/curves/hyperbola.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Conic</span></code></p>
 <p>A hyperbola is defined by a coordinate frame and a major and minor axis.</p>
 <p>It is implemented using the equation</p>
@@ -1144,6 +1144,8 @@ and the eccentricity math::<cite>fraq{sqrt{a^2 + b^2}}{a}</cite>.</p>
 </dd>
 <dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>, optional</span></dt><dd><p>The local coordinate system of the hyperbola.
 The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the hyperbola is constructed in the XY plane of the world coordinate system.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the hyperbola.</p>
 </dd>
 </dl>
 </dd>
@@ -1219,16 +1221,13 @@ The eccentricity of a hyperbola is a number higher than 1.</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.from_data.html#compas.geometry.Hyperbola.from_data" title="compas.geometry.Hyperbola.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a></p></td>
-<td><p>Construct an object of this type from the provided data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.normal_at.html#compas.geometry.Hyperbola.normal_at" title="compas.geometry.Hyperbola.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.normal_at.html#compas.geometry.Hyperbola.normal_at" title="compas.geometry.Hyperbola.normal_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal_at</span></code></a></p></td>
 <td><p>Normal at a specific normalized parameter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.point_at.html#compas.geometry.Hyperbola.point_at" title="compas.geometry.Hyperbola.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.point_at.html#compas.geometry.Hyperbola.point_at" title="compas.geometry.Hyperbola.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
 <td><p>Point at the parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.tangent_at.html#compas.geometry.Hyperbola.tangent_at" title="compas.geometry.Hyperbola.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.tangent_at.html#compas.geometry.Hyperbola.tangent_at" title="compas.geometry.Hyperbola.tangent_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangent_at</span></code></a></p></td>
 <td><p>Tangent vector at the parameter.</p></td>
 </tr>
 </tbody>
@@ -1308,46 +1307,43 @@ The eccentricity of a hyperbola is a number higher than 1.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.split.html#compas.geometry.Hyperbola.split" title="compas.geometry.Hyperbola.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_data.html#compas.geometry.Hyperbola.to_data" title="compas.geometry.Hyperbola.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a></p></td>
-<td><p>Convert an object to its native data representation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_json.html#compas.geometry.Hyperbola.to_json" title="compas.geometry.Hyperbola.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_json.html#compas.geometry.Hyperbola.to_json" title="compas.geometry.Hyperbola.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_jsonstring.html#compas.geometry.Hyperbola.to_jsonstring" title="compas.geometry.Hyperbola.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_jsonstring.html#compas.geometry.Hyperbola.to_jsonstring" title="compas.geometry.Hyperbola.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_obj.html#compas.geometry.Hyperbola.to_obj" title="compas.geometry.Hyperbola.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_obj.html#compas.geometry.Hyperbola.to_obj" title="compas.geometry.Hyperbola.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a></p></td>
 <td><p>Write the curve geometry to an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_points.html#compas.geometry.Hyperbola.to_points" title="compas.geometry.Hyperbola.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_points.html#compas.geometry.Hyperbola.to_points" title="compas.geometry.Hyperbola.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a></p></td>
 <td><p>Convert the curve to a list of points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_polygon.html#compas.geometry.Hyperbola.to_polygon" title="compas.geometry.Hyperbola.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_polygon.html#compas.geometry.Hyperbola.to_polygon" title="compas.geometry.Hyperbola.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
 <td><p>Convert the curve to a polygon.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_polyline.html#compas.geometry.Hyperbola.to_polyline" title="compas.geometry.Hyperbola.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_polyline.html#compas.geometry.Hyperbola.to_polyline" title="compas.geometry.Hyperbola.to_polyline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyline</span></code></a></p></td>
 <td><p>Convert the curve to a polyline.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_step.html#compas.geometry.Hyperbola.to_step" title="compas.geometry.Hyperbola.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.to_step.html#compas.geometry.Hyperbola.to_step" title="compas.geometry.Hyperbola.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the curve geometry to a STP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.transform.html#compas.geometry.Hyperbola.transform" title="compas.geometry.Hyperbola.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.transform.html#compas.geometry.Hyperbola.transform" title="compas.geometry.Hyperbola.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.transformed.html#compas.geometry.Hyperbola.transformed" title="compas.geometry.Hyperbola.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.transformed.html#compas.geometry.Hyperbola.transformed" title="compas.geometry.Hyperbola.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.translate.html#compas.geometry.Hyperbola.translate" title="compas.geometry.Hyperbola.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.translate.html#compas.geometry.Hyperbola.translate" title="compas.geometry.Hyperbola.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.translated.html#compas.geometry.Hyperbola.translated" title="compas.geometry.Hyperbola.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.translated.html#compas.geometry.Hyperbola.translated" title="compas.geometry.Hyperbola.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.trim.html#compas.geometry.Hyperbola.trim" title="compas.geometry.Hyperbola.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.trim.html#compas.geometry.Hyperbola.trim" title="compas.geometry.Hyperbola.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.validate_data.html#compas.geometry.Hyperbola.validate_data" title="compas.geometry.Hyperbola.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Hyperbola.validate_data.html#compas.geometry.Hyperbola.validate_data" title="compas.geometry.Hyperbola.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
