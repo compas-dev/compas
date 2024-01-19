@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="GraphObject.clear" href="compas.scene.GraphObject.clear.html" />
-    <link rel="prev" title="MeshObject.draw" href="compas.scene.MeshObject.draw.html" />
+    <link rel="prev" title="MeshObject.add" href="compas.scene.MeshObject.add.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -845,7 +845,6 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.GeometryObject.html">GeometryObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.MeshObject.html">MeshObject</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">GraphObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.scene.NoSceneObjectContextError.html">NoSceneObjectContextError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.Scene.html">Scene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.SceneObject.html">SceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.SceneObjectNotRegisteredError.html">SceneObjectNotRegisteredError</a></li>
@@ -1121,7 +1120,7 @@ document.write(`
 <h1>GraphObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.GraphObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">GraphObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/18c1b46/src/compas/scene/graphobject.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">GraphObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/0ceee4c/src/compas/scene/graphobject.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.scene.SceneObject.html#compas.scene.SceneObject" title="compas.scene.sceneobject.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">SceneObject</span></code></a></p>
 <p>Scene object for drawing graph data structures.</p>
 <dl class="field-list">
@@ -1174,10 +1173,13 @@ The default view coordinates are the actual coordinates of the nodes of the grap
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.clear_nodes.html#compas.scene.GraphObject.clear_nodes" title="compas.scene.GraphObject.clear_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_nodes</span></code></a></p></td>
 <td><p>Clear the nodes of the graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.draw_edges.html#compas.scene.GraphObject.draw_edges" title="compas.scene.GraphObject.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.draw.html#compas.scene.GraphObject.draw" title="compas.scene.GraphObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
+<td><p>Draw the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.draw_edges.html#compas.scene.GraphObject.draw_edges" title="compas.scene.GraphObject.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw the edges of the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.draw_nodes.html#compas.scene.GraphObject.draw_nodes" title="compas.scene.GraphObject.draw_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.draw_nodes.html#compas.scene.GraphObject.draw_nodes" title="compas.scene.GraphObject.draw_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodes</span></code></a></p></td>
 <td><p>Draw the nodes of the graph.</p></td>
 </tr>
 </tbody>
@@ -1187,9 +1189,6 @@ The default view coordinates are the actual coordinates of the nodes of the grap
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.add.html#compas.scene.GraphObject.add" title="compas.scene.GraphObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.draw.html#compas.scene.GraphObject.draw" title="compas.scene.GraphObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p>The main drawing method.</p></td>
 </tr>
 </tbody>
 </table>

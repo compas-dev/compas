@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="MeshObject.clear" href="compas.scene.MeshObject.clear.html" />
-    <link rel="prev" title="GeometryObject.draw" href="compas.scene.GeometryObject.draw.html" />
+    <link rel="prev" title="GeometryObject.clear" href="compas.scene.GeometryObject.clear.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -845,7 +845,6 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.GeometryObject.html">GeometryObject</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">MeshObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.GraphObject.html">GraphObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas.scene.NoSceneObjectContextError.html">NoSceneObjectContextError</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.Scene.html">Scene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.SceneObject.html">SceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas.scene.SceneObjectNotRegisteredError.html">SceneObjectNotRegisteredError</a></li>
@@ -1121,7 +1120,7 @@ document.write(`
 <h1>MeshObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.MeshObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/18c1b46/src/compas/scene/meshobject.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/0ceee4c/src/compas/scene/meshobject.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.scene.SceneObject.html#compas.scene.SceneObject" title="compas.scene.sceneobject.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">SceneObject</span></code></a></p>
 <p>Base class for all mesh scene objects.</p>
 <dl class="field-list">
@@ -1183,16 +1182,19 @@ Defaults to the real coordinates.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.scene.MeshObject.clear_vertices.html#compas.scene.MeshObject.clear_vertices" title="compas.scene.MeshObject.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
 <td><p>Clear the vertices of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_edges.html#compas.scene.MeshObject.draw_edges" title="compas.scene.MeshObject.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw.html#compas.scene.MeshObject.draw" title="compas.scene.MeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
+<td><p>draw the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_edges.html#compas.scene.MeshObject.draw_edges" title="compas.scene.MeshObject.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw the edges of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_faces.html#compas.scene.MeshObject.draw_faces" title="compas.scene.MeshObject.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_faces.html#compas.scene.MeshObject.draw_faces" title="compas.scene.MeshObject.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
 <td><p>Draw the faces of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_mesh.html#compas.scene.MeshObject.draw_mesh" title="compas.scene.MeshObject.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_mesh.html#compas.scene.MeshObject.draw_mesh" title="compas.scene.MeshObject.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
 <td><p>Draw the mesh of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_vertices.html#compas.scene.MeshObject.draw_vertices" title="compas.scene.MeshObject.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw_vertices.html#compas.scene.MeshObject.draw_vertices" title="compas.scene.MeshObject.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
 <td><p>Draw the vertices of the mesh.</p></td>
 </tr>
 </tbody>
@@ -1202,9 +1204,6 @@ Defaults to the real coordinates.</p>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.MeshObject.add.html#compas.scene.MeshObject.add" title="compas.scene.MeshObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.MeshObject.draw.html#compas.scene.MeshObject.draw" title="compas.scene.MeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p>The main drawing method.</p></td>
 </tr>
 </tbody>
 </table>

@@ -32,6 +32,17 @@ body {
     max-width: 1920px;
 }
 
+/*
+Ideally max-width would only be applied to the content of the sidebar
+and the sidebar itself would be 25% of the page width.
+The content then should be aligned to the right.
+*/
+
+.bd-sidebar-primary {
+    width: 25%;
+    max-width: 22rem; /* 360px ish */
+}
+
 .bd-header {
     box-shadow: none;
     border-bottom: 1px solid var(--pst-color-shadow);
