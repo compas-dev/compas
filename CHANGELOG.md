@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Merged `compas.datastructures.Halfedge` into `compas.datastructures.Mesh`.
 * Merged `compas.datastructures.Network` into `compas.datastructures.Graph`.
 * Merged `compas.datastructures.Halfface` into `compas.datastructures.VolMesh`.
+* Fixed `RhinoBrep` doesn't get capped after trimming.
 
 ### Removed
 
