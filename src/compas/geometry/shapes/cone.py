@@ -85,6 +85,22 @@ class Cone(Shape):
         "required": ["radius", "height", "frame"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "height": self.height,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius=data["radius"],
+            height=data["height"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
     def __init__(self, radius, height, frame=None, **kwargs):
         super(Cone, self).__init__(frame=frame, **kwargs)
         self._radius = None
@@ -98,26 +114,6 @@ class Cone(Shape):
             self.radius,
             self.height,
             self.frame,
-        )
-
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius": self.radius,
-            "height": self.height,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius=data["radius"],
-            height=data["height"],
-            frame=Frame.from_data(data["frame"]),
         )
 
     # ==========================================================================

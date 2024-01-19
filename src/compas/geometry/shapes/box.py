@@ -113,6 +113,24 @@ class Box(Shape):
         "minProperties": 4,
     }
 
+    @property
+    def __data__(self):
+        return {
+            "xsize": self.xsize,
+            "ysize": self.ysize,
+            "zsize": self.zsize,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            xsize=data["xsize"],
+            ysize=data["ysize"],
+            zsize=data["zsize"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
     def __init__(self, xsize=1.0, ysize=None, zsize=None, frame=None, **kwargs):
         super(Box, self).__init__(frame=frame, **kwargs)
         self._xsize = None
@@ -160,28 +178,6 @@ class Box(Shape):
 
     def __iter__(self):
         return iter([self.xsize, self.ysize, self.zsize, self.frame])
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "xsize": self.xsize,
-            "ysize": self.ysize,
-            "zsize": self.zsize,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            xsize=data["xsize"],
-            ysize=data["ysize"],
-            zsize=data["zsize"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # Properties
@@ -542,6 +538,27 @@ class Box(Shape):
             faces = _faces
 
         return vertices, faces
+
+    def to_mesh(self, triangulated=False):
+        """Returns a mesh representation of the box.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            If True, triangulate the faces.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+
+        """
+        from compas.datastructures import Mesh
+
+        vertices, faces = self.to_vertices_and_faces(triangulated=triangulated)
+
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+        return mesh
 
     def to_brep(self):
         """Returns a BREP representation of the box.

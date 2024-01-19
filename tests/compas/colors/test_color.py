@@ -31,7 +31,7 @@ def test_color(color):
 
 def test_color_data():
     color = Color(random(), random(), random(), random())
-    other = Color.from_data(json.loads(json.dumps(color.data)))
+    other = Color.__from_data__(json.loads(json.dumps(color.__data__)))
 
     assert color.r == other.r
     assert color.g == other.g
@@ -41,8 +41,8 @@ def test_color_data():
     assert color == other
 
     if not compas.IPY:
-        assert Color.validate_data(color.data)
-        assert Color.validate_data(other.data)
+        assert Color.validate_data(color.__data__)
+        assert Color.validate_data(other.__data__)
 
 
 def test_color_predefined():

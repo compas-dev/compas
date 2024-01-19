@@ -77,7 +77,7 @@ def test_hyperbola_create_with_frame():
 
 def test_hyperbola_data():
     hyperbola = Hyperbola(major=1.0, minor=0.5)
-    other = Hyperbola.from_data(json.loads(json.dumps(hyperbola.data)))
+    other = Hyperbola.__from_data__(json.loads(json.dumps(hyperbola.__data__)))
 
     assert hyperbola.major == other.major
     assert hyperbola.minor == other.minor
@@ -86,8 +86,8 @@ def test_hyperbola_data():
     assert allclose(hyperbola.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
     if not compas.IPY:
-        assert Hyperbola.validate_data(hyperbola.data)
-        assert Hyperbola.validate_data(other.data)
+        assert Hyperbola.validate_data(hyperbola.__data__)
+        assert Hyperbola.validate_data(other.__data__)
 
 
 # =============================================================================

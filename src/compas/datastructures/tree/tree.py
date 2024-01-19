@@ -47,6 +47,20 @@ class TreeNode(Data):
         "required": ["attributes", "children"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "attributes": self.attributes,
+            "children": [child.__data__ for child in self.children],
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        node = cls(**data["attributes"])
+        for child in data["children"]:
+            node.add(cls.__from_data__(child))
+        return node
+
     def __init__(self, **kwargs):
         super(TreeNode, self).__init__(**kwargs)
         self.attributes = kwargs
@@ -83,20 +97,6 @@ class TreeNode(Data):
             return self._tree
         else:
             return self.parent.tree  # type: ignore
-
-    @property
-    def data(self):
-        return {
-            "attributes": self.attributes,
-            "children": [child.data for child in self.children],
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        node = cls(**data["attributes"])
-        for child in data["children"]:
-            node.add(cls.from_data(child))
-        return node
 
     def add(self, node):
         """
@@ -247,22 +247,22 @@ class Tree(Datastructure):
         "required": ["root"],
     }
 
-    def __init__(self, name=None):
-        super(Tree, self).__init__(name=name)
-        self._root = None
-
     @property
-    def data(self):
+    def __data__(self):
         return {
-            "root": self.root.data,  # type: ignore
+            "root": self.root.__data__,  # type: ignore
         }
 
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         tree = cls()
-        root = TreeNode.from_data(data["root"])
+        root = TreeNode.__from_data__(data["root"])
         tree.add(root)
         return tree
+
+    def __init__(self, name=None):
+        super(Tree, self).__init__(name=name)
+        self._root = None
 
     @property
     def root(self):

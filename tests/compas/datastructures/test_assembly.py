@@ -102,11 +102,11 @@ def test_find_by_key():
     assert assembly.find_by_key("100") is None
 
 
-def test_find_by_key_after_from_data():
+def test_find_by_key_after__from_data__():
     assembly = Assembly()
     part = Part()
     assembly.add_part(part, key=2)
-    assembly = Assembly.from_data(assembly.to_data())
+    assembly = Assembly.__from_data__(assembly.__data__)
     assert assembly.find_by_key(2) == part
 
 

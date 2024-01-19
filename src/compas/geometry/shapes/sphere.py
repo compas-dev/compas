@@ -72,6 +72,20 @@ class Sphere(Shape):
         "required": ["radius", "frame"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius=data["radius"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
     def __init__(self, radius, frame=None, point=None, **kwargs):
         super(Sphere, self).__init__(frame=frame, **kwargs)
         self._radius = 1.0
@@ -84,24 +98,6 @@ class Sphere(Shape):
             type(self).__name__,
             self.radius,
             self.frame,
-        )
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius": self.radius,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius=data["radius"],
-            frame=Frame.from_data(data["frame"]),
         )
 
     # ==========================================================================

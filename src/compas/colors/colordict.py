@@ -58,7 +58,7 @@ class ColorDict(Data):
         return key in self._dict
 
     @property
-    def data(self):
+    def __data__(self):
         return {"default": self.default.data, "dict": self._dict}
 
     def items(self):

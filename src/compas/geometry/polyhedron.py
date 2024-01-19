@@ -195,6 +195,10 @@ class Polyhedron(Geometry):
         "required": ["vertices", "faces"],
     }
 
+    @property
+    def __data__(self):
+        return {"vertices": self.vertices, "faces": self.faces}
+
     def __init__(self, vertices, faces, **kwargs):
         super(Polyhedron, self).__init__(**kwargs)
         self._vertices = None
@@ -257,14 +261,6 @@ class Polyhedron(Geometry):
 
     def __or__(self, other):
         return self.__add__(other)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"vertices": self.vertices, "faces": self.faces}
 
     # ==========================================================================
     # Properties

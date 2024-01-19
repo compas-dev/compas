@@ -23,6 +23,13 @@ class ConicalSurface(Surface):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base surface class
+    def __new__(cls, *args, **kwargs):
+        surface = object.__new__(cls)
+        surface.__init__(*args, **kwargs)
+        return surface
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -33,12 +40,21 @@ class ConicalSurface(Surface):
         "required": ["radius", "height", "frame"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base surface class
-    def __new__(cls, *args, **kwargs):
-        surface = object.__new__(cls)
-        surface.__init__(*args, **kwargs)
-        return surface
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "height": self.height,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius=data["radius"],
+            height=data["height"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
 
     def __init__(self, radius, height, frame=None, **kwargs):
         super(ConicalSurface, self).__init__(frame=frame, **kwargs)
@@ -63,26 +79,6 @@ class ConicalSurface(Surface):
         except Exception:
             return False
         return self.radius == other_radius and self.height == other_height and self.frame == other_frame
-
-    # =============================================================================
-    # Data
-    # =============================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius": self.radius,
-            "height": self.height,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius=data["radius"],
-            height=data["height"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # =============================================================================
     # Properties

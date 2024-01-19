@@ -81,6 +81,14 @@ class Frame(Geometry):
         "required": ["point", "xaxis", "yaxis"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "point": self.point.__data__,
+            "xaxis": self.xaxis.__data__,
+            "yaxis": self.yaxis.__data__,
+        }
+
     def __init__(self, point, xaxis=None, yaxis=None, **kwargs):
         super(Frame, self).__init__(**kwargs)
         self._point = None
@@ -129,18 +137,6 @@ class Frame(Geometry):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return TOL.is_allclose(self, other, atol=tol)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "point": self.point.data,
-            "xaxis": self.xaxis.data,
-            "yaxis": self.yaxis.data,
-        }
 
     # ==========================================================================
     # Properties

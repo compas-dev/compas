@@ -36,15 +36,15 @@ def test_plane_data():
     point = Point(random(), random(), random())
     vector = Vector(random(), random(), random())
     plane = Plane(point, vector)
-    other = Plane.from_data(json.loads(json.dumps(plane.data)))
+    other = Plane.__from_data__(json.loads(json.dumps(plane.__data__)))
 
     assert allclose(other.point, plane.point, tol=1e-12)
     assert allclose(other.normal, plane.normal, tol=1e-12)
     assert plane.guid != other.guid
 
     if not compas.IPY:
-        assert Plane.validate_data(plane.data)
-        assert Plane.validate_data(other.data)
+        assert Plane.validate_data(plane.__data__)
+        assert Plane.validate_data(other.__data__)
 
 
 def test_plane_predefined():

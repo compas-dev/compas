@@ -73,32 +73,28 @@ class Torus(Shape):
         "required": ["radius_axis", "radius_pipe", "frame"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "radius_axis": self.radius_axis,
+            "radius_pipe": self.radius_pipe,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius_axis=data["radius_axis"],
+            radius_pipe=data["radius_pipe"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
     def __init__(self, radius_axis, radius_pipe, frame=None, **kwargs):
         super(Torus, self).__init__(frame=frame, **kwargs)
         self._radius_axis = None
         self._radius_pipe = None
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius_axis": self.radius_axis,
-            "radius_pipe": self.radius_pipe,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius_axis=data["radius_axis"],
-            radius_pipe=data["radius_pipe"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # Properties

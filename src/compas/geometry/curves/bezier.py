@@ -160,6 +160,13 @@ class Bezier(Curve):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -168,12 +175,9 @@ class Bezier(Curve):
         "required": ["points"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
+    @property
+    def __data__(self):
+        return {"points": [point.__data__ for point in self.points]}
 
     def __init__(self, points, **kwargs):
         super(Bezier, self).__init__(**kwargs)
@@ -182,14 +186,6 @@ class Bezier(Curve):
 
     def __repr__(self):
         return "{0}(points={1!r})".format(type(self).__name__, self.points)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties

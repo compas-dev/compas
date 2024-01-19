@@ -41,15 +41,15 @@ def test_polygon_constructor_does_not_modify_input_params():
 def test_polygon_data():
     points = [[random(), random(), random()] for i in range(10)]
     polygon = Polygon(points)
-    other = Polygon.from_data(json.loads(json.dumps(polygon.to_data())))
+    other = Polygon.__from_data__(json.loads(json.dumps(polygon.__data__)))
 
     assert polygon == other
     assert polygon.points == other.points
-    assert polygon.data == other.data
+    assert polygon.__data__ == other.__data__
 
     if not compas.IPY:
-        assert Polygon.validate_data(polygon.data)
-        assert Polygon.validate_data(other.data)
+        assert Polygon.validate_data(polygon.__data__)
+        assert Polygon.validate_data(other.__data__)
 
 
 def test_polygon__eq__():

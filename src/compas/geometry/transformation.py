@@ -95,6 +95,10 @@ class Transformation(Data):
         "required": ["matrix"],
     }
 
+    @property
+    def __data__(self):
+        return {"matrix": self.matrix}
+
     def __init__(self, matrix=None):
         super(Transformation, self).__init__()
         if not matrix:
@@ -142,14 +146,6 @@ class Transformation(Data):
 
     def __len__(self):
         return len(self.matrix)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"matrix": self.matrix}
 
     # ==========================================================================
     # Properties

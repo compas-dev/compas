@@ -83,6 +83,40 @@ class NurbsSurface(Surface):
         "minProperties": 10,
     }
 
+    @property
+    def __dtype__(self):
+        return "compas.geometry/NurbsSurface"
+
+    @property
+    def __data__(self):
+        return {
+            "points": [point.__data__ for point in self.points],
+            "weights": self.weights,
+            "knots_u": self.knots_u,
+            "knots_v": self.knots_v,
+            "mults_u": self.mults_u,
+            "mults_v": self.mults_v,
+            "degree_u": self.degree_u,
+            "degree_v": self.degree_v,
+            "is_periodic_u": self.is_periodic_u,
+            "is_periodic_v": self.is_periodic_v,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls.from_parameters(
+            data["points"],
+            data["weights"],
+            data["knots_u"],
+            data["knots_v"],
+            data["mults_u"],
+            data["mults_v"],
+            data["degree_u"],
+            data["degree_v"],
+            data["is_periodic_u"],
+            data["is_periodic_v"],
+        )
+
     def __new__(cls, *args, **kwargs):
         return new_nurbssurface(cls, *args, **kwargs)
 
@@ -102,57 +136,6 @@ class NurbsSurface(Surface):
             self.degree_v,
             self.is_periodic_u,
             self.is_periodic_v,
-        )
-
-    # ==============================================================================
-    # Data
-    # ==============================================================================
-
-    @property
-    def dtype(self):
-        return "compas.geometry/NurbsSurface"
-
-    @property
-    def data(self):
-        return {
-            "points": [point.data for point in self.points],
-            "weights": self.weights,
-            "knots_u": self.knots_u,
-            "knots_v": self.knots_v,
-            "mults_u": self.mults_u,
-            "mults_v": self.mults_v,
-            "degree_u": self.degree_u,
-            "degree_v": self.degree_v,
-            "is_periodic_u": self.is_periodic_u,
-            "is_periodic_v": self.is_periodic_v,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a BSpline surface from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsSurface`
-            The constructed surface.
-
-        """
-        return cls.from_parameters(
-            data["points"],
-            data["weights"],
-            data["knots_u"],
-            data["knots_v"],
-            data["mults_u"],
-            data["mults_v"],
-            data["degree_u"],
-            data["degree_v"],
-            data["is_periodic_u"],
-            data["is_periodic_v"],
         )
 
     # ==============================================================================

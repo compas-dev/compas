@@ -92,29 +92,29 @@ def test_graph_from_pointcloud():
 
 
 def test_graph_data1(graph):
-    other = Graph.from_data(json.loads(json.dumps(graph.data)))
+    other = Graph.__from_data__(json.loads(json.dumps(graph.__data__)))
 
-    assert graph.data == other.data
+    assert graph.__data__ == other.__data__
     assert graph.default_node_attributes == other.default_node_attributes
     assert graph.default_edge_attributes == other.default_edge_attributes
     assert graph.number_of_nodes() == other.number_of_nodes()
     assert graph.number_of_edges() == other.number_of_edges()
 
     if not compas.IPY:
-        assert Graph.validate_data(graph.data)
-        assert Graph.validate_data(other.data)
+        assert Graph.validate_data(graph.__data__)
+        assert Graph.validate_data(other.__data__)
 
 
 def test_graph_data2():
     cloud = Pointcloud.from_bounds(random.random(), random.random(), random.random(), random.randint(10, 100))
     graph = Graph.from_pointcloud(cloud=cloud, degree=3)
-    other = Graph.from_data(json.loads(json.dumps(graph.data)))
+    other = Graph.__from_data__(json.loads(json.dumps(graph.__data__)))
 
-    assert graph.data == other.data
+    assert graph.__data__ == other.__data__
 
     if not compas.IPY:
-        assert Graph.validate_data(graph.data)
-        assert Graph.validate_data(other.data)
+        assert Graph.validate_data(graph.__data__)
+        assert Graph.validate_data(other.__data__)
 
 
 # ==============================================================================

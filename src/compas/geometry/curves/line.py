@@ -65,6 +65,13 @@ class Line(Curve):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -74,12 +81,9 @@ class Line(Curve):
         "required": ["start", "end"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
+    @property
+    def __data__(self):
+        return {"start": self.start.__data__, "end": self.end.__data__}
 
     def __init__(self, start, end, **kwargs):
         super(Line, self).__init__(**kwargs)
@@ -122,14 +126,6 @@ class Line(Curve):
             return self.start == other[0] and self.end == other[1]
         except Exception:
             return False
-
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"start": self.start.data, "end": self.end.data}
 
     # ==========================================================================
     # properties

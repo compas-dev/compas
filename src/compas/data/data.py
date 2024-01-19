@@ -72,6 +72,14 @@ class Data(object):
         if name:
             self.name = name
 
+    @property
+    def __dtype__(self):
+        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
+
+    @property
+    def __data__(self):
+        raise NotImplementedError
+
     def __jsondump__(self, minimal=False):
         """Return the required information for serialization with the COMPAS JSON serializer.
 
@@ -86,8 +94,8 @@ class Data(object):
 
         """
         state = {
-            "dtype": self.dtype,
-            "data": self.data,
+            "dtype": self.__dtype__,
+            "data": self.__data__,
         }
         if minimal:
             return state
@@ -114,7 +122,7 @@ class Data(object):
         object
 
         """
-        obj = cls.from_data(data)
+        obj = cls.__from_data__(data)
         if guid is not None:
             obj._guid = UUID(guid)
         if name is not None:
@@ -133,13 +141,22 @@ class Data(object):
         if "name" in state:
             self.name = state["name"]
 
-    @property
-    def dtype(self):
-        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
+    @classmethod
+    def __from_data__(cls, data):  # type: (dict) -> Data
+        """Construct an object of this type from the provided data.
 
-    @property
-    def data(self):
-        raise NotImplementedError
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
+        return cls(**data)
 
     def ToString(self):
         """Converts the instance to a string.
@@ -168,34 +185,6 @@ class Data(object):
     @name.setter
     def name(self, name):
         self._name = name
-
-    @classmethod
-    def from_data(cls, data):  # type: (dict) -> Data
-        """Construct an object of this type from the provided data.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.data.Data`
-            An instance of this object type if the data contained in the dict has the correct schema.
-
-        """
-        return cls(**data)
-
-    def to_data(self):
-        """Convert an object to its native data representation.
-
-        Returns
-        -------
-        dict
-            The data representation of the object as described by the schema.
-
-        """
-        return self.data
 
     @classmethod
     def from_json(cls, filepath):  # type: (...) -> Data
@@ -295,7 +284,7 @@ class Data(object):
         """
         if not cls:
             cls = type(self)
-        obj = cls.from_data(deepcopy(self.data))
+        obj = cls.__from_data__(deepcopy(self.__data__))
         obj.name = self.name
         return obj  # type: ignore
 
@@ -335,7 +324,7 @@ class Data(object):
     def validate_data(cls, data):
         """Validate the data against the object's data schema.
 
-        The data is the raw data that can be used to construct an object of this type with the classmethod ``from_data``.
+        The data is the raw data that can be used to construct an object of this type with the classmethod ``__from_data__``.
 
         Parameters
         ----------

@@ -113,8 +113,24 @@ class Ellipse(Conic):
             "minor": {"type": "number", "minimum": 0},
             "frame": Frame.DATASCHEMA,
         },
-        "required": ["frame", "major", "minor"],
+        "required": ["major", "minor", "frame"],
     }
+
+    @property
+    def __data__(self):
+        return {
+            "major": self.major,
+            "minor": self.minor,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            major=data["major"],
+            minor=data["minor"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
 
     def __init__(self, major=1.0, minor=1.0, frame=None, **kwargs):
         super(Ellipse, self).__init__(frame=frame, **kwargs)
@@ -139,26 +155,6 @@ class Ellipse(Conic):
         except Exception:
             return False
         return self.major == other_major and self.minor == other_minor, self.frame == other_frame
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "major": self.major,
-            "minor": self.minor,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            major=data["major"],
-            minor=data["minor"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # Properties

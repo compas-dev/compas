@@ -111,6 +111,13 @@ class Arc(Curve):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
+
     DATASCHEMA = {
         "value": {
             "type": "object",
@@ -124,12 +131,23 @@ class Arc(Curve):
         }
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "start_angle": self.start_angle,
+            "end_angle": self.end_angle,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius=data["radius"],
+            start_angle=data["start_angle"],
+            end_angle=data["end_angle"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
 
     def __init__(self, radius, start_angle, end_angle, frame=None, **kwargs):
         super(Arc, self).__init__(frame=frame, **kwargs)
@@ -159,28 +177,6 @@ class Arc(Curve):
             )
         except Exception:
             return False
-
-    # =============================================================================
-    # Data
-    # =============================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius": self.radius,
-            "start_angle": self.start_angle,
-            "end_angle": self.end_angle,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius=data["radius"],
-            start_angle=data["start_angle"],
-            end_angle=data["end_angle"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # =============================================================================
     # Properties

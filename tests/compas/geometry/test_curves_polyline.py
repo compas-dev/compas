@@ -34,13 +34,13 @@ def test_polyline_create_with_frame():
 
 def test_polyline_data():
     curve = Polyline([[0, 0, 0], [1, 0, 0]])
-    other = Polyline.from_data(json.loads(json.dumps(curve.data)))
+    other = Polyline.__from_data__(json.loads(json.dumps(curve.__data__)))
 
     assert curve.points == other.points
 
     if not compas.IPY:
-        assert Polyline.validate_data(curve.data)
-        assert Polyline.validate_data(other.data)
+        assert Polyline.validate_data(curve.__data__)
+        assert Polyline.validate_data(other.__data__)
 
 
 # =============================================================================

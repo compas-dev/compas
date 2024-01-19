@@ -51,7 +51,7 @@ def test_quaternion_data():
     w = random()
 
     quaternion = Quaternion(w, x, y, z)
-    other = Quaternion.from_data(json.loads(json.dumps(quaternion.data)))
+    other = Quaternion.__from_data__(json.loads(json.dumps(quaternion.__data__)))
 
     assert quaternion.w == other.w
     assert quaternion.x == other.x
@@ -59,8 +59,8 @@ def test_quaternion_data():
     assert quaternion.z == other.z
 
     if not compas.IPY:
-        assert Quaternion.validate_data(quaternion.data)
-        assert Quaternion.validate_data(other.data)
+        assert Quaternion.validate_data(quaternion.__data__)
+        assert Quaternion.validate_data(other.__data__)
 
 
 # =============================================================================

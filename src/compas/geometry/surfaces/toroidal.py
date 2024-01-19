@@ -30,6 +30,13 @@ class ToroidalSurface(Surface):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base surface class
+    def __new__(cls, *args, **kwargs):
+        surface = object.__new__(cls)
+        surface.__init__(*args, **kwargs)
+        return surface
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -40,12 +47,21 @@ class ToroidalSurface(Surface):
         "required": ["radius_axis", "radius_pipe", "frame"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base surface class
-    def __new__(cls, *args, **kwargs):
-        surface = object.__new__(cls)
-        surface.__init__(*args, **kwargs)
-        return surface
+    @property
+    def __data__(self):
+        return {
+            "radius_axis": self.radius_axis,
+            "radius_pipe": self.radius_pipe,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius_axis=data["radius_axis"],
+            radius_pipe=data["radius_pipe"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
 
     def __init__(self, radius_axis, radius_pipe, frame=None, **kwargs):
         super(ToroidalSurface, self).__init__(frame=frame, **kwargs)
@@ -73,26 +89,6 @@ class ToroidalSurface(Surface):
             self.radius_axis == other_radius_axis
             and self.radius_pipe == other_radius_pipe
             and self.frame == other_frame
-        )
-
-    # =============================================================================
-    # Data
-    # =============================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius_axis": self.radius_axis,
-            "radius_pipe": self.radius_pipe,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius_axis=data["radius_axis"],
-            radius_pipe=data["radius_pipe"],
-            frame=Frame.from_data(data["frame"]),
         )
 
     # =============================================================================

@@ -275,9 +275,9 @@ def test_from_ploygons():
     ],
 )
 def test_mesh_data(halfedge):
-    other = Mesh.from_data(json.loads(json.dumps(halfedge.data)))
+    other = Mesh.__from_data__(json.loads(json.dumps(halfedge.__data__)))
 
-    assert halfedge.data == other.data
+    assert halfedge.__data__ == other.__data__
     assert halfedge.default_vertex_attributes == other.default_vertex_attributes
     assert halfedge.default_edge_attributes == other.default_edge_attributes
     assert halfedge.default_face_attributes == other.default_face_attributes
@@ -286,8 +286,8 @@ def test_mesh_data(halfedge):
     assert halfedge.number_of_faces() == other.number_of_faces()
 
     if not compas.IPY:
-        assert Mesh.validate_data(halfedge.data)
-        assert Mesh.validate_data(other.data)
+        assert Mesh.validate_data(halfedge.__data__)
+        assert Mesh.validate_data(other.__data__)
 
 
 # --------------------------------------------------------------------------

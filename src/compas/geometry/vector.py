@@ -71,6 +71,14 @@ class Vector(Geometry):
         "items": {"type": "number"},
     }
 
+    @property
+    def __data__(self):
+        return list(self)
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(*data)
+
     def __init__(self, x, y, z=0.0, **kwargs):
         super(Vector, self).__init__(**kwargs)
         self._x = 0.0
@@ -179,18 +187,6 @@ class Vector(Geometry):
         self.y **= n
         self.z **= n
         return self
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return list(self)
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(*data)
 
     # ==========================================================================
     # Properties

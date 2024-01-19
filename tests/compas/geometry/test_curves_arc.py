@@ -103,7 +103,7 @@ def test_arc_create_invalid():
 
 def test_arc_data():
     arc = Arc(radius=1.0, start_angle=0.0, end_angle=math.pi)
-    other = Arc.from_data(json.loads(json.dumps(arc.data)))
+    other = Arc.__from_data__(json.loads(json.dumps(arc.__data__)))
 
     assert arc.radius == other.radius
     assert close(arc.start_angle, other.start_angle, tol=1e-12)
@@ -113,8 +113,8 @@ def test_arc_data():
     assert allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
     if not compas.IPY:
-        assert Arc.validate_data(arc.data)
-        assert Arc.validate_data(other.data)
+        assert Arc.validate_data(arc.__data__)
+        assert Arc.validate_data(other.__data__)
 
 
 # =============================================================================

@@ -121,6 +121,10 @@ class Quaternion(Geometry):
         "required": ["w", "x", "y", "z"],
     }
 
+    @property
+    def __data__(self):
+        return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
+
     def __init__(self, w, x, y, z, **kwargs):
         super(Quaternion, self).__init__(**kwargs)
         self._w = None
@@ -169,14 +173,6 @@ class Quaternion(Geometry):
 
     def __len__(self):
         return 4
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
 
     # ==========================================================================
     # Properties
