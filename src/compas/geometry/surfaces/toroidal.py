@@ -20,6 +20,8 @@ class ToroidalSurface(Surface):
         The radius of the sphere.
     frame : :class:`Frame`
         The frame of the sphere.
+    name : str, optional
+        The name of the surface.
 
     Examples
     --------

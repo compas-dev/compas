@@ -35,6 +35,8 @@ class Box(Shape):
     frame : :class:`compas.geometry.Frame`, optional
         The frame of the box.
         Defaults to ``Frame.worldXY()``.
+    name : str, optional
+        The name of the shape.
 
     Attributes
     ----------

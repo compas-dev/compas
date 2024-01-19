@@ -157,6 +157,8 @@ class Polyhedron(Geometry):
         The point locations of the vertices of the polyhedron.
     faces : list[list[int]]
         The faces as a list of index lists.
+    name : str, optional
+        The name of the polyhedron.
 
     Attributes
     ----------

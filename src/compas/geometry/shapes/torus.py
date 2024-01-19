@@ -27,7 +27,7 @@ class Torus(Shape):
         The local coordinate system of the torus.
         Default is ``None``, in which case the torus is constructed in the world XY plane.
     name : str, optional
-        The name of the surface.
+        The name of the shape.
 
     Attributes
     ----------
