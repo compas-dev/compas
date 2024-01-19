@@ -379,7 +379,9 @@ class RhinoBrep(Brep):
 
         breps = []
         for result in results:
-            result.CapPlanarHoles(TOLERANCE)
+            capped = result.CapPlanarHoles(TOLERANCE)
+            if capped:
+                result = capped
             breps.append(RhinoBrep.from_native(result))
         return breps
 
