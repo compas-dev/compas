@@ -34,19 +34,22 @@ class Assembly(Datastructure):
         "type": "object",
         "properties": {
             "graph": Graph.DATASCHEMA,
+            "attributes": {"type": "object"},
         },
-        "required": ["graph"],
+        "required": ["graph", "attributes"],
     }
 
     @property
     def __data__(self):
         return {
             "graph": self.graph.__data__,
+            "attributes": self.attributes,
         }
 
     @classmethod
     def __from_data__(cls, data):
         assembly = cls()
+        assembly.attributes.update(data["attributes"] or {})
         assembly.graph = Graph.__from_data__(data["graph"])
         assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
         return assembly

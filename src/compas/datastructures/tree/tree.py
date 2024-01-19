@@ -246,19 +246,22 @@ class Tree(Datastructure):
         "type": "object",
         "properties": {
             "root": TreeNode.DATASCHEMA,
+            "attributes": {"type": "object"},
         },
-        "required": ["root"],
+        "required": ["root", "attributes"],
     }
 
     @property
     def __data__(self):
         return {
+            "attributes": self.attributes,
             "root": self.root.__data__,  # type: ignore
         }
 
     @classmethod
     def __from_data__(cls, data):
         tree = cls()
+        tree.attributes.update(data["attributes"] or {})
         root = TreeNode.__from_data__(data["root"])
         tree.add(root)
         return tree

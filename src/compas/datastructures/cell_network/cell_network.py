@@ -85,6 +85,7 @@ class CellNetwork(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "default_vertex_attributes": {"type": "object"},
             "default_edge_attributes": {"type": "object"},
             "default_face_attributes": {"type": "object"},
@@ -146,6 +147,7 @@ class CellNetwork(Datastructure):
             "max_cell": {"type": "number", "minimum": -1},
         },
         "required": [
+            "attributes",
             "default_vertex_attributes",
             "default_edge_attributes",
             "default_face_attributes",
@@ -173,6 +175,7 @@ class CellNetwork(Datastructure):
             cell[c] = sorted(list(faces))
 
         return {
+            "attributes": self.attributes,
             "default_vertex_attributes": self.default_vertex_attributes,
             "default_edge_attributes": self.default_edge_attributes,
             "default_face_attributes": self.default_face_attributes,
@@ -196,6 +199,7 @@ class CellNetwork(Datastructure):
             default_face_attributes=data.get("default_face_attributes"),
             default_cell_attributes=data.get("default_cell_attributes"),
         )
+        cell_network.attributes.update(data.get("attributes") or {})
 
         vertex = data["vertex"] or {}
         edge = data["edge"] or {}

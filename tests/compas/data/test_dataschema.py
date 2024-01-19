@@ -596,6 +596,7 @@ if not compas.IPY:
         "graph",
         [
             {
+                "attributes": {},
                 "default_node_attributes": {},
                 "default_edge_attributes": {},
                 "node": {},
@@ -603,6 +604,7 @@ if not compas.IPY:
                 "max_node": -1,
             },
             {
+                "attributes": {},
                 "default_node_attributes": {},
                 "default_edge_attributes": {},
                 "node": {},
@@ -610,6 +612,7 @@ if not compas.IPY:
                 "max_node": 0,
             },
             {
+                "attributes": {},
                 "default_node_attributes": {},
                 "default_edge_attributes": {},
                 "node": {},

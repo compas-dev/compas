@@ -90,6 +90,7 @@ class Graph(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "default_node_attributes": {"type": "object"},
             "default_edge_attributes": {"type": "object"},
             "node": {
@@ -106,6 +107,7 @@ class Graph(Datastructure):
             "max_node": {"type": "integer", "minimum": -1},
         },
         "required": [
+            "attributes",
             "default_node_attributes",
             "default_edge_attributes",
             "node",
@@ -118,6 +120,7 @@ class Graph(Datastructure):
     def __data__(self):
         return self.__before_json_dump__(
             {
+                "attributes": self.attributes,
                 "default_node_attributes": self.default_node_attributes,
                 "default_edge_attributes": self.default_edge_attributes,
                 "node": self.node,
@@ -145,6 +148,7 @@ class Graph(Datastructure):
             default_node_attributes=data.get("default_node_attributes"),
             default_edge_attributes=data.get("default_edge_attributes"),
         )
+        graph.attributes.update(data["attributes"] or {})
         data = graph.__after_json_load__(data)
         for node, attr in iter(data["node"].items()):
             graph.add_node(key=node, attr_dict=attr)

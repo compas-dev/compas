@@ -138,6 +138,7 @@ class Mesh(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "default_vertex_attributes": {"type": "object"},
             "default_edge_attributes": {"type": "object"},
             "default_face_attributes": {"type": "object"},
@@ -171,6 +172,7 @@ class Mesh(Datastructure):
             "max_face": {"type": "integer", "minimum": -1},
         },
         "required": [
+            "attributes",
             "default_vertex_attributes",
             "default_edge_attributes",
             "default_face_attributes",
@@ -187,6 +189,7 @@ class Mesh(Datastructure):
     def __data__(self):
         return self.__before_json_dump__(
             {
+                "attributes": self.attributes,
                 "default_vertex_attributes": self.default_vertex_attributes,
                 "default_edge_attributes": self.default_edge_attributes,
                 "default_face_attributes": self.default_face_attributes,
@@ -212,6 +215,7 @@ class Mesh(Datastructure):
             default_face_attributes=data.get("default_face_attributes"),
             default_edge_attributes=data.get("default_edge_attributes"),
         )
+        mesh.attributes.update(data.get("attributes") or {})
 
         vertex = data["vertex"] or {}
         face = data["face"] or {}

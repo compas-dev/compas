@@ -80,6 +80,7 @@ class VolMesh(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
+            "attributes": {"type": "object"},
             "default_vertex_attributes": {"type": "object"},
             "default_edge_attributes": {"type": "object"},
             "default_face_attributes": {"type": "object"},
@@ -124,6 +125,7 @@ class VolMesh(Datastructure):
             "max_cell": {"type": "number", "minimum": -1},
         },
         "required": [
+            "attributes",
             "default_vertex_attributes",
             "default_edge_attributes",
             "default_face_attributes",
@@ -149,6 +151,7 @@ class VolMesh(Datastructure):
             _cell[c] = faces
 
         return {
+            "attributes": self.attributes,
             "default_vertex_attributes": self.default_vertex_attributes,
             "default_edge_attributes": self.default_edge_attributes,
             "default_face_attributes": self.default_face_attributes,
@@ -171,6 +174,7 @@ class VolMesh(Datastructure):
             default_face_attributes=data.get("default_face_attributes"),
             default_cell_attributes=data.get("default_cell_attributes"),
         )
+        volmesh.attributes.update(data["attributes"] or {})
 
         vertex = data["vertex"] or {}
         cell = data["cell"] or {}
