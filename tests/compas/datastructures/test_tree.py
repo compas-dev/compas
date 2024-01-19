@@ -157,7 +157,7 @@ def test_tree_remove_node(simple_tree):
 def test_tree_serialization(simple_tree):
     serialized = json_dumps(simple_tree)
     deserialized = json_loads(serialized)
-    assert simple_tree.data == deserialized.data
+    assert simple_tree.__data__ == deserialized.__data__
 
     test_tree_properties(deserialized)
     test_tree_traversal(deserialized)

@@ -18,7 +18,7 @@ from compas.geometry._core.predicates_2 import is_intersection_segment_segment_x
 def graph_embed_in_plane_proxy(data, fixed=None):
     from compas.datastructures import Graph
 
-    graph = Graph.from_data(data)
+    graph = Graph.__from_data__(data)
     graph_embed_in_plane(graph, fixed=fixed)
     return graph.to_data()
 

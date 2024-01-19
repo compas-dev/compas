@@ -29,21 +29,21 @@ class SceneObjectNode(TreeNode):
 
     """
 
-    def __init__(self, sceneobject):
-        super(SceneObjectNode, self).__init__()
-        self.object = sceneobject
-
     @property
-    def data(self):
+    def __data__(self):
         return {
             "item": str(self.object.item.guid),
             "settings": self.object.settings,
-            "children": [child.data for child in self.children],
+            "children": [child.__data__ for child in self.children],
         }
 
     @classmethod
-    def from_data(cls, data):
-        raise TypeError("SceneObjectNode cannot be created from data. Use Scene.from_data instead.")
+    def __from_data__(cls, data):
+        raise TypeError("SceneObjectNode cannot be created from data. Use Scene.__from_data__ instead.")
+
+    def __init__(self, sceneobject, name=None):
+        super(SceneObjectNode, self).__init__(name=name)
+        self.object = sceneobject
 
     @property
     def name(self):
@@ -79,7 +79,7 @@ class SceneObjectNode(TreeNode):
         sceneobject = SceneObject(item, **kwargs)
         node = SceneObjectNode(sceneobject)
         self.add(node)
-        sceneobject._node = node
+        sceneobject._node = node  # type: ignore
         return sceneobject
 
 
@@ -97,6 +97,10 @@ class SceneTree(Tree):
         All scene objects in the scene tree.
 
     """
+
+    @classmethod
+    def __from_data__(cls, data):
+        raise TypeError("SceneTree cannot be created from data. Use Scene.__from_data__ instead.")
 
     def __init__(self, name=None):
         super(SceneTree, self).__init__(name=name)
@@ -170,10 +174,6 @@ class SceneTree(Tree):
                     return node
         raise ValueError("Scene object not in scene tree")
 
-    @classmethod
-    def from_data(cls, data):
-        raise TypeError("SceneTree cannot be created from data. Use Scene.from_data instead.")
-
 
 class Scene(Data):
     """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
@@ -205,22 +205,17 @@ class Scene(Data):
 
     viewerinstance = None
 
-    def __init__(self, name=None, context=None):
-        super(Scene, self).__init__(name)
-        self._tree = SceneTree("Scene")
-        self.context = context or detect_current_context()
-
     @property
-    def data(self):
+    def __data__(self):
         items = {str(object.item.guid): object.item for object in self.objects}
         return {
             "name": self.name,
-            "tree": self.tree.data,
+            "tree": self.tree.__data__,
             "items": list(items.values()),
         }
 
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         scene = cls(data["name"])
         items = {str(item.guid): item for item in data["items"]}
 
@@ -234,6 +229,11 @@ class Scene(Data):
         add(data["tree"]["root"], scene, items)
 
         return scene
+
+    def __init__(self, name=None, context=None):
+        super(Scene, self).__init__(name)
+        self._tree = SceneTree("Scene")
+        self.context = context or detect_current_context()
 
     @property
     def tree(self):

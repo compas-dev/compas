@@ -76,16 +76,16 @@ def test_plane_data():
     xsize = random()
     ysize = random()
     plane = PlanarSurface(xsize=xsize, ysize=ysize)
-    other = PlanarSurface.from_data(json.loads(json.dumps(plane.data)))
+    other = PlanarSurface.__from_data__(json.loads(json.dumps(plane.__data__)))
 
-    assert plane.data == other.data
+    assert plane.__data__ == other.__data__
     assert plane.xsize == xsize
     assert plane.ysize == ysize
     assert plane.frame == Frame.worldXY()
 
     if not compas.IPY:
-        assert PlanarSurface.validate_data(plane.data)
-        assert PlanarSurface.validate_data(other.data)
+        assert PlanarSurface.validate_data(plane.__data__)
+        assert PlanarSurface.validate_data(other.__data__)
 
 
 # =============================================================================

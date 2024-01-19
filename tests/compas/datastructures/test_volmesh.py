@@ -27,9 +27,9 @@ def halfface():
 
 
 def test_halfface_data(halfface):
-    other = VolMesh.from_data(json.loads(json.dumps(halfface.data)))
+    other = VolMesh.__from_data__(json.loads(json.dumps(halfface.__data__)))
 
-    assert halfface.data == other.data
+    assert halfface.__data__ == other.__data__
     assert halfface.default_vertex_attributes == other.default_vertex_attributes
     assert halfface.default_edge_attributes == other.default_edge_attributes
     assert halfface.default_face_attributes == other.default_face_attributes
@@ -40,23 +40,23 @@ def test_halfface_data(halfface):
     assert halfface.number_of_cells() == other.number_of_cells()
 
     if not compas.IPY:
-        assert VolMesh.validate_data(halfface.data)
-        assert VolMesh.validate_data(other.data)
+        assert VolMesh.validate_data(halfface.__data__)
+        assert VolMesh.validate_data(other.__data__)
 
 
 def test_volmesh_data():
     vmesh = VolMesh.from_obj(compas.get("boxes.obj"))
-    other = VolMesh.from_data(json.loads(json.dumps(vmesh.data)))
+    other = VolMesh.__from_data__(json.loads(json.dumps(vmesh.__data__)))
 
-    assert vmesh.data == other.data
+    assert vmesh.__data__ == other.__data__
     assert vmesh.number_of_vertices() == other.number_of_vertices()
     assert vmesh.number_of_edges() == other.number_of_edges()
     assert vmesh.number_of_faces() == other.number_of_faces()
     assert vmesh.number_of_cells() == other.number_of_cells()
 
     if not compas.IPY:
-        assert VolMesh.validate_data(vmesh.data)
-        assert VolMesh.validate_data(other.data)
+        assert VolMesh.validate_data(vmesh.__data__)
+        assert VolMesh.validate_data(other.__data__)
 
 
 # ==============================================================================

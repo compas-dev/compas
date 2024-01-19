@@ -14,6 +14,8 @@ class Assembly(Datastructure):
     ----------
     name : str, optional
         The name of the assembly.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -32,35 +34,34 @@ class Assembly(Datastructure):
         "type": "object",
         "properties": {
             "graph": Graph.DATASCHEMA,
+            "attributes": {"type": "object"},
         },
-        "required": ["graph"],
+        "required": ["graph", "attributes"],
     }
 
-    def __init__(self, name=None):
-        super(Assembly, self).__init__(name=name)
+    @property
+    def __data__(self):
+        return {
+            "graph": self.graph.__data__,
+            "attributes": self.attributes,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        assembly = cls()
+        assembly.attributes.update(data["attributes"] or {})
+        assembly.graph = Graph.__from_data__(data["graph"])
+        assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
+        return assembly
+
+    def __init__(self, name=None, **kwargs):
+        super(Assembly, self).__init__(kwargs, name=name)
         self.graph = Graph()
         self._parts = {}
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
         return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "graph": self.graph.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        assembly = cls()
-        assembly.graph = Graph.from_data(data["graph"])
-        assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
-        return assembly
 
     # ==========================================================================
     # Constructors

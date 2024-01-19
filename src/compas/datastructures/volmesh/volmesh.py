@@ -61,6 +61,8 @@ class VolMesh(Datastructure):
         Default values for cell attributes.
     name : str, optional
         The name of the volmesh.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -78,10 +80,11 @@ class VolMesh(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "dva": {"type": "object"},
-            "dea": {"type": "object"},
-            "dfa": {"type": "object"},
-            "dca": {"type": "object"},
+            "attributes": {"type": "object"},
+            "default_vertex_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
+            "default_face_attributes": {"type": "object"},
+            "default_cell_attributes": {"type": "object"},
             "vertex": {
                 "type": "object",
                 "patternProperties": {"^[0-9]+$": {"type": "object"}},
@@ -122,9 +125,10 @@ class VolMesh(Datastructure):
             "max_cell": {"type": "number", "minimum": -1},
         },
         "required": [
-            "dva",
-            "dea",
-            "dfa",
+            "attributes",
+            "default_vertex_attributes",
+            "default_edge_attributes",
+            "default_face_attributes",
             "vertex",
             "cell",
             "edge_data",
@@ -136,6 +140,66 @@ class VolMesh(Datastructure):
         ],
     }
 
+    @property
+    def __data__(self):
+        _cell = {}
+        for c in self._cell:
+            faces = []
+            for u in sorted(self._cell[c]):
+                for v in sorted(self._cell[c][u]):
+                    faces.append(self._halfface[self._cell[c][u][v]])
+            _cell[c] = faces
+
+        return {
+            "attributes": self.attributes,
+            "default_vertex_attributes": self.default_vertex_attributes,
+            "default_edge_attributes": self.default_edge_attributes,
+            "default_face_attributes": self.default_face_attributes,
+            "default_cell_attributes": self.default_cell_attributes,
+            "vertex": {str(vertex): attr for vertex, attr in self._vertex.items()},
+            "cell": {str(cell): faces for cell, faces in _cell.items()},
+            "edge_data": self._edge_data,
+            "face_data": self._face_data,
+            "cell_data": {str(cell): attr for cell, attr in self._cell_data},
+            "max_vertex": self._max_vertex,
+            "max_face": self._max_face,
+            "max_cell": self._max_cell,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        volmesh = cls(
+            default_vertex_attributes=data.get("default_vertex_attributes"),
+            default_edge_attributes=data.get("default_edge_attributes"),
+            default_face_attributes=data.get("default_face_attributes"),
+            default_cell_attributes=data.get("default_cell_attributes"),
+        )
+        volmesh.attributes.update(data["attributes"] or {})
+
+        vertex = data["vertex"] or {}
+        cell = data["cell"] or {}
+        edge_data = data.get("edge_data") or {}
+        face_data = data.get("face_data") or {}
+        cell_data = data.get("cell_data") or {}
+
+        for key, attr in iter(vertex.items()):
+            volmesh.add_vertex(key=key, attr_dict=attr)
+
+        for ckey, faces in iter(cell.items()):
+            volmesh.add_cell(faces, ckey=ckey, attr_dict=cell_data.get(ckey))
+
+        for edge in edge_data:
+            volmesh._edge_data[edge] = edge_data[edge] or {}
+
+        for face in face_data:
+            volmesh._face_data[face] = face_data[face] or {}
+
+        volmesh._max_vertex = data.get("max_vertex", volmesh._max_vertex)
+        volmesh._max_face = data.get("max_face", volmesh._max_face)
+        volmesh._max_cell = data.get("max_cell", volmesh._max_cell)
+
+        return volmesh
+
     def __init__(
         self,
         default_vertex_attributes=None,
@@ -143,8 +207,9 @@ class VolMesh(Datastructure):
         default_face_attributes=None,
         default_cell_attributes=None,
         name=None,
+        **kwargs
     ):
-        super(VolMesh, self).__init__(name=name)
+        super(VolMesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -176,82 +241,6 @@ class VolMesh(Datastructure):
             self.number_of_cells(),
             self.number_of_edges(),
         )
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        _cell = {}
-        # this sometimes changes the cycle order of faces
-        # for c in self.cells():
-        #     faces = []
-        #     for face in self.cell_faces(c):
-        #         vertices = self.halfface_vertices(face)
-        #         faces.append(vertices)
-        #     _cell[c] = faces
-        for c in self._cell:
-            faces = []
-            for u in sorted(self._cell[c]):
-                for v in sorted(self._cell[c][u]):
-                    faces.append(self._halfface[self._cell[c][u][v]])
-            _cell[c] = faces
-
-        return {
-            "dva": self.default_vertex_attributes,
-            "dea": self.default_edge_attributes,
-            "dfa": self.default_face_attributes,
-            "dca": self.default_cell_attributes,
-            "vertex": {str(vertex): attr for vertex, attr in self._vertex.items()},
-            "cell": {str(cell): faces for cell, faces in _cell.items()},
-            "edge_data": self._edge_data,
-            "face_data": self._face_data,
-            "cell_data": {str(cell): attr for cell, attr in self._cell_data},
-            "max_vertex": self._max_vertex,
-            "max_face": self._max_face,
-            "max_cell": self._max_cell,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        dva = data.get("dva") or {}
-        dea = data.get("dea") or {}
-        dfa = data.get("dfa") or {}
-        dca = data.get("dca") or {}
-
-        halfface = cls(
-            default_vertex_attributes=dva,
-            default_edge_attributes=dea,
-            default_face_attributes=dfa,
-            default_cell_attributes=dca,
-        )
-
-        vertex = data["vertex"] or {}
-        cell = data["cell"] or {}
-
-        edge_data = data.get("edge_data") or {}
-        face_data = data.get("face_data") or {}
-        cell_data = data.get("cell_data") or {}
-
-        for key, attr in iter(vertex.items()):
-            halfface.add_vertex(key=key, attr_dict=attr)
-
-        for ckey, faces in iter(cell.items()):
-            attr = cell_data.get(ckey) or {}
-            halfface.add_cell(faces, ckey=ckey, attr_dict=attr)
-
-        for edge in edge_data:
-            halfface._edge_data[edge] = edge_data[edge] or {}
-
-        for face in face_data:
-            halfface._face_data[face] = face_data[face] or {}
-
-        halfface._max_vertex = data.get("max_vertex", halfface._max_vertex)
-        halfface._max_face = data.get("max_face", halfface._max_face)
-        halfface._max_cell = data.get("max_cell", halfface._max_cell)
-
-        return halfface
 
     # --------------------------------------------------------------------------
     # Customisation

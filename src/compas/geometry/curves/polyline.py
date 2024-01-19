@@ -29,6 +29,8 @@ class Polyline(Curve):
     points : list[[float, float, float] | :class:`compas.geometry.Point`]
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
+    name : str, optional
+        The name of the polyline.
 
     Attributes
     ----------
@@ -68,6 +70,13 @@ class Polyline(Curve):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -76,15 +85,12 @@ class Polyline(Curve):
         "required": ["points"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
+    @property
+    def __data__(self):
+        return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points, **kwargs):
-        super(Polyline, self).__init__(**kwargs)
+    def __init__(self, points, name=None):
+        super(Polyline, self).__init__(name=name)
         self._points = []
         self._lines = []
         self.points = points
@@ -112,14 +118,6 @@ class Polyline(Curve):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return allclose(self, other)
-
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # properties

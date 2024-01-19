@@ -98,7 +98,7 @@ def test_ellipse_create_with_frame():
 
 def test_ellipse_data():
     ellipse = Ellipse(major=1.0, minor=0.5)
-    other = Ellipse.from_data(json.loads(json.dumps(ellipse.data)))
+    other = Ellipse.__from_data__(json.loads(json.dumps(ellipse.__data__)))
 
     assert ellipse.major == other.major
     assert ellipse.minor == other.minor
@@ -107,8 +107,8 @@ def test_ellipse_data():
     assert allclose(ellipse.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
     if not compas.IPY:
-        assert Ellipse.validate_data(ellipse.data)
-        assert Ellipse.validate_data(other.data)
+        assert Ellipse.validate_data(ellipse.__data__)
+        assert Ellipse.validate_data(other.__data__)
 
 
 # =============================================================================

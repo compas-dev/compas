@@ -87,7 +87,7 @@ def test_circle_create_with_frame():
 
 def test_circle_data():
     circle = Circle(radius=1.0)
-    other = Circle.from_data(json.loads(json.dumps(circle.data)))
+    other = Circle.__from_data__(json.loads(json.dumps(circle.__data__)))
 
     assert circle.radius == other.radius
     assert circle.frame.point == other.frame.point
@@ -95,8 +95,8 @@ def test_circle_data():
     assert allclose(circle.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
     if not compas.IPY:
-        assert Circle.validate_data(circle.data)
-        assert Circle.validate_data(other.data)
+        assert Circle.validate_data(circle.__data__)
+        assert Circle.validate_data(other.__data__)
 
 
 # =============================================================================

@@ -76,15 +76,15 @@ def test_torus_data():
     frame = Frame.worldXY()
 
     torus = ToroidalSurface(radius_axis=radius_axis, radius_pipe=radius_pipe, frame=frame)
-    other = ToroidalSurface.from_data(json.loads(json.dumps(torus.data)))
+    other = ToroidalSurface.__from_data__(json.loads(json.dumps(torus.__data__)))
 
     assert torus.radius_axis == other.radius_axis
     assert torus.radius_pipe == other.radius_pipe
     assert torus.frame == frame
 
     if not compas.IPY:
-        assert ToroidalSurface.validate_data(torus.data)
-        assert ToroidalSurface.validate_data(other.data)
+        assert ToroidalSurface.validate_data(torus.__data__)
+        assert ToroidalSurface.validate_data(other.__data__)
 
 
 # =============================================================================

@@ -65,11 +65,11 @@ class GeometricFeature(Feature):
         self._geometry = None
 
     @property
-    def data(self):
+    def __data__(self):
         return {"geometry": self._geometry}
 
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         feature = cls()
         feature._geometry = data["geometry"]  # this will work but is not consistent with validation
         return feature
@@ -163,6 +163,24 @@ class Part(Datastructure):
         "required": ["key", "frame"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "attributes": self.attributes,
+            "key": self.key,
+            "frame": self.frame.__data__,
+            "features": self.features,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        part = cls()
+        part.attributes.update(data["attributes"] or {})
+        part.key = data["key"]
+        part.frame = Frame.__from_data__(data["frame"])
+        part.features = data["features"] or []
+        return part
+
     def __init__(self, name=None, frame=None, **kwargs):
         super(Part, self).__init__()
         self.attributes = {"name": name or "Part"}
@@ -170,24 +188,6 @@ class Part(Datastructure):
         self.key = None
         self.frame = frame or Frame.worldXY()
         self.features = []
-
-    @property
-    def data(self):
-        return {
-            "attributes": self.attributes,
-            "key": self.key,
-            "frame": self.frame.data,
-            "features": self.features,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        part = cls()
-        part.attributes.update(data["attributes"] or {})
-        part.key = data["key"]
-        part.frame = Frame.from_data(data["frame"])
-        part.features = data["features"] or []
-        return part
 
     def get_geometry(self, with_features=False):
         """

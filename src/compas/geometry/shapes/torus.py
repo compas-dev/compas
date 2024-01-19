@@ -26,6 +26,8 @@ class Torus(Shape):
     frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the torus.
         Default is ``None``, in which case the torus is constructed in the world XY plane.
+    name : str, optional
+        The name of the shape.
 
     Attributes
     ----------
@@ -73,32 +75,28 @@ class Torus(Shape):
         "required": ["radius_axis", "radius_pipe", "frame"],
     }
 
-    def __init__(self, radius_axis, radius_pipe, frame=None, **kwargs):
-        super(Torus, self).__init__(frame=frame, **kwargs)
+    @property
+    def __data__(self):
+        return {
+            "radius_axis": self.radius_axis,
+            "radius_pipe": self.radius_pipe,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius_axis=data["radius_axis"],
+            radius_pipe=data["radius_pipe"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, radius_axis, radius_pipe, frame=None, name=None):
+        super(Torus, self).__init__(frame=frame, name=name)
         self._radius_axis = None
         self._radius_pipe = None
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius_axis": self.radius_axis,
-            "radius_pipe": self.radius_pipe,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius_axis=data["radius_axis"],
-            radius_pipe=data["radius_pipe"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # Properties
@@ -209,7 +207,8 @@ class Torus(Shape):
         >>> torus = Torus.from_plane_and_radii(plane, 5.0, 2.0)
 
         """
-        return cls(plane=plane, radius_axis=radius_axis, radius_pipe=radius_pipe)
+        frame = Frame.from_plane(plane)
+        return cls(radius_axis=radius_axis, radius_pipe=radius_pipe, frame=frame)
 
     # ==========================================================================
     # Conversions

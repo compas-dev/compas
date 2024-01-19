@@ -39,7 +39,7 @@ def test_line_create(p1, p2):
 
 
 def test_line_create_with_frame():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Line([0, 0, 0], [1, 0, 0], frame=Frame.worldXY())
 
 
@@ -50,14 +50,14 @@ def test_line_create_with_frame():
 
 def test_line_data():
     line = Line([0, 0, 0], [1, 0, 0])
-    other = Line.from_data(json.loads(json.dumps(line.data)))
+    other = Line.__from_data__(json.loads(json.dumps(line.__data__)))
 
     assert line.start == other.start
     assert line.end == other.end
 
     if not compas.IPY:
-        assert Line.validate_data(line.data)
-        assert Line.validate_data(other.data)
+        assert Line.validate_data(line.__data__)
+        assert Line.validate_data(other.__data__)
 
 
 # =============================================================================

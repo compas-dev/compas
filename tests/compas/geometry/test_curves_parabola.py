@@ -53,7 +53,7 @@ def test_parabola_create_with_frame():
 
 def test_parabola_data():
     parabola = Parabola(focal=1)
-    other = Parabola.from_data(json.loads(json.dumps(parabola.data)))
+    other = Parabola.__from_data__(json.loads(json.dumps(parabola.__data__)))
 
     assert parabola.focal == other.focal
     assert parabola.frame.point == other.frame.point
@@ -61,8 +61,8 @@ def test_parabola_data():
     assert allclose(parabola.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
     if not compas.IPY:
-        assert Parabola.validate_data(parabola.data)
-        assert Parabola.validate_data(other.data)
+        assert Parabola.validate_data(parabola.__data__)
+        assert Parabola.validate_data(other.__data__)
 
 
 # =============================================================================

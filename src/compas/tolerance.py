@@ -19,6 +19,8 @@ class Tolerance(Data):
     ----------
     unit : {"M", "MM"}, optional
         The unit of the tolerance settings.
+    name : str, optional
+        The name of the tolerance settings.
 
     Attributes
     ----------
@@ -96,18 +98,8 @@ class Tolerance(Data):
 
     """
 
-    def __init__(self, unit="M"):
-        self._unit = None
-        self._absolute = None
-        self._relative = None
-        self._angular = None
-        self._approximation = None
-        self._precision = None
-        self._lineardeflection = None
-        self.unit = unit
-
     @property
-    def data(self):
+    def __data__(self):
         return {
             "unit": self.unit,
             "absolute": self.absolute,
@@ -119,7 +111,7 @@ class Tolerance(Data):
         }
 
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         tol = cls()
         tol.unit = data["unit"]
         tol.absolute = data["absolute"]
@@ -129,6 +121,17 @@ class Tolerance(Data):
         tol.precision = data["precision"]
         tol.lineardeflection = data["lineardeflection"]
         return tol
+
+    def __init__(self, unit="M", name=None):
+        super(Tolerance, self).__init__(name=name)
+        self._unit = None
+        self._absolute = None
+        self._relative = None
+        self._angular = None
+        self._approximation = None
+        self._precision = None
+        self._lineardeflection = None
+        self.unit = unit
 
     def reset(self):
         """Reset all precision settings to their default values."""

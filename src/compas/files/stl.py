@@ -328,7 +328,7 @@ class STLParser(object):
 
 
 class STLWriter(object):
-    """Class for writing geometric data to a PLY file.
+    """Class for writing geometric data to a STL file.
 
     Parameters
     ----------

@@ -68,15 +68,15 @@ def test_cylinder_frame(frame):
 def test_cylinder_data():
     radius = random()
     cylinder = CylindricalSurface(radius=radius)
-    other = CylindricalSurface.from_data(json.loads(json.dumps(cylinder.data)))
+    other = CylindricalSurface.__from_data__(json.loads(json.dumps(cylinder.__data__)))
 
-    assert cylinder.data == other.data
+    assert cylinder.__data__ == other.__data__
     assert cylinder.radius == radius
     assert cylinder.frame == Frame.worldXY()
 
     if not compas.IPY:
-        assert CylindricalSurface.validate_data(cylinder.data)
-        assert CylindricalSurface.validate_data(other.data)
+        assert CylindricalSurface.validate_data(cylinder.__data__)
+        assert CylindricalSurface.validate_data(other.__data__)
 
 
 # =============================================================================

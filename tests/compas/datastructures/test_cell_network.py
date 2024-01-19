@@ -64,7 +64,7 @@ def test_cell_network_data(example_cell_network):
     ds.edge_attribute((12, 14), "column", True)
     ds.face_attribute(11, "canopy", True)
 
-    other = CellNetwork.from_data(ds.data)
+    other = CellNetwork.__from_data__(ds.__data__)
 
     assert other.number_of_vertices() is nv
     assert other.number_of_edges() is ne

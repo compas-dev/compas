@@ -54,6 +54,8 @@ class CellNetwork(Datastructure):
         Default values for cell attributes.
     name : str, optional
         The name of the cell network.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -83,10 +85,11 @@ class CellNetwork(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "dva": {"type": "object"},
-            "dea": {"type": "object"},
-            "dfa": {"type": "object"},
-            "dca": {"type": "object"},
+            "attributes": {"type": "object"},
+            "default_vertex_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
+            "default_face_attributes": {"type": "object"},
+            "default_cell_attributes": {"type": "object"},
             "vertex": {
                 "type": "object",
                 "patternProperties": {"^[0-9]+$": {"type": "object"}},
@@ -144,10 +147,11 @@ class CellNetwork(Datastructure):
             "max_cell": {"type": "number", "minimum": -1},
         },
         "required": [
-            "dva",
-            "dea",
-            "dfa",
-            "dca",
+            "attributes",
+            "default_vertex_attributes",
+            "default_edge_attributes",
+            "default_face_attributes",
+            "default_cell_attributes",
             "vertex",
             "edge",
             "face",
@@ -160,6 +164,69 @@ class CellNetwork(Datastructure):
         ],
     }
 
+    @property
+    def __data__(self):
+        cell = {}
+        for c in self._cell:
+            faces = set()
+            for u in self._cell[c]:
+                for v in self._cell[c][u]:
+                    faces.add(self._cell[c][u][v])
+            cell[c] = sorted(list(faces))
+
+        return {
+            "attributes": self.attributes,
+            "default_vertex_attributes": self.default_vertex_attributes,
+            "default_edge_attributes": self.default_edge_attributes,
+            "default_face_attributes": self.default_face_attributes,
+            "default_cell_attributes": self.default_cell_attributes,
+            "vertex": self._vertex,
+            "edge": self._edge,
+            "face": self._face,
+            "cell": cell,
+            "face_data": self._face_data,
+            "cell_data": self._cell_data,
+            "max_vertex": self._max_vertex,
+            "max_face": self._max_face,
+            "max_cell": self._max_cell,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        cell_network = cls(
+            default_vertex_attributes=data.get("default_vertex_attributes"),
+            default_edge_attributes=data.get("default_edge_attributes"),
+            default_face_attributes=data.get("default_face_attributes"),
+            default_cell_attributes=data.get("default_cell_attributes"),
+        )
+        cell_network.attributes.update(data.get("attributes") or {})
+
+        vertex = data["vertex"] or {}
+        edge = data["edge"] or {}
+        face = data["face"] or {}
+        cell = data["cell"] or {}
+
+        for key, attr in iter(vertex.items()):
+            cell_network.add_vertex(key=key, attr_dict=attr)
+
+        for u in edge:
+            for v, attr in edge[u].items():
+                cell_network.add_edge(u, v, attr_dict=attr)
+
+        face_data = data.get("face_data") or {}
+        for key, vertices in iter(face.items()):
+            cell_network.add_face(vertices, fkey=key, attr_dict=face_data.get(key))
+
+        cell_data = data.get("cell_data") or {}
+        for ckey, faces in iter(cell.items()):
+            cell_network.add_cell(faces, ckey=ckey, attr_dict=cell_data.get(ckey))
+
+        cell_network._max_vertex = data.get("max_vertex", cell_network._max_vertex)
+        cell_network._max_face = data.get("max_face", cell_network._max_face)
+        cell_network._max_cell = data.get("max_cell", cell_network._max_cell)
+
+        return cell_network
+
     def __init__(
         self,
         default_vertex_attributes=None,
@@ -167,8 +234,9 @@ class CellNetwork(Datastructure):
         default_face_attributes=None,
         default_cell_attributes=None,
         name=None,
+        **kwargs
     ):
-        super(CellNetwork, self).__init__(name=name)
+        super(CellNetwork, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
@@ -200,92 +268,6 @@ class CellNetwork(Datastructure):
             self.number_of_cells(),
             self.number_of_edges(),
         )
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        """Returns a dictionary of structured data representing the cell network data object.
-
-        Note that some of the data stored internally in the data structure object is not included in the dictionary representation of the object.
-        This is the case for data that is considered private and/or redundant.
-        Specifically, the plane dictionary are not included.
-        This is because the information in these dictionaries can be reconstructed from the other data.
-        Therefore, to keep the dictionary representation as compact as possible, these dictionaries are not included.
-
-        Returns
-        -------
-        dict
-            The structured data representing the cell network.
-
-        """
-        cell = {}
-        for c in self._cell:
-            faces = set()
-            for u in self._cell[c]:
-                for v in self._cell[c][u]:
-                    faces.add(self._cell[c][u][v])
-            cell[c] = sorted(list(faces))
-
-        return {
-            "dva": self.default_vertex_attributes,
-            "dea": self.default_edge_attributes,
-            "dfa": self.default_face_attributes,
-            "dca": self.default_cell_attributes,
-            "vertex": self._vertex,
-            "edge": self._edge,
-            "face": self._face,
-            "cell": cell,
-            "face_data": self._face_data,
-            "cell_data": self._cell_data,
-            "max_vertex": self._max_vertex,
-            "max_face": self._max_face,
-            "max_cell": self._max_cell,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        dva = data.get("dva") or {}
-        dea = data.get("dea") or {}
-        dfa = data.get("dfa") or {}
-        dca = data.get("dca") or {}
-
-        cell_network = cls(
-            default_vertex_attributes=dva,
-            default_edge_attributes=dea,
-            default_face_attributes=dfa,
-            default_cell_attributes=dca,
-        )
-
-        vertex = data["vertex"] or {}
-        edge = data["edge"] or {}
-        face = data["face"] or {}
-        cell = data["cell"] or {}
-
-        for key, attr in iter(vertex.items()):
-            cell_network.add_vertex(key=key, attr_dict=attr)
-
-        for u in edge:
-            for v, attr in edge[u].items():
-                cell_network.add_edge(u, v, attr_dict=attr)
-
-        face_data = data.get("face_data") or {}
-        for key, vertices in iter(face.items()):
-            attr = face_data.get(key) or {}
-            cell_network.add_face(vertices, fkey=key, attr_dict=attr)
-
-        cell_data = data.get("cell_data") or {}
-        for ckey, faces in iter(cell.items()):
-            attr = cell_data.get(ckey) or {}
-            cell_network.add_cell(faces, ckey=ckey, attr_dict=attr)
-
-        cell_network._max_vertex = data.get("max_vertex", cell_network._max_vertex)
-        cell_network._max_face = data.get("max_face", cell_network._max_face)
-        cell_network._max_cell = data.get("max_cell", cell_network._max_cell)
-
-        return cell_network
 
     # --------------------------------------------------------------------------
     # Helpers

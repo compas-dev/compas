@@ -92,6 +92,8 @@ class Mesh(Datastructure):
         Default values for face attributes.
     name : str, optional
         Then name of the mesh.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -120,12 +122,26 @@ class Mesh(Datastructure):
 
     """
 
+    collapse_edge = mesh_collapse_edge
+    merge_faces = mesh_merge_faces
+    split_edge = mesh_split_edge
+    split_face = mesh_split_face
+    split_strip = mesh_split_strip
+    subdivided = mesh_subdivide
+    dual = mesh_dual
+    slice = mesh_slice_plane
+    unweld_vertices = mesh_unweld_vertices
+    unweld_edges = mesh_unweld_edges
+    smooth_centroid = mesh_smooth_centroid
+    smooth_area = mesh_smooth_area
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "dva": {"type": "object"},
-            "dea": {"type": "object"},
-            "dfa": {"type": "object"},
+            "attributes": {"type": "object"},
+            "default_vertex_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
+            "default_face_attributes": {"type": "object"},
             "vertex": {
                 "type": "object",
                 "patternProperties": {"^[0-9]+$": {"type": "object"}},
@@ -156,9 +172,10 @@ class Mesh(Datastructure):
             "max_face": {"type": "integer", "minimum": -1},
         },
         "required": [
-            "dva",
-            "dea",
-            "dfa",
+            "attributes",
+            "default_vertex_attributes",
+            "default_edge_attributes",
+            "default_face_attributes",
             "vertex",
             "face",
             "facedata",
@@ -168,26 +185,64 @@ class Mesh(Datastructure):
         ],
     }
 
-    collapse_edge = mesh_collapse_edge
-    merge_faces = mesh_merge_faces
-    split_edge = mesh_split_edge
-    split_face = mesh_split_face
-    split_strip = mesh_split_strip
-    subdivided = mesh_subdivide
-    dual = mesh_dual
-    slice = mesh_slice_plane
-    # split
-    # trim
-    unweld_vertices = mesh_unweld_vertices
-    unweld_edges = mesh_unweld_edges
+    @property
+    def __data__(self):
+        return self.__before_json_dump__(
+            {
+                "attributes": self.attributes,
+                "default_vertex_attributes": self.default_vertex_attributes,
+                "default_edge_attributes": self.default_edge_attributes,
+                "default_face_attributes": self.default_face_attributes,
+                "vertex": self.vertex,
+                "face": self.face,
+                "facedata": self.facedata,
+                "edgedata": self.edgedata,
+                "max_vertex": self._max_vertex,
+                "max_face": self._max_face,
+            }
+        )
 
-    smooth_centroid = mesh_smooth_centroid
-    smooth_area = mesh_smooth_area
+    def __before_json_dump__(self, data):
+        data["vertex"] = {str(vertex): attr for vertex, attr in data["vertex"].items()}
+        data["face"] = {str(face): vertices for face, vertices in data["face"].items()}
+        data["facedata"] = {str(face): attr for face, attr in data["facedata"].items()}
+        return data
+
+    @classmethod
+    def __from_data__(cls, data):
+        mesh = cls(
+            default_vertex_attributes=data.get("default_vertex_attributes"),
+            default_face_attributes=data.get("default_face_attributes"),
+            default_edge_attributes=data.get("default_edge_attributes"),
+        )
+        mesh.attributes.update(data.get("attributes") or {})
+
+        vertex = data["vertex"] or {}
+        face = data["face"] or {}
+        facedata = data.get("facedata") or {}
+        edgedata = data.get("edgedata") or {}
+
+        for key, attr in iter(vertex.items()):
+            mesh.add_vertex(key=key, attr_dict=attr)
+
+        for fkey, vertices in iter(face.items()):
+            mesh.add_face(vertices, fkey=fkey, attr_dict=facedata.get(fkey))
+
+        mesh.edgedata = edgedata
+        mesh._max_vertex = data.get("max_vertex", mesh._max_vertex)
+        mesh._max_face = data.get("max_face", mesh._max_face)
+
+        return mesh
 
     def __init__(
-        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, name=None
+        self,
+        default_vertex_attributes=None,
+        default_edge_attributes=None,
+        default_face_attributes=None,
+        name=None,
+        **kwargs
     ):
-        super(Mesh, self).__init__(name=name)
+        super(Mesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex = {}
@@ -208,52 +263,6 @@ class Mesh(Datastructure):
     def __str__(self):
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        return {
-            "dva": self.default_vertex_attributes,
-            "dea": self.default_edge_attributes,
-            "dfa": self.default_face_attributes,
-            "vertex": {str(vertex): attr for vertex, attr in self.vertex.items()},
-            "face": {str(face): vertices for face, vertices in self.face.items()},
-            "facedata": {str(face): attr for face, attr in self.facedata.items()},
-            "edgedata": self.edgedata,
-            "max_vertex": self._max_vertex,
-            "max_face": self._max_face,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        dva = data.get("dva") or {}
-        dfa = data.get("dfa") or {}
-        dea = data.get("dea") or {}
-
-        halfedge = cls(default_vertex_attributes=dva, default_face_attributes=dfa, default_edge_attributes=dea)
-
-        vertex = data["vertex"] or {}
-        face = data["face"] or {}
-
-        facedata = data.get("facedata") or {}
-        edgedata = data.get("edgedata") or {}
-
-        for key, attr in iter(vertex.items()):
-            halfedge.add_vertex(key=key, attr_dict=attr)
-
-        for fkey, vertices in iter(face.items()):
-            attr = facedata.get(fkey) or {}
-            halfedge.add_face(vertices, fkey=fkey, attr_dict=attr)
-
-        halfedge.edgedata = edgedata
-
-        halfedge._max_vertex = data.get("max_vertex", halfedge._max_vertex)
-        halfedge._max_face = data.get("max_face", halfedge._max_face)
-
-        return halfedge
 
     # --------------------------------------------------------------------------
     # Properties
@@ -4446,7 +4455,7 @@ class Mesh(Datastructure):
         return max(face_edge_lengths) / min(face_edge_lengths)
 
     def face_skewness(self, fkey):
-        """Face skewness as the maximum absolute angular deviation from the ideal polygon angle.
+        """Face skewness as the maximum absolute angular deviation from the idefault_edge_attributesl polygon angle.
 
         Parameters
         ----------
@@ -4463,7 +4472,7 @@ class Mesh(Datastructure):
         * Wikipedia. *Types of mesh*. Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
 
         """
-        ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
+        idefault_edge_attributesl_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
         angles = []
         vertices = self.face_vertices(fkey)
         for u, v, w in window(vertices + vertices[:2], n=3):
@@ -4473,8 +4482,8 @@ class Mesh(Datastructure):
             angle = angle_points(o, a, b, deg=True)
             angles.append(angle)
         return max(
-            (max(angles) - ideal_angle) / (180 - ideal_angle),  # type: ignore
-            (ideal_angle - min(angles)) / ideal_angle,  # type: ignore
+            (max(angles) - idefault_edge_attributesl_angle) / (180 - idefault_edge_attributesl_angle),  # type: ignore
+            (idefault_edge_attributesl_angle - min(angles)) / idefault_edge_attributesl_angle,  # type: ignore
         )
 
     def face_curvature(self, fkey):

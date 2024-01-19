@@ -29,6 +29,8 @@ class Projection(Transformation):
         A 4x4 matrix (or similar) representing a projection transformation.
     check : bool, optional
         If ``True``, the provided matrix will be checked for validity.
+    name : str, optional
+        The name of the transformation.
 
     Raises
     ------
@@ -41,12 +43,12 @@ class Projection(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=False):
+    def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             _, _, _, _, perspective = decompose_matrix(matrix)
             if not allclose(flatten(matrix), flatten(matrix_from_perspective_entries(perspective))):
                 raise ValueError("This is not a proper projection matrix.")
-        super(Projection, self).__init__(matrix=matrix)
+        super(Projection, self).__init__(matrix=matrix, name=name)
 
     @classmethod
     def from_plane(cls, plane):

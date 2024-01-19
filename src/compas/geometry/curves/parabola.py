@@ -23,6 +23,8 @@ class Parabola(Conic):
         The focal length of the parabola.
     frame : :class:`compas.geometry.Frame`
         The coordinate frame of the parabola.
+    name : str, optional
+        The name of the parabola.
 
     Attributes
     ----------
@@ -79,8 +81,28 @@ class Parabola(Conic):
 
     """
 
-    def __init__(self, focal, frame=None, **kwargs):
-        super(Parabola, self).__init__(frame=frame, **kwargs)
+    DATASCHEMA = {
+        "type": "object",
+        "properties": {
+            "focal": {"type": "number", "minimum": 0},
+            "frame": Frame.DATASCHEMA,
+        },
+        "required": ["focal", "frame"],
+    }
+
+    @property
+    def __data__(self):
+        return {"focal": self.focal, "frame": self.frame.__data__}
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            focal=data["focal"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, focal, frame=None, name=None):
+        super(Parabola, self).__init__(frame=frame, name=name)
         self._focal = None
         self.focal = focal
 
@@ -96,21 +118,6 @@ class Parabola(Conic):
             return self.focal == other.focal and self.frame == other.frame
         except AttributeError:
             return False
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"focal": self.focal, "frame": self.frame.data}
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            focal=data["focal"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # properties

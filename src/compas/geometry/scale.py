@@ -29,6 +29,8 @@ class Scale(Transformation):
         A 4x4 matrix (or similar) representing a scaling.
     check : bool, optional
         If ``True``, the provided matrix will be checked for validity.
+    name : str, optional
+        The name of the transformation.
 
     Raises
     ------
@@ -55,12 +57,12 @@ class Scale(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=False):
+    def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             scale, _, _, _, _ = decompose_matrix(matrix)
             if not allclose(flatten(matrix), flatten(matrix_from_scale_factors(scale))):
                 raise ValueError("This is not a proper scale matrix.")
-        super(Scale, self).__init__(matrix=matrix)
+        super(Scale, self).__init__(matrix=matrix, name=name)
 
     @classmethod
     def from_factors(cls, factors, frame=None):
