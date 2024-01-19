@@ -233,7 +233,7 @@ class Scene(Data):
     def __init__(self, name=None, context=None):
         super(Scene, self).__init__(name)
         self._tree = SceneTree("Scene")
-        self.context = context
+        self.context = context or detect_current_context()
 
     @property
     def tree(self):
