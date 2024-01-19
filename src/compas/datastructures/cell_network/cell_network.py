@@ -230,6 +230,7 @@ class CellNetwork(Datastructure):
             "edge": self._edge,
             "face": self._face,
             "cell": cell,
+            "edge_data": self._edge_data,
             "face_data": self._face_data,
             "cell_data": self._cell_data,
             "max_vertex": self._max_vertex,
@@ -261,8 +262,10 @@ class CellNetwork(Datastructure):
         for key, attr in iter(vertex.items()):
             cell_network.add_vertex(key=key, attr_dict=attr)
 
+        edge_data = data.get("edge_data") or {}
         for u in edge:
-            for v, attr in edge[u].items():
+            for v in edge[u]:
+                attr = edge_data.get(tuple(sorted((u, v))), {})
                 cell_network.add_edge(u, v, attr_dict=attr)
 
         face_data = data.get("face_data") or {}
@@ -550,9 +553,11 @@ class CellNetwork(Datastructure):
         attr = attr_dict or {}
         attr.update(kwattr)
 
-        data = self._edge[u].get(v, {})
+        uv = tuple(sorted((u, v)))
+
+        data = self._edge_data.get(uv, {})
         data.update(attr)
-        self._edge[u][v] = data
+        self._edge_data[uv] = data
 
         # @Romana
         # should the data not be added to this edge as well?
@@ -1880,12 +1885,13 @@ class CellNetwork(Datastructure):
         """
         seen = set()
         for u, nbrs in iter(self._edge.items()):
-            for v, attr in iter(nbrs.items()):
+            for v in nbrs:
                 if (u, v) in seen or (v, u) in seen:
                     continue
                 seen.add((u, v))
                 seen.add((v, u))
                 if data:
+                    attr = self._edge_data[tuple(sorted([u, v]))]
                     yield (u, v), attr
                 else:
                     yield u, v
@@ -2042,12 +2048,11 @@ class CellNetwork(Datastructure):
         if not self.has_edge(edge):
             raise KeyError(edge)
 
-        u, v = edge
-        attr = self._edge.get(u, {}).get(v, {})
+        attr = self._edge_data.get(tuple(sorted(edge)), {})
 
         if value is not None:
             attr.update({name: value})
-            self._edge[u][v] = attr
+            self._edge_data[tuple(sorted(edge))] = attr
             return
         if name in attr:
             return attr[name]
@@ -2086,8 +2091,7 @@ class CellNetwork(Datastructure):
         if not self.has_edge(edge):
             raise KeyError(edge)
 
-        u, v = edge
-        del self._edge[u][v][name]
+        del self._edge_data[tuple(sorted(edge))][name]
 
     def edge_attributes(self, edge, names=None, values=None):
         """Get or set multiple attributes of an edge.
@@ -2122,14 +2126,12 @@ class CellNetwork(Datastructure):
         if not self.has_edge(edge):
             raise KeyError(edge)
 
-        u, v = edge
-
         if names and values:
             for name, value in zip(names, values):
-                self._edge[u][v][name] = value
+                self._edge_data[tuple(sorted(edge))][name] = value
             return
         if not names:
-            return EdgeAttributeView(self.default_edge_attributes, self._edge[u][v])
+            return EdgeAttributeView(self.default_edge_attributes, self._edge_data[tuple(sorted(edge))])
         values = []
         for name in names:
             value = self.edge_attribute(edge, name)
