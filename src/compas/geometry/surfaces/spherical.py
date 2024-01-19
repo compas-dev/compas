@@ -22,6 +22,8 @@ class SphericalSurface(Surface):
         The radius of the sphere.
     frame : :class:`Frame`
         The frame of the sphere.
+    name : str, optional
+        The name of the surface.
 
     Examples
     --------
@@ -62,8 +64,8 @@ class SphericalSurface(Surface):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, frame=None, **kwargs):
-        super(SphericalSurface, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius, frame=None, name=None):
+        super(SphericalSurface, self).__init__(frame=frame, name=name)
         self._radius = None
         self.radius = radius
 

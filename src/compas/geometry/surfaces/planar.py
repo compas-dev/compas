@@ -21,6 +21,8 @@ class PlanarSurface(Surface):
         The size of the surface in the local X-direction.
     ysize : float, optional
         The size of the surface in the local Y-direction.
+    name : str, optional
+        The name of the surface.
 
     """
 
@@ -57,8 +59,8 @@ class PlanarSurface(Surface):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, xsize=1.0, ysize=1.0, frame=None):
-        super(PlanarSurface, self).__init__(frame=frame)
+    def __init__(self, xsize=1.0, ysize=1.0, frame=None, name=None):
+        super(PlanarSurface, self).__init__(frame=frame, name=name)
         self._xsize = None
         self._ysize = None
         self.xsize = xsize

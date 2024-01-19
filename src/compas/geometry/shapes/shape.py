@@ -43,8 +43,8 @@ class Shape(Geometry):
 
     """
 
-    def __init__(self, frame=None, **kwargs):
-        super(Shape, self).__init__(**kwargs)
+    def __init__(self, frame=None, name=None):
+        super(Shape, self).__init__(name=name)
         self._frame = None
         self._transformation = None
         self.frame = frame

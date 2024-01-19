@@ -76,6 +76,11 @@ class Brep(Geometry):
     This class serves as an interface for a Brep and allows instantiating a Brep object depending on the available Backend.
     Note: this is not a full implementation of Brep and rather relies on COMPAS's plugin system for actual implementation.
 
+    Parameters
+    ----------
+    name : str, optional
+        The name of the Brep.
+
     Attributes
     ----------
     area : float, read-only
@@ -149,8 +154,8 @@ class Brep(Geometry):
     def __new__(cls, *args, **kwargs):
         return new_brep(cls, *args, **kwargs)
 
-    def __init__(self, *args, **kwargs):
-        super(Brep, self).__init__(*args, **kwargs)
+    def __init__(self, *args, name=None):
+        super(Brep, self).__init__(*args, name=name)
 
     def __str__(self):
         lines = [

@@ -20,6 +20,8 @@ class ConicalSurface(Surface):
         The radius of the cone.
     frame : :class:`Frame`
         The local coordinate system of the cone.
+    name : str, optional
+        The name of the surface.
 
     """
 
@@ -56,8 +58,8 @@ class ConicalSurface(Surface):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, height, frame=None, **kwargs):
-        super(ConicalSurface, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius, height, frame=None, name=None):
+        super(ConicalSurface, self).__init__(frame=frame, name=name)
         self._radius = None
         self._height = None
         self.radius = radius

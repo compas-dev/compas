@@ -31,6 +31,8 @@ class Ellipse(Conic):
     frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the ellipse.
         The default value is ``None``, in which case the ellipse is constructed in the XY plane of the world coordinate system.
+    name : str, optional
+        The name of the ellipse.
 
     Attributes
     ----------
@@ -132,8 +134,8 @@ class Ellipse(Conic):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, major=1.0, minor=1.0, frame=None, **kwargs):
-        super(Ellipse, self).__init__(frame=frame, **kwargs)
+    def __init__(self, major=1.0, minor=1.0, frame=None, name=None):
+        super(Ellipse, self).__init__(frame=frame, name=name)
         self._major = None
         self._minor = None
         self.major = major

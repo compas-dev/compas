@@ -32,6 +32,8 @@ class Cylinder(Shape):
     frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system, or "frame", of the cylinder.
         Default is ``None``, in which case the world coordinate system is used.
+    name : str, optional
+        The name of the shape.
 
     Attributes
     ----------
@@ -98,8 +100,8 @@ class Cylinder(Shape):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, height, frame=None, **kwargs):
-        super(Cylinder, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius, height, frame=None, name=None):
+        super(Cylinder, self).__init__(frame=frame, name=name)
         self._radius = None
         self._height = None
         self.radius = radius

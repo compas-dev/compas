@@ -59,6 +59,8 @@ class Graph(Datastructure):
         Default values for edge attributes.
     name : str, optional
         The name of the graph.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -152,8 +154,8 @@ class Graph(Datastructure):
         graph._max_node = data.get("max_node", graph._max_node)
         return graph
 
-    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None):
-        super(Graph, self).__init__(name=None)
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None, **kwargs):
+        super(Graph, self).__init__(kwargs, name=name)
         self._max_node = -1
         self.node = {}
         self.edge = {}

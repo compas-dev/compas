@@ -199,8 +199,8 @@ class Polyhedron(Geometry):
     def __data__(self):
         return {"vertices": self.vertices, "faces": self.faces}
 
-    def __init__(self, vertices, faces, **kwargs):
-        super(Polyhedron, self).__init__(**kwargs)
+    def __init__(self, vertices, faces, name=None):
+        super(Polyhedron, self).__init__(name=name)
         self._vertices = None
         self._faces = None
         self.vertices = vertices

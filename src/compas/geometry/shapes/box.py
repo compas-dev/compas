@@ -131,8 +131,8 @@ class Box(Shape):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, xsize=1.0, ysize=None, zsize=None, frame=None, **kwargs):
-        super(Box, self).__init__(frame=frame, **kwargs)
+    def __init__(self, xsize=1.0, ysize=None, zsize=None, frame=None, name=None):
+        super(Box, self).__init__(frame=frame, name=name)
         self._xsize = None
         self._ysize = None
         self._zsize = None

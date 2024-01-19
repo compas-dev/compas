@@ -19,6 +19,8 @@ class Tolerance(Data):
     ----------
     unit : {"M", "MM"}, optional
         The unit of the tolerance settings.
+    name : str, optional
+        The name of the tolerance settings.
 
     Attributes
     ----------
@@ -120,7 +122,8 @@ class Tolerance(Data):
         tol.lineardeflection = data["lineardeflection"]
         return tol
 
-    def __init__(self, unit="M"):
+    def __init__(self, unit="M", name=None):
+        super(Tolerance, self).__init__(name=name)
         self._unit = None
         self._absolute = None
         self._relative = None

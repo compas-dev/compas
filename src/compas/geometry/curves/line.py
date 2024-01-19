@@ -28,6 +28,8 @@ class Line(Curve):
         The first point.
     end : [float, float, float] | :class:`compas.geometry.Point`
         The second point.
+    name : str, optional
+        The name of the line.
 
     Attributes
     ----------
@@ -85,8 +87,8 @@ class Line(Curve):
     def __data__(self):
         return {"start": self.start.__data__, "end": self.end.__data__}
 
-    def __init__(self, start, end, **kwargs):
-        super(Line, self).__init__(**kwargs)
+    def __init__(self, start, end, name=None):
+        super(Line, self).__init__(name=name)
         self._point = None
         self._vector = None
         self._direction = None

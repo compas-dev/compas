@@ -201,12 +201,15 @@ class TreeNode(Data):
 
 
 class Tree(Datastructure):
-    """A hierarchical data structure that organizes elements into parent-child relationships. The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
+    """A hierarchical data structure that organizes elements into parent-child relationships.
+    The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
 
     Parameters
     ----------
     name : str, optional
         The name of the tree.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -260,8 +263,8 @@ class Tree(Datastructure):
         tree.add(root)
         return tree
 
-    def __init__(self, name=None):
-        super(Tree, self).__init__(name=name)
+    def __init__(self, name=None, **kwargs):
+        super(Tree, self).__init__(kwargs, name=name)
         self._root = None
 
     @property

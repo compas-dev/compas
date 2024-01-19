@@ -22,8 +22,8 @@ class Pointcloud(Geometry):
     ----------
     points : sequence[point]
         A sequence of points to add to the cloud.
-    **kwargs : dict[str, Any], optional
-        Additional keyword arguments collected in a dict.
+    name : str, optional
+        The name of the pointcloud.
 
     Attributes
     ----------
@@ -48,8 +48,8 @@ class Pointcloud(Geometry):
     def __data__(self):
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points, **kwargs):
-        super(Pointcloud, self).__init__(**kwargs)
+    def __init__(self, points, name=None):
+        super(Pointcloud, self).__init__(name=name)
         self._points = None
         self._tree = None
         self.points = points

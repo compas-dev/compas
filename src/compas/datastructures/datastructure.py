@@ -8,6 +8,10 @@ from compas.data import Data
 class Datastructure(Data):
     """Base class for all data structures."""
 
+    def __init__(self, attributes=None, name=None):
+        super(Datastructure, self).__init__(name=name)
+        self.attributes = attributes or {}
+
     def transform(self, transformation):
         """Transforms the data structure.
 

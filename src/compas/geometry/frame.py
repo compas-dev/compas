@@ -36,6 +36,8 @@ class Frame(Geometry):
         The x-axis of the frame. Defaults to the unit X vector.
     yaxis : [float, float, float] | :class:`compas.geometry.Vector`, optional
         The y-axis of the frame. Defaults to the unit Y vector.
+    name : str, optional
+        The name of the frame.
 
     Attributes
     ----------
@@ -89,8 +91,8 @@ class Frame(Geometry):
             "yaxis": self.yaxis.__data__,
         }
 
-    def __init__(self, point, xaxis=None, yaxis=None, **kwargs):
-        super(Frame, self).__init__(**kwargs)
+    def __init__(self, point, xaxis=None, yaxis=None, name=None):
+        super(Frame, self).__init__(name=name)
         self._point = None
         self._xaxis = None
         self._yaxis = None

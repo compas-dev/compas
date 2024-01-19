@@ -35,6 +35,8 @@ class Cone(Shape):
         The height of the cone along the z-axis of the frame.
         The base of the cone is at the origin of the frame.
         The entire cone is above the XY plane of the frame.
+    name : str, optional
+        The name of the shape.
 
     Attributes
     ----------
@@ -101,8 +103,8 @@ class Cone(Shape):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, height, frame=None, **kwargs):
-        super(Cone, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius, height, frame=None, name=None):
+        super(Cone, self).__init__(frame=frame, name=name)
         self._radius = None
         self._height = None
         self.radius = radius

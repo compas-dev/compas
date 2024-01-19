@@ -43,6 +43,8 @@ class Hyperbola(Conic):
     frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the hyperbola.
         The default value is ``None``, in which case the hyperbola is constructed in the XY plane of the world coordinate system.
+    name : str, optional
+        The name of the hyperbola.
 
     Attributes
     ----------
@@ -136,8 +138,8 @@ class Hyperbola(Conic):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, major, minor, frame=None, **kwargs):
-        super(Hyperbola, self).__init__(frame=frame, **kwargs)
+    def __init__(self, major, minor, frame=None, name=None):
+        super(Hyperbola, self).__init__(frame=frame, name=name)
         self._major = None
         self._minor = None
         self.major = major

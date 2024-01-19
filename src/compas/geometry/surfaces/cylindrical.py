@@ -22,6 +22,8 @@ class CylindricalSurface(Surface):
         The radius of the cylinder.
     frame : :class:`Frame`
         The local coordinate system of the cylinder.
+    name : str, optional
+        The name of the surface.
 
     """
 
@@ -55,8 +57,8 @@ class CylindricalSurface(Surface):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, frame=None, **kwargs):
-        super(CylindricalSurface, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius, frame=None, name=None):
+        super(CylindricalSurface, self).__init__(frame=frame, name=name)
         self._radius = None
         self.radius = radius
 

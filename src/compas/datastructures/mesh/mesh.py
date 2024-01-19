@@ -92,6 +92,8 @@ class Mesh(Datastructure):
         Default values for face attributes.
     name : str, optional
         Then name of the mesh.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -229,9 +231,14 @@ class Mesh(Datastructure):
         return mesh
 
     def __init__(
-        self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, name=None
+        self,
+        default_vertex_attributes=None,
+        default_edge_attributes=None,
+        default_face_attributes=None,
+        name=None,
+        **kwargs
     ):
-        super(Mesh, self).__init__(name=name)
+        super(Mesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex = {}

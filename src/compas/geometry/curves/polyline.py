@@ -29,6 +29,8 @@ class Polyline(Curve):
     points : list[[float, float, float] | :class:`compas.geometry.Point`]
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
+    name : str, optional
+        The name of the polyline.
 
     Attributes
     ----------
@@ -87,8 +89,8 @@ class Polyline(Curve):
     def __data__(self):
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points, **kwargs):
-        super(Polyline, self).__init__(**kwargs)
+    def __init__(self, points, name=None):
+        super(Polyline, self).__init__(name=name)
         self._points = []
         self._lines = []
         self.points = points

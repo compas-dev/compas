@@ -14,6 +14,8 @@ class Assembly(Datastructure):
     ----------
     name : str, optional
         The name of the assembly.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -49,8 +51,8 @@ class Assembly(Datastructure):
         assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
         return assembly
 
-    def __init__(self, name=None):
-        super(Assembly, self).__init__(name=name)
+    def __init__(self, name=None, **kwargs):
+        super(Assembly, self).__init__(kwargs, name=name)
         self.graph = Graph()
         self._parts = {}
 

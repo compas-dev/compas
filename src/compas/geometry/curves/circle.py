@@ -30,6 +30,8 @@ class Circle(Conic):
     frame : :class:`compas.geometry.Frame`, optional
         The coordinate frame of the circle.
         The default value is ``None``, in which case the world coordinate system is used.
+    name : str, optional
+        The name of the circle.
 
     Attributes
     ----------
@@ -102,8 +104,8 @@ class Circle(Conic):
     def __from_data__(cls, data):
         return cls(radius=data["radius"], frame=Frame.__from_data__(data["frame"]))
 
-    def __init__(self, radius, frame=None, **kwargs):
-        super(Circle, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius, frame=None, name=None):
+        super(Circle, self).__init__(frame=frame, name=name)
         self._radius = None
         self.radius = radius
 

@@ -63,8 +63,8 @@ class ToroidalSurface(Surface):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius_axis, radius_pipe, frame=None, **kwargs):
-        super(ToroidalSurface, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius_axis, radius_pipe, frame=None, name=None):
+        super(ToroidalSurface, self).__init__(frame=frame, name=name)
         self._radius_axis = None
         self._radius_pipe = None
         self.radius_axis = radius_axis

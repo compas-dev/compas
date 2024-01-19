@@ -54,6 +54,8 @@ class CellNetwork(Datastructure):
         Default values for cell attributes.
     name : str, optional
         The name of the cell network.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -228,8 +230,9 @@ class CellNetwork(Datastructure):
         default_face_attributes=None,
         default_cell_attributes=None,
         name=None,
+        **kwargs
     ):
-        super(CellNetwork, self).__init__(name=name)
+        super(CellNetwork, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1

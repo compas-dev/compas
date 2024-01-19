@@ -41,8 +41,8 @@ class SceneObjectNode(TreeNode):
     def __from_data__(cls, data):
         raise TypeError("SceneObjectNode cannot be created from data. Use Scene.__from_data__ instead.")
 
-    def __init__(self, sceneobject):
-        super(SceneObjectNode, self).__init__()
+    def __init__(self, sceneobject, name=None):
+        super(SceneObjectNode, self).__init__(name=name)
         self.object = sceneobject
 
     @property

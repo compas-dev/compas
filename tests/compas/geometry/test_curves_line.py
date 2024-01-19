@@ -39,7 +39,7 @@ def test_line_create(p1, p2):
 
 
 def test_line_create_with_frame():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Line([0, 0, 0], [1, 0, 0], frame=Frame.worldXY())
 
 

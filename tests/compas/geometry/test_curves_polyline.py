@@ -23,7 +23,7 @@ def test_polyline_create(points):
 
 
 def test_polyline_create_with_frame():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Polyline([], frame=Frame.worldXY())
 
 

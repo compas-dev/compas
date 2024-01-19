@@ -22,6 +22,8 @@ class Plane(Geometry):
         The base point of the plane.
     normal : [float, float, float] | :class:`compas.geometry.Vector`
         The normal vector of the plane.
+    name : str, optional
+        The name of the plane.
 
     Attributes
     ----------
@@ -60,8 +62,8 @@ class Plane(Geometry):
             "normal": self.normal.__data__,
         }
 
-    def __init__(self, point, normal, **kwargs):
-        super(Plane, self).__init__(**kwargs)
+    def __init__(self, point, normal, name=None):
+        super(Plane, self).__init__(name=name)
         self._point = None
         self._normal = None
         self.point = point

@@ -126,6 +126,8 @@ class Bezier(Curve):
     ----------
     points : sequence[point]
         A sequence of control points, represented by their location in 3D space.
+    name : str, optional
+        The name of the curve.
 
     Attributes
     ----------
@@ -179,8 +181,8 @@ class Bezier(Curve):
     def __data__(self):
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points, **kwargs):
-        super(Bezier, self).__init__(**kwargs)
+    def __init__(self, points, name=None):
+        super(Bezier, self).__init__(name=name)
         self._points = []
         self.points = points
 

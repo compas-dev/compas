@@ -61,6 +61,8 @@ class VolMesh(Datastructure):
         Default values for cell attributes.
     name : str, optional
         The name of the volmesh.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -201,8 +203,9 @@ class VolMesh(Datastructure):
         default_face_attributes=None,
         default_cell_attributes=None,
         name=None,
+        **kwargs
     ):
-        super(VolMesh, self).__init__(name=name)
+        super(VolMesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1

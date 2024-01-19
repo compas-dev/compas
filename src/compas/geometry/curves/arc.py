@@ -38,6 +38,8 @@ class Arc(Curve):
     frame : :class:`compas.geometry.Frame`, optional
         Local coordinate system of the arc.
         Defaults to the world XY plane.
+    name : str, optional
+        The name of the arc.
 
     Attributes
     ----------
@@ -149,8 +151,8 @@ class Arc(Curve):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, start_angle, end_angle, frame=None, **kwargs):
-        super(Arc, self).__init__(frame=frame, **kwargs)
+    def __init__(self, radius, start_angle, end_angle, frame=None, name=None):
+        super(Arc, self).__init__(frame=frame, name=name)
         self._radius = None
         self._start_angle = None
         self._end_angle = None

@@ -32,6 +32,8 @@ class Shear(Transformation):
         A 4x4 matrix (or similar) representing a shear transformation.
     check : bool, optional
         If ``True``, the provided matrix will be checked for validity.
+    name : str, optional
+        The name of the transformation.
 
     Raises
     ------
@@ -44,12 +46,12 @@ class Shear(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=False):
+    def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             _, shear, _, _, _ = decompose_matrix(matrix)
             if not allclose(flatten(matrix), flatten(matrix_from_shear_entries(shear))):
                 raise ValueError("This is not a proper shear matrix.")
-        super(Shear, self).__init__(matrix=matrix)
+        super(Shear, self).__init__(matrix=matrix, name=name)
 
     @classmethod
     def from_angle_direction_plane(cls, angle, direction, plane):

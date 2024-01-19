@@ -15,8 +15,8 @@ from compas.data import Data
 class Geometry(Data):
     """Base class for all geometric objects."""
 
-    def __init__(self, *args, **kwargs):
-        super(Geometry, self).__init__(*args, **kwargs)
+    def __init__(self, name=None):
+        super(Geometry, self).__init__(name=name)
 
     def __eq__(self, other):
         raise NotImplementedError
