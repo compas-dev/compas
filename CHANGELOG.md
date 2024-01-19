@@ -94,7 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
 * Fixed `TypeErrorException` when serializing a `Mesh` which has been converted from Rhino.
 * Fixed color conversions in `compas_rhion.conversions.mesh_to_compas`.
-* Allowed `SceneObject` registration for `None` context.
+* Changed `SceneObject` registration to allow for `None` context.
 * Changed `compas.data.Data.name` to be stored in `compas.data.Data.attributes`.
 * Changed `compas.data.Data.__jsondump__` to include `compas.data.Data.attributes` if the dict is not empty.
 * Changed `compas.data.Data.__jsonload__` to update `compas.data.Data.attributes` if the attribute dict is provided.
