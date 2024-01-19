@@ -4,7 +4,7 @@ import compas
 from compas.scene import context
 from compas.scene import register
 from compas.scene import SceneObject
-from compas.scene import NoSceneObjectContextError
+from compas.scene import SceneObjectNotRegisteredError
 from compas.data import Data
 
 
@@ -111,6 +111,6 @@ if not compas.IPY:
         mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
         mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
 
-        with pytest.raises(NoSceneObjectContextError):
+        with pytest.raises(SceneObjectNotRegisteredError):
             item = FakeSubItem()
             _ = SceneObject(item)

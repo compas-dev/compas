@@ -5,7 +5,6 @@ import compas
 from compas.plugins import PluginValidator
 from compas.plugins import pluggable
 
-from .exceptions import NoSceneObjectContextError
 from .exceptions import SceneObjectNotRegisteredError
 
 ITEM_SCENEOBJECT = defaultdict(dict)
@@ -69,7 +68,7 @@ def is_viewer_open():
     return Scene.viewerinstance is not None
 
 
-def _detect_current_context():
+def detect_current_context():
     """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
     1. Viewer
     2. Plotter
@@ -82,6 +81,10 @@ def _detect_current_context():
         Name of an available context, used as key in :attr:`SceneObject.ITEM_SCENEOBJECT`
 
     """
+
+    if not ITEM_SCENEOBJECT:
+        register_scene_objects()
+
     if is_viewer_open():
         return "Viewer"
     if compas.is_grasshopper():
@@ -93,12 +96,13 @@ def _detect_current_context():
     other_contexts = [v for v in ITEM_SCENEOBJECT.keys()]
     if other_contexts:
         return other_contexts[0]
-    raise NoSceneObjectContextError()
+
+    return None
 
 
 def _get_sceneobject_cls(data, **kwargs):
     # in any case user gets to override the choice
-    context_name = kwargs.get("context") or _detect_current_context()
+    context_name = kwargs.get("context") or detect_current_context()
 
     dtype = type(data)
     cls = None
@@ -122,9 +126,6 @@ def _get_sceneobject_cls(data, **kwargs):
 
 
 def get_sceneobject_cls(item, **kwargs):
-    if not ITEM_SCENEOBJECT:
-        register_scene_objects()
-
     if item is None:
         raise ValueError(
             "Cannot create a scene object for None. Please ensure you pass a instance of a supported class."
