@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [2.0.0-beta.3] 2024-01-19
+
+### Added
+
 * Added `compas.dtastructures.Network` as alias of `compas.datastructures.Graph`.
 * Added `compas.data.Data.name` and included it in serialisation in case `compas.data.Data._name is not None`.
 
