@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `attributes` from `compas.datastructures.VolMesh.data`.
 * Removed `compas.data.Data.to_data`.
 * Removed `compas.rpc.XFunc`.
+* Removed `compas_blender.geometry.curves`.
 
 ## [2.0.0-beta.2] 2024-01-12
 
