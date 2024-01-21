@@ -105,6 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Network.transform`.
 * Added `compas.datastructures.Graph.is_connected`.
 * Added `compas.datastructures.Graph.adjacency_matrix`, `compas.datastructures.Graph.connectivity_matrix`, `compas.datastructures.Graph.degree_matrix`, `compas.datastructures.Graph.laplacian_matrix`.
+* Added `compas.datastructures.Box` collision method `has_collision`.
 
 ### Changed
 
