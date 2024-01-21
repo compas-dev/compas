@@ -66,11 +66,11 @@ class RhinoBrepLoop(BrepLoop):
     # ==============================================================================
 
     @property
-    def data(self):
-        return {"type": str(self._loop.LoopType), "trims": [t.data for t in self._trims]}
+    def __data__(self):
+        return {"type": str(self._loop.LoopType), "trims": [t.__data__ for t in self._trims]}
 
     @classmethod
-    def from_data(cls, data, builder):
+    def __from_data__(cls, data, builder):
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -92,7 +92,7 @@ class RhinoBrepLoop(BrepLoop):
         )
         loop_builder = builder.add_loop(instance._type)
         for trim_data in data["trims"]:
-            RhinoBrepTrim.from_data(trim_data, loop_builder)
+            RhinoBrepTrim.__from_data__(trim_data, loop_builder)
         instance.native_loop = loop_builder.result
         return instance
 

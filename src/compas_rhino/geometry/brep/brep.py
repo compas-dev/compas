@@ -72,15 +72,15 @@ class RhinoBrep(Brep):
     # ==============================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         return {
-            "vertices": [v.data for v in self.vertices],  # type: ignore
-            "edges": [e.data for e in self.edges],  # type: ignore
-            "faces": [f.data for f in self.faces],  # type: ignore
+            "vertices": [v.__data__ for v in self.vertices],  # type: ignore
+            "edges": [e.__data__ for e in self.edges],  # type: ignore
+            "faces": [f.__data__ for f in self.faces],  # type: ignore
         }
 
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         """Construct a RhinoBrep from its data representation.
 
         Parameters
@@ -96,11 +96,11 @@ class RhinoBrep(Brep):
         instance = cls()
         builder = _RhinoBrepBuilder()
         for v_data in data["vertices"]:
-            RhinoBrepVertex.from_data(v_data, builder)
+            RhinoBrepVertex.__from_data__(v_data, builder)
         for e_data in data["edges"]:
-            RhinoBrepEdge.from_data(e_data, builder)
+            RhinoBrepEdge.__from_data__(e_data, builder)
         for f_data in data["faces"]:
-            RhinoBrepFace.from_data(f_data, builder)
+            RhinoBrepFace.__from_data__(f_data, builder)
         instance.native_brep = builder.result
         return instance
 

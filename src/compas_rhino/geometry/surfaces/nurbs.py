@@ -143,7 +143,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     # ==============================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         # add superfluous knots
         # for compatibility with all/most other NURBS implementations
         # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
@@ -154,7 +154,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         mults_v[0] += 1
         mults_v[-1] += 1
         return {
-            "points": [[point.data for point in row] for row in self.points],  # type: ignore
+            "points": [[point.__data__ for point in row] for row in self.points],  # type: ignore
             "weights": self.weights,
             "knots_u": self.knots_u,
             "knots_v": self.knots_v,
@@ -166,33 +166,8 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
             "is_periodic_v": self.is_periodic_v,
         }
 
-    @data.setter
-    def data(self, data):
-        points = [[Point.from_data(point) for point in row] for row in data["points"]]
-        weights = data["weights"]
-        knots_u = data["knots_u"]
-        knots_v = data["knots_v"]
-        mults_u = data["mults_u"]
-        mults_v = data["mults_v"]
-        degree_u = data["degree_u"]
-        degree_v = data["degree_v"]
-        is_periodic_u = data["is_periodic_u"]
-        is_periodic_v = data["is_periodic_v"]
-        self.rhino_surface = NurbsSurface.from_parameters(
-            points,
-            weights,
-            knots_u,
-            knots_v,
-            mults_u,
-            mults_v,
-            degree_u,
-            degree_v,
-            is_periodic_u,
-            is_periodic_v,
-        )
-
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         """Construct a BSpline surface from its data representation.
 
         Parameters
@@ -206,7 +181,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
             The constructed surface.
 
         """
-        points = [[Point.from_data(point) for point in row] for row in data["points"]]
+        points = [[Point.__from_data__(point) for point in row] for row in data["points"]]
         weights = data["weights"]
         knots_u = data["knots_u"]
         knots_v = data["knots_v"]

@@ -49,7 +49,7 @@ def data_to_rhino_surface(data):
     :rhino:`Rhino.Geometry.NurbsSurface`
 
     """
-    points = [[Point.from_data(point) for point in row] for row in data["points"]]
+    points = [[Point.__from_data__(point) for point in row] for row in data["points"]]
 
     nu = len(points[0])
     nv = len(points)

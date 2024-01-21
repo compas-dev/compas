@@ -73,19 +73,19 @@ class RhinoBrepEdge(BrepEdge):
     # ==============================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         curve_type, curve, plane, domain = self._get_curve_geometry()
         return {
             "curve_type": curve_type,
-            "curve": curve.data,
-            "frame": plane_to_compas_frame(plane).data,
+            "curve": curve.__data__,
+            "frame": plane_to_compas_frame(plane).__data__,
             "start_vertex": self._edge.StartVertex.VertexIndex,
             "end_vertex": self._edge.EndVertex.VertexIndex,
             "domain": domain,
         }
 
     @classmethod
-    def from_data(cls, data, builder):
+    def __from_data__(cls, data, builder):
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -102,7 +102,7 @@ class RhinoBrepEdge(BrepEdge):
 
         """
         instance = cls()
-        edge_curve = cls._create_curve_from_data(data["curve_type"], data["curve"], data["frame"], data["domain"])
+        edge_curve = cls._create_curve__from_data__(data["curve_type"], data["curve"], data["frame"], data["domain"])
         instance.native_edge = builder.add_edge(edge_curve, data["start_vertex"], data["end_vertex"])
         return instance
 
@@ -183,24 +183,24 @@ class RhinoBrepEdge(BrepEdge):
         raise ValueError("Unknown curve type: {}".format(curve.__class__.__name__))
 
     @staticmethod
-    def _create_curve_from_data(curve_type, curve_data, frame_data, domain):
-        frame = Frame.from_data(frame_data)
+    def _create_curve__from_data__(curve_type, curve_data, frame_data, domain):
+        frame = Frame.__from_data__(frame_data)
         if curve_type == "line":
-            line = Line.from_data(curve_data)
+            line = Line.__from_data__(curve_data)
             curve = LineCurve(line_to_rhino(line))
         elif curve_type == "circle":
-            circle = circle_to_rhino(Circle.from_data(curve_data))
+            circle = circle_to_rhino(Circle.__from_data__(curve_data))
             circle.Plane = frame_to_rhino_plane(frame)
             curve = ArcCurve(circle)
         elif curve_type == "ellipse":
-            ellipse = ellipse_to_rhino(Ellipse.from_data(curve_data))
+            ellipse = ellipse_to_rhino(Ellipse.__from_data__(curve_data))
             ellipse.Plane = frame_to_rhino_plane(frame)
             curve = NurbsCurve.CreateFromEllipse(ellipse)
         elif curve_type == "arc":
-            arc = arc_to_rhino(Arc.from_data(curve_data))
+            arc = arc_to_rhino(Arc.__from_data__(curve_data))
             curve = ArcCurve(arc)
         elif curve_type == "nurbs":
-            curve = RhinoNurbsCurve.from_data(curve_data).rhino_curve
+            curve = RhinoNurbsCurve.__from_data__(curve_data).rhino_curve
         else:
             raise ValueError("Unknown curve type: {}".format(curve_type))
         curve.Domain = Interval(*domain)
