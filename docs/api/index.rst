@@ -86,7 +86,7 @@ COMPAS geometry and data structures, and for basic user inter interaction in Rhi
 .. toctree::
     :maxdepth: 1
     :titlesonly:
-    :caption: compas_rhino
+    :caption: compas_rhino8
 
     compas_rhino8.conversions
     compas_rhino8.install
