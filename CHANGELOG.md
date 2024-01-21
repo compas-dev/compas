@@ -11,8 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed `compas.tolerance.Tolerance` into singleton.
+* Changed `compas_rhino.geometry.curves.nursb.RhinoNurbsCurve` to use private data API.
+* Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
+
 ### Removed
 
+* Removed `compas_blender.geometry.curves`.
 
 ## [2.0.0-beta.3] 2024-01-19
 
@@ -30,9 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.data.Data.data` to `compas.data.Data.__data__`.
 * Changed `compas.data.Data.dtype` to `compas.data.Data.__dtype__`.
 * Changed `compas.data.Data.from_data` to `compas.data.Data.__from_data__`.
-* Changed `compas.tolerance.Tolerance` into singleton.
-* Changed `compas_rhino.geometry.curves.nursb.RhinoNurbsCurve` to use private data API.
-* Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
 
 ### Removed
 
@@ -49,7 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `attributes` from `compas.datastructures.VolMesh.data`.
 * Removed `compas.data.Data.to_data`.
 * Removed `compas.rpc.XFunc`.
-* Removed `compas_blender.geometry.curves`.
 
 ## [2.0.0-beta.2] 2024-01-12
 
