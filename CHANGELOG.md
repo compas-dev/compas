@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.data.Data.data` to `compas.data.Data.__data__`.
 * Changed `compas.data.Data.dtype` to `compas.data.Data.__dtype__`.
 * Changed `compas.data.Data.from_data` to `compas.data.Data.__from_data__`.
+* Changed `compas.tolerance.Tolerance` into singleton.
 
 ### Removed
 
