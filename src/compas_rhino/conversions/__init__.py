@@ -1,5 +1,5 @@
 """
-This package provides functions to convert between COMPAS data/objects and Blender data/objects.
+This package provides functions to convert between COMPAS data/objects and Rhino data/objects.
 """
 from __future__ import absolute_import
 
