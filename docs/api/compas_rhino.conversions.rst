@@ -8,7 +8,7 @@ compas_rhino.conversions
 .. rst-class:: lead
 
 
-This package provides functions to convert between COMPAS data/objects and Blender data/objects.
+This package provides functions to convert between COMPAS data/objects and Rhino data/objects.
 
 
 Classes
