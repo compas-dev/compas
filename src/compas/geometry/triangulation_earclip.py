@@ -290,4 +290,11 @@ def earclip_polygon(polygon):
 
     # Run the Earcut algorithm.
     ear_cut = Earcut(points)
-    return ear_cut.triangulate()
+    triangles = ear_cut.triangulate()
+
+    # Reverse the triangles to match the original polygon winding.
+    if sum_val > 0.0:
+        n = len(points)-1
+        for i in range(len(triangles)):
+            triangles[i] = [abs(triangles[i][j % 3]-n) for j in range(3)]
+    return triangles
