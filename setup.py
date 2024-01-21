@@ -56,6 +56,7 @@ setup(
     packages=[
         "compas",
         "compas_rhino",
+        "compas_rhino8",
         "compas_blender",
         "compas_ghpython",
     ],

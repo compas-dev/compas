@@ -9,11 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino8.install`.
+* Added `compas_rhino8.objects`.
+* Added `compas_rhino8.layers`.
+* Added `compas_rhino8.conversions`.
+* Added `compas_rhino8.scene`.
+
 ### Changed
 
 * Changed `compas.tolerance.Tolerance` into singleton.
 * Changed `compas_rhino.geometry.curves.nursb.RhinoNurbsCurve` to use private data API.
 * Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
+* Changed `setup.py` to include `compas_rhino8`.
 
 ### Removed
 
