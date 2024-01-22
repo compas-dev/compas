@@ -140,18 +140,32 @@ def _try_remove_bootstrapper(path):
 # =============================================================================
 
 
-def _get_default_rhino_executable_path_mac(version):
-    if version == "8.0":
-        return "/Applications/Rhino 8.app/Contents/MacOS/Rhinoceros"
-    raise NotImplementedError
+# def _get_default_rhino_executable_path(version):
+#     version = _check_rhino_version(version)
+
+#     if compas.WINDOWS:
+#         path = _get_default_rhino_executable_path_windows(version)
+
+#     elif compas.OSX:
+#         path = _get_default_rhino_executable_path_mac(version)
+
+#     else:
+#         raise Exception("Unsupported platform")
+
+#     if not os.path.exists(path):
+#         path = None
+
+#     return path
 
 
-def _get_default_rhino_executable_path_windows(version):
-    raise NotImplementedError
+# def _get_default_rhino_executable_path_mac(version):
+#     if version == "8.0":
+#         return "/Applications/Rhino 8.app/Contents/MacOS/Rhinoceros"
+#     raise NotImplementedError
 
 
-def _get_default_rhino_executable_path_linux(version):
-    raise NotImplementedError
+# def _get_default_rhino_executable_path_windows(version):
+#     raise NotImplementedError
 
 
 # =============================================================================
@@ -169,6 +183,7 @@ def _get_rhino_application_folder(version):
 
     if compas.WINDOWS:
         app = os.path.join(os.getenv("ProgramFiles"), "Rhino {}".format(version))  # type: ignore
+
     elif compas.OSX:
         paths = {
             "5": ["/", "Applications", "Rhinoceros.app"],
@@ -376,30 +391,30 @@ def _get_rhino_grasshopperplugin_path(version):
 # =============================================================================
 
 
-def _get_default_rhino_ironpython_path(version):
-    version = _check_rhino_version(version)
+# def _get_default_rhino_ironpython_path(version):
+#     version = _check_rhino_version(version)
 
-    if compas.WINDOWS:
-        path = _get_default_rhino_ironpython_path_windows(version)
+#     if compas.WINDOWS:
+#         path = _get_default_rhino_ironpython_path_windows(version)
 
-    elif compas.OSX:
-        path = _get_default_rhino_ironpython_path_mac(version)
+#     elif compas.OSX:
+#         path = _get_default_rhino_ironpython_path_mac(version)
 
-    else:
-        raise Exception("Unsupported platform")
+#     else:
+#         raise Exception("Unsupported platform")
 
-    if not os.path.exists(path):
-        path = None
+#     if not os.path.exists(path):
+#         path = None
 
-    return path
-
-
-def _get_default_rhino_ironpython_path_mac(version):
-    raise NotImplementedError
+#     return path
 
 
-def _get_default_rhino_ironpython_path_windows(version):
-    raise NotImplementedError
+# def _get_default_rhino_ironpython_path_mac(version):
+#     raise NotImplementedError
+
+
+# def _get_default_rhino_ironpython_path_windows(version):
+#     raise NotImplementedError
 
 
 # =============================================================================
@@ -432,13 +447,13 @@ def _get_default_rhino_cpython_path(version):
     return path
 
 
-def _get_default_rhino_cpython_path_mac(version):
-    if version == "8.0":
-        return "{}/.rhinocode/py39-rh8/python3.9".format(os.path.expanduser("~"))
+def _get_default_rhino_cpython_path_windows(version):
     raise NotImplementedError
 
 
-def _get_default_rhino_cpython_path_windows(version):
+def _get_default_rhino_cpython_path_mac(version):
+    if version == "8.0":
+        return "{}/.rhinocode/py39-rh8/python3.9".format(os.path.expanduser("~"))
     raise NotImplementedError
 
 
