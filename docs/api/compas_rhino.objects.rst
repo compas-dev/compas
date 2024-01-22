@@ -1,8 +1,8 @@
 ********************************************************************************
-compas_rhino8.objects
+compas_rhino.objects
 ********************************************************************************
 
-.. currentmodule:: compas_rhino8.objects
+.. currentmodule:: compas_rhino.objects
 
 
 Functions

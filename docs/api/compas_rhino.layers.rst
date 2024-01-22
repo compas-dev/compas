@@ -1,8 +1,8 @@
 ********************************************************************************
-compas_rhino8.layers
+compas_rhino.layers
 ********************************************************************************
 
-.. currentmodule:: compas_rhino8.layers
+.. currentmodule:: compas_rhino.layers
 
 
 Functions
