@@ -17,28 +17,57 @@ Installation
 
 The installation of COMPAS in Rhino 8 can be done in two ways:
 
-* by installing COMPAS in Rhino 8's Python environment using ``pip``, or
-* by using the ``compas_rhino.install_with_pip`` command.
+* by using the ``compas_rhino.install_with_pip`` command, or
+* by installing COMPAS in Rhino 8's Python environment using ``pip`` directly.
+
+
+Using ``compas_rhino.install_with_pip``
+---------------------------------------
+
+Rhino 8 comes with its own CPython executable (Python 3.9).
+This procedure simply uses that executable and its associated ``pip`` to install COMPAS.
+
+Install from PyPI
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ python -m compas_rhino.install_with_pip "compas"
+
+
+Install from Source
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ cd path/to/compas
+    $ python -m compas_rhino.install_with_pip "-e ."
+
 
 Using ``pip``
 -------------
 
-Rhino 8 comes with its own Python installation.
-This procedure simply uses that Python installation and associated ``pip`` to install COMPAS.
-It doesn't require an existing COMPAS installation on your system.
+The procedure above assumes Rhino 8 is installed in the default location, and my require some user priviliges that are not always available.
+If the procedure doesn't work, you can install COMPAS (and other python packages), using the Rhino CPython executable and ``pip`` directly.
 
-You need to know the path to the Python executable that comes with Rhino 8.
+To do so, you need to know the path to the Python executable that comes with Rhino 8.
 On macOS, this is typically something like ``~/.rhinocode/py39-rh8/python3.9``.
+
+Install from PyPI
+~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
     $ ~/.rhinocode/py39-rh8/python3.9 -m pip install compas
 
 
-Using ``compas_rhino.install_with_pip``
----------------------------------------
+Install from Source
+~~~~~~~~~~~~~~~~~~~
 
-**Under Construction...**
+.. code-block:: bash
+
+    $ cd /path/to/compas
+    $ ~/.rhinocode/py39-rh8/python3.9 -m pip install -e .
 
 
 Verification
