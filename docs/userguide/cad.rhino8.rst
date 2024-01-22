@@ -21,40 +21,20 @@ The installation of COMPAS in Rhino 8 can be done in two ways:
 * by installing COMPAS in Rhino 8's Python environment using ``pip`` directly.
 
 
-Using ``compas_rhino.install_with_pip``
----------------------------------------
-
-Rhino 8 comes with its own CPython executable (Python 3.9).
-This procedure simply uses that executable and its associated ``pip`` to install COMPAS.
-
-Install from PyPI
-~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-    $ python -m compas_rhino.install_with_pip "compas"
-
-
-Install from Source
-~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-    $ cd path/to/compas
-    $ python -m compas_rhino.install_with_pip "-e ."
-
-
 Using ``pip``
 -------------
 
-The procedure above assumes Rhino 8 is installed in the default location, and my require some user priviliges that are not always available.
-If the procedure doesn't work, you can install COMPAS (and other python packages), using the Rhino CPython executable and ``pip`` directly.
+Rhino 8 comes with its own CPython executable (Python 3.9).
+This procedure simply uses that executable and its associated ``pip`` to install COMPAS.
+The location of the executable is different on different platforms.
 
-To do so, you need to know the path to the Python executable that comes with Rhino 8.
-On macOS, this is typically something like ``~/.rhinocode/py39-rh8/python3.9``.
+* Windows: ``%USERPROFILE%\.rhinocode\py39-rh8\python.exe``
+* macOS: ``~/.rhinocode/py39-rh8/python3.9``
 
 Install from PyPI
 ~~~~~~~~~~~~~~~~~
+
+For example on Mac:
 
 .. code-block:: bash
 
@@ -66,8 +46,34 @@ Install from Source
 
 .. code-block:: bash
 
-    $ cd /path/to/compas
+    $ cd path/to/compas
     $ ~/.rhinocode/py39-rh8/python3.9 -m pip install -e .
+
+
+Using ``compas_rhino.install_with_pip``
+---------------------------------------
+
+To simplify the above procedure, ``compas_rhino`` provides a convnience command.
+
+.. warning::
+
+    This command is experimental and may not yet work properly on your system.
+
+Install from PyPI
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ python -m compas_rhino.install_with_pip compas
+
+
+Install from Source
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ cd /path/to/compas
+    $ python -m compas_rhino.install_with_pip "-e ."
 
 
 Verification
