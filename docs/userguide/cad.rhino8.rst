@@ -73,9 +73,34 @@ Install from Source
 Verification
 ============
 
+In Rhino 8, open the Python editor (just type ``ScriptEditor``), open an new ``Python 3`` edito tab, and type the following:
+
+.. code-block:: python
+
+    import compas
+    print(compas.__version__)
+
+If everything is installed correctly, this should print the version number of the installed COMPAS package.
+
 
 Visualisation
 =============
+
+Visualisation of COMPAS objects in Rhino 8 is handled the same way as in other Rhino version, using viualisation scenes.
+For more information on visualisation scenes, see :doc:`/userguide/basics.visualisation`.
+
+.. code-block:: python
+
+    import compas
+    from compas.datastructures import Mesh
+    from compas.scene import Scene
+
+    mesh = Mesh.from_obj(compas.get('tubemesh.obj'))
+
+    scene = Scene()
+    scene.clear()
+    scene.add(mesh)
+    scene.redraw()
 
 
 Conversions
