@@ -17,12 +17,8 @@ nbsphinx
 pydocstyle
 pytest
 sphinx ==4.5
+sphinxcontrib-applehelp==1.0.2
 sphinx_compas_theme >=0.15.18
-sphinxcontrib-applehelp==1.0.4
-sphinxcontrib-devhelp==1.0.2
-sphinxcontrib-htmlhelp==2.0.1
-sphinxcontrib-qthelp==1.0.3
-sphinxcontrib-serializinghtml==1.1.5
 twine
 wheel
 -e .
