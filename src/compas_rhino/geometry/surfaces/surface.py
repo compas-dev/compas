@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import Rhino.Geometry  # type: ignore
+
 from compas.geometry import Surface
 
 from compas_rhino.conversions import point_to_rhino
@@ -16,8 +18,6 @@ from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
 
 from compas_rhino.geometry.curves import RhinoCurve
-
-import Rhino.Geometry  # type: ignore
 
 
 class RhinoSurface(Surface):

@@ -6,11 +6,6 @@ import os
 import compas
 import compas._os
 
-if compas.is_rhino():
-    import rhinoscriptsyntax as rs  # noqa: F401
-    from .utilities import *  # noqa: F401 F403
-
-
 __version__ = "2.0.0-beta.3"
 
 
@@ -18,7 +13,8 @@ PURGE_ON_DELETE = True
 
 INSTALLABLE_PACKAGES = ["compas", "compas_rhino", "compas_ghpython"]
 SUPPORTED_VERSIONS = ["5.0", "6.0", "7.0", "8.0"]
-DEFAULT_VERSION = "7.0"
+DEFAULT_VERSION = "8.0"
+INSTALLED_VERSION = None
 
 INSTALLATION_ARGUMENTS = None
 
@@ -32,6 +28,7 @@ __all__ = [
     "INSTALLABLE_PACKAGES",
     "SUPPORTED_VERSIONS",
     "DEFAULT_VERSION",
+    "INSTALLED_VERSION",
     "IRONPYTHON_PLUGIN_GUID",
     "GRASSHOPPER_PLUGIN_GUID",
     "RHINOCYCLES_PLUGIN_GUID",
@@ -53,17 +50,25 @@ __all_plugins__ = [
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # General helpers
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
 def clear(guids=None):
+    import compas_rhino.objects
+
     if guids is None:
-        guids = get_objects()  # noqa: F405
-    delete_objects(guids, purge=True)  # noqa: F405
+        guids = compas_rhino.objects.get_objects()
+    compas_rhino.objects.delete_objects(guids, purge=True)
 
 
 def redraw():
+    import rhinoscriptsyntax as rs  # type: ignore
+
     rs.EnableRedraw(True)
     rs.Redraw()
 
@@ -80,6 +85,15 @@ def _check_rhino_version(version):
 
 def _get_package_path(package):
     return os.path.abspath(os.path.dirname(package.__file__))
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Bootstrapper
+# =============================================================================
+# =============================================================================
+# =============================================================================
 
 
 def _get_bootstrapper_path(install_path):
@@ -118,7 +132,34 @@ def _try_remove_bootstrapper(path):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
+# Rhino executable
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_rhino_executable_path_mac(version):
+    if version == "8.0":
+        return "/Applications/Rhino 8.app/Contents/MacOS/Rhinoceros"
+    raise NotImplementedError
+
+
+def _get_default_rhino_executable_path_windows(version):
+    raise NotImplementedError
+
+
+def _get_default_rhino_executable_path_linux(version):
+    raise NotImplementedError
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
 # Base Application folder (Program Files on Windows and Applications on Mac)
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
@@ -127,7 +168,7 @@ def _get_rhino_application_folder(version):
     version = version.split(".")[0]  # take the major only
 
     if compas.WINDOWS:
-        app = os.path.join(os.getenv("ProgramFiles"), "Rhino {}".format(version))
+        app = os.path.join(os.getenv("ProgramFiles"), "Rhino {}".format(version))  # type: ignore
     elif compas.OSX:
         paths = {
             "5": ["/", "Applications", "Rhinoceros.app"],
@@ -140,7 +181,7 @@ def _get_rhino_application_folder(version):
             "8": [
                 "/",
                 "Applications",
-                "RhinoWIP.app",
+                "Rhino 8.app",
             ],
         }
         app = os.path.join(*paths[version])
@@ -155,16 +196,20 @@ def _get_rhino_application_folder(version):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # Base AppData folder (APPDATA on Windows and Application Support on Mac)
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
 def _get_rhino_appdata_folder():
     if compas.WINDOWS:
-        app = os.path.join(os.getenv("APPDATA"), "McNeel", "Rhinoceros")
+        app = os.path.join(os.getenv("APPDATA"), "McNeel", "Rhinoceros")  # type: ignore
 
     elif compas.OSX:
-        app = os.path.join(os.getenv("HOME"), "Library", "Application Support", "McNeel", "Rhinoceros")
+        app = os.path.join(os.getenv("HOME"), "Library", "Application Support", "McNeel", "Rhinoceros")  # type: ignore
 
     else:
         raise Exception("Unsupported platform")
@@ -176,7 +221,11 @@ def _get_rhino_appdata_folder():
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # Scripts folder
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
@@ -192,7 +241,11 @@ def _get_rhino_scripts_path(version):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # Managed Plugins folder
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
@@ -223,7 +276,11 @@ def _get_rhino_managedplugins_path(version):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # Plugins folder
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
@@ -250,7 +307,11 @@ def _get_rhino_plugins_path(version):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # PythonPlugins folder
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
@@ -260,7 +321,11 @@ def _get_rhino_pythonplugins_path(version):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # IronPython Plugin
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
@@ -273,7 +338,11 @@ def _get_rhino_ironpythonplugin_path(version):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
 # Grasshopper
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 
@@ -281,7 +350,7 @@ def _get_rhino_grasshopperplugin_path(version):
     version = _check_rhino_version(version)
 
     if compas.WINDOWS:
-        gh_path = os.path.join(os.getenv("APPDATA"), "Grasshopper")
+        gh_path = os.path.join(os.getenv("APPDATA"), "Grasshopper")  # type: ignore
 
     elif compas.OSX:
         gh_path = os.path.join(
@@ -299,7 +368,162 @@ def _get_rhino_grasshopperplugin_path(version):
 
 
 # =============================================================================
+# =============================================================================
+# =============================================================================
+# Rhino IronPython
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_rhino_ironpython_path(version):
+    version = _check_rhino_version(version)
+
+    if compas.WINDOWS:
+        path = _get_default_rhino_ironpython_path_windows(version)
+
+    elif compas.OSX:
+        path = _get_default_rhino_ironpython_path_mac(version)
+
+    else:
+        raise Exception("Unsupported platform")
+
+    if not os.path.exists(path):
+        path = None
+
+    return path
+
+
+def _get_default_rhino_ironpython_path_mac(version):
+    raise NotImplementedError
+
+
+def _get_default_rhino_ironpython_path_windows(version):
+    raise NotImplementedError
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Rhino CPython
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_rhino_cpython_path(version):
+    version = _check_rhino_version(version)
+
+    if version != "8.0":
+        raise NotImplementedError
+
+    if compas.WINDOWS:
+        path = _get_default_rhino_cpython_path_windows(version)
+
+    elif compas.OSX:
+        path = _get_default_rhino_cpython_path_mac(version)
+
+    else:
+        raise Exception("Unsupported platform")
+
+    if not os.path.exists(path):
+        path = None
+
+    return path
+
+
+def _get_default_rhino_cpython_path_mac(version):
+    if version == "8.0":
+        return "{}/.rhinocode/py39-rh8/python3.9".format(os.path.expanduser("~"))
+    raise NotImplementedError
+
+
+def _get_default_rhino_cpython_path_windows(version):
+    raise NotImplementedError
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Rhino IronPython site-packages
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_rhino_ironpython_sitepackages_path(version):
+    version = _check_rhino_version(version)
+
+    if version != "8.0":
+        raise NotImplementedError
+
+    if compas.OSX:
+        path = _get_default_rhino_ironpython_sitepackages_path_mac(version)
+
+    elif compas.WINDOWS:
+        path = _get_default_rhino_ironpython_sitepackages_path_windows(version)
+
+    else:
+        raise Exception("Unsupported platform.")
+
+    if not os.path.exists(path):
+        raise Exception("The default installation folder for rhino8 {} doesn't exist.".format(version))
+
+    return path
+
+
+def _get_default_rhino_ironpython_sitepackages_path_mac(version):
+    return "{}/.rhinocode/py27-rh8/Lib/site-packages".format(os.path.expanduser("~"))
+
+
+def _get_default_rhino_ironpython_sitepackages_path_windows(version):
+    raise NotImplementedError
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Rhino CPython site-packages
+# =============================================================================
+# =============================================================================
+# =============================================================================
+
+
+def _get_default_rhino_cpython_sitepackages_path(version):
+    version = _check_rhino_version(version)
+
+    if version != "8.0":
+        raise NotImplementedError
+
+    if compas.OSX:
+        path = _get_default_rhino_cpython_sitepackages_path_mac(version)
+
+    elif compas.WINDOWS:
+        path = _get_default_rhino_cpython_sitepackages_path_windows(version)
+
+    else:
+        raise Exception("Unsupported platform.")
+
+    if not os.path.exists(path):
+        raise Exception("The default installation folder for rhino8 {} doesn't exist.".format(version))
+
+    return path
+
+
+def _get_default_rhino_cpython_sitepackages_path_mac(version):
+    return "{}/.rhinocode/py39-rh8/lib/python3.9/site-packages".format(os.path.expanduser("~"))
+
+
+def _get_default_rhino_cpython_sitepackages_path_windows(version):
+    raise NotImplementedError
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
 # IronPython lib folder
+# =============================================================================
+# =============================================================================
 # =============================================================================
 
 

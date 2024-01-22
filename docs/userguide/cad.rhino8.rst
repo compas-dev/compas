@@ -4,7 +4,12 @@ Working in Rhino 8
 
 .. warning::
 
-    Support for CPython scripting in the Rhino 8 ScriptEditor is experimental.
+    Support for the new Rhino 8 ScriptEditor is experimental.
+
+.. info::
+
+    The installation procedures listed here are for using COMPAS with CPython in Rhino 8.
+    For using COMPAS with IronPython in Rhino 8, see :doc:`/userguide/cad.rhino`.
 
 
 Installation
@@ -13,7 +18,7 @@ Installation
 The installation of COMPAS in Rhino 8 can be done in two ways:
 
 * by installing COMPAS in Rhino 8's Python environment using ``pip``, or
-* by using the ``compas_rhino8.install`` command.
+* by using the ``compas_rhino.install_with_pip`` command.
 
 Using ``pip``
 -------------
@@ -30,29 +35,10 @@ On macOS, this is typically something like ``~/.rhinocode/py39-rh8/python3.9``.
     $ ~/.rhinocode/py39-rh8/python3.9 -m pip install compas
 
 
-Using ``compas_rhino8.install``
--------------------------------
+Using ``compas_rhino.install_with_pip``
+---------------------------------------
 
-.. warning::
-
-    This installation procedure will only install the specified COMPAS packages.
-    The dependencies and requirements of these packages are not installed automatically.
-    We recommend using the procedure with ``pip`` described above instead.
-
-
-The ``compas_rhino8.install`` command installs COMPAS in Rhino 8's Python ``site-packages`` folder
-by creating symlinks to COMPAS packages installed in an existing (``conda``) environment.
-Therefore, before running the command below, you should activate the environment in which you have installed COMPAS.
-
-.. code-block:: bash
-
-    $ python -m compas_rhino8.install
-
-To remove all previously installed symlinks before installing new ones, use the ``--clean`` flag.
-
-.. code-block:: bash
-
-    $ python -m compas_rhino8.install --clean
+**Under Construction...**
 
 
 Verification

@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Rhino.Geometry import Transform  # type: ignore
+import Rhino  # type: ignore
 
 
 def transformation_to_rhino(transformation):
@@ -18,7 +18,7 @@ def transformation_to_rhino(transformation):
     :rhino:`Rhino.Geometry.Transform`
 
     """
-    transform = Transform(1.0)
+    transform = Rhino.Geometry.Transform(1.0)
     for i in range(0, 4):
         for j in range(0, 4):
             transform[i, j] = transformation[i, j]
@@ -38,7 +38,7 @@ def transformation_matrix_to_rhino(matrix):
     :rhino:`Rhino.Geometry.Transform`
 
     """
-    transform = Transform(1.0)
+    transform = Rhino.Geometry.Transform(1.0)
     for i in range(0, 4):
         for j in range(0, 4):
             transform[i, j] = matrix[i][j]

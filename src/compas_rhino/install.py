@@ -13,9 +13,6 @@ import compas._os
 import compas.plugins
 
 
-INSTALLED_VERSION = None
-
-
 def install(version=None, packages=None, clean=False):
     """Install COMPAS for Rhino.
 
@@ -219,8 +216,7 @@ def install(version=None, packages=None, clean=False):
     if exit_code != 0:
         sys.exit(exit_code)
 
-    global INSTALLED_VERSION
-    INSTALLED_VERSION = version
+    compas_rhino.INSTALLED_VERSION = version
 
 
 def _run_post_execution_steps(steps_generator):
@@ -353,9 +349,13 @@ def _filter_installable_packages(version, packages):
     return packages
 
 
-# ==============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
 # Main
-# ==============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
 
 if __name__ == "__main__":
     import argparse
