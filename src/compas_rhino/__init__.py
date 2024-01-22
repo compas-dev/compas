@@ -449,13 +449,13 @@ def _get_default_rhino_cpython_path(version):
 
 def _get_default_rhino_cpython_path_windows(version):
     if version == "8.0":
-        return "{}/.rhinocode/py39-rh8/python3.9".format(os.path.expanduser("~"))
+        return os.path.abspath("{}/.rhinocode/py39-rh8/python.exe".format(os.path.expanduser("~")))
     raise NotImplementedError
 
 
 def _get_default_rhino_cpython_path_mac(version):
     if version == "8.0":
-        return "{}/.rhinocode/py39-rh8/python3.9".format(os.path.expanduser("~"))
+        return os.path.abspath("{}/.rhinocode/py39-rh8/python3.9".format(os.path.expanduser("~")))
     raise NotImplementedError
 
 
