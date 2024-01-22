@@ -448,6 +448,8 @@ def _get_default_rhino_cpython_path(version):
 
 
 def _get_default_rhino_cpython_path_windows(version):
+    if version == "8.0":
+        return "{}/.rhinocode/py39-rh8/python3.9".format(os.path.expanduser("~"))
     raise NotImplementedError
 
 
@@ -488,10 +490,14 @@ def _get_default_rhino_ironpython_sitepackages_path(version):
 
 
 def _get_default_rhino_ironpython_sitepackages_path_mac(version):
-    return "{}/.rhinocode/py27-rh8/Lib/site-packages".format(os.path.expanduser("~"))
+    if version == "8.0":
+        return "{}/.rhinocode/py27-rh8/Lib/site-packages".format(os.path.expanduser("~"))
+    raise NotImplementedError
 
 
 def _get_default_rhino_ironpython_sitepackages_path_windows(version):
+    if version == "8.0":
+        return "{}/.rhinocode/py27-rh8/Lib/site-packages".format(os.path.expanduser("~"))
     raise NotImplementedError
 
 
@@ -526,10 +532,14 @@ def _get_default_rhino_cpython_sitepackages_path(version):
 
 
 def _get_default_rhino_cpython_sitepackages_path_mac(version):
-    return "{}/.rhinocode/py39-rh8/lib/python3.9/site-packages".format(os.path.expanduser("~"))
+    if version == "8.0":
+        return "{}/.rhinocode/py39-rh8/lib/python3.9/site-packages".format(os.path.expanduser("~"))
+    raise NotImplementedError
 
 
 def _get_default_rhino_cpython_sitepackages_path_windows(version):
+    if version == "8.0":
+        return "{}/.rhinocode/py39-rh8/lib/python3.9/site-packages".format(os.path.expanduser("~"))
     raise NotImplementedError
 
 
