@@ -14,7 +14,7 @@ compas_plotters
 
 """
 
-__version__ = "1.17.9"
+__version__ = "1.17.10"
 
 from .core import *  # noqa: F401 F403
 
