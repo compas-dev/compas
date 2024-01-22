@@ -7,7 +7,7 @@ from numpy import divide
 from numpy import hstack
 from numpy import tile
 
-from scipy import cross
+from numpy import cross
 from scipy.sparse import coo_matrix
 
 from compas.numerical.linalg import normrow

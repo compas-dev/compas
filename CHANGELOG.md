@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed `ImportError` when when `scipy==1.12.0` is installed.
+
 ### Removed
 
 
