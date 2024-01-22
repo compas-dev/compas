@@ -18,7 +18,7 @@ pydocstyle
 pytest
 sphinx ==4.5
 sphinxcontrib-applehelp==1.0.2
-sphinxcontrib-devhelp==1.0.5
+sphinxcontrib-devhelp==1.0.2
 sphinxcontrib-htmlhelp==2.0.4
 sphinx_compas_theme >=0.15.18
 twine
