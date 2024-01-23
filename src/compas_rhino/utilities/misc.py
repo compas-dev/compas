@@ -2,23 +2,25 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-try:
-    basestring
-except NameError:
-    basestring = str
+# try:
+#     basestring
+# except NameError:
+#     basestring = str
 
 import os
 import sys
-import ast
 
-import rhinoscriptsyntax as rs
-import Rhino
-import clr
+# import ast
 
-clr.AddReference("Rhino.UI")
-import Rhino.UI  # noqa: E402
-from Rhino.UI.Dialogs import ShowMessageBox  # noqa: E402
-from Rhino.UI.Dialogs import ShowPropertyListBox  # noqa: E402
+import rhinoscriptsyntax as rs  # type: ignore
+import Rhino  # type: ignore
+
+# import clr
+
+# clr.AddReference("Rhino.UI")
+# import Rhino.UI  # noqa: E402
+# from Rhino.UI.Dialogs import ShowMessageBox  # noqa: E402
+# from Rhino.UI.Dialogs import ShowPropertyListBox  # noqa: E402
 
 
 # ==============================================================================
@@ -167,8 +169,8 @@ def print_display_on(on=True):
         rs.Command("_PrintDisplay State Off _Enter")
 
 
-def display_message(message):
-    return ShowMessageBox(message, "Message")
+# def display_message(message):
+#     return ShowMessageBox(message, "Message")
 
 
 # def display_text(text, title="Text", width=800, height=600):
@@ -183,8 +185,8 @@ def display_message(message):
 #     return form.show()
 
 
-def display_html():
-    raise NotImplementedError
+# def display_html():
+#     raise NotImplementedError
 
 
 # ==============================================================================
@@ -192,34 +194,34 @@ def display_html():
 # ==============================================================================
 
 
-def update_named_values(names, values, message="", title="Update named values", evaluate=False):
-    values = ShowPropertyListBox(message, title, names, values)
-    if evaluate:
-        if values:
-            values = list(values)
-            for i in range(len(values)):
-                value = values[i]
-                try:
-                    value = ast.literal_eval(value)
-                except (TypeError, ValueError, SyntaxError):
-                    pass
-                values[i] = value
-    return values
+# def update_named_values(names, values, message="", title="Update named values", evaluate=False):
+#     values = ShowPropertyListBox(message, title, names, values)
+#     if evaluate:
+#         if values:
+#             values = list(values)
+#             for i in range(len(values)):
+#                 value = values[i]
+#                 try:
+#                     value = ast.literal_eval(value)
+#                 except (TypeError, ValueError, SyntaxError):
+#                     pass
+#                 values[i] = value
+#     return values
 
 
-def update_settings(settings, message="", title="Update settings"):
-    names = sorted(settings.keys())
-    values = [str(settings[name]) for name in names]
-    values = update_named_values(names, values, message=message, title=title)
-    if values:
-        values = list(values)
-        for name, value in zip(names, values):
-            try:
-                settings[name] = ast.literal_eval(value)
-            except (TypeError, ValueError, SyntaxError):
-                settings[name] = value
-        return True
-    return False
+# def update_settings(settings, message="", title="Update settings"):
+#     names = sorted(settings.keys())
+#     values = [str(settings[name]) for name in names]
+#     values = update_named_values(names, values, message=message, title=title)
+#     if values:
+#         values = list(values)
+#         for name, value in zip(names, values):
+#             try:
+#                 settings[name] = ast.literal_eval(value)
+#             except (TypeError, ValueError, SyntaxError):
+#                 settings[name] = value
+#         return True
+#     return False
 
 
 def unload_modules(top_level_module_name):

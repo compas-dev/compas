@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 from itertools import groupby
+
+import Rhino.Geometry  # type: ignore
+
 from compas.geometry import Point
 from compas.geometry import NurbsCurve
 
@@ -11,8 +14,6 @@ from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import line_to_rhino
 
 from .curve import RhinoCurve
-
-import Rhino.Geometry  # type: ignore
 
 
 def rhino_curve_from_parameters(points, weights, knots, multiplicities, degree):

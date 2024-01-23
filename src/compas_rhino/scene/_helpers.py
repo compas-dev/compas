@@ -2,16 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from System.Drawing.Color import FromArgb  # type: ignore
-from Rhino.DocObjects.ObjectColorSource import ColorFromObject  # type: ignore
-from Rhino.DocObjects import ObjectAttributes  # type: ignore
-from Rhino.DocObjects.ObjectDecoration import EndArrowhead  # type: ignore
-from Rhino.DocObjects.ObjectDecoration import StartArrowhead  # type: ignore
-
+import System  # type: ignore
+import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
 
-from compas_rhino import create_layers_from_path
+from compas_rhino.layers import create_layers_from_path
 
 try:
     find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
@@ -30,18 +26,18 @@ def ensure_layer(layerpath):
 
 
 def attributes(name=None, color=None, layer=None, arrow=None):
-    attributes = ObjectAttributes()
+    attributes = Rhino.DocObjects.ObjectAttributes()
     if name:
         attributes.Name = name
     if color:
-        attributes.ObjectColor = FromArgb(*color.rgb255)
-        attributes.ColorSource = ColorFromObject
+        attributes.ObjectColor = System.Drawing.Color.FromArgb(*color.rgb255)
+        attributes.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
     if layer:
         attributes.LayerIndex = ensure_layer(layer)
     if arrow == "end":
-        attributes.ObjectDecoration = EndArrowhead
+        attributes.ObjectDecoration = Rhino.DocObjects.ObjectDecoration.EndArrowhead
     elif arrow == "start":
-        attributes.ObjectDecoration = StartArrowhead
+        attributes.ObjectDecoration = Rhino.DocObjects.ObjectDecoration.StartArrowhead
     return attributes
 
 

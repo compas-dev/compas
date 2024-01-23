@@ -3,8 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino  # type: ignore
-from Rhino.Geometry import Interval  # type: ignore
-from Rhino.Geometry import RevSurface  # type: ignore
 
 from compas.geometry import Brep
 from compas.geometry import BrepFace
@@ -208,7 +206,7 @@ class RhinoBrepFace(BrepFace):
         if isinstance(surface, Rhino.Geometry.NurbsSurface):
             _, plane = surface.FrameAt(0.0, 0.0)
             return "nurbs", RhinoNurbsSurface.from_rhino(surface), uv_domain, plane
-        if isinstance(surface, Rhino.Geometry.RevSurface):
+        if isinstance(surface, Rhino.Geometry.Rhino.Geometry.RevSurface):
             success, cast_surface = surface.TryGetSphere()
             if success:
                 return "sphere", sphere_to_compas(cast_surface), uv_domain, cast_surface.EquatorialPlane
@@ -236,8 +234,10 @@ class RhinoBrepFace(BrepFace):
             surface = RhinoNurbsSurface.__from_data__(surface_data)
         elif surface_type == "torus":
             raise NotImplementedError("Support for torus surface is not yet implemented!")
-        surface.rhino_surface.SetDomain(0, Interval(*u_domain))
-        surface.rhino_surface.SetDomain(1, Interval(*v_domain))
+        else:
+            raise NotImplementedError("Support for surface type: {} is not yet implemented.".format(surface_type))
+        surface.rhino_surface.SetDomain(0, Rhino.Geometry.Interval(*u_domain))
+        surface.rhino_surface.SetDomain(1, Rhino.Geometry.Interval(*v_domain))
         return surface
 
     @staticmethod
@@ -245,22 +245,22 @@ class RhinoBrepFace(BrepFace):
         cylinder = Cylinder.__from_data__(surface_data)
         cylinder = cylinder_to_rhino(cylinder)
         cylinder.BasePlane = frame_to_rhino_plane(frame)
-        surface = RevSurface.CreateFromCylinder(cylinder)
-        surface.SetDomain(0, Interval(*u_domain))
-        surface.SetDomain(1, Interval(*v_domain))
+        surface = Rhino.Geometry.RevSurface.CreateFromCylinder(cylinder)
+        surface.SetDomain(0, Rhino.Geometry.Interval(*u_domain))
+        surface.SetDomain(1, Rhino.Geometry.Interval(*v_domain))
         return surface
 
     @staticmethod
     def _make_sphere_surface(surface_data, u_domain, v_domain, frame):
         sphere = Sphere.__from_data__(surface_data)
         sphere = sphere_to_rhino(sphere)
-        # seems Sphere => RevSurface conversion modifies the orientation of the sphere
+        # seems Sphere => Rhino.Geometry.RevSurface conversion modifies the orientation of the sphere
         # setting the plane here is overriden by this modification and surface ends up oriented differntly than
         # original.
         # sphere.EquatorialPlane = frame_to_rhino_plane(frame)
-        surface = RevSurface.CreateFromSphere(sphere)
-        surface.SetDomain(0, Interval(*u_domain))
-        surface.SetDomain(1, Interval(*v_domain))
+        surface = Rhino.Geometry.RevSurface.CreateFromSphere(sphere)
+        surface.SetDomain(0, Rhino.Geometry.Interval(*u_domain))
+        surface.SetDomain(1, Rhino.Geometry.Interval(*v_domain))
         return surface
 
     # ==============================================================================

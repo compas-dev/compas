@@ -5,13 +5,15 @@ from __future__ import division
 from Rhino.Geometry import TextDot  # type: ignore
 import scriptcontext as sc  # type: ignore
 
-import compas_rhino
 from compas.geometry import centroid_points
 from compas.geometry import Line
 from compas.scene import VolMeshObject as BaseVolMeshObject
+
+import compas_rhino.objects
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
+
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 from ._helpers import ngon
@@ -44,8 +46,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.*".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_vertices(self):
         """Delete all vertices drawn by this scene object.
@@ -55,8 +57,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.vertex.*".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -66,8 +68,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.edge.*".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_faces(self):
         """Delete all faces drawn by this scene object.
@@ -77,8 +79,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.face.*".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_cells(self):
         """Delete all cells drawn by this scene object.
@@ -88,8 +90,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.cell.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.cell.*".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_vertexlabels(self):
         """Delete all vertex labels drawn by this scene object.
@@ -99,8 +101,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*.label".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.vertex.*.label".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
         """Delete all edge labels drawn by this scene object.
@@ -110,8 +112,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*.label".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.edge.*.label".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
         """Delete all face labels drawn by this scene object.
@@ -121,8 +123,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*.label".format(self.volmesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.face.*.label".format(self.volmesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     # ==========================================================================
     # draw

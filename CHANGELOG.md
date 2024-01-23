@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino.objects`.
+* Added `compas_rhino.layers`.
+* Added `compas_rhino.install_with_pip`.
+
 ### Changed
 
 * Changed `compas.tolerance.Tolerance` into singleton.
@@ -18,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Removed `compas_blender.geometry.curves`.
+* Removed `compas_rhino.utilities.objects`.
+* Removed `compas_rhino.utilities.layers`.
 
 ## [2.0.0-beta.3] 2024-01-19
 

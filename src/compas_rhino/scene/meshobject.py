@@ -2,18 +2,18 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from Rhino.Geometry import TextDot  # type: ignore
 import scriptcontext as sc  # type: ignore
+import Rhino  # type: ignore
 
 from compas.geometry import centroid_points
 from compas.geometry import Point
 from compas.geometry import Line
 from compas.geometry import Cylinder
 from compas.geometry import Sphere
-
-import compas_rhino
 from compas.scene import MeshObject as BaseMeshObject
 from compas.colors import Color
+
+import compas_rhino.objects
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
@@ -21,6 +21,7 @@ from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino_brep
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
+
 from .sceneobject import RhinoSceneObject
 from ._helpers import attributes
 from ._helpers import ngon
@@ -53,8 +54,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.*".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_vertices(self):
         """Delete all vertices drawn by this scene object.
@@ -64,8 +65,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.vertex.*".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -75,8 +76,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.edge.*".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_faces(self):
         """Delete all faces drawn by this scene object.
@@ -86,8 +87,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.face.*".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_vertexnormals(self):
         """Delete all vertex normals drawn by this scene object.
@@ -97,8 +98,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*.normal".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.vertex.*.normal".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_facenormals(self):
         """Delete all face normals drawn by this scene object.
@@ -108,8 +109,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*.normal".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.face.*.normal".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_vertexlabels(self):
         """Delete all vertex labels drawn by this scene object.
@@ -119,8 +120,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.vertex.*.label".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_edgelabels(self):
         """Delete all edge labels drawn by this scene object.
@@ -130,8 +131,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.edge.*.label".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_facelabels(self):
         """Delete all face labels drawn by this scene object.
@@ -141,8 +142,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.face.*.label".format(self.mesh.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     # ==========================================================================
     # draw
@@ -352,7 +353,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
             point = point_to_rhino(self.vertex_xyz[vertex])
 
-            dot = TextDot(str(text[vertex]), point)  # type: ignore
+            dot = Rhino.Geometry.TextDot(str(text[vertex]), point)  # type: ignore
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 
@@ -398,7 +399,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
             point = point_to_rhino(line.midpoint)
 
-            dot = TextDot(str(text[edge]), point)  # type: ignore
+            dot = Rhino.Geometry.TextDot(str(text[edge]), point)  # type: ignore
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 
@@ -442,7 +443,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
             points = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
             point = point_to_rhino(centroid_points(points))  # type: ignore
 
-            dot = TextDot(str(text[face]), point)  # type: ignore
+            dot = Rhino.Geometry.TextDot(str(text[face]), point)  # type: ignore
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 

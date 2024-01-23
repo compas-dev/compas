@@ -2,11 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Rhino.Geometry import ArcCurve  # type: ignore
-from Rhino.Geometry import NurbsCurve  # type: ignore
-from Rhino.Geometry import LineCurve  # type: ignore
-from Rhino.Geometry import Interval  # type: ignore
-from Rhino.Geometry import LengthMassProperties  # type: ignore
+import Rhino  # type: ignore
 
 from compas.geometry import BrepEdge
 from compas.geometry import Line
@@ -125,7 +121,7 @@ class RhinoBrepEdge(BrepEdge):
     @native_edge.setter
     def native_edge(self, value):
         self._edge = value
-        self._mass_props = LengthMassProperties.Compute(value.EdgeCurve)
+        self._mass_props = Rhino.Geometry.LengthMassProperties.Compute(value.EdgeCurve)
         self._curve = RhinoNurbsCurve.from_rhino(value.EdgeCurve.ToNurbsCurve())
         self._start_vertex = RhinoBrepVertex(value.StartVertex)
         self._end_vertex = RhinoBrepVertex(value.EndVertex)
@@ -166,11 +162,11 @@ class RhinoBrepEdge(BrepEdge):
         curve = self._edge.EdgeCurve
         domain = [self._edge.Domain[0], self._edge.Domain[1]]
         _, frame = curve.FrameAt(0)
-        if isinstance(curve, LineCurve):
+        if isinstance(curve, Rhino.Geometry.LineCurve):
             return "line", curve_to_compas_line(curve), frame, domain
-        if isinstance(curve, NurbsCurve):
+        if isinstance(curve, Rhino.Geometry.NurbsCurve):
             return "nurbs", RhinoNurbsCurve.from_rhino(curve), frame, domain
-        if isinstance(curve, ArcCurve):
+        if isinstance(curve, Rhino.Geometry.ArcCurve):
             if not curve.IsClosed:
                 return "arc", arc_to_compas(curve.Arc), curve.Arc.Plane, domain
             is_circle, circle = curve.TryGetCircle()
@@ -187,21 +183,21 @@ class RhinoBrepEdge(BrepEdge):
         frame = Frame.__from_data__(frame_data)
         if curve_type == "line":
             line = Line.__from_data__(curve_data)
-            curve = LineCurve(line_to_rhino(line))
+            curve = Rhino.Geometry.LineCurve(line_to_rhino(line))
         elif curve_type == "circle":
             circle = circle_to_rhino(Circle.__from_data__(curve_data))
             circle.Plane = frame_to_rhino_plane(frame)
-            curve = ArcCurve(circle)
+            curve = Rhino.Geometry.ArcCurve(circle)
         elif curve_type == "ellipse":
             ellipse = ellipse_to_rhino(Ellipse.__from_data__(curve_data))
             ellipse.Plane = frame_to_rhino_plane(frame)
-            curve = NurbsCurve.CreateFromEllipse(ellipse)
+            curve = Rhino.Geometry.NurbsCurve.CreateFromEllipse(ellipse)
         elif curve_type == "arc":
             arc = arc_to_rhino(Arc.__from_data__(curve_data))
-            curve = ArcCurve(arc)
+            curve = Rhino.Geometry.ArcCurve(arc)
         elif curve_type == "nurbs":
             curve = RhinoNurbsCurve.__from_data__(curve_data).rhino_curve
         else:
             raise ValueError("Unknown curve type: {}".format(curve_type))
-        curve.Domain = Interval(*domain)
+        curve.Domain = Rhino.Geometry.Interval(*domain)
         return curve
