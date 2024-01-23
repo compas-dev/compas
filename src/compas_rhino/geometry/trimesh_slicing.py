@@ -2,9 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import Rhino
-from Rhino.Geometry import Point3d, Vector3d, Plane
-from Rhino.Geometry.Intersect.Intersection import MeshPlane
+import Rhino  # type: ignore
 
 from compas.plugins import plugin
 
@@ -48,11 +46,11 @@ def trimesh_slice(mesh, planes):
     # (1) parse to Rhino.Geometry.Plane
     P = []
     for plane in planes:
-        point = Point3d(plane[0][0], plane[0][1], plane[0][2])
-        normal = Vector3d(plane[1][0], plane[1][1], plane[1][2])
-        P.append(Plane(point, normal))
+        point = Rhino.Geometry.Point3d(plane[0][0], plane[0][1], plane[0][2])
+        normal = Rhino.Geometry.Vector3d(plane[1][0], plane[1][1], plane[1][2])
+        P.append(Rhino.Geometry.Plane(point, normal))
     # (2) Slice
-    polylines = MeshPlane(M, P)
+    polylines = Rhino.Geometry.Intersect.Intersection.MeshPlane(M, P)
     # (3) Return points in a list of arrays
     polyline_pts = []
     for polyline in polylines:

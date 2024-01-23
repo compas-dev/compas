@@ -2,9 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from Rhino.Geometry import Point3d  # type: ignore
-from Rhino.Geometry import Vector3d  # type: ignore
-from Rhino.Geometry import Plane as RhinoPlane  # type: ignore
+import Rhino  # type: ignore
 
 from compas.geometry import Point
 from compas.geometry import Vector
@@ -30,7 +28,7 @@ def point_to_rhino(point):
     :rhino:`Rhino.Geometry.Point3d`
 
     """
-    return Point3d(point[0], point[1], point[2])
+    return Rhino.Geometry.Point3d(point[0], point[1], point[2])
 
 
 def vector_to_rhino(vector):
@@ -45,7 +43,7 @@ def vector_to_rhino(vector):
     :rhino:`Rhino.Geometry.Vector3d`
 
     """
-    return Vector3d(vector[0], vector[1], vector[2])
+    return Rhino.Geometry.Vector3d(vector[0], vector[1], vector[2])
 
 
 def plane_to_rhino(plane):
@@ -60,7 +58,7 @@ def plane_to_rhino(plane):
     :rhino:`Rhino.Geometry.Plane`
 
     """
-    return RhinoPlane(point_to_rhino(plane[0]), vector_to_rhino(plane[1]))
+    return Rhino.Geometry.Plane(point_to_rhino(plane[0]), vector_to_rhino(plane[1]))
 
 
 def frame_to_rhino_plane(frame):
@@ -75,7 +73,7 @@ def frame_to_rhino_plane(frame):
     :rhino:`Rhino.Geometry.Plane`
 
     """
-    return RhinoPlane(point_to_rhino(frame.point), vector_to_rhino(frame.xaxis), vector_to_rhino(frame.yaxis))
+    return Rhino.Geometry.Plane(point_to_rhino(frame.point), vector_to_rhino(frame.xaxis), vector_to_rhino(frame.yaxis))
 
 
 frame_to_rhino = frame_to_rhino_plane

@@ -4,6 +4,8 @@ from __future__ import division
 
 from itertools import groupby
 
+import Rhino.Geometry  # type: ignore
+
 from compas.geometry import Point
 from compas.geometry import NurbsSurface
 from compas.geometry import knots_and_mults_to_knotvector
@@ -13,8 +15,6 @@ from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
 
 from .surface import RhinoSurface
-
-import Rhino.Geometry  # type: ignore
 
 
 class ControlPoints(object):

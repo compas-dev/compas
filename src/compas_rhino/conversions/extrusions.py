@@ -3,8 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import scriptcontext as sc  # type: ignore
-
-from Rhino.Geometry import Box as RhinoBox  # type: ignore
+import Rhino  # type: ignore
 
 from .shapes import box_to_compas
 from .shapes import cylinder_to_compas
@@ -34,7 +33,7 @@ def extrusion_to_compas_box(extrusion):
     """
     plane = extrusion.GetPathPlane(0)
     bbox = extrusion.GetBoundingBox(plane)
-    box = RhinoBox(plane, bbox)
+    box = Rhino.Geometry.Box(plane, bbox)
     return box_to_compas(box)
 
 
