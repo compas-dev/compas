@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.objects`.
 * Added `compas_rhino.layers`.
 * Added `compas_rhino.install_with_pip`.
+* Added `__eq__` to `compas.data.Data`.
 
 ### Changed
 

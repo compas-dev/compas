@@ -158,6 +158,11 @@ class Data(object):
         """
         return cls(**data)
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__data__ == other.__data__
+
     def ToString(self):
         """Converts the instance to a string.
 
