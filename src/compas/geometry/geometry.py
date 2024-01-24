@@ -18,9 +18,6 @@ class Geometry(Data):
     def __init__(self, name=None):
         super(Geometry, self).__init__(name=name)
 
-    def __eq__(self, other):
-        raise NotImplementedError
-
     def __ne__(self, other):
         # this is not obvious to ironpython
         return not self.__eq__(other)
