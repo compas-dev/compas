@@ -113,8 +113,8 @@ def is_rhino():
 
 def is_grasshopper():
     try:
-        import Rhino
-        import scriptcontext
+        import Rhino  # noqa : F401
+        import scriptcontext  # noqa : F401
     except ImportError:
         return False
     return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
