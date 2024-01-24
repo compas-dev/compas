@@ -14,7 +14,7 @@ def test_string_casting():
 
 
 def test___eq__():
-    class SerilailableClass(Data):
+    class DataClass(Data):
         def __init__(self, int_attr, str_attr, bool_attr, float_attr, list_attr, dict_attr, data_attr):
             self.int_attr = int_attr
             self.str_attr = str_attr
@@ -36,10 +36,10 @@ def test___eq__():
                 "data_attr": self.data_attr,
             }
 
-    instanceA = SerilailableClass(1, "str", True, 1.0, [1, 2, 3], {"a": 1, "b": 2}, None)
-    instanceB = SerilailableClass(2, "str", True, 1.0, [1, 2, 3], {"a": 1, "b": 2}, None)
-    instanceC = SerilailableClass(3, "str", False, 0.0, [3, 2, 1], {"c": 1, "d": 2}, instanceA)
-    instanceD = SerilailableClass(4, "str", False, 0.0, [3, 2, 1], {"c": 1, "d": 2}, instanceB)
+    instanceA = DataClass(1, "str", True, 1.0, [1, 2, 3], {"a": 1, "b": 2}, None)
+    instanceB = DataClass(2, "str", True, 1.0, [1, 2, 3], {"a": 1, "b": 2}, None)
+    instanceC = DataClass(3, "str", False, 0.0, [3, 2, 1], {"c": 1, "d": 2}, instanceA)
+    instanceD = DataClass(4, "str", False, 0.0, [3, 2, 1], {"c": 1, "d": 2}, instanceB)
 
     assert instanceA != instanceB
     assert instanceC != instanceD
