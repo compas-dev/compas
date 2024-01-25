@@ -68,7 +68,7 @@ class SceneObject(object):
         self._node = None
         self._frame = kwargs.get("frame", None)
         self._transformation = kwargs.get("transformation", None)
-        self.name = kwargs.get("name", item.name or item.__class__.__name__)
+        self.name = kwargs.get("name", getattr(item, "name", item.__class__.__name__))
         self.color = kwargs.get("color", self.color)
         self.opacity = kwargs.get("opacity", 1.0)
         self.show = kwargs.get("show", True)
