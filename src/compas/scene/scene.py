@@ -3,6 +3,8 @@ from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 
 from .context import clear
+from .context import predraw
+from .context import postdraw
 from .context import redraw
 from .context import detect_current_context
 from .sceneobject import SceneObject
@@ -287,8 +289,10 @@ class Scene(Data):
             sceneobject._guids = None
         clear(guids=guids)
 
-    def redraw(self):
-        """Redraw the scene."""
+    def draw(self):
+        """Draw the scene."""
+
+        predraw()
 
         if not self.context:
             raise ValueError("No context detected.")
@@ -302,7 +306,11 @@ class Scene(Data):
         if drawn_objects:
             redraw()
 
+        postdraw()
+
         return drawn_objects
+
+    redraw = draw
 
     def print_hierarchy(self):
         """Print the hierarchy of the scene."""

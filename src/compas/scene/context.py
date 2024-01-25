@@ -26,6 +26,22 @@ def redraw():
 redraw.__pluggable__ = True
 
 
+@pluggable(category="drawing-utils")
+def predraw():
+    pass
+
+
+predraw.__pluggable__ = True
+
+
+@pluggable(category="drawing-utils")
+def postdraw():
+    pass
+
+
+postdraw.__pluggable__ = True
+
+
 @pluggable(category="factories", selector="collect_all")
 def register_scene_objects():
     """Registers scene objects available in the current context."""
@@ -123,7 +139,6 @@ def _get_sceneobject_cls(data, **kwargs):
 
 
 def get_sceneobject_cls(item, **kwargs):
-
     if not ITEM_SCENEOBJECT:
         register_scene_objects()
 
