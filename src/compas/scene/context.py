@@ -82,9 +82,6 @@ def detect_current_context():
 
     """
 
-    if not ITEM_SCENEOBJECT:
-        register_scene_objects()
-
     if is_viewer_open():
         return "Viewer"
     if compas.is_grasshopper():
@@ -126,6 +123,10 @@ def _get_sceneobject_cls(data, **kwargs):
 
 
 def get_sceneobject_cls(item, **kwargs):
+
+    if not ITEM_SCENEOBJECT:
+        register_scene_objects()
+
     if item is None:
         raise ValueError(
             "Cannot create a scene object for None. Please ensure you pass a instance of a supported class."
