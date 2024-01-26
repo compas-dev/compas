@@ -37,10 +37,25 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    disjoint : bool, optional
+        Draw the faces of the mesh disjointed.
+        Default is ``False``.
+    group : str, optional
+        The name of the group to add the mesh components. The group will be created if not already present.
+        Default is ``None``.
+
     """
 
     def __init__(self, mesh, **kwargs):
         super(MeshObject, self).__init__(mesh=mesh, **kwargs)
+        self.disjoint = kwargs.get("disjoint", False)
+        self.group = kwargs.get("group", None)
+        self._guid_mesh = None
+        self._guids_faces = None
+        self._guids_edges = None
+        self._guids_vertices = None
 
     # ==========================================================================
     # clear
@@ -149,16 +164,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
     # draw
     # ==========================================================================
 
-    def draw(self, color=None, vertexcolors=None, facecolors=None, disjoint=False):
-        """Draw the mesh as a consolidated RhinoMesh.
-
-        Parameters
-        ----------
-        color : tuple[int, int, int], optional
-            The color of the mesh.
-            Default is the value of :attr:`MeshObject.default_color`.
-        disjoint : bool, optional
-            If True, draw the faces of the mesh with disjoint vertices.
+    def draw(self):
+        """Draw the mesh or its components in Rhino.
 
         Returns
         -------
@@ -179,29 +186,32 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         self._guids = []
 
         if self.show_faces is True:
-            color = Color.coerce(color) or self.color
-            attr = attributes(name=self.mesh.name, color=color, layer=self.layer)  # type: ignore
+            attr = attributes(name=self.name, color=self.color, layer=self.layer)  # type: ignore
 
             geometry = mesh_to_rhino(
                 self.mesh,
-                color=color,
-                vertexcolors=vertexcolors,
-                facecolors=facecolors,
-                disjoint=disjoint,
+                color=self.color,
+                vertexcolors=self.vertexcolor,
+                facecolors=self.facecolor,
+                disjoint=self.disjoint,
             )
 
             geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
-            self._guids += [sc.doc.Objects.AddMesh(geometry, attr)]
+            self._guid_mesh = sc.doc.Objects.AddMesh(geometry, attr)
+            if self.group:
+                self.add_to_group(self.group, [self._guid_mesh])
+
+            self._guids.append(self._guid_mesh)
 
         elif self.show_faces:
-            self._guids += self.draw_faces(faces=self.show_faces, color=self.facecolor)
+            self._guids += self.draw_faces(faces=self.show_faces, color=self.facecolor, group=self.group)
 
         if self.show_vertices:
-            self._guids += self.draw_vertices(vertices=self.show_vertices, color=self.vertexcolor)
+            self._guids += self.draw_vertices(vertices=self.show_vertices, color=self.vertexcolor, group=self.group)
 
         if self.show_edges:
-            self._guids += self.draw_edges(edges=self.show_edges, color=self.edgecolor)
+            self._guids += self.draw_edges(edges=self.show_edges, color=self.edgecolor, group=self.group)
 
         return self.guids
 
@@ -243,6 +253,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_vertices = guids
 
         return guids
 
@@ -288,6 +300,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_edges = guids
 
         return guids
 
@@ -335,6 +349,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_faces = guids
 
         return guids
 
