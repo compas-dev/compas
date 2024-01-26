@@ -852,7 +852,8 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.get_sceneobject_cls.html">get_sceneobject_cls</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.register.html">register</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.clear.html">clear</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.redraw.html">redraw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.before_draw.html">before_draw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.after_draw.html">after_draw</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/compas.scene.register_scene_objects.html">register_scene_objects</a></li>
 </ul>
 </li>
@@ -1217,12 +1218,15 @@ The scene objects are implemented as pluggables, and automatically switch betwee
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.scene.clear.html" title="compas.scene.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Pluggable to clear the current context of the scene or a list of objects through guids.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.scene.redraw.html" title="compas.scene.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.scene.before_draw.html" title="compas.scene.before_draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before_draw</span></code></a></p></td>
+<td><p>Pluggable to perform operations before drawing the scene.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.scene.register_scene_objects.html" title="compas.scene.register_scene_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_scene_objects</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.scene.after_draw.html" title="compas.scene.after_draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after_draw</span></code></a></p></td>
+<td><p>Pluggable to perform operations after drawing the scene. This function is automatically called at the end of <cite>compas.scene.Scene.draw()</cite>. Parameters ---------- drawn_objects : list     A list of objects that were drawn.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.scene.register_scene_objects.html" title="compas.scene.register_scene_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_scene_objects</span></code></a></p></td>
 <td><p>Registers scene objects available in the current context.</p></td>
 </tr>
 </tbody>
