@@ -59,8 +59,8 @@ def clear_blender(guids=None):
     compas_blender.clear(guids=guids)
 
 
-@plugin(category="drawing-utils", pluggable_name="redraw", requires=["bpy"])
-def redraw_blender():
+@plugin(category="drawing-utils", pluggable_name="after_draw", requires=["bpy"])
+def after_draw_blender(drawn_objects):
     compas_blender.redraw()
 
 

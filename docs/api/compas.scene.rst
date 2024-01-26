@@ -51,5 +51,6 @@ Pluggables are functions that don't have an actual implementation, but receive a
     :nosignatures:
 
     clear
-    redraw
+    before_draw
+    after_draw
     register_scene_objects

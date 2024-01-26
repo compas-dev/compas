@@ -9,7 +9,7 @@ COMPAS (data) objects can be visualised by placing them into a "scene".
 >>> box = Box(1)
 >>> scene = Scene()
 >>> scene.add(box)
->>> scene.redraw()
+>>> scene.draw()
 
 .. When a COMPAS object is added, the scene automatically creates a corresponding scene object for the current/active visualisation context.
 .. Currently, four visualisation contexts are supported: COMPAS Viewer (default), Rhino, Grasshopper, and Blender.

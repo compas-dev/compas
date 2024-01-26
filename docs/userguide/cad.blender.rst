@@ -94,7 +94,7 @@ For more information on visualisation scenes, see :doc:`/userguide/basics.visual
     scene = Scene()
     scene.clear()
     scene.add(mesh)
-    scene.redraw()
+    scene.draw()
 
 
 Conversions

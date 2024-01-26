@@ -16,7 +16,8 @@ from .geometryobject import GeometryObject
 from .volmeshobject import VolMeshObject
 
 from .context import clear
-from .context import redraw
+from .context import before_draw
+from .context import after_draw
 from .context import register_scene_objects
 from .context import get_sceneobject_cls
 from .context import register
@@ -51,7 +52,8 @@ __all__ = [
     "SceneObjectNode",
     "SceneTree",
     "clear",
-    "redraw",
+    "before_draw",
+    "after_draw",
     "register_scene_objects",
     "get_sceneobject_cls",
     "register",

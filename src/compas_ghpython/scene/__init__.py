@@ -61,11 +61,6 @@ def clear_GH(guids=None):
     pass
 
 
-@plugin(category="drawing-utils", pluggable_name="redraw", requires=["Grasshopper"])
-def redraw_GH():
-    pass
-
-
 @plugin(category="factories", requires=["Rhino"])
 def register_scene_objects():
     register(Box, BoxObject, context="Grasshopper")

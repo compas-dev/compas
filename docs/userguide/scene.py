@@ -84,4 +84,4 @@ for obj in scene.objects:
 
 
 scene.print_hierarchy()
-scene.redraw()
+scene.draw()
